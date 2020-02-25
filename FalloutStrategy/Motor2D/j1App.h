@@ -18,6 +18,7 @@ class j1Map;
 class j1PathFinding;
 class j1Fonts;
 class j1Gui;
+class j1Collision;
 
 class j1App
 {
@@ -92,6 +93,7 @@ public:
 	j1PathFinding*		pathfinding = NULL;
 	j1Fonts*			font = NULL;
 	j1Gui*				gui = NULL;
+	j1Collision	*		collision = NULL;
 
 private:
 
