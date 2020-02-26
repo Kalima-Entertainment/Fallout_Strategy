@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.2" tiledversion="1.2.4" name="Vault_Dweller_Melee" tilewidth="64" tileheight="84" tilecount="768" columns="32">
- <image source="Vault_Dweller_Melee_2.png" width="2048" height="2048"/>
+ <image source="Vault_Dweller_Melee.png" width="2048" height="2048"/>
  <tile id="0">
   <animation>
    <frame tileid="0" duration="100"/>
@@ -74,6 +74,8 @@
    <frame tileid="103" duration="100"/>
    <frame tileid="104" duration="100"/>
    <frame tileid="105" duration="100"/>
+   <frame tileid="107" duration="100"/>
+   <frame tileid="104" duration="100"/>
    <frame tileid="105" duration="100"/>
    <frame tileid="106" duration="100"/>
    <frame tileid="107" duration="100"/>
