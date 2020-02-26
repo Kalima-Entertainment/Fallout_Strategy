@@ -9,8 +9,6 @@
 struct SDL_Texture;
 struct Collider;
 
-#define COLLIDER_MARGIN 20
-
 enum EntityState {
 	IDLE,
 	ATTACK,
@@ -55,18 +53,12 @@ public:
 	Collider* last_collider = nullptr;
 	Collider* attack_collider = nullptr;
 	
-	p2List<Animation*> animations;
+	Animation animations[5];
 	Animation idle;
 	Animation walk;
-	Animation slide;
-	Animation crouch_down;
-	Animation crouch_up;
-	Animation jump;
-	Animation run;
-	Animation fall;
 	Animation attack;
+	Animation hit;
 	Animation die;
-	Animation rest;
 	Animation* current_animation = nullptr;
 	Animation* last_animation = nullptr;
 
@@ -76,14 +68,6 @@ public:
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
 
 	bool particles_created = false;
-
-	bool going_after_player = false;
-
-	uint		die_fx = 0;
-	p2SString	die_fx_path;
-
-	uint		attack_fx = 2;
-	p2SString	attack_fx_path;
 
 	bool playing_fx = false;
 

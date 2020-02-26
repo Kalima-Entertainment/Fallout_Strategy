@@ -8,7 +8,6 @@
 
 class j1Entity;
 struct SDL_Texture;
-class j1Player;
 class j1WalkingEnemy;
 class j1FlyingEnemy;
 
@@ -56,25 +55,10 @@ public:
 	p2List<j1Entity*> entities;
 	pugi::xml_node config_data;
 
-	j1Player* player;
-
 public:
-	int gravity = 0;
-	int max_falling_speed = 0;
 
 	j1WalkingEnemy* reference_walking_enemy = nullptr;
 	j1FlyingEnemy* reference_flying_enemy = nullptr;
-
-	//sfx
-	uint walking_enemy_attack_fx;
-	uint flying_enemy_attack_fx;
-
-	uint walking_enemy_die_fx;
-	uint flying_enemy_die_fx;
-	uint walking_enemy2_die_fx;
-
-	float time_between_updates = 0.01f;
-	float accumulated_time = 0;
 
 	bool blocked_movement = false;
 
