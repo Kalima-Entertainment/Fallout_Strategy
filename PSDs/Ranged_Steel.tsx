@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.2.4" name="Ranged_Steel" tilewidth="128" tileheight="128" tilecount="256" columns="16">
- <image source="../../../../Fallout_Strategy/PSDs/Ranged_Steel.png" width="2048" height="2048"/>
+<tileset name="Ranged_Steel" tilewidth="128" tileheight="128" tilecount="256" columns="16">
+ <image source="Ranged_Steel.png" width="2048" height="2048"/>
  <tile id="0">
   <animation>
    <frame tileid="0" duration="100"/>
@@ -198,11 +198,98 @@
  </tile>
  <tile id="170">
   <animation>
-   <frame tileid="170" duration="1000"/>
-   <frame tileid="171" duration="1000"/>
-   <frame tileid="172" duration="1000"/>
-   <frame tileid="173" duration="1000"/>
-   <frame tileid="174" duration="1000"/>
+   <frame tileid="170" duration="100"/>
+   <frame tileid="171" duration="100"/>
+   <frame tileid="172" duration="100"/>
+   <frame tileid="173" duration="100"/>
+   <frame tileid="174" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="176">
+  <animation>
+   <frame tileid="176" duration="100"/>
+   <frame tileid="177" duration="100"/>
+   <frame tileid="178" duration="100"/>
+   <frame tileid="179" duration="100"/>
+   <frame tileid="180" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="181">
+  <animation>
+   <frame tileid="181" duration="100"/>
+   <frame tileid="182" duration="100"/>
+   <frame tileid="183" duration="100"/>
+   <frame tileid="184" duration="100"/>
+   <frame tileid="185" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="186">
+  <animation>
+   <frame tileid="186" duration="100"/>
+   <frame tileid="187" duration="100"/>
+   <frame tileid="188" duration="100"/>
+   <frame tileid="189" duration="100"/>
+   <frame tileid="190" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="192">
+  <animation>
+   <frame tileid="192" duration="100"/>
+   <frame tileid="193" duration="100"/>
+   <frame tileid="194" duration="100"/>
+   <frame tileid="195" duration="100"/>
+   <frame tileid="196" duration="100"/>
+   <frame tileid="197" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="198">
+  <animation>
+   <frame tileid="198" duration="100"/>
+   <frame tileid="199" duration="100"/>
+   <frame tileid="200" duration="100"/>
+   <frame tileid="201" duration="100"/>
+   <frame tileid="202" duration="100"/>
+   <frame tileid="203" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="208">
+  <animation>
+   <frame tileid="208" duration="100"/>
+   <frame tileid="209" duration="100"/>
+   <frame tileid="210" duration="100"/>
+   <frame tileid="211" duration="100"/>
+   <frame tileid="212" duration="100"/>
+   <frame tileid="213" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="214">
+  <animation>
+   <frame tileid="214" duration="100"/>
+   <frame tileid="215" duration="100"/>
+   <frame tileid="216" duration="100"/>
+   <frame tileid="217" duration="100"/>
+   <frame tileid="218" duration="100"/>
+   <frame tileid="219" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="224">
+  <animation>
+   <frame tileid="224" duration="100"/>
+   <frame tileid="225" duration="100"/>
+   <frame tileid="226" duration="100"/>
+   <frame tileid="227" duration="100"/>
+   <frame tileid="228" duration="100"/>
+   <frame tileid="229" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="230">
+  <animation>
+   <frame tileid="230" duration="100"/>
+   <frame tileid="231" duration="100"/>
+   <frame tileid="232" duration="100"/>
+   <frame tileid="233" duration="100"/>
+   <frame tileid="234" duration="100"/>
+   <frame tileid="235" duration="100"/>
   </animation>
  </tile>
 </tileset>
