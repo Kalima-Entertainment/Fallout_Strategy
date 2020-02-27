@@ -62,6 +62,11 @@
  </tile>
  <tile id="64">
   <animation>
+   <frame tileid="64" duration="100"/>
+   <frame tileid="65" duration="100"/>
+   <frame tileid="66" duration="100"/>
+   <frame tileid="67" duration="100"/>
+   <frame tileid="68" duration="100"/>
    <frame tileid="69" duration="100"/>
    <frame tileid="70" duration="100"/>
    <frame tileid="71" duration="100"/>
@@ -107,6 +112,21 @@
    <frame tileid="128" duration="100"/>
    <frame tileid="129" duration="100"/>
    <frame tileid="130" duration="100"/>
+   <frame tileid="131" duration="100"/>
+   <frame tileid="132" duration="100"/>
+   <frame tileid="133" duration="100"/>
+   <frame tileid="134" duration="100"/>
+   <frame tileid="135" duration="100"/>
+   <frame tileid="136" duration="100"/>
+   <frame tileid="137" duration="100"/>
+   <frame tileid="138" duration="100"/>
+   <frame tileid="139" duration="100"/>
+   <frame tileid="140" duration="100"/>
+   <frame tileid="141" duration="100"/>
+   <frame tileid="142" duration="100"/>
+   <frame tileid="143" duration="100"/>
+   <frame tileid="144" duration="100"/>
+   <frame tileid="145" duration="100"/>
   </animation>
  </tile>
  <tile id="160">
