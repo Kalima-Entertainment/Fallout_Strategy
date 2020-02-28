@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="70" tileheight="70" infinite="0" nextlayerid="2" nextobjectid="1">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="10" tilewidth="70" tileheight="70" infinite="0" nextlayerid="2" nextobjectid="1">
  <tileset firstgid="1" source="Ghoul_Ranged.tsx"/>
  <tileset firstgid="842" source="Ghoul_gatherer.tsx"/>
  <layer id="1" name="Capa de Patrones 1" width="10" height="10">
   <data encoding="csv">
-842,1045,855,1058,0,0,0,0,0,0,
-871,1074,884,1087,0,0,0,0,0,0,
-900,1103,913,1116,0,0,0,0,0,0,
-929,1132,942,1145,0,0,0,0,0,0,
-958,1161,971,1174,0,0,0,0,0,0,
-987,1190,1000,0,0,0,0,0,0,0,
+842,1045,855,1058,1067,0,0,0,0,0,
+871,1074,884,1087,1096,0,0,0,0,0,
+900,1103,913,1116,1125,0,0,0,0,0,
+929,1132,942,1145,1154,0,0,0,0,0,
+958,1161,971,1174,1183,0,0,0,0,0,
+987,1190,1000,1203,1212,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
