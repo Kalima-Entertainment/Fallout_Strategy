@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="6" height="6" tilewidth="112" tileheight="112" nextobjectid="1">
+ <tileset firstgid="1" source="Supermutant_Ranged.tsx"/>
+ <layer name="Capa de Patrones 1" width="6" height="6">
+  <data encoding="csv">
+1,19,37,55,73,91,
+109,127,145,163,181,199,
+120,138,156,174,192,210,
+217,235,253,271,289,307,
+226,0,0,0,0,0,
+0,0,0,0,0,0
+</data>
+ </layer>
+</map>
