@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.3.2" name="Vault_Dweller_Melee" tilewidth="64" tileheight="84" tilecount="768" columns="32">
+<tileset version="1.2" tiledversion="1.2.4" name="Vault_Dweller_Melee" tilewidth="64" tileheight="84" tilecount="768" columns="32">
  <image source="Vault_Dweller_Melee.png" width="2048" height="2048"/>
  <tile id="0">
   <animation>
@@ -331,6 +331,78 @@
    <frame tileid="406" duration="100"/>
    <frame tileid="407" duration="100"/>
    <frame tileid="408" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="448">
+  <animation>
+   <frame tileid="448" duration="100"/>
+   <frame tileid="449" duration="100"/>
+   <frame tileid="450" duration="100"/>
+   <frame tileid="451" duration="100"/>
+   <frame tileid="452" duration="100"/>
+   <frame tileid="453" duration="100"/>
+   <frame tileid="454" duration="100"/>
+   <frame tileid="455" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="480">
+  <animation>
+   <frame tileid="480" duration="100"/>
+   <frame tileid="481" duration="100"/>
+   <frame tileid="482" duration="100"/>
+   <frame tileid="483" duration="100"/>
+   <frame tileid="484" duration="100"/>
+   <frame tileid="485" duration="100"/>
+   <frame tileid="486" duration="100"/>
+   <frame tileid="487" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="512">
+  <animation>
+   <frame tileid="512" duration="100"/>
+   <frame tileid="513" duration="100"/>
+   <frame tileid="514" duration="100"/>
+   <frame tileid="515" duration="100"/>
+   <frame tileid="516" duration="100"/>
+   <frame tileid="517" duration="100"/>
+   <frame tileid="518" duration="100"/>
+   <frame tileid="519" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="544">
+  <animation>
+   <frame tileid="544" duration="100"/>
+   <frame tileid="545" duration="100"/>
+   <frame tileid="546" duration="100"/>
+   <frame tileid="547" duration="100"/>
+   <frame tileid="548" duration="100"/>
+   <frame tileid="549" duration="100"/>
+   <frame tileid="550" duration="100"/>
+   <frame tileid="551" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="576">
+  <animation>
+   <frame tileid="576" duration="100"/>
+   <frame tileid="577" duration="100"/>
+   <frame tileid="578" duration="100"/>
+   <frame tileid="579" duration="100"/>
+   <frame tileid="580" duration="100"/>
+   <frame tileid="581" duration="100"/>
+   <frame tileid="582" duration="100"/>
+   <frame tileid="583" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="608">
+  <animation>
+   <frame tileid="608" duration="100"/>
+   <frame tileid="609" duration="100"/>
+   <frame tileid="610" duration="100"/>
+   <frame tileid="611" duration="100"/>
+   <frame tileid="612" duration="100"/>
+   <frame tileid="613" duration="100"/>
+   <frame tileid="614" duration="100"/>
+   <frame tileid="615" duration="100"/>
   </animation>
  </tile>
 </tileset>
