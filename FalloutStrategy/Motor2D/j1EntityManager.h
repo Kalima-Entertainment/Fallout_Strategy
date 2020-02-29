@@ -38,7 +38,7 @@ public:
 	j1Entity* CreateStaticEntity(Faction faction, BuildingType building_type , int position_x, int position_y);
 	void DestroyEntity(j1Entity* delete_entity);
 	void DestroyAllEntities();
-//	void RellocateEntities();
+    //void RellocateEntities();
 
 public:
 
@@ -48,6 +48,25 @@ public:
 public:
 
 	//reference characters
+	j1Entity* reference_vault_melee;
+	j1Entity* reference_vault_range;
+	j1Entity* reference_vault_gatherer;
+	j1Entity* reference_vault_base;
+
+	j1Entity* reference_brotherhood_melee;
+	j1Entity* reference_brotherhood_range;
+	j1Entity* reference_brotherhood_gatherer;
+	j1Entity* reference_brotherhood_base;
+
+	j1Entity* reference_mutant_melee;
+	j1Entity* reference_mutant_range;
+	j1Entity* reference_mutant_gatherer;
+	j1Entity* reference_mutant_base;
+
+	j1Entity* reference_ghoul_melee;
+	j1Entity* reference_ghoul_range;
+	j1Entity* reference_ghoul_gatherer;
+	j1Entity* reference_ghoul_base;
 
 	bool blocked_movement = false;
 

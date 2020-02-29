@@ -1,5 +1,7 @@
 #ifndef _j1ENTITY_H
 #define _j1ENTITY_H
+#include <iostream>
+#include <vector>
 #include "SDL/include/SDL.h"
 #include "Animation.h"
 #include "j1EntityManager.h"
@@ -48,11 +50,13 @@ public:
 
 	int health = 0;
 
+	j1Entity* reference_entity;
+
 	Collider* collider = nullptr;
 	Collider* last_collider = nullptr;
 	Collider* attack_collider = nullptr;
 	
-	Animation animations[5];
+	std::vector<Animation*> animations;
 	Animation idle;
 	Animation walk;
 	Animation attack;

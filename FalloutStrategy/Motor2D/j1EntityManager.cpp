@@ -30,11 +30,26 @@ j1Entity* j1EntityManager::CreateDynamicEntity(Faction faction, Troop troop, int
 	j1Entity* entity = nullptr;
 	switch (troop)
 	{
-	case Troop::GATHERER:
-		break;
 	case Troop::MELEE:
+		entity = new DynamicEntity(Troop::MELEE);
+		if (faction == Faction::VAULT) entity->reference_entity = reference_vault_melee;
+		else if (faction == Faction::BROTHERHOOD) entity->reference_entity = reference_brotherhood_melee;
+		else if (faction == Faction::MUTANT) entity->reference_entity = reference_mutant_melee;
+		else if (faction == Faction::GHOUL) entity->reference_entity = reference_ghoul_melee;
 		break;
 	case Troop::RANGE:
+		entity = new DynamicEntity(Troop::RANGE);
+		if (faction == Faction::VAULT) entity->reference_entity = reference_vault_range;
+		else if (faction == Faction::BROTHERHOOD) entity->reference_entity = reference_brotherhood_range;
+		else if (faction == Faction::MUTANT) entity->reference_entity = reference_mutant_range;
+		else if (faction == Faction::GHOUL) entity->reference_entity = reference_ghoul_range;
+		break;
+	case Troop::GATHERER:
+		entity = new DynamicEntity(Troop::GATHERER);
+		if (faction == Faction::VAULT) entity->reference_entity = reference_vault_gatherer;
+		else if (faction == Faction::BROTHERHOOD) entity->reference_entity = reference_brotherhood_gatherer;
+		else if (faction == Faction::MUTANT) entity->reference_entity = reference_mutant_gatherer;
+		else if (faction == Faction::GHOUL) entity->reference_entity = reference_ghoul_gatherer;
 		break;
 	default:
 		break;
@@ -112,6 +127,10 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 	config_data = config;
 
 	//load all textures
+	//Vault Dwellers
+	//Brotherhood
+	//Super Mutants
+	//Ghouls
 
 	return ret;
 }

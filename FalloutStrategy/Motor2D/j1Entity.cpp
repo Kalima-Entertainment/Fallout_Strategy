@@ -75,20 +75,20 @@ bool j1Entity::LoadAnimations(const char* path) {
 	SDL_Rect rect;
 	rect.w = tile_width;
 	rect.h = tile_height;
-
+	int i = 0;
 	while (animation != nullptr)
 	{
 		p2SString animation_name(animation.child("properties").child("property").attribute("name").as_string());
 			if (animation_name == "idle")
-				animations[0] = idle;
+				animations[0] = &idle;
 			else if (animation_name == "walk")
-				animations[1] = walk;
+				animations[1] = &walk;
 			else if (animation_name == "attack")
-				animations[2] = attack;
+				animations[2] = &attack;
 			else if (animation_name == "hit")
-				animations[3] = hit;
+				animations[3] = &hit;
 			else if (animation_name == "die")
-				animations[4] = die;
+				animations[4] = &die;
 			else goto CHANGE_ANIMATION;
 
 			id = animation.attribute("id").as_int();
@@ -98,7 +98,7 @@ bool j1Entity::LoadAnimations(const char* path) {
 				speed = frame.attribute("duration").as_int() * 0.001f;
 				rect.x = rect.w * ((tile_id) % columns);
 				rect.y = rect.h * ((tile_id) / columns);
-				//animation->data->PushBack(rect, speed);
+				animations[i]->PushBack(rect, speed);
 				frame = frame.next_sibling();
 			}
 

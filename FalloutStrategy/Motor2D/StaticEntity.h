@@ -11,7 +11,7 @@ enum class BuildingType {
 class StaticEntity : public j1Entity
 {
 public:
-	StaticEntity();
+	StaticEntity(BuildingType type);
 	~StaticEntity();
 
 	BuildingType type;

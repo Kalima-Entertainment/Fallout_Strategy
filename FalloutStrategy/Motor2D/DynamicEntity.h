@@ -11,7 +11,7 @@ enum class Troop {
 class DynamicEntity : public j1Entity
 {
 public:
-	DynamicEntity();
+	DynamicEntity(Troop type);
 	~DynamicEntity();
 	State current_state;
 private:
