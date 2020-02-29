@@ -5,7 +5,7 @@
 enum class Troop {
 	GATHERER,
 	MELEE,
-	RANGE
+	RANGED
 };
 
 class DynamicEntity : public j1Entity

@@ -37,8 +37,8 @@ j1Entity* j1EntityManager::CreateDynamicEntity(Faction faction, Troop troop, int
 		else if (faction == Faction::MUTANT) entity->reference_entity = reference_mutant_melee;
 		else if (faction == Faction::GHOUL) entity->reference_entity = reference_ghoul_melee;
 		break;
-	case Troop::RANGE:
-		entity = new DynamicEntity(Troop::RANGE);
+	case Troop::RANGED:
+		entity = new DynamicEntity(Troop::RANGED);
 		if		(faction == Faction::VAULT) entity->reference_entity = reference_vault_range;
 		else if (faction == Faction::BROTHERHOOD) entity->reference_entity = reference_brotherhood_range;
 		else if (faction == Faction::MUTANT) entity->reference_entity = reference_mutant_range;
@@ -156,20 +156,20 @@ bool j1EntityManager::Start()
 	//load all textures
 	//Vault Dwellers
 	reference_vault_melee = CreateDynamicEntity(VAULT, Troop::MELEE, 10, 10);
-	reference_vault_range = CreateDynamicEntity(VAULT, Troop::RANGE, 20, 20);
+	reference_vault_range = CreateDynamicEntity(VAULT, Troop::RANGED, 20, 20);
 	reference_vault_gatherer = CreateDynamicEntity(VAULT, Troop::GATHERER, 30, 30);
 	reference_vault_melee->LoadAnimations("VaultDwellers/Vault_Dweller_Melee");
-	//reference_vault_range->texture =
-	//reference_vault_gatherer->texture = 
+	reference_vault_range->LoadAnimations("VaultDwellers/Vault_Dweller_Ranged");
+	reference_vault_gatherer->LoadAnimations("VaultDwellers/Vault_Dweller_Gatherer");
 
 	//Brotherhood
 	reference_brotherhood_melee = CreateDynamicEntity(BROTHERHOOD, Troop::MELEE, 40, 40);
-	reference_brotherhood_range = CreateDynamicEntity(BROTHERHOOD, Troop::RANGE, 50, 50);
+	reference_brotherhood_range = CreateDynamicEntity(BROTHERHOOD, Troop::RANGED, 50, 50);
 	reference_brotherhood_gatherer = CreateDynamicEntity(BROTHERHOOD, Troop::GATHERER, 60, 60);
 
 	//Super Mutants
 	reference_mutant_melee = CreateDynamicEntity(MUTANT, Troop::MELEE, 70, 70);
-	reference_mutant_range = CreateDynamicEntity(MUTANT, Troop::RANGE, 80, 80);
+	reference_mutant_range = CreateDynamicEntity(MUTANT, Troop::RANGED, 80, 80);
 	reference_mutant_gatherer = CreateDynamicEntity(MUTANT, Troop::GATHERER, 90, 90);
 	//reference_mutant_melee->texture =
 	//reference_mutant_range->texture =
@@ -177,7 +177,7 @@ bool j1EntityManager::Start()
 
 	//Ghouls
 	reference_ghoul_melee = CreateDynamicEntity(GHOUL, Troop::MELEE, 100, 100);
-	reference_ghoul_range = CreateDynamicEntity(GHOUL, Troop::RANGE, 110, 110);
+	reference_ghoul_range = CreateDynamicEntity(GHOUL, Troop::RANGED, 110, 110);
 	reference_ghoul_gatherer = CreateDynamicEntity(GHOUL, Troop::GATHERER, 120, 120);
 
 	return ret;

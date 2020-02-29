@@ -7,7 +7,7 @@ DynamicEntity::DynamicEntity(Troop type) {
 		break;
 	case Troop::MELEE:
 		break;
-	case Troop::RANGE:
+	case Troop::RANGED:
 		break;
 	default:
 		break;
