@@ -4,7 +4,7 @@
 #include "j1Collision.h"
 #include "p2Log.h"
 #include "j1Scene.h"
-#include "brofiler/Brofiler/Brofiler.h"
+//#include "brofiler/Brofiler/Brofiler.h"
 
 j1Collision::j1Collision()
 {
@@ -81,7 +81,7 @@ bool j1Collision::PreUpdate()
 // Called before render is available
 bool j1Collision::Update(float dt)
 {
-	BROFILER_CATEGORY("CollisionUpdate", Profiler::Color::Yellow)
+	//BROFILER_CATEGORY("CollisionUpdate", Profiler::Color::Yellow)
 	bool ret = true;
 
 	// Remove all colliders scheduled for deletion

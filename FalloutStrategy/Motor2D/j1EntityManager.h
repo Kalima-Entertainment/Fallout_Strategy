@@ -13,19 +13,6 @@ enum Faction;
 enum class Troop;
 enum class BuildingType;
 
-/*
-enum class EntityType
-{
-	PLAYER,
-	WALKING_ENEMY,
-	WALKING_ENEMY2,
-	FLYING_ENEMY,
-	TRAP,
-	PARTICLES,
-	UNKNOWN
-};
-*/
-
 class j1EntityManager : public j1Module
 {
 public:
@@ -60,8 +47,7 @@ public:
 
 public:
 
-	//j1WalkingEnemy* reference_walking_enemy = nullptr;
-	//j1FlyingEnemy* reference_flying_enemy = nullptr;
+	//reference characters
 
 	bool blocked_movement = false;
 

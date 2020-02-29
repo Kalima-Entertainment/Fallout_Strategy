@@ -10,9 +10,9 @@
 #include "j1Map.h"
 #include "j1Audio.h"
 #include "j1Entity.h"
-//#include "j1UI.h"
-//#include "j1Particles.h"
-#include "brofiler/Brofiler/Brofiler.h"
+#include "DynamicEntity.h"
+#include "StaticEntity.h"
+//#include "brofiler/Brofiler/Brofiler.h"
 
 
 j1EntityManager::j1EntityManager(){
@@ -24,49 +24,64 @@ j1EntityManager::~j1EntityManager(){
 }
 
 j1Entity* j1EntityManager::CreateDynamicEntity(Faction faction, Troop troop, int position_x, int position_y){
-	BROFILER_CATEGORY("EntityCreation", Profiler::Color::Linen)
-		//static_assert(EntityType::UNKNOWN == 4, "code needs update");
-		/*
-		j1Entity* entity = nullptr;
-		switch (troop)
-		{
-		default:
-			break;
-		}
+	//BROFILER_CATEGORY("EntityCreation", Profiler::Color::Linen)
+	//static_assert(EntityType::UNKNOWN == 4, "code needs update");
 
+	j1Entity* entity = nullptr;
+	switch (troop)
+	{
+	case Troop::GATHERER:
+		break;
+	case Troop::MELEE:
+		break;
+	case Troop::RANGE:
+		break;
+	default:
+		break;
+	}
+
+	if (entity != NULL)
+	{
 		entity->faction = faction;
 		entity->position.x = entity->initialPosition.x = position_x;
 		entity->position.y = entity->initialPosition.y = position_y;
+	}
 
-		if (entity != nullptr) entities.add(entity);
-		return entity;
-		*/
-		return nullptr;
+	if (entity != nullptr) entities.push_back(entity);
+	return entity;
 }
 
 j1Entity* j1EntityManager::CreateStaticEntity(Faction faction, BuildingType buiding_type, int position_x, int position_y) {
-	BROFILER_CATEGORY("EntityCreation", Profiler::Color::Linen)
-		/*
-		//static_assert(EntityType::UNKNOWN == 4, "code needs update");
-		j1Entity* entity = nullptr;
-		switch (buiding_type)
-		{
-		default:
-			break;
-		}
+	//BROFILER_CATEGORY("EntityCreation", Profiler::Color::Linen)
+	//static_assert(EntityType::UNKNOWN == 4, "code needs update");
+	j1Entity* entity = nullptr;
 
+	switch (buiding_type)
+	{
+	case BuildingType::BASE:
+		break;
+	case BuildingType::WAREHOUSE:
+		break;
+	case BuildingType::BARRACK:
+		break;
+	default:
+		break;
+	}
+
+	if (entity != NULL)
+	{
 		entity->faction = faction;
 		entity->position.x = entity->initialPosition.x = position_x;
 		entity->position.y = entity->initialPosition.y = position_y;
+	}
 
-		if (entity != nullptr) entities.add(entity);
-		return entity;
-		*/
-		return nullptr;
+
+	if (entity != nullptr) entities.push_back(entity);
+	return entity;
 }
 
 void j1EntityManager::DestroyEntity(j1Entity* entity){
-	BROFILER_CATEGORY("EntityDestruction", Profiler::Color::Orange)
+	//BROFILER_CATEGORY("EntityDestruction", Profiler::Color::Orange)
 	/*
 		p2List_item<j1Entity*>* item;
 
@@ -96,9 +111,7 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 
 	config_data = config;
 
-	//player creation
-	//player->Awake(config.child("player"));
-	//entities.add(player);
+	//load all textures
 
 	return ret;
 }
@@ -106,6 +119,7 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 bool j1EntityManager::Start()
 {
 	bool ret = true;
+	//create reference entities
 	/*
 	player->Start();
 	reference_walking_enemy->texture = App->tex->Load("sprites/characters/sheet_hero_idle.png");
@@ -148,21 +162,21 @@ bool j1EntityManager::CleanUp()
 		entity->data->DestroyEntity(entity->data);
 	}
 	*/
+	entities.clear();
 	return ret;
 }
 
 bool j1EntityManager::PreUpdate()
 {
-	BROFILER_CATEGORY("EntitiesPreUpdate", Profiler::Color::Bisque)
+	//BROFILER_CATEGORY("EntitiesPreUpdate", Profiler::Color::Bisque)
 	bool ret = true;
-	//player->PreUpdate();
 	return ret;
 }
 
 bool j1EntityManager::Update(float dt)
 {
-	BROFILER_CATEGORY("EntitiesUpdate", Profiler::Color::Bisque)
-		bool ret = true;
+	//BROFILER_CATEGORY("EntitiesUpdate", Profiler::Color::Bisque)
+	bool ret = true;
 	/*
 	if ((!App->pause)&&(!blocked_movement)){
 		for (p2List_item<j1Entity*>* entity = entities.start; entity != nullptr; entity = entity->next)
@@ -187,7 +201,7 @@ bool j1EntityManager::Update(float dt)
 
 bool j1EntityManager::PostUpdate()
 {
-	BROFILER_CATEGORY("EntitiesPostUpdate", Profiler::Color::Bisque)
+	//BROFILER_CATEGORY("EntitiesPostUpdate", Profiler::Color::Bisque)
 	bool ret = true;
 	/*
 	for (p2List_item<j1Entity*>* entity = entities.start; entity != nullptr; entity = entity->next)
