@@ -23,29 +23,52 @@ j1EntityManager::j1EntityManager(){
 j1EntityManager::~j1EntityManager(){
 }
 
-j1Entity* j1EntityManager::CreateEntity(EntityType type, int position_x, int position_y){
+j1Entity* j1EntityManager::CreateDynamicEntity(Faction faction, Troop troop, int position_x, int position_y){
 	BROFILER_CATEGORY("EntityCreation", Profiler::Color::Linen)
-	//static_assert(EntityType::UNKNOWN == 4, "code needs update");
-	j1Entity* entity = nullptr;
-	switch (type)
-	{
-	case EntityType::UNKNOWN:
-		break;
-	default:
-		break;
-	}
+		//static_assert(EntityType::UNKNOWN == 4, "code needs update");
+		/*
+		j1Entity* entity = nullptr;
+		switch (troop)
+		{
+		default:
+			break;
+		}
 
-	entity->position.x = entity->initialPosition.x = position_x;
-	entity->position.y = entity->initialPosition.y = position_y;
+		entity->faction = faction;
+		entity->position.x = entity->initialPosition.x = position_x;
+		entity->position.y = entity->initialPosition.y = position_y;
 
-	if (entity != nullptr) entities.add(entity);
+		if (entity != nullptr) entities.add(entity);
+		return entity;
+		*/
+		return nullptr;
+}
 
-	return entity;
+j1Entity* j1EntityManager::CreateStaticEntity(Faction faction, BuildingType buiding_type, int position_x, int position_y) {
+	BROFILER_CATEGORY("EntityCreation", Profiler::Color::Linen)
+		/*
+		//static_assert(EntityType::UNKNOWN == 4, "code needs update");
+		j1Entity* entity = nullptr;
+		switch (buiding_type)
+		{
+		default:
+			break;
+		}
+
+		entity->faction = faction;
+		entity->position.x = entity->initialPosition.x = position_x;
+		entity->position.y = entity->initialPosition.y = position_y;
+
+		if (entity != nullptr) entities.add(entity);
+		return entity;
+		*/
+		return nullptr;
 }
 
 void j1EntityManager::DestroyEntity(j1Entity* entity){
 	BROFILER_CATEGORY("EntityDestruction", Profiler::Color::Orange)
-	p2List_item<j1Entity*>* item;
+	/*
+		p2List_item<j1Entity*>* item;
 
 	if (entity != nullptr) {
 		item = entities.At(entities.find(entity));
@@ -54,23 +77,18 @@ void j1EntityManager::DestroyEntity(j1Entity* entity){
 			entity->collider->to_delete = true;
 			entity->collider = nullptr;
 		}
-		if (entity->raycast != nullptr) {
-			entity->raycast->to_delete = true;
-			entity->raycast = nullptr;
-		}
 		entities.del(item);;
 	}
+	*/
 }
 
 void j1EntityManager::DestroyAllEntities() {
-	p2List_item<j1Entity*>* item;
-
-	for (item = entities.start; item != nullptr; item = item->next)
+	/*
+	for (auto item = entities.begin(); item != entities.end(); ++item)
 	{
-		if (item->data != player) {
-			DestroyEntity(item->data);
-		}
+		DestroyEntity(item->data);
 	}
+	*/
 }
 
 bool j1EntityManager::Awake(pugi::xml_node& config){
@@ -133,13 +151,6 @@ bool j1EntityManager::CleanUp()
 	return ret;
 }
 
-j1Entity* j1EntityManager::getPlayer() {
-	for (p2List_item<j1Entity*>* item = entities.start; item != nullptr; item = item->next)
-	{
-		//if (item->data == player) return item->data;
-	}
-}
-
 bool j1EntityManager::PreUpdate()
 {
 	BROFILER_CATEGORY("EntitiesPreUpdate", Profiler::Color::Bisque)
@@ -159,7 +170,6 @@ bool j1EntityManager::Update(float dt)
 			entity->data->Update(dt);
 		}
 	}
-	*/
 	//LOG("Accumulated time: %f", accumulated_time);
 
 	/*if (entity != nullptr)
@@ -179,13 +189,16 @@ bool j1EntityManager::PostUpdate()
 {
 	BROFILER_CATEGORY("EntitiesPostUpdate", Profiler::Color::Bisque)
 	bool ret = true;
+	/*
 	for (p2List_item<j1Entity*>* entity = entities.start; entity != nullptr; entity = entity->next)
 	{
 		entity->data->PostUpdate();
 	}
+	*/
 	return ret;
 }
 
+/*
 void j1EntityManager::RellocateEntities() {
 	for (p2List_item<j1Entity*>* entity = entities.start; entity != nullptr; entity = entity->next)
 	{
@@ -224,9 +237,9 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 
 		entity_node = entity_node.next_sibling();
 	}
-	*/
 	return ret;
 }
+
 
 bool j1EntityManager::Save(pugi::xml_node& data) const
 {
@@ -242,6 +255,7 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 	
 	return ret;
 }
+
 
 bool j1EntityManager::CheckpointSave() {
 	bool ret = true;
@@ -328,3 +342,4 @@ bool j1EntityManager::CheckpointLoad()
 	}
 	return ret;
 }
+*/

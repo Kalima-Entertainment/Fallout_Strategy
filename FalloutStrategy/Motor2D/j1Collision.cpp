@@ -173,7 +173,7 @@ void j1Collision::DebugDraw()
 			break;
 		}
 	}
-	App->render->DrawQuad(App->scene->camera_frame, 100, 100, 153, 70);
+	//App->render->DrawQuad(App->scene->camera_frame, 100, 100, 153, 70);
 }
 
 // Called before quitting

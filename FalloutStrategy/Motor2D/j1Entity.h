@@ -6,8 +6,8 @@
 #include "p2DynArray.h"
 #include "p2Log.h"
 
-struct SDL_Texture;
-struct Collider;
+//struct SDL_Texture;
+//struct Collider;
 
 enum State {
 	IDLE,
@@ -27,7 +27,6 @@ class j1Entity
 {
 public:
 	j1Entity() {}
-	j1Entity(EntityType type);
 	virtual ~j1Entity();
 
 	virtual bool Awake(pugi::xml_node&) { return true; }
@@ -37,7 +36,7 @@ public:
 	virtual bool PostUpdate() { return true; }
 	virtual bool CleanUp() { return true; }
 	virtual void OnCollision(Collider* c1, Collider* c2) {};
-	void PathfindtoPlayer(int detection_range, j1Entity* player);
+	//void PathfindtoPlayer(int detection_range, j1Entity* player);
 	bool LoadAnimations(const char* animation_file);
 
 public:
@@ -62,7 +61,6 @@ public:
 	Animation* current_animation = nullptr;
 	Animation* last_animation = nullptr;
 
-	EntityType type = EntityType::UNKNOWN;
 	State state = State::IDLE;
 	Faction faction;
 
