@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="isometric" renderorder="right-down" width="6" height="6" tilewidth="128" tileheight="64" nextobjectid="1">
+ <tileset firstgid="1" source="Vault_Dweller_Ranged.tsx"/>
+ <layer name="Capa de Patrones 1" width="6" height="6">
+  <data encoding="csv">
+1,17,33,49,65,81,
+0,0,0,0,0,0,
+97,113,129,145,161,177,
+0,0,0,0,0,0,
+187,107,123,139,155,171,
+0,0,209,0,0,0
+</data>
+ </layer>
+</map>
