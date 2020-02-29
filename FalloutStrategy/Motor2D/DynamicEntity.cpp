@@ -12,6 +12,11 @@ DynamicEntity::DynamicEntity(Troop type) {
 	default:
 		break;
 	}
+	current_animation = &idle;
 }
 
 DynamicEntity::~DynamicEntity() {}
+
+bool DynamicEntity::Update(float dt) {
+	return true;
+}

@@ -32,21 +32,21 @@ j1Entity* j1EntityManager::CreateDynamicEntity(Faction faction, Troop troop, int
 	{
 	case Troop::MELEE:
 		entity = new DynamicEntity(Troop::MELEE);
-		if (faction == Faction::VAULT) entity->reference_entity = reference_vault_melee;
+		if		(faction == Faction::VAULT) entity->reference_entity = reference_vault_melee;
 		else if (faction == Faction::BROTHERHOOD) entity->reference_entity = reference_brotherhood_melee;
 		else if (faction == Faction::MUTANT) entity->reference_entity = reference_mutant_melee;
 		else if (faction == Faction::GHOUL) entity->reference_entity = reference_ghoul_melee;
 		break;
 	case Troop::RANGE:
 		entity = new DynamicEntity(Troop::RANGE);
-		if (faction == Faction::VAULT) entity->reference_entity = reference_vault_range;
+		if		(faction == Faction::VAULT) entity->reference_entity = reference_vault_range;
 		else if (faction == Faction::BROTHERHOOD) entity->reference_entity = reference_brotherhood_range;
 		else if (faction == Faction::MUTANT) entity->reference_entity = reference_mutant_range;
 		else if (faction == Faction::GHOUL) entity->reference_entity = reference_ghoul_range;
 		break;
 	case Troop::GATHERER:
 		entity = new DynamicEntity(Troop::GATHERER);
-		if (faction == Faction::VAULT) entity->reference_entity = reference_vault_gatherer;
+		if		(faction == Faction::VAULT) entity->reference_entity = reference_vault_gatherer;
 		else if (faction == Faction::BROTHERHOOD) entity->reference_entity = reference_brotherhood_gatherer;
 		else if (faction == Faction::MUTANT) entity->reference_entity = reference_mutant_gatherer;
 		else if (faction == Faction::GHOUL) entity->reference_entity = reference_ghoul_gatherer;
@@ -62,7 +62,9 @@ j1Entity* j1EntityManager::CreateDynamicEntity(Faction faction, Troop troop, int
 		entity->position.y = entity->initialPosition.y = position_y;
 	}
 
-	if (entity != nullptr) entities.push_back(entity);
+	if (entity != nullptr) 
+		entities.push_back(entity);
+
 	return entity;
 }
 
@@ -90,8 +92,8 @@ j1Entity* j1EntityManager::CreateStaticEntity(Faction faction, BuildingType buid
 		entity->position.y = entity->initialPosition.y = position_y;
 	}
 
-
-	if (entity != nullptr) entities.push_back(entity);
+	if (entity != nullptr)
+		entities.push_back(entity);
 	return entity;
 }
 
@@ -126,12 +128,6 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 
 	config_data = config;
 
-	//load all textures
-	//Vault Dwellers
-	//Brotherhood
-	//Super Mutants
-	//Ghouls
-
 	return ret;
 }
 
@@ -156,6 +152,34 @@ bool j1EntityManager::Start()
 		}
 	}
 	*/
+
+	//load all textures
+	//Vault Dwellers
+	reference_vault_melee = CreateDynamicEntity(VAULT, Troop::MELEE, 10, 10);
+	reference_vault_range = CreateDynamicEntity(VAULT, Troop::RANGE, 20, 20);
+	reference_vault_gatherer = CreateDynamicEntity(VAULT, Troop::GATHERER, 30, 30);
+	reference_vault_melee->LoadAnimations("VaultDwellers/Vault_Dweller_Melee");
+	//reference_vault_range->texture =
+	//reference_vault_gatherer->texture = 
+
+	//Brotherhood
+	reference_brotherhood_melee = CreateDynamicEntity(BROTHERHOOD, Troop::MELEE, 40, 40);
+	reference_brotherhood_range = CreateDynamicEntity(BROTHERHOOD, Troop::RANGE, 50, 50);
+	reference_brotherhood_gatherer = CreateDynamicEntity(BROTHERHOOD, Troop::GATHERER, 60, 60);
+
+	//Super Mutants
+	reference_mutant_melee = CreateDynamicEntity(MUTANT, Troop::MELEE, 70, 70);
+	reference_mutant_range = CreateDynamicEntity(MUTANT, Troop::RANGE, 80, 80);
+	reference_mutant_gatherer = CreateDynamicEntity(MUTANT, Troop::GATHERER, 90, 90);
+	//reference_mutant_melee->texture =
+	//reference_mutant_range->texture =
+	//reference_mutant_gatherer->texture = 
+
+	//Ghouls
+	reference_ghoul_melee = CreateDynamicEntity(GHOUL, Troop::MELEE, 100, 100);
+	reference_ghoul_range = CreateDynamicEntity(GHOUL, Troop::RANGE, 110, 110);
+	reference_ghoul_gatherer = CreateDynamicEntity(GHOUL, Troop::GATHERER, 120, 120);
+
 	return ret;
 }
 
@@ -215,6 +239,10 @@ bool j1EntityManager::Update(float dt)
 				accumulated_time = 0;
 			}
 	}*/
+	for (int i = 0; i < entities.size(); i++)
+	{
+		entities[i]->Update(dt);
+	}
 	return ret;
 }
 
@@ -228,6 +256,10 @@ bool j1EntityManager::PostUpdate()
 		entity->data->PostUpdate();
 	}
 	*/
+	for (int i = 0; i < entities.size(); i++)
+	{
+		entities[i]->PostUpdate();
+	}
 	return ret;
 }
 

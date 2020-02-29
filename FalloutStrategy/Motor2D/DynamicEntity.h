@@ -13,6 +13,7 @@ class DynamicEntity : public j1Entity
 public:
 	DynamicEntity(Troop type);
 	~DynamicEntity();
+	bool Update(float dt);
 	State current_state;
 private:
 	int mov_speed;

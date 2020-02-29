@@ -35,7 +35,7 @@ public:
 	virtual bool Start() { return true; }
 	virtual bool PreUpdate() { return true; }
 	virtual bool Update(float dt) { return true; }
-	virtual bool PostUpdate() { return true; }
+	bool PostUpdate();
 	virtual bool CleanUp() { return true; }
 	virtual void OnCollision(Collider* c1, Collider* c2) {};
 	//void PathfindtoPlayer(int detection_range, j1Entity* player);

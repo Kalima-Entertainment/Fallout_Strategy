@@ -49,18 +49,19 @@ void j1Entity::PathfindtoPlayer(int detection_range, j1Entity* player) {
 bool j1Entity::LoadAnimations(const char* path) {
 	bool ret = true;
 
-	p2SString file("sprites/characters/%s", path);
+	p2SString file("textures/characters/%s.tmx", path);
 
 	pugi::xml_document animation_file;
 	pugi::xml_parse_result result = animation_file.load_file(file.GetString());
 	p2SString image(animation_file.child("tileset").child("image").attribute("source").as_string());
+	p2SString texture_path("textures/characters/%s.png", path);
+	this->texture = App->tex->Load(texture_path.GetString());
 
 	if (result == NULL)
 	{
 		LOG("Could not load animation tmx file %s. pugi error: %s", path, result.description());
 		ret = false;
 	}
-
 
 	int tile_width = animation_file.child("map").child("tileset").attribute("tilewidth").as_int();
 	int tile_height = animation_file.child("map").child("tileset").attribute("tileheight").as_int();
@@ -80,15 +81,15 @@ bool j1Entity::LoadAnimations(const char* path) {
 	{
 		p2SString animation_name(animation.child("properties").child("property").attribute("name").as_string());
 			if (animation_name == "idle")
-				animations[0] = &idle;
+				animations.push_back(&idle);
 			else if (animation_name == "walk")
-				animations[1] = &walk;
+				animations.push_back(&walk);
 			else if (animation_name == "attack")
-				animations[2] = &attack;
+				animations.push_back(&attack);
 			else if (animation_name == "hit")
-				animations[3] = &hit;
+				animations.push_back(&hit);
 			else if (animation_name == "die")
-				animations[4] = &die;
+				animations.push_back(&die);
 			else goto CHANGE_ANIMATION;
 
 			id = animation.attribute("id").as_int();
@@ -107,4 +108,9 @@ bool j1Entity::LoadAnimations(const char* path) {
 	}
 
 	return ret;
+}
+
+bool j1Entity::PostUpdate() {
+	App->render->Blit(texture, position.x, position.y, &current_animation->GetCurrentFrame());
+	return true;
 }
