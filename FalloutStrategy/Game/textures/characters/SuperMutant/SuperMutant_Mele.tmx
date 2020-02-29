@@ -452,13 +452,43 @@
   </tile>
  </tileset>
  <layer name="Capa de Patrones 1" width="6" height="6">
-  <data encoding="csv">
-1,21,41,61,81,101,
-121,141,161,181,201,221,
-241,261,281,301,321,341,
-381,401,421,441,461,481,
-521,0,0,0,0,0,
-541,561,581,601,621,641
-</data>
+  <data>
+   <tile gid="1"/>
+   <tile gid="21"/>
+   <tile gid="41"/>
+   <tile gid="61"/>
+   <tile gid="81"/>
+   <tile gid="101"/>
+   <tile gid="121"/>
+   <tile gid="141"/>
+   <tile gid="161"/>
+   <tile gid="181"/>
+   <tile gid="201"/>
+   <tile gid="221"/>
+   <tile gid="241"/>
+   <tile gid="261"/>
+   <tile gid="281"/>
+   <tile gid="301"/>
+   <tile gid="321"/>
+   <tile gid="341"/>
+   <tile gid="381"/>
+   <tile gid="401"/>
+   <tile gid="421"/>
+   <tile gid="441"/>
+   <tile gid="461"/>
+   <tile gid="481"/>
+   <tile gid="521"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="541"/>
+   <tile gid="561"/>
+   <tile gid="581"/>
+   <tile gid="601"/>
+   <tile gid="621"/>
+   <tile gid="641"/>
+  </data>
  </layer>
 </map>

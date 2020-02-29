@@ -2,13 +2,43 @@
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="6" height="6" tilewidth="112" tileheight="112" nextobjectid="1">
  <tileset firstgid="1" source="Supermutant_Ranged.tsx"/>
  <layer name="Capa de Patrones 1" width="6" height="6">
-  <data encoding="csv">
-1,19,37,55,73,91,
-109,127,145,163,181,199,
-120,138,156,174,192,210,
-217,235,253,271,289,307,
-226,0,0,0,0,0,
-0,0,0,0,0,0
-</data>
+  <data>
+   <tile gid="1"/>
+   <tile gid="19"/>
+   <tile gid="37"/>
+   <tile gid="55"/>
+   <tile gid="73"/>
+   <tile gid="91"/>
+   <tile gid="109"/>
+   <tile gid="127"/>
+   <tile gid="145"/>
+   <tile gid="163"/>
+   <tile gid="181"/>
+   <tile gid="199"/>
+   <tile gid="120"/>
+   <tile gid="138"/>
+   <tile gid="156"/>
+   <tile gid="174"/>
+   <tile gid="192"/>
+   <tile gid="210"/>
+   <tile gid="217"/>
+   <tile gid="235"/>
+   <tile gid="253"/>
+   <tile gid="271"/>
+   <tile gid="289"/>
+   <tile gid="307"/>
+   <tile gid="226"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+  </data>
  </layer>
 </map>
