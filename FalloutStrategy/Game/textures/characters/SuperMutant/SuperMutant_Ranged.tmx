@@ -344,8 +344,43 @@
   </tile>
  </tileset>
  <layer name="Capa de Patrones 1" width="6" height="6">
-  <data encoding="base64">
-   AQAAABMAAAAlAAAANwAAAEkAAABbAAAAbQAAAH8AAACRAAAAowAAALUAAADHAAAAeAAAAIoAAACcAAAArgAAAMAAAADSAAAA2QAAAOsAAAD9AAAADwEAACEBAAAzAQAA4gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  <data>
+   <tile gid="1"/>
+   <tile gid="19"/>
+   <tile gid="37"/>
+   <tile gid="55"/>
+   <tile gid="73"/>
+   <tile gid="91"/>
+   <tile gid="109"/>
+   <tile gid="127"/>
+   <tile gid="145"/>
+   <tile gid="163"/>
+   <tile gid="181"/>
+   <tile gid="199"/>
+   <tile gid="120"/>
+   <tile gid="138"/>
+   <tile gid="156"/>
+   <tile gid="174"/>
+   <tile gid="192"/>
+   <tile gid="210"/>
+   <tile gid="217"/>
+   <tile gid="235"/>
+   <tile gid="253"/>
+   <tile gid="271"/>
+   <tile gid="289"/>
+   <tile gid="307"/>
+   <tile gid="226"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
   </data>
  </layer>
 </map>
