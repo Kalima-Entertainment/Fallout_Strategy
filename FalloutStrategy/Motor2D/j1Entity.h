@@ -9,17 +9,24 @@
 struct SDL_Texture;
 struct Collider;
 
-enum EntityState {
+enum State {
 	IDLE,
 	ATTACK,
 	WALK,
 	DIE
 };
 
-class j1Entity : public j1EntityManager
+enum Faction {
+	VAULT,
+	GHOUL,
+	BROTHERHOOD,
+	MUTANT
+};
+
+class j1Entity 
 {
 public:
-
+	j1Entity() {}
 	j1Entity(EntityType type);
 	virtual ~j1Entity();
 
@@ -41,15 +48,8 @@ public:
 	iPoint initialPosition = { 0, 0 };
 
 	int health = 0;
-	int damage = 0;
-	int detection_range = 0;
-
-	bool grounded = false;
-	int	 gravity = 0;
-	int	 max_falling_speed = 0;
 
 	Collider* collider = nullptr;
-	Collider* raycast = nullptr;
 	Collider* last_collider = nullptr;
 	Collider* attack_collider = nullptr;
 	
@@ -63,12 +63,14 @@ public:
 	Animation* last_animation = nullptr;
 
 	EntityType type = EntityType::UNKNOWN;
-	EntityState state = EntityState::IDLE;
+	State state = State::IDLE;
+	Faction faction;
+
 	SDL_Texture* texture = nullptr;
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
 
+	bool to_destroy = false;
 	bool particles_created = false;
-
 	bool playing_fx = false;
 
 	const p2DynArray<iPoint>* path_to_player = nullptr;

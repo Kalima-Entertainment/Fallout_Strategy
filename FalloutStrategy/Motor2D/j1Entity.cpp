@@ -8,10 +8,12 @@
 #include "j1Map.h"
 #include "p2Log.h"
 
-j1Entity::j1Entity(EntityType type) : j1EntityManager() {}
+j1Entity::j1Entity(EntityType type) {}
 
 j1Entity::~j1Entity() {}
 
+//to be updated
+/*
 void j1Entity::PathfindtoPlayer(int detection_range, j1Entity* player) {
 
 	//if the player is close we create a path to him
@@ -42,7 +44,9 @@ void j1Entity::PathfindtoPlayer(int detection_range, j1Entity* player) {
 	}
 
 }
+*/
 
+// to be updated
 bool j1Entity::LoadAnimations(const char* path) {
 	bool ret = true;
 
@@ -73,31 +77,29 @@ bool j1Entity::LoadAnimations(const char* path) {
 	rect.w = tile_width;
 	rect.h = tile_height;
 
-	p2List_item<Animation*>* item_animation;
-
 	while (animation != nullptr)
 	{
 		p2SString animation_name(animation.child("properties").child("property").attribute("name").as_string());
 			if (animation_name == "idle")
-				animations.add(&idle);
+				animations[0] = idle;
 			else if (animation_name == "walk")
-				animations.add(&walk);
+				animations[1] = walk;
 			else if (animation_name == "attack")
-				animations.add(&attack);
+				animations[2] = attack;
+			else if (animation_name == "hit")
+				animations[3] = hit;
 			else if (animation_name == "die")
-				animations.add(&die);
+				animations[4] = die;
 			else goto CHANGE_ANIMATION;
 
 			id = animation.attribute("id").as_int();
-
-			item_animation = animations.end;
 
 			while (frame != nullptr) {
 				tile_id = frame.attribute("tileid").as_int();
 				speed = frame.attribute("duration").as_int() * 0.001f;
 				rect.x = rect.w * ((tile_id) % columns);
 				rect.y = rect.h * ((tile_id) / columns);
-				item_animation->data->PushBack(rect, speed);
+				//animation->data->PushBack(rect, speed);
 				frame = frame.next_sibling();
 			}
 
