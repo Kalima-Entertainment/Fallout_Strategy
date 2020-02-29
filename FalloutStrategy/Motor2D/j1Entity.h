@@ -11,6 +11,10 @@
 //struct SDL_Texture;
 //struct Collider;
 
+struct Resource {
+	uint money, water, food;
+};
+
 enum State {
 	IDLE,
 	ATTACK,

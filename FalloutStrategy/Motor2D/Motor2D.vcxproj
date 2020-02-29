@@ -77,6 +77,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DynamicEntity.cpp" />
+    <ClCompile Include="GathererEntity.cpp" />
     <ClCompile Include="j1Collision.cpp" />
     <ClCompile Include="j1Entity.cpp" />
     <ClCompile Include="j1EntityManager.cpp" />
@@ -91,16 +92,19 @@
     <ClCompile Include="j1PerfTimer.cpp" />
     <ClCompile Include="j1Scene.cpp" />
     <ClCompile Include="j1Timer.cpp" />
+    <ClCompile Include="MeleeEntity.cpp" />
     <ClCompile Include="p2Log.cpp" />
     <ClCompile Include="j1Render.cpp" />
     <ClCompile Include="j1Textures.cpp" />
     <ClCompile Include="j1Window.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
+    <ClCompile Include="RangedEntity.cpp" />
     <ClCompile Include="StaticEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="DynamicEntity.h" />
+    <ClInclude Include="GathererEntity.h" />
     <ClInclude Include="j1Collision.h" />
     <ClInclude Include="j1Entity.h" />
     <ClInclude Include="j1EntityManager.h" />
@@ -111,6 +115,7 @@
     <ClInclude Include="j1PerfTimer.h" />
     <ClInclude Include="j1Scene.h" />
     <ClInclude Include="j1Timer.h" />
+    <ClInclude Include="MeleeEntity.h" />
     <ClInclude Include="p2DynArray.h" />
     <ClInclude Include="j1Audio.h" />
     <ClInclude Include="j1Input.h" />
@@ -126,6 +131,7 @@
     <ClInclude Include="p2SString.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
+    <ClInclude Include="RangedEntity.h" />
     <ClInclude Include="StaticEntity.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

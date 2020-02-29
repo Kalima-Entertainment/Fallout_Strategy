@@ -64,6 +64,15 @@
     <ClCompile Include="StaticEntity.cpp">
       <Filter>Desenvolupament  ========\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="RangedEntity.cpp">
+      <Filter>Desenvolupament  ========\Entities\DynamicEntities</Filter>
+    </ClCompile>
+    <ClCompile Include="MeleeEntity.cpp">
+      <Filter>Desenvolupament  ========\Entities\DynamicEntities</Filter>
+    </ClCompile>
+    <ClCompile Include="GathererEntity.cpp">
+      <Filter>Desenvolupament  ========\Entities\DynamicEntities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -150,6 +159,15 @@
     <ClInclude Include="StaticEntity.h">
       <Filter>Desenvolupament  ========\Entities</Filter>
     </ClInclude>
+    <ClInclude Include="RangedEntity.h">
+      <Filter>Desenvolupament  ========\Entities\DynamicEntities</Filter>
+    </ClInclude>
+    <ClInclude Include="MeleeEntity.h">
+      <Filter>Desenvolupament  ========\Entities\DynamicEntities</Filter>
+    </ClInclude>
+    <ClInclude Include="GathererEntity.h">
+      <Filter>Desenvolupament  ========\Entities\DynamicEntities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -172,6 +190,9 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\Entities">
       <UniqueIdentifier>{a7375bea-d952-4812-ab4b-82c26caaf0b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Entities\DynamicEntities">
+      <UniqueIdentifier>{b4e25503-6acd-4f41-aeb2-af359617060a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

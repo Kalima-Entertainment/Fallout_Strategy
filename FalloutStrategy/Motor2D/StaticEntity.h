@@ -9,6 +9,7 @@ enum class BuildingType {
 };
 
 class StaticEntity : public j1Entity
+
 {
 public:
 	StaticEntity(BuildingType type);
@@ -20,4 +21,3 @@ private:
 };
 
 #endif // !_STATIC_ENTITY_H
-
