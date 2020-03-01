@@ -114,3 +114,9 @@ bool j1Entity::PostUpdate() {
 	App->render->Blit(reference_entity->texture, position.x, position.y, &current_animation->GetCurrentFrame());
 	return true;
 }
+
+iPoint j1Entity::MapPosition() {
+	iPoint spot = App->render->ScreenToWorld(position.x, position.y);
+	spot = App->map->WorldToMap(spot.x, spot.y);
+	return spot;
+}

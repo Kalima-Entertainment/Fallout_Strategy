@@ -45,6 +45,9 @@ public:
 	//void PathfindtoPlayer(int detection_range, j1Entity* player);
 	bool LoadAnimations(const char* animation_file);
 	virtual bool LoadReferenceData() { return true; };
+	iPoint MapPosition();
+
+	//Check if mouse pointer its inside the same spot than the entity and if pressed returns any advice
 
 public:
 	iPoint position = { 0, 0 };
