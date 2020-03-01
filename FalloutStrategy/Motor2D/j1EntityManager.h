@@ -13,6 +13,8 @@ enum Faction;
 enum class Troop;
 enum class BuildingType;
 
+#define REFERENCE_ENTITIES 12
+
 class j1EntityManager : public j1Module
 {
 public:

@@ -35,6 +35,7 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
+	DynamicEntity* test_melee;
 	if(App->map->Load("iso_walk.tmx") == true)
 	{
 		int w, h;
@@ -46,9 +47,10 @@ bool j1Scene::Start()
 	}
 
 	debug_tex = App->tex->Load("maps/path2.png");
-	App->entities->CreateDynamicEntity(VAULT, Troop::MELEE, 10, 100);
-	App->entities->CreateDynamicEntity(VAULT, Troop::RANGED, 20, 200);
-	App->entities->CreateDynamicEntity(VAULT, Troop::GATHERER, 30, 300);
+	test_melee = (DynamicEntity*)App->entities->CreateDynamicEntity(VAULT, Troop::MELEE, 10, 100);
+	test_melee->texture = test_melee->reference_entity->texture;
+	//App->entities->CreateDynamicEntity(VAULT, Troop::RANGED, 20, 200);
+	//App->entities->CreateDynamicEntity(VAULT, Troop::GATHERER, 30, 300);
 
 	return true;
 }
