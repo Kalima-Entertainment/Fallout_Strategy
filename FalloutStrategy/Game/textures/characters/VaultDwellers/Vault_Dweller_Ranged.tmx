@@ -2,13 +2,43 @@
 <map version="1.0" orientation="isometric" renderorder="right-down" width="6" height="6" tilewidth="128" tileheight="64" nextobjectid="1">
  <tileset firstgid="1" source="Vault_Dweller_Ranged.tsx"/>
  <layer name="Capa de Patrones 1" width="6" height="6">
-  <data encoding="csv">
-1,17,33,49,65,81,
-0,0,0,0,0,0,
-97,113,129,145,161,177,
-0,0,0,0,0,0,
-187,107,123,139,155,171,
-0,0,209,0,0,0
-</data>
+  <data>
+   <tile gid="1"/>
+   <tile gid="17"/>
+   <tile gid="33"/>
+   <tile gid="49"/>
+   <tile gid="65"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="97"/>
+   <tile gid="113"/>
+   <tile gid="129"/>
+   <tile gid="145"/>
+   <tile gid="161"/>
+   <tile gid="177"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="107"/>
+   <tile gid="123"/>
+   <tile gid="139"/>
+   <tile gid="155"/>
+   <tile gid="171"/>
+   <tile gid="187"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="209"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+  </data>
  </layer>
 </map>
