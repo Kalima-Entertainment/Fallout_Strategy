@@ -7,43 +7,31 @@
 #include "j1Pathfinding.h"
 #include "j1Map.h"
 #include "p2Log.h"
+#include "j1Collision.h"
 
 
 j1Entity::~j1Entity() {}
 
-//to be updated
-/*
-void j1Entity::PathfindtoPlayer(int detection_range, j1Entity* player) {
+void j1Entity::PathfindToPosition(iPoint destination) {
 
 	//if the player is close we create a path to him
-	if ((abs(player->position.x - position.x) < detection_range)&&(player->state != DIE))
-	{
-		iPoint origin = App->map->WorldToMap(position.x, position.y);
-		iPoint destination = App->map->WorldToMap(player->position.x, player->position.y);
-		App->pathfinding->CreatePath(origin, destination);
-		going_after_player = true;
-	}
-	else { going_after_player = false; }
+	iPoint origin = App->map->WorldToMap(position.x, position.y);
+	App->pathfinding->CreatePath(current_tile, destination);
 
 	//pathfinding debug
-	if (going_after_player)
+	int x, y;
+	SDL_Rect Debug_rect = { 0,0,32,32 };
+
+	path_to_target = App->pathfinding->GetLastPath();
+
+	for (uint i = 0; i < path_to_target->Count(); ++i)
 	{
-		int x, y;
-		SDL_Rect Debug_rect = { 0,0,32,32 };
-
-		path_to_player = App->pathfinding->GetLastPath();
-
-		for (uint i = 0; i < path_to_player->Count(); ++i)
-		{
-			iPoint pos = App->map->MapToWorld(path_to_player->At(i)->x, path_to_player->At(i)->y);
-			Debug_rect.x = pos.x;
-			Debug_rect.y = pos.y;
-			if (App->collision->debug)App->render->DrawQuad(Debug_rect, 90, 850, 230, 40);
-		}
+		iPoint pos = App->map->MapToWorld(path_to_target->At(i)->x, path_to_target->At(i)->y);
+		Debug_rect.x = pos.x;
+		Debug_rect.y = pos.y;
+		if (App->collision->debug)App->render->DrawQuad(Debug_rect, 90, 850, 230, 40);
 	}
-
 }
-*/
 
 // to be updated
 bool j1Entity::LoadAnimations(const char* path) {
@@ -81,15 +69,17 @@ bool j1Entity::LoadAnimations(const char* path) {
 	{
 		p2SString animation_name(animation.child("properties").child("property").attribute("name").as_string());
 			if (animation_name == "idle")
-				animations.push_back(&idle);
+				animations.push_back(&idle[0]);
 			else if (animation_name == "walk")
-				animations.push_back(&walk);
+				animations.push_back(&walk[0]);
 			else if (animation_name == "attack")
-				animations.push_back(&attack);
+				animations.push_back(&attack[0]);
+			else if (animation_name == "gather")
+				animations.push_back(&gather[0]);
 			else if (animation_name == "hit")
-				animations.push_back(&hit);
+				animations.push_back(&hit[0]);
 			else if (animation_name == "die")
-				animations.push_back(&die);
+				animations.push_back(&die[0]);
 			else goto CHANGE_ANIMATION;
 
 			id = animation.attribute("id").as_int();
@@ -112,6 +102,8 @@ bool j1Entity::LoadAnimations(const char* path) {
 
 bool j1Entity::PostUpdate() {
 	App->render->Blit(reference_entity->texture, position.x, position.y, &current_animation->GetCurrentFrame());
+	//App->render->DrawQuad({ position.x, position.y, current_animation->GetCurrentFrame().w, current_animation->GetCurrentFrame().h }, 10, 150, 10, 80);
+	
 	return true;
 }
 

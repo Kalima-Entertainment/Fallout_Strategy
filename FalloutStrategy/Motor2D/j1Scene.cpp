@@ -57,7 +57,6 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
-
 	// debug pathfing ------------------
 	static iPoint origin;
 	static bool origin_selected = false;
@@ -153,10 +152,7 @@ bool j1Scene::Update(float dt)
 		}
 	}
 
-	
-	
 	//Now with this info stored we must loop ONCE all entity list to know if any entity its located in that spot comparing with selected_spot updated in map.
-	
 
 	return true;
 }

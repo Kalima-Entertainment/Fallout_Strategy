@@ -42,7 +42,7 @@ public:
 	virtual bool PostUpdate();
 	virtual bool CleanUp() { return true; }
 	virtual void OnCollision(Collider* c1, Collider* c2) {};
-	//void PathfindtoPlayer(int detection_range, j1Entity* player);
+	void PathfindToPosition(iPoint target);
 	bool LoadAnimations(const char* animation_file);
 	virtual bool LoadReferenceData() { return true; };
 	iPoint MapPosition();
@@ -55,6 +55,8 @@ public:
 	iPoint current_speed = {0, 0};
 	iPoint speed = { 0, 0 };
 	iPoint initialPosition = { 0, 0 };
+	iPoint current_tile = { 0,0 };
+	iPoint target_tile = { 0,0 };
 
 	int health = 0;
 
@@ -65,11 +67,12 @@ public:
 	Collider* attack_collider = nullptr;
 	
 	std::vector<Animation*> animations;
-	Animation idle;
-	Animation walk;
-	Animation attack;
-	Animation hit;
-	Animation die;
+	Animation idle[6];
+	Animation walk[6];
+	Animation attack[6];
+	Animation gather[6];
+	Animation hit[6];
+	Animation die[6];
 	Animation* current_animation = nullptr;
 	Animation* last_animation = nullptr;
 
@@ -83,7 +86,7 @@ public:
 	bool particles_created = false;
 	bool playing_fx = false;
 
-	const p2DynArray<iPoint>* path_to_player = nullptr;
+	const p2DynArray<iPoint>* path_to_target = nullptr;
 
 };
 #endif // !_j1ENTITY_H

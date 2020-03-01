@@ -16,7 +16,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, Troop g_type) {
 
 	type = g_type;
 	faction = g_faction;
-	current_animation = &idle;
+	current_animation = &idle[0];
 }
 
 DynamicEntity::~DynamicEntity() {}
@@ -33,7 +33,7 @@ bool DynamicEntity::LoadReferenceData() {
 	{
 		animations.push_back(reference_entity->animations.at(i));
 	}
-	idle = *animations.at(0);
+	idle[0] = *animations.at(0);
 
 	return ret;
 }

@@ -12,6 +12,7 @@ struct SDL_Texture;
 enum Faction;
 enum class Troop;
 enum class BuildingType;
+class DynamicEntity;
 
 #define REFERENCE_ENTITIES 12
 
@@ -40,6 +41,7 @@ public:
 	j1Entity* CreateStaticEntity(Faction faction, BuildingType building_type , int position_x, int position_y);
 	void DestroyEntity(j1Entity* delete_entity);
 	void DestroyAllEntities();
+	void LoadReferenceEntityData(pugi::xml_node& reference_entities_node, DynamicEntity* reference_entity);
     //void RellocateEntities();
 
 public:
@@ -71,7 +73,7 @@ public:
 	j1Entity* reference_ghoul_base;
 
 	bool blocked_movement = false;
-
+	SDL_Texture* debug_tex;
 };
 
 #endif // !_ENTITY_MANAGER_H_
