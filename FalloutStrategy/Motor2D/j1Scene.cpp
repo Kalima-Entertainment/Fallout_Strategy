@@ -146,16 +146,17 @@ bool j1Scene::Update(float dt)
 		selected_spot = App->render->ScreenToWorld(tx, ty);
 		selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
 		LOG("Actual Map Position is X: %i and Y: %i", selected_spot.x, selected_spot.y);
+
+		for (int i = 0; i < App->entities->entities.size(); i++)
+		{
+			if(App->entities->entities[i]->MapPosition() == selected_spot) LOG("COINCIDENCE IN MAP");
+		}
 	}
 
-
-
 	
-
-	//Now with this info stored we must loop ONCE all entity list to know if any entity its located in that spot comparing with tx and ty.
 	
-
-
+	//Now with this info stored we must loop ONCE all entity list to know if any entity its located in that spot comparing with selected_spot updated in map.
+	
 
 	return true;
 }
