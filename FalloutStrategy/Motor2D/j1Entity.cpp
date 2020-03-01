@@ -67,31 +67,49 @@ bool j1Entity::LoadAnimations(const char* path) {
 	int i = 0;
 	while (animation != nullptr)
 	{
+		p2SString animation_direction(animation.child("properties").child("property").attribute("direction").as_string());
 		p2SString animation_name(animation.child("properties").child("property").attribute("name").as_string());
-			if (animation_name == "idle")
-				animations.push_back(&idle[0]);
-			else if (animation_name == "walk")
-				animations.push_back(&walk[0]);
-			else if (animation_name == "attack")
-				animations.push_back(&attack[0]);
-			else if (animation_name == "gather")
-				animations.push_back(&gather[0]);
-			else if (animation_name == "hit")
-				animations.push_back(&hit[0]);
-			else if (animation_name == "die")
-				animations.push_back(&die[0]);
-			else goto CHANGE_ANIMATION;
+		int k = (int)Direction::NONE;
 
-			id = animation.attribute("id").as_int();
+		//animation direction
+		if (animation_direction == "top_left")
+			k = (int)Direction::TOP_LEFT;
+		else if (animation_direction == "top_right")
+			k = (int)Direction::TOP_RIGHT;
+		else if (animation_direction == "left")
+			k = (int)Direction::LEFT;
+		else if (animation_direction == "right")
+			k = (int)Direction::RIGHT;
+		else if (animation_direction == "bottom_left")
+			k = (int)Direction::BOTTOM_LEFT;
+		else if (animation_direction == "bottom_right")
+			k = (int)Direction::BOTTOM_RIGHT;
 
-			while (frame != nullptr) {
-				tile_id = frame.attribute("tileid").as_int();
-				speed = frame.attribute("duration").as_int() * 0.001f;
-				rect.x = rect.w * ((tile_id) % columns);
-				rect.y = rect.h * ((tile_id) / columns);
-				animations[i]->PushBack(rect, speed);
-				frame = frame.next_sibling();
-			}
+		//animation type
+		if (animation_name == "idle")
+			animations.push_back(&idle[k]);
+		else if (animation_name == "walk")
+			animations.push_back(&walk[k]);
+		else if (animation_name == "attack")
+			animations.push_back(&attack[k]);
+		else if (animation_name == "gather")
+			animations.push_back(&gather[k]);
+		else if (animation_name == "hit")
+			animations.push_back(&hit[k]);
+		else if (animation_name == "die")
+			animations.push_back(&die[k]);
+		else goto CHANGE_ANIMATION;
+
+		id = animation.attribute("id").as_int();
+
+		while (frame != nullptr) {
+			tile_id = frame.attribute("tileid").as_int();
+			speed = frame.attribute("duration").as_int() * 0.001f;
+			rect.x = rect.w * ((tile_id) % columns);
+			rect.y = rect.h * ((tile_id) / columns);
+			animations[i]->PushBack(rect, speed);
+			frame = frame.next_sibling();
+		}
 
 	CHANGE_ANIMATION: animation = animation.next_sibling();
 		frame = animation.child("animation").child("frame");
