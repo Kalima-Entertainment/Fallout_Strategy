@@ -10,6 +10,9 @@
 #include "j1PathFinding.h"
 #include "j1Gui.h"
 #include "j1Scene.h"
+#include "j1EntityManager.h"
+#include "j1Entity.h"
+#include "DynamicEntity.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -32,6 +35,7 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
+	DynamicEntity* test_melee;
 	if(App->map->Load("iso_walk.tmx") == true)
 	{
 		int w, h;
@@ -43,9 +47,9 @@ bool j1Scene::Start()
 	}
 
 	debug_tex = App->tex->Load("maps/path2.png");
-
-	// TODO 3: Create the banner (rect {485, 829, 328, 103}) as a UI element
-	// TODO 4: Create the text "Hello World" as a UI element
+	test_melee = (DynamicEntity*)App->entities->CreateDynamicEntity(VAULT, Troop::MELEE, 50, 100);
+	//App->entities->CreateDynamicEntity(VAULT, Troop::RANGED, 20, 200);
+	//App->entities->CreateDynamicEntity(VAULT, Troop::GATHERER, 30, 300);
 
 	return true;
 }
