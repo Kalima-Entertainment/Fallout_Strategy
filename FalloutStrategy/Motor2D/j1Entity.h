@@ -44,6 +44,7 @@ public:
 	virtual void OnCollision(Collider* c1, Collider* c2) {};
 	//void PathfindtoPlayer(int detection_range, j1Entity* player);
 	bool LoadAnimations(const char* animation_file);
+	virtual bool LoadReferenceData() { return true; };
 
 public:
 	iPoint position = { 0, 0 };

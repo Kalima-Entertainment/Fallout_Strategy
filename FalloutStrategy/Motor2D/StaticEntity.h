@@ -15,6 +15,7 @@ public:
 	StaticEntity(BuildingType type);
 	~StaticEntity();
 
+public:
 	BuildingType type;
 private:
 	int gen_speed;
