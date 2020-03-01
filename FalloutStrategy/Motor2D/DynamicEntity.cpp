@@ -28,11 +28,12 @@ bool DynamicEntity::Update(float dt) {
 bool DynamicEntity::LoadReferenceData() {
 	bool ret = true;
 	int size = reference_entity->animations.size();
-
+	//animations
 	for (int i = 0; i < size; i++)
 	{
 		animations.push_back(reference_entity->animations.at(i));
 	}
+	idle = *animations.at(0);
 
 	return ret;
 }
