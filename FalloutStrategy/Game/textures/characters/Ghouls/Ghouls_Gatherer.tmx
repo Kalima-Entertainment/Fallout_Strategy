@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="6" height="6" tilewidth="70" tileheight="70" nextobjectid="1">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="6" height="6" tilewidth="70" tileheight="70" infinite="0" nextlayerid="2" nextobjectid="1">
  <tileset firstgid="1" source="Ghouls_Gatherer.tsx"/>
- <layer name="Capa de Patrones 1" width="6" height="6">
+ <layer id="1" name="Capa de Patrones 1" width="6" height="6">
   <data>
    <tile gid="1"/>
    <tile gid="30"/>
@@ -33,12 +33,12 @@
    <tile gid="313"/>
    <tile gid="342"/>
    <tile gid="371"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile gid="494"/>
+   <tile gid="523"/>
+   <tile gid="552"/>
   </data>
  </layer>
 </map>

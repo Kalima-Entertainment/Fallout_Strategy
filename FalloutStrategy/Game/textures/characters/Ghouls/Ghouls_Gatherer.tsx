@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset name="Ghouls_Gatherer" tilewidth="70" tileheight="70" tilecount="841" columns="29">
+<tileset version="1.2" tiledversion="1.2.4" name="Ghouls_Gatherer" tilewidth="70" tileheight="70" tilecount="841" columns="29">
  <image source="Ghouls_Gatherer.png" width="2048" height="2048"/>
  <tile id="0">
   <animation>
@@ -407,6 +407,54 @@
    <frame tileid="372" duration="100"/>
    <frame tileid="373" duration="100"/>
    <frame tileid="374" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="493">
+  <animation>
+   <frame tileid="493" duration="100"/>
+   <frame tileid="494" duration="100"/>
+   <frame tileid="495" duration="100"/>
+   <frame tileid="496" duration="100"/>
+   <frame tileid="497" duration="100"/>
+   <frame tileid="498" duration="100"/>
+   <frame tileid="499" duration="100"/>
+   <frame tileid="500" duration="100"/>
+   <frame tileid="501" duration="100"/>
+   <frame tileid="502" duration="100"/>
+   <frame tileid="503" duration="100"/>
+   <frame tileid="504" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="522">
+  <animation>
+   <frame tileid="522" duration="100"/>
+   <frame tileid="523" duration="100"/>
+   <frame tileid="524" duration="100"/>
+   <frame tileid="525" duration="100"/>
+   <frame tileid="526" duration="100"/>
+   <frame tileid="527" duration="100"/>
+   <frame tileid="528" duration="100"/>
+   <frame tileid="529" duration="100"/>
+   <frame tileid="530" duration="100"/>
+   <frame tileid="531" duration="100"/>
+   <frame tileid="532" duration="100"/>
+   <frame tileid="533" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="551">
+  <animation>
+   <frame tileid="551" duration="100"/>
+   <frame tileid="552" duration="100"/>
+   <frame tileid="553" duration="100"/>
+   <frame tileid="554" duration="100"/>
+   <frame tileid="555" duration="100"/>
+   <frame tileid="556" duration="100"/>
+   <frame tileid="557" duration="100"/>
+   <frame tileid="558" duration="100"/>
+   <frame tileid="559" duration="100"/>
+   <frame tileid="560" duration="100"/>
+   <frame tileid="561" duration="100"/>
+   <frame tileid="562" duration="100"/>
   </animation>
  </tile>
 </tileset>
