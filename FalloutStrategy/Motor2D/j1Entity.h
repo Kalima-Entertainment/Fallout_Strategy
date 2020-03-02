@@ -21,7 +21,8 @@ enum State {
 	ATTACK,
 	GATHER,
 	HIT,
-	DIE
+	DIE,
+	MAX_ANIMATIONS
 };
 
 enum Faction {
@@ -31,14 +32,14 @@ enum Faction {
 	MUTANT
 };
 
-enum class Direction {
-	NONE,
+enum Direction {
 	TOP_LEFT,
 	TOP_RIGHT,
 	RIGHT,
 	BOTTOM_RIGHT,
 	BOTTOM_LEFT,
-	LEFT
+	LEFT,
+	NONE
 };
 
 class j1Entity 
@@ -78,7 +79,8 @@ public:
 	Collider* last_collider = nullptr;
 	Collider* attack_collider = nullptr;
 	
-	std::vector<Animation*> animations;
+	//std::vector<Animation*> animations;
+	Animation animations[MAX_ANIMATIONS][6];
 	Animation idle[6];
 	Animation walk[6];
 	Animation attack[6];
