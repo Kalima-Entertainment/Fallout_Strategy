@@ -33,9 +33,9 @@
    <tile gid="313"/>
    <tile gid="342"/>
    <tile gid="371"/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="407"/>
+   <tile gid="436"/>
+   <tile gid="465"/>
    <tile gid="494"/>
    <tile gid="523"/>
    <tile gid="552"/>
