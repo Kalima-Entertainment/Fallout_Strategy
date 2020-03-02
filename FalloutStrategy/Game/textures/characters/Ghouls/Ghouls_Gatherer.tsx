@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.3.1" name="Ghouls_Gatherer" tilewidth="70" tileheight="70" tilecount="841" columns="29">
+<tileset name="Ghouls_Gatherer" tilewidth="70" tileheight="70" tilecount="841" columns="29">
  <image source="Ghouls_Gatherer.png" width="2048" height="2048"/>
  <tile id="0">
   <animation>

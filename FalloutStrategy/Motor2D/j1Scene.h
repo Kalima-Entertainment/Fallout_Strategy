@@ -6,6 +6,7 @@
 struct SDL_Texture;
 class GuiImage;
 class GuiText;
+class DynamicEntity;
 
 class j1Scene : public j1Module
 {
