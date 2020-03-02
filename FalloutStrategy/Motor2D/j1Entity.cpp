@@ -72,37 +72,7 @@ bool j1Entity::LoadAnimations(const char* path) {
 		int direction = TOP_LEFT;
 		State state = IDLE;
 
-		//animation direction
-		if (animation_direction == "top_left")
-			direction = TOP_LEFT;
-		else if (animation_direction == "top_right")
-			direction = TOP_RIGHT;
-		else if (animation_direction == "left")
-			direction = LEFT;
-		else if (animation_direction == "right")
-			direction = RIGHT;
-		else if (animation_direction == "bottom_left")
-			direction = BOTTOM_LEFT;
-		else if (animation_direction == "bottom_right")
-			direction = BOTTOM_RIGHT;
-
-		//animation type
-		/*
-		if (animation_name == "idle")
-			animations.push_back(&idle[k]);
-		else if (animation_name == "walk")
-			animations.push_back(&walk[k]);
-		else if (animation_name == "attack")
-			animations.push_back(&attack[k]);
-		else if (animation_name == "gather")
-			animations.push_back(&gather[k]);
-		else if (animation_name == "hit")
-			animations.push_back(&hit[k]);
-		else if (animation_name == "die")
-			animations.push_back(&die[k]);
-		else goto CHANGE_ANIMATION;
-		*/
-
+		//animation
 		if (animation_name == "idle")
 			state = IDLE;
 		else if (animation_name == "walk")
@@ -116,6 +86,20 @@ bool j1Entity::LoadAnimations(const char* path) {
 		else if (animation_name == "die")
 			state = DIE;
 		else goto CHANGE_ANIMATION;
+
+		//animation direction
+		if (animation_direction == "top_left")
+			direction = TOP_LEFT;
+		else if (animation_direction == "top_right")
+			direction = TOP_RIGHT;
+		else if (animation_direction == "left")
+			direction = LEFT;
+		else if (animation_direction == "right")
+			direction = RIGHT;
+		else if (animation_direction == "bottom_left")
+			direction = BOTTOM_LEFT;
+		else if (animation_direction == "bottom_right")
+			direction = BOTTOM_RIGHT;
 	
 		id = animation.attribute("id").as_int();
 
@@ -124,7 +108,6 @@ bool j1Entity::LoadAnimations(const char* path) {
 			speed = frame.attribute("duration").as_int() * 0.001f;
 			rect.x = rect.w * ((tile_id) % columns);
 			rect.y = rect.h * ((tile_id) / columns);
-			//animations[i]->PushBack(rect, speed);
 			animations[state][direction].PushBack(rect, speed);
 			frame = frame.next_sibling();
 		}
@@ -138,9 +121,7 @@ bool j1Entity::LoadAnimations(const char* path) {
 
 bool j1Entity::PostUpdate() {
 	current_animation = &animations[IDLE][TOP_LEFT];
-	App->render->Blit(reference_entity->texture, position.x, position.y, &current_animation->GetCurrentFrame());
-	//App->render->DrawQuad({ position.x, position.y, current_animation->GetCurrentFrame().w, current_animation->GetCurrentFrame().h }, 10, 150, 10, 80);
-	
+	App->render->Blit(reference_entity->texture, position.x, position.y, &current_animation->GetCurrentFrame());	
 	return true;
 }
 

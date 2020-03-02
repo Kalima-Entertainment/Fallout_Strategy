@@ -55,9 +55,11 @@ public:
 	virtual bool PostUpdate();
 	virtual bool CleanUp() { return true; }
 	virtual void OnCollision(Collider* c1, Collider* c2) {};
+
 	void PathfindToPosition(iPoint target);
 	bool LoadAnimations(const char* animation_file);
 	virtual bool LoadReferenceData() { return true; };
+
 	iPoint MapPosition();
 
 	//Check if mouse pointer its inside the same spot than the entity and if pressed returns any advice

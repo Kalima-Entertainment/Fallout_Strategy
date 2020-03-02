@@ -21,20 +21,13 @@ DynamicEntity::DynamicEntity(Faction g_faction, Troop g_type) {
 DynamicEntity::~DynamicEntity() {}
 
 bool DynamicEntity::Update(float dt) {
+	//position.x++;
 	return true;
 }
 
 bool DynamicEntity::LoadReferenceData() {
 	bool ret = true;
-	/*
-	int size = reference_entity->animations.size();
-	//animations
-	for (int i = 0; i < size; i++)
-	{
-		animations.push_back(reference_entity->animations.at(i));
-	}
-	idle[0] = *animations.at(0);
-	*/
+
 	for (int i = 0; i < MAX_ANIMATIONS; i++)
 	{
 		for (int j = 0; j <= 6; j++)
@@ -43,7 +36,7 @@ bool DynamicEntity::LoadReferenceData() {
 		}
 	}
 
-	current_animation = &animations[IDLE][TOP_LEFT];
+	current_animation = &animations[IDLE][TOP_RIGHT];
 
 	return ret;
 }

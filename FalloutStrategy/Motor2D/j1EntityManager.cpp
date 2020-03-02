@@ -196,25 +196,12 @@ bool j1EntityManager::Start()
 bool j1EntityManager::CleanUp()
 {
 	bool ret = true;
-	/*
-	App->tex->UnLoad(trap_texture);
-	trap_texture = nullptr;
 
-	App->tex->UnLoad(reference_walking_enemy->texture);
-	reference_walking_enemy->texture = nullptr;
-
-	App->tex->UnLoad(reference_flying_enemy->texture);
-	reference_flying_enemy->texture = nullptr;
-
-	App->tex->UnLoad(reference_walking_enemy2->texture);
-	reference_walking_enemy2->texture = nullptr;
-
-	//destroy all entities
-	for (p2List_item<j1Entity*>* entity = entities.start; entity != nullptr; entity = entity->next)
+	for (int i = 0; i < REFERENCE_ENTITIES; i++)
 	{
-		entity->data->DestroyEntity(entity->data);
+		App->tex->UnLoad(entities[i]->texture);
 	}
-	*/
+
 	entities.clear();
 	return ret;
 }
