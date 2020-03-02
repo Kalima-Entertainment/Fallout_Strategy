@@ -47,7 +47,7 @@ bool j1Scene::Start()
 	}
 
 	debug_tex = App->tex->Load("maps/path2.png");
-	test_melee = (DynamicEntity*)App->entities->CreateDynamicEntity(VAULT, Troop::MELEE, 50, 100);
+	test_melee = (DynamicEntity*)App->entities->CreateDynamicEntity(VAULT, Troop::MELEE, 600, 400);
 	//App->entities->CreateDynamicEntity(VAULT, Troop::RANGED, 20, 200);
 	//App->entities->CreateDynamicEntity(VAULT, Troop::GATHERER, 30, 300);
 
@@ -57,7 +57,6 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
-
 	// debug pathfing ------------------
 	static iPoint origin;
 	static bool origin_selected = false;
@@ -137,6 +136,23 @@ bool j1Scene::Update(float dt)
 		iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
 		App->render->Blit(debug_tex, pos.x, pos.y);
 	}
+
+	//Creates temporal x and y, that will be stored when we make left click with mouse
+	int tx, ty;
+	iPoint selected_spot;
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
+		App->input->GetMousePosition(tx, ty);
+		selected_spot = App->render->ScreenToWorld(tx, ty);
+		selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
+		LOG("Actual Map Position is X: %i and Y: %i", selected_spot.x, selected_spot.y);
+
+		for (int i = 0; i < App->entities->entities.size(); i++)
+		{
+			if(App->entities->entities[i]->MapPosition() == selected_spot) LOG("COINCIDENCE IN MAP");
+		}
+	}
+
+	//Now with this info stored we must loop ONCE all entity list to know if any entity its located in that spot comparing with selected_spot updated in map.
 
 	return true;
 }

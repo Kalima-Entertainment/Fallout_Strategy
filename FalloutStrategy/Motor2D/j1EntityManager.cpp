@@ -133,6 +133,31 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 
 	config_data = config;
 
+	//Load reference data
+	//Vault Dwellers
+	reference_vault_melee = CreateDynamicEntity(VAULT, Troop::MELEE, 10, 10);
+	reference_vault_range = CreateDynamicEntity(VAULT, Troop::RANGED, 10, 20);
+	reference_vault_gatherer = CreateDynamicEntity(VAULT, Troop::GATHERER, 70, 30);
+
+	//LoadReferenceEntityData(config, reference_vault_melee);
+	//LoadReferenceEntityData(config, reference_vault_range);
+	//LoadReferenceEntityData(config, reference_vault_gatherer);
+
+	//Brotherhood
+	reference_brotherhood_melee = CreateDynamicEntity(BROTHERHOOD, Troop::MELEE, 40, 40);
+	reference_brotherhood_range = CreateDynamicEntity(BROTHERHOOD, Troop::RANGED, 50, 50);
+	reference_brotherhood_gatherer = CreateDynamicEntity(BROTHERHOOD, Troop::GATHERER, 60, 60);
+
+	//Super Mutants
+	reference_mutant_melee = CreateDynamicEntity(MUTANT, Troop::MELEE, 70, 70);
+	reference_mutant_range = CreateDynamicEntity(MUTANT, Troop::RANGED, 80, 80);
+	reference_mutant_gatherer = CreateDynamicEntity(MUTANT, Troop::GATHERER, 90, 90);
+
+	//Ghouls
+	reference_ghoul_melee = CreateDynamicEntity(GHOUL, Troop::MELEE, 100, 100);
+	reference_ghoul_range = CreateDynamicEntity(GHOUL, Troop::RANGED, 110, 110);
+	reference_ghoul_gatherer = CreateDynamicEntity(GHOUL, Troop::GATHERER, 120, 120);
+
 	return ret;
 }
 
@@ -142,41 +167,28 @@ bool j1EntityManager::Start()
 	//create reference entities
 
 	//load all textures
-	//Vault Dwellers
-	reference_vault_melee = CreateDynamicEntity(VAULT, Troop::MELEE, 10, 10);
-	reference_vault_range = CreateDynamicEntity(VAULT, Troop::RANGED, 10, 20);
-	reference_vault_gatherer = CreateDynamicEntity(VAULT, Troop::GATHERER, 70, 30);
 
+	//Vault Dwellers
 	reference_vault_melee->LoadAnimations("VaultDwellers/Vault_Dweller_Melee");
 	reference_vault_range->LoadAnimations("VaultDwellers/Vault_Dweller_Ranged");
 	reference_vault_gatherer->LoadAnimations("VaultDwellers/Vault_Dweller_Gatherer");
 
 	//Brotherhood
-	reference_brotherhood_melee = CreateDynamicEntity(BROTHERHOOD, Troop::MELEE, 40, 40);
-	reference_brotherhood_range = CreateDynamicEntity(BROTHERHOOD, Troop::RANGED, 50, 50);
-	reference_brotherhood_gatherer = CreateDynamicEntity(BROTHERHOOD, Troop::GATHERER, 60, 60);
-
 	reference_brotherhood_melee->LoadAnimations("Brotherhood/Brotherhood_melee");
 	reference_brotherhood_range->LoadAnimations("Brotherhood/Brotherhood_Ranged");
 	reference_brotherhood_gatherer->LoadAnimations("Brotherhood/Brotherhood_gatherer");
 
 	//Super Mutants
-	reference_mutant_melee = CreateDynamicEntity(MUTANT, Troop::MELEE, 70, 70);
-	reference_mutant_range = CreateDynamicEntity(MUTANT, Troop::RANGED, 80, 80);
-	reference_mutant_gatherer = CreateDynamicEntity(MUTANT, Troop::GATHERER, 90, 90);
-
 	reference_mutant_melee->LoadAnimations("SuperMutant/SuperMutant_Mele");
 	reference_mutant_range->LoadAnimations("SuperMutant/SuperMutant_Ranged");
 	reference_mutant_gatherer->LoadAnimations("SuperMutant/SuperMutant_Gatherer");
 
 	//Ghouls
-	reference_ghoul_melee = CreateDynamicEntity(GHOUL, Troop::MELEE, 100, 100);
-	reference_ghoul_range = CreateDynamicEntity(GHOUL, Troop::RANGED, 110, 110);
-	reference_ghoul_gatherer = CreateDynamicEntity(GHOUL, Troop::GATHERER, 120, 120);
-
 	reference_ghoul_melee->LoadAnimations("Ghouls/Ghouls_Melee");
 	reference_ghoul_range->LoadAnimations("Ghouls/Ghouls_Ranged");
 	reference_ghoul_gatherer->LoadAnimations("Ghouls/Ghouls_Gatherer");
+
+	debug_tex = App->tex->Load("maps/meta.png");
 
 	return ret;
 }
@@ -230,11 +242,31 @@ bool j1EntityManager::PostUpdate()
 {
 	//BROFILER_CATEGORY("EntitiesPostUpdate", Profiler::Color::Bisque)
 	bool ret = true;
+	SDL_Rect tex_rect = { 0,0,64,64 };
 	for (int i = REFERENCE_ENTITIES; i < entities.size(); i++)
 	{
 		entities[i]->PostUpdate();
 	}
 	return ret;
+}
+
+void j1EntityManager::LoadReferenceEntityData(pugi::xml_node& reference_entities_node, DynamicEntity* reference_entity) {
+	pugi::xml_node entities = reference_entities_node;
+
+	switch (reference_entity->faction)
+	{
+	case Faction::VAULT:
+		//if(reference_entity->type == Troop::MELEE) 
+		break;
+	case Faction::BROTHERHOOD:
+		break;
+	case Faction::MUTANT:
+		break;
+	case Faction::GHOUL:
+		break;
+	default:
+		break;
+	}
 }
 
 /*
