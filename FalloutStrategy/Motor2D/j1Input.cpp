@@ -166,7 +166,7 @@ void j1Input::GetMouseMotion(int& x, int& y)
 	y = mouse_motion_y;
 }
 
-void j1Input::GetMouseWheel(float& y)
+void j1Input::GetMouseWheel(uint& y)
 {
 	y = mouse_wheel_motion_y;
 }

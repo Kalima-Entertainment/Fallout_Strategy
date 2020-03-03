@@ -163,10 +163,10 @@ bool j1Scene::Update(float dt)
 	if (y > height - 100) App->render->camera.y -= floor(600.0f * dt);
 
 	//Zoom in, zoom out
-	float zoom;
+	uint zoom;
 	App->input->GetMouseWheel(zoom);
-	//if(zoom != 0)App->win->SetScale(&zoom);
-	LOG("WHEEL VALUE %f", zoom);
+	if(zoom != 0)App->win->SetScale(zoom);	//Check this condition
+	LOG("WHEEL VALUE %i", zoom);
 
 	return true;
 }

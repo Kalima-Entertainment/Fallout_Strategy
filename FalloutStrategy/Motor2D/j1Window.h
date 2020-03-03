@@ -31,7 +31,7 @@ public:
 	uint GetScale() const;
 
 	//Set scale to zoom in/out
-	void SetScale(int* zoom) ;
+	void SetScale(uint& zoom);
 
 public:
 	//The window we'll be rendering to
