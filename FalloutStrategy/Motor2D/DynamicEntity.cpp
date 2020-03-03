@@ -26,13 +26,16 @@ bool DynamicEntity::Update(float dt) {
 	switch (state)
 	{
 	case IDLE:
-		position.x += 10;
+		if (target_tile != current_tile)
+		{
+			//state = WALK;
+		}
 		break;
 	case WALK:
 		PathfindToPosition(target_tile);
 		if ((target_tile.x >= 0)&&(target_tile.y >= 0))
 		{
-			position.x++;
+
 		}
 		break;
 	case ATTACK:
@@ -59,8 +62,6 @@ bool DynamicEntity::LoadReferenceData() {
 			animations[i][j] = reference_entity->animations[i][j];
 		}
 	}
-
-	current_animation = &animations[IDLE][TOP_RIGHT];
 
 	return ret;
 }

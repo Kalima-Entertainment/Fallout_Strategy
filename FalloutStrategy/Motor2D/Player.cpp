@@ -29,14 +29,17 @@ bool Player::PreUpdate() {
 			selected_entity->state = WALK;
 		}
 
-		for (int i = 0; i < App->entities->entities.size(); i++)
+		for (int i = REFERENCE_ENTITIES; i < App->entities->entities.size(); i++)
 		{
 			if (App->entities->entities[i]->current_tile == selected_spot) {
 				LOG("COINCIDENCE IN MAP");
 				selected_entity = App->entities->entities[i];
 				break;
 			}
-			selected_entity = nullptr;
+			else
+			{
+				//selected_entity = nullptr;
+			}
 		}
 	}
 	return ret;

@@ -121,7 +121,7 @@ bool j1Entity::LoadAnimations(const char* path) {
 
 bool j1Entity::PostUpdate() {
 	current_animation = &animations[state][direction];
-	App->render->Blit(reference_entity->texture, position.x, position.y, &current_animation->GetCurrentFrame());	
+	App->render->Blit(reference_entity->texture, position.x - 32, position.y - 96, &current_animation->GetCurrentFrame());	
 	return true;
 }
 
