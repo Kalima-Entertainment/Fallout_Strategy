@@ -234,11 +234,6 @@ bool j1EntityManager::PostUpdate()
 	SDL_Rect tex_rect = { 0,0,64,64 };
 	for (int i = REFERENCE_ENTITIES; i < entities.size(); i++)
 	{
-		iPoint render_position;
-		render_position = App->map->MapToWorld(entities[i]->current_tile.x, entities[i]->current_tile.y);
-		App->render->WorldToScreen(render_position.x, render_position.y);
-		entities[i]->position.x = render_position.x - entities[i]->current_animation->GetCurrentFrame().w * 0.5f + 32;
-		entities[i]->position.y = render_position.y - entities[i]->current_animation->GetCurrentFrame().h + 36;
 		entities[i]->PostUpdate();
 	}
 	return ret;

@@ -18,7 +18,6 @@ public:
 	bool LoadReferenceData();
 
 public:
-	State current_state;
 	int mov_speed;
 	int attack_speed;
 	int damage;

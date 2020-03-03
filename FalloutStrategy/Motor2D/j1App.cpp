@@ -17,6 +17,7 @@
 #include "j1App.h"
 #include "j1Collision.h"
 #include "j1EntityManager.h"
+#include "Player.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -35,6 +36,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	gui = new j1Gui();
 	collision = new j1Collision();
 	entities = new j1EntityManager();
+	player = new Player();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -46,6 +48,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(collision);
 	AddModule(pathfinding);
 	AddModule(entities);
+	AddModule(player);
 	AddModule(font);
 	AddModule(gui);
 

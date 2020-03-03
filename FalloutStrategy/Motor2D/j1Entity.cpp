@@ -69,7 +69,7 @@ bool j1Entity::LoadAnimations(const char* path) {
 	{
 		p2SString animation_direction(animation.child("properties").child("property").attribute("value").as_string());
 		p2SString animation_name(animation.child("properties").child("property").attribute("name").as_string());
-		int direction = TOP_LEFT;
+		int direction = TOP_RIGHT;
 		State state = IDLE;
 
 		//animation
@@ -120,7 +120,7 @@ bool j1Entity::LoadAnimations(const char* path) {
 }
 
 bool j1Entity::PostUpdate() {
-	current_animation = &animations[IDLE][TOP_RIGHT];
+	current_animation = &animations[state][direction];
 	App->render->Blit(reference_entity->texture, position.x, position.y, &current_animation->GetCurrentFrame());	
 	return true;
 }
