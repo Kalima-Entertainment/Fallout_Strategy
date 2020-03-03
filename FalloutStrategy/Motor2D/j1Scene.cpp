@@ -47,7 +47,7 @@ bool j1Scene::Start()
 	}
 
 	debug_tex = App->tex->Load("maps/path2.png");
-	test_melee = (DynamicEntity*)App->entities->CreateDynamicEntity(VAULT, Troop::MELEE, 600, 400);
+	test_melee = (DynamicEntity*)App->entities->CreateDynamicEntity(VAULT, Troop::MELEE, 10, 10);
 	//App->entities->CreateDynamicEntity(VAULT, Troop::RANGED, 20, 200);
 	//App->entities->CreateDynamicEntity(VAULT, Troop::GATHERER, 30, 300);
 
@@ -96,16 +96,16 @@ bool j1Scene::Update(float dt)
 		App->SaveGame("save_game.xml");
 
 	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		App->render->camera.y += floor(200.0f * dt);
+		App->render->camera.y += floor(300.0f * dt);
 
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		App->render->camera.y -= floor(200.0f * dt);
+		App->render->camera.y -= floor(300.0f * dt);
 
 	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		App->render->camera.x += floor(200.0f * dt);
+		App->render->camera.x += floor(300.0f * dt);
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		App->render->camera.x -= floor(200.0f * dt);
+		App->render->camera.x -= floor(300.0f * dt);
 
 	App->map->Draw();
 
@@ -148,7 +148,7 @@ bool j1Scene::Update(float dt)
 
 		for (int i = 0; i < App->entities->entities.size(); i++)
 		{
-			if(App->entities->entities[i]->MapPosition() == selected_spot) LOG("COINCIDENCE IN MAP");
+			if(App->entities->entities[i]->current_tile == selected_spot) LOG("COINCIDENCE IN MAP");
 		}
 	}
 

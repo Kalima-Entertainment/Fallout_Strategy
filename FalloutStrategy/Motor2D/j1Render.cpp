@@ -44,7 +44,7 @@ bool j1Render::Awake(pugi::xml_node& config)
 	{
 		camera.w = App->win->screen_surface->w;
 		camera.h = App->win->screen_surface->h;
-		camera.x = 0;
+		camera.x = 333;
 		camera.y = 0;
 	}
 
@@ -125,6 +125,15 @@ iPoint j1Render::ScreenToWorld(int x, int y) const
 	ret.x = (x - camera.x / scale);
 	ret.y = (y - camera.y / scale);
 
+	return ret;
+}
+
+iPoint j1Render::WorldToScreen(int x, int y) const 
+{
+	iPoint ret;
+	int scale = App->win->GetScale();
+	ret.x = x + camera.x / scale;
+	ret.y = y + camera.y / scale;
 	return ret;
 }
 
