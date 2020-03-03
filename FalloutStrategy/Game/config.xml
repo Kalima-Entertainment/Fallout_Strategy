@@ -6,7 +6,7 @@
     <organization>UPC</organization>
   </app>
   <entities>
-   <vault_dwellers>
+   <vault_dwellers health="100">
    </vault_dwellers>
    <mutants>
    </mutants>
