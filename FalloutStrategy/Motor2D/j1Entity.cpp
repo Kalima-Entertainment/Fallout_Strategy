@@ -122,22 +122,6 @@ bool j1Entity::LoadAnimations(const char* path) {
 	return ret;
 }
 
-bool j1Entity::PostUpdate() {
-	current_animation = &animations[state][direction];
-
-	if (path_to_target != NULL)
-	{
-		for (uint i = 0; i < path_to_target->Count(); ++i)
-		{
-			iPoint pos = App->map->MapToWorld(path_to_target->At(i)->x, path_to_target->At(i)->y);
-			App->render->Blit(App->scene->debug_tex, pos.x, pos.y);
-		}
-	}
-
-	App->render->Blit(reference_entity->texture, position.x - 32, position.y - 96, &current_animation->GetCurrentFrame());	
-	return true;
-}
-
 iPoint j1Entity::MapPosition() {
 	iPoint spot = App->render->ScreenToWorld(position.x, position.y);
 	spot = App->map->WorldToMap(spot.x, spot.y);

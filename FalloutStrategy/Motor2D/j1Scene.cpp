@@ -154,6 +154,7 @@ bool j1Scene::Update(float dt)
 	}
 
 	//Margin camera movement
+	/*
 	uint width, height;
 	App->win->GetWindowSize(width, height);
 
@@ -167,7 +168,7 @@ bool j1Scene::Update(float dt)
 	App->input->GetMouseWheel(zoom);
 	if(zoom != 0)App->win->SetScale(zoom);	//Check this condition
 	LOG("WHEEL VALUE %i", zoom);
-
+	*/
 	return true;
 }
 

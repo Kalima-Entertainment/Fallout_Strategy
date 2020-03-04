@@ -65,8 +65,8 @@ j1Entity* j1EntityManager::CreateDynamicEntity(Faction faction, Troop troop, int
 		entity->current_tile.x = position_x;
 		entity->current_tile.y = position_y;
 
-		entity->position = App->map->MapToWorld(entity->current_tile.x, entity->current_tile.y);
-		entity->position = App->render->WorldToScreen(entity->position.x, entity->position.y);
+		entity->position = App->map->fMapToWorld(entity->current_tile.x, entity->current_tile.y);
+		entity->position = App->render->fWorldToScreen(entity->position.x, entity->position.y);
 
 		if (entity->reference_entity != nullptr)
 		{
@@ -237,7 +237,7 @@ bool j1EntityManager::PostUpdate()
 {
 	//BROFILER_CATEGORY("EntitiesPostUpdate", Profiler::Color::Bisque)
 	bool ret = true;
-	SDL_Rect tex_rect = {64,12,64,36 };
+	SDL_Rect tex_rect = {64,0,64,64 };
 	iPoint tex_position;
 
 	if (App->player->selected_entity != nullptr)

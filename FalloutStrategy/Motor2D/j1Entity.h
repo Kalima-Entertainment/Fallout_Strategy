@@ -52,7 +52,7 @@ public:
 	virtual bool Start() { return true; }
 	virtual bool PreUpdate() { return true; }
 	virtual bool Update(float dt) { return true; }
-	virtual bool PostUpdate();
+	virtual bool PostUpdate() { return true; };
 	virtual bool CleanUp() { return true; }
 	virtual void OnCollision(Collider* c1, Collider* c2) {};
 
@@ -65,11 +65,9 @@ public:
 	//Check if mouse pointer its inside the same spot than the entity and if pressed returns any advice
 
 public:
-	iPoint position = { 0, 0 };
-	iPoint lastPosition = { 0, 0 };
-	iPoint current_speed = {0, 0};
-	iPoint speed = { 0, 0 };
-	iPoint initialPosition = { 0, 0 };
+	fPoint position = { 0, 0 };
+	fPoint lastPosition = { 0, 0 };
+	fPoint initialPosition = { 0, 0 };
 	iPoint current_tile = { 0,0 };
 	iPoint target_tile = { 0,0 };
 
@@ -79,16 +77,10 @@ public:
 
 	Collider* collider = nullptr;
 	Collider* last_collider = nullptr;
-	Collider* attack_collider = nullptr;
 	
 	//std::vector<Animation*> animations;
 	Animation animations[MAX_ANIMATIONS][6];
 	Animation idle[6];
-	Animation walk[6];
-	Animation attack[6];
-	Animation gather[6];
-	Animation hit[6];
-	Animation die[6];
 	Animation* current_animation = nullptr;
 	Animation* last_animation = nullptr;
 	Direction direction;
