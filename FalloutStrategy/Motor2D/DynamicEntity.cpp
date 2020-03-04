@@ -52,6 +52,26 @@ bool DynamicEntity::Update(float dt) {
 	return true;
 }
 
+<<<<<<< Updated upstream
+=======
+bool DynamicEntity::PostUpdate() {
+	current_animation = &animations[state][direction];
+
+	if (path_to_target != NULL)
+	{
+		for (uint i = 0; i < path_to_target->Count(); ++i)
+		{
+			iPoint pos = App->map->MapToWorld(path_to_target->At(i)->x, path_to_target->At(i)->y);
+			App->render->Blit(App->scene->debug_tex, pos.x, pos.y);
+		}
+	}
+
+	App->render->Blit(reference_entity->texture, position.x - 32, position.y - 96, &current_animation->GetCurrentFrame());
+	//App->render->DrawQuad({(int)(position.x - 2), (int)(position.y - 2) , 4 , 4 }, 255, 0, 0, 255);
+	return true;
+}
+
+>>>>>>> Stashed changes
 bool DynamicEntity::LoadReferenceData() {
 	bool ret = true;
 
