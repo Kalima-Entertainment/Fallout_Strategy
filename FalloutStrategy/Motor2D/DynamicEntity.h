@@ -17,12 +17,14 @@ public:
 	bool Update(float dt);
 	bool LoadReferenceData();
 	void CheckAnimation();
+	void Move();
 
 public:
 	int mov_speed;
 	int attack_speed;
 	int damage;
 	Troop type;
+	iPoint next_tile;
 };
 
 

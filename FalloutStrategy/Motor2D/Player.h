@@ -10,11 +10,12 @@ public:
 	Player();
 	~Player();
 
+	bool Start();
 	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
 
-private:
+public:
 	j1Entity* selected_entity;
 };
 

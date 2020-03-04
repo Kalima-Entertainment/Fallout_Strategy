@@ -74,6 +74,7 @@ public:
 
 	bool blocked_movement = false;
 	SDL_Texture* debug_tex;
+	SDL_Texture* selected_unit_tex;
 };
 
 #endif // !_ENTITY_MANAGER_H_

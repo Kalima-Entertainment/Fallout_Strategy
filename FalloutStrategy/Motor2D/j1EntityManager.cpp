@@ -12,11 +12,15 @@
 #include "j1Entity.h"
 #include "DynamicEntity.h"
 #include "StaticEntity.h"
+#include "Player.h"
+
 //#include "brofiler/Brofiler/Brofiler.h"
 
 
 j1EntityManager::j1EntityManager(){
 	name.create("entities");
+
+	selected_unit_tex = nullptr;
 }
 
 
@@ -192,6 +196,7 @@ bool j1EntityManager::Start()
 	reference_ghoul_gatherer->LoadAnimations("Ghouls/Ghouls_Gatherer");
 
 	debug_tex = App->tex->Load("maps/meta.png");
+	selected_unit_tex = App->tex->Load("maps/meta2.png");
 
 	return ret;
 }
@@ -232,7 +237,15 @@ bool j1EntityManager::PostUpdate()
 {
 	//BROFILER_CATEGORY("EntitiesPostUpdate", Profiler::Color::Bisque)
 	bool ret = true;
-	SDL_Rect tex_rect = { 0,0,64,64 };
+	SDL_Rect tex_rect = {64,12,64,36 };
+	iPoint tex_position;
+
+	if (App->player->selected_entity != nullptr)
+	{
+		tex_position = App->map->MapToWorld(App->player->selected_entity->current_tile.x, App->player->selected_entity->current_tile.y);
+		App->render->Blit(selected_unit_tex, tex_position.x, tex_position.y, &tex_rect);
+	}
+
 	for (int i = REFERENCE_ENTITIES; i < entities.size(); i++)
 	{
 		entities[i]->PostUpdate();

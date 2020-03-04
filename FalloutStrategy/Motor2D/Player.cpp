@@ -11,6 +11,10 @@ Player::Player() : j1Module() {}
 
 Player::~Player() {}
 
+bool Player::Start() {
+	return true;
+}
+
 bool Player::PreUpdate() {
 	bool ret = true;
 	int tx, ty;

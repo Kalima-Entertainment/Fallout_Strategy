@@ -33,7 +33,8 @@ bool DynamicEntity::Update(float dt) {
 		break;
 	case WALK:
 		PathfindToPosition(target_tile);
-		CheckAnimation();
+		Move();
+		//CheckAnimation();
 		break;
 	case ATTACK:
 		break;
@@ -64,21 +65,57 @@ bool DynamicEntity::LoadReferenceData() {
 }
 
 void DynamicEntity::CheckAnimation() {
-	if ((current_tile.x >= target_tile.x)&&(current_tile.y >= target_tile.y))
+	if ((current_tile.x >= next_tile.x)&&(current_tile.y >= next_tile.y))
 	{
 		//current_animation = &animations[state][TOP_LEFT];
 		direction = TOP_LEFT;
 	}
-	else if ((current_tile.x <= target_tile.x) && (current_tile.y >= target_tile.y)) {
+	else if ((current_tile.x <= next_tile.x) && (current_tile.y >= next_tile.y)) {
 		//current_animation = &animations[state][TOP_RIGHT];
 		direction = TOP_RIGHT;
 	}
-	else if ((current_tile.x >= target_tile.x) && (current_tile.y <= target_tile.y)){
+	else if ((current_tile.x >= next_tile.x) && (current_tile.y <= next_tile.y)){
 		//current_animation = &animations[state][BOTTOM_LEFT];
 		direction = BOTTOM_LEFT;
 	}
-	else if ((current_tile.x <= target_tile.x) && (current_tile.y <= target_tile.y)) {
+	else if ((current_tile.x <= next_tile.x) && (current_tile.y <= next_tile.y)) {
 		//current_animation = &animations[state][BOTTOM_RIGHT];
 		direction = BOTTOM_RIGHT;
+	}
+}
+
+void DynamicEntity::Move() {
+	if (path_to_target != NULL)
+	{
+		if (path_to_target->Count() != 0)
+		{
+			next_tile = *path_to_target->At(0);
+			if ((current_tile.x > next_tile.x) && (current_tile.y >= next_tile.y))
+			{
+				direction = TOP_LEFT;
+				position.x--;
+				position.y--;
+			}
+			else if ((current_tile.x < next_tile.x) && (current_tile.y >= next_tile.y)) {
+				direction = TOP_RIGHT;
+				position.x++;
+				position.y--;
+			}
+			else if ((current_tile.x >= next_tile.x) && (current_tile.y < next_tile.y)) {
+				direction = BOTTOM_LEFT;
+				position.x--;
+				position.y++;
+			}
+			else if ((current_tile.x <= next_tile.x) && (current_tile.y < next_tile.y)) {
+				direction = BOTTOM_RIGHT;
+				position.x--;
+				position.y++;
+			}
+		}
+		else
+		{
+			state = IDLE;
+			target_tile = current_tile;
+		}
 	}
 }
