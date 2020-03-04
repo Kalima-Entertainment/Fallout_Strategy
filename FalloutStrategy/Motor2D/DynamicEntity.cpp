@@ -16,24 +16,52 @@ DynamicEntity::DynamicEntity(Faction g_faction, Troop g_type) {
 
 	type = g_type;
 	faction = g_faction;
-	current_animation = &idle;
+	state = IDLE;
+	direction = TOP_RIGHT;
 }
 
 DynamicEntity::~DynamicEntity() {}
 
 bool DynamicEntity::Update(float dt) {
+	switch (state)
+	{
+	case IDLE:
+		if (target_tile != current_tile)
+		{
+			//state = WALK;
+		}
+		break;
+	case WALK:
+		PathfindToPosition(target_tile);
+		if ((target_tile.x >= 0)&&(target_tile.y >= 0))
+		{
+
+		}
+		break;
+	case ATTACK:
+		break;
+	case GATHER:
+		break;
+	case HIT:
+		break;
+	case DIE:
+		break;
+	default:
+		break;
+	}
 	return true;
 }
 
 bool DynamicEntity::LoadReferenceData() {
 	bool ret = true;
-	int size = reference_entity->animations.size();
-	//animations
-	for (int i = 0; i < size; i++)
+
+	for (int i = 0; i < MAX_ANIMATIONS; i++)
 	{
-		animations.push_back(reference_entity->animations.at(i));
+		for (int j = 0; j <= 6; j++)
+		{
+			animations[i][j] = reference_entity->animations[i][j];
+		}
 	}
-	idle = *animations.at(0);
 
 	return ret;
 }
