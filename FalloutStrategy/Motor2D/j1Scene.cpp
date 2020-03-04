@@ -47,7 +47,7 @@ bool j1Scene::Start()
 	}
 
 	debug_tex = App->tex->Load("maps/path2.png");
-	test_melee = (DynamicEntity*)App->entities->CreateDynamicEntity(VAULT, Troop::MELEE, 600, 400);
+	test_melee = (DynamicEntity*)App->entities->CreateDynamicEntity(VAULT, Troop::MELEE, 10, 10);
 	//App->entities->CreateDynamicEntity(VAULT, Troop::RANGED, 20, 200);
 	//App->entities->CreateDynamicEntity(VAULT, Troop::GATHERER, 30, 300);
 

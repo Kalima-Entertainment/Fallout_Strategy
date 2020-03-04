@@ -20,6 +20,7 @@ class j1Fonts;
 class j1Gui;
 class j1EntityManager;
 class j1Collision;
+class Player;
 
 class j1App
 {
@@ -96,6 +97,7 @@ public:
 	j1Gui*				gui = NULL;
 	j1Collision	*		collision = NULL;
 	j1EntityManager*	entities = NULL;
+	Player*				player = NULL;
 
 	bool pause;
 private:

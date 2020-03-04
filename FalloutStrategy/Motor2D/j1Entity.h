@@ -91,6 +91,7 @@ public:
 	Animation die[6];
 	Animation* current_animation = nullptr;
 	Animation* last_animation = nullptr;
+	Direction direction;
 
 	State state = State::IDLE;
 	Faction faction;
