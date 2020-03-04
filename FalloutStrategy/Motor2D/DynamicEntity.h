@@ -16,6 +16,7 @@ public:
 	~DynamicEntity();
 	bool Update(float dt);
 	bool LoadReferenceData();
+	void CheckAnimation();
 
 public:
 	int mov_speed;
