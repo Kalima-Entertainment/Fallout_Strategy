@@ -1,7 +1,8 @@
 #include "DynamicEntity.h"
+#include "j1Map.h"
+#include "j1App.h"
 #include "j1Scene.h"
 #include "j1Render.h"
-#include "j1Map.h"
 
 DynamicEntity::DynamicEntity(Faction g_faction, Troop g_type) {
 
@@ -36,10 +37,8 @@ bool DynamicEntity::Update(float dt) {
 		break;
 	case WALK:
 		PathfindToPosition(target_tile);
-		if ((target_tile.x >= 0)&&(target_tile.y >= 0))
-		{
-
-		}
+		Move();
+		//CheckAnimation();
 		break;
 	case ATTACK:
 		break;
@@ -86,3 +85,71 @@ bool DynamicEntity::LoadReferenceData() {
 	return ret;
 }
 
+void DynamicEntity::CheckAnimation() {
+	if ((current_tile.x >= next_tile.x)&&(current_tile.y >= next_tile.y))
+	{
+		//current_animation = &animations[state][TOP_LEFT];
+		direction = TOP_LEFT;
+	}
+	else if ((current_tile.x <= next_tile.x) && (current_tile.y >= next_tile.y)) {
+		//current_animation = &animations[state][TOP_RIGHT];
+		direction = TOP_RIGHT;
+	}
+	else if ((current_tile.x >= next_tile.x) && (current_tile.y <= next_tile.y)){
+		//current_animation = &animations[state][BOTTOM_LEFT];
+		direction = BOTTOM_LEFT;
+	}
+	else if ((current_tile.x <= next_tile.x) && (current_tile.y <= next_tile.y)) {
+		//current_animation = &animations[state][BOTTOM_RIGHT];
+		direction = BOTTOM_RIGHT;
+	}
+}
+
+void DynamicEntity::Move() {
+	if (path_to_target != NULL)
+	{
+		if (path_to_target->Count() != 0)
+		{
+			next_tile = *path_to_target->At(0);
+			if ((current_tile.x > next_tile.x) && (current_tile.y == next_tile.y))
+			{
+				direction = TOP_LEFT;
+				position.x -= speed.x;
+				position.y -= speed.y;
+			}
+			else if ((current_tile.x == next_tile.x) && (current_tile.y > next_tile.y))
+			{
+				direction = TOP_RIGHT;
+				position.x += speed.x;
+				position.y -= speed.y;
+			}
+			else if ((current_tile.x == next_tile.x) && (current_tile.y < next_tile.y))
+			{
+				direction = BOTTOM_LEFT;
+				position.x -= speed.x;
+				position.y += speed.y;
+			}
+			else if ((current_tile.x < next_tile.x) && (current_tile.y == next_tile.y))
+			{
+				direction = BOTTOM_RIGHT;
+				position.x += speed.x;
+				position.y += speed.y;
+			}
+			else if (current_tile.x == (target_tile.x - 1) && (current_tile.y == (target_tile.y + 1)))
+			{
+				direction = RIGHT;
+				position.x += speed.x;
+			}
+			else if ((current_tile.x == (target_tile.x -1))&&(current_tile.y == (target_tile.y + 1)))
+			{
+				direction = LEFT;
+				position.x += speed.x;
+			}
+		}
+		else
+		{
+			state = IDLE;
+			target_tile = current_tile;
+		}
+	}
+}

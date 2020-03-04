@@ -137,6 +137,15 @@ iPoint j1Render::WorldToScreen(int x, int y) const
 	return ret;
 }
 
+fPoint j1Render::fWorldToScreen(int x, int y) const
+{
+	fPoint ret;
+	int scale = App->win->GetScale();
+	ret.x = x + camera.x / scale;
+	ret.y = y + camera.y / scale;
+	return ret;
+}
+
 // Blit to screen
 bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivot_x, int pivot_y) const
 {

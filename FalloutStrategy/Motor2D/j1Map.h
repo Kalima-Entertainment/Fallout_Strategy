@@ -120,6 +120,7 @@ public:
 	bool Load(const char* path);
 
 	iPoint MapToWorld(int x, int y) const;
+	fPoint fMapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
 	iPoint fWorldToMap(float x, float y) const;
 	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;

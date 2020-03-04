@@ -67,11 +67,13 @@ public:
 	// Get mouse / axis position
 	void GetMousePosition(int &x, int &y);
 	void GetMouseMotion(int& x, int& y);
+	void GetMouseWheel(uint& y);
 
 private:
 	bool		windowEvents[WE_COUNT];
 	j1KeyState*	keyboard;
 	j1KeyState	mouse_buttons[NUM_MOUSE_BUTTONS];
+	uint		mouse_wheel_motion_y;
 	int			mouse_motion_x;
 	int			mouse_motion_y;
 	int			mouse_x;
