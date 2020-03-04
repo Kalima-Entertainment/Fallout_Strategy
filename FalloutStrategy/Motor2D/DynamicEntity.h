@@ -15,6 +15,7 @@ public:
 	DynamicEntity(Faction faction, Troop type);
 	~DynamicEntity();
 	bool Update(float dt);
+	bool PostUpdate();
 	bool LoadReferenceData();
 
 public:

@@ -1,4 +1,7 @@
 #include "DynamicEntity.h"
+#include "j1Scene.h"
+#include "j1Render.h"
+#include "j1Map.h"
 
 DynamicEntity::DynamicEntity(Faction g_faction, Troop g_type) {
 
@@ -52,8 +55,6 @@ bool DynamicEntity::Update(float dt) {
 	return true;
 }
 
-<<<<<<< Updated upstream
-=======
 bool DynamicEntity::PostUpdate() {
 	current_animation = &animations[state][direction];
 
@@ -71,7 +72,6 @@ bool DynamicEntity::PostUpdate() {
 	return true;
 }
 
->>>>>>> Stashed changes
 bool DynamicEntity::LoadReferenceData() {
 	bool ret = true;
 
