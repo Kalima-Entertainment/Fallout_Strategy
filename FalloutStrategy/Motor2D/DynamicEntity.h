@@ -17,7 +17,6 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool LoadReferenceData();
-	void CheckAnimation();
 	void Move();
 
 public:

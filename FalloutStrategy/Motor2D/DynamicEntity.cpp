@@ -38,7 +38,6 @@ bool DynamicEntity::Update(float dt) {
 	case WALK:
 		PathfindToPosition(target_tile);
 		Move();
-		//CheckAnimation();
 		break;
 	case ATTACK:
 		break;
@@ -83,26 +82,6 @@ bool DynamicEntity::LoadReferenceData() {
 	}
 
 	return ret;
-}
-
-void DynamicEntity::CheckAnimation() {
-	if ((current_tile.x >= next_tile.x)&&(current_tile.y >= next_tile.y))
-	{
-		//current_animation = &animations[state][TOP_LEFT];
-		direction = TOP_LEFT;
-	}
-	else if ((current_tile.x <= next_tile.x) && (current_tile.y >= next_tile.y)) {
-		//current_animation = &animations[state][TOP_RIGHT];
-		direction = TOP_RIGHT;
-	}
-	else if ((current_tile.x >= next_tile.x) && (current_tile.y <= next_tile.y)){
-		//current_animation = &animations[state][BOTTOM_LEFT];
-		direction = BOTTOM_LEFT;
-	}
-	else if ((current_tile.x <= next_tile.x) && (current_tile.y <= next_tile.y)) {
-		//current_animation = &animations[state][BOTTOM_RIGHT];
-		direction = BOTTOM_RIGHT;
-	}
 }
 
 void DynamicEntity::Move() {
