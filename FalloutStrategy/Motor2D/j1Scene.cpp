@@ -47,7 +47,7 @@ bool j1Scene::Start()
 	}
 
 	debug_tex = App->tex->Load("maps/path2.png");
-	test_melee = (DynamicEntity*)App->entities->CreateDynamicEntity(VAULT, Troop::MELEE, 10, 10);
+	test_melee = (DynamicEntity*)App->entities->CreateDynamicEntity(VAULT, Troop::MELEE, 14, 4);
 	//App->entities->CreateDynamicEntity(VAULT, Troop::RANGED, 20, 200);
 	//App->entities->CreateDynamicEntity(VAULT, Troop::GATHERER, 30, 300);
 
@@ -95,17 +95,17 @@ bool j1Scene::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 		App->SaveGame("save_game.xml");
 
-	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		App->render->camera.y += floor(300.0f * dt);
+	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+		App->render->camera.y += floor(200.0f * dt);
 
-	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		App->render->camera.y -= floor(300.0f * dt);
+	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		App->render->camera.y -= floor(200.0f * dt);
 
-	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		App->render->camera.x += floor(300.0f * dt);
+	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		App->render->camera.x += floor(200.0f * dt);
 
-	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		App->render->camera.x -= floor(300.0f * dt);
+	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		App->render->camera.x -= floor(200.0f * dt);
 
 	App->map->Draw();
 
@@ -137,6 +137,38 @@ bool j1Scene::Update(float dt)
 		App->render->Blit(debug_tex, pos.x, pos.y);
 	}
 
+	//Creates temporal x and y, that will be stored when we make left click with mouse
+	int tx, ty;
+	iPoint selected_spot;
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
+		App->input->GetMousePosition(tx, ty);
+		selected_spot = App->render->ScreenToWorld(tx, ty);
+		selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
+		LOG("Actual Map Position is X: %i and Y: %i", selected_spot.x, selected_spot.y);
+
+		//Now with this info stored we must loop ONCE all entity list to know if any entity its located in that spot comparing with selected_spot updated in map.
+		for (int i = 0; i < App->entities->entities.size(); i++)
+		{
+			if(App->entities->entities[i]->MapPosition() == selected_spot) LOG("COINCIDENCE IN MAP");
+		}
+	}
+
+	//Margin camera movement
+	/*
+	uint width, height;
+	App->win->GetWindowSize(width, height);
+
+	if (x < 100) App->render->camera.x += floor(600.0f * dt);
+	if (x > width - 100) App->render->camera.x -= floor(600.0f * dt);
+	if (y < 100) App->render->camera.y += floor(600.0f * dt);
+	if (y > height - 100) App->render->camera.y -= floor(600.0f * dt);
+
+	//Zoom in, zoom out
+	uint zoom;
+	App->input->GetMouseWheel(zoom);
+	if(zoom != 0)App->win->SetScale(zoom);	//Check this condition
+	LOG("WHEEL VALUE %i", zoom);
+	*/
 	return true;
 }
 

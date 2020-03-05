@@ -17,13 +17,13 @@ Real-time strategy game produced by 2nd year students from CITM/UPC University i
 | <a href="https://github.com/marcpages2020" target="_blank">**Marc Pagès**</a> | <a href="https://github.com/JBGelsenorJ" target="_blank">**Javier Belda**</a> | <a href="https://github.com/pablogalve" target="_blank">**Pablo Galve**</a> | <a href="https://github.com/Germanins6" target="_blank">**Germán Insua**</a> |
 | :---: |:---:| :---:| :---:|
 | [![Marc Pagès](https://avatars1.githubusercontent.com/u/47534017?s=400&v=4)](https://github.com/marcpages2020)    | [![Javier Belda](https://avatars2.githubusercontent.com/u/33731319?s=400&v=4)](https://github.com/JBGelsenorJ) | [![Pablo Galve](https://avatars3.githubusercontent.com/u/30580652?s=400&v=447534017?s=400&v=4)](https://github.com/pablogalve)  | [![Germán Insua](https://avatars3.githubusercontent.com/u/47743816?s=400&v=4)](https://github.com/Germanins6)  |
-| <a href="https://github.com/marcpages2020" target="_blank">`Team Leader`</a> | <a href="https://github.com/JBGelsenorJ" target="_blank">`Management`</a> | <a href="https://github.com/pablogalve" target="_blank">`Quality Assurance`</a> | <a href="https://github.com/Germanins6" target="_blank">`Code`</a> |
+| Team Leader| Management | Quality Assurance | Code |
 
 
 | <a href="https://github.com/maciadalmau" target="_blank">**Macià Dalmau**</a> | <a href="https://github.com/sauko22" target="_blank">**Pol Juan**</a> | <a href="https://github.com/silvino00" target="_blank">**Silvino Medina**</a> | <a href="https://github.com/christianpi4" target="_blank">**Christian Piña**</a> |
 | :---: |:---:| :---:| :---:|
 | [![Macià Dalmau](https://avatars2.githubusercontent.com/u/47743853?s=400&v=4)](https://github.com/maciadalmau)    | [![Pol Juan](https://avatars3.githubusercontent.com/u/47743898?s=400&v=4)](https://github.com/sauko22) | [![Silvino Medina](https://avatars1.githubusercontent.com/u/47743896?s=400&v=4)](https://github.com/silvino00)  | [![Christian Piña](https://avatars1.githubusercontent.com/u/47557433?s=400&v=4)](https://github.com/christianpi4)  |
-| <a href="https://github.com/maciadalmau" target="_blank">`Art`</a> | <a href="https://github.com/sauko22" target="_blank">`Design`</a> | <a href="https://github.com/silvino00" target="_blank">`Audio`</a> | <a href="https://github.com/christianpi4" target="_blank">`User Interface`</a> |
+| Art | Design| Audio | User Interface |
 
 ## Credits
 //TODO
