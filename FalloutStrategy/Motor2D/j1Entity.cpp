@@ -9,6 +9,8 @@
 #include "p2Log.h"
 #include "j1Collision.h"
 
+#include "j1Scene.h"
+
 
 j1Entity::~j1Entity() {}
 
@@ -16,6 +18,7 @@ void j1Entity::PathfindToPosition(iPoint destination) {
 
 	//if the player is close we create a path to him
 	iPoint origin = App->map->WorldToMap(position.x, position.y);
+	current_tile = App->map->WorldToMap(position.x, position.y);
 	App->pathfinding->CreatePath(current_tile, destination);
 
 	//pathfinding debug
@@ -117,12 +120,6 @@ bool j1Entity::LoadAnimations(const char* path) {
 	}
 
 	return ret;
-}
-
-bool j1Entity::PostUpdate() {
-	current_animation = &animations[state][direction];
-	App->render->Blit(reference_entity->texture, position.x - 32, position.y - 96, &current_animation->GetCurrentFrame());	
-	return true;
 }
 
 iPoint j1Entity::MapPosition() {

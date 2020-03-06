@@ -118,13 +118,22 @@ bool j1Input::PreUpdate()
 			break;
 
 			case SDL_MOUSEMOTION:
-				int scale = App->win->GetScale();
+				int scale;
+				scale = App->win->GetScale();
 				mouse_motion_x = event.motion.xrel / scale;
 				mouse_motion_y = event.motion.yrel / scale;
 				mouse_x = event.motion.x / scale;
 				mouse_y = event.motion.y / scale;
 				//LOG("Mouse motion x %d y %d", mouse_motion_x, mouse_motion_y);
 			break;
+
+			case SDL_MOUSEWHEEL:
+				//Zoom +
+				if (event.wheel.y > 0) mouse_wheel_motion_y += 1;
+
+				//Zoom -
+				if(event.wheel.y < 0) mouse_wheel_motion_y -=1;
+				break;
 		}
 	}
 
@@ -155,4 +164,9 @@ void j1Input::GetMouseMotion(int& x, int& y)
 {
 	x = mouse_motion_x;
 	y = mouse_motion_y;
+}
+
+void j1Input::GetMouseWheel(uint& y)
+{
+	y = mouse_wheel_motion_y;
 }
