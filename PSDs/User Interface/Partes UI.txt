@@ -1,0 +1,13 @@
+Textura metalizada 
+Textura oxidada 
+
+Boton Pulsado
+Boton Hover
+Boton Normal
+Slider Pulsada
+Slider Hover
+Slider Normal
+Cuadrado Minimapa
+Cuadrado Tropas
+Cuadrado Menus
+Cuadrado Superior Materiales
