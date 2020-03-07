@@ -16,8 +16,7 @@ j1Entity::~j1Entity() {}
 
 void j1Entity::PathfindToPosition(iPoint destination) {
 
-	//if the player is close we create a path to him
-	iPoint origin = App->map->WorldToMap(position.x, position.y);
+	//iPoint origin = App->map->WorldToMap(position.x, position.y);
 	current_tile = App->map->WorldToMap(position.x, position.y);
 	App->pathfinding->CreatePath(current_tile, destination);
 

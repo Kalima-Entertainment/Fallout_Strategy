@@ -65,7 +65,13 @@ bool DynamicEntity::PostUpdate() {
 		}
 	}
 
+	iPoint render_position;
+	render_position = App->map->MapToWorld(current_tile.x, current_tile.y);
+
 	App->render->Blit(reference_entity->texture, position.x - 32, position.y - 96, &current_animation->GetCurrentFrame());
+	
+	App->render->DrawQuad({ (int)position.x - 2, (int)position.y - 2, 4,4 }, 255, 0, 0, 255);
+	App->render->DrawQuad(next_tile_center_rect, 0, 255, 0, 255);
 	return true;
 }
 
@@ -89,6 +95,9 @@ void DynamicEntity::Move() {
 		if (path_to_target->Count() != 0)
 		{
 			next_tile = *path_to_target->At(0);
+		//	next_tile_center = App->map->MapToWorld(next_tile.x, next_tile.y);
+		//	next_tile_center_rect = { next_tile_center.x + 28, next_tile_center.y + 28,8,8 };
+			///*
 			if ((current_tile.x > next_tile.x) && (current_tile.y == next_tile.y))
 			{
 				direction = TOP_LEFT;
@@ -113,18 +122,35 @@ void DynamicEntity::Move() {
 				position.x += speed.x;
 				position.y += speed.y;
 			}
-			else if (current_tile.x == (target_tile.x - 1) && (current_tile.y == (target_tile.y + 1)))
-			{
-				direction = RIGHT;
-				position.x += speed.x;
+			//*/
+			/*
+			if ((position.x > next_tile_center_rect.x + next_tile_center_rect.w) && (position.x > next_tile_center_rect.x) && (position.y > next_tile_center_rect.y) && (position.y > next_tile_center_rect.y + next_tile_center_rect.h)) {
+				direction = TOP_LEFT;
+				position.x -= speed.x;
+				position.y -= speed.y;
 			}
-			else if ((current_tile.x == (target_tile.x -1))&&(current_tile.y == (target_tile.y + 1)))
-			{
-				direction = LEFT;
+			else if ((position.x < next_tile_center_rect.x + next_tile_center_rect.w) && (position.x < next_tile_center_rect.x) && (position.y > next_tile_center_rect.y) && (position.y > next_tile_center_rect.y + next_tile_center_rect.h)) {
+				direction = TOP_RIGHT;
 				position.x += speed.x;
+				position.y -= speed.y;
 			}
+			else if ((position.x > next_tile_center_rect.x + next_tile_center_rect.w) && (position.x > next_tile_center_rect.x) && (position.y < next_tile_center_rect.y) && (position.y < next_tile_center_rect.y + next_tile_center_rect.h)) {
+				direction = BOTTOM_LEFT;
+				position.x -= speed.x;
+				position.y += speed.y;
+			}
+			else if ((position.x < next_tile_center_rect.x + next_tile_center_rect.w) && (position.x < next_tile_center_rect.x) && (position.y < next_tile_center_rect.y) && (position.y < next_tile_center_rect.y + next_tile_center_rect.h)) {
+				direction = BOTTOM_RIGHT;
+				position.x += speed.x;
+				position.y += speed.y;
+			}
+			else
+			{
+				state = IDLE;
+			}
+			*/
 		}
-		else
+		else 
 		{
 			state = IDLE;
 			target_tile = current_tile;

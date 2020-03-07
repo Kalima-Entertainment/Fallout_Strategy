@@ -66,7 +66,9 @@ j1Entity* j1EntityManager::CreateDynamicEntity(Faction faction, Troop troop, int
 		entity->current_tile.y = position_y;
 
 		entity->position = App->map->fMapToWorld(entity->current_tile.x, entity->current_tile.y);
-		entity->position = App->render->fWorldToScreen(entity->position.x, entity->position.y);
+		//entity->position = App->render->fWorldToScreen(entity->position.x, entity->position.y);
+		entity->position.x += 32;
+		entity->position.y += 32;
 
 		if (entity->reference_entity != nullptr)
 		{

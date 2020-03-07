@@ -40,11 +40,10 @@ bool Player::PreUpdate() {
 				selected_entity = App->entities->entities[i];
 				break;
 			}
-			else
-			{
-				//selected_entity = nullptr;
-			}
 		}
+	}
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
+		selected_entity = nullptr;
 	}
 	return ret;
 }

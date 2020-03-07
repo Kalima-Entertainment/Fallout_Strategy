@@ -30,6 +30,9 @@ public:
 	fPoint speed = { 1, 0.5f };
 
 	Collider* attack_collider = nullptr;
+
+	iPoint next_tile_center;
+	SDL_Rect next_tile_center_rect;
 };
 
 
