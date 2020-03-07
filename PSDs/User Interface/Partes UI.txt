@@ -1,13 +1,8 @@
-Textura metalizada DONE
-Textura oxidada DONE
-
 Boton Pulsado
 Boton Hover
 Boton Normal
 Slider Pulsada
 Slider Hover
 Slider Normal
-Cuadrado Minimapa DONE
-Cuadrado Tropas DONE
+
 Cuadrado Menus
-Cuadrado Superior Materiales DONE
