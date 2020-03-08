@@ -73,8 +73,13 @@ bool DynamicEntity::PostUpdate() {
 	render_position = App->map->MapToWorld(current_tile.x, current_tile.y);
 
 	App->render->Blit(reference_entity->texture, position.x - 64, position.y - 112, &current_animation->GetCurrentFrame());
-	//App->render->DrawQuad({ (int)position.x - 2, (int)position.y - 2, 4,4 }, 255, 0, 0, 255);
-	//App->render->DrawQuad(next_tile_center_rect, 0, 255, 0, 255);
+	
+	if (App->render->debug)
+	{
+		App->render->DrawQuad({ (int)position.x - 2, (int)position.y - 2, 4,4 }, 255, 0, 0, 255);
+		App->render->DrawQuad(next_tile_center_rect, 0, 255, 0, 255);
+	}
+
 	return true;
 }
 
