@@ -66,7 +66,9 @@ j1Entity* j1EntityManager::CreateDynamicEntity(Faction faction, Troop troop, int
 		entity->current_tile.y = position_y;
 
 		entity->position = App->map->fMapToWorld(entity->current_tile.x, entity->current_tile.y);
-		entity->position = App->render->fWorldToScreen(entity->position.x, entity->position.y);
+		//entity->position = App->render->fWorldToScreen(entity->position.x, entity->position.y);
+		entity->position.x += 32;
+		entity->position.y += 32;
 
 		if (entity->reference_entity != nullptr)
 		{
@@ -177,23 +179,23 @@ bool j1EntityManager::Start()
 
 	//Vault Dwellers
 	reference_vault_melee->LoadAnimations("VaultDwellers/Vault_Dweller_Melee");
-	reference_vault_range->LoadAnimations("VaultDwellers/Vault_Dweller_Ranged");
-	reference_vault_gatherer->LoadAnimations("VaultDwellers/Vault_Dweller_Gatherer");
+	//reference_vault_range->LoadAnimations("VaultDwellers/Vault_Dweller_Ranged");
+	//reference_vault_gatherer->LoadAnimations("VaultDwellers/Vault_Dweller_Gatherer");
 
 	//Brotherhood
-	reference_brotherhood_melee->LoadAnimations("Brotherhood/Brotherhood_melee");
-	reference_brotherhood_range->LoadAnimations("Brotherhood/Brotherhood_Ranged");
-	reference_brotherhood_gatherer->LoadAnimations("Brotherhood/Brotherhood_gatherer");
+	//reference_brotherhood_melee->LoadAnimations("Brotherhood/Brotherhood_melee");
+	//reference_brotherhood_range->LoadAnimations("Brotherhood/Brotherhood_Ranged");
+	//reference_brotherhood_gatherer->LoadAnimations("Brotherhood/Brotherhood_gatherer");
 
 	//Super Mutants
-	reference_mutant_melee->LoadAnimations("SuperMutant/SuperMutant_Mele");
-	reference_mutant_range->LoadAnimations("SuperMutant/SuperMutant_Ranged");
-	reference_mutant_gatherer->LoadAnimations("SuperMutant/SuperMutant_Gatherer");
+	//reference_mutant_melee->LoadAnimations("SuperMutant/SuperMutant_Mele");
+	//reference_mutant_range->LoadAnimations("SuperMutant/SuperMutant_Ranged");
+	//reference_mutant_gatherer->LoadAnimations("SuperMutant/SuperMutant_Gatherer");
 
 	//Ghouls
-	reference_ghoul_melee->LoadAnimations("Ghouls/Ghouls_Melee");
-	reference_ghoul_range->LoadAnimations("Ghouls/Ghouls_Ranged");
-	reference_ghoul_gatherer->LoadAnimations("Ghouls/Ghouls_Gatherer");
+	//reference_ghoul_melee->LoadAnimations("Ghouls/Ghouls_Melee");
+	//reference_ghoul_range->LoadAnimations("Ghouls/Ghouls_Ranged");
+	//reference_ghoul_gatherer->LoadAnimations("Ghouls/Ghouls_Gatherer");
 
 	debug_tex = App->tex->Load("maps/meta.png");
 	selected_unit_tex = App->tex->Load("maps/meta2.png");
