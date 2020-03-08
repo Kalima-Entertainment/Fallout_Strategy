@@ -35,7 +35,7 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-	DynamicEntity* test_melee[10];
+	DynamicEntity* test_melee;
 	if(App->map->Load("iso_walk.tmx") == true)
 	{
 		int w, h;
@@ -47,12 +47,7 @@ bool j1Scene::Start()
 	}
 
 	debug_tex = App->tex->Load("maps/path2.png");
-	test_melee[0] = (DynamicEntity*)App->entities->CreateDynamicEntity(VAULT, Troop::MELEE, 14, 4);
-	//test_melee[1] = (DynamicEntity*)App->entities->CreateDynamicEntity(BROTHERHOOD, Troop::MELEE, 4, 6);
-	//test_melee[2] = (DynamicEntity*)App->entities->CreateDynamicEntity(MUTANT, Troop::MELEE, 8, 10);
-	//test_melee[3] = (DynamicEntity*)App->entities->CreateDynamicEntity(GHOUL, Troop::MELEE, 20, 4);
-	//App->entities->CreateDynamicEntity(VAULT, Troop::RANGED, 20, 200);
-	//App->entities->CreateDynamicEntity(VAULT, Troop::GATHERER, 30, 300);
+	test_melee = (DynamicEntity*)App->entities->CreateDynamicEntity(VAULT, Troop::MELEE, 14, 4);
 
 	return true;
 }
@@ -64,6 +59,7 @@ bool j1Scene::PreUpdate()
 	static iPoint origin;
 	static bool origin_selected = false;
 
+	/*
 	int x, y;
 	App->input->GetMousePosition(x, y);
 	iPoint p = App->render->ScreenToWorld(x, y);
@@ -82,7 +78,7 @@ bool j1Scene::PreUpdate()
 			origin_selected = true;
 		}
 	}
-
+	*/
 	return true;
 }
 
@@ -115,7 +111,7 @@ bool j1Scene::Update(float dt)
 	int x, y;
 	App->input->GetMousePosition(x, y);
 	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
-	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
+	p2SString title("Fallout Strategy 0.1: Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
 					App->map->data.width, App->map->data.height,
 					App->map->data.tile_width, App->map->data.tile_height,
 					App->map->data.tilesets.count(),
@@ -125,6 +121,7 @@ bool j1Scene::Update(float dt)
 
 	// Debug pathfinding ------------------------------
 	//int x, y;
+	/*
 	App->input->GetMousePosition(x, y);
 	iPoint p = App->render->ScreenToWorld(x, y);
 	p = App->map->WorldToMap(p.x, p.y);
@@ -139,7 +136,7 @@ bool j1Scene::Update(float dt)
 		iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
 		App->render->Blit(debug_tex, pos.x, pos.y);
 	}
-
+	
 	//Creates temporal x and y, that will be stored when we make left click with mouse
 	int tx, ty;
 	iPoint selected_spot;
@@ -154,10 +151,11 @@ bool j1Scene::Update(float dt)
 		{
 			if(App->entities->entities[i]->MapPosition() == selected_spot) LOG("COINCIDENCE IN MAP");
 		}
+	
 	}
+	*/
 
 	//Margin camera movement
-	/*
 	uint width, height;
 	App->win->GetWindowSize(width, height);
 
@@ -170,8 +168,7 @@ bool j1Scene::Update(float dt)
 	uint zoom;
 	App->input->GetMouseWheel(zoom);
 	if(zoom != 0)App->win->SetScale(zoom);	//Check this condition
-	LOG("WHEEL VALUE %i", zoom);
-	*/
+	//LOG("WHEEL VALUE %i", zoom);
 	return true;
 }
 
