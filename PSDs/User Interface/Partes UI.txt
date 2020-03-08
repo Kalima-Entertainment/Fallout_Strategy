@@ -1,8 +1,0 @@
-Boton Pulsado
-Boton Hover
-Boton Normal
-Slider Pulsada
-Slider Hover
-Slider Normal
-
-Cuadrado Menus
