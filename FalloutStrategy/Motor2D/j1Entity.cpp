@@ -4,7 +4,6 @@
 #include "j1Textures.h"
 #include "j1Collision.h"
 #include "j1EntityManager.h"
-#include "j1Pathfinding.h"
 #include "j1Map.h"
 #include "p2Log.h"
 #include "j1Collision.h"
@@ -13,27 +12,6 @@
 
 
 j1Entity::~j1Entity() {}
-
-void j1Entity::PathfindToPosition(iPoint destination) {
-
-	//iPoint origin = App->map->WorldToMap(position.x, position.y);
-	current_tile = App->map->WorldToMap(position.x, position.y);
-	App->pathfinding->CreatePath(current_tile, destination);
-
-	//pathfinding debug
-	int x, y;
-	SDL_Rect Debug_rect = { 0,0,32,32 };
-
-	path_to_target = App->pathfinding->GetLastPath();
-
-	for (uint i = 0; i < path_to_target->Count(); ++i)
-	{
-		iPoint pos = App->map->MapToWorld(path_to_target->At(i)->x, path_to_target->At(i)->y);
-		Debug_rect.x = pos.x;
-		Debug_rect.y = pos.y;
-		if (App->collision->debug)App->render->DrawQuad(Debug_rect, 90, 850, 230, 40);
-	}
-}
 
 // to be updated
 bool j1Entity::LoadAnimations(const char* path) {

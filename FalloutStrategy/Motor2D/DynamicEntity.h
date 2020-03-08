@@ -17,6 +17,7 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool LoadReferenceData();
+	void PathfindToPosition(iPoint target);
 	void Move();
 
 public:
