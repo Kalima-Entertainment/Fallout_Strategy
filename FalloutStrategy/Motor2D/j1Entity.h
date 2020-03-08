@@ -56,7 +56,6 @@ public:
 	virtual bool CleanUp() { return true; }
 	virtual void OnCollision(Collider* c1, Collider* c2) {};
 
-	void PathfindToPosition(iPoint target);
 	bool LoadAnimations(const char* animation_file);
 	virtual bool LoadReferenceData() { return true; };
 
@@ -95,7 +94,7 @@ public:
 	bool particles_created = false;
 	bool playing_fx = false;
 
-	const p2DynArray<iPoint>* path_to_target = nullptr;
+	p2DynArray<iPoint>* path_to_target = nullptr;
 
 };
 #endif // !_j1ENTITY_H
