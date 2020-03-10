@@ -23,6 +23,11 @@ DynamicEntity::DynamicEntity(Faction g_faction, Troop g_type) {
 	faction = g_faction;
 	state = IDLE;
 	direction = TOP_RIGHT;
+
+	current_speed = { 0, 0 };
+	speed = { 1, 0.5f };
+	reference_entity = nullptr;
+	attack_collider = nullptr;
 }
 
 DynamicEntity::~DynamicEntity() {}

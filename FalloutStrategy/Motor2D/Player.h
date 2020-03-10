@@ -18,6 +18,9 @@ public:
 
 public:
 	DynamicEntity* selected_entity;
+	bool border_scroll;
+private:
+
 };
 
 

@@ -10,6 +10,32 @@
 
 #include "j1Scene.h"
 
+j1Entity::j1Entity() {
+
+	position = { 0, 0 };
+	lastPosition = { 0, 0 };
+	initialPosition = { 0, 0 };
+	current_tile = { 0, 0 };
+	target_tile = { 0, 0 };
+	path_to_target = nullptr;
+
+	health = 0;
+
+	collider = nullptr;
+	last_collider = nullptr;
+
+	current_animation = nullptr;
+	direction = TOP_RIGHT;
+	state = IDLE;
+	faction = VAULT;
+
+	texture = nullptr;
+	flip = SDL_FLIP_NONE;
+
+	to_destroy = false;
+	particles_created = false;
+	playing_fx = false;
+}
 
 j1Entity::~j1Entity() {}
 

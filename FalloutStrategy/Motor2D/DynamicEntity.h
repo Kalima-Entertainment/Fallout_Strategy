@@ -27,10 +27,10 @@ public:
 	Troop type;
 	iPoint next_tile;
 
-	iPoint current_speed = { 0, 0 };
-	fPoint speed = { 1, 0.5f };
+	iPoint current_speed;
+	fPoint speed;
 
-	Collider* attack_collider = nullptr;
+	Collider* attack_collider;
 
 	iPoint next_tile_center;
 	SDL_Rect next_tile_center_rect;

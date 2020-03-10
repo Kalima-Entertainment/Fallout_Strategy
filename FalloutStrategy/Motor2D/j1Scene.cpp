@@ -111,7 +111,7 @@ bool j1Scene::Update(float dt)
 	int x, y;
 	App->input->GetMousePosition(x, y);
 	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
-	p2SString title("Fallout Strategy 0.1: Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
+	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
 					App->map->data.width, App->map->data.height,
 					App->map->data.tile_width, App->map->data.tile_height,
 					App->map->data.tilesets.count(),
@@ -154,21 +154,6 @@ bool j1Scene::Update(float dt)
 	
 	}
 	*/
-
-	//Margin camera movement
-	uint width, height;
-	App->win->GetWindowSize(width, height);
-
-	if (x < 100) App->render->camera.x += floor(600.0f * dt);
-	if (x > width - 100) App->render->camera.x -= floor(600.0f * dt);
-	if (y < 100) App->render->camera.y += floor(600.0f * dt);
-	if (y > height - 100) App->render->camera.y -= floor(600.0f * dt);
-
-	//Zoom in, zoom out
-	uint zoom;
-	App->input->GetMouseWheel(zoom);
-	if(zoom != 0)App->win->SetScale(zoom);	//Check this condition
-	//LOG("WHEEL VALUE %i", zoom);
 	return true;
 }
 
