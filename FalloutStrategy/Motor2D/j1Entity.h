@@ -15,6 +15,15 @@ struct Resource {
 	uint money, water, food;
 };
 
+enum EntityType {
+	MELEE,
+	RANGED,
+	GATHERER,
+	BASE,
+	LABORATORY,
+	BARRACK
+};
+
 enum State {
 	IDLE,
 	WALK,

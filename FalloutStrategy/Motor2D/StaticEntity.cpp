@@ -1,13 +1,13 @@
 #include "StaticEntity.h"
 
-StaticEntity::StaticEntity(BuildingType type) {
+StaticEntity::StaticEntity(Faction faction, EntityType type) {
 	switch (type)
 	{
-	case BuildingType::BASE:
+	case BASE:
 		break;
-	case BuildingType::WAREHOUSE:
+	case LABORATORY:
 		break;
-	case BuildingType::BARRACK:
+	case BARRACK:
 		break;
 	default:
 		break;

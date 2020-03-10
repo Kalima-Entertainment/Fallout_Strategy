@@ -5,15 +5,15 @@
 #include "j1Render.h"
 #include "j1Pathfinding.h"
 
-DynamicEntity::DynamicEntity(Faction g_faction, Troop g_type) {
+DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 
 	switch (g_type)
 	{
-	case Troop::GATHERER:
+	case MELEE:
 		break;
-	case Troop::MELEE:
+	case RANGED:
 		break;
-	case Troop::RANGED:
+	case GATHERER:
 		break;
 	default:
 		break;

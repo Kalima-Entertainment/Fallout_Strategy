@@ -12,7 +12,7 @@ class StaticEntity : public j1Entity
 
 {
 public:
-	StaticEntity(BuildingType type);
+	StaticEntity(Faction faction, EntityType type);
 	~StaticEntity();
 
 public:

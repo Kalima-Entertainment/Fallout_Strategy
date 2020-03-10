@@ -3,17 +3,10 @@
 #include "j1Entity.h"
 #include "j1Timer.h"
 
-enum class Troop {
-	NONE,
-	GATHERER,
-	MELEE,
-	RANGED
-};
-
 class DynamicEntity : public j1Entity
 {
 public:
-	DynamicEntity(Faction faction, Troop type);
+	DynamicEntity(Faction faction, EntityType type);
 	~DynamicEntity();
 	bool Update(float dt);
 	bool PostUpdate();
@@ -29,7 +22,7 @@ public:
 	fPoint speed;
 	iPoint next_tile;
 
-	Troop type;
+	EntityType type;
 	int damage;
 	j1Entity* target_entity;
 	j1Timer attack_timer;

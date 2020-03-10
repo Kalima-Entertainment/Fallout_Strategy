@@ -10,9 +10,9 @@
 class j1Entity;
 struct SDL_Texture;
 enum Faction;
-enum class Troop;
 enum class BuildingType;
 class DynamicEntity;
+enum EntityType;
 
 #define REFERENCE_ENTITIES 12
 
@@ -37,7 +37,7 @@ public:
 	//bool CheckpointSave();
 	//bool CheckpointLoad();
 
-	j1Entity* CreateDynamicEntity(Faction faction, Troop troop_type, int position_x, int position_y);
+	j1Entity* CreateEntity(Faction faction, EntityType type, int position_x, int position_y);
 	j1Entity* CreateStaticEntity(Faction faction, BuildingType building_type , int position_x, int position_y);
 	j1Entity* FindEntityByTile(iPoint position);
 	void DestroyEntity(j1Entity* delete_entity);
@@ -52,26 +52,7 @@ public:
 
 public:
 
-	//reference characters
-	j1Entity* reference_vault_melee;
-	j1Entity* reference_vault_range;
-	j1Entity* reference_vault_gatherer;
-	j1Entity* reference_vault_base;
-
-	j1Entity* reference_brotherhood_melee;
-	j1Entity* reference_brotherhood_range;
-	j1Entity* reference_brotherhood_gatherer;
-	j1Entity* reference_brotherhood_base;
-
-	j1Entity* reference_mutant_melee;
-	j1Entity* reference_mutant_range;
-	j1Entity* reference_mutant_gatherer;
-	j1Entity* reference_mutant_base;
-
-	j1Entity* reference_ghoul_melee;
-	j1Entity* reference_ghoul_range;
-	j1Entity* reference_ghoul_gatherer;
-	j1Entity* reference_ghoul_base;
+	j1Entity* reference_entities[4][6];
 
 	bool blocked_movement;
 	SDL_Texture* debug_tex;
