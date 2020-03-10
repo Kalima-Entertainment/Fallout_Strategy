@@ -21,6 +21,7 @@ j1EntityManager::j1EntityManager(){
 	name.create("entities");
 
 	selected_unit_tex = nullptr;
+	blocked_movement = false;
 }
 
 
@@ -134,6 +135,17 @@ void j1EntityManager::DestroyAllEntities() {
 		DestroyEntity(item->data);
 	}
 	*/
+}
+
+j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
+	for (int i = REFERENCE_ENTITIES; i < entities.size(); i++)
+	{
+		if (entities[i]->current_tile == tile)
+		{
+			return entities[i];
+		}
+	}
+	return nullptr;
 }
 
 bool j1EntityManager::Awake(pugi::xml_node& config){

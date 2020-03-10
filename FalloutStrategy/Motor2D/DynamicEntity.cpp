@@ -26,8 +26,9 @@ DynamicEntity::DynamicEntity(Faction g_faction, Troop g_type) {
 
 	current_speed = { 0, 0 };
 	speed = { 1, 0.5f };
-	reference_entity = nullptr;
 	attack_collider = nullptr;
+	target_entity = nullptr;
+	attack_time = 3.0f;
 }
 
 DynamicEntity::~DynamicEntity() {}
@@ -36,16 +37,12 @@ bool DynamicEntity::Update(float dt) {
 	switch (state)
 	{
 	case IDLE:
-		if (target_tile != current_tile)
-		{
-			//state = WALK;
-		}
 		break;
 	case WALK:
-		//PathfindToPosition(target_tile);
 		Move();
 		break;
 	case ATTACK:
+		Attack();
 		break;
 	case GATHER:
 		break;
@@ -98,6 +95,8 @@ bool DynamicEntity::LoadReferenceData() {
 			animations[i][j] = reference_entity->animations[i][j];
 		}
 	}
+
+
 
 	return ret;
 }
@@ -169,12 +168,19 @@ void DynamicEntity::Move() {
 					next_tile = *path_to_target->At(1);
 					path_to_target->Advance();
 				}
-				else
+				//we reach the destination but there is not an enemy in it
+				else if (target_entity == nullptr)
 				{
 					position.x = next_tile_center_rect.x +2;
 					position.y = next_tile_center_rect.y +2;
 					current_tile = next_tile;
 					state = IDLE;
+				}
+				//we reach the destination and there is an enemy in it
+				else
+				{
+					state = ATTACK;
+					attack_timer.Start();
 				}
 			}
 
@@ -184,6 +190,13 @@ void DynamicEntity::Move() {
 			state = IDLE;
 			target_tile = current_tile;
 		}
+	}
+}
+
+void DynamicEntity::Attack() {
+	if (attack_timer.ReadSec() > attack_time)
+	{
+		target_entity->health -= damage;
 	}
 }
 

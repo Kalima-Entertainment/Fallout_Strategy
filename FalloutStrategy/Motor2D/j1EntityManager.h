@@ -39,6 +39,7 @@ public:
 
 	j1Entity* CreateDynamicEntity(Faction faction, Troop troop_type, int position_x, int position_y);
 	j1Entity* CreateStaticEntity(Faction faction, BuildingType building_type , int position_x, int position_y);
+	j1Entity* FindEntityByTile(iPoint position);
 	void DestroyEntity(j1Entity* delete_entity);
 	void DestroyAllEntities();
 	void LoadReferenceEntityData(pugi::xml_node& reference_entities_node, DynamicEntity* reference_entity);
@@ -72,7 +73,7 @@ public:
 	j1Entity* reference_ghoul_gatherer;
 	j1Entity* reference_ghoul_base;
 
-	bool blocked_movement = false;
+	bool blocked_movement;
 	SDL_Texture* debug_tex;
 	SDL_Texture* selected_unit_tex;
 };

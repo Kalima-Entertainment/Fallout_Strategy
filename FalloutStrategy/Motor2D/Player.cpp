@@ -42,9 +42,24 @@ bool Player::PreUpdate() {
 		LOG("Actual Map Position is X: %i and Y: %i", selected_spot.x, selected_spot.y);
 		if ((selected_entity != nullptr)&&(selected_spot != selected_entity->current_tile))
 		{
+			//choose a tile for the entity to go to
 			selected_entity->target_tile = selected_spot;
 			selected_entity->PathfindToPosition(selected_spot);
-			selected_entity->state = WALK;
+			
+			//check if there is an entity there
+			j1Entity* target = nullptr;
+			target = App->entities->FindEntityByTile(selected_spot);
+
+			//if there is an enemy in that tile save it
+			if ( target != nullptr)
+			{
+				selected_entity->target_entity = target;
+			}
+			else
+			{
+				selected_entity->state = WALK;
+			}
+
 		}
 
 		for (int i = REFERENCE_ENTITIES; i < App->entities->entities.size(); i++)
