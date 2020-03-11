@@ -21,6 +21,7 @@ j1EntityManager::j1EntityManager(){
 
 	selected_unit_tex = nullptr;
 	blocked_movement = false;
+	total_entities = 0;
 }
 
 
@@ -59,8 +60,10 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		}
 	}
 	   
-	if (entity != nullptr) 
+	if (entity != nullptr) {
 		entities.push_back(entity);
+		total_entities++;
+	}
 
 	return entity;
 }
@@ -109,15 +112,14 @@ void j1EntityManager::DestroyEntity(j1Entity* entity){
 		entities.del(item);;
 	}
 	*/
+
 }
 
 void j1EntityManager::DestroyAllEntities() {
-	/*
-	for (auto item = entities.begin(); item != entities.end(); ++item)
+	for (int i = REFERENCE_ENTITIES; i < total_entities; i++)
 	{
-		DestroyEntity(item->data);
+		entities[i]->to_destroy = true;
 	}
-	*/
 }
 
 j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
@@ -134,9 +136,13 @@ j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
 bool j1EntityManager::Awake(pugi::xml_node& config){
 	bool ret = true;
 
+	int max_factions = 4;
+	int max_types = 6;
+
 	config_data = config;
 
 	//Load reference data
+
 	//Vault Dwellers
 	reference_entities[VAULT][MELEE] = CreateEntity(VAULT, MELEE, 0, 0);
 	reference_entities[VAULT][RANGED] = CreateEntity(VAULT, RANGED, 1, 0);
@@ -168,8 +174,9 @@ bool j1EntityManager::Start()
 	//load all textures
 
 	//Vault Dwellers
-	//reference_vault_melee->LoadAnimations("VaultDwellers/Vault_Dweller_Melee");
 	reference_entities[VAULT][MELEE]->LoadAnimations("VaultDwellers/Vault_Dweller_Melee");
+	//reference_entities[VAULT][RANGED]->LoadAnimations("VaultDwellers/Vault_Dweller_Ranged");
+	reference_entities[VAULT][GATHERER]->LoadAnimations("VaultDwellers/Vault_Dweller_Gatherer");
 	//reference_vault_range->LoadAnimations("VaultDwellers/Vault_Dweller_Ranged");
 	//reference_vault_gatherer->LoadAnimations("VaultDwellers/Vault_Dweller_Gatherer");
 
@@ -239,7 +246,7 @@ bool j1EntityManager::PostUpdate()
 		App->render->Blit(selected_unit_tex, tex_position.x, tex_position.y, &tex_rect);
 	}
 
-	for (int i = REFERENCE_ENTITIES; i < entities.size(); i++)
+	for (int i = REFERENCE_ENTITIES; i < total_entities; i++)
 	{
 		entities[i]->PostUpdate();
 	}

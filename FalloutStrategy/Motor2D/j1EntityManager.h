@@ -48,6 +48,7 @@ public:
 public:
 
 	std::vector<j1Entity*> entities;
+	int total_entities;
 	pugi::xml_node config_data;
 
 public:
