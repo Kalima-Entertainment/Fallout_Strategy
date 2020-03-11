@@ -22,7 +22,6 @@ public:
 	fPoint speed;
 	iPoint next_tile;
 
-	EntityType type;
 	int damage;
 	j1Entity* target_entity;
 	j1Timer attack_timer;

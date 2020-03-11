@@ -17,7 +17,7 @@ public:
 	bool PostUpdate();
 
 public:
-	DynamicEntity* selected_entity;
+	j1Entity* selected_entity;
 	bool border_scroll;
 private:
 

@@ -35,7 +35,7 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-	DynamicEntity* test_melee;
+	DynamicEntity* test_melee, *test_enemy;
 	if(App->map->Load("iso_walk.tmx") == true)
 	{
 		int w, h;
@@ -48,6 +48,7 @@ bool j1Scene::Start()
 
 	debug_tex = App->tex->Load("maps/path2.png");
 	test_melee = (DynamicEntity*)App->entities->CreateEntity(VAULT, MELEE, 14, 4);
+	test_enemy = (DynamicEntity*)App->entities->CreateEntity(MUTANT, RANGED, 14, 2);
 	App->entities->CreateEntity(VAULT, GATHERER, 18, 6);
 
 	return true;

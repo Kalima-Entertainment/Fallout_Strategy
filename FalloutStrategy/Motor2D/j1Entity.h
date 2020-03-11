@@ -83,6 +83,7 @@ public:
 	int health;
 
 	j1Entity* reference_entity;
+	EntityType type;
 
 	Collider* collider;
 	Collider* last_collider;
@@ -98,6 +99,7 @@ public:
 	SDL_Texture* texture;
 	SDL_RendererFlip flip;
 
+	bool is_dynamic;
 	bool to_destroy;
 	bool particles_created;
 	bool playing_fx;

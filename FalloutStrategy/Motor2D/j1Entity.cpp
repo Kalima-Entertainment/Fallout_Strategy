@@ -19,7 +19,7 @@ j1Entity::j1Entity() {
 	target_tile = { 0, 0 };
 	path_to_target = nullptr;
 
-	health = 0;
+	health = 100;
 
 	collider = nullptr;
 	last_collider = nullptr;
@@ -32,6 +32,7 @@ j1Entity::j1Entity() {
 	texture = nullptr;
 	flip = SDL_FLIP_NONE;
 
+	is_dynamic = false;
 	to_destroy = false;
 	particles_created = false;
 	playing_fx = false;

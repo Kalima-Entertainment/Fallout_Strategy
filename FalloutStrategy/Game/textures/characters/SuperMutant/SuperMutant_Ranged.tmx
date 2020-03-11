@@ -3,6 +3,9 @@
  <tileset firstgid="1" name="SuperMutant_Ranged" tilewidth="128" tileheight="128" tilecount="256" columns="16">
   <image source="SuperMutant_Ranged.png" width="2048" height="2048"/>
   <tile id="0">
+   <properties>
+    <property name="idle" value="top_right"/>
+   </properties>
    <animation>
     <frame tileid="0" duration="100"/>
     <frame tileid="1" duration="100"/>
@@ -22,6 +25,9 @@
    </animation>
   </tile>
   <tile id="16">
+   <properties>
+    <property name="idle" value="right"/>
+   </properties>
    <animation>
     <frame tileid="16" duration="100"/>
     <frame tileid="17" duration="100"/>
@@ -41,6 +47,9 @@
    </animation>
   </tile>
   <tile id="32">
+   <properties>
+    <property name="idle" value="bottom_right"/>
+   </properties>
    <animation>
     <frame tileid="32" duration="100"/>
     <frame tileid="33" duration="100"/>
@@ -60,6 +69,9 @@
    </animation>
   </tile>
   <tile id="48">
+   <properties>
+    <property name="idle" value="bottom_left"/>
+   </properties>
    <animation>
     <frame tileid="48" duration="100"/>
     <frame tileid="49" duration="100"/>
@@ -79,6 +91,9 @@
    </animation>
   </tile>
   <tile id="64">
+   <properties>
+    <property name="idle" value="left"/>
+   </properties>
    <animation>
     <frame tileid="64" duration="100"/>
     <frame tileid="65" duration="100"/>
@@ -98,6 +113,9 @@
    </animation>
   </tile>
   <tile id="80">
+   <properties>
+    <property name="idle" value="top_left"/>
+   </properties>
    <animation>
     <frame tileid="80" duration="100"/>
     <frame tileid="81" duration="100"/>

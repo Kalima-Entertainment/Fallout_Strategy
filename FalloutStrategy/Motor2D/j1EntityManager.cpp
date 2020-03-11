@@ -36,6 +36,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 
 	if ((type == MELEE) || (type == RANGED) || (type == GATHERER)) {
 		entity = new DynamicEntity(faction, type);
+		entity->is_dynamic = true;
 	}
 	else
 	{
@@ -72,7 +73,7 @@ j1Entity* j1EntityManager::CreateStaticEntity(Faction faction, BuildingType buid
 	//BROFILER_CATEGORY("EntityCreation", Profiler::Color::Linen)
 	//static_assert(EntityType::UNKNOWN == 4, "code needs update");
 	j1Entity* entity = nullptr;
-
+	/*
 	switch (buiding_type)
 	{
 	case BuildingType::BASE:
@@ -84,7 +85,7 @@ j1Entity* j1EntityManager::CreateStaticEntity(Faction faction, BuildingType buid
 	default:
 		break;
 	}
-
+	*/
 	if (entity != NULL)
 	{
 		entity->faction = faction;
@@ -187,6 +188,7 @@ bool j1EntityManager::Start()
 
 	//Super Mutants
 	//reference_mutant_melee->LoadAnimations("SuperMutant/SuperMutant_Mele");
+	reference_entities[MUTANT][RANGED]->LoadAnimations("SuperMutant/SuperMutant_Ranged");
 	//reference_mutant_range->LoadAnimations("SuperMutant/SuperMutant_Ranged");
 	//reference_mutant_gatherer->LoadAnimations("SuperMutant/SuperMutant_Gatherer");
 

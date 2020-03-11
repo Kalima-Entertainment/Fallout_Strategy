@@ -34,6 +34,12 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 DynamicEntity::~DynamicEntity() {}
 
 bool DynamicEntity::Update(float dt) {
+
+	if (health <= 0)
+	{
+		state = DIE;
+	}
+
 	switch (state)
 	{
 	case IDLE:
@@ -106,7 +112,6 @@ void DynamicEntity::Move() {
 	{
 		if (path_to_target->Count() != 0)
 		{
-			//next_tile = *path_to_target->At(0);
 			next_tile_center = App->map->MapToWorld(next_tile.x, next_tile.y);
 			next_tile_center_rect = { next_tile_center.x + 30, next_tile_center.y + 30,4,4 };
 
@@ -162,25 +167,35 @@ void DynamicEntity::Move() {
 			}
 			else
 			{
-				if (*path_to_target->At(0) != target_tile)
+				if (*path_to_target->At(1) != target_tile)
 				{
 					current_tile = *path_to_target->At(0);
 					next_tile = *path_to_target->At(1);
 					path_to_target->Advance();
 				}
-				//we reach the destination but there is not an enemy in it
-				else if (target_entity == nullptr)
-				{
-					position.x = next_tile_center_rect.x +2;
-					position.y = next_tile_center_rect.y +2;
-					current_tile = next_tile;
-					state = IDLE;
-				}
-				//we reach the destination and there is an enemy in it
 				else
 				{
-					state = ATTACK;
-					attack_timer.Start();
+					//we reach the destination but we have no target
+					if (target_entity == nullptr)
+					{
+						position.x = next_tile_center_rect.x + 2;
+						position.y = next_tile_center_rect.y + 2;
+						current_tile = next_tile;
+						state = IDLE;
+					}
+					//we reach the destination and there is an entity in it
+					else
+					{
+						if (faction != target_entity->faction)
+						{
+							state = ATTACK;
+							attack_timer.Start();
+						}
+						else
+						{
+							state = IDLE;
+						}
+					}
 				}
 			}
 
@@ -189,6 +204,7 @@ void DynamicEntity::Move() {
 		{
 			state = IDLE;
 			target_tile = current_tile;
+			current_tile = target_tile;
 		}
 	}
 }
@@ -211,7 +227,10 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 	SDL_Rect Debug_rect = { 0,0,32,32 };
 
 	path_to_target = (p2DynArray<iPoint>*)App->pathfinding->GetLastPath();
-	next_tile = *path_to_target->At(0);
+	if (path_to_target->Count() != 0)
+	{
+		next_tile = *path_to_target->At(0);
+	}
 
 	for (uint i = 0; i < path_to_target->Count(); ++i)
 	{

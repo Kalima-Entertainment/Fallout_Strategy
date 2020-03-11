@@ -39,6 +39,7 @@ bool Player::PreUpdate() {
 		selected_spot = App->render->ScreenToWorld(tx, ty);
 		selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
 
+		/*
 		LOG("Actual Map Position is X: %i and Y: %i", selected_spot.x, selected_spot.y);
 		if ((selected_entity != nullptr)&&(selected_spot != selected_entity->current_tile))
 		{
@@ -61,13 +62,49 @@ bool Player::PreUpdate() {
 			}
 
 		}
-
 		for (int i = REFERENCE_ENTITIES; i < App->entities->entities.size(); i++)
 		{
 			if (App->entities->entities[i]->current_tile == selected_spot) {
 				LOG("COINCIDENCE IN MAP");
 				selected_entity = (DynamicEntity*)App->entities->entities[i];
 				break;
+			}
+		}
+		*/
+
+		//check if there's an entity in the selected spot
+		j1Entity* target;
+		target = App->entities->FindEntityByTile(selected_spot);
+
+		if (selected_entity == nullptr)
+		{
+			selected_entity = target;
+		}
+		else
+		{
+			if (selected_entity->is_dynamic)
+			{
+				DynamicEntity* dynamic_entity;
+				dynamic_entity = (DynamicEntity*)selected_entity;
+				dynamic_entity->PathfindToPosition(selected_spot);
+				dynamic_entity->target_tile = selected_spot;
+				dynamic_entity->state = WALK;
+
+				if (target != nullptr) {
+					//target is a dynamic entity
+					if (target->is_dynamic){
+						dynamic_entity->target_entity = target;
+					}
+					//it is a static entity
+					else
+					{
+
+					}
+				}
+				else
+				{
+					dynamic_entity->target_entity = nullptr;
+				}
 			}
 		}
 	}
