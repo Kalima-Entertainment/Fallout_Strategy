@@ -29,16 +29,12 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 	attack_collider = nullptr;
 	target_entity = nullptr;
 	attack_time = 3.0f;
+	damage = 100;
 }
 
 DynamicEntity::~DynamicEntity() {}
 
 bool DynamicEntity::Update(float dt) {
-
-	if (health <= 0)
-	{
-		state = DIE;
-	}
 
 	switch (state)
 	{
@@ -53,8 +49,16 @@ bool DynamicEntity::Update(float dt) {
 	case GATHER:
 		break;
 	case HIT:
+		if (current_animation->Finished())
+		{
+			state = IDLE;
+		}
 		break;
 	case DIE:
+		if (current_animation->Finished())
+		{
+			//delete entity
+		}
 		break;
 	default:
 		break;
@@ -63,6 +67,7 @@ bool DynamicEntity::Update(float dt) {
 }
 
 bool DynamicEntity::PostUpdate() {
+
 	current_animation = &animations[state][direction];
 
 	if (App->render->debug)
@@ -80,7 +85,7 @@ bool DynamicEntity::PostUpdate() {
 	iPoint render_position;
 	render_position = App->map->MapToWorld(current_tile.x, current_tile.y);
 
-	App->render->Blit(reference_entity->texture, position.x - 64, position.y - 112, &current_animation->GetCurrentFrame());
+	App->render->Blit(reference_entity->texture, position.x - TILE_SIZE, position.y - 2 * TILE_SIZE, &current_animation->GetCurrentFrame());
 	
 	if (App->render->debug)
 	{
@@ -101,8 +106,6 @@ bool DynamicEntity::LoadReferenceData() {
 			animations[i][j] = reference_entity->animations[i][j];
 		}
 	}
-
-
 
 	return ret;
 }
@@ -167,7 +170,7 @@ void DynamicEntity::Move() {
 			}
 			else
 			{
-				if (*path_to_target->At(1) != target_tile)
+				if (*path_to_target->At(0) != target_tile)
 				{
 					current_tile = *path_to_target->At(0);
 					next_tile = *path_to_target->At(1);
@@ -212,7 +215,14 @@ void DynamicEntity::Move() {
 void DynamicEntity::Attack() {
 	if (attack_timer.ReadSec() > attack_time)
 	{
+		attack_timer.Start();
 		target_entity->health -= damage;
+		target_entity->state = HIT;
+
+		if (target_entity->health <= 0) { 
+			target_entity->state = DIE;
+			target_entity->direction = TOP_LEFT;
+		}
 	}
 }
 

@@ -32,6 +32,21 @@ bool Player::PreUpdate() {
 	if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
 		border_scroll = !border_scroll;
 
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	{
+		if (selected_entity != nullptr)
+		{
+			App->render->camera.x = selected_entity->position.x - (App->render->camera.w * 0.5f);
+			App->render->camera.y = selected_entity->position.y - (App->render->camera.h * 0.5f);
+		}
+		else
+		{
+			App->render->camera.x = 0;
+			App->render->camera.y = 0;
+
+		}
+	}
+
 	//Movement
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
 		App->input->GetMousePosition(tx, ty);

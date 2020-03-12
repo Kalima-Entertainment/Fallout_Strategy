@@ -11,6 +11,8 @@
 //struct SDL_Texture;
 //struct Collider;
 
+#define TILE_SIZE 64
+
 struct Resource {
 	uint money, water, food;
 };
