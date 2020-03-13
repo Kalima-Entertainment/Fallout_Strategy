@@ -78,20 +78,30 @@ bool j1Entity::LoadAnimations(const char* path) {
 		p2SString animation_name(animation.child("properties").child("property").attribute("name").as_string());
 		int direction = TOP_RIGHT;
 		State state = IDLE;
+		bool loop = true;
 
 		//animation
-		if (animation_name == "idle")
+		if (animation_name == "idle") {
 			state = IDLE;
-		else if (animation_name == "walk")
+		}
+		else if (animation_name == "walk") {
 			state = WALK;
-		else if (animation_name == "attack")
+		}
+		else if (animation_name == "attack") {
 			state = ATTACK;
-		else if (animation_name == "gather")
+		}
+		else if (animation_name == "gather") {
 			state = GATHER;
-		else if (animation_name == "hit")
+			loop = false;
+		}
+		else if (animation_name == "hit") {
 			state = HIT;
-		else if (animation_name == "die")
+			loop = false;
+		}
+		else if (animation_name == "die") {
 			state = DIE;
+			loop = false;
+		}
 		else goto CHANGE_ANIMATION;
 
 		//animation direction
@@ -118,6 +128,7 @@ bool j1Entity::LoadAnimations(const char* path) {
 			animations[state][direction].PushBack(rect, speed);
 			frame = frame.next_sibling();
 		}
+		animations[state][direction].loop = loop;
 
 	CHANGE_ANIMATION: animation = animation.next_sibling();
 		frame = animation.child("animation").child("frame");

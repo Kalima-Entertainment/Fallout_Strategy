@@ -45,13 +45,11 @@ public:
 
 	SDL_Rect& GetCurrentFrame()
 	{
-		//if (!App->is_paused) {
-			current_frame += frames[(int)current_frame].speed;
-			if (current_frame >= last_frame) {
-				current_frame = (loop) ? 0.0f : last_frame - 1;
-				loops++;
-			}
-		//}
+		current_frame += frames[(int)current_frame].speed;
+		if (current_frame >= last_frame) {
+			current_frame = (loop) ? 0.0f : last_frame - 1;
+			loops++;
+		}
 		
 		return frames[(int)current_frame].rect;
 	}

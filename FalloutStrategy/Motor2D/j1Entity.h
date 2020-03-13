@@ -8,8 +8,7 @@
 #include "p2DynArray.h"
 #include "p2Log.h"
 
-//struct SDL_Texture;
-//struct Collider;
+class DynamicEntity;
 
 #define TILE_SIZE 64
 
@@ -97,6 +96,7 @@ public:
 
 	State state;
 	Faction faction;
+	DynamicEntity* attacking_entity;
 
 	SDL_Texture* texture;
 	SDL_RendererFlip flip;

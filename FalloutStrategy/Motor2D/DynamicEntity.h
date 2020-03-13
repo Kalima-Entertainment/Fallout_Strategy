@@ -23,6 +23,7 @@ public:
 	iPoint next_tile;
 
 	int damage;
+	int range;
 	j1Entity* target_entity;
 	j1Timer attack_timer;
 	float attack_time;

@@ -10,8 +10,10 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 	switch (g_type)
 	{
 	case MELEE:
+		range = 1;
 		break;
 	case RANGED:
+		range = 3;
 		break;
 	case GATHERER:
 		break;
@@ -46,7 +48,10 @@ bool DynamicEntity::Update(float dt) {
 	case ATTACK:
 		if (attack_timer.ReadSec() > attack_time)
 		{
-			Attack();
+			if (current_tile.DistanceManhattan(target_entity->current_tile) <= range)
+			{
+				Attack();
+			}
 		}
 		break;
 	case GATHER:
@@ -74,6 +79,7 @@ bool DynamicEntity::PostUpdate() {
 
 	current_animation = &animations[state][direction];
 
+	//render path
 	if (App->render->debug)
 	{
 		if (path_to_target != NULL)
@@ -86,11 +92,12 @@ bool DynamicEntity::PostUpdate() {
 		}
 	}
 
+	//render character
 	iPoint render_position;
 	render_position = App->map->MapToWorld(current_tile.x, current_tile.y);
-
 	App->render->Blit(reference_entity->texture, position.x - TILE_SIZE, position.y - 2 * TILE_SIZE, &current_animation->GetCurrentFrame());
 	
+	//render position
 	if (App->render->debug)
 	{
 		App->render->DrawQuad({ (int)position.x - 2, (int)position.y - 2, 4,4 }, 255, 0, 0, 255);
@@ -216,10 +223,37 @@ void DynamicEntity::Attack() {
 	attack_timer.Start();
 	target_entity->health -= damage;
 	target_entity->state = HIT;
+	target_entity->current_animation->Reset();
+
+	switch (direction)
+	{
+	case TOP_LEFT:
+		target_entity->direction = BOTTOM_RIGHT;
+		break;
+	case TOP_RIGHT:
+		target_entity->direction = BOTTOM_LEFT;
+		break;
+	case RIGHT:
+		target_entity->direction = LEFT;
+		break;
+	case BOTTOM_RIGHT:
+		target_entity->direction = TOP_LEFT;
+		break;
+	case BOTTOM_LEFT:
+		target_entity->direction = TOP_RIGHT;
+		break;
+	case LEFT:
+		target_entity->direction = RIGHT;
+		break;
+	default:
+		break;
+	}
 
 	if (target_entity->health <= 0) { 
 		target_entity->state = DIE;
 		target_entity->direction = TOP_LEFT;
+		target_entity = nullptr;
+		state = IDLE;
 	}
 }
 
