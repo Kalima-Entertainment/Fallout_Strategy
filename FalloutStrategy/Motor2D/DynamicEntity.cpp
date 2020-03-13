@@ -29,7 +29,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 	attack_collider = nullptr;
 	target_entity = nullptr;
 	attack_time = 3.0f;
-	damage = 100;
+	damage = 10;
 }
 
 DynamicEntity::~DynamicEntity() {}
@@ -44,7 +44,10 @@ bool DynamicEntity::Update(float dt) {
 		Move();
 		break;
 	case ATTACK:
-		Attack();
+		if (attack_timer.ReadSec() > attack_time)
+		{
+			Attack();
+		}
 		break;
 	case GATHER:
 		break;
@@ -52,12 +55,13 @@ bool DynamicEntity::Update(float dt) {
 		if (current_animation->Finished())
 		{
 			state = IDLE;
+			current_animation->Reset();
 		}
 		break;
 	case DIE:
 		if (current_animation->Finished())
 		{
-			//delete entity
+			to_destroy = true;
 		}
 		break;
 	default:
@@ -147,6 +151,19 @@ void DynamicEntity::Move() {
 			*/
 
 			//Method 2
+			
+			if ((next_tile == target_tile)&&(target_entity != nullptr)){
+				//we reach the destination and there is an entity in it
+				if (faction != target_entity->faction)
+				{
+					state = ATTACK;
+					Attack();
+				}
+				else
+				{
+					state = IDLE;
+				}
+			}
 
 			if ((position.x > next_tile_center_rect.x + next_tile_center_rect.w) && (position.x > next_tile_center_rect.x) && (position.y > next_tile_center_rect.y) && (position.y > next_tile_center_rect.y + next_tile_center_rect.h)) {
 				direction = TOP_LEFT;
@@ -178,30 +195,12 @@ void DynamicEntity::Move() {
 				}
 				else
 				{
-					//we reach the destination but we have no target
-					if (target_entity == nullptr)
-					{
-						position.x = next_tile_center_rect.x + 2;
-						position.y = next_tile_center_rect.y + 2;
-						current_tile = next_tile;
-						state = IDLE;
-					}
-					//we reach the destination and there is an entity in it
-					else
-					{
-						if (faction != target_entity->faction)
-						{
-							state = ATTACK;
-							attack_timer.Start();
-						}
-						else
-						{
-							state = IDLE;
-						}
-					}
+					position.x = next_tile_center_rect.x + 2;
+					position.y = next_tile_center_rect.y + 2;
+					current_tile = target_tile;
+					state = IDLE;
 				}
 			}
-
 		}
 		else
 		{
@@ -213,22 +212,19 @@ void DynamicEntity::Move() {
 }
 
 void DynamicEntity::Attack() {
-	if (attack_timer.ReadSec() > attack_time)
-	{
-		attack_timer.Start();
-		target_entity->health -= damage;
-		target_entity->state = HIT;
 
-		if (target_entity->health <= 0) { 
-			target_entity->state = DIE;
-			target_entity->direction = TOP_LEFT;
-		}
+	attack_timer.Start();
+	target_entity->health -= damage;
+	target_entity->state = HIT;
+
+	if (target_entity->health <= 0) { 
+		target_entity->state = DIE;
+		target_entity->direction = TOP_LEFT;
 	}
 }
 
 void DynamicEntity::PathfindToPosition(iPoint destination) {
 
-	//iPoint origin = App->map->WorldToMap(position.x, position.y);
 	current_tile = App->map->WorldToMap(position.x, position.y);
 	App->pathfinding->CreatePath(current_tile, destination);
 
