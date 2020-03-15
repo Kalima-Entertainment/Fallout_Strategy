@@ -5,8 +5,6 @@
 
 #define CURSOR_WIDTH 2
 
-// TODO 1: Create your structure of classes
-
 // ---------------------------------------------------
 class j1Gui : public j1Module
 {
@@ -32,7 +30,6 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	// TODO 2: Create the factory methods
 	// Gui creation functions
 
 	const SDL_Texture* GetAtlas() const;
