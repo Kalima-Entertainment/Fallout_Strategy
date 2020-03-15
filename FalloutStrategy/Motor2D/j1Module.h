@@ -11,6 +11,7 @@
 
 class j1App;
 struct Collider;
+class UI_element;
 
 class j1Module
 {
@@ -74,6 +75,7 @@ public:
 	}
 
 	virtual void OnCollision(Collider* c1, Collider* c2) {}
+	virtual void Callback(UI_element* element) {}
 
 public:
 
