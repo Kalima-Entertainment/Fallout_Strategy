@@ -74,6 +74,18 @@ public:
 		return true;
 	}
 
+	void Enable()
+	{
+		active = true;
+		Start();
+	}
+
+	void Disable()
+	{
+		active = false;
+		CleanUp();
+	}
+
 	virtual void OnCollision(Collider* c1, Collider* c2) {}
 	virtual void Callback(UI_element* element) {}
 

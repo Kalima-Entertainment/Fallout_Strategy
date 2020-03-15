@@ -29,7 +29,7 @@ bool j1Gui::Awake(pugi::xml_node& config)
 	bool ret = true;
 	node = config;
 	folder.create(node.child("folder").child_value());
-	UI_file_name = config.child("button").attribute("file1").as_string();
+	UI_file_name = config.child("ui").attribute("file1").as_string();
 
 	return ret;
 }

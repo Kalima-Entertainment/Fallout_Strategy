@@ -21,6 +21,8 @@ class j1Gui;
 class j1EntityManager;
 class j1Collision;
 class Player;
+class MenuManager;
+class MainMenu;
 
 class j1App
 {
@@ -98,6 +100,8 @@ public:
 	j1Collision	*		collision = NULL;
 	j1EntityManager*	entities = NULL;
 	Player*				player = NULL;
+	MenuManager*		menu_manager = NULL;
+	MainMenu*			main_menu = NULL;
 
 	bool pause;
 private:

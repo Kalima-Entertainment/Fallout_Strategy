@@ -28,7 +28,8 @@
   </window>
 
   <gui>
-    <atlas file="gui/atlas.png"/>
+    <folder>gui/</folder>
+    <ui file1="atlas.png"/>
   </gui>
 
   <map>

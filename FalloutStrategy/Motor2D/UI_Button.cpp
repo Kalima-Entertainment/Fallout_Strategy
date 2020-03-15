@@ -7,6 +7,10 @@
 #include "j1EntityManager.h"
 #include "j1Entity.h"
 #include "j1Pathfinding.h"
+#include "MenuManager.h"
+#include "Player.h"
+#include "j1Scene.h"
+#include "j1Map.h"
 
 #include "./brofiler/Brofiler/Brofiler.h"
 
@@ -96,7 +100,9 @@ bool UI_Button::Update(float dt)
 				App->gui->fx_up = 2;
 			}
 
-			if (t == Button_play) {
+			if (t == button_new_game) {
+				App->menu_manager->DestroyMainMenu();
+				
 				
 			}
 

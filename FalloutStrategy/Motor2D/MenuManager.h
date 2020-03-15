@@ -1,0 +1,47 @@
+#ifndef __MENUMANAGER_H__
+#define __MENUMANAGER_H__
+
+#include "j1Module.h"
+
+enum UI_Type;
+class j1Image;
+class UI_Slider;
+class UI_Button;
+class UI_Label;
+
+struct UI_main_menu {
+
+	j1Image* background = nullptr;
+	j1Image* logo = nullptr;
+
+	UI_Button* new_game_button = nullptr;
+	UI_Button* load_game_button = nullptr;
+	UI_Button* options_button = nullptr;
+	UI_Button* credits_button = nullptr;
+	UI_Button* exit_game_button = nullptr;
+	
+
+};
+
+class MenuManager :public j1Module {
+
+public:
+
+	MenuManager();
+	~MenuManager();
+
+
+public:
+	
+	void CreateMainMenu();
+	void DestroyMainMenu();
+
+public:
+
+	UI_main_menu	main_menu;
+	
+	
+};
+
+
+#endif // !__MENUMANAGER_H__

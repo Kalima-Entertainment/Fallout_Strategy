@@ -35,6 +35,8 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
+	menu_state = StatesMenu::NONE;
+
 	DynamicEntity* test_melee;
 	if(App->map->Load("iso_walk.tmx") == true)
 	{
@@ -189,4 +191,14 @@ bool j1Scene::CleanUp()
 	LOG("Freeing scene");
 
 	return true;
+}
+
+StatesMenu j1Scene::GetMenuState()
+{
+	return menu_state;
+}
+
+void j1Scene::SetMenuState(const StatesMenu& menu)
+{
+	menu_state = menu;
 }
