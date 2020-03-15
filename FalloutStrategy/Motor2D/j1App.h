@@ -103,7 +103,8 @@ public:
 	MenuManager*		menu_manager = NULL;
 	MainMenu*			main_menu = NULL;
 
-	bool pause;
+	bool				pause;
+	bool				quitGame = false;
 private:
 
 	p2List<j1Module*>	modules;

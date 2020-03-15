@@ -53,7 +53,7 @@ bool UI_Label::SetLabelText(const char* text_input)
 {
 	bool ret = false;
 
-	text_texture = App->font->Print(text_input, { 255,255,255,255 }, App->font->fonts.start->data);
+	text_texture = App->font->Print(text_input, { 242,207,99,255 }, App->font->fonts.start->data);
 	
 	if (text_texture != nullptr)
 	{

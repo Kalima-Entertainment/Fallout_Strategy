@@ -13,12 +13,19 @@ struct UI_main_menu {
 
 	j1Image* background = nullptr;
 	j1Image* logo = nullptr;
+	j1Image* panel = nullptr;
+
+	UI_Label* new_game_text = nullptr;
+	UI_Label* load_game_text = nullptr;
+	UI_Label* settings_text = nullptr;
+	UI_Label* credits_text = nullptr;
+	UI_Label* exit_text = nullptr;
 
 	UI_Button* new_game_button = nullptr;
 	UI_Button* load_game_button = nullptr;
 	UI_Button* options_button = nullptr;
 	UI_Button* credits_button = nullptr;
-	UI_Button* exit_game_button = nullptr;
+	UI_Button* exit_button = nullptr;
 	
 
 };

@@ -11,6 +11,7 @@ struct SDL_Texture;
 enum UI_Type {
 
 	button_new_game,
+	button_exit,
 	Button_settings,
 	Button_restart,
 	Button_info,
@@ -24,6 +25,13 @@ enum UI_Type {
 	Label,
 	Label_timer,
 	Image,
+	Logo,
+	Panel,
+	text_new_game,
+	text_load_game,
+	text_settings,
+	text_credits,
+	text_exit,
 	Slider_music,
 	Slider_fx,
 	Heart,

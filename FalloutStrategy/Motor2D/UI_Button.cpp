@@ -100,10 +100,16 @@ bool UI_Button::Update(float dt)
 				App->gui->fx_up = 2;
 			}
 
-			if (t == button_new_game) {
+			if (t == button_new_game) 
+			{
 				App->menu_manager->DestroyMainMenu();
 				
 				
+			}
+			
+			if(t == button_exit)
+			{
+				App->quitGame = true;
 			}
 
 			if (t == Button_close) {
