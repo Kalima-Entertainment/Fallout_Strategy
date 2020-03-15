@@ -19,7 +19,7 @@ j1Entity::j1Entity() {
 	target_tile = { 0, 0 };
 	path_to_target = nullptr;
 
-	health = 100;
+	max_health = current_health = 100;
 
 	collider = nullptr;
 	last_collider = nullptr;
