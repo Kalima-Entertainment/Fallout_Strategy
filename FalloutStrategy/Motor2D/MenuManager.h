@@ -30,6 +30,12 @@ struct UI_main_menu {
 
 };
 
+struct UI_credits {
+
+	j1Image* background = nullptr;
+	
+};
+
 class MenuManager :public j1Module {
 
 public:
@@ -48,7 +54,7 @@ public:
 public:
 
 	UI_main_menu	main_menu;
-	
+	UI_credits	credits_menu;
 	
 };
 

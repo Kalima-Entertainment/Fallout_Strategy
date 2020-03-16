@@ -77,7 +77,7 @@ void MenuManager::DestroyMainMenu()
 
 void MenuManager::CreateCredits()
 {
-	
+	credits_menu.background = (j1Image*)App->gui->CreateImage(-90, 0, Image, { 0, 1536, 1207, 837 }, NULL, this);
 
 
 }
