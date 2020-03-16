@@ -14,6 +14,7 @@
 #include "j1Entity.h"
 #include "DynamicEntity.h"
 #include "Player.h"
+#include "SDL_mixer/include/SDL_mixer.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -51,6 +52,9 @@ bool j1Scene::Start()
 	test_melee = (DynamicEntity*)App->entities->CreateEntity(VAULT, MELEE, 14, 4);
 	test_enemy = (DynamicEntity*)App->entities->CreateEntity(MUTANT, RANGED, 14, 2);
 	App->entities->CreateEntity(VAULT, GATHERER, 18, 6);
+
+	App->audio->PlayMusic("audio/music/elevator_music.ogg", 4.0F);
+	//App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
 
 	return true;
 }
@@ -160,6 +164,52 @@ bool j1Scene::Update(float dt)
 		}
 	
 	}
+	*/
+
+
+
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
+		Mix_HaltChannel(-1);
+		Mix_SetPosition(1, 270, 1);
+		App->audio->PlayFx(1, App->audio->explosion, 0);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	{
+		Mix_HaltChannel(-1);
+		Mix_SetPosition(2, 270, 200);
+		App->audio->PlayFx(2, App->audio->explosion, 0);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+	{
+		Mix_HaltChannel(-1);
+		Mix_SetPosition(3, 90, 1);
+		App->audio->PlayFx(3, App->audio->explosion, 0);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
+	{
+		Mix_HaltChannel(-1);
+		Mix_SetPosition(4, 90, 200);
+		App->audio->PlayFx(4, App->audio->explosion, 0);
+	}
+	/*
+	Mix_HaltChannel(-1);
+	int distance = (App->render->camera.x * App->render->camera.x + App->render->camera.y * App->render->camera.y); // cause remember, inverse square law
+	distance = distance / 500; //to scale a bit
+	int volume = (distance * 255) / App->render->camera.w;
+	if (volume < 0) { volume = 0; } if (volume > 255) { volume = 255; }
+
+	float angle = 90;
+	if (App->render->camera.y == 0) {
+		angle = atan(-App->render->camera.x);
+	}
+	else {
+		angle = atan((-App->render->camera.x) / (App->render->camera.y));
+	}
+	angle = angle * 57 + 360; //conversion from rad to degree +270. We add +90 extra cause sdl has 0 as its front for some fkn reason. 
+
+	Mix_SetPosition(5, angle, volume);
+	App->audio->PlayFx(5, App->audio->explosion, 0);
 	*/
 	return true;
 }

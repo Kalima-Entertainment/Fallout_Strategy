@@ -42,7 +42,7 @@ public:
 	j1Entity* FindEntityByTile(iPoint position);
 	void DestroyEntity(j1Entity* delete_entity);
 	void DestroyAllEntities();
-	void LoadReferenceEntityData(pugi::xml_node& reference_entities_node, DynamicEntity* reference_entity);
+	bool LoadReferenceEntityData();
     //void RellocateEntities();
 
 public:
