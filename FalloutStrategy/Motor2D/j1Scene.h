@@ -42,6 +42,8 @@ private:
 
 	GuiImage* banner;
 	GuiText* text;
+
+	int SongPlaying = 0;
 };
 
 #endif // __j1SCENE_H__

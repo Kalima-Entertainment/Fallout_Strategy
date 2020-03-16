@@ -2,6 +2,7 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Audio.h"
+#include "p2List.h"
 
 #include "SDL/include/SDL.h"
 #include "SDL_mixer\include\SDL_mixer.h"
@@ -49,6 +50,8 @@ bool j1Audio::Awake(pugi::xml_node& config)
 		active = false;
 		ret = true;
 	}
+
+	explosion = LoadFx("audio/fx/Others/Weapons/bigexplode1.wav");
 
 	return ret;
 }
@@ -157,16 +160,17 @@ unsigned int j1Audio::LoadFx(const char* path)
 }
 
 // Play WAV
-bool j1Audio::PlayFx(unsigned int id, int repeat)
+bool j1Audio::PlayFx(int channel, unsigned int id, int repeat)
 {
 	bool ret = false;
+	id += 0;
 
 	if(!active)
 		return false;
 
 	if(id > 0 && id <= fx.count())
 	{
-		Mix_PlayChannel(-1, fx[id - 1], repeat);
+		Mix_PlayChannel(channel, fx[id - 1], repeat);
 	}
 
 	return ret;
