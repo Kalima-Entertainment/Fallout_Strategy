@@ -14,7 +14,7 @@ enum class BuildingType;
 class DynamicEntity;
 enum EntityType;
 
-#define REFERENCE_ENTITIES 12
+#define REFERENCE_ENTITIES 13
 
 class j1EntityManager : public j1Module
 {
@@ -38,7 +38,6 @@ public:
 	//bool CheckpointLoad();
 
 	j1Entity* CreateEntity(Faction faction, EntityType type, int position_x, int position_y);
-	j1Entity* CreateStaticEntity(Faction faction, BuildingType building_type , int position_x, int position_y);
 	j1Entity* FindEntityByTile(iPoint position);
 	void DestroyEntity(j1Entity* delete_entity);
 	void DestroyAllEntities();

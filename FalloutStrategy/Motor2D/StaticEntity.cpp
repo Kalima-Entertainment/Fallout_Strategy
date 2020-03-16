@@ -3,7 +3,7 @@
 #include "j1Render.h"
 #include "j1Map.h"
 
-StaticEntity::StaticEntity(Faction faction, EntityType type) {
+StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
 	switch (type)
 	{
 	case BASE:
@@ -15,6 +15,10 @@ StaticEntity::StaticEntity(Faction faction, EntityType type) {
 	default:
 		break;
 	}
+
+	type = g_type;
+	faction = g_faction;
+	state = IDLE;
 }
 
 StaticEntity::~StaticEntity() {}
@@ -25,9 +29,8 @@ bool StaticEntity::Update(float dt) {
 		break;
 	case DIE:
 		if (current_animation->Finished())
-		{
 			to_destroy = true;
-		}
+		
 		break;
 	default:
 		break;
@@ -45,21 +48,4 @@ bool StaticEntity::PostUpdate() {
 	App->render->Blit(reference_entity->texture, position.x - TILE_SIZE, position.y - 2 * TILE_SIZE, &current_animation->GetCurrentFrame());
 
 	return true;
-}
-
-void StaticEntity::CreatePerson() {
-	
-	switch (type) {
-	case BASE:
-		//TODO: Spawn gatherer
-		break;
-	case LABORATORY:
-		//Lab has no entities
-		break;
-	case BARRACK:
-		//TODO: Spawn melee or ranged
-		break;
-	default:
-		break;
-	}
 }

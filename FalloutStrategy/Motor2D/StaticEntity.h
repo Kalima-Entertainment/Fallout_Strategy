@@ -10,7 +10,7 @@ public:
 	~StaticEntity();
 	bool Update(float dt);
 	bool PostUpdate();
-	void CreatePerson();
+	//bool LoadReferenceData();
 public:
 private:
 	int gen_speed;
