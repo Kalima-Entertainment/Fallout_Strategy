@@ -16,6 +16,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 		range = 3;
 		break;
 	case GATHERER:
+		range = 1;
 		break;
 	default:
 		break;
@@ -31,7 +32,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 	attack_collider = nullptr;
 	target_entity = nullptr;
 	attack_time = 3.0f;
-	damage = 10;
+	damage = 100;
 }
 
 DynamicEntity::~DynamicEntity() {}
@@ -98,8 +99,8 @@ bool DynamicEntity::PostUpdate() {
 	App->render->Blit(reference_entity->texture, position.x - TILE_SIZE, position.y - 2 * TILE_SIZE, &current_animation->GetCurrentFrame());
 
 	//health bar
-	SDL_Rect background_bar = { position.x - HALF_TILE, position.y - TILE_SIZE * 1.5f, max_health * 0.5f, 4 };
-	SDL_Rect foreground_bar = { position.x - HALF_TILE, position.y - TILE_SIZE * 1.5f, current_health * 0.5f, 4 };
+	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, max_health * 0.5f, 4 };
+	SDL_Rect foreground_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, current_health * 0.5f, 4 };
 	App->render->DrawQuad(background_bar, 255, 255, 255, 255);
 	App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
 
@@ -163,11 +164,10 @@ void DynamicEntity::Move() {
 			}
 			*/
 
-			//Method 2
-			
-			if ((next_tile == target_tile)&&(target_entity != nullptr)){
+			//Method 2	
+			if ((current_tile.DistanceManhattan(target_tile) <= range)&&(target_entity != nullptr)){
 				//we reach the destination and there is an entity in it
-				if (faction != target_entity->faction)
+				if ((faction != target_entity->faction)&&(type != GATHERER))
 				{
 					state = ATTACK;
 					Attack();

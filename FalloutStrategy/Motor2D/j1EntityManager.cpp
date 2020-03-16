@@ -98,22 +98,9 @@ j1Entity* j1EntityManager::CreateStaticEntity(Faction faction, BuildingType buid
 	return entity;
 }
 
-void j1EntityManager::DestroyEntity(j1Entity* entity){
-	//BROFILER_CATEGORY("EntityDestruction", Profiler::Color::Orange)
-	/*
-		p2List_item<j1Entity*>* item;
-
-	if (entity != nullptr) {
-		item = entities.At(entities.find(entity));
-		if (entity->collider != nullptr)
-		{
-			entity->collider->to_delete = true;
-			entity->collider = nullptr;
-		}
-		entities.del(item);;
-	}
-	*/
-
+void j1EntityManager::DestroyEntity(j1Entity* entity) {
+	delete entity;
+	total_entities--;
 }
 
 void j1EntityManager::DestroyAllEntities() {
@@ -206,7 +193,11 @@ bool j1EntityManager::CleanUp()
 
 	for (int i = 0; i < REFERENCE_ENTITIES; i++)
 	{
-		App->tex->UnLoad(entities[i]->texture);
+		if (i < REFERENCE_ENTITIES)
+		{
+			App->tex->UnLoad(entities[i]->texture);
+		}
+		delete entities[i];
 	}
 
 	entities.clear();
@@ -247,7 +238,14 @@ bool j1EntityManager::PostUpdate()
 
 	for (int i = REFERENCE_ENTITIES; i < total_entities; i++)
 	{
-		entities[i]->PostUpdate();
+		if (entities[i]->to_destroy){
+			delete entities[i];
+			entities[i] = nullptr;
+		}
+		else
+		{
+			entities[i]->PostUpdate();
+		}
 	}
 	return ret;
 }
