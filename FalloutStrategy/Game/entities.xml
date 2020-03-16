@@ -1,9 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
 <entities>
  <static>
-  <vault_dwellers>
-  </vault_dwellers>
  </static>
  <dynamic>
+  <vault_dwellers>
+   <type="melee" health="100" damage="80" speed="100"/>
+   <type="ranged" health="100" damage="120" speed="100"/>
+   <type="gatherer" health="100" damage="100" speed="100"/>
+  </vault_dwellers>
+  <brotherhood>
+   <type="melee" health="200" damage="100" speed="80"/>
+   <type="ranged" health="200" damage="220" speed="80"/>
+   <type="gatherer" health="200" damage="120" speed="80"/>
+  </brotherhood>  
+  <mutants>
+   <type="melee" health="200" damage="100" speed="80"/>
+   <type="ranged" health="200" damage="200" speed="80"/>
+   <type="gatherer" health="80" damage="100" speed="120"/>
+  </mutants>
+  <ghouls>
+   <type="melee" health="80" damage="80" speed="120"/>
+   <type="ranged" health="80" damage="100" speed="120"/>
+   <type="gatherer" health="70" damage="80" speed="120"/>
+  </ghouls>
  </dynamic>
 </entities>

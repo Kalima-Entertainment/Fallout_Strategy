@@ -11,6 +11,7 @@
 class DynamicEntity;
 
 #define TILE_SIZE 64
+#define HALF_TILE 32
 
 struct Resource {
 	uint money, water, food;
@@ -81,7 +82,8 @@ public:
 	iPoint target_tile;
 	p2DynArray<iPoint>* path_to_target = nullptr;
 
-	int health;
+	int current_health;
+	int max_health;
 
 	j1Entity* reference_entity;
 	EntityType type;

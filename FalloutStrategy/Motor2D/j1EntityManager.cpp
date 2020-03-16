@@ -137,13 +137,9 @@ j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
 bool j1EntityManager::Awake(pugi::xml_node& config){
 	bool ret = true;
 
-	int max_factions = 4;
-	int max_types = 6;
-
 	config_data = config;
 
 	//Load reference data
-
 	//Vault Dwellers
 	reference_entities[VAULT][MELEE] = CreateEntity(VAULT, MELEE, 0, 0);
 	reference_entities[VAULT][RANGED] = CreateEntity(VAULT, RANGED, 1, 0);
@@ -163,6 +159,8 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 	reference_entities[GHOUL][MELEE] = CreateEntity(GHOUL, MELEE, 10, 10);
 	reference_entities[GHOUL][RANGED] = CreateEntity(GHOUL, RANGED, 11, 11);
 	reference_entities[GHOUL][GATHERER] = CreateEntity(GHOUL, GATHERER, 12, 12);
+
+	ret = LoadReferenceEntityData();
 
 	return ret;
 }
@@ -252,22 +250,29 @@ bool j1EntityManager::PostUpdate()
 	return ret;
 }
 
-void j1EntityManager::LoadReferenceEntityData(pugi::xml_node& reference_entities_node, DynamicEntity* reference_entity) {
-	pugi::xml_node entities = reference_entities_node;
+bool j1EntityManager::LoadReferenceEntityData() {
+	bool ret = true;
+	pugi::xml_document entities_file;
+	pugi::xml_node entities_node;
+	pugi::xml_parse_result result = entities_file.load_file("entities.xml");
 
-	switch (reference_entity->faction)
+	if (result == NULL)
+		LOG("Could not load map xml file entities.xml. pugi error: %s", result.description());
+	else
+		 entities_node = entities_file.child("entities");
+
+	pugi::xml_node faction_node;
+	Faction faction;
+	EntityType type;
+
+	//load dynamic entities
+	faction_node = entities_node.child("dynamic").first_child();
+	for (int i = 0; i < REFERENCE_ENTITIES; i++)
 	{
-	case Faction::VAULT:
-		break;
-	case Faction::BROTHERHOOD:
-		break;
-	case Faction::MUTANT:
-		break;
-	case Faction::GHOUL:
-		break;
-	default:
-		break;
+
 	}
+
+	return ret;
 }
 
 /*

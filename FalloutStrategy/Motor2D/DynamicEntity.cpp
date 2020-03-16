@@ -96,7 +96,13 @@ bool DynamicEntity::PostUpdate() {
 	iPoint render_position;
 	render_position = App->map->MapToWorld(current_tile.x, current_tile.y);
 	App->render->Blit(reference_entity->texture, position.x - TILE_SIZE, position.y - 2 * TILE_SIZE, &current_animation->GetCurrentFrame());
-	
+
+	//health bar
+	SDL_Rect background_bar = { position.x - HALF_TILE, position.y - TILE_SIZE * 1.5f, max_health * 0.5f, 4 };
+	SDL_Rect foreground_bar = { position.x - HALF_TILE, position.y - TILE_SIZE * 1.5f, current_health * 0.5f, 4 };
+	App->render->DrawQuad(background_bar, 255, 255, 255, 255);
+	App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
+
 	//render position
 	if (App->render->debug)
 	{
@@ -221,7 +227,7 @@ void DynamicEntity::Move() {
 void DynamicEntity::Attack() {
 
 	attack_timer.Start();
-	target_entity->health -= damage;
+	target_entity->current_health -= damage;
 	target_entity->state = HIT;
 	target_entity->current_animation->Reset();
 
@@ -249,7 +255,7 @@ void DynamicEntity::Attack() {
 		break;
 	}
 
-	if (target_entity->health <= 0) { 
+	if (target_entity->current_health <= 0) { 
 		target_entity->state = DIE;
 		target_entity->direction = TOP_LEFT;
 		target_entity = nullptr;
