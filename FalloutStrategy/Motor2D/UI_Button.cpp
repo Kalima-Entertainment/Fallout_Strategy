@@ -113,6 +113,12 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->CreateCredits();
 			}
 
+			if (t == button_back_credits)
+			{
+				App->menu_manager->CreateMainMenu();
+				App->menu_manager->DestroyCredits();
+			}
+
 			if(t == button_exit)
 			{
 				App->quitGame = true;
@@ -134,8 +140,14 @@ bool UI_Button::Update(float dt)
 				
 			}
 
-			if (t == Button_info) {
-				ShellExecuteA(NULL, "open", "https://polcamacho.github.io/Ninja-Warrior", NULL, NULL, SW_SHOWNORMAL);
+			if (t == button_github_credits) 
+			{
+				ShellExecuteA(NULL, "open", "https://github.com/Kalima-Entertainment/Fallout_Strategy", NULL, NULL, SW_SHOWNORMAL);
+			}
+
+			if (t == button_twitter_credits)
+			{
+				ShellExecuteA(NULL, "open", "https://twitter.com/KalimaEntmt", NULL, NULL, SW_SHOWNORMAL);
 			}
 
 			if (t == Button_restart) {

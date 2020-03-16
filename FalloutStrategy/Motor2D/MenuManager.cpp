@@ -77,12 +77,23 @@ void MenuManager::DestroyMainMenu()
 
 void MenuManager::CreateCredits()
 {
+	//Images
 	credits_menu.background = (j1Image*)App->gui->CreateImage(-90, 0, Image, { 0, 1536, 1207, 837 }, NULL, this);
-
-
+	
+	//Buttons
+	credits_menu.back_button = (UI_Button*)App->gui->CreateButton(65, 65, button_back_credits, { 1704,1054,48,46 }, { 1765,1054,48,46 }, { 1765,1054,48,46 }, NULL, this);
+	credits_menu.github_button = (UI_Button*)App->gui->CreateButton(110, 550, button_github_credits, { 2181,841,73,78 }, { 2181,919,73,78 }, { 2181,1005,73,78 }, NULL, this);
+	credits_menu.web_button = (UI_Button*)App->gui->CreateButton(230, 550, button_web_credits, { 2268,841,73,78 }, { 2268,919,73,78 }, { 2268,1005,73,78 }, NULL, this);
+	credits_menu.web_button = (UI_Button*)App->gui->CreateButton(350, 550, button_twitter_credits, { 2355,841,73,78 }, { 2355,919,73,78 }, { 2355,1005,73,78 }, NULL, this);
 }
 
 void MenuManager::DestroyCredits()
 {
+	//Destroying Images
+	App->gui->Delete_Element(credits_menu.background);
 	
+	//Destroying Buttons
+	App->gui->Delete_Element(credits_menu.back_button);
+	App->gui->Delete_Element(credits_menu.github_button);
+	App->gui->Delete_Element(credits_menu.web_button);
 }

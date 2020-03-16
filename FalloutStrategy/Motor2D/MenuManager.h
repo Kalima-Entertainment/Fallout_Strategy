@@ -34,6 +34,10 @@ struct UI_credits {
 
 	j1Image* background = nullptr;
 	
+	UI_Button* back_button = nullptr;
+	UI_Button* github_button = nullptr;
+	UI_Button* web_button = nullptr;
+	UI_Button* twitter_button = nullptr;
 };
 
 class MenuManager :public j1Module {
