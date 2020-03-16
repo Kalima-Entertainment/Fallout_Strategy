@@ -42,6 +42,8 @@ public:
 	
 	void CreateMainMenu();
 	void DestroyMainMenu();
+	void CreateCredits();
+	void DestroyCredits();
 
 public:
 

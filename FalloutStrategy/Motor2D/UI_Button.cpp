@@ -107,6 +107,12 @@ bool UI_Button::Update(float dt)
 				
 			}
 			
+			if (t == button_credits)
+			{
+				App->menu_manager->DestroyMainMenu();
+				App->menu_manager->CreateCredits();
+			}
+
 			if(t == button_exit)
 			{
 				App->quitGame = true;

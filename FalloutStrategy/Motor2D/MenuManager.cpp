@@ -74,3 +74,15 @@ void MenuManager::DestroyMainMenu()
 	App->gui->Delete_Element(main_menu.credits_button);
 	App->gui->Delete_Element(main_menu.exit_button);
 }
+
+void MenuManager::CreateCredits()
+{
+	
+
+
+}
+
+void MenuManager::DestroyCredits()
+{
+	
+}
