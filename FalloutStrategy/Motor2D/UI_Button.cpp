@@ -119,6 +119,62 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->DestroyCredits();
 			}
 
+			if (t == button_marc)
+			{
+				App->menu_manager->DestroyAllCollaboratorsPictures();
+				App->menu_manager->collaborator = 'M';
+				App->menu_manager->CreateCollaboratorPicture();
+			}
+
+			if (t == button_javi)
+			{
+				App->menu_manager->DestroyAllCollaboratorsPictures();
+				App->menu_manager->collaborator = 'J';
+				App->menu_manager->CreateCollaboratorPicture();
+			}
+
+			if (t == button_pablo)
+			{
+				App->menu_manager->DestroyAllCollaboratorsPictures();
+				App->menu_manager->collaborator = 'P';
+				App->menu_manager->CreateCollaboratorPicture();
+			}
+
+			if (t == button_german)
+			{
+				App->menu_manager->DestroyAllCollaboratorsPictures();
+				App->menu_manager->collaborator = 'G';
+				App->menu_manager->CreateCollaboratorPicture();
+			}
+
+			if (t == button_macia)
+			{
+				App->menu_manager->DestroyAllCollaboratorsPictures();
+				App->menu_manager->collaborator = 'D';
+				App->menu_manager->CreateCollaboratorPicture();
+			}
+
+			if (t == button_pol)
+			{
+				App->menu_manager->DestroyAllCollaboratorsPictures();
+				App->menu_manager->collaborator = 'K';
+				App->menu_manager->CreateCollaboratorPicture();
+			}
+
+			if (t == button_silvino)
+			{
+				App->menu_manager->DestroyAllCollaboratorsPictures();
+				App->menu_manager->collaborator = 'S';
+				App->menu_manager->CreateCollaboratorPicture();
+			}
+
+			if (t == button_cristian)
+			{
+				App->menu_manager->DestroyAllCollaboratorsPictures();
+				App->menu_manager->collaborator = 'C';
+				App->menu_manager->CreateCollaboratorPicture();
+			}
+
 			if(t == button_exit)
 			{
 				App->quitGame = true;

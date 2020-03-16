@@ -53,11 +53,28 @@ struct UI_main_menu {
 struct UI_credits {
 
 	j1Image* background = nullptr;
-	
+	j1Image* marc_image = nullptr;
+	j1Image* javi_image = nullptr;
+	j1Image* pablo_image = nullptr;
+	j1Image* german_image = nullptr;
+	j1Image* macia_image = nullptr;
+	j1Image* pol_image = nullptr;
+	j1Image* silvino_image = nullptr;
+	j1Image* cristian_image = nullptr;
+
 	UI_Button* back_button = nullptr;
 	UI_Button* github_button = nullptr;
 	UI_Button* web_button = nullptr;
 	UI_Button* twitter_button = nullptr;
+	UI_Button* marc_button = nullptr;
+	UI_Button* javi_button = nullptr;
+	UI_Button* pablo_button = nullptr;
+	UI_Button* german_button = nullptr;
+	UI_Button* macia_button = nullptr;
+	UI_Button* pol_button = nullptr;
+	UI_Button* silvino_button = nullptr;
+	UI_Button* cristian_button = nullptr;
+
 };
 
 class MenuManager :public j1Module {
@@ -76,11 +93,14 @@ public:
 	void DestroyCredits();
 	void CreateSettings();
 	void DestroySettings();
+	void CreateCollaboratorPicture();
+	void DestroyAllCollaboratorsPictures();
 
 public:
 
 	UI_main_menu	main_menu;
 	UI_credits	credits_menu;
+	char collaborator = 'M';
 	
 };
 
