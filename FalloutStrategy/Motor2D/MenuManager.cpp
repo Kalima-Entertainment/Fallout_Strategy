@@ -33,6 +33,8 @@ MenuManager::~MenuManager()
 void MenuManager::CreateMainMenu()
 {
 
+	App->player->Disable();
+
 	//Images
 	main_menu.background = (j1Image*)App->gui->CreateImage(-5, 0, Image, { 1526, 0, 1075, 783 }, NULL, this);
 	main_menu.logo = (j1Image*)App->gui->CreateImage(40, 40, Logo, { 938, 903, 505, 233 }, NULL, this);
@@ -55,6 +57,9 @@ void MenuManager::CreateMainMenu()
 
 void MenuManager::DestroyMainMenu()
 {
+
+	App->player->Enable();
+
 	//Destroying images
 	App->gui->Delete_Element(main_menu.background);
 	App->gui->Delete_Element(main_menu.logo);
@@ -85,4 +90,68 @@ void MenuManager::CreateCredits()
 void MenuManager::DestroyCredits()
 {
 	
+}
+
+void MenuManager::CreateSettings()
+{
+
+	//Images
+	main_menu.background = (j1Image*)App->gui->CreateImage(-5, 0, Image, { 1526, 0, 1075, 783 }, NULL, this);
+	main_menu.panel_volume = (j1Image*)App->gui->CreateImage(190, 125, Volume_Panel, { 0, 537, 658, 358 }, NULL, this);
+	main_menu.panel_cap = (j1Image*)App->gui->CreateImage(300, 500, Cap_Panel, { 1017, 352, 455, 190 }, NULL, this);
+	main_menu.mute = (j1Image*)App->gui->CreateImage(275, 275, Mute, { 1674, 981, 20, 36 }, NULL, this);
+	main_menu.fps_image = (j1Image*)App->gui->CreateImage(475, 600, FPS, { 1599, 1054, 77, 52 }, NULL, this);
+
+	//Labels
+	main_menu.fps = (UI_Label*)App->gui->CreateLabel(400, 525, text_fps, "REFRESH RATE", NULL, this, NULL);
+	main_menu.fx_volume = (UI_Label*)App->gui->CreateLabel(240, 335, text_fx_volume, "SOUND EFFECTS VOLUME", NULL, this, NULL);
+	main_menu.music_volume = (UI_Label*)App->gui->CreateLabel(240, 150, text_music_volume, "MUSIC VOLUME", NULL, this, NULL);
+	main_menu.settings_text = (UI_Label*)App->gui->CreateLabel(435, 50, text_settings, "SETTINGS", NULL, this, NULL);
+
+	//Music Slider
+	main_menu.volume_music_slider = (UI_Slider*)App->gui->CreateSlider(345, 220, Slider_music, { 1834,842,329,27 }, { 1792,926,33,16 }, 400, NULL, this);
+	main_menu.left_music_button = (UI_Button*)App->gui->CreateButton(315, 220, Button_slider_music_left, { 1671,880,26,25 }, { 1738,880,26,25 }, { 1738,880,26,25 }, NULL, this);
+	main_menu.right_music_button = (UI_Button*)App->gui->CreateButton(676, 220, Button_slider_music_right, { 1704,880,26,25 }, { 1771,880,26,25 }, { 1771,880,26,25 }, NULL, this);
+
+	//Fx Slider
+	main_menu.volume_fx_slider = (UI_Slider*)App->gui->CreateSlider(345, 405, Slider_fx, { 1834,842,329,27 }, { 1792,926,33,16 }, 400, NULL, this);
+	main_menu.left_fx_button = (UI_Button*)App->gui->CreateButton(315, 405, Button_slider_fx_left, { 1671,880,26,25 }, { 1738,880,26,25 }, { 1738,880,26,25 }, NULL, this);
+	main_menu.right_fx_button = (UI_Button*)App->gui->CreateButton(676, 405, Button_slider_fx_right, { 1704,880,26,25 }, { 1771,880,26,25 }, { 1771,880,26,25 }, NULL, this);
+
+	//Buttons
+	main_menu.cap_button = (UI_Button*)App->gui->CreateButton(425, 615, button_cap, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this);
+	main_menu.mute_button = (UI_Button*)App->gui->CreateButton(240, 280, button_mute, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this);
+	main_menu.back_button = (UI_Button*)App->gui->CreateButton(40, 40, button_back, { 1704,1054,48,46 }, { 1765,1054,48,46 }, { 1765,1054,48,46 }, NULL, this);
+
+
+}
+
+void MenuManager::DestroySettings()
+{
+
+	//Destroying images
+	App->gui->Delete_Element(main_menu.background);
+	App->gui->Delete_Element(main_menu.mute);
+	App->gui->Delete_Element(main_menu.panel_volume);
+	App->gui->Delete_Element(main_menu.panel_cap);
+
+	//Destroying Sliders
+	App->gui->Delete_Element(main_menu.volume_music_slider);
+	App->gui->Delete_Element(main_menu.volume_fx_slider);
+	App->gui->Delete_Element(main_menu.left_fx_button);
+	App->gui->Delete_Element(main_menu.right_fx_button);
+	App->gui->Delete_Element(main_menu.left_music_button);
+	App->gui->Delete_Element(main_menu.right_music_button);
+
+	//Destroying buttons
+	App->gui->Delete_Element(main_menu.cap_button);
+	App->gui->Delete_Element(main_menu.mute_button);
+	App->gui->Delete_Element(main_menu.back_button);
+
+	//Destroying Labels
+	App->gui->Delete_Element(main_menu.fps);
+	App->gui->Delete_Element(main_menu.music_volume);
+	App->gui->Delete_Element(main_menu.fx_volume);
+	App->gui->Delete_Element(main_menu.settings_text);
+
 }

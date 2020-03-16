@@ -144,9 +144,17 @@ bool UI_Button::Update(float dt)
 
 			}
 
-			if (t == Button_settings) {
+			if (t == button_settings) {
 
-				
+				App->menu_manager->DestroyMainMenu();
+				App->menu_manager->CreateSettings();
+			}
+
+			if (t == button_back) {
+
+				App->menu_manager->DestroySettings();
+				App->menu_manager->CreateMainMenu();
+
 			}
 
 	

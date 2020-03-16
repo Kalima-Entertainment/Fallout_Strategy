@@ -27,7 +27,27 @@ struct UI_main_menu {
 	UI_Button* credits_button = nullptr;
 	UI_Button* exit_button = nullptr;
 	
+	
+	UI_Label* fps = nullptr;
+	UI_Label* fx_volume = nullptr;
+	UI_Label* music_volume = nullptr;
 
+	j1Image* panel_volume = nullptr;
+	j1Image* mute = nullptr;
+	j1Image* panel_cap = nullptr;
+	j1Image* fps_image = nullptr;
+
+	UI_Slider* volume_music_slider = nullptr;
+	UI_Button* left_music_button = nullptr;
+	UI_Button* right_music_button = nullptr;
+	
+	UI_Slider* volume_fx_slider = nullptr;
+	UI_Button* left_fx_button = nullptr;
+	UI_Button* right_fx_button = nullptr;
+
+	UI_Button* cap_button = nullptr;
+	UI_Button* mute_button = nullptr;
+	UI_Button* back_button = nullptr;
 };
 
 class MenuManager :public j1Module {
@@ -44,6 +64,8 @@ public:
 	void DestroyMainMenu();
 	void CreateCredits();
 	void DestroyCredits();
+	void CreateSettings();
+	void DestroySettings();
 
 public:
 
