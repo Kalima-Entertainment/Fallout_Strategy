@@ -23,7 +23,7 @@ struct UI_main_menu {
 
 	UI_Button* new_game_button = nullptr;
 	UI_Button* load_game_button = nullptr;
-	UI_Button* options_button = nullptr;
+	UI_Button* settings_button = nullptr;
 	UI_Button* credits_button = nullptr;
 	UI_Button* exit_button = nullptr;
 	

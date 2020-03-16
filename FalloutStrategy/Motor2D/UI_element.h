@@ -11,6 +11,9 @@ struct SDL_Texture;
 enum UI_Type {
 
 	button_new_game,
+	button_load_game,
+	button_settings,
+	button_credits,
 	button_exit,
 	Button_settings,
 	Button_restart,

@@ -47,6 +47,9 @@ void MenuManager::CreateMainMenu()
 
 	//Buttons
 	main_menu.new_game_button = (UI_Button*)App->gui->CreateButton(630, 295, button_new_game, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
+	main_menu.load_game_button = (UI_Button*)App->gui->CreateButton(630, 373, button_load_game, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
+	main_menu.settings_button = (UI_Button*)App->gui->CreateButton(630, 450, button_settings, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
+	main_menu.credits_button = (UI_Button*)App->gui->CreateButton(630, 527, button_credits, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
 	main_menu.exit_button = (UI_Button*)App->gui->CreateButton(630, 604, button_exit, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
 }
 
@@ -66,5 +69,8 @@ void MenuManager::DestroyMainMenu()
 
 	//Destroying buttons
 	App->gui->Delete_Element(main_menu.new_game_button);
+	App->gui->Delete_Element(main_menu.load_game_button);
+	App->gui->Delete_Element(main_menu.settings_button);
+	App->gui->Delete_Element(main_menu.credits_button);
 	App->gui->Delete_Element(main_menu.exit_button);
 }
