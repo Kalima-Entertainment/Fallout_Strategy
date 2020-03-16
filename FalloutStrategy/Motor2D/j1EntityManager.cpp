@@ -68,35 +68,6 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	return entity;
 }
 
-j1Entity* j1EntityManager::CreateStaticEntity(Faction faction, BuildingType buiding_type, int position_x, int position_y) {
-	//BROFILER_CATEGORY("EntityCreation", Profiler::Color::Linen)
-	//static_assert(EntityType::UNKNOWN == 4, "code needs update");
-	j1Entity* entity = nullptr;
-	/*
-	switch (buiding_type)
-	{
-	case BuildingType::BASE:
-		break;
-	case BuildingType::WAREHOUSE:
-		break;
-	case BuildingType::BARRACK:
-		break;
-	default:
-		break;
-	}
-	*/
-	if (entity != NULL)
-	{
-		entity->faction = faction;
-		entity->position.x = entity->initialPosition.x = position_x;
-		entity->position.y = entity->initialPosition.y = position_y;
-	}
-
-	if (entity != nullptr)
-		entities.push_back(entity);
-	return entity;
-}
-
 void j1EntityManager::DestroyEntity(j1Entity* entity) {
 	delete entity;
 	total_entities--;
@@ -130,6 +101,8 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 	reference_entities[VAULT][MELEE] = CreateEntity(VAULT, MELEE, 0, 0);
 	reference_entities[VAULT][RANGED] = CreateEntity(VAULT, RANGED, 1, 0);
 	reference_entities[VAULT][GATHERER] = CreateEntity(VAULT, GATHERER, 2, 0);
+	//TODO: Add static entities 
+	reference_entities[VAULT][BASE] = CreateEntity(VAULT, BASE, 3, 0);
 
 	//Brotherhood
 	reference_entities[BROTHERHOOD][MELEE] = CreateEntity(BROTHERHOOD, MELEE, 4, 4);
@@ -162,6 +135,7 @@ bool j1EntityManager::Start()
 	reference_entities[VAULT][MELEE]->LoadAnimations("VaultDwellers/Vault_Dweller_Melee");
 	//reference_entities[VAULT][RANGED]->LoadAnimations("VaultDwellers/Vault_Dweller_Ranged");
 	reference_entities[VAULT][GATHERER]->LoadAnimations("VaultDwellers/Vault_Dweller_Gatherer");
+	reference_entities[VAULT][BASE]->LoadAnimations("VaultDwellers/Vault_Dweller_Base");
 
 	//Brotherhood
 	//reference_entities[BROTHERHOOD][MELEE]->LoadAnimations("Brotherhood/Brotherhood_melee");
