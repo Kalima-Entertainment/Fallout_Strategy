@@ -99,6 +99,9 @@ bool DynamicEntity::PostUpdate() {
 	//health bar
 	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 50, 4 };
 	SDL_Rect foreground_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, (float)current_health/max_health * 50, 4 };
+	if (foreground_bar.w < 0)
+		foreground_bar.w = 0;
+
 	App->render->DrawQuad(background_bar, 255, 255, 255, 255);
 	App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
 
@@ -178,11 +181,14 @@ void DynamicEntity::Move() {
 				}
 				else
 				{
+					iPoint current_tile_center = App->map->MapToWorld(current_tile.x, current_tile.y);
+					position.x = current_tile_center.x + HALF_TILE;
+					position.y = current_tile_center.y + HALF_TILE;
 					state = IDLE;
 				}
 			}
 
-			if ((position.x > next_tile_center_rect.x + next_tile_center_rect.w) && (position.x > next_tile_center_rect.x) && (position.y > next_tile_center_rect.y) && (position.y > next_tile_center_rect.y + next_tile_center_rect.h)) {
+			else if ((position.x > next_tile_center_rect.x + next_tile_center_rect.w) && (position.x > next_tile_center_rect.x) && (position.y > next_tile_center_rect.y) && (position.y > next_tile_center_rect.y + next_tile_center_rect.h)) {
 				direction = TOP_LEFT;
 				position.x -= speed.x;
 				position.y -= speed.y;
@@ -207,8 +213,12 @@ void DynamicEntity::Move() {
 				if (*path_to_target->At(0) != target_tile)
 				{
 					current_tile = *path_to_target->At(0);
-					next_tile = *path_to_target->At(1);
+					if (path_to_target->Count() > 1)
+					{
+						next_tile = *path_to_target->At(1);
+					}
 					path_to_target->Advance();
+					
 				}
 				else
 				{

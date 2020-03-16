@@ -14,7 +14,7 @@ enum class BuildingType;
 class DynamicEntity;
 enum EntityType;
 
-#define REFERENCE_ENTITIES 13
+#define REFERENCE_ENTITIES 24
 
 class j1EntityManager : public j1Module
 {

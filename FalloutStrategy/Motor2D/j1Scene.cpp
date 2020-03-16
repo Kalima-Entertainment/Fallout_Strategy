@@ -51,6 +51,7 @@ bool j1Scene::Start()
 	debug_tex = App->tex->Load("maps/path2.png");
 	test_melee = (DynamicEntity*)App->entities->CreateEntity(VAULT, MELEE, 14, 4);
 	test_enemy = (DynamicEntity*)App->entities->CreateEntity(MUTANT, RANGED, 14, 2);
+	//App->entities->CreateEntity(VAULT, RANGED, 16, 4);
 	App->entities->CreateEntity(VAULT, GATHERER, 18, 6);
 
 	App->audio->PlayMusic("audio/music/elevator_music.ogg", 4.0F);

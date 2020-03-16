@@ -15,7 +15,6 @@
 
 //#include "brofiler/Brofiler/Brofiler.h"
 
-
 j1EntityManager::j1EntityManager(){
 	name.create("entities");
 
@@ -23,7 +22,6 @@ j1EntityManager::j1EntityManager(){
 	blocked_movement = false;
 	total_entities = 0;
 }
-
 
 j1EntityManager::~j1EntityManager(){}
 
@@ -96,6 +94,8 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 
 	config_data = config;
 
+	//manual entities loading
+	/*
 	//Load reference data
 	//Vault Dwellers
 	reference_entities[VAULT][MELEE] = CreateEntity(VAULT, MELEE, 0, 0);
@@ -118,6 +118,16 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 	reference_entities[GHOUL][MELEE] = CreateEntity(GHOUL, MELEE, 10, 10);
 	reference_entities[GHOUL][RANGED] = CreateEntity(GHOUL, RANGED, 11, 11);
 	reference_entities[GHOUL][GATHERER] = CreateEntity(GHOUL, GATHERER, 12, 12);
+	*/
+
+	//automatic entities loading
+	for (int faction = VAULT; faction < NO_FACTION; faction++)
+	{
+		for (int type = MELEE; type < NO_TYPE; type++)
+		{
+			reference_entities[faction][type] = CreateEntity((Faction)faction, (EntityType)type, faction, type);
+		}
+	}
 
 	ret = LoadReferenceEntityData();
 
@@ -133,7 +143,7 @@ bool j1EntityManager::Start()
 
 	//Vault Dwellers
 	reference_entities[VAULT][MELEE]->LoadAnimations("VaultDwellers/Vault_Dweller_Melee");
-	//reference_entities[VAULT][RANGED]->LoadAnimations("VaultDwellers/Vault_Dweller_Ranged");
+	reference_entities[VAULT][RANGED]->LoadAnimations("VaultDwellers/Vault_Dweller_Ranged");
 	reference_entities[VAULT][GATHERER]->LoadAnimations("VaultDwellers/Vault_Dweller_Gatherer");
 	reference_entities[VAULT][BASE]->LoadAnimations("VaultDwellers/Vault_Dweller_Base");
 
@@ -178,6 +188,7 @@ bool j1EntityManager::CleanUp()
 bool j1EntityManager::PreUpdate()
 {
 	//BROFILER_CATEGORY("EntitiesPreUpdate", Profiler::Color::Bisque)
+
 	bool ret = true;
 	return ret;
 }
@@ -210,8 +221,7 @@ bool j1EntityManager::PostUpdate()
 	for (int i = REFERENCE_ENTITIES; i < total_entities; i++)
 	{
 		if (entities[i]->to_destroy){
-		//	delete entities[i];
-		//	entities[i] = nullptr;
+			entities.erase(entities.begin() + i);
 		}
 		else
 		{
