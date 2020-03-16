@@ -28,11 +28,9 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 	direction = TOP_RIGHT;
 
 	current_speed = { 0, 0 };
-	speed = { 1, 0.5f };
 	attack_collider = nullptr;
 	target_entity = nullptr;
 	attack_time = 3.0f;
-	damage = 100;
 }
 
 DynamicEntity::~DynamicEntity() {}
@@ -99,8 +97,8 @@ bool DynamicEntity::PostUpdate() {
 	App->render->Blit(reference_entity->texture, position.x - TILE_SIZE, position.y - 2 * TILE_SIZE, &current_animation->GetCurrentFrame());
 
 	//health bar
-	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, max_health * 0.5f, 4 };
-	SDL_Rect foreground_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, current_health * 0.5f, 4 };
+	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 50, 4 };
+	SDL_Rect foreground_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, (float)current_health/max_health * 50, 4 };
 	App->render->DrawQuad(background_bar, 255, 255, 255, 255);
 	App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
 
@@ -117,6 +115,7 @@ bool DynamicEntity::PostUpdate() {
 bool DynamicEntity::LoadReferenceData() {
 	bool ret = true;
 
+	//load animations
 	for (int i = 0; i < MAX_ANIMATIONS; i++)
 	{
 		for (int j = 0; j <= 6; j++)
@@ -124,6 +123,11 @@ bool DynamicEntity::LoadReferenceData() {
 			animations[i][j] = reference_entity->animations[i][j];
 		}
 	}
+
+	//load property data
+	current_health = max_health = reference_entity->max_health;
+	damage = reference_entity->damage;
+	speed = reference_entity->speed;
 
 	return ret;
 }

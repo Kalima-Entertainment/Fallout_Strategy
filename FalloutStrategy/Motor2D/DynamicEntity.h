@@ -19,10 +19,8 @@ public:
 	int mov_speed;
 	int attack_speed;
 	iPoint current_speed;
-	fPoint speed;
 	iPoint next_tile;
 
-	int damage;
 	int range;
 	j1Entity* target_entity;
 	j1Timer attack_timer;

@@ -23,7 +23,8 @@ enum EntityType {
 	GATHERER,
 	BASE,
 	LABORATORY,
-	BARRACK
+	BARRACK,
+	NO_TYPE
 };
 
 enum State {
@@ -40,7 +41,8 @@ enum Faction {
 	VAULT,
 	GHOUL,
 	BROTHERHOOD,
-	MUTANT
+	MUTANT,
+	NO_FACTION
 };
 
 enum Direction {
@@ -50,7 +52,7 @@ enum Direction {
 	BOTTOM_RIGHT,
 	BOTTOM_LEFT,
 	LEFT,
-	NONE
+	NO_DIRECTION
 };
 
 class j1Entity 
@@ -81,9 +83,11 @@ public:
 	iPoint current_tile;
 	iPoint target_tile;
 	p2DynArray<iPoint>* path_to_target = nullptr;
+	fPoint speed;
 
 	int current_health;
 	int max_health;
+	int damage;
 
 	j1Entity* reference_entity;
 	EntityType type;
