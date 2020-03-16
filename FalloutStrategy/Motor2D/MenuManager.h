@@ -50,6 +50,16 @@ struct UI_main_menu {
 	UI_Button* back_button = nullptr;
 };
 
+struct UI_credits {
+
+	j1Image* background = nullptr;
+	
+	UI_Button* back_button = nullptr;
+	UI_Button* github_button = nullptr;
+	UI_Button* web_button = nullptr;
+	UI_Button* twitter_button = nullptr;
+};
+
 class MenuManager :public j1Module {
 
 public:
@@ -70,7 +80,7 @@ public:
 public:
 
 	UI_main_menu	main_menu;
-	
+	UI_credits	credits_menu;
 	
 };
 

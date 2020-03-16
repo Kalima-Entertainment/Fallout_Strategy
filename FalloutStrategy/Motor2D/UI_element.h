@@ -11,6 +11,10 @@ struct SDL_Texture;
 enum UI_Type {
 
 	button_new_game,
+	button_back_credits,
+	button_github_credits,
+	button_web_credits,
+	button_twitter_credits,
 	button_load_game,
 	button_settings,
 	button_credits,
