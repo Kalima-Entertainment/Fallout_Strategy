@@ -56,7 +56,7 @@ bool j1Scene::Start()
 	//App->entities->CreateEntity(VAULT, RANGED, 16, 4);
 	App->entities->CreateEntity(VAULT, GATHERER, 18, 6);
 	//test_base = (StaticEntity*)
-	test_base = (StaticEntity*)App->entities->CreateEntity(MUTANT, BASE, 16, 2);
+	test_base = (StaticEntity*)App->entities->CreateEntity(GHOUL, BASE, 16, 2);
 
 	//App->audio->PlayMusic("audio/music/elevator_music.ogg", 4.0F);
 	App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
