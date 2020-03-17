@@ -49,3 +49,21 @@ bool StaticEntity::PostUpdate() {
 
 	return true;
 }
+
+bool StaticEntity::LoadReferenceData() {
+	bool ret = true;
+
+	//load animations
+	for (int i = 0; i < MAX_ANIMATIONS; i++)
+	{
+		for (int j = 0; j <= 6; j++)
+		{
+			animations[i][j] = reference_entity->animations[i][j];
+		}
+	}
+
+	//load property data
+	current_health = max_health = reference_entity->max_health;
+
+	return ret;
+}

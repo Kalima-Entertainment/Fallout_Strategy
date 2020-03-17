@@ -13,6 +13,7 @@
 #include "j1EntityManager.h"
 #include "j1Entity.h"
 #include "DynamicEntity.h"
+#include "StaticEntity.h"
 #include "Player.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
@@ -38,6 +39,7 @@ bool j1Scene::Awake()
 bool j1Scene::Start()
 {
 	DynamicEntity* test_melee, *test_enemy;
+	StaticEntity* test_base;
 	if(App->map->Load("iso_walk.tmx") == true)
 	{
 		int w, h;
@@ -53,6 +55,8 @@ bool j1Scene::Start()
 	test_enemy = (DynamicEntity*)App->entities->CreateEntity(MUTANT, RANGED, 14, 2);
 	//App->entities->CreateEntity(VAULT, RANGED, 16, 4);
 	App->entities->CreateEntity(VAULT, GATHERER, 18, 6);
+	//test_base = (StaticEntity*)
+	test_base = (StaticEntity*)App->entities->CreateEntity(MUTANT, BASE, 16, 2);
 
 	//App->audio->PlayMusic("audio/music/elevator_music.ogg", 4.0F);
 	App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
