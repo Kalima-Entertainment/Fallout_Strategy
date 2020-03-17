@@ -220,7 +220,8 @@ bool j1EntityManager::PostUpdate()
 
 	for (int i = REFERENCE_ENTITIES; i < total_entities; i++)
 	{
-		if (entities[i]->to_destroy){
+		if (entities[i]->to_destroy)
+		{
 			entities.erase(entities.begin() + i);
 		}
 		else

@@ -30,7 +30,6 @@ bool StaticEntity::Update(float dt) {
 	case DIE:
 		if (current_animation->Finished())
 			to_destroy = true;
-		
 		break;
 	default:
 		break;
