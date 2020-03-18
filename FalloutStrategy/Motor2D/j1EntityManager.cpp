@@ -165,6 +165,8 @@ bool j1EntityManager::Start()
 	//reference_entities[GHOUL][GATHERER]->LoadAnimations("Ghouls/Ghouls_Gatherer");
 	//reference_entities[GHOUL][BASE]->LoadAnimations("Ghouls/Ghouls_Base");
 	reference_entities[GHOUL][BASE]->LoadAnimations("Ghouls/Ghouls_Buildings");
+	//reference_entities[GHOUL][BARRACK]->LoadAnimations("Ghouls/Ghouls_Buildings");
+	//reference_entities[GHOUL][BARRACK]->texture = reference_entities[GHOUL][BASE]->texture;
 
 	debug_tex = App->tex->Load("maps/meta.png");
 	selected_unit_tex = App->tex->Load("maps/meta2.png");
