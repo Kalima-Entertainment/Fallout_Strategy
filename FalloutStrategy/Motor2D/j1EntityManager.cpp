@@ -145,19 +145,19 @@ bool j1EntityManager::Start()
 	reference_entities[VAULT][MELEE]->LoadAnimations("VaultDwellers/Vault_Dweller_Melee");
 	reference_entities[VAULT][RANGED]->LoadAnimations("VaultDwellers/Vault_Dweller_Ranged");
 	reference_entities[VAULT][GATHERER]->LoadAnimations("VaultDwellers/Vault_Dweller_Gatherer");
-	reference_entities[VAULT][BASE]->LoadAnimations("VaultDwellers/Vault_Dweller_Base");
+	//reference_entities[VAULT][BASE]->LoadAnimations("VaultDwellers/Vault_Dweller_Base");
 
 	//Brotherhood
 	//reference_entities[BROTHERHOOD][MELEE]->LoadAnimations("Brotherhood/Brotherhood_melee");
 	//reference_entities[BROTHERHOOD][RANGED]->LoadAnimations("Brotherhood/Brotherhood_Ranged");
 	//reference_entities[BROTHERHOOD][GATHERER]->LoadAnimations("Brotherhood/Brotherhood_gatherer");
-	reference_entities[BROTHERHOOD][BASE]->LoadAnimations("Brotherhood/Brotherhood_Buildings");
+	//reference_entities[BROTHERHOOD][BASE]->LoadAnimations("Brotherhood/Brotherhood_Buildings");
 
 	//Super Mutants
 	//reference_entities[MUTANT][MELEE]->LoadAnimations("SuperMutant/SuperMutant_Mele");
 	reference_entities[MUTANT][RANGED]->LoadAnimations("SuperMutant/SuperMutant_Ranged");
 	//reference_entities[MUTANT][GATHERER]->LoadAnimations("SuperMutant/SuperMutant_Gatherer");
-	reference_entities[MUTANT][BASE]->LoadAnimations("SuperMutant/SuperMutant_Buildings");
+	//reference_entities[MUTANT][BASE]->LoadAnimations("SuperMutant/SuperMutant_Buildings");
 
 	//Ghouls
 	//reference_entities[GHOUL][MELEE]->LoadAnimations("Ghouls/Ghouls_Melee");

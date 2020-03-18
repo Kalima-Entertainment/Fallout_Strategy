@@ -69,7 +69,7 @@ public:
 	virtual bool CleanUp() { return true; }
 	virtual void OnCollision(Collider* c1, Collider* c2) {};
 
-	bool LoadAnimations(const char* animation_file);
+	virtual bool LoadAnimations(const char* animation_file) { return true; };
 	virtual bool LoadReferenceData() { return true; };
 
 	iPoint MapPosition();
