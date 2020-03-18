@@ -25,8 +25,12 @@ UI_Button::UI_Button(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, 
 	t = type;
 
 	dimensions = idle;
-	click_fx = App->audio->LoadFx("audio/fx/Button_click.wav");
-	hover_fx = App->audio->LoadFx("audio/fx/Button_hover.wav");
+	click_fx = App->audio->LoadFx("audio/fx/UI Sounds/Butn_Arrow.wav");
+	hover_fx = App->audio->LoadFx("audio/fx/UI Sounds/Butn_Slider.wav");
+	back_fx = App->audio->LoadFx("audio/fx/UI Sounds/Butn_ReadyOff.wav");
+	volume_fx = App->audio->LoadFx("audio/fx/UI Sounds/Butn_Text.wav");
+	members_fx = App->audio->LoadFx("audio/fx/UI Sounds/Butn_Skill.wav");
+
 }
 
 bool UI_Button::CleanUp()
@@ -78,45 +82,49 @@ bool UI_Button::Update(float dt)
 			dimensions = Button_click;
 			
 			//only plays fx once
-			App->audio->PlayFx(click_fx, 0);
-
+						
 			if (observer) {
 				observer->Callback(this);
 			}
 
 			if (t == Button_slider_music_left) {
 				App->gui->volume_up = 1;
+				App->audio->PlayFx(volume_fx, 0);
 			}
 
 			else if (t == Button_slider_music_right) {
 				App->gui->volume_up = 2;
+				App->audio->PlayFx(volume_fx, 0);
 			}
 
 			if (t == Button_slider_fx_left) {
 				App->gui->fx_up = 1;
+				App->audio->PlayFx(volume_fx, 0);
 			}
 
 			else if (t == Button_slider_fx_right) {
 				App->gui->fx_up = 2;
+				App->audio->PlayFx(volume_fx, 0);
 			}
 
 			if (t == button_new_game) 
 			{
 				App->menu_manager->DestroyMainMenu();
-				
-				
+				App->audio->PlayFx(click_fx, 0);
 			}
 			
 			if (t == button_credits)
 			{
 				App->menu_manager->DestroyMainMenu();
 				App->menu_manager->CreateCredits();
+				App->audio->PlayFx(click_fx, 0);
 			}
 
 			if (t == button_back_credits)
 			{
 				App->menu_manager->CreateMainMenu();
 				App->menu_manager->DestroyCredits();
+				App->audio->PlayFx(back_fx, 0);
 			}
 
 			if (t == button_marc)
@@ -124,6 +132,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->DestroyAllCollaboratorsPictures();
 				App->menu_manager->collaborator = 'M';
 				App->menu_manager->CreateCollaboratorPicture();
+				App->audio->PlayFx(members_fx, 0);
 			}
 
 			if (t == button_javi)
@@ -131,6 +140,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->DestroyAllCollaboratorsPictures();
 				App->menu_manager->collaborator = 'J';
 				App->menu_manager->CreateCollaboratorPicture();
+				App->audio->PlayFx(members_fx, 0);
 			}
 
 			if (t == button_pablo)
@@ -138,6 +148,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->DestroyAllCollaboratorsPictures();
 				App->menu_manager->collaborator = 'P';
 				App->menu_manager->CreateCollaboratorPicture();
+				App->audio->PlayFx(members_fx, 0);
 			}
 
 			if (t == button_german)
@@ -145,6 +156,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->DestroyAllCollaboratorsPictures();
 				App->menu_manager->collaborator = 'G';
 				App->menu_manager->CreateCollaboratorPicture();
+				App->audio->PlayFx(members_fx, 0);
 			}
 
 			if (t == button_macia)
@@ -152,6 +164,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->DestroyAllCollaboratorsPictures();
 				App->menu_manager->collaborator = 'D';
 				App->menu_manager->CreateCollaboratorPicture();
+				App->audio->PlayFx(members_fx, 0);
 			}
 
 			if (t == button_pol)
@@ -159,6 +172,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->DestroyAllCollaboratorsPictures();
 				App->menu_manager->collaborator = 'K';
 				App->menu_manager->CreateCollaboratorPicture();
+				App->audio->PlayFx(members_fx, 0);
 			}
 
 			if (t == button_silvino)
@@ -166,6 +180,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->DestroyAllCollaboratorsPictures();
 				App->menu_manager->collaborator = 'S';
 				App->menu_manager->CreateCollaboratorPicture();
+				App->audio->PlayFx(members_fx, 0);
 			}
 
 			if (t == button_cristian)
@@ -173,11 +188,13 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->DestroyAllCollaboratorsPictures();
 				App->menu_manager->collaborator = 'C';
 				App->menu_manager->CreateCollaboratorPicture();
+				App->audio->PlayFx(members_fx, 0);
 			}
 
 			if(t == button_exit)
 			{
 				App->quitGame = true;
+				App->audio->PlayFx(click_fx, 0);
 			}
 
 			if (t == Button_close) {
@@ -199,30 +216,31 @@ bool UI_Button::Update(float dt)
 			if (t == button_github_credits) 
 			{
 				ShellExecuteA(NULL, "open", "https://github.com/Kalima-Entertainment/Fallout_Strategy", NULL, NULL, SW_SHOWNORMAL);
+				App->audio->PlayFx(click_fx, 0);
 			}
 
 			if (t == button_twitter_credits)
 			{
 				ShellExecuteA(NULL, "open", "https://twitter.com/KalimaEntmt", NULL, NULL, SW_SHOWNORMAL);
+				App->audio->PlayFx(click_fx, 0);
 			}
 
 			if (t == Button_restart) {
-				
-				
-
+				App->audio->PlayFx(click_fx, 0);
+			
 			}
 
 			if (t == button_settings) {
 
 				App->menu_manager->DestroyMainMenu();
 				App->menu_manager->CreateSettings();
+				App->audio->PlayFx(click_fx, 0);
 			}
 
 			if (t == button_back) {
-
 				App->menu_manager->DestroySettings();
 				App->menu_manager->CreateMainMenu();
-
+				App->audio->PlayFx(back_fx, 0);
 			}
 
 	
