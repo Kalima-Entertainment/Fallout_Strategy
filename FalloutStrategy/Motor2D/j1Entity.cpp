@@ -47,3 +47,7 @@ iPoint j1Entity::MapPosition() {
 	spot = App->map->WorldToMap(spot.x, spot.y);
 	return spot;
 }
+
+int j1Entity::GetPositionScore() const {
+	return current_tile.x + current_tile.y;
+}

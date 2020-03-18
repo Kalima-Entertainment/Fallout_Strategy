@@ -54,13 +54,10 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 
 		if (entity->reference_entity != nullptr)
 		{
+			entities.push_back(entity);
+			total_entities++;
 			entity->LoadReferenceData();
 		}
-	}
-	   
-	if (entity != nullptr) {
-		entities.push_back(entity);
-		total_entities++;
 	}
 
 	return entity;
@@ -79,7 +76,7 @@ void j1EntityManager::DestroyAllEntities() {
 }
 
 j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
-	for (int i = REFERENCE_ENTITIES; i < entities.size(); i++)
+	for (int i = 0; i < entities.size(); i++)
 	{
 		if (entities[i]->current_tile == tile)
 		{
@@ -204,7 +201,7 @@ bool j1EntityManager::Update(float dt)
 	//BROFILER_CATEGORY("EntitiesUpdate", Profiler::Color::Bisque)
 	bool ret = true;
 
-	for (int i = REFERENCE_ENTITIES; i < entities.size(); i++)
+	for (int i = 0; i < entities.size(); i++)
 	{
 		entities[i]->Update(dt);
 	}
@@ -224,7 +221,7 @@ bool j1EntityManager::PostUpdate()
 		App->render->Blit(selected_unit_tex, tex_position.x, tex_position.y, &tex_rect);
 	}
 
-	for (int i = REFERENCE_ENTITIES; i < total_entities; i++)
+	for (int i = 0; i < entities.size(); i++)
 	{
 		if (entities[i]->to_destroy)
 		{
@@ -232,6 +229,7 @@ bool j1EntityManager::PostUpdate()
 		}
 		else
 		{
+			SortEntities();
 			entities[i]->PostUpdate();
 		}
 	}
@@ -300,6 +298,24 @@ bool j1EntityManager::LoadReferenceEntityData() {
 	}
 
 	return ret;
+}
+
+void j1EntityManager::SortEntities() {
+	int i, j;
+	int n = entities.size();
+
+	for (i = 0; i < n - 1; i++)
+		for (j = 0; j < n - i - 1; j++)
+			if (entities[j]->GetPositionScore() > entities[j + 1]->GetPositionScore())
+				Swap(j, j + 1);
+}
+
+void j1EntityManager::Swap(int i, int j)
+{
+	int temp = i;
+	j1Entity* aux = entities[i];
+	entities[i] = entities[j];
+	entities[j] = aux;
 }
 
 /*

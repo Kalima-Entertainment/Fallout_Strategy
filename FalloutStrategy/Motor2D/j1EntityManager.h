@@ -42,6 +42,8 @@ public:
 	void DestroyEntity(j1Entity* delete_entity);
 	void DestroyAllEntities();
 	bool LoadReferenceEntityData();
+	void SortEntities();
+	void Swap(int i, int j);
     //void RellocateEntities();
 
 public:

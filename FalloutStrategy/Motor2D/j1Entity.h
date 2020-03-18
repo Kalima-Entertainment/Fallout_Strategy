@@ -72,6 +72,8 @@ public:
 	virtual bool LoadAnimations(const char* animation_file) { return true; };
 	virtual bool LoadReferenceData() { return true; };
 
+	int GetPositionScore() const;
+
 	iPoint MapPosition();
 
 	//Check if mouse pointer its inside the same spot than the entity and if pressed returns any advice
