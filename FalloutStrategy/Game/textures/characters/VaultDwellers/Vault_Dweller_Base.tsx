@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset name="Vault_Dweller_Base" tilewidth="256" tileheight="256" tilecount="64" columns="8">
- <image source="../../../../../../../../Desktop/Vault_Dweller_Base.png" width="2048" height="2048"/>
+<tileset version="1.2" tiledversion="1.3.3" name="Vault_Dweller_Base" tilewidth="256" tileheight="256" tilecount="64" columns="8">
+ <image source="Vault_Dweller_Base.png" width="2048" height="2048"/>
  <tile id="0">
   <animation>
    <frame tileid="0" duration="100"/>
