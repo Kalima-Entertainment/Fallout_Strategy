@@ -35,9 +35,10 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		entity = new DynamicEntity(faction, type);
 		entity->is_dynamic = true;
 	}
-	else
+	else if ((type == BASE) || (type == LABORATORY) || (type == BARRACK))
 	{
 		entity = new StaticEntity(faction, type);
+		entity->is_dynamic = false;
 	}
 
 	entity->reference_entity = reference_entities[faction][type];
