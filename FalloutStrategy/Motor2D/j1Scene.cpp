@@ -39,7 +39,7 @@ bool j1Scene::Awake()
 bool j1Scene::Start()
 {
 	DynamicEntity* test_melee, *test_enemy, *test_ranged, *test_gatherer;
-	StaticEntity* test_base, *test_base2, *test_base3, *test_base4;
+	StaticEntity* test_base;
 	if(App->map->Load("wasteland_low_left.tmx") == true)
 	{
 		int w, h;
@@ -58,11 +58,8 @@ bool j1Scene::Start()
 	test_enemy = (DynamicEntity*)App->entities->CreateEntity(MUTANT, RANGED, 14, 2);
 	test_enemy->direction = BOTTOM_LEFT;
 
-	//test_base = (StaticEntity*)
-	test_base = (StaticEntity*)App->entities->CreateEntity(GHOUL, BASE, -10,0);
-	//test_base2 = (StaticEntity*)App->entities->CreateEntity(VAULT, BASE, 12, 2);
-	//test_base3 = (StaticEntity*)App->entities->CreateEntity(MUTANT, BASE, 14, 2);
-	//test_base4 = (StaticEntity*)App->entities->CreateEntity(BROTHERHOOD, BASE, 16, 2);
+	iPoint initial_pos = { 0,0 };
+	test_base = (StaticEntity*)App->entities->CreateBuilding(GHOUL, BASE, initial_pos, 3, 3);
 
 	//App->audio->PlayMusic("audio/music/elevator_music.ogg", 4.0F);
 	App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);

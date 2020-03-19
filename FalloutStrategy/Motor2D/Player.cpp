@@ -122,13 +122,11 @@ bool Player::PreUpdate() {
 						dynamic_entity->target_entity = target;
 					}
 					//target is a static entity
-					else
-					{
+					else{
 						static_entity->target_entity = target;
 					}
 				}
-				else
-				{
+				else{
 					dynamic_entity->target_entity = nullptr;
 				}
 			}

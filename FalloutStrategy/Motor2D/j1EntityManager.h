@@ -38,13 +38,13 @@ public:
 	//bool CheckpointLoad();
 
 	j1Entity* CreateEntity(Faction faction, EntityType type, int position_x, int position_y);
+	j1Entity* CreateBuilding(Faction faction, EntityType type, iPoint initial_position, int size_x, int size_y);
 	j1Entity* FindEntityByTile(iPoint position);
 	void DestroyEntity(j1Entity* delete_entity);
 	void DestroyAllEntities();
 	bool LoadReferenceEntityData();
 	void SortEntities();
 	void Swap(int i, int j);
-    //void RellocateEntities();
 
 public:
 
