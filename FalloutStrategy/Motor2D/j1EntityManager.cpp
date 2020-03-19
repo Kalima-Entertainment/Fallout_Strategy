@@ -97,14 +97,14 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 	//automatic entities loading
 	for (int faction = VAULT; faction < NO_FACTION; faction++)
 	{
-		for (int type = MELEE; type < RESOURCE; type++)
+		for (int type = MELEE; type < NO_TYPE; type++)
 		{
 			reference_entities[faction][type] = CreateEntity((Faction)faction, (EntityType)type, faction, type);
 		}
 	}
 
 	//Water tank
-	reference_entities[NO_FACTION][0] = CreateEntity(NO_FACTION, RESOURCE, 0, 0);
+	//reference_entities[NO_FACTION][0] = CreateEntity(NO_FACTION, RESOURCE, 0, 0);
 	//reference_entities[NO_FACTION][1] = CreateEntity(NO_FACTION, RESOURCE, 0, 0);
 	//reference_entities[NO_FACTION][2] = CreateEntity(NO_FACTION, RESOURCE, 0, 0);
 
