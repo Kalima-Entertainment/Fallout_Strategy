@@ -38,7 +38,7 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-	DynamicEntity* test_melee, *test_enemy;
+	DynamicEntity* test_melee, *test_enemy, *test_ranged, *test_gatherer;
 	StaticEntity* test_base, *test_base2, *test_base3, *test_base4;
 	if(App->map->Load("iso_walk.tmx") == true)
 	{
@@ -51,12 +51,15 @@ bool j1Scene::Start()
 	}
 
 	debug_tex = App->tex->Load("maps/path2.png");
-	test_melee = (DynamicEntity*)App->entities->CreateEntity(VAULT, MELEE, 14, 4);
+	test_melee = (DynamicEntity*)App->entities->CreateEntity(VAULT, MELEE, 14, 6);
+	test_ranged = (DynamicEntity*)App->entities->CreateEntity(VAULT, RANGED, 15, 6);
+	test_gatherer = (DynamicEntity*)App->entities->CreateEntity(VAULT, GATHERER, 16, 6);
+
 	test_enemy = (DynamicEntity*)App->entities->CreateEntity(MUTANT, RANGED, 14, 2);
-	//App->entities->CreateEntity(VAULT, RANGED, 16, 4);
-	App->entities->CreateEntity(VAULT, GATHERER, 18, 6);
+	test_enemy->direction = BOTTOM_LEFT;
+
 	//test_base = (StaticEntity*)
-	test_base = (StaticEntity*)App->entities->CreateEntity(GHOUL, BASE, 10, 2);
+	test_base = (StaticEntity*)App->entities->CreateEntity(GHOUL, BASE, -10,0);
 	test_base2 = (StaticEntity*)App->entities->CreateEntity(VAULT, BASE, 12, 2);
 	test_base3 = (StaticEntity*)App->entities->CreateEntity(MUTANT, BASE, 14, 2);
 	test_base4 = (StaticEntity*)App->entities->CreateEntity(BROTHERHOOD, BASE, 16, 2);

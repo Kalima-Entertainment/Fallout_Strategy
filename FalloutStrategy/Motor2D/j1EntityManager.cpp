@@ -63,29 +63,6 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	return entity;
 }
 
-void j1EntityManager::DestroyEntity(j1Entity* entity) {
-	delete entity;
-	total_entities--;
-}
-
-void j1EntityManager::DestroyAllEntities() {
-	for (int i = REFERENCE_ENTITIES; i < total_entities; i++)
-	{
-		entities[i]->to_destroy = true;
-	}
-}
-
-j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
-	for (int i = 0; i < entities.size(); i++)
-	{
-		if (entities[i]->current_tile == tile)
-		{
-			return entities[i];
-		}
-	}
-	return nullptr;
-}
-
 bool j1EntityManager::Awake(pugi::xml_node& config){
 	bool ret = true;
 
@@ -120,11 +97,16 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 	//automatic entities loading
 	for (int faction = VAULT; faction < NO_FACTION; faction++)
 	{
-		for (int type = MELEE; type < NO_TYPE; type++)
+		for (int type = MELEE; type < RESOURCE; type++)
 		{
 			reference_entities[faction][type] = CreateEntity((Faction)faction, (EntityType)type, faction, type);
 		}
 	}
+
+	//Water tank
+	reference_entities[NO_FACTION][0] = CreateEntity(NO_FACTION, RESOURCE, 0, 0);
+	//reference_entities[NO_FACTION][1] = CreateEntity(NO_FACTION, RESOURCE, 0, 0);
+	//reference_entities[NO_FACTION][2] = CreateEntity(NO_FACTION, RESOURCE, 0, 0);
 
 	ret = LoadReferenceEntityData();
 
@@ -174,16 +156,16 @@ bool j1EntityManager::Start()
 bool j1EntityManager::CleanUp()
 {
 	bool ret = true;
-
+	/*
 	for (int i = 0; i < REFERENCE_ENTITIES; i++)
 	{
 		if (i < REFERENCE_ENTITIES)
 		{
-			App->tex->UnLoad(entities[i]->texture);
+			App->tex->UnLoad(reference_entities[i]->texture);
 		}
 		delete entities[i];
 	}
-
+	*/
 	entities.clear();
 	return ret;
 }
@@ -316,6 +298,29 @@ void j1EntityManager::Swap(int i, int j)
 	j1Entity* aux = entities[i];
 	entities[i] = entities[j];
 	entities[j] = aux;
+}
+
+j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
+	for (int i = 0; i < entities.size(); i++)
+	{
+		if (entities[i]->current_tile == tile)
+		{
+			return entities[i];
+		}
+	}
+	return nullptr;
+}
+
+void j1EntityManager::DestroyEntity(j1Entity* entity) {
+	delete entity;
+	total_entities--;
+}
+
+void j1EntityManager::DestroyAllEntities() {
+	for (int i = REFERENCE_ENTITIES; i < total_entities; i++)
+	{
+		entities[i]->to_destroy = true;
+	}
 }
 
 /*
