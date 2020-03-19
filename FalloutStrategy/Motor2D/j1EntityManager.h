@@ -16,6 +16,18 @@ enum EntityType;
 
 #define REFERENCE_ENTITIES 24
 
+enum class Resource {
+	CAPS,
+	WATER,
+	FOOD
+};
+
+struct ResourceBuilding {
+	Resource resource_type;
+	int quantity;
+	std::vector<iPoint> tiles;
+};
+
 class j1EntityManager : public j1Module
 {
 public:
@@ -49,6 +61,7 @@ public:
 public:
 
 	std::vector<j1Entity*> entities;
+	std::vector<ResourceBuilding*> resource_buildings;
 	int total_entities;
 	pugi::xml_node config_data;
 

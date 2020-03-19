@@ -85,6 +85,20 @@ enum MapTypes
 	MAPTYPE_STAGGERED
 };
 // ----------------------------------------------------
+
+struct Object {
+	//ResourceBuilding
+};
+
+
+struct ObjectGroup {
+	p2SString name = "No name";
+	Object* object;
+	uint size = 0u;
+};
+
+// ----------------------------------------------------
+
 struct MapData
 {
 	int					width;
@@ -95,6 +109,7 @@ struct MapData
 	MapTypes			type;
 	p2List<TileSet*>	tilesets;
 	p2List<MapLayer*>	layers;
+	p2List<ObjectGroup*> objectgroups;
 };
 
 // ----------------------------------------------------
@@ -131,6 +146,7 @@ private:
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
+	bool LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup);
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
 
 	TileSet* GetTilesetFromTileId(int id) const;

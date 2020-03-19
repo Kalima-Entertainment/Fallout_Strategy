@@ -13,10 +13,6 @@ class DynamicEntity;
 #define TILE_SIZE 64
 #define HALF_TILE 32
 
-struct Resource {
-	uint money, water, food;
-};
-
 enum EntityType {
 	MELEE,
 	RANGED,

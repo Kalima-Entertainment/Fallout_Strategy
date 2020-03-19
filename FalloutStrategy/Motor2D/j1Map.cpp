@@ -5,6 +5,7 @@
 #include "j1Textures.h"
 #include "j1Map.h"
 #include <math.h>
+#include "j1EntityManager.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -215,6 +216,18 @@ bool j1Map::CleanUp()
 	}
 	data.layers.clear();
 
+	// Remove all objects
+
+	p2List_item<ObjectGroup*>* item3;
+	item3 = data.objectgroups.start;
+	while (item3 != NULL)
+	{
+		//LOG("Objectgroups releasing");
+		RELEASE(item3->data);
+		item3 = item3->next;
+	}
+	data.objectgroups.clear();
+
 	// Clean up the pugui tree
 	map_file.reset();
 
@@ -298,6 +311,29 @@ bool j1Map::Load(const char* file_name)
 			LOG("tile width: %d tile height: %d", l->width, l->height);
 			item_layer = item_layer->next;
 		}
+
+		p2List_item<ObjectGroup*>* item_object = data.objectgroups.start;
+		while (item_object != NULL)
+		{
+			ObjectGroup* o = item_object->data;
+			LOG("ObjectGroup ----");
+			LOG("name: %s", o->name.GetString());
+			item_object = item_object->next;
+		}
+	}
+
+	//Load objectgroup info -------------------------------------
+
+	pugi::xml_node objectgroup;
+	for (objectgroup = map_file.child("map").child("objectgroup"); objectgroup && ret; objectgroup = objectgroup.next_sibling("objectgroup"))
+	{
+		ObjectGroup* set = new ObjectGroup();
+
+		if (ret == true)
+		{
+			ret = LoadObjectGroup(objectgroup, set);
+		}
+		data.objectgroups.add(set);
 	}
 
 	map_loaded = ret;
@@ -457,6 +493,51 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		for(pugi::xml_node tile = layer_data.child("tile"); tile; tile = tile.next_sibling("tile"))
 		{
 			layer->data[i++] = tile.attribute("gid").as_int(0);
+		}
+	}
+
+	return ret;
+}
+
+bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
+	bool ret = true;
+	pugi::xml_node object_node = node.child("object");
+	SDL_Rect rect = { 0,0,0,0 };
+	objectgroup->name = node.attribute("name").as_string();
+	uint i = 0u;
+	p2SString type;
+
+	if (object_node == NULL)
+	{
+		LOG("Error loading object group");
+		ret = false;
+	}
+
+	else
+	{
+		while (object_node != nullptr)
+		{
+			pugi::xml_node properties = object_node.child("properties");
+			pugi::xml_node property = properties.child("property");
+
+			ResourceBuilding* building = new ResourceBuilding();
+
+			while (property != nullptr)
+			{
+				p2SString property_name(property.attribute("name").as_string());
+				if (property_name == "Nuka-Cola") {
+					building->resource_type = Resource::CAPS;
+					building->quantity = property.attribute("value").as_int();
+				}
+				else if (property_name == "Water") {
+					building->resource_type = Resource::WATER;
+					building->quantity = property.attribute("value").as_int();
+				}
+				property = property.next_sibling();
+			}
+			App->entities->resource_buildings.push_back(building);
+
+			object_node = object_node.next_sibling();
 		}
 	}
 
