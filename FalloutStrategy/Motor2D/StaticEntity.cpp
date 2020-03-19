@@ -20,6 +20,8 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
 	type = g_type;
 	faction = g_faction;
 	state = IDLE;
+
+	target_entity = nullptr;
 }
 
 StaticEntity::~StaticEntity() {}
@@ -46,6 +48,7 @@ bool StaticEntity::PostUpdate() {
 	iPoint render_position;
 	render_position = App->map->MapToWorld(current_tile.x, current_tile.y);
 	App->render->Blit(reference_entity->texture, position.x - TILE_SIZE, position.y - 2 * TILE_SIZE, &current_animation->GetCurrentFrame());
+
 
 	return true;
 }
