@@ -77,11 +77,10 @@ public:
 public:
 	fPoint lastPosition;
 	fPoint initialPosition;
+	iPoint current_tile;
 	//For dynamic entities
 	fPoint position;
-	iPoint current_tile;
 	//For buildings
-	iPoint current_tiles[9];
 	fPoint positions[9];
 
 	iPoint target_tile;
