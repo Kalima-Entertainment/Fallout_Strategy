@@ -97,21 +97,20 @@ j1Entity* j1EntityManager::CreateBuilding(Faction faction, EntityType type, iPoi
 				for (int j = 1; j <= size_y; j++) {
 					//Add current position to current_tile
 					building->current_tile.x = initial_position.x;
-					building->current_tile.y = initial_position.y;	
+					building->current_tile.y = initial_position.y;
 
 					//Add tile to building positions array
 					building->positions[counter] = App->map->fMapToWorld(building->current_tile.x, building->current_tile.y);
 
-					//Update initial_position to current_position
-					initial_position.x = initial_position.x + i;
-					initial_position.y = initial_position.y + j;
+					//Update initial_position to current_position					
+					initial_position.y = initial_position.y + 1;
 
 					counter++;
-				}					
-			}						
-
-			building->current_tile = { 0,0 };
-
+				}
+				initial_position.x = initial_position.x + 1;
+				initial_position.y = 0;
+			}
+			
 			if (building->reference_entity != nullptr) {
 				entities.push_back(building);
 				total_entities++;
