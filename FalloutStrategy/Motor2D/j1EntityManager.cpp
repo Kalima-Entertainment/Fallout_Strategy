@@ -101,8 +101,6 @@ j1Entity* j1EntityManager::CreateBuilding(Faction faction, EntityType type, iPoi
 
 					//Add tile to building positions array
 					building->positions[counter] = App->map->fMapToWorld(building->current_tile.x, building->current_tile.y);
-					building->positions[counter].x += 32;
-					building->positions[counter].y += 32;
 
 					//Update initial_position to current_position
 					initial_position.x = initial_position.x + i;
@@ -129,32 +127,6 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 	bool ret = true;
 
 	config_data = config;
-
-	//manual entities loading
-	/*
-	//Load reference data
-	//Vault Dwellers
-	reference_entities[VAULT][MELEE] = CreateEntity(VAULT, MELEE, 0, 0);
-	reference_entities[VAULT][RANGED] = CreateEntity(VAULT, RANGED, 1, 0);
-	reference_entities[VAULT][GATHERER] = CreateEntity(VAULT, GATHERER, 2, 0);
-	//TODO: Add static entities 
-	reference_entities[VAULT][BASE] = CreateEntity(VAULT, BASE, 3, 0);
-
-	//Brotherhood
-	reference_entities[BROTHERHOOD][MELEE] = CreateEntity(BROTHERHOOD, MELEE, 4, 4);
-	reference_entities[BROTHERHOOD][RANGED] = CreateEntity(BROTHERHOOD, RANGED, 5, 5);
-	reference_entities[BROTHERHOOD][GATHERER] = CreateEntity(BROTHERHOOD, GATHERER, 6, 6);
-
-	//Super Mutants
-	reference_entities[MUTANT][MELEE] = CreateEntity(MUTANT, MELEE, 7, 7);
-	reference_entities[MUTANT][RANGED] = CreateEntity(MUTANT, RANGED, 8, 8);
-	reference_entities[MUTANT][GATHERER] = CreateEntity(MUTANT, GATHERER, 9, 9);
-
-	//Ghouls
-	reference_entities[GHOUL][MELEE] = CreateEntity(GHOUL, MELEE, 10, 10);
-	reference_entities[GHOUL][RANGED] = CreateEntity(GHOUL, RANGED, 11, 11);
-	reference_entities[GHOUL][GATHERER] = CreateEntity(GHOUL, GATHERER, 12, 12);
-	*/
 
 	//automatic entities loading
 	for (int faction = VAULT; faction < NO_FACTION; faction++)
@@ -183,7 +155,7 @@ bool j1EntityManager::Start()
 	//load all textures
 
 	//Vault Dwellers
-	reference_entities[VAULT][MELEE]->LoadAnimations("VaultDwellers/Vault_Dweller_Melee");
+	//reference_entities[VAULT][MELEE]->LoadAnimations("VaultDwellers/Vault_Dweller_Melee");
 	reference_entities[VAULT][RANGED]->LoadAnimations("VaultDwellers/Vault_Dweller_Ranged");
 	reference_entities[VAULT][GATHERER]->LoadAnimations("VaultDwellers/Vault_Dweller_Gatherer");
 	//reference_entities[VAULT][BASE]->LoadAnimations("VaultDwellers/Vault_Dweller_Base");

@@ -108,7 +108,6 @@ bool Player::PreUpdate() {
 				dynamic_entity->PathfindToPosition(selected_spot);
 				dynamic_entity->target_tile = selected_spot;
 				dynamic_entity->state = WALK;
-
 				
 				StaticEntity* static_entity;
 				static_entity = (StaticEntity*)selected_entity;
