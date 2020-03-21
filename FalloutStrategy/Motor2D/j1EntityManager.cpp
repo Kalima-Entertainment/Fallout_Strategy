@@ -66,8 +66,6 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 			entity->current_tile.y = position_y;
 
 			entity->position = App->map->fMapToWorld(entity->current_tile.x, entity->current_tile.y);
-			entity->position.x += 32;
-			entity->position.y += 32;
 
 			if (entity->reference_entity != nullptr) {
 				entities.push_back(entity);
@@ -103,6 +101,8 @@ j1Entity* j1EntityManager::CreateBuilding(Faction faction, EntityType type, iPoi
 
 					//Add tile to building positions array
 					building->positions[counter] = App->map->fMapToWorld(building->current_tile.x, building->current_tile.y);
+					building->positions[counter].x += 32;
+					building->positions[counter].y += 32;
 
 					//Update initial_position to current_position
 					initial_position.x = initial_position.x + i;
@@ -111,6 +111,8 @@ j1Entity* j1EntityManager::CreateBuilding(Faction faction, EntityType type, iPoi
 					counter++;
 				}					
 			}						
+
+			building->current_tile = { 0,0 };
 
 			if (building->reference_entity != nullptr) {
 				entities.push_back(building);
@@ -259,8 +261,16 @@ bool j1EntityManager::PostUpdate()
 
 	if (App->player->selected_entity != nullptr)
 	{
-		tex_position = App->map->MapToWorld(App->player->selected_entity->current_tile.x, App->player->selected_entity->current_tile.y);
-		App->render->Blit(selected_unit_tex, tex_position.x, tex_position.y, &tex_rect);
+		if (App->player->selected_entity->is_dynamic == true) {
+			//Selected entity is a unit
+			tex_position = App->map->MapToWorld(App->player->selected_entity->current_tile.x, App->player->selected_entity->current_tile.y);
+			App->render->Blit(selected_unit_tex, tex_position.x, tex_position.y, &tex_rect);
+		}else { //Selected entity is a building
+			for (int i = 0; i < 9; i++) {
+				tex_position = App->map->MapToWorld(App->player->selected_entity->positions[i].x, App->player->selected_entity->positions[i].y);
+				App->render->Blit(selected_unit_tex, App->player->selected_entity->positions[i].x, App->player->selected_entity->positions[i].y, &tex_rect);
+			}			
+		}		
 	}
 
 	for (int i = 0; i < entities.size(); i++)
@@ -364,6 +374,17 @@ j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
 	for (int i = 0; i < entities.size(); i++)
 	{
 		if (entities[i]->current_tile == tile)
+		{
+			return entities[i];
+		}
+	}
+	return nullptr;
+}
+
+j1Entity* j1EntityManager::FindBuildingByTile(iPoint tile) {
+	for (int i = 0; i < entities.size(); i++)
+	{
+		if ((entities[i]->positions[i].x == tile.x) && (entities[i]->positions[i].y == tile.y))
 		{
 			return entities[i];
 		}

@@ -52,6 +52,7 @@ public:
 	j1Entity* CreateEntity(Faction faction, EntityType type, int position_x, int position_y);
 	j1Entity* CreateBuilding(Faction faction, EntityType type, iPoint initial_position, int size_x, int size_y);
 	j1Entity* FindEntityByTile(iPoint position);
+	j1Entity* FindBuildingByTile(iPoint position);
 	void DestroyEntity(j1Entity* delete_entity);
 	void DestroyAllEntities();
 	bool LoadReferenceEntityData();
