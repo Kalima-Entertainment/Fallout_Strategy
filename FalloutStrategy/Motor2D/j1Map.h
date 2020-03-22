@@ -145,6 +145,7 @@ public:
 	fPoint fMapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
 	iPoint fWorldToMap(float x, float y) const;
+	iPoint IsometricWorldToMap(int x, int y) const;
 	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
 	bool AddBuildingToMap(iPoint first_tile_position, int width, int height, ResourceBuilding* building);
 

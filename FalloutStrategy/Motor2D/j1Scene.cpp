@@ -40,6 +40,8 @@ bool j1Scene::Start()
 {
 	DynamicEntity* test_melee, *test_enemy, *test_ranged, *test_gatherer;
 	StaticEntity* test_base;
+
+	//if(App->map->Load("iso_walk.tmx") == true)
 	if(App->map->Load("grassland_low_left.tmx") == true)
 	{
 		int w, h;
@@ -52,7 +54,7 @@ bool j1Scene::Start()
 
 	test_melee = (DynamicEntity*)App->entities->CreateEntity(VAULT, MELEE, 14, 6);
 	test_ranged = (DynamicEntity*)App->entities->CreateEntity(VAULT, RANGED, 15, 6);
-	test_gatherer = (DynamicEntity*)App->entities->CreateEntity(VAULT, GATHERER, 16, 6);
+	test_gatherer = (DynamicEntity*)App->entities->CreateEntity(VAULT, GATHERER, 36, 6);
 
 	test_enemy = (DynamicEntity*)App->entities->CreateEntity(MUTANT, RANGED, 14, 2);
 	test_enemy->direction = BOTTOM_LEFT;
@@ -143,8 +145,8 @@ bool j1Scene::Update(float dt)
 		iPoint p = App->render->ScreenToWorld(x, y);
 		p = App->map->WorldToMap(p.x, p.y);
 		p = App->map->MapToWorld(p.x, p.y);
-
-		App->render->Blit(App->render->debug_tex, p.x, p.y);
+		SDL_Rect debug_rect = { 128,0,64,64 };
+		App->render->Blit(App->render->debug_tex, p.x, p.y, &debug_rect);
 	}
 	
 	/*

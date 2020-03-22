@@ -69,7 +69,8 @@ void j1Map::Draw()
 				if (resource_tiles[i][j] != nullptr)
 				{
 					iPoint position = MapToWorld(i, j);
-					App->render->Blit(App->render->debug_tex, position.x, position.y);
+					SDL_Rect debug_rect = { 0,0,64,64 };
+					App->render->Blit(App->render->debug_tex, position.x, position.y,&debug_rect);
 				}
 			}
 		}
@@ -192,6 +193,13 @@ iPoint j1Map::fWorldToMap(float x, float y) const
 	}
 
 	return ret;
+}
+
+iPoint j1Map::IsometricWorldToMap(int x, int y) const {
+	iPoint map_position;
+	map_position.x = x / (data.tile_width * 0.5f);
+	map_position.y = y / data.tile_height;
+	return map_position;
 }
 
 SDL_Rect TileSet::GetTileRect(int id) const
@@ -642,7 +650,7 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 bool j1Map::AddBuildingToMap(iPoint first_tile_position, int width, int height, ResourceBuilding* building) {
 	bool ret = true;
 
-	first_tile_position = WorldToMap(first_tile_position.x, first_tile_position.y);
+	first_tile_position = IsometricWorldToMap(first_tile_position.x, first_tile_position.y);
 
 	for (int i = 0; i < width; i++)
 	{

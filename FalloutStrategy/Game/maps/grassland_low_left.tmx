@@ -9,7 +9,7 @@
  <tileset firstgid="865" name="Nuke-Cola" tilewidth="256" tileheight="256" tilecount="16" columns="4">
   <image source="Nuke-Cola.png" width="1024" height="1024"/>
  </tileset>
- <tileset firstgid="881" name="WaterTank" tilewidth="512" tileheight="512" tilecount="2048" columns="4">
+ <tileset firstgid="881" name="WaterTank" tilewidth="512" tileheight="512" tilecount="16" columns="4">
   <image source="WaterTank.png" width="2048" height="2048"/>
  </tileset>
  <layer name="ground" width="75" height="75">
@@ -28158,6 +28158,9 @@
   </data>
  </layer>
  <layer name="buildings2" width="75" height="75">
+  <properties>
+   <property name="Navigation" value="1"/>
+  </properties>
   <data>
    <tile gid="0"/>
    <tile gid="0"/>

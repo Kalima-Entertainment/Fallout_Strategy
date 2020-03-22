@@ -175,9 +175,6 @@ bool j1EntityManager::Start()
 	//reference_entities[GHOUL][BARRACK]->LoadAnimations("Ghouls/Ghouls_Buildings");
 	//reference_entities[GHOUL][BARRACK]->texture = reference_entities[GHOUL][BASE]->texture;
 
-	debug_tex = App->tex->Load("maps/meta.png");
-	selected_unit_tex = App->tex->Load("maps/meta2.png");
-
 	return ret;
 }
 
@@ -230,11 +227,11 @@ bool j1EntityManager::PostUpdate()
 		if (App->player->selected_entity->is_dynamic == true) {
 			//Selected entity is a unit
 			tex_position = App->map->MapToWorld(App->player->selected_entity->current_tile.x, App->player->selected_entity->current_tile.y);
-			App->render->Blit(selected_unit_tex, tex_position.x, tex_position.y, &tex_rect);
+			App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tex_rect);
 		}else { //Selected entity is a building
 			for (int i = 0; i < 9; i++) {
 				tex_position = App->map->MapToWorld(App->player->selected_entity->positions[i].x, App->player->selected_entity->positions[i].y);
-				App->render->Blit(selected_unit_tex, App->player->selected_entity->positions[i].x, App->player->selected_entity->positions[i].y, &tex_rect);
+				App->render->Blit(App->render->debug_tex, App->player->selected_entity->positions[i].x, App->player->selected_entity->positions[i].y, &tex_rect);
 			}			
 		}		
 	}

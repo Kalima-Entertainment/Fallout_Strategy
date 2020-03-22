@@ -71,7 +71,6 @@ public:
 	j1Entity* reference_entities[4][6];
 
 	bool blocked_movement;
-	SDL_Texture* debug_tex;
 	SDL_Texture* selected_unit_tex;
 };
 
