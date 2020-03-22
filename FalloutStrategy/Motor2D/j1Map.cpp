@@ -58,6 +58,22 @@ void j1Map::Draw()
 			}
 		}
 	}
+
+	//debug resource buildings
+	if (App->render->debug)
+	{
+		for (int i = 0; i < MAP_LENGTH; i++)
+		{
+			for (int j = 0; j < MAP_LENGTH; j++)
+			{
+				if (resource_tiles[i][j] != nullptr)
+				{
+					iPoint position = MapToWorld(i, j);
+					App->render->Blit(App->render->debug_tex, position.x, position.y);
+				}
+			}
+		}
+	}
 }
 
 int Properties::Get(const char* value, int default_value) const

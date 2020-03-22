@@ -87,7 +87,7 @@ bool DynamicEntity::PostUpdate() {
 			for (uint i = 0; i < path_to_target->Count(); ++i)
 			{
 				iPoint pos = App->map->MapToWorld(path_to_target->At(i)->x, path_to_target->At(i)->y);
-				App->render->Blit(App->scene->debug_tex, pos.x, pos.y);
+				App->render->Blit(App->render->debug_tex, pos.x, pos.y);
 			}
 		}
 	}

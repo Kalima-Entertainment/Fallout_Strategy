@@ -50,7 +50,6 @@ bool j1Scene::Start()
 		RELEASE_ARRAY(data);
 	}
 
-	debug_tex = App->tex->Load("maps/path2.png");
 	test_melee = (DynamicEntity*)App->entities->CreateEntity(VAULT, MELEE, 14, 6);
 	test_ranged = (DynamicEntity*)App->entities->CreateEntity(VAULT, RANGED, 15, 6);
 	test_gatherer = (DynamicEntity*)App->entities->CreateEntity(VAULT, GATHERER, 16, 6);
@@ -94,6 +93,7 @@ bool j1Scene::PreUpdate()
 		}
 	}
 	*/
+
 	return true;
 }
 
@@ -144,7 +144,7 @@ bool j1Scene::Update(float dt)
 		p = App->map->WorldToMap(p.x, p.y);
 		p = App->map->MapToWorld(p.x, p.y);
 
-		App->render->Blit(debug_tex, p.x, p.y);
+		App->render->Blit(App->render->debug_tex, p.x, p.y);
 	}
 	
 	/*

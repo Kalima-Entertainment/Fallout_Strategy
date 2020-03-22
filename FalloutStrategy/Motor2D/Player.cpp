@@ -13,6 +13,7 @@
 Player::Player() : j1Module() {
 	selected_entity = nullptr;
 	border_scroll = false;
+	mouse_speed_multiplier = 1.5f;
 }
 
 Player::~Player() {}
@@ -137,6 +138,13 @@ bool Player::PreUpdate() {
 	//deselect entity
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
 		selected_entity = nullptr;
+	}
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_REPEAT) {
+		int x, y;
+		App->input->GetMouseMotion(x, y);
+		App->render->camera.x += x * mouse_speed_multiplier;
+		App->render->camera.y += y * mouse_speed_multiplier;
 	}
 
 	return ret;

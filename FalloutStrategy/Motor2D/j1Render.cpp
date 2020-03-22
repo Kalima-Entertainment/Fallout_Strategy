@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Render.h"
+#include "j1Textures.h"
 
 #define VSYNC true
 
@@ -13,7 +14,7 @@ j1Render::j1Render() : j1Module()
 	background.g = 0;
 	background.b = 0;
 	background.a = 0;
-	debug = false;
+	debug = true;
 }
 
 // Destructor
@@ -56,6 +57,7 @@ bool j1Render::Awake(pugi::xml_node& config)
 bool j1Render::Start()
 {
 	LOG("render start");
+	debug_tex = App->tex->Load("maps/path2.png");
 	// back background
 	SDL_RenderGetViewport(renderer, &viewport);
 	return true;
