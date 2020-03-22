@@ -6,6 +6,7 @@
 #include "j1Map.h"
 #include <math.h>
 #include "j1EntityManager.h"
+#include "j1Entity.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -529,7 +530,6 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 	SDL_Rect rect = { 0,0,0,0 };
 	objectgroup->name = node.attribute("name").as_string();
 	uint i = 0u;
-	p2SString type;
 
 	if (object_node == NULL)
 	{
@@ -541,33 +541,54 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 	{
 		while (object_node != nullptr)
 		{
+			p2SString object_name(object_node.attribute("name").as_string());
 			pugi::xml_node properties = object_node.child("properties");
 			pugi::xml_node property = properties.child("property");
 
-			ResourceBuilding* building = new ResourceBuilding();
 			int x = object_node.attribute("x").as_int();
 			int y = object_node.attribute("y").as_int();
 			int width = object_node.attribute("width").as_int() / (HALF_TILE)+1;
 			int height = object_node.attribute("height").as_int() / (HALF_TILE)+1;
 			iPoint first_tile_position = { x,y };
 
-			while (property != nullptr)
-			{
-				p2SString property_name(property.attribute("name").as_string());
+			if (object_name == "Resources") {
+				ResourceBuilding* building = new ResourceBuilding();
 
-				if (property_name == "Nuka-Cola") {
-					building->resource_type = Resource::CAPS;
-					building->quantity = property.attribute("value").as_int();
+				while (property != nullptr)
+				{
+					p2SString property_name(property.attribute("name").as_string());
+
+					if (property_name == "Nuka-Cola") {
+						building->resource_type = Resource::CAPS;
+						building->quantity = property.attribute("value").as_int();
+					}
+					else if (property_name == "Water") {
+						building->resource_type = Resource::WATER;
+						building->quantity = property.attribute("value").as_int();
+					}
+					property = property.next_sibling();
 				}
-				else if (property_name == "Water") {
-					building->resource_type = Resource::WATER;
-					building->quantity = property.attribute("value").as_int();
-				}
-				property = property.next_sibling();
+
+				AddResourceBuildingToMap(first_tile_position, width, height, building);
+				App->entities->resource_buildings.push_back(building);
 			}
-
-			AddBuildingToMap(first_tile_position, width, height, building);
-			App->entities->resource_buildings.push_back(building);
+			else if (object_name == "Static") {
+				//create building
+				//add tiles
+				p2SString object_type(object_node.attribute("type").as_string());
+				EntityType type = NO_TYPE;
+				if (object_type == "Base") {
+					type = BASE;
+				}
+				else if (object_type == "Barrack") {
+					type = BARRACK;
+				}
+				else if (object_type == "Laboratory")
+				{
+					type = LABORATORY;
+				}
+			}
+			
 			object_node = object_node.next_sibling();
 		}
 	}
@@ -647,7 +668,7 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 	return ret;
 }
 
-bool j1Map::AddBuildingToMap(iPoint first_tile_position, int width, int height, ResourceBuilding* building) {
+bool j1Map::AddResourceBuildingToMap(iPoint first_tile_position, int width, int height, ResourceBuilding* building) {
 	bool ret = true;
 
 	first_tile_position = IsometricWorldToMap(first_tile_position.x, first_tile_position.y);
