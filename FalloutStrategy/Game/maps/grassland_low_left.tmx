@@ -7,9 +7,11 @@
   <image source="Floors64x32.png" width="1024" height="1024"/>
  </tileset>
  <tileset firstgid="865" name="Nuke-Cola" tilewidth="256" tileheight="256" tilecount="16" columns="4">
+  <tileoffset x="0" y="-200"/>
   <image source="Nuke-Cola.png" width="1024" height="1024"/>
  </tileset>
  <tileset firstgid="881" name="WaterTank" tilewidth="512" tileheight="512" tilecount="16" columns="4">
+  <tileoffset x="0" y="-434"/>
   <image source="WaterTank.png" width="2048" height="2048"/>
  </tileset>
  <layer name="ground" width="75" height="75">
@@ -22528,7 +22530,7 @@
    <tile gid="642"/>
   </data>
  </layer>
- <layer name="buildings" width="75" height="75">
+ <layer name="buildings" width="75" height="75" offsetx="0" offsety="434">
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -28157,7 +28159,7 @@
    <tile gid="0"/>
   </data>
  </layer>
- <layer name="buildings2" width="75" height="75">
+ <layer name="buildings2" width="75" height="75" offsetx="0" offsety="434">
   <properties>
    <property name="Navigation" value="1"/>
   </properties>
@@ -29376,7 +29378,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -30496,7 +30498,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="52"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>

@@ -5,6 +5,7 @@
 #include "j1Render.h"
 #include "j1Pathfinding.h"
 #include "j1Textures.h"
+#include "j1EntityManager.h"
 
 DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 
@@ -31,7 +32,9 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 	current_speed = { 0, 0 };
 	attack_collider = nullptr;
 	target_entity = nullptr;
+	resource_building = nullptr;
 	attack_time = 3.0f;
+	resource_collected = 0;
 }
 
 DynamicEntity::~DynamicEntity() {}
@@ -55,6 +58,7 @@ bool DynamicEntity::Update(float dt) {
 		}
 		break;
 	case GATHER:
+		Gather();
 		break;
 	case HIT:
 		if (current_animation->Finished())
@@ -174,19 +178,35 @@ void DynamicEntity::Move() {
 			*/
 
 			//Method 2	
-			if ((current_tile.DistanceManhattan(target_tile) <= range)&&(target_entity != nullptr)){
+			if (current_tile.DistanceManhattan(target_tile) <= range) {
+				if (target_entity != nullptr) {
 				//we reach the destination and there is an entity in it
-				if ((faction != target_entity->faction)&&(type != GATHERER))
-				{
-					state = ATTACK;
-					Attack();
+					if ((faction != target_entity->faction) && (type != GATHERER))
+					{
+						state = ATTACK;
+						Attack();
+					}
+					else
+					{
+						iPoint current_tile_center = App->map->MapToWorld(current_tile.x, current_tile.y);
+						position.x = current_tile_center.x + HALF_TILE;
+						position.y = current_tile_center.y + HALF_TILE;
+						state = IDLE;
+					}
 				}
 				else
 				{
-					iPoint current_tile_center = App->map->MapToWorld(current_tile.x, current_tile.y);
-					position.x = current_tile_center.x + HALF_TILE;
-					position.y = current_tile_center.y + HALF_TILE;
-					state = IDLE;
+					if (type == GATHERER) {
+						if ((resource_building != nullptr)&& (resource_collected < storage_capacity)) {
+							state = GATHER;
+						}
+						else {
+							iPoint current_tile_center = App->map->MapToWorld(current_tile.x, current_tile.y);
+							position.x = current_tile_center.x + HALF_TILE;
+							position.y = current_tile_center.y + HALF_TILE;
+							state = IDLE;
+						}
+					}
 				}
 			}
 
@@ -354,7 +374,6 @@ bool DynamicEntity::LoadAnimations(const char* path) {
 		}
 		else if (animation_name == "gather") {
 			state = GATHER;
-			loop = false;
 		}
 		else if (animation_name == "hit") {
 			state = HIT;
@@ -397,4 +416,10 @@ bool DynamicEntity::LoadAnimations(const char* path) {
 	}
 
 	return ret;
+}
+
+void DynamicEntity::Gather() {
+	resource_building->quantity -= damage;
+	resource_collected += damage;
+	resource_type = resource_building->resource_type; 
 }
