@@ -40,7 +40,7 @@ bool j1Scene::Start()
 {
 	DynamicEntity* test_melee, *test_enemy, *test_ranged, *test_gatherer;
 	StaticEntity* test_base;
-	if(App->map->Load("wasteland_low_left.tmx") == true)
+	if(App->map->Load("grassland_low_left.tmx") == true)
 	{
 		int w, h;
 		uchar* data = NULL;

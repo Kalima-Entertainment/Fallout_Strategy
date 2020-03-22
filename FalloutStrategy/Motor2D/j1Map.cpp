@@ -521,10 +521,16 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 			pugi::xml_node property = properties.child("property");
 
 			ResourceBuilding* building = new ResourceBuilding();
+			int x = object_node.attribute("x").as_int();
+			int y = object_node.attribute("y").as_int();
+			int width = object_node.attribute("width").as_int() / (HALF_TILE)+1;
+			int height = object_node.attribute("height").as_int() / (HALF_TILE)+1;
+			iPoint first_tile_position = { x,y };
 
 			while (property != nullptr)
 			{
 				p2SString property_name(property.attribute("name").as_string());
+
 				if (property_name == "Nuka-Cola") {
 					building->resource_type = Resource::CAPS;
 					building->quantity = property.attribute("value").as_int();
@@ -535,12 +541,12 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 				}
 				property = property.next_sibling();
 			}
-			App->entities->resource_buildings.push_back(building);
 
+			AddBuildingToMap(first_tile_position, width, height, building);
+			App->entities->resource_buildings.push_back(building);
 			object_node = object_node.next_sibling();
 		}
 	}
-
 	return ret;
 }
 
@@ -612,6 +618,22 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 		ret = true;
 
 		break;
+	}
+
+	return ret;
+}
+
+bool j1Map::AddBuildingToMap(iPoint first_tile_position, int width, int height, ResourceBuilding* building) {
+	bool ret = true;
+
+	first_tile_position = WorldToMap(first_tile_position.x, first_tile_position.y);
+
+	for (int i = 0; i < width; i++)
+	{
+		for (int j = 0; j < height; j++)
+		{
+			resource_tiles[first_tile_position.x + i][first_tile_position.y + j] = building;
+		}
 	}
 
 	return ret;

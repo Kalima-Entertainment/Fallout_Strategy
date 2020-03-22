@@ -136,11 +136,6 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 		}
 	}
 
-	//Water tank
-	//reference_entities[NO_FACTION][0] = CreateEntity(NO_FACTION, RESOURCE, 0, 0);
-	//reference_entities[NO_FACTION][1] = CreateEntity(NO_FACTION, RESOURCE, 0, 0);
-	//reference_entities[NO_FACTION][2] = CreateEntity(NO_FACTION, RESOURCE, 0, 0);
-
 	ret = LoadReferenceEntityData();
 
 	return ret;
@@ -154,7 +149,7 @@ bool j1EntityManager::Start()
 	//load all textures
 
 	//Vault Dwellers
-	//reference_entities[VAULT][MELEE]->LoadAnimations("VaultDwellers/Vault_Dweller_Melee");
+	reference_entities[VAULT][MELEE]->LoadAnimations("VaultDwellers/Vault_Dweller_Melee");
 	reference_entities[VAULT][RANGED]->LoadAnimations("VaultDwellers/Vault_Dweller_Ranged");
 	reference_entities[VAULT][GATHERER]->LoadAnimations("VaultDwellers/Vault_Dweller_Gatherer");
 	//reference_entities[VAULT][BASE]->LoadAnimations("VaultDwellers/Vault_Dweller_Base");

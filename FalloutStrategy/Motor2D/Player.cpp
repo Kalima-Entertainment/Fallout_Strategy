@@ -58,8 +58,9 @@ bool Player::PreUpdate() {
 		selected_spot = App->render->ScreenToWorld(tx, ty);
 		selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
 
-		/*
+		
 		LOG("Actual Map Position is X: %i and Y: %i", selected_spot.x, selected_spot.y);
+		/*
 		if ((selected_entity != nullptr)&&(selected_spot != selected_entity->current_tile))
 		{
 			//choose a tile for the entity to go to
@@ -122,11 +123,11 @@ bool Player::PreUpdate() {
 						dynamic_entity->target_entity = target;
 					}
 					//target is a static entity
-					else{
+					else {
 						static_entity->target_entity = target;
 					}
 				}
-				else{
+				else {
 					dynamic_entity->target_entity = nullptr;
 				}
 			}
