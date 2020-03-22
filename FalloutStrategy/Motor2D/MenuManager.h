@@ -77,6 +77,25 @@ struct UI_credits {
 
 };
 
+struct UI_select_faction {
+
+	j1Image* background = nullptr;
+	j1Image* ghouls = nullptr;
+	j1Image* brotherhood = nullptr;
+	j1Image* supermutants = nullptr;
+	j1Image* vault = nullptr;
+
+	UI_Button* ghouls_button = nullptr;
+	UI_Button* brotherhood_button = nullptr;
+	UI_Button* supermutants_button = nullptr;
+	UI_Button* vault_button = nullptr;
+
+	UI_Label* ghouls_label = nullptr;
+	UI_Label* brotherhood_label = nullptr;
+	UI_Label* supermutants_label = nullptr;
+	UI_Label* vault_label = nullptr;
+};
+
 class MenuManager :public j1Module {
 
 public:
@@ -95,11 +114,15 @@ public:
 	void DestroySettings();
 	void CreateCollaboratorPicture();
 	void DestroyAllCollaboratorsPictures();
+	void CreateSelectFaction();
+	void DestroySelectFaction();
 
 public:
 
 	UI_main_menu	main_menu;
 	UI_credits	credits_menu;
+	UI_select_faction select_faction_menu;
+
 	char collaborator = 'M';
 	
 };

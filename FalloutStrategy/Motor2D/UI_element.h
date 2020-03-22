@@ -10,6 +10,10 @@ struct SDL_Texture;
 
 enum UI_Type {
 
+	button_select_ghoul,
+	button_select_brotherhood,
+	button_select_supermutant,
+	button_select_vault,
 	button_new_game,
 	button_back_credits,
 	button_github_credits,
@@ -62,6 +66,7 @@ enum UI_Type {
 	text_fx_volume,
 	text_music_volume,
 	text_fps,
+	ghouls_label,
 
 	Heart,
 	Timer,

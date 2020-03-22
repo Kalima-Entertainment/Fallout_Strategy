@@ -110,6 +110,7 @@ bool UI_Button::Update(float dt)
 			if (t == button_new_game) 
 			{
 				App->menu_manager->DestroyMainMenu();
+				App->menu_manager->CreateSelectFaction();
 				App->audio->PlayFx(click_fx, 0);
 			}
 			
