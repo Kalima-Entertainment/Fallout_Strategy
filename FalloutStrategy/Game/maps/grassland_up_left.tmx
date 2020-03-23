@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="isometric" renderorder="left-up" width="75" height="75" tilewidth="64" tileheight="32" nextobjectid="29">
+<map version="1.0" orientation="isometric" renderorder="left-up" width="75" height="75" tilewidth="64" tileheight="32" nextobjectid="30">
  <tileset firstgid="1" name="ground" tilewidth="64" tileheight="32" tilecount="352" columns="16">
   <image source="Ground64x32.png" width="1024" height="704"/>
  </tileset>
@@ -38,7 +38,7 @@
   </data>
  </layer>
  <objectgroup name="resources">
-  <object id="1" x="1162" y="25.5" width="156.5" height="96.5">
+  <object id="1" x="1137.33" y="24.1667" width="219.5" height="110.5">
    <properties>
     <property name="Nuka-Cola" type="int" value="200"/>
    </properties>
@@ -90,17 +90,7 @@
     <property name="Nuka-Cola" type="int" value="50"/>
    </properties>
   </object>
-  <object id="19" x="1137" y="122.667" width="52.3333" height="125.667">
-   <properties>
-    <property name="Nuka-Cola" type="int" value="0"/>
-   </properties>
-  </object>
   <object id="20" x="1162.33" y="176.333"/>
-  <object id="22" x="1321.5" y="63.1665" width="66.6666" height="164.334">
-   <properties>
-    <property name="Nuka-Cola" type="int" value="0"/>
-   </properties>
-  </object>
   <object id="23" x="2219.33" y="-5.33333" width="123.333" height="278">
    <properties>
     <property name="Water" type="int" value="200"/>

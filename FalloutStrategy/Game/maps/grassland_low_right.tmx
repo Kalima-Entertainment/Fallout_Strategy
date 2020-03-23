@@ -43,7 +43,7 @@
     <property name="Nuka-Cola" type="int" value="200"/>
    </properties>
   </object>
-  <object id="3" x="87" y="406.5" width="156.5" height="102.5">
+  <object id="3" x="23" y="367.833" width="220.5" height="141.167">
    <properties>
     <property name="Nuka-Cola" type="int" value="200"/>
    </properties>
@@ -75,11 +75,6 @@
    </properties>
   </object>
   <object id="20" x="1162.33" y="176.333"/>
-  <object id="22" x="15.4394" y="328.318" width="66.6666" height="187.061">
-   <properties>
-    <property name="Nuka-Cola" type="int" value="0"/>
-   </properties>
-  </object>
   <object id="23" x="2219.33" y="-5.33333" width="123.333" height="278">
    <properties>
     <property name="Water" type="int" value="200"/>
