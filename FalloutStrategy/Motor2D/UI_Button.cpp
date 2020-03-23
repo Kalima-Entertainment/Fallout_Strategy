@@ -252,6 +252,12 @@ bool UI_Button::Update(float dt)
 				App->audio->PlayFx(back_fx, 0);
 			}
 
+			if(t == button_back_to_menu)
+			{
+				App->menu_manager->CreateMainMenu();
+				App->menu_manager->DestroySelectFaction();
+				App->audio->PlayFx(back_fx, 0);
+			}
 	
 
 		}

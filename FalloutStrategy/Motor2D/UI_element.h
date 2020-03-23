@@ -10,6 +10,7 @@ struct SDL_Texture;
 
 enum UI_Type {
 
+	button_back_to_menu,
 	button_select_ghoul,
 	button_select_brotherhood,
 	button_select_supermutant,

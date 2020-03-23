@@ -95,6 +95,7 @@ struct UI_select_faction {
 	UI_Button* brotherhood_button = nullptr;
 	UI_Button* supermutants_button = nullptr;
 	UI_Button* vault_button = nullptr;
+	UI_Button* back_button = nullptr;
 
 	UI_Label* ghouls_label = nullptr;
 	UI_Label* brotherhood_label = nullptr;

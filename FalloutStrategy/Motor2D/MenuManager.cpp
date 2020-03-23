@@ -241,27 +241,44 @@ void MenuManager::CreateSelectFaction()
 	//Images
 	select_faction_menu.background = (j1Image*)App->gui->CreateImage(-5, 0, Image, { 1900, 1531, 1290, 842 }, NULL, this);
 	select_faction_menu.ghouls = (j1Image*)App->gui->CreateImage(100, 300, Image, { 2492, 837, 168, 166 }, NULL, this);
-	select_faction_menu.vault = (j1Image*)App->gui->CreateImage(310, 300, Image, { 2492, 1014, 177, 140 }, NULL, this);
+	select_faction_menu.vault = (j1Image*)App->gui->CreateImage(310, 300, Image, { 2492, 1013, 309, 134 }, NULL, this);
 	select_faction_menu.brotherhood = (j1Image*)App->gui->CreateImage(550, 300, Image, { 2492, 1161, 155, 180 }, NULL, this);
 	select_faction_menu.supermutants = (j1Image*)App->gui->CreateImage(750, 300, Image, { 2492, 1354, 158, 158 }, NULL, this);
 
 	//Buttons
-	select_faction_menu.ghouls_button = (UI_Button*)App->gui->CreateButton(150, 200, button_select_ghoul, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
-	select_faction_menu.vault_button = (UI_Button*)App->gui->CreateButton(150, 300, button_select_vault, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
-	select_faction_menu.brotherhood_button = (UI_Button*)App->gui->CreateButton(150, 400, button_select_brotherhood, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
-	select_faction_menu.supermutants_button = (UI_Button*)App->gui->CreateButton(150, 500, button_select_supermutant, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
+	select_faction_menu.ghouls_button = (UI_Button*)App->gui->CreateButton(200, 200, button_select_ghoul, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
+	select_faction_menu.vault_button = (UI_Button*)App->gui->CreateButton(200, 300, button_select_vault, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
+	select_faction_menu.brotherhood_button = (UI_Button*)App->gui->CreateButton(200, 400, button_select_brotherhood, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
+	select_faction_menu.supermutants_button = (UI_Button*)App->gui->CreateButton(200, 500, button_select_supermutant, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
+	select_faction_menu.back_button = (UI_Button*)App->gui->CreateButton(120, 605, button_back_to_menu, { 1243,2014,73,78 }, { 1243,2102,73,79 }, { 1243,2188,73,71 }, NULL, this);
 
 	//Labels
-	select_faction_menu.ghouls_label = (UI_Label*)App->gui->CreateLabel(230, 215, ghouls_label, "GHOUL", NULL, this, NULL);
-	select_faction_menu.vault_label = (UI_Label*)App->gui->CreateLabel(228, 315, ghouls_label, "VAULT", NULL, this, NULL);
-	select_faction_menu.brotherhood_label = (UI_Label*)App->gui->CreateLabel(170, 415, ghouls_label, "BROTHERHOOD", NULL, this, NULL);
-	select_faction_menu.supermutants_label = (UI_Label*)App->gui->CreateLabel(164, 515, ghouls_label, "SUPERMUTANT", NULL, this, NULL);
+	select_faction_menu.ghouls_label = (UI_Label*)App->gui->CreateLabel(280, 215, ghouls_label, "GHOUL", NULL, this, NULL);
+	select_faction_menu.vault_label = (UI_Label*)App->gui->CreateLabel(278, 315, ghouls_label, "VAULT", NULL, this, NULL);
+	select_faction_menu.brotherhood_label = (UI_Label*)App->gui->CreateLabel(220, 415, ghouls_label, "BROTHERHOOD", NULL, this, NULL);
+	select_faction_menu.supermutants_label = (UI_Label*)App->gui->CreateLabel(214, 515, ghouls_label, "SUPERMUTANT", NULL, this, NULL);
+
+
 }
 
 void MenuManager::DestroySelectFaction()
 {
 
 	App->gui->Delete_Element(select_faction_menu.background);
+	App->gui->Delete_Element(select_faction_menu.ghouls);
+	App->gui->Delete_Element(select_faction_menu.vault);
+	App->gui->Delete_Element(select_faction_menu.brotherhood);
+	App->gui->Delete_Element(select_faction_menu.supermutants);
+
+	App->gui->Delete_Element(select_faction_menu.ghouls_button);
+	App->gui->Delete_Element(select_faction_menu.vault_button);
+	App->gui->Delete_Element(select_faction_menu.brotherhood_button);
+	App->gui->Delete_Element(select_faction_menu.supermutants_button);
+
+	App->gui->Delete_Element(select_faction_menu.ghouls_label);
+	App->gui->Delete_Element(select_faction_menu.vault_label);
+	App->gui->Delete_Element(select_faction_menu.brotherhood_label);
+	App->gui->Delete_Element(select_faction_menu.supermutants_label);
 
 }
 
