@@ -12,10 +12,10 @@ UI_Slider::UI_Slider(int x, int y, UI_Type type, SDL_Rect scrollbar, SDL_Rect bu
 {
 	texture = App->gui->GetAtlas();
 	
-	dimensions.w = button.w + 150;
+	dimensions.w = button.w + 265;
 	dimensions.h = button.h + 25;
 
-	//App->audio->Change_Volume_Music(get_valors());
+	App->audio->Change_Volume_Music(get_valors());
 
 	t = type;
 
@@ -30,8 +30,9 @@ UI_Slider::UI_Slider(int x, int y, UI_Type type, SDL_Rect scrollbar, SDL_Rect bu
 
 		Button_Scrollbar_volume = button;
 
+		
 		//actual_pos_v = ((App->audio->Get_Music_Volume()*(max_v - initial_v)) / 128) + initial_v;
-		//App->audio->Change_Volume_Music(get_valors());
+		App->audio->Change_Volume_Music(get_valors());
 	}
 	if (t == Slider_fx) {
 		
@@ -44,7 +45,7 @@ UI_Slider::UI_Slider(int x, int y, UI_Type type, SDL_Rect scrollbar, SDL_Rect bu
 
 		Button_Scrollbar_fx = button;
 		//actual_pos_f = ((App->audio->Get_Music_Volume()*(max_f - initial_f)) / 128) + initial_f;
-		//App->audio->Change_Volume_FX(get_valors());
+		App->audio->Change_Volume_FX(get_valors());
 	
 	}
 
@@ -71,12 +72,13 @@ bool UI_Slider::Update(float dt)
 			Mouse_Is_Moving();
 
 			if (t == Slider_music) {
-				//App->audio->Change_Volume_Music(get_valors());
+				App->audio->Change_Volume_Music(get_valors());
+				
 			}
 			if (t == Slider_fx) {
-				//App->audio->Change_Volume_FX(get_valors());
+				App->audio->Change_Volume_FX(get_valors());
 			}
-	
+
 		}
 		
 	}
@@ -95,7 +97,7 @@ bool UI_Slider::Update(float dt)
 
 			if (actual_pos_v > initial_v) {
 
-				//App->audio->Change_Volume_Music(get_valors());
+				App->audio->Change_Volume_Music(get_valors());
 				actual_pos_v -= 10;
 
 			}
@@ -107,7 +109,7 @@ bool UI_Slider::Update(float dt)
 			if (actual_pos_v < initial_v + 178) {
 
 				actual_pos_v += 10;
-				//App->audio->Change_Volume_Music(get_valors());
+				App->audio->Change_Volume_Music(get_valors());
 
 			}
 
@@ -121,7 +123,7 @@ bool UI_Slider::Update(float dt)
 
 			if (actual_pos_f > initial_f) {
 
-				//App->audio->Change_Volume_FX(get_valors());
+				App->audio->Change_Volume_FX(get_valors());
 				actual_pos_f -= 10;
 
 			}
@@ -133,7 +135,7 @@ bool UI_Slider::Update(float dt)
 			if (actual_pos_f < initial_f + 178) {
 
 				actual_pos_f += 10;
-				//App->audio->Change_Volume_FX(get_valors());
+				App->audio->Change_Volume_FX(get_valors());
 
 			}
 
