@@ -33,7 +33,7 @@ public:
 
 	iPoint new_mouse_pos_music;
 	iPoint new_mouse_pos_fx;
-	//float mouse_position_in_button;
+	float mouse_position_in_button;
 
 private:
 	
