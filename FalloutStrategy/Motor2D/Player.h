@@ -20,7 +20,7 @@ public:
 	j1Entity* selected_entity;
 	bool border_scroll;
 private:
-
+	float mouse_speed_multiplier;
 };
 
 

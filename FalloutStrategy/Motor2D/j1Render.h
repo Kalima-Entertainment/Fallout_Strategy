@@ -5,6 +5,8 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
+struct SDL_Texture;
+
 class j1Render : public j1Module
 {
 public:
@@ -54,6 +56,7 @@ public:
 	SDL_Rect		viewport;
 	SDL_Color		background;
 
+	SDL_Texture*	debug_tex;
 	bool			debug;
 };
 

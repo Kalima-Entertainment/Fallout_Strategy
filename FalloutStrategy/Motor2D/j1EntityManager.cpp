@@ -136,11 +136,6 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 		}
 	}
 
-	//Water tank
-	//reference_entities[NO_FACTION][0] = CreateEntity(NO_FACTION, RESOURCE, 0, 0);
-	//reference_entities[NO_FACTION][1] = CreateEntity(NO_FACTION, RESOURCE, 0, 0);
-	//reference_entities[NO_FACTION][2] = CreateEntity(NO_FACTION, RESOURCE, 0, 0);
-
 	ret = LoadReferenceEntityData();
 
 	return ret;
@@ -154,7 +149,7 @@ bool j1EntityManager::Start()
 	//load all textures
 
 	//Vault Dwellers
-	//reference_entities[VAULT][MELEE]->LoadAnimations("VaultDwellers/Vault_Dweller_Melee");
+	reference_entities[VAULT][MELEE]->LoadAnimations("VaultDwellers/Vault_Dweller_Melee");
 	reference_entities[VAULT][RANGED]->LoadAnimations("VaultDwellers/Vault_Dweller_Ranged");
 	reference_entities[VAULT][GATHERER]->LoadAnimations("VaultDwellers/Vault_Dweller_Gatherer");
 	//reference_entities[VAULT][BASE]->LoadAnimations("VaultDwellers/Vault_Dweller_Base");
@@ -179,9 +174,6 @@ bool j1EntityManager::Start()
 	reference_entities[GHOUL][BASE]->LoadAnimations("Ghouls/Ghouls_Buildings");
 	//reference_entities[GHOUL][BARRACK]->LoadAnimations("Ghouls/Ghouls_Buildings");
 	//reference_entities[GHOUL][BARRACK]->texture = reference_entities[GHOUL][BASE]->texture;
-
-	debug_tex = App->tex->Load("maps/meta.png");
-	selected_unit_tex = App->tex->Load("maps/meta2.png");
 
 	return ret;
 }
@@ -235,11 +227,11 @@ bool j1EntityManager::PostUpdate()
 		if (App->player->selected_entity->is_dynamic == true) {
 			//Selected entity is a unit
 			tex_position = App->map->MapToWorld(App->player->selected_entity->current_tile.x, App->player->selected_entity->current_tile.y);
-			App->render->Blit(selected_unit_tex, tex_position.x, tex_position.y, &tex_rect);
+			App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tex_rect);
 		}else { //Selected entity is a building
 			for (int i = 0; i < 9; i++) {
 				tex_position = App->map->MapToWorld(App->player->selected_entity->positions[i].x, App->player->selected_entity->positions[i].y);
-				App->render->Blit(selected_unit_tex, App->player->selected_entity->positions[i].x, App->player->selected_entity->positions[i].y, &tex_rect);
+				App->render->Blit(App->render->debug_tex, App->player->selected_entity->positions[i].x, App->player->selected_entity->positions[i].y, &tex_rect);
 			}			
 		}		
 	}

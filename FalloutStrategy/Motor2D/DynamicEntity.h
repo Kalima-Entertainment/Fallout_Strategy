@@ -3,6 +3,9 @@
 #include "j1Entity.h"
 #include "j1Timer.h"
 
+struct ResourceBuilding;
+enum class Resource;
+
 class DynamicEntity : public j1Entity
 {
 public:
@@ -16,6 +19,7 @@ public:
 	void PathfindToPosition(iPoint target);
 	void Move();
 	void Attack();
+	void Gather();
 
 public:
 	int mov_speed;
@@ -24,7 +28,10 @@ public:
 	iPoint next_tile;
 
 	int range;
+	int resource_collected;
 	j1Entity* target_entity;
+	ResourceBuilding* resource_building;
+	Resource resource_type;
 	j1Timer attack_timer;
 	float attack_time;
 

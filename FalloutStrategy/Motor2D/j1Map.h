@@ -6,6 +6,13 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
+#define TILE_SIZE 64
+#define HALF_TILE 32
+#define MODULE_LENGTH 75
+#define MAP_LENGTH 150
+
+struct ResourceBuilding;
+
 // ----------------------------------------------------
 struct Properties
 {
@@ -138,7 +145,9 @@ public:
 	fPoint fMapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
 	iPoint fWorldToMap(float x, float y) const;
+	iPoint IsometricWorldToMap(int x, int y) const;
 	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
+	bool AddResourceBuildingToMap(iPoint first_tile_position, int width, int height, ResourceBuilding* building);
 
 private:
 
@@ -154,7 +163,7 @@ private:
 public:
 
 	MapData data;
-
+	ResourceBuilding* resource_tiles[MAP_LENGTH][MAP_LENGTH];
 private:
 
 	pugi::xml_document	map_file;

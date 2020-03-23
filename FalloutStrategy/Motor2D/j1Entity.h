@@ -90,6 +90,7 @@ public:
 	int current_health;
 	int max_health;
 	int damage;
+	int storage_capacity = 100;
 
 	j1Entity* reference_entity;
 	EntityType type;
@@ -97,8 +98,7 @@ public:
 	Collider* collider;
 	Collider* last_collider;
 	
-	Animation animations[MAX_ANIMATIONS][6];
-	Animation idle[6];
+	Animation animations[MAX_ANIMATIONS][7];
 	Animation* current_animation;
 	Direction direction;
 

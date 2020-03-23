@@ -13,6 +13,7 @@
 Player::Player() : j1Module() {
 	selected_entity = nullptr;
 	border_scroll = false;
+	mouse_speed_multiplier = 1.5f;
 }
 
 Player::~Player() {}
@@ -58,8 +59,9 @@ bool Player::PreUpdate() {
 		selected_spot = App->render->ScreenToWorld(tx, ty);
 		selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
 
-		/*
+		
 		LOG("Actual Map Position is X: %i and Y: %i", selected_spot.x, selected_spot.y);
+		/*
 		if ((selected_entity != nullptr)&&(selected_spot != selected_entity->current_tile))
 		{
 			//choose a tile for the entity to go to
@@ -95,10 +97,12 @@ bool Player::PreUpdate() {
 		j1Entity* target;
 		target = App->entities->FindEntityByTile(selected_spot);
 
+		//if we hadn't any entity selected
 		if (selected_entity == nullptr)
 		{
 			selected_entity = target;
 		}
+		//if we had one
 		else
 		{
 			if (selected_entity->is_dynamic)
@@ -108,13 +112,6 @@ bool Player::PreUpdate() {
 				dynamic_entity->PathfindToPosition(selected_spot);
 				dynamic_entity->target_tile = selected_spot;
 				dynamic_entity->state = WALK;
-				
-				StaticEntity* static_entity;
-				static_entity = (StaticEntity*)selected_entity;
-				dynamic_entity->PathfindToPosition(selected_spot);
-				dynamic_entity->target_tile = selected_spot;
-				dynamic_entity->state = IDLE;
-				
 
 				if (target != nullptr) {
 					//target is a dynamic entity
@@ -122,13 +119,30 @@ bool Player::PreUpdate() {
 						dynamic_entity->target_entity = target;
 					}
 					//target is a static entity
-					else{
-						static_entity->target_entity = target;
+					else {
+						dynamic_entity->target_entity = target;
 					}
 				}
-				else{
+				else {					
 					dynamic_entity->target_entity = nullptr;
+					ResourceBuilding* resource_building;
+					resource_building = App->map->resource_tiles[selected_spot.x][selected_spot.y];
+					if (resource_building != nullptr) {
+						dynamic_entity->resource_building = resource_building;
+					}
+					else
+					{
+						dynamic_entity->resource_building = nullptr;
+					}
 				}
+			}
+			else
+			{
+				StaticEntity* static_entity;
+				static_entity = (StaticEntity*)selected_entity;
+				//dynamic_entity->PathfindToPosition(selected_spot);
+				//dynamic_entity->target_tile = selected_spot;
+				//dynamic_entity->state = IDLE;
 			}
 		}
 	}
@@ -136,6 +150,13 @@ bool Player::PreUpdate() {
 	//deselect entity
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
 		selected_entity = nullptr;
+	}
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_REPEAT) {
+		int x, y;
+		App->input->GetMouseMotion(x, y);
+		App->render->camera.x += x * mouse_speed_multiplier;
+		App->render->camera.y += y * mouse_speed_multiplier;
 	}
 
 	return ret;
@@ -152,7 +173,6 @@ bool Player::Update(float dt) {
 
 	if (border_scroll)
 	{
-
 		if (x < 40) App->render->camera.x += floor(600.0f * dt);
 		if (x > width - 40) App->render->camera.x -= floor(600.0f * dt);
 		if (y < 40) App->render->camera.y += floor(600.0f * dt);

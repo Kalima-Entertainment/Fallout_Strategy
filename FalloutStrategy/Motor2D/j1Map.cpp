@@ -6,6 +6,7 @@
 #include "j1Map.h"
 #include <math.h>
 #include "j1EntityManager.h"
+#include "j1Entity.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -53,7 +54,24 @@ void j1Map::Draw()
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = MapToWorld(x, y);
 
-					App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+					App->render->Blit(tileset->texture, pos.x + tileset->offset_x, pos.y + tileset->offset_y, &r);
+				}
+			}
+		}
+	}
+
+	//debug resource buildings
+	if (App->render->debug)
+	{
+		for (int i = 0; i < MAP_LENGTH; i++)
+		{
+			for (int j = 0; j < MAP_LENGTH; j++)
+			{
+				if (resource_tiles[i][j] != nullptr)
+				{
+					iPoint position = MapToWorld(i, j);
+					SDL_Rect debug_rect = { 0,0,64,64 };
+					App->render->Blit(App->render->debug_tex, position.x, position.y,&debug_rect);
 				}
 			}
 		}
@@ -176,6 +194,13 @@ iPoint j1Map::fWorldToMap(float x, float y) const
 	}
 
 	return ret;
+}
+
+iPoint j1Map::IsometricWorldToMap(int x, int y) const {
+	iPoint map_position;
+	map_position.x = x / (data.tile_width * 0.5f);
+	map_position.y = y / data.tile_height;
+	return map_position;
 }
 
 SDL_Rect TileSet::GetTileRect(int id) const
@@ -505,7 +530,6 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 	SDL_Rect rect = { 0,0,0,0 };
 	objectgroup->name = node.attribute("name").as_string();
 	uint i = 0u;
-	p2SString type;
 
 	if (object_node == NULL)
 	{
@@ -517,30 +541,57 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 	{
 		while (object_node != nullptr)
 		{
+			p2SString object_name(object_node.attribute("name").as_string());
 			pugi::xml_node properties = object_node.child("properties");
 			pugi::xml_node property = properties.child("property");
 
-			ResourceBuilding* building = new ResourceBuilding();
+			int x = object_node.attribute("x").as_int();
+			int y = object_node.attribute("y").as_int();
+			int width = object_node.attribute("width").as_int() / (HALF_TILE)+1;
+			int height = object_node.attribute("height").as_int() / (HALF_TILE)+1;
+			iPoint first_tile_position = { x,y };
 
-			while (property != nullptr)
-			{
-				p2SString property_name(property.attribute("name").as_string());
-				if (property_name == "Nuka-Cola") {
-					building->resource_type = Resource::CAPS;
-					building->quantity = property.attribute("value").as_int();
+			if (object_name == "Resources") {
+				ResourceBuilding* building = new ResourceBuilding();
+
+				while (property != nullptr)
+				{
+					p2SString property_name(property.attribute("name").as_string());
+
+					if (property_name == "Nuka-Cola") {
+						building->resource_type = Resource::CAPS;
+						building->quantity = property.attribute("value").as_int();
+					}
+					else if (property_name == "Water") {
+						building->resource_type = Resource::WATER;
+						building->quantity = property.attribute("value").as_int();
+					}
+					property = property.next_sibling();
 				}
-				else if (property_name == "Water") {
-					building->resource_type = Resource::WATER;
-					building->quantity = property.attribute("value").as_int();
-				}
-				property = property.next_sibling();
+
+				AddResourceBuildingToMap(first_tile_position, width, height, building);
+				App->entities->resource_buildings.push_back(building);
 			}
-			App->entities->resource_buildings.push_back(building);
-
+			else if (object_name == "Static") {
+				//create building
+				//add tiles
+				p2SString object_type(object_node.attribute("type").as_string());
+				EntityType type = NO_TYPE;
+				if (object_type == "Base") {
+					type = BASE;
+				}
+				else if (object_type == "Barrack") {
+					type = BARRACK;
+				}
+				else if (object_type == "Laboratory")
+				{
+					type = LABORATORY;
+				}
+			}
+			
 			object_node = object_node.next_sibling();
 		}
 	}
-
 	return ret;
 }
 
@@ -612,6 +663,22 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 		ret = true;
 
 		break;
+	}
+
+	return ret;
+}
+
+bool j1Map::AddResourceBuildingToMap(iPoint first_tile_position, int width, int height, ResourceBuilding* building) {
+	bool ret = true;
+
+	first_tile_position = IsometricWorldToMap(first_tile_position.x, first_tile_position.y);
+
+	for (int i = 0; i < width; i++)
+	{
+		for (int j = 0; j < height; j++)
+		{
+			resource_tiles[first_tile_position.x + i][first_tile_position.y + j] = building;
+		}
 	}
 
 	return ret;
