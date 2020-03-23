@@ -269,18 +269,18 @@ void MenuManager::CreatePauseMenu()
 {
 
 	//Images
-	pause_menu.panel = (j1Image*)App->gui->CreateImage(434, 213, Image, { 887, 0, 413, 294 }, NULL, this);
+	pause_menu.panel = (j1Image*)App->gui->CreateImage(434, 213, Image, { 2637, 41, 334, 313 }, NULL, this);
 
 
 	//Buttons
-	pause_menu.resume_button = (UI_Button*)App->gui->CreateButton(450, 240, resume_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
-	pause_menu.settings_button = (UI_Button*)App->gui->CreateButton(450, 330, button_settings_pause, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
-	pause_menu.exit_button = (UI_Button*)App->gui->CreateButton(450, 420, button_exit, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
+	pause_menu.resume_button = (UI_Button*)App->gui->CreateButton(480, 240, resume_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
+	pause_menu.settings_button = (UI_Button*)App->gui->CreateButton(480, 330, button_settings_pause, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
+	pause_menu.exit_button = (UI_Button*)App->gui->CreateButton(480, 420, button_exit, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
 
 	//Labels
-	pause_menu.resume_label = (UI_Label*)App->gui->CreateLabel(517, 258, RESUME, "RESUME", NULL, this, NULL);
-	pause_menu.settings_label = (UI_Label*)App->gui->CreateLabel(495, 348, SETTINGS, "SETTINGS", NULL, this, NULL);
-	pause_menu.exit_label = (UI_Label*)App->gui->CreateLabel(537, 438, EXIT, "EXIT", NULL, this, NULL);
+	pause_menu.resume_label = (UI_Label*)App->gui->CreateLabel(547, 258, RESUME, "RESUME", NULL, this, NULL);
+	pause_menu.settings_label = (UI_Label*)App->gui->CreateLabel(525, 348, SETTINGS, "SETTINGS", NULL, this, NULL);
+	pause_menu.exit_label = (UI_Label*)App->gui->CreateLabel(567, 438, EXIT, "EXIT", NULL, this, NULL);
 
 
 }
