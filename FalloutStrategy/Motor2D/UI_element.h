@@ -29,6 +29,7 @@ enum UI_Type {
 	button_cristian,
 	button_load_game,
 	button_settings,
+	button_settings_pause,
 	button_credits,
 	button_exit,
 	Button_settings,
@@ -52,6 +53,7 @@ enum UI_Type {
 	button_cap,
 	button_mute,
 	button_back,
+	button_back_pause,
 
 	Label,
 	Label_timer,
@@ -67,6 +69,11 @@ enum UI_Type {
 	text_music_volume,
 	text_fps,
 	ghouls_label,
+
+	resume_button,
+	RESUME,
+	SETTINGS,
+	EXIT,
 
 	Heart,
 	Timer,

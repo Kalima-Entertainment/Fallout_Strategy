@@ -13,6 +13,7 @@
 #include "j1EntityManager.h"
 #include "j1Entity.h"
 #include "DynamicEntity.h"
+#include "MenuManager.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -89,7 +90,24 @@ bool j1Scene::PreUpdate()
 bool j1Scene::Update(float dt)
 {
 	// Gui ---
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
+		
+		if (create == true) {
+			
+			App->menu_manager->DestroyPauseMenu();
+			create = false;
+			
+		}
+		
+		else if (create == false) {
+			
+			App->menu_manager->CreatePauseMenu();
+			create = true;
+
+		}
 	
+	}
+
 	// -------
 	if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		App->LoadGame("save_game.xml");
@@ -179,8 +197,8 @@ bool j1Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
+	/*if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		ret = false;*/
 
 	return ret;
 }

@@ -54,7 +54,7 @@ public:
 
 public:
 	SDL_Texture* debug_tex;
-
+	bool create = false;
 	StatesMenu menu_state = StatesMenu::NONE;
 
 private:

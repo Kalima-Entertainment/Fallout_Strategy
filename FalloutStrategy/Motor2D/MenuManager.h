@@ -27,11 +27,16 @@ struct UI_main_menu {
 	UI_Button* credits_button = nullptr;
 	UI_Button* exit_button = nullptr;
 	
-	
+};
+
+struct UI_settings {
+
 	UI_Label* fps = nullptr;
 	UI_Label* fx_volume = nullptr;
 	UI_Label* music_volume = nullptr;
+	UI_Label* settings_text = nullptr;
 
+	j1Image* background = nullptr;
 	j1Image* panel_volume = nullptr;
 	j1Image* mute = nullptr;
 	j1Image* panel_cap = nullptr;
@@ -40,7 +45,7 @@ struct UI_main_menu {
 	UI_Slider* volume_music_slider = nullptr;
 	UI_Button* left_music_button = nullptr;
 	UI_Button* right_music_button = nullptr;
-	
+
 	UI_Slider* volume_fx_slider = nullptr;
 	UI_Button* left_fx_button = nullptr;
 	UI_Button* right_fx_button = nullptr;
@@ -48,6 +53,7 @@ struct UI_main_menu {
 	UI_Button* cap_button = nullptr;
 	UI_Button* mute_button = nullptr;
 	UI_Button* back_button = nullptr;
+
 };
 
 struct UI_credits {
@@ -96,6 +102,20 @@ struct UI_select_faction {
 	UI_Label* vault_label = nullptr;
 };
 
+struct UI_pause_menu {
+
+	j1Image* panel = nullptr;
+
+	UI_Button* resume_button = nullptr;
+	UI_Button* settings_button = nullptr;
+	UI_Button* exit_button = nullptr;
+
+	UI_Label* resume_label = nullptr;
+	UI_Label* settings_label = nullptr;
+	UI_Label* exit_label = nullptr;
+
+};
+
 class MenuManager :public j1Module {
 
 public:
@@ -116,12 +136,18 @@ public:
 	void DestroyAllCollaboratorsPictures();
 	void CreateSelectFaction();
 	void DestroySelectFaction();
+	void CreatePauseMenu();
+	void DestroyPauseMenu();
+	void CreatePauseSettings();
+	void DestroyPauseSettings();
 
 public:
 
-	UI_main_menu	main_menu;
-	UI_credits	credits_menu;
-	UI_select_faction select_faction_menu;
+	UI_main_menu		main_menu;
+	UI_credits			credits_menu;
+	UI_select_faction	select_faction_menu;
+	UI_settings			settings_menu;
+	UI_pause_menu		pause_menu;
 
 	char collaborator = 'M';
 	

@@ -200,18 +200,7 @@ bool UI_Button::Update(float dt)
 
 			if (t == Button_close) {
 				LOG("HOLA");
-				
-				
-				
-			}
-
-			if (t == Button_menu) {
-				
-				
-			}
-
-			if (t == Button_close_game) {
-				
+							
 			}
 
 			if (t == button_github_credits) 
@@ -238,9 +227,28 @@ bool UI_Button::Update(float dt)
 				App->audio->PlayFx(click_fx, 0);
 			}
 
+			if (t == button_settings_pause) {
+
+				App->menu_manager->DestroyPauseMenu();
+				App->menu_manager->CreatePauseSettings();
+				App->audio->PlayFx(click_fx, 0);
+			}
+
 			if (t == button_back) {
 				App->menu_manager->DestroySettings();
 				App->menu_manager->CreateMainMenu();
+				App->audio->PlayFx(back_fx, 0);
+			}
+
+			if (t == button_back_pause) {
+				App->menu_manager->DestroyPauseSettings();
+				App->menu_manager->CreatePauseMenu();
+				App->audio->PlayFx(back_fx, 0);
+			}
+
+			if (t == resume_button) {
+				App->menu_manager->DestroyPauseMenu();
+				App->scene->create = false;
 				App->audio->PlayFx(back_fx, 0);
 			}
 
