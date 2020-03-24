@@ -118,15 +118,8 @@ bool Player::PreUpdate() {
 				dynamic_entity->target_tile = selected_spot;
 				dynamic_entity->state = WALK;
 
-				if (target != nullptr) {
-					//target is a dynamic entity
-					if (target->is_dynamic){
-						dynamic_entity->target_entity = target;
-					}
-					//target is a static entity
-					else {
-						dynamic_entity->target_entity = target;
-					}
+				if (target != nullptr) {					
+					dynamic_entity->target_entity = target;					
 				}
 				else {					
 					dynamic_entity->target_entity = nullptr;
@@ -148,6 +141,9 @@ bool Player::PreUpdate() {
 				//dynamic_entity->PathfindToPosition(selected_spot);
 				//dynamic_entity->target_tile = selected_spot;
 				//dynamic_entity->state = IDLE;
+
+				if (target != nullptr) 
+					static_entity->target_entity = target;	
 			}
 		}
 	}

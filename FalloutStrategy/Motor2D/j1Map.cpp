@@ -7,6 +7,7 @@
 #include <math.h>
 #include "j1EntityManager.h"
 #include "j1Entity.h"
+#include "StaticEntity.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -574,19 +575,27 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 			}
 			else if (object_name == "Static") {
 				//create building
+				StaticEntity* building;
+				iPoint size;
+
 				//add tiles
 				p2SString object_type(object_node.attribute("type").as_string());
 				EntityType type = NO_TYPE;
 				if (object_type == "Base") {
 					type = BASE;
+					size = { 3,3 };
 				}
 				else if (object_type == "Barrack") {
 					type = BARRACK;
+					size = { 3,3 };
 				}
 				else if (object_type == "Laboratory")
 				{
 					type = LABORATORY;
+					size = { 3,3 };
 				}
+
+				building = (StaticEntity*)App->entities->CreateBuilding(GHOUL, type, { 0,0 }, size);
 			}
 			
 			object_node = object_node.next_sibling();
