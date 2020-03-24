@@ -38,7 +38,8 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-	DynamicEntity* test_melee, *test_enemy, *test_ranged, *test_gatherer;
+	//DynamicEntity* test_melee, *test_enemy, *test_ranged, *test_gatherer;
+	DynamicEntity* vault[3], * brotherhood[3], * ghoul[3], *mutant[3];
 	StaticEntity* test_base;
 
 	//if(App->map->Load("iso_walk.tmx") == true)
@@ -52,12 +53,27 @@ bool j1Scene::Start()
 		RELEASE_ARRAY(data);
 	}
 
-	test_melee = (DynamicEntity*)App->entities->CreateEntity(VAULT, MELEE, 14, 6);
-	test_ranged = (DynamicEntity*)App->entities->CreateEntity(VAULT, RANGED, 15, 6);
-	test_gatherer = (DynamicEntity*)App->entities->CreateEntity(VAULT, GATHERER, 36, 6);
+	vault[0] = (DynamicEntity*)App->entities->CreateEntity(VAULT, MELEE, 14, 6);
+	vault[1] = (DynamicEntity*)App->entities->CreateEntity(VAULT, RANGED, 15, 6);
+	vault[2] = (DynamicEntity*)App->entities->CreateEntity(VAULT, GATHERER, 16, 6);
 
-	test_enemy = (DynamicEntity*)App->entities->CreateEntity(MUTANT, RANGED, 14, 2);
-	test_enemy->direction = BOTTOM_LEFT;
+	ghoul[0] = (DynamicEntity*)App->entities->CreateEntity(GHOUL, MELEE, 14, 3);
+	ghoul[0]->direction = BOTTOM_LEFT;
+	ghoul[1] = (DynamicEntity*)App->entities->CreateEntity(GHOUL, RANGED, 15, 3);
+	ghoul[1]->direction = BOTTOM_LEFT;
+	ghoul[2] = (DynamicEntity*)App->entities->CreateEntity(GHOUL, GATHERER, 16, 3);
+	ghoul[2]->direction = BOTTOM_LEFT;
+
+	mutant[0] = (DynamicEntity*)App->entities->CreateEntity(MUTANT, MELEE, 18, 3);
+	mutant[0]->direction = BOTTOM_LEFT;
+	mutant[1] = (DynamicEntity*)App->entities->CreateEntity(MUTANT, RANGED, 19, 3);
+	mutant[1]->direction = BOTTOM_LEFT;
+	mutant[2] = (DynamicEntity*)App->entities->CreateEntity(MUTANT, GATHERER, 20, 3);
+	mutant[2]->direction = BOTTOM_LEFT;
+
+	brotherhood[0] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, MELEE, 18, 6);			
+	brotherhood[1] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, RANGED, 19, 6);				
+	brotherhood[2] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, GATHERER, 20, 6);
 
 	iPoint initial_pos = { 0,0 };
 	test_base = (StaticEntity*)App->entities->CreateBuilding(GHOUL, BASE, initial_pos, 3, 3);

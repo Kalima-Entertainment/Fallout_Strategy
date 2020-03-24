@@ -399,8 +399,37 @@
   </tile>
  </tileset>
  <layer name="Tile Layer 1" width="6" height="5">
-  <data encoding="base64">
-   AQAAACEAAABBAAAAYQAAAIEAAAChAAAADgAAAC4AAABOAAAAbgAAAI4AAACuAAAAGAAAADgAAABYAAAAeAAAAJgAAAC4AAAA4QAAAAEBAAAhAQAAQQEAAGEBAACBAQAA6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  <data>
+   <tile gid="1"/>
+   <tile gid="33"/>
+   <tile gid="65"/>
+   <tile gid="97"/>
+   <tile gid="129"/>
+   <tile gid="161"/>
+   <tile gid="14"/>
+   <tile gid="46"/>
+   <tile gid="78"/>
+   <tile gid="110"/>
+   <tile gid="142"/>
+   <tile gid="174"/>
+   <tile gid="24"/>
+   <tile gid="56"/>
+   <tile gid="88"/>
+   <tile gid="120"/>
+   <tile gid="152"/>
+   <tile gid="184"/>
+   <tile gid="225"/>
+   <tile gid="257"/>
+   <tile gid="289"/>
+   <tile gid="321"/>
+   <tile gid="353"/>
+   <tile gid="385"/>
+   <tile gid="232"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
   </data>
  </layer>
 </map>
