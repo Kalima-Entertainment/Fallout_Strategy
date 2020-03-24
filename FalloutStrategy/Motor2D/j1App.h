@@ -21,6 +21,7 @@ class j1Gui;
 class j1EntityManager;
 class j1Collision;
 class Player;
+class j1Minimap;
 
 class j1App
 {
@@ -98,6 +99,7 @@ public:
 	j1Collision	*		collision = NULL;
 	j1EntityManager*	entities = NULL;
 	Player*				player = NULL;
+	j1Minimap*			minimap = NULL;
 
 	bool pause;
 private:

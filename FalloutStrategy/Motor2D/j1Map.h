@@ -149,6 +149,8 @@ public:
 	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
 	bool AddBuildingToMap(iPoint first_tile_position, int width, int height, Building* building);
 
+	TileSet* GetTilesetFromTileId(int id) const;
+
 private:
 
 	bool LoadMap();
@@ -158,12 +160,11 @@ private:
 	bool LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup);
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
 
-	TileSet* GetTilesetFromTileId(int id) const;
-
 public:
 
 	MapData data;
 	Building* building_tiles[MAP_LENGTH][MAP_LENGTH];
+
 private:
 
 	pugi::xml_document	map_file;
