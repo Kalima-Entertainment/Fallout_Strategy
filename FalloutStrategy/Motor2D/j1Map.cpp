@@ -71,8 +71,17 @@ void j1Map::Draw()
 				if (building_tiles[i][j] != nullptr)
 				{
 					iPoint position = MapToWorld(i, j);
-					SDL_Rect debug_rect = { 0,0,64,64 };
-					App->render->Blit(App->render->debug_tex, position.x, position.y,&debug_rect);
+					SDL_Rect resource_debug_rect = { 0,0,64,64 };
+					SDL_Rect static_debug_rect = { 256,0,64,64 };
+					if (building_tiles[i][j]->is_static)
+					{
+						App->render->Blit(App->render->debug_tex, position.x, position.y, &static_debug_rect);
+					}
+					else 
+					{
+						App->render->Blit(App->render->debug_tex, position.x, position.y, &resource_debug_rect);
+					}
+
 				}
 			}
 		}
@@ -572,6 +581,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 				}
 
 				building->resource_building = resource_building;
+				building->is_static = false;
 				AddBuildingToMap(first_tile_position, width, height, building);
 				App->entities->resource_buildings.push_back(resource_building);
 			}
@@ -599,6 +609,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 
 				static_entity = (StaticEntity*)App->entities->CreateBuilding(GHOUL, type, { 0,0 }, size);
 				building->static_entity = static_entity;
+				building->is_static = true;
 				AddBuildingToMap(first_tile_position, width, height, building);
 			}
 			

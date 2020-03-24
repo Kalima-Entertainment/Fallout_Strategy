@@ -32,6 +32,7 @@ struct ResourceBuilding {
 union Building {
 	ResourceBuilding* resource_building;
 	StaticEntity* static_entity;
+	bool is_static = true;
 };
 
 class j1EntityManager : public j1Module
