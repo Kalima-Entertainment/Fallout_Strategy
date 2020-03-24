@@ -590,24 +590,29 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 				StaticEntity* static_entity;
 				iPoint size;
 
+				//Adjust coordinates to tiles
+				x /= 32;
+				y /= 32;
+
 				//add tiles
 				p2SString object_type(object_node.attribute("type").as_string());
 				EntityType type = NO_TYPE;
+
 				if (object_type == "Base") {
 					type = BASE;
-					size = { 3,3 };
+					x -= 10;
+					y -= 5;
 				}
 				else if (object_type == "Barrack") {
 					type = BARRACK;
-					size = { 3,3 };
+					x -= 12;
+					y -= 6;
 				}
-				else if (object_type == "Laboratory")
-				{
+				else if (object_type == "Laboratory") {
 					type = LABORATORY;
-					size = { 3,3 };
 				}
 
-				static_entity = (StaticEntity*)App->entities->CreateBuilding(GHOUL, type, { 0,0 }, size);
+				static_entity = (StaticEntity*)App->entities->CreateEntity(GHOUL, type, x,y);
 				building->static_entity = static_entity;
 				building->is_static = true;
 				AddBuildingToMap(first_tile_position, width, height, building);

@@ -78,50 +78,6 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	return entity;
 }
 
-j1Entity* j1EntityManager::CreateBuilding(Faction faction, EntityType type, iPoint initial_position, iPoint size) {
-	j1Entity* building = nullptr;
-
-	if ((type == BASE) || (type == LABORATORY) || (type == BARRACK))
-	{
-		building = new StaticEntity(faction, type);
-		building->is_dynamic = false;
-
-		building->reference_entity = reference_entities[faction][type];
-
-		if (building != NULL)
-		{
-			building->faction = faction;
-
-			int counter = 0;
-			for (int i = 1; i <= size.x; i++) {
-				for (int j = 1; j <= size.y; j++) {
-					//Add current position to current_tile
-					building->current_tile.x = initial_position.x;
-					building->current_tile.y = initial_position.y;
-
-					//Add tile to building positions array
-					building->positions[counter] = App->map->fMapToWorld(building->current_tile.x, building->current_tile.y);
-
-					//Update initial_position to current_position
-					initial_position.y = initial_position.y + 1;
-
-					counter++;
-				}
-				initial_position.x = initial_position.x + 1;
-				initial_position.y = 0;
-			}
-
-			if (building->reference_entity != nullptr) {
-				entities.push_back(building);
-				total_entities++;
-				building->LoadReferenceData();
-			}
-		}
-	}
-
-	return building;
-}
-
 bool j1EntityManager::Awake(pugi::xml_node& config){
 	bool ret = true;
 
