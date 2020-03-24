@@ -101,28 +101,7 @@ bool j1Scene::PreUpdate()
 
 // Called each loop iteration
 bool j1Scene::Update(float dt)
-{
-	// Gui ---
-	
-	// -------
-	if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
-		App->LoadGame("save_game.xml");
-
-	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
-		App->SaveGame("save_game.xml");
-
-	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		App->render->camera.y += floor(200.0f * dt);
-
-	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		App->render->camera.y -= floor(200.0f * dt);
-
-	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		App->render->camera.x += floor(200.0f * dt);
-
-	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		App->render->camera.x -= floor(200.0f * dt);
-
+{	
 	App->map->Draw();
 
 	int x, y;
@@ -176,8 +155,6 @@ bool j1Scene::Update(float dt)
 	}
 	*/
 
-
-
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
 		Mix_HaltChannel(-1);
@@ -202,6 +179,7 @@ bool j1Scene::Update(float dt)
 		Mix_SetPosition(4, 90, 200);
 		App->audio->PlayFx(4, App->audio->explosion, 0);
 	}
+
 	/*
 	Mix_HaltChannel(-1);
 	int distance = (App->render->camera.x * App->render->camera.x + App->render->camera.y * App->render->camera.y); // cause remember, inverse square law
@@ -221,6 +199,7 @@ bool j1Scene::Update(float dt)
 	Mix_SetPosition(5, angle, volume);
 	App->audio->PlayFx(5, App->audio->explosion, 0);
 	*/
+
 	return true;
 }
 

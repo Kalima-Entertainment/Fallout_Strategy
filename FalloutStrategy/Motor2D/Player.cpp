@@ -14,6 +14,9 @@ Player::Player() : j1Module() {
 	selected_entity = nullptr;
 	border_scroll = false;
 	mouse_speed_multiplier = 1.5f;
+	caps = 0;
+	food = 0;
+	water = 0;
 }
 
 Player::~Player() {}
@@ -28,6 +31,9 @@ bool Player::PreUpdate() {
 	iPoint selected_spot;
 
 	//debug keys
+
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+		LOG("Water %i Caps: %i Food: %i", water, caps, food);
 
 	//enable/disable debug mode
 	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
@@ -59,8 +65,7 @@ bool Player::PreUpdate() {
 		selected_spot = App->render->ScreenToWorld(tx, ty);
 		selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
 
-		
-		LOG("Actual Map Position is X: %i and Y: %i", selected_spot.x, selected_spot.y);
+		//LOG("Actual Map Position is X: %i and Y: %i", selected_spot.x, selected_spot.y);
 		/*
 		if ((selected_entity != nullptr)&&(selected_spot != selected_entity->current_tile))
 		{
@@ -152,6 +157,7 @@ bool Player::PreUpdate() {
 		selected_entity = nullptr;
 	}
 
+	//move camera
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_REPEAT) {
 		int x, y;
 		App->input->GetMouseMotion(x, y);
@@ -185,10 +191,25 @@ bool Player::Update(float dt) {
 	if (zoom != 0)App->win->SetScale(zoom);	//Check this condition
 	//LOG("WHEEL VALUE %i", zoom);
 	
-	return ret;
-}
+	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+		App->LoadGame("save_game.xml");
 
-bool Player::PostUpdate() {
-	bool ret = true;
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+		App->SaveGame("save_game.xml");
+
+	//Move map
+
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+		App->render->camera.y += floor(200.0f * dt);
+
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+		App->render->camera.y -= floor(200.0f * dt);
+
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		App->render->camera.x += floor(200.0f * dt);
+
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		App->render->camera.x -= floor(200.0f * dt);
+
 	return ret;
 }

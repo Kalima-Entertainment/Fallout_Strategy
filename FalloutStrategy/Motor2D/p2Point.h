@@ -126,6 +126,22 @@ public:
 	{
 		return abs(v.x - x) + abs(v.y - y);
 	}
+
+	TYPE LinealDistance(const p2Point& v) const 
+	{
+		if ((x-v.x)==0)
+		{
+			return abs(y - v.y);
+		}
+		else if ((y - v.y) == 0) 
+		{
+			return abs(x - v.x);
+		}
+		else
+		{
+			return 42;
+		}
+	}
 };
 
 typedef p2Point<int> iPoint;

@@ -32,13 +32,11 @@ public:
 	j1Entity* target_entity;
 	ResourceBuilding* resource_building;
 	Resource resource_type;
-	j1Timer attack_timer;
-	float attack_time;
+	j1Timer timer;
+	float action_time;
 
-	Collider* attack_collider;
-
-	iPoint next_tile_center;
-	SDL_Rect next_tile_center_rect;
+	iPoint next_tile_position;
+	SDL_Rect next_tile_rect_center;
 
 
 };
