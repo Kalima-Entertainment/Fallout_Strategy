@@ -17542,7 +17542,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="880"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -28160,82 +28160,72 @@
   </data>
  </layer>
  <objectgroup name="resources">
-  <object id="1" x="1175.17" y="25.5" width="143.333" height="96.5">
+  <object id="1" name="Resources" x="1148.67" y="25.5" width="242.833" height="202">
    <properties>
     <property name="Nuka-Cola" type="int" value="200"/>
    </properties>
   </object>
-  <object id="3" x="4" y="2054.33" width="156.5" height="85.6667">
+  <object id="3" name="Resources" x="4" y="2054.33" width="156.5" height="85.6667">
    <properties>
     <property name="Nuka-Cola" type="int" value="200"/>
    </properties>
   </object>
-  <object id="12" x="2147.17" y="672.333" width="91.8333" height="160.333">
+  <object id="12" name="Resources" x="2147.17" y="672.333" width="91.8333" height="160.333">
    <properties>
     <property name="Nuka-Cola" type="int" value="150"/>
    </properties>
   </object>
-  <object id="14" x="2047.67" y="643.667" width="42.3333" height="41.6667">
+  <object id="14" name="Resources" x="2047.67" y="643.667" width="42.3333" height="41.6667">
    <properties>
     <property name="Nuka-Cola" type="int" value="50"/>
    </properties>
   </object>
-  <object id="15" x="2137.5" y="591.5" width="34" height="34.6667">
+  <object id="15" name="Resources" x="2137.5" y="591.5" width="34" height="34.6667">
    <properties>
     <property name="Nuka-Cola" type="int" value="50"/>
    </properties>
   </object>
-  <object id="16" x="2273.83" y="684.167" width="42.3333" height="41.6667">
+  <object id="16" name="Resources" x="2273.83" y="684.167" width="42.3333" height="41.6667">
    <properties>
     <property name="Nuka-Cola" type="int" value="50"/>
    </properties>
   </object>
-  <object id="17" x="135.833" y="2251.5" width="42.3333" height="41.6667">
+  <object id="17" name="Resources" x="135.833" y="2251.5" width="42.3333" height="41.6667">
    <properties>
     <property name="Nuka-Cola" type="int" value="50"/>
    </properties>
   </object>
-  <object id="18" x="35.1667" y="2222.83" width="42.3333" height="41.6667">
+  <object id="18" name="Resources" x="35.1667" y="2222.83" width="42.3333" height="41.6667">
    <properties>
     <property name="Nuka-Cola" type="int" value="50"/>
    </properties>
   </object>
-  <object id="19" x="1148.17" y="67.667" width="54.3333" height="156.834">
-   <properties>
-    <property name="Nuka-Cola" type="int" value="0"/>
-   </properties>
-  </object>
-  <object id="22" x="1321.5" y="63.1665" width="69.4999" height="153.501">
-   <properties>
-    <property name="Nuka-Cola" type="int" value="0"/>
-   </properties>
-  </object>
-  <object id="23" x="2243.66" y="-5.33333" width="98.9997" height="281.5">
+  <object id="23" name="Resources" x="2243.66" y="-5.33333" width="98.9997" height="281.5">
    <properties>
     <property name="Water" type="int" value="200"/>
    </properties>
   </object>
-  <object id="24" x="2112.67" y="6.33333" width="103" height="168.5">
+  <object id="24" name="Resources" x="2112.67" y="6.33333" width="103" height="168.5">
    <properties>
     <property name="Water" type="int" value="150"/>
    </properties>
   </object>
-  <object id="25" x="10.3335" y="1167" width="232.333" height="145.333">
+  <object id="25" name="Resources" x="10.3335" y="1167" width="232.333" height="145.333">
    <properties>
     <property name="Water" type="int" value="200"/>
    </properties>
   </object>
-  <object id="26" x="1506.84" y="1541" width="89.4993" height="167.833">
+  <object id="26" name="Resources" x="1506.84" y="1541" width="89.4993" height="167.833">
    <properties>
     <property name="Water" type="int" value="150"/>
    </properties>
   </object>
-  <object id="27" x="247" y="1181" width="58.6663" height="148">
+  <object id="27" name="Resources" x="247" y="1181" width="58.6663" height="148">
    <properties>
     <property name="Water" type="int" value="50"/>
    </properties>
   </object>
-  <object id="28" x="1610" y="1641.33" width="142" height="70.6667">
+  <object id="28" name="Resources" x="1610" y="1641.33" width="142" height="70.6667">
    <properties>
     <property name="Water" type="int" value="50"/>
    </properties>
