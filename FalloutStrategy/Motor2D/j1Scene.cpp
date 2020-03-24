@@ -38,9 +38,12 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-	//DynamicEntity* test_melee, *test_enemy, *test_ranged, *test_gatherer;
 	DynamicEntity* vault[3], * brotherhood[3], * ghoul[3], *mutant[3];
-	StaticEntity* test_base;
+	DynamicEntity* test_melee, *test_enemy, *test_ranged, *test_gatherer;
+	StaticEntity* ghoul_base, *ghoul_barrack, *ghoul_laboratory;
+	StaticEntity* vault_base, *vault_barrack, *vault_laboratory;
+	StaticEntity* mutant_base, *mutant_barrack, *mutant_laboratory;
+	StaticEntity* brotherhood_base, *brotherhood_barrack, *brotherhood_laboratory;
 
 	//if(App->map->Load("iso_walk.tmx") == true)
 	if(App->map->Load("grassland_low_left.tmx") == true)
@@ -71,12 +74,25 @@ bool j1Scene::Start()
 	mutant[2] = (DynamicEntity*)App->entities->CreateEntity(MUTANT, GATHERER, 20, 3);
 	mutant[2]->direction = BOTTOM_LEFT;
 
-	brotherhood[0] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, MELEE, 18, 6);			
-	brotherhood[1] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, RANGED, 19, 6);				
+	brotherhood[0] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, MELEE, 18, 6);
+	brotherhood[1] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, RANGED, 19, 6);
 	brotherhood[2] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, GATHERER, 20, 6);
 
-	iPoint initial_pos = { 0,0 };
-	test_base = (StaticEntity*)App->entities->CreateBuilding(GHOUL, BASE, initial_pos, 3, 3);
+	ghoul_base = (StaticEntity*)App->entities->CreateBuilding(GHOUL, BASE, {0,0}, {3,3});
+	ghoul_barrack = (StaticEntity*)App->entities->CreateBuilding(GHOUL, BARRACK, { 3,3 }, { 3,3 });
+	ghoul_laboratory = (StaticEntity*)App->entities->CreateBuilding(GHOUL, LABORATORY, { 6,6 }, { 3,3 });
+
+	vault_base = (StaticEntity*)App->entities->CreateBuilding(VAULT, BASE, { 0,0 }, { 3,3 });
+	vault_barrack = (StaticEntity*)App->entities->CreateBuilding(VAULT, BARRACK, { 3,3 }, { 3,3 });
+	vault_laboratory = (StaticEntity*)App->entities->CreateBuilding(VAULT, LABORATORY, { 6,6 }, { 3,3 });
+
+	mutant_base = (StaticEntity*)App->entities->CreateBuilding(MUTANT, BASE, { 0,0 }, { 3,3 });
+	mutant_barrack = (StaticEntity*)App->entities->CreateBuilding(MUTANT, BARRACK, { 3,3 }, { 3,3 });
+	mutant_laboratory = (StaticEntity*)App->entities->CreateBuilding(MUTANT, LABORATORY, { 6,6 }, { 3,3 });
+
+	brotherhood_base = (StaticEntity*)App->entities->CreateBuilding(BROTHERHOOD, BASE, { 0,0 }, { 3,3 });
+	brotherhood_barrack = (StaticEntity*)App->entities->CreateBuilding(BROTHERHOOD, BARRACK, { 3,3 }, { 3,3 });
+	brotherhood_laboratory = (StaticEntity*)App->entities->CreateBuilding(BROTHERHOOD, LABORATORY, { 6,6 }, { 3,3 });
 
 	//App->audio->PlayMusic("audio/music/elevator_music.ogg", 4.0F);
 	App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
@@ -117,7 +133,7 @@ bool j1Scene::PreUpdate()
 
 // Called each loop iteration
 bool j1Scene::Update(float dt)
-{	
+{
 	App->map->Draw();
 
 	int x, y;
@@ -143,7 +159,7 @@ bool j1Scene::Update(float dt)
 		SDL_Rect debug_rect = { 128,0,64,64 };
 		App->render->Blit(App->render->debug_tex, p.x, p.y, &debug_rect);
 	}
-	
+
 	/*
 	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
 
@@ -152,7 +168,7 @@ bool j1Scene::Update(float dt)
 		iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
 		App->render->Blit(debug_tex, pos.x, pos.y);
 	}
-	
+
 	//Creates temporal x and y, that will be stored when we make left click with mouse
 	int tx, ty;
 	iPoint selected_spot;
@@ -167,7 +183,7 @@ bool j1Scene::Update(float dt)
 		{
 			if(App->entities->entities[i]->MapPosition() == selected_spot) LOG("COINCIDENCE IN MAP");
 		}
-	
+
 	}
 	*/
 
@@ -210,7 +226,7 @@ bool j1Scene::Update(float dt)
 	else {
 		angle = atan((-App->render->camera.x) / (App->render->camera.y));
 	}
-	angle = angle * 57 + 360; //conversion from rad to degree +270. We add +90 extra cause sdl has 0 as its front for some fkn reason. 
+	angle = angle * 57 + 360; //conversion from rad to degree +270. We add +90 extra cause sdl has 0 as its front for some fkn reason.
 
 	Mix_SetPosition(5, angle, volume);
 	App->audio->PlayFx(5, App->audio->explosion, 0);
