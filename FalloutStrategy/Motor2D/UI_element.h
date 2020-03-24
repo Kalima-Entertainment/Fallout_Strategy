@@ -59,6 +59,7 @@ enum UI_Type {
 	Label,
 	Label_timer,
 	Image,
+	Image1,
 	Logo,
 	Panel,
 	text_new_game,

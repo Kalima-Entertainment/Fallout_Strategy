@@ -14,6 +14,7 @@ struct UI_main_menu {
 	j1Image* background = nullptr;
 	j1Image* logo = nullptr;
 	j1Image* panel = nullptr;
+	j1Image* image = nullptr;
 
 	UI_Label* new_game_text = nullptr;
 	UI_Label* load_game_text = nullptr;
