@@ -33892,9 +33892,9 @@
     <property name="Nuka-Cola" type="int" value="50"/>
    </properties>
   </object>
-  <object id="42" name="Static" type="Base" x="557" y="136" width="70.3333" height="46.6667"/>
-  <object id="43" name="Static" type="Barrack" x="682" y="139" width="50.6667" height="44.3333"/>
-  <object id="44" name="Static" type="Barrack" x="679.333" y="75.8333" width="50.6667" height="44.3333"/>
-  <object id="45" name="Static" type="Laboratory" x="488.333" y="136" width="49.3333" height="46.3333"/>
+  <object id="42" name="Static" type="Base" x="620" y="105" width="70.3333" height="46.6667"/>
+  <object id="43" name="Static" type="Barrack" x="847.5" y="235.5" width="50.6667" height="44.3333"/>
+  <object id="44" name="Static" type="Barrack" x="845.333" y="137.833" width="50.6667" height="44.3333"/>
+  <object id="45" name="Static" type="Laboratory" x="686.333" y="294" width="49.3333" height="46.3333"/>
  </objectgroup>
 </map>

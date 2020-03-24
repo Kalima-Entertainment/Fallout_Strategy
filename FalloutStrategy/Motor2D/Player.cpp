@@ -124,7 +124,7 @@ bool Player::PreUpdate() {
 				else {					
 					dynamic_entity->target_entity = nullptr;
 					ResourceBuilding* resource_building;
-					resource_building = App->map->resource_tiles[selected_spot.x][selected_spot.y];
+					resource_building = (ResourceBuilding*)App->map->building_tiles[selected_spot.x][selected_spot.y];
 					if (resource_building != nullptr) {
 						dynamic_entity->resource_building = resource_building;
 					}

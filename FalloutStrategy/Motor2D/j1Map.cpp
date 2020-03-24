@@ -68,7 +68,7 @@ void j1Map::Draw()
 		{
 			for (int j = 0; j < MAP_LENGTH; j++)
 			{
-				if (resource_tiles[i][j] != nullptr)
+				if (building_tiles[i][j] != nullptr)
 				{
 					iPoint position = MapToWorld(i, j);
 					SDL_Rect debug_rect = { 0,0,64,64 };
@@ -551,31 +551,33 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 			int width = object_node.attribute("width").as_int() / (HALF_TILE)+1;
 			int height = object_node.attribute("height").as_int() / (HALF_TILE)+1;
 			iPoint first_tile_position = { x,y };
+			Building* building = new Building();
 
 			if (object_name == "Resources") {
-				ResourceBuilding* building = new ResourceBuilding();
+				ResourceBuilding* resource_building = new ResourceBuilding();
 
 				while (property != nullptr)
 				{
 					p2SString property_name(property.attribute("name").as_string());
 
 					if (property_name == "Nuka-Cola") {
-						building->resource_type = Resource::CAPS;
-						building->quantity = property.attribute("value").as_int();
+						resource_building->resource_type = Resource::CAPS;
+						resource_building->quantity = property.attribute("value").as_int();
 					}
 					else if (property_name == "Water") {
-						building->resource_type = Resource::WATER;
-						building->quantity = property.attribute("value").as_int();
+						resource_building->resource_type = Resource::WATER;
+						resource_building->quantity = property.attribute("value").as_int();
 					}
 					property = property.next_sibling();
 				}
 
-				AddResourceBuildingToMap(first_tile_position, width, height, building);
-				App->entities->resource_buildings.push_back(building);
+				building->resource_building = resource_building;
+				AddBuildingToMap(first_tile_position, width, height, building);
+				App->entities->resource_buildings.push_back(resource_building);
 			}
 			else if (object_name == "Static") {
 				//create building
-				StaticEntity* building;
+				StaticEntity* static_entity;
 				iPoint size;
 
 				//add tiles
@@ -595,7 +597,9 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 					size = { 3,3 };
 				}
 
-				building = (StaticEntity*)App->entities->CreateBuilding(GHOUL, type, { 0,0 }, size);
+				static_entity = (StaticEntity*)App->entities->CreateBuilding(GHOUL, type, { 0,0 }, size);
+				building->static_entity = static_entity;
+				AddBuildingToMap(first_tile_position, width, height, building);
 			}
 			
 			object_node = object_node.next_sibling();
@@ -677,7 +681,7 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 	return ret;
 }
 
-bool j1Map::AddResourceBuildingToMap(iPoint first_tile_position, int width, int height, ResourceBuilding* building) {
+bool j1Map::AddBuildingToMap(iPoint first_tile_position, int width, int height, Building* building) {
 	bool ret = true;
 
 	first_tile_position = IsometricWorldToMap(first_tile_position.x, first_tile_position.y);
@@ -686,7 +690,7 @@ bool j1Map::AddResourceBuildingToMap(iPoint first_tile_position, int width, int 
 	{
 		for (int j = 0; j < height; j++)
 		{
-			resource_tiles[first_tile_position.x + i][first_tile_position.y + j] = building;
+			building_tiles[first_tile_position.x + i][first_tile_position.y + j] = building;
 		}
 	}
 

@@ -11,7 +11,7 @@
 #define MODULE_LENGTH 75
 #define MAP_LENGTH 150
 
-struct ResourceBuilding;
+union Building;
 
 // ----------------------------------------------------
 struct Properties
@@ -147,7 +147,7 @@ public:
 	iPoint fWorldToMap(float x, float y) const;
 	iPoint IsometricWorldToMap(int x, int y) const;
 	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
-	bool AddResourceBuildingToMap(iPoint first_tile_position, int width, int height, ResourceBuilding* building);
+	bool AddBuildingToMap(iPoint first_tile_position, int width, int height, Building* building);
 
 private:
 
@@ -163,7 +163,7 @@ private:
 public:
 
 	MapData data;
-	ResourceBuilding* resource_tiles[MAP_LENGTH][MAP_LENGTH];
+	Building* building_tiles[MAP_LENGTH][MAP_LENGTH];
 private:
 
 	pugi::xml_document	map_file;

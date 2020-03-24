@@ -12,6 +12,7 @@ struct SDL_Texture;
 enum Faction;
 enum class BuildingType;
 class DynamicEntity;
+class StaticEntity;
 enum EntityType;
 
 #define REFERENCE_ENTITIES 24
@@ -26,6 +27,11 @@ struct ResourceBuilding {
 	Resource resource_type;
 	int quantity;
 	std::vector<iPoint> tiles;
+};
+
+union Building {
+	ResourceBuilding* resource_building;
+	StaticEntity* static_entity;
 };
 
 class j1EntityManager : public j1Module
