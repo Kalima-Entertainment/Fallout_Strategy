@@ -78,7 +78,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	return entity;
 }
 
-j1Entity* j1EntityManager::CreateBuilding(Faction faction, EntityType type, iPoint initial_position, int size_x, int size_y) {
+j1Entity* j1EntityManager::CreateBuilding(Faction faction, EntityType type, iPoint initial_position, iPoint size) {
 	j1Entity* building = nullptr;
 
 	if ((type == BASE) || (type == LABORATORY) || (type == BARRACK))
@@ -93,8 +93,8 @@ j1Entity* j1EntityManager::CreateBuilding(Faction faction, EntityType type, iPoi
 			building->faction = faction;
 
 			int counter = 0;
-			for (int i = 1; i <= size_x; i++) {
-				for (int j = 1; j <= size_y; j++) {
+			for (int i = 1; i <= size.x; i++) {
+				for (int j = 1; j <= size.y; j++) {
 					//Add current position to current_tile
 					building->current_tile.x = initial_position.x;
 					building->current_tile.y = initial_position.y;
@@ -152,19 +152,25 @@ bool j1EntityManager::Start()
 	reference_entities[VAULT][MELEE]->LoadAnimations("VaultDwellers/Vault_Dweller_Melee");
 	reference_entities[VAULT][RANGED]->LoadAnimations("VaultDwellers/Vault_Dweller_Ranged");
 	reference_entities[VAULT][GATHERER]->LoadAnimations("VaultDwellers/Vault_Dweller_Gatherer");
-	//reference_entities[VAULT][BASE]->LoadAnimations("VaultDwellers/Vault_Dweller_Base");
+	reference_entities[VAULT][BASE]->LoadAnimations("VaultDwellers/Vault_Dweller_Base");
+	reference_entities[VAULT][BARRACK]->texture = reference_entities[VAULT][BASE]->texture;	
+	reference_entities[VAULT][LABORATORY]->texture = reference_entities[VAULT][BASE]->texture;
 
 	//Brotherhood
 	//reference_entities[BROTHERHOOD][MELEE]->LoadAnimations("Brotherhood/Brotherhood_melee");
 	//reference_entities[BROTHERHOOD][RANGED]->LoadAnimations("Brotherhood/Brotherhood_Ranged");
 	//reference_entities[BROTHERHOOD][GATHERER]->LoadAnimations("Brotherhood/Brotherhood_gatherer");
-	//reference_entities[BROTHERHOOD][BASE]->LoadAnimations("Brotherhood/Brotherhood_Buildings");
+	reference_entities[BROTHERHOOD][BASE]->LoadAnimations("Brotherhood/Brotherhood_Buildings");
+	reference_entities[BROTHERHOOD][BARRACK]->texture = reference_entities[BROTHERHOOD][BASE]->texture;
+	reference_entities[BROTHERHOOD][LABORATORY]->texture = reference_entities[BROTHERHOOD][BASE]->texture;
 
 	//Super Mutants
 	//reference_entities[MUTANT][MELEE]->LoadAnimations("SuperMutant/SuperMutant_Mele");
 	reference_entities[MUTANT][RANGED]->LoadAnimations("SuperMutant/SuperMutant_Ranged");
 	//reference_entities[MUTANT][GATHERER]->LoadAnimations("SuperMutant/SuperMutant_Gatherer");
-	//reference_entities[MUTANT][BASE]->LoadAnimations("SuperMutant/SuperMutant_Buildings");
+	reference_entities[MUTANT][BASE]->LoadAnimations("SuperMutant/SuperMutant_Buildings");
+	reference_entities[MUTANT][BARRACK]->texture = reference_entities[MUTANT][BASE]->texture;
+	reference_entities[MUTANT][LABORATORY]->texture = reference_entities[MUTANT][BASE]->texture;
 
 	//Ghouls
 	//reference_entities[GHOUL][MELEE]->LoadAnimations("Ghouls/Ghouls_Melee");
@@ -172,8 +178,8 @@ bool j1EntityManager::Start()
 	//reference_entities[GHOUL][GATHERER]->LoadAnimations("Ghouls/Ghouls_Gatherer");
 	//reference_entities[GHOUL][BASE]->LoadAnimations("Ghouls/Ghouls_Base");
 	reference_entities[GHOUL][BASE]->LoadAnimations("Ghouls/Ghouls_Buildings");
-	//reference_entities[GHOUL][BARRACK]->LoadAnimations("Ghouls/Ghouls_Buildings");
-	//reference_entities[GHOUL][BARRACK]->texture = reference_entities[GHOUL][BASE]->texture;
+	reference_entities[GHOUL][BARRACK]->LoadAnimations("Ghouls/Ghouls_Buildings");
+	reference_entities[GHOUL][BARRACK]->texture = reference_entities[GHOUL][BASE]->texture;
 
 	return ret;
 }
