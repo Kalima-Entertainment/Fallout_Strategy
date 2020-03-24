@@ -6,6 +6,7 @@
 #include "j1Pathfinding.h"
 #include "j1Textures.h"
 #include "j1EntityManager.h"
+#include "Player.h"
 
 DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 
@@ -30,10 +31,9 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 	direction = TOP_RIGHT;
 
 	current_speed = { 0, 0 };
-	attack_collider = nullptr;
 	target_entity = nullptr;
 	resource_building = nullptr;
-	attack_time = 3.0f;
+	action_time = 3.0f;
 	resource_collected = 0;
 }
 
@@ -49,7 +49,7 @@ bool DynamicEntity::Update(float dt) {
 		Move();
 		break;
 	case ATTACK:
-		if (attack_timer.ReadSec() > attack_time)
+		if (timer.ReadSec() > action_time)
 		{
 			if (current_tile.DistanceManhattan(target_entity->current_tile) <= range)
 			{
@@ -58,7 +58,11 @@ bool DynamicEntity::Update(float dt) {
 		}
 		break;
 	case GATHER:
-		Gather();
+		if (timer.ReadSec() > action_time)
+		{
+			Gather();
+			state = IDLE;
+		}
 		break;
 	case HIT:
 		if (current_animation->Finished())
@@ -100,7 +104,7 @@ bool DynamicEntity::PostUpdate() {
 	//render character
 	iPoint render_position;
 	render_position = App->map->MapToWorld(current_tile.x, current_tile.y);
-	App->render->Blit(reference_entity->texture, position.x - TILE_SIZE, position.y - 2 * TILE_SIZE, &current_animation->GetCurrentFrame());
+	App->render->Blit(reference_entity->texture, position.x - TILE_SIZE, position.y - 1.82f * TILE_SIZE, &current_animation->GetCurrentFrame());
 
 	//health bar
 	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 50, 4 };
@@ -115,7 +119,7 @@ bool DynamicEntity::PostUpdate() {
 	if (App->render->debug)
 	{
 		App->render->DrawQuad({ (int)position.x - 2, (int)position.y - 2, 4,4 }, 255, 0, 0, 255);
-		App->render->DrawQuad(next_tile_center_rect, 0, 255, 0, 255);
+		App->render->DrawQuad(next_tile_rect_center, 0, 255, 0, 255);
 	}
 
 	return true;
@@ -146,39 +150,12 @@ void DynamicEntity::Move() {
 	{
 		if (path_to_target->Count() != 0)
 		{
-			next_tile_center = App->map->MapToWorld(next_tile.x, next_tile.y);
-			next_tile_center_rect = { next_tile_center.x + 30, next_tile_center.y + 30,4,4 };
+			//get next tile center
+			next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
+			next_tile_rect_center = { next_tile_position.x + HALF_TILE - 2, next_tile_position.y + HALF_TILE,4,4 };
 
-			//Method 1
-			/*
-			if ((current_tile.x > next_tile.x) && (current_tile.y == next_tile.y))
-			{
-				direction = TOP_LEFT;
-				position.x -= speed.x;
-				position.y -= speed.y;
-			}
-			else if ((current_tile.x == next_tile.x) && (current_tile.y > next_tile.y))
-			{
-				direction = TOP_RIGHT;
-				position.x += speed.x;
-				position.y -= speed.y;
-			}
-			else if ((current_tile.x == next_tile.x) && (current_tile.y < next_tile.y))
-			{
-				direction = BOTTOM_LEFT;
-				position.x -= speed.x;
-				position.y += speed.y;
-			}
-			else if ((current_tile.x < next_tile.x) && (current_tile.y == next_tile.y))
-			{
-				direction = BOTTOM_RIGHT;
-				position.x += speed.x;
-				position.y += speed.y;
-			}
-			*/
-
-			//Method 2	
-			if (current_tile.DistanceManhattan(target_tile) <= range) {
+			//check what's on next tile and act
+			if (current_tile.LinealDistance(target_tile) <= range) {
 				if (target_entity != nullptr) {
 				//we reach the destination and there is an entity in it
 					if ((faction != target_entity->faction) && (type != GATHERER))
@@ -186,46 +163,54 @@ void DynamicEntity::Move() {
 						state = ATTACK;
 						Attack();
 					}
-					else
+					
+					else if (next_tile == target_tile)
 					{
 						iPoint current_tile_center = App->map->MapToWorld(current_tile.x, current_tile.y);
 						position.x = current_tile_center.x + HALF_TILE;
 						position.y = current_tile_center.y + HALF_TILE;
 						state = IDLE;
 					}
+					
 				}
 				else
 				{
 					if (type == GATHERER) {
-						if ((resource_building != nullptr)&& (resource_collected < storage_capacity)) {
+						if ((resource_building != nullptr) && (resource_collected < storage_capacity)) {
 							state = GATHER;
+							timer.Start();
 						}
-						else {
-							iPoint current_tile_center = App->map->MapToWorld(current_tile.x, current_tile.y);
-							position.x = current_tile_center.x + HALF_TILE;
-							position.y = current_tile_center.y + HALF_TILE;
-							state = IDLE;
+					}
+					else
+					{
+						if (current_tile == target_tile)
+						{
+						iPoint current_tile_center = App->map->MapToWorld(current_tile.x, current_tile.y);
+						position.x = current_tile_center.x + HALF_TILE;
+						position.y = current_tile_center.y + HALF_TILE;
+						state = IDLE;
 						}
 					}
 				}
 			}
 
-			else if ((position.x > next_tile_center_rect.x + next_tile_center_rect.w) && (position.x > next_tile_center_rect.x) && (position.y > next_tile_center_rect.y) && (position.y > next_tile_center_rect.y + next_tile_center_rect.h)) {
+			//move to next tile
+			if ((position.x > next_tile_rect_center.x + next_tile_rect_center.w) && (position.x > next_tile_rect_center.x) && (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h)) {
 				direction = TOP_LEFT;
 				position.x -= speed.x;
 				position.y -= speed.y;
 			}
-			else if ((position.x < next_tile_center_rect.x) && (position.x < next_tile_center_rect.x + next_tile_center_rect.w) && (position.y > next_tile_center_rect.y) && (position.y > next_tile_center_rect.y + next_tile_center_rect.h)) {
+			else if ((position.x < next_tile_rect_center.x) && (position.x < next_tile_rect_center.x + next_tile_rect_center.w) && (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h)) {
 				direction = TOP_RIGHT;
 				position.x += speed.x;
 				position.y -= speed.y;
 			}
-			else if ((position.x > next_tile_center_rect.x) && (position.x > next_tile_center_rect.x + next_tile_center_rect.w) && (position.y < next_tile_center_rect.y) && (position.y < next_tile_center_rect.y + next_tile_center_rect.h)) {
+			else if ((position.x > next_tile_rect_center.x) && (position.x > next_tile_rect_center.x + next_tile_rect_center.w) && (position.y < next_tile_rect_center.y) && (position.y < next_tile_rect_center.y + next_tile_rect_center.h)) {
 				direction = BOTTOM_LEFT;
 				position.x -= speed.x;
 				position.y += speed.y;
 			}
-			else if ((position.x < next_tile_center_rect.x) && (position.x < next_tile_center_rect.x + next_tile_center_rect.w) && (position.y < next_tile_center_rect.y) && (position.y < next_tile_center_rect.y + next_tile_center_rect.h)) {
+			else if ((position.x < next_tile_rect_center.x) && (position.x < next_tile_rect_center.x + next_tile_rect_center.w) && (position.y < next_tile_rect_center.y) && (position.y < next_tile_rect_center.y + next_tile_rect_center.h)) {
 				direction = BOTTOM_RIGHT;
 				position.x += speed.x;
 				position.y += speed.y;
@@ -244,8 +229,8 @@ void DynamicEntity::Move() {
 				}
 				else
 				{
-					position.x = next_tile_center_rect.x + 2;
-					position.y = next_tile_center_rect.y + 2;
+					position.x = next_tile_rect_center.x + 2;
+					position.y = next_tile_rect_center.y + 2;
 					current_tile = target_tile;
 					state = IDLE;
 				}
@@ -262,7 +247,7 @@ void DynamicEntity::Move() {
 
 void DynamicEntity::Attack() {
 
-	attack_timer.Start();
+	timer.Start();
 	target_entity->current_health -= damage;
 	target_entity->state = HIT;
 	target_entity->current_animation->Reset();

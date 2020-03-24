@@ -14,11 +14,14 @@ public:
 	bool Start();
 	bool PreUpdate();
 	bool Update(float dt);
-	bool PostUpdate();
 
 public:
-	j1Entity* selected_entity;
 	bool border_scroll;
+
+	j1Entity* selected_entity;
+	int caps;
+	int water;
+	int food;
 private:
 	float mouse_speed_multiplier;
 };

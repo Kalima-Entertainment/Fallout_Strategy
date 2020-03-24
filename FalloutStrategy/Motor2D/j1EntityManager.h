@@ -12,6 +12,7 @@ struct SDL_Texture;
 enum Faction;
 enum class BuildingType;
 class DynamicEntity;
+class StaticEntity;
 enum EntityType;
 
 #define REFERENCE_ENTITIES 24
@@ -26,6 +27,12 @@ struct ResourceBuilding {
 	Resource resource_type;
 	int quantity;
 	std::vector<iPoint> tiles;
+};
+
+union Building {
+	ResourceBuilding* resource_building;
+	StaticEntity* static_entity;
+	bool is_static = true;
 };
 
 class j1EntityManager : public j1Module
@@ -50,7 +57,6 @@ public:
 	//bool CheckpointLoad();
 
 	j1Entity* CreateEntity(Faction faction, EntityType type, int position_x, int position_y);
-	j1Entity* CreateBuilding(Faction faction, EntityType type, iPoint initial_position, int size_x, int size_y);
 	j1Entity* FindEntityByTile(iPoint position);
 	j1Entity* FindBuildingByTile(iPoint position);
 	void DestroyEntity(j1Entity* delete_entity);

@@ -33827,17 +33827,17 @@
     <property name="Nuka-Cola" type="int" value="0"/>
    </properties>
   </object>
-  <object id="25" name="Resources" x="2.66683" y="1072" width="177" height="146.848">
+  <object id="25" name="Resources" x="11.6668" y="1136" width="244.333" height="120.848">
    <properties>
     <property name="Water" type="int" value="200"/>
    </properties>
   </object>
-  <object id="26" name="Resources" x="2150.18" y="1992.36" width="116.666" height="148">
+  <object id="26" name="Resources" x="2195.68" y="2038.86" width="116.666" height="148">
    <properties>
     <property name="Water" type="int" value="150"/>
    </properties>
   </object>
-  <object id="27" name="Resources" x="235" y="1105" width="63.6663" height="155.5">
+  <object id="27" name="Resources" x="273.667" y="1147.67" width="63.6663" height="155.5">
    <properties>
     <property name="Water" type="int" value="50"/>
    </properties>
@@ -33857,7 +33857,7 @@
     <property name="Water" type="int" value="200"/>
    </properties>
   </object>
-  <object id="32" name="Resources" x="2015.83" y="1981.58" width="126.833" height="304.848">
+  <object id="32" name="Resources" x="2048.33" y="2015.08" width="123.5" height="304.848">
    <properties>
     <property name="Water" type="int" value="200"/>
    </properties>
@@ -33892,9 +33892,9 @@
     <property name="Nuka-Cola" type="int" value="50"/>
    </properties>
   </object>
-  <object id="42" name="Static" type="Base" x="557" y="136" width="70.3333" height="46.6667"/>
-  <object id="43" name="Static" type="Barrack" x="682" y="139" width="50.6667" height="44.3333"/>
-  <object id="44" name="Static" type="Barrack" x="679.333" y="75.8333" width="50.6667" height="44.3333"/>
-  <object id="45" name="Static" type="Laboratory" x="488.333" y="136" width="49.3333" height="46.3333"/>
+  <object id="42" name="Static" type="Base" x="570.5" y="531.5" width="113.833" height="118.309"/>
+  <object id="43" name="Static" type="Barrack" x="706.5" y="411.5" width="50.6667" height="77.3333"/>
+  <object id="44" name="Static" type="Barrack" x="835.333" y="414.833" width="50.6667" height="79.3333"/>
+  <object id="45" name="Static" type="Laboratory" x="512.833" y="441.5" width="49.3333" height="46.3333"/>
  </objectgroup>
 </map>
