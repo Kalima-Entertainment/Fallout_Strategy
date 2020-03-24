@@ -10,6 +10,7 @@ struct SDL_Texture;
 
 enum UI_Type {
 
+	button_start_game,
 	button_back_to_menu,
 	button_select_ghoul,
 	button_select_brotherhood,
@@ -33,6 +34,7 @@ enum UI_Type {
 	button_settings_pause,
 	button_credits,
 	button_exit,
+	button_pause_to_main,
 	Button_settings,
 	Button_restart,
 	Button_info,
@@ -71,6 +73,7 @@ enum UI_Type {
 	text_music_volume,
 	text_fps,
 	ghouls_label,
+	start_game_label,
 
 	resume_button,
 	RESUME,

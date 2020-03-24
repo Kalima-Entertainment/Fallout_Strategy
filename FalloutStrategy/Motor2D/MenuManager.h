@@ -97,11 +97,13 @@ struct UI_select_faction {
 	UI_Button* supermutants_button = nullptr;
 	UI_Button* vault_button = nullptr;
 	UI_Button* back_button = nullptr;
+	UI_Button* start_game_button = nullptr;
 
 	UI_Label* ghouls_label = nullptr;
 	UI_Label* brotherhood_label = nullptr;
 	UI_Label* supermutants_label = nullptr;
 	UI_Label* vault_label = nullptr;
+	UI_Label* start_game_label = nullptr;
 };
 
 struct UI_pause_menu {
@@ -110,11 +112,11 @@ struct UI_pause_menu {
 
 	UI_Button* resume_button = nullptr;
 	UI_Button* settings_button = nullptr;
-	UI_Button* exit_button = nullptr;
+	UI_Button* back_to_main_menu_button = nullptr;
 
 	UI_Label* resume_label = nullptr;
 	UI_Label* settings_label = nullptr;
-	UI_Label* exit_label = nullptr;
+	UI_Label* back_to_main_menu_label = nullptr;
 
 };
 

@@ -42,11 +42,11 @@ void MenuManager::CreateMainMenu()
 	main_menu.panel = (j1Image*)App->gui->CreateImage(827, 260, Panel, { 0, 0, 416, 448 }, NULL, this);
 	
 	//Labels
-	main_menu.new_game_text = (UI_Label*)App->gui->CreateLabel(957,300, text_new_game, "NEW GAME", NULL, this, NULL);
-	main_menu.load_game_text = (UI_Label*)App->gui->CreateLabel(957, 377, text_load_game, "LOAD GAME", NULL, this, NULL);
-	main_menu.settings_text = (UI_Label*)App->gui->CreateLabel(957, 454, text_settings, "SETTINGS", NULL, this, NULL);
-	main_menu.credits_text = (UI_Label*)App->gui->CreateLabel(957, 531, text_credits, "CREDITS", NULL, this, NULL);
-	main_menu.exit_text = (UI_Label*)App->gui->CreateLabel(957, 608, text_exit, "EXIT", NULL, this, NULL);
+	main_menu.new_game_text = (UI_Label*)App->gui->CreateLabel(957,310, text_new_game, "NEW GAME", NULL, this, NULL);
+	main_menu.load_game_text = (UI_Label*)App->gui->CreateLabel(957, 387, text_load_game, "LOAD GAME", NULL, this, NULL);
+	main_menu.settings_text = (UI_Label*)App->gui->CreateLabel(957, 464, text_settings, "SETTINGS", NULL, this, NULL);
+	main_menu.credits_text = (UI_Label*)App->gui->CreateLabel(957, 541, text_credits, "CREDITS", NULL, this, NULL);
+	main_menu.exit_text = (UI_Label*)App->gui->CreateLabel(957, 618, text_exit, "EXIT", NULL, this, NULL);
 
 	//Buttons
 	main_menu.new_game_button = (UI_Button*)App->gui->CreateButton(887, 295, button_new_game, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
@@ -254,12 +254,14 @@ void MenuManager::CreateSelectFaction()
 	select_faction_menu.brotherhood_button = (UI_Button*)App->gui->CreateButton(200, 400, button_select_brotherhood, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
 	select_faction_menu.supermutants_button = (UI_Button*)App->gui->CreateButton(200, 500, button_select_supermutant, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
 	select_faction_menu.back_button = (UI_Button*)App->gui->CreateButton(120, 605, button_back_to_menu, { 1243,2014,73,78 }, { 1243,2102,73,79 }, { 1243,2188,73,71 }, NULL, this);
-
+	select_faction_menu.start_game_button = (UI_Button*)App->gui->CreateButton(900, 605, button_start_game, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
+	
 	//Labels
 	select_faction_menu.ghouls_label = (UI_Label*)App->gui->CreateLabel(280, 215, ghouls_label, "GHOUL", NULL, this, NULL);
 	select_faction_menu.vault_label = (UI_Label*)App->gui->CreateLabel(278, 315, ghouls_label, "VAULT", NULL, this, NULL);
 	select_faction_menu.brotherhood_label = (UI_Label*)App->gui->CreateLabel(220, 415, ghouls_label, "BROTHERHOOD", NULL, this, NULL);
 	select_faction_menu.supermutants_label = (UI_Label*)App->gui->CreateLabel(214, 515, ghouls_label, "SUPERMUTANT", NULL, this, NULL);
+	select_faction_menu.start_game_label = (UI_Label*)App->gui->CreateLabel(925, 620, start_game_label, "START GAME", NULL, this, NULL);
 
 
 }
@@ -277,11 +279,14 @@ void MenuManager::DestroySelectFaction()
 	App->gui->Delete_Element(select_faction_menu.vault_button);
 	App->gui->Delete_Element(select_faction_menu.brotherhood_button);
 	App->gui->Delete_Element(select_faction_menu.supermutants_button);
+	App->gui->Delete_Element(select_faction_menu.start_game_button);
+	App->gui->Delete_Element(select_faction_menu.back_button);
 
 	App->gui->Delete_Element(select_faction_menu.ghouls_label);
 	App->gui->Delete_Element(select_faction_menu.vault_label);
 	App->gui->Delete_Element(select_faction_menu.brotherhood_label);
 	App->gui->Delete_Element(select_faction_menu.supermutants_label);
+	App->gui->Delete_Element(select_faction_menu.start_game_label);
 
 }
 
@@ -295,12 +300,12 @@ void MenuManager::CreatePauseMenu()
 	//Buttons
 	pause_menu.resume_button = (UI_Button*)App->gui->CreateButton(480, 240, resume_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
 	pause_menu.settings_button = (UI_Button*)App->gui->CreateButton(480, 330, button_settings_pause, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
-	pause_menu.exit_button = (UI_Button*)App->gui->CreateButton(480, 420, button_exit, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
+	pause_menu.back_to_main_menu_button = (UI_Button*)App->gui->CreateButton(480, 420, button_pause_to_main, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
 
 	//Labels
-	pause_menu.resume_label = (UI_Label*)App->gui->CreateLabel(547, 258, RESUME, "RESUME", NULL, this, NULL);
+	pause_menu.resume_label = (UI_Label*)App->gui->CreateLabel(540, 258, RESUME, "RESUME", NULL, this, NULL);
 	pause_menu.settings_label = (UI_Label*)App->gui->CreateLabel(525, 348, SETTINGS, "SETTINGS", NULL, this, NULL);
-	pause_menu.exit_label = (UI_Label*)App->gui->CreateLabel(567, 438, EXIT, "EXIT", NULL, this, NULL);
+	pause_menu.back_to_main_menu_label = (UI_Label*)App->gui->CreateLabel(515, 438, EXIT, "MAIN MENU", NULL, this, NULL);
 
 
 }
@@ -315,12 +320,12 @@ void MenuManager::DestroyPauseMenu()
 	//Destroying buttons
 	App->gui->Delete_Element(pause_menu.resume_button);
 	App->gui->Delete_Element(pause_menu.settings_button);
-	App->gui->Delete_Element(pause_menu.exit_button);
+	App->gui->Delete_Element(pause_menu.back_to_main_menu_button);
 
 	//Destroying Labels
 	App->gui->Delete_Element(pause_menu.resume_label);
 	App->gui->Delete_Element(pause_menu.settings_label);
-	App->gui->Delete_Element(pause_menu.exit_label);
+	App->gui->Delete_Element(pause_menu.back_to_main_menu_label);
 	
 
 }

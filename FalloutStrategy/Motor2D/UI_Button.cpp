@@ -259,7 +259,18 @@ bool UI_Button::Update(float dt)
 				App->audio->PlayFx(back_fx, 0);
 			}
 	
+			if (t == button_start_game)
+			{
+				App->menu_manager->DestroySelectFaction();
+				App->audio->PlayFx(back_fx, 0);
+			}
 
+			if (t == button_pause_to_main)
+			{
+				App->menu_manager->DestroyPauseMenu();
+				App->menu_manager->CreateMainMenu();
+				App->audio->PlayFx(back_fx, 0);
+			}
 		}
 		else {
 			
