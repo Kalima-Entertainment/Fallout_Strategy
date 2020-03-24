@@ -164,7 +164,7 @@ void DynamicEntity::Move() {
 						Attack();
 					}
 					
-					else if(next_tile == target_tile)
+					else if (next_tile == target_tile)
 					{
 						iPoint current_tile_center = App->map->MapToWorld(current_tile.x, current_tile.y);
 						position.x = current_tile_center.x + HALF_TILE;
@@ -176,15 +176,9 @@ void DynamicEntity::Move() {
 				else
 				{
 					if (type == GATHERER) {
-						if ((resource_building != nullptr)&& (resource_collected < storage_capacity)) {
+						if ((resource_building != nullptr) && (resource_collected < storage_capacity)) {
 							state = GATHER;
 							timer.Start();
-						}
-						else {
-							iPoint current_tile_center = App->map->MapToWorld(current_tile.x, current_tile.y);
-							position.x = current_tile_center.x + HALF_TILE;
-							position.y = current_tile_center.y + HALF_TILE;
-							state = IDLE;
 						}
 					}
 					else

@@ -102,7 +102,7 @@ j1Entity* j1EntityManager::CreateBuilding(Faction faction, EntityType type, iPoi
 					//Add tile to building positions array
 					building->positions[counter] = App->map->fMapToWorld(building->current_tile.x, building->current_tile.y);
 
-					//Update initial_position to current_position					
+					//Update initial_position to current_position
 					initial_position.y = initial_position.y + 1;
 
 					counter++;
@@ -110,7 +110,7 @@ j1Entity* j1EntityManager::CreateBuilding(Faction faction, EntityType type, iPoi
 				initial_position.x = initial_position.x + 1;
 				initial_position.y = 0;
 			}
-			
+
 			if (building->reference_entity != nullptr) {
 				entities.push_back(building);
 				total_entities++;
@@ -153,29 +153,30 @@ bool j1EntityManager::Start()
 	reference_entities[VAULT][RANGED]->LoadAnimations("VaultDwellers/Vault_Dweller_Ranged");
 	reference_entities[VAULT][GATHERER]->LoadAnimations("VaultDwellers/Vault_Dweller_Gatherer");
 	reference_entities[VAULT][BASE]->LoadAnimations("VaultDwellers/Vault_Dweller_Base");
-	reference_entities[VAULT][BARRACK]->texture = reference_entities[VAULT][BASE]->texture;	
+	reference_entities[VAULT][BARRACK]->texture = reference_entities[VAULT][BASE]->texture;
 	reference_entities[VAULT][LABORATORY]->texture = reference_entities[VAULT][BASE]->texture;
 
 	//Brotherhood
-	//reference_entities[BROTHERHOOD][MELEE]->LoadAnimations("Brotherhood/Brotherhood_melee");
-	//reference_entities[BROTHERHOOD][RANGED]->LoadAnimations("Brotherhood/Brotherhood_Ranged");
-	//reference_entities[BROTHERHOOD][GATHERER]->LoadAnimations("Brotherhood/Brotherhood_gatherer");
+
+	reference_entities[BROTHERHOOD][MELEE]->LoadAnimations("Brotherhood/Brotherhood_melee");
+	reference_entities[BROTHERHOOD][RANGED]->LoadAnimations("Brotherhood/Brotherhood_Ranged");
+	reference_entities[BROTHERHOOD][GATHERER]->LoadAnimations("Brotherhood/Brotherhood_gatherer");
 	reference_entities[BROTHERHOOD][BASE]->LoadAnimations("Brotherhood/Brotherhood_Buildings");
 	reference_entities[BROTHERHOOD][BARRACK]->texture = reference_entities[BROTHERHOOD][BASE]->texture;
 	reference_entities[BROTHERHOOD][LABORATORY]->texture = reference_entities[BROTHERHOOD][BASE]->texture;
 
 	//Super Mutants
-	//reference_entities[MUTANT][MELEE]->LoadAnimations("SuperMutant/SuperMutant_Mele");
+	reference_entities[MUTANT][MELEE]->LoadAnimations("SuperMutant/SuperMutant_Melee");
 	reference_entities[MUTANT][RANGED]->LoadAnimations("SuperMutant/SuperMutant_Ranged");
-	//reference_entities[MUTANT][GATHERER]->LoadAnimations("SuperMutant/SuperMutant_Gatherer");
+	reference_entities[MUTANT][GATHERER]->LoadAnimations("SuperMutant/SuperMutant_Gatherer");
 	reference_entities[MUTANT][BASE]->LoadAnimations("SuperMutant/SuperMutant_Buildings");
 	reference_entities[MUTANT][BARRACK]->texture = reference_entities[MUTANT][BASE]->texture;
 	reference_entities[MUTANT][LABORATORY]->texture = reference_entities[MUTANT][BASE]->texture;
 
 	//Ghouls
-	//reference_entities[GHOUL][MELEE]->LoadAnimations("Ghouls/Ghouls_Melee");
-	//reference_entities[GHOUL][RANGED]->LoadAnimations("Ghouls/Ghouls_Ranged");
-	//reference_entities[GHOUL][GATHERER]->LoadAnimations("Ghouls/Ghouls_Gatherer");
+	reference_entities[GHOUL][MELEE]->LoadAnimations("Ghouls/Ghouls_Melee");
+	reference_entities[GHOUL][RANGED]->LoadAnimations("Ghouls/Ghouls_Ranged");
+	reference_entities[GHOUL][GATHERER]->LoadAnimations("Ghouls/Ghouls_Gatherer");
 	//reference_entities[GHOUL][BASE]->LoadAnimations("Ghouls/Ghouls_Base");
 	reference_entities[GHOUL][BASE]->LoadAnimations("Ghouls/Ghouls_Buildings");
 	reference_entities[GHOUL][BARRACK]->LoadAnimations("Ghouls/Ghouls_Buildings");
@@ -238,8 +239,8 @@ bool j1EntityManager::PostUpdate()
 			for (int i = 0; i < 9; i++) {
 				tex_position = App->map->MapToWorld(App->player->selected_entity->positions[i].x, App->player->selected_entity->positions[i].y);
 				App->render->Blit(App->render->debug_tex, App->player->selected_entity->positions[i].x, App->player->selected_entity->positions[i].y, &tex_rect);
-			}			
-		}		
+			}
+		}
 	}
 
 	for (int i = 0; i < entities.size(); i++)
@@ -301,7 +302,7 @@ bool j1EntityManager::LoadReferenceEntityData() {
 				type = RANGED;
 			else if (type_string == "gatherer")
 				type = GATHERER;
-			
+
 			//load attributes
 			int health = entity_node.attribute("health").as_int();
 			int damage = entity_node.attribute("damage").as_int();
