@@ -18,6 +18,7 @@
 #include "j1Collision.h"
 #include "j1EntityManager.h"
 #include "Player.h"
+#include "j1Minimap.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -37,6 +38,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	collision = new j1Collision();
 	entities = new j1EntityManager();
 	player = new Player();
+	minimap = new j1Minimap();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -54,6 +56,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 
 	// scene last
 	AddModule(scene);
+	AddModule(minimap);
 
 	// render last to swap buffer
 	AddModule(render);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="6" height="6" tilewidth="128" tileheight="128" nextobjectid="1">
- <tileset firstgid="1" name="SuperMutant_Mele" tilewidth="128" tileheight="128" tilecount="680" columns="20">
-  <image source="SuperMutant_Mele.png" width="2560" height="4352"/>
+ <tileset firstgid="1" name="SuperMutant_Melee" tilewidth="128" tileheight="128" tilecount="680" columns="20">
+  <image source="SuperMutant_Melee.png" width="2560" height="4352"/>
   <tile id="0">
    <properties>
     <property name="idle" value="top_right"/>
