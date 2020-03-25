@@ -122,12 +122,6 @@ bool Player::PreUpdate() {
 	}
 
 	//move camera
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_REPEAT) {
-		int x, y;
-		App->input->GetMouseMotion(x, y);
-		App->render->camera.x += x * mouse_speed_multiplier;
-		App->render->camera.y += y * mouse_speed_multiplier;
-	}
 
 	int mouse_x, mouse_y;
 	if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT))
@@ -143,6 +137,13 @@ bool Player::PreUpdate() {
 			App->render->camera.x = -(minimap_mouse_position.x - App->render->camera.w * 0.5f);
 			App->render->camera.y = -(minimap_mouse_position.y - App->render->camera.h * 0.5f);
 		}
+	}
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_REPEAT) {
+		int x, y;
+		App->input->GetMouseMotion(x, y);
+		App->render->camera.x += x * mouse_speed_multiplier;
+		App->render->camera.y += y * mouse_speed_multiplier;
 	}
 
 	return ret;

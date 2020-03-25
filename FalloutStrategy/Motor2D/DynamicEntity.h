@@ -14,7 +14,6 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 
-	bool LoadAnimations(const char* animation_file);
 	bool LoadReferenceData();
 	void PathfindToPosition(iPoint target);
 	void Move();
