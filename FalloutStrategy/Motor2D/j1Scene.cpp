@@ -39,7 +39,6 @@ bool j1Scene::Start()
 {
 	menu_state = StatesMenu::NONE;
 
-	DynamicEntity* test_melee;
 	DynamicEntity* test_melee, *test_enemy;
   
 	if(App->map->Load("iso_walk.tmx") == true)
