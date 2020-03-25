@@ -223,54 +223,63 @@ bool j1EntityManager::LoadReferenceEntityData() {
 	else
 		 entities_node = entities_file.child("entities");
 
-	pugi::xml_node dynamic_node = entities_node.child("dynamic");
+	pugi::xml_node type_node = entities_node.first_child();
 	pugi::xml_node faction_node;
 	Faction faction = NO_FACTION;
 	EntityType type = NO_TYPE;
 
 	//load dynamic entities
-	faction_node = dynamic_node.first_child();
-	while (faction_node != nullptr)
-	{
-		p2SString faction_string(faction_node.name());
-
-		//check faction
-		if (faction_string == "vault")
-			faction = VAULT;
-		else if (faction_string == "brotherhood")
-			faction = BROTHERHOOD;
-		else if (faction_string == "mutants")
-			faction = MUTANT;
-		else if (faction_string == "ghouls")
-			faction = GHOUL;
-
-		pugi::xml_node entity_node = faction_node.first_child();
-		while (entity_node != nullptr)
+	faction_node = type_node.first_child();
+	while (type_node != nullptr) {
+		while (faction_node != nullptr)
 		{
-			p2SString type_string(entity_node.name());
+			p2SString faction_string(faction_node.name());
 
-			//check type
-			if (type_string == "melee")
-				type = MELEE;
-			else if (type_string == "ranged")
-				type = RANGED;
-			else if (type_string == "gatherer")
-				type = GATHERER;
+			//check faction
+			if (faction_string == "vault")
+				faction = VAULT;
+			else if (faction_string == "brotherhood")
+				faction = BROTHERHOOD;
+			else if (faction_string == "mutants")
+				faction = MUTANT;
+			else if (faction_string == "ghouls")
+				faction = GHOUL;
 
-			//load attributes
-			int health = entity_node.attribute("health").as_int();
-			int damage = entity_node.attribute("damage").as_int();
-			int speed = entity_node.attribute("speed").as_int();
+			pugi::xml_node entity_node = faction_node.first_child();
+			while (entity_node != nullptr)
+			{
+				p2SString type_string(entity_node.name());
 
-			//load into reference entities
-			reference_entities[faction][type]->max_health = health;
-			reference_entities[faction][type]->damage = damage;
-			reference_entities[faction][type]->speed.x = speed * 0.01;
-			reference_entities[faction][type]->speed.y = speed * 0.005f;
+				//check type
+				if (type_string == "melee")
+					type = MELEE;
+				else if (type_string == "ranged")
+					type = RANGED;
+				else if (type_string == "gatherer")
+					type = GATHERER;
+				else if (type_string == "base")
+					type = BASE;
+				else if (type_string == "barrack")
+					type = BARRACK;
+				else if (type_string == "laboratory")
+					type = LABORATORY;
 
-			entity_node = entity_node.next_sibling();
+				//load attributes
+				int health = entity_node.attribute("health").as_int();
+				int damage = entity_node.attribute("damage").as_int();
+				int speed = entity_node.attribute("speed").as_int();
+
+				//load into reference entities
+				reference_entities[faction][type]->max_health = health;
+				reference_entities[faction][type]->damage = damage;
+				reference_entities[faction][type]->speed.x = speed * 0.01;
+				reference_entities[faction][type]->speed.y = speed * 0.005f;
+
+				entity_node = entity_node.next_sibling();
+			}
+			faction_node = faction_node.next_sibling();
 		}
-		faction_node = faction_node.next_sibling();
+		type_node = type_node.next_sibling();
 	}
 
 	return ret;

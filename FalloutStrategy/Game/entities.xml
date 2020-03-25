@@ -1,6 +1,26 @@
 <!-- Entities file for the game -->
 <entities>
  <static>
+   <vault>
+    <base health="32000"/>
+    <barrack heaalth="28000"/>
+    <laboratory health="24000"/>
+   </vault>
+   <brotherhood>
+    <base health="32000"/>
+    <barrack heaalth="24000"/>
+    <laboratory health="28000"/>
+   </brotherhood>
+   <mutants>
+    <base health="32000"/>
+    <barrack heaalth="24000"/>
+    <laboratory health="28000"/>
+   </mutants>
+   <ghouls>
+    <base health="32000"/>
+    <barrack heaalth="24000"/>
+    <laboratory health="28000"/>
+  </ghouls>
  </static>
  <dynamic>
   <vault>
