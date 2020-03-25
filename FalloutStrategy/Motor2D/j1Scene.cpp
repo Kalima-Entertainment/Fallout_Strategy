@@ -13,6 +13,7 @@
 #include "j1EntityManager.h"
 #include "j1Entity.h"
 #include "DynamicEntity.h"
+#include "MenuManager.h"
 #include "Player.h"
 
 j1Scene::j1Scene() : j1Module()
@@ -36,7 +37,11 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
+	menu_state = StatesMenu::NONE;
+
+	DynamicEntity* test_melee;
 	DynamicEntity* test_melee, *test_enemy;
+  
 	if(App->map->Load("iso_walk.tmx") == true)
 	{
 		int w, h;
@@ -89,7 +94,24 @@ bool j1Scene::PreUpdate()
 bool j1Scene::Update(float dt)
 {
 	// Gui ---
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
+		
+		if (create == true) {
+			
+			App->menu_manager->DestroyPauseMenu();
+			create = false;
+			
+		}
+		
+		else if (create == false) {
+			
+			App->menu_manager->CreatePauseMenu();
+			create = true;
+
+		}
 	
+	}
+
 	// -------
 	if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		App->LoadGame("save_game.xml");
@@ -169,8 +191,8 @@ bool j1Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
+	/*if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		ret = false;*/
 
 	return ret;
 }
@@ -181,4 +203,14 @@ bool j1Scene::CleanUp()
 	LOG("Freeing scene");
 
 	return true;
+}
+
+StatesMenu j1Scene::GetMenuState()
+{
+	return menu_state;
+}
+
+void j1Scene::SetMenuState(const StatesMenu& menu)
+{
+	menu_state = menu;
 }

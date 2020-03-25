@@ -8,6 +8,17 @@ class GuiImage;
 class GuiText;
 class DynamicEntity;
 
+enum class StatesMenu 
+{
+	
+	MAIN_MENU,
+	SETTINGS,
+	FACTION_SELECTION,
+	PAUSE,
+
+	NONE
+};
+
 class j1Scene : public j1Module
 {
 public:
@@ -35,8 +46,16 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	/*bool Save(pugi::xml_node&) const;
+	bool Load(pugi::xml_node&);*/
+
+	StatesMenu GetMenuState();
+	void SetMenuState(const StatesMenu& menu);
+
 public:
 	SDL_Texture* debug_tex;
+	bool create = false;
+	StatesMenu menu_state = StatesMenu::NONE;
 
 private:
 

@@ -18,6 +18,8 @@
 #include "j1Collision.h"
 #include "j1EntityManager.h"
 #include "Player.h"
+#include "MenuManager.h"
+#include "MainMenu.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -37,6 +39,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	collision = new j1Collision();
 	entities = new j1EntityManager();
 	player = new Player();
+	menu_manager = new MenuManager();
+	main_menu = new MainMenu();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -47,13 +51,13 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(collision);
 	AddModule(pathfinding);
+	AddModule(main_menu);
 	AddModule(entities);
 	AddModule(player);
 	AddModule(font);
-	AddModule(gui);
-
-	// scene last
+	AddModule(menu_manager);
 	AddModule(scene);
+	AddModule(gui);
 
 	// render last to swap buffer
 	AddModule(render);
@@ -156,7 +160,7 @@ bool j1App::Update()
 	bool ret = true;
 	PrepareUpdate();
 
-	if(input->GetWindowEvent(WE_QUIT) == true)
+	if(input->GetWindowEvent(WE_QUIT) == true || quitGame)
 		ret = false;
 
 	if(ret == true)
