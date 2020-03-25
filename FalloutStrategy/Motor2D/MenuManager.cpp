@@ -391,3 +391,44 @@ void MenuManager::DestroyPauseSettings()
 	App->gui->Delete_Element(settings_menu.settings_text);
 
 }
+
+void MenuManager::CreateGUI()
+{
+
+	//Images
+	gui_ingame.nukas_background = (j1Image*)App->gui->CreateImage(0, 0, Nukas, { 1275, 586, 165, 81 }, NULL, this);
+	gui_ingame.water_background = (j1Image*)App->gui->CreateImage(166, 0, Water, { 1275, 586, 165, 81 }, NULL, this);
+	gui_ingame.meat_background = (j1Image*)App->gui->CreateImage(332, 0, Meat, { 1275, 586, 165, 81 }, NULL, this);
+
+	gui_ingame.nukas = (j1Image*)App->gui->CreateImage(15, 30, Nukas, { 1287, 673, 40, 42 }, NULL, this);
+	gui_ingame.water = (j1Image*)App->gui->CreateImage(186, 30, Water, { 1341, 672, 21, 40 }, NULL, this);
+	gui_ingame.meat = (j1Image*)App->gui->CreateImage(348, 35, Meat, { 1376, 678, 45, 29 }, NULL, this);
+
+	gui_ingame.nukas_label = (j1Image*)App->gui->CreateImage(20, 8, Nukas, { 1285, 725, 43, 14 }, NULL, this);
+	gui_ingame.water_label = (j1Image*)App->gui->CreateImage(186, 8, Water, { 1340, 727, 43, 14 }, NULL, this);
+	gui_ingame.meat_label = (j1Image*)App->gui->CreateImage(358, 8, Meat, { 1407, 727, 34, 14 }, NULL, this);
+
+	//Labels
+	//settings_menu.fps = (UI_Label*)App->gui->CreateLabel(520, 525, text_fps, "REFRESH RATE", NULL, this, NULL);
+	//settings_menu.fx_volume = (UI_Label*)App->gui->CreateLabel(360, 335, text_fx_volume, "SOUND EFFECTS VOLUME", NULL, this, NULL);
+	//settings_menu.music_volume = (UI_Label*)App->gui->CreateLabel(360, 150, text_music_volume, "MUSIC VOLUME", NULL, this, NULL);
+
+}
+
+void MenuManager::DestroyGUI()
+{
+
+	//Destroying images
+	App->gui->Delete_Element(gui_ingame.nukas);
+	App->gui->Delete_Element(gui_ingame.water);
+	App->gui->Delete_Element(gui_ingame.meat);
+	App->gui->Delete_Element(gui_ingame.nukas_background);
+	App->gui->Delete_Element(gui_ingame.water_background);
+	App->gui->Delete_Element(gui_ingame.meat_background);
+
+	//Destroying Labels
+	//App->gui->Delete_Element(settings_menu.fps);
+	//App->gui->Delete_Element(settings_menu.music_volume);
+	//App->gui->Delete_Element(settings_menu.fx_volume);
+
+}

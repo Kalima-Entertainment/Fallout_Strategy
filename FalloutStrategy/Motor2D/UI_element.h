@@ -80,9 +80,9 @@ enum UI_Type {
 	SETTINGS,
 	EXIT,
 
-	Heart,
-	Timer,
-	Coin,
+	Nukas,
+	Water,
+	Meat,
 };
 
 class UI_element 
