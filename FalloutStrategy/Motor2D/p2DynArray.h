@@ -82,6 +82,20 @@ public:
 		return false;
 	}
 
+	bool Advance()
+	{
+		if (num_elements > 0)
+		{
+			num_elements--;
+			for (int i = 0; i < num_elements; i++)
+			{
+				data[i] = data[i+1];
+			}
+			return true;
+		}
+		return false;
+	}
+
 	void Clear()
 	{
 		num_elements = 0;

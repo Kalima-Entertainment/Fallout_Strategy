@@ -8,11 +8,21 @@
 #include "p2DynArray.h"
 #include "p2Log.h"
 
-//struct SDL_Texture;
-//struct Collider;
+class DynamicEntity;
+
+#define TILE_SIZE 64
 
 struct Resource {
 	uint money, water, food;
+};
+
+enum EntityType {
+	MELEE,
+	RANGED,
+	GATHERER,
+	BASE,
+	LABORATORY,
+	BARRACK
 };
 
 enum State {
@@ -45,7 +55,7 @@ enum Direction {
 class j1Entity 
 {
 public:
-	j1Entity() {}
+	j1Entity();
 	virtual ~j1Entity();
 
 	virtual bool Awake(pugi::xml_node&) { return true; }
@@ -56,7 +66,6 @@ public:
 	virtual bool CleanUp() { return true; }
 	virtual void OnCollision(Collider* c1, Collider* c2) {};
 
-	void PathfindToPosition(iPoint target);
 	bool LoadAnimations(const char* animation_file);
 	virtual bool LoadReferenceData() { return true; };
 
@@ -65,38 +74,37 @@ public:
 	//Check if mouse pointer its inside the same spot than the entity and if pressed returns any advice
 
 public:
-	fPoint position = { 0, 0 };
-	fPoint lastPosition = { 0, 0 };
-	fPoint initialPosition = { 0, 0 };
-	iPoint current_tile = { 0,0 };
-	iPoint target_tile = { 0,0 };
+	fPoint position;
+	fPoint lastPosition;
+	fPoint initialPosition;
+	iPoint current_tile;
+	iPoint target_tile;
+	p2DynArray<iPoint>* path_to_target = nullptr;
 
-	int health = 0;
+	int health;
 
 	j1Entity* reference_entity;
+	EntityType type;
 
-	Collider* collider = nullptr;
-	Collider* last_collider = nullptr;
+	Collider* collider;
+	Collider* last_collider;
 	
-	//std::vector<Animation*> animations;
 	Animation animations[MAX_ANIMATIONS][6];
 	Animation idle[6];
-	Animation* current_animation = nullptr;
-	Animation* last_animation = nullptr;
+	Animation* current_animation;
 	Direction direction;
 
-	State state = State::IDLE;
+	State state;
 	Faction faction;
+	DynamicEntity* attacking_entity;
 
-	SDL_Texture* texture = nullptr;
-	SDL_RendererFlip flip = SDL_FLIP_NONE;
+	SDL_Texture* texture;
+	SDL_RendererFlip flip;
 
-	bool to_destroy = false;
-	bool particles_created = false;
-	bool playing_fx = false;
-
-	const p2DynArray<iPoint>* path_to_target = nullptr;
-
+	bool is_dynamic;
+	bool to_destroy;
+	bool particles_created;
+	bool playing_fx;
 };
 #endif // !_j1ENTITY_H
 

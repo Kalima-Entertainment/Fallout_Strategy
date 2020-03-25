@@ -3,6 +3,7 @@
 #include "j1Module.h"
 
 class j1Entity;
+class DynamicEntity;
 
 class Player : public j1Module
 {
@@ -17,6 +18,9 @@ public:
 
 public:
 	j1Entity* selected_entity;
+	bool border_scroll;
+private:
+
 };
 
 
