@@ -13,8 +13,6 @@ public:
 
 	bool LoadAnimations();
 	bool LoadReferenceData();
-public:
-	j1Entity* target_entity;
 private:
 	int gen_speed;
 };

@@ -602,13 +602,13 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 
 				if (object_type == "Base") {
 					type = BASE;
-					x -= 10;
-					y -= 5;
+					//x -= 10;
+					//y -= 5;
 				}
 				else if (object_type == "Barrack") {
 					type = BARRACK;
-					x -= 12;
-					y -= 6;
+					//x -= 12;
+					//y -= 6;
 				}
 				else if (object_type == "Laboratory") {
 					type = LABORATORY;

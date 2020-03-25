@@ -3,6 +3,8 @@
 #include "j1Render.h"
 #include "j1Map.h"
 #include "j1Textures.h"
+#include "Player.h"
+#include "j1Input.h"
 
 StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
 	switch (type)
@@ -20,8 +22,6 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
 	type = g_type;
 	faction = g_faction;
 	state = IDLE;
-
-	target_entity = nullptr;
 }
 
 StaticEntity::~StaticEntity() {}
@@ -37,6 +37,26 @@ bool StaticEntity::Update(float dt) {
 	default:
 		break;
 	}
+
+	//Interact with the building to spawn units or investigate upgrades
+	if (this == App->player->selected_entity) {		
+		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
+			if (type == BASE)
+				App->entities->CreateEntity(VAULT, GATHERER, 3, 3);
+			else if (type == BARRACK)
+				App->entities->CreateEntity(VAULT, MELEE, 5, 5);
+			else if (type == LABORATORY)
+				LOG("Upgrade 1 on laboratory");
+		}
+		if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
+			if (type == BASE)
+				LOG("Second Option on base");
+			else if (type == BARRACK)
+				App->entities->CreateEntity(VAULT, RANGED, 7, 7);
+			else if (type == LABORATORY)
+				LOG("Upgrade 2 on laboratory");
+		}
+	}	
 
 	return true;
 }

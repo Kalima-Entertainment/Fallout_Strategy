@@ -96,8 +96,7 @@ bool Player::PreUpdate() {
 					if (resource_building != nullptr) {
 						dynamic_entity->resource_building = resource_building;
 					}
-					else
-					{
+					else{
 						dynamic_entity->resource_building = nullptr;
 					}
 				}
@@ -106,12 +105,6 @@ bool Player::PreUpdate() {
 			{
 				StaticEntity* static_entity;
 				static_entity = (StaticEntity*)selected_entity;
-				//dynamic_entity->PathfindToPosition(selected_spot);
-				//dynamic_entity->target_tile = selected_spot;
-				//dynamic_entity->state = IDLE;
-
-				if (target != nullptr) 
-					static_entity->target_entity = target;	
 			}
 		}
 	}
@@ -122,7 +115,6 @@ bool Player::PreUpdate() {
 	}
 
 	//move camera
-
 	int mouse_x, mouse_y;
 	if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT))
 	{
