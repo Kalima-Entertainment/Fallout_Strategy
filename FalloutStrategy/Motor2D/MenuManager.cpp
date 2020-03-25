@@ -267,10 +267,10 @@ void MenuManager::DestroySelectFaction()
 {
 
 	App->gui->Delete_Element(select_faction_menu.background);
-	//App->gui->Delete_Element(select_faction_menu.ghouls);
-	//App->gui->Delete_Element(select_faction_menu.vault);
-	//App->gui->Delete_Element(select_faction_menu.brotherhood);
-	//App->gui->Delete_Element(select_faction_menu.supermutants);
+	App->gui->Delete_Element(select_faction_menu.ghouls);
+	App->gui->Delete_Element(select_faction_menu.vault);
+	App->gui->Delete_Element(select_faction_menu.brotherhood);
+	App->gui->Delete_Element(select_faction_menu.supermutants);
 
 	App->gui->Delete_Element(select_faction_menu.ghouls_button);
 	App->gui->Delete_Element(select_faction_menu.vault_button);

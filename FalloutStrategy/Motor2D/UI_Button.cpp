@@ -68,7 +68,7 @@ bool UI_Button::Update(float dt)
 
 		//rect is button hover
 		dimensions = Button_hover;
-		//LOG("%i", counter);
+		LOG("%i", counter);
 
 		//only plays fx once
 		if (counter == 1) {
@@ -82,12 +82,12 @@ bool UI_Button::Update(float dt)
 
 		if (t == button_select_ghoul) {
 
-			if (counter == 1) {
+			if (counter == 10) {
 				
-				App->menu_manager->ghouls = (j1Image*)App->gui->CreateImage(100, 300, Image, { 2492, 837, 168, 166 }, NULL, this);
-				App->gui->Delete_Element(App->menu_manager->vault);
-				App->gui->Delete_Element(App->menu_manager->brotherhood);
-				App->gui->Delete_Element(App->menu_manager->supermutants);
+				App->menu_manager->select_faction_menu.ghouls = (j1Image*)App->gui->CreateImage(100, 300, Image, { 2492, 837, 168, 166 }, NULL, this);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.vault);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.brotherhood);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.supermutants);
 
 			}
 		
@@ -98,10 +98,10 @@ bool UI_Button::Update(float dt)
 
 			if (counter == 1) {
 				
-				App->menu_manager->vault = (j1Image*)App->gui->CreateImage(310, 300, Image, { 2492, 1013, 309, 134 }, NULL, this);
-				App->gui->Delete_Element(App->menu_manager->ghouls);
-				App->gui->Delete_Element(App->menu_manager->brotherhood);
-				App->gui->Delete_Element(App->menu_manager->supermutants);
+				App->menu_manager->select_faction_menu.vault = (j1Image*)App->gui->CreateImage(310, 300, Image, { 2492, 1013, 309, 134 }, NULL, this);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.ghouls);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.brotherhood);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.supermutants);
 
 			}
 
@@ -112,10 +112,10 @@ bool UI_Button::Update(float dt)
 
 			if (counter == 1) {
 				
-				App->menu_manager->brotherhood = (j1Image*)App->gui->CreateImage(550, 300, Image, { 2492, 1161, 155, 180 }, NULL, this);
-				App->gui->Delete_Element(App->menu_manager->ghouls);
-				App->gui->Delete_Element(App->menu_manager->vault);
-				App->gui->Delete_Element(App->menu_manager->supermutants);
+				App->menu_manager->select_faction_menu.brotherhood = (j1Image*)App->gui->CreateImage(550, 300, Image, { 2492, 1161, 155, 180 }, NULL, this);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.ghouls);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.vault);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.supermutants);
 
 			}
 
@@ -125,10 +125,10 @@ bool UI_Button::Update(float dt)
 
 			if (counter == 1) {
 				
-				App->menu_manager->supermutants = (j1Image*)App->gui->CreateImage(750, 300, Image, { 2492, 1354, 158, 158 }, NULL, this);
-				App->gui->Delete_Element(App->menu_manager->ghouls);
-				App->gui->Delete_Element(App->menu_manager->vault);
-				App->gui->Delete_Element(App->menu_manager->brotherhood);
+				App->menu_manager->select_faction_menu.supermutants = (j1Image*)App->gui->CreateImage(750, 300, Image, { 2492, 1354, 158, 158 }, NULL, this);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.ghouls);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.vault);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.brotherhood);
 
 			}
 
