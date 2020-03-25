@@ -170,13 +170,12 @@ bool j1EntityManager::PostUpdate()
 	if (App->render->debug) {
 		for (int i = 0; i < entities.size(); i++)
 		{
+			SDL_Rect rect = { 0,0,64,64 };
 			if (entities[i]->is_dynamic)
 			{
-				SDL_Rect rect = { 0,0,64,64 };
 				tex_position = App->map->MapToWorld(entities[i]->current_tile.x, entities[i]->current_tile.y);
 				App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &rect);
 			}
-
 		}
 	}
 
@@ -189,9 +188,11 @@ bool j1EntityManager::PostUpdate()
 		}
 		//Selected entity is a building
 		else { 
-			for (int i = 0; i < 9; i++) {
-				tex_position = App->map->MapToWorld(App->player->selected_entity->positions[i].x, App->player->selected_entity->positions[i].y);
-				App->render->Blit(App->render->debug_tex, App->player->selected_entity->positions[i].x, App->player->selected_entity->positions[i].y, &tex_rect);
+			StaticEntity* static_entity = (StaticEntity*)App->player->selected_entity;
+			for (int j = 0; j < static_entity->tiles.size(); j++)
+			{
+				tex_position = App->map->MapToWorld(static_entity->tiles[j].x, static_entity->tiles[j].y);
+				App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tex_rect);
 			}
 		}
 	}
@@ -324,5 +325,15 @@ void j1EntityManager::DestroyAllEntities() {
 	for (int i = REFERENCE_ENTITIES; i < total_entities; i++)
 	{
 		entities[i]->to_destroy = true;
+	}
+}
+
+j1Entity* j1EntityManager::FindEntityByType(Faction faction, EntityType type) {
+	for (int i = 0; i < entities.size(); i++)
+	{
+		if ((entities[i]->faction)&&(entities[i]->type))
+		{
+			return entities[i];
+		}
 	}
 }

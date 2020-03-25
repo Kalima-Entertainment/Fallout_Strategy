@@ -125,26 +125,6 @@ bool DynamicEntity::PostUpdate() {
 	return true;
 }
 
-bool DynamicEntity::LoadReferenceData() {
-	bool ret = true;
-
-	//load animations
-	for (int i = 0; i < MAX_ANIMATIONS; i++)
-	{
-		for (int j = 0; j <= 6; j++)
-		{
-			animations[i][j] = reference_entity->animations[i][j];
-		}
-	}
-
-	//load property data
-	current_health = max_health = reference_entity->max_health;
-	damage = reference_entity->damage;
-	speed = reference_entity->speed;
-
-	return ret;
-}
-
 void DynamicEntity::Move() {
 	if (path_to_target != NULL)
 	{
@@ -284,6 +264,12 @@ void DynamicEntity::Attack() {
 	}
 }
 
+void DynamicEntity::Gather() {
+	resource_building->quantity -= damage;
+	resource_collected += damage;
+	resource_type = resource_building->resource_type;
+}
+
 void DynamicEntity::PathfindToPosition(iPoint destination) {
 
 	current_tile = App->map->WorldToMap(position.x, position.y);
@@ -418,8 +404,23 @@ bool DynamicEntity::LoadAnimations() {
 	return ret;
 }
 
-void DynamicEntity::Gather() {
-	resource_building->quantity -= damage;
-	resource_collected += damage;
-	resource_type = resource_building->resource_type; 
+bool DynamicEntity::LoadReferenceData() {
+	bool ret = true;
+
+	//load animations
+	for (int i = 0; i < MAX_ANIMATIONS; i++)
+	{
+		for (int j = 0; j <= 6; j++)
+		{
+			animations[i][j] = reference_entity->animations[i][j];
+		}
+	}
+
+	//load property data
+	current_health = max_health = reference_entity->max_health;
+	damage = reference_entity->damage;
+	speed = reference_entity->speed;
+
+	return ret;
 }
+

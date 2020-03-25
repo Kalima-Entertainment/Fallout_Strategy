@@ -1,6 +1,7 @@
 #ifndef _STATIC_ENTITY_H
 #define _STATIC_ENTITY_H
 #include "j1Entity.h"
+#include <vector>
 
 class StaticEntity : public j1Entity
 
@@ -13,6 +14,9 @@ public:
 
 	bool LoadAnimations();
 	bool LoadReferenceData();
+
+public:
+	std::vector<iPoint> tiles;
 private:
 	int gen_speed;
 };
