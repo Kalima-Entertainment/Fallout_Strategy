@@ -13,7 +13,7 @@ public:
 	~DynamicEntity();
 	bool Update(float dt);
 	bool PostUpdate();
-
+	bool LoadAnimations();
 	bool LoadReferenceData();
 	void PathfindToPosition(iPoint target);
 	void Move();

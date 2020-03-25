@@ -70,15 +70,25 @@ bool StaticEntity::LoadReferenceData() {
 	return ret;
 }
 
-bool StaticEntity::LoadAnimations(const char* path) {
+bool StaticEntity::LoadAnimations() {
 	bool ret = true;
+	char* faction_char = "NoFaction";
 
-	p2SString file("textures/characters/%s.tmx", path);
+	if (faction == VAULT)
+		faction_char = "VaultDwellers";
+	else if (faction == BROTHERHOOD)
+		faction_char = "Brotherhood";
+	else if (faction == GHOUL)
+		faction_char = "Ghouls";
+	else if (faction == MUTANT)
+		faction_char = "SuperMutant";
+
+	p2SString file("textures/characters/%s/%s_Buildings.tmx", faction_char, faction_char);
 
 	pugi::xml_document animation_file;
 	pugi::xml_parse_result result = animation_file.load_file(file.GetString());
 	p2SString image(animation_file.child("tileset").child("image").attribute("source").as_string());
-	p2SString texture_path("textures/characters/%s.png", path);
+	p2SString texture_path("textures/characters/%s/%s_Buildings.png",faction_char,faction_char);
 
 	if (type == BASE)
 	{
@@ -87,7 +97,7 @@ bool StaticEntity::LoadAnimations(const char* path) {
 	
 	if (result == NULL)
 	{
-		LOG("Could not load animation tmx file %s. pugi error: %s", path, result.description());
+		LOG("Could not load animation tmx file %s. pugi error: %s", file, result.description());
 		ret = false;
 	}
 

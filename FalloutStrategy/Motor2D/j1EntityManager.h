@@ -65,8 +65,6 @@ public:
 	void SortEntities();
 	void Swap(int i, int j);
 
-	bool LoadAnimations(j1Entity* entity);
-
 public:
 
 	std::vector<j1Entity*> entities;

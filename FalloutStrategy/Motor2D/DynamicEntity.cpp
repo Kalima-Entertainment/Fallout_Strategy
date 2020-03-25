@@ -308,6 +308,115 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 	}
 }
 
+bool DynamicEntity::LoadAnimations() {
+	bool ret = true;
+	char* faction_char = { "NoFaction" };
+	char* type_char = { "NoType" };
+
+	//entity faction
+	if (faction == VAULT)
+		faction_char = "VaultDwellers";
+	else if (faction == BROTHERHOOD)
+		faction_char = "Brotherhood";
+	else if (faction == MUTANT)
+		faction_char = "SuperMutant";
+	else if (faction == GHOUL)
+		faction_char = "Ghouls";
+
+	//entity type
+	if (type == MELEE)
+		type_char = "Melee";
+	else if (type == RANGED)
+		type_char = "Ranged";
+	if (type == GATHERER)
+		type_char = "Gatherer";
+
+	p2SString file("textures/characters/%s/%s_%s.tmx", faction_char, faction_char, type_char);
+	p2SString texture_path("textures/characters/%s/%s_%s.png", faction_char, faction_char, type_char);
+
+	pugi::xml_document animation_file;
+	pugi::xml_parse_result result = animation_file.load_file(file.GetString());
+	p2SString image(animation_file.child("tileset").child("image").attribute("source").as_string());
+	texture = App->tex->Load(texture_path.GetString());
+
+	if (result == NULL)
+	{
+		LOG("Could not load animation tmx file %s. pugi error: %s", file, result.description());
+		ret = false;
+	}
+
+	int tile_width = animation_file.child("map").child("tileset").attribute("tilewidth").as_int();
+	int tile_height = animation_file.child("map").child("tileset").attribute("tileheight").as_int();
+	int columns = animation_file.child("map").child("tileset").attribute("columns").as_int();
+	int firstgid = animation_file.child("map").child("tileset").attribute("firstgid").as_int();
+	int id, tile_id;
+	float speed;
+
+	pugi::xml_node animation = animation_file.child("map").child("tileset").child("tile");
+	pugi::xml_node frame = animation.child("animation").child("frame");
+
+	SDL_Rect rect;
+	rect.w = tile_width;
+	rect.h = tile_height;
+	int i = 0;
+	while (animation != nullptr)
+	{
+		p2SString animation_direction(animation.child("properties").child("property").attribute("value").as_string());
+		p2SString animation_name(animation.child("properties").child("property").attribute("name").as_string());
+		int direction = TOP_RIGHT;
+		State state = IDLE;
+		bool loop = true;
+
+		//animation
+		if (animation_name == "idle")
+			state = IDLE;
+		else if (animation_name == "walk")
+			state = WALK;
+		else if (animation_name == "attack")
+			state = ATTACK;
+		else if (animation_name == "gather")
+			state = GATHER;
+		else if (animation_name == "hit") {
+			state = HIT;
+			loop = false;
+		}
+		else if (animation_name == "die") {
+			state = DIE;
+			loop = false;
+		}
+
+		//animation direction
+		if (animation_direction == "top_left")
+			direction = TOP_LEFT;
+		else if (animation_direction == "top_right")
+			direction = TOP_RIGHT;
+		else if (animation_direction == "left")
+			direction = LEFT;
+		else if (animation_direction == "right")
+			direction = RIGHT;
+		else if (animation_direction == "bottom_left")
+			direction = BOTTOM_LEFT;
+		else if (animation_direction == "bottom_right")
+			direction = BOTTOM_RIGHT;
+
+		id = animation.attribute("id").as_int();
+
+		while (frame != nullptr) {
+			tile_id = frame.attribute("tileid").as_int();
+			speed = frame.attribute("duration").as_int() * 0.001f;
+			rect.x = rect.w * ((tile_id) % columns);
+			rect.y = rect.h * ((tile_id) / columns);
+			animations[state][direction].PushBack(rect, speed);
+			frame = frame.next_sibling();
+		}
+		animations[state][direction].loop = loop;
+
+		animation = animation.next_sibling();
+		frame = animation.child("animation").child("frame");
+	}
+
+	return ret;
+}
 
 void DynamicEntity::Gather() {
 	resource_building->quantity -= damage;

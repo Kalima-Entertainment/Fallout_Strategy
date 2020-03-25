@@ -66,7 +66,7 @@ public:
 	virtual bool CleanUp() { return true; }
 	virtual void OnCollision(Collider* c1, Collider* c2) {};
 
-	virtual bool LoadAnimations(const char* animation_file) { return true; };
+	virtual bool LoadAnimations() { return true; };
 	virtual bool LoadReferenceData() { return true; };
 
 	int GetPositionScore() const;

@@ -11,7 +11,7 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 
-	bool LoadAnimations(const char* animation_file);
+	bool LoadAnimations();
 	bool LoadReferenceData();
 public:
 	j1Entity* target_entity;
