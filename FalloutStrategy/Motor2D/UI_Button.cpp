@@ -76,6 +76,65 @@ bool UI_Button::Update(float dt)
 			App->audio->PlayFx(hover_fx, 0);
 		}
 
+		if (observer) {
+			observer->Callback(this);
+		}
+
+		if (t == button_select_ghoul) {
+
+			if (counter == 1) {
+				
+				App->menu_manager->ghouls = (j1Image*)App->gui->CreateImage(100, 300, Image, { 2492, 837, 168, 166 }, NULL, this);
+				App->gui->Delete_Element(App->menu_manager->vault);
+				App->gui->Delete_Element(App->menu_manager->brotherhood);
+				App->gui->Delete_Element(App->menu_manager->supermutants);
+
+			}
+		
+		}
+
+		if (t == button_select_vault) {
+
+
+			if (counter == 1) {
+				
+				App->menu_manager->vault = (j1Image*)App->gui->CreateImage(310, 300, Image, { 2492, 1013, 309, 134 }, NULL, this);
+				App->gui->Delete_Element(App->menu_manager->ghouls);
+				App->gui->Delete_Element(App->menu_manager->brotherhood);
+				App->gui->Delete_Element(App->menu_manager->supermutants);
+
+			}
+
+		}
+
+		if (t == button_select_brotherhood) {
+
+
+			if (counter == 1) {
+				
+				App->menu_manager->brotherhood = (j1Image*)App->gui->CreateImage(550, 300, Image, { 2492, 1161, 155, 180 }, NULL, this);
+				App->gui->Delete_Element(App->menu_manager->ghouls);
+				App->gui->Delete_Element(App->menu_manager->vault);
+				App->gui->Delete_Element(App->menu_manager->supermutants);
+
+			}
+
+		}
+
+		if (t == button_select_supermutant) {
+
+			if (counter == 1) {
+				
+				App->menu_manager->supermutants = (j1Image*)App->gui->CreateImage(750, 300, Image, { 2492, 1354, 158, 158 }, NULL, this);
+				App->gui->Delete_Element(App->menu_manager->ghouls);
+				App->gui->Delete_Element(App->menu_manager->vault);
+				App->gui->Delete_Element(App->menu_manager->brotherhood);
+
+			}
+
+		}
+
+		
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT)==KEY_DOWN) {
 
 			//rect is button pressed

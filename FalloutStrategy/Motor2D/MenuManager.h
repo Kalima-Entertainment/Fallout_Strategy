@@ -87,10 +87,7 @@ struct UI_credits {
 struct UI_select_faction {
 
 	j1Image* background = nullptr;
-	j1Image* ghouls = nullptr;
-	j1Image* brotherhood = nullptr;
-	j1Image* supermutants = nullptr;
-	j1Image* vault = nullptr;
+
 
 	UI_Button* ghouls_button = nullptr;
 	UI_Button* brotherhood_button = nullptr;
@@ -155,6 +152,11 @@ public:
 
 	char collaborator = 'M';
 	
+	j1Image* ghouls = nullptr;
+	j1Image* brotherhood = nullptr;
+	j1Image* supermutants = nullptr;
+	j1Image* vault = nullptr;
+
 };
 
 
