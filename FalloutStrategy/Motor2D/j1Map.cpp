@@ -119,21 +119,8 @@ fPoint j1Map::fMapToWorld(int x, int y) const
 {
 	fPoint ret;
 
-	if (data.type == MAPTYPE_ORTHOGONAL)
-	{
-		ret.x = x * data.tile_width;
-		ret.y = y * data.tile_height;
-	}
-	else if (data.type == MAPTYPE_ISOMETRIC)
-	{
-		ret.x = (x - y) * (data.tile_width * 0.5f);
-		ret.y = (x + y) * (data.tile_height * 0.5f);
-	}
-	else
-	{
-		LOG("Unknown map type");
-		ret.x = x; ret.y = y;
-	}
+	ret.x = (x - y) * (64 * 0.5f);
+	ret.y = (x + y) * (32 * 0.5f);
 
 	return ret;
 }

@@ -1,38 +1,57 @@
 ## Introduction
-Real-time strategy game produced by 2nd year students from CITM/UPC University in Terrassa, Barcelona.
+This is a real-time strategy game produced by 2nd year students from CITM/UPC University in Terrassa, Barcelona.
 
 ## Goal
-* Choose a civilization among: Vault members, Super Mutants, Brotherhood of Steel members and Ghouls.
-* Rise your empire to conquer your enemies and reach the victory!
+* Make your faction survive among the others in this exciting RTS! 
 
 ## Controls
 ### Movement
-//TODO
-
+Left click on the unit and left click on the position you want to make it go to.
+Y - Block/Unblock border scroll
+F - Center camera 
+F9 - Debug mode ON/OFF
+ESC - Close game
 ### Debug
-//TODO
+In debug mode you will be able to see the path the player follows and how it does so. 
 
 ## Team
 
-| <a href="https://github.com/marcpages2020" target="_blank">**Marc Pagès**</a> | <a href="https://github.com/JBGelsenorJ" target="_blank">**Javier Belda**</a> | <a href="https://github.com/pablogalve" target="_blank">**Pablo Galve**</a> | <a href="https://github.com/Germanins6" target="_blank">**Germán Insua**</a> |
-| :---: |:---:| :---:| :---:|
-| [![Marc Pagès](https://avatars1.githubusercontent.com/u/47534017?s=400&v=4)](https://github.com/marcpages2020)    | [![Javier Belda](https://avatars2.githubusercontent.com/u/33731319?s=400&v=4)](https://github.com/JBGelsenorJ) | [![Pablo Galve](https://avatars3.githubusercontent.com/u/30580652?s=400&v=447534017?s=400&v=4)](https://github.com/pablogalve)  | [![Germán Insua](https://avatars3.githubusercontent.com/u/47743816?s=400&v=4)](https://github.com/Germanins6)  |
-| Team Leader| Management | Quality Assurance | Code |
+* Marc Pagès
+https://github.com/marcpages2020
 
+* Javier Belda 
+https://github.com/JBGelsenorJ
 
-| <a href="https://github.com/maciadalmau" target="_blank">**Macià Dalmau**</a> | <a href="https://github.com/sauko22" target="_blank">**Pol Juan**</a> | <a href="https://github.com/silvino00" target="_blank">**Silvino Medina**</a> | <a href="https://github.com/christianpi4" target="_blank">**Christian Piña**</a> |
-| :---: |:---:| :---:| :---:|
-| [![Macià Dalmau](https://avatars2.githubusercontent.com/u/47743853?s=400&v=4)](https://github.com/maciadalmau)    | [![Pol Juan](https://avatars3.githubusercontent.com/u/47743898?s=400&v=4)](https://github.com/sauko22) | [![Silvino Medina](https://avatars1.githubusercontent.com/u/47743896?s=400&v=4)](https://github.com/silvino00)  | [![Christian Piña](https://avatars1.githubusercontent.com/u/47557433?s=400&v=4)](https://github.com/christianpi4)  |
-| Art | Design| Audio | User Interface |
+* Germán Insua
+https://github.com/Germanins6
+
+* Silvino Medina
+https://github.com/silvino00
+
+* Macià Dalmau
+https://github.com/maciadalmau
+
+* Pablo Galve
+https://github.com/pablogalve
+
+* Christian Piña
+https://github.com/christianpi4
+* Pol Juan
+https://github.com/sauko22
+
 
 ## Credits
-//TODO
+All characters and buildings sprites as well as the audio were taken from The Spriters Resource: https://www.spriters-resource.com
 
 ## Website
 https://kalima-entertainment.github.io/Fallout_Strategy/
 
 ## Link to our Github repository
 https://github.com/Kalima-Entertainment/Fallout_Strategy
+
+## Twitter
+Take a look at our Twitter to see the latest updates and the development process! 
+https://twitter.com/kalimaentmt
 
 # License
 MIT License

@@ -3,6 +3,9 @@
  <tileset firstgid="1" name="Brotherhood_melee1" tilewidth="128" tileheight="128" tilecount="1024" columns="32">
   <image source="Brotherhood_melee.png" width="4096" height="4096"/>
   <tile id="0">
+   <properties>
+    <property name="idle" value="top_right"/>
+   </properties>
    <animation>
     <frame tileid="0" duration="100"/>
     <frame tileid="1" duration="100"/>
@@ -19,6 +22,9 @@
    </animation>
   </tile>
   <tile id="32">
+   <properties>
+    <property name="idle" value="right"/>
+   </properties>
    <animation>
     <frame tileid="32" duration="100"/>
     <frame tileid="33" duration="100"/>
@@ -35,6 +41,9 @@
    </animation>
   </tile>
   <tile id="64">
+   <properties>
+    <property name="idle" value="bottom_right"/>
+   </properties>
    <animation>
     <frame tileid="64" duration="100"/>
     <frame tileid="65" duration="100"/>
@@ -48,6 +57,9 @@
    </animation>
   </tile>
   <tile id="96">
+   <properties>
+    <property name="idle" value="bottom_left"/>
+   </properties>
    <animation>
     <frame tileid="96" duration="100"/>
     <frame tileid="97" duration="100"/>
@@ -64,6 +76,9 @@
    </animation>
   </tile>
   <tile id="128">
+   <properties>
+    <property name="idle" value="left"/>
+   </properties>
    <animation>
     <frame tileid="128" duration="100"/>
     <frame tileid="129" duration="100"/>
@@ -80,6 +95,9 @@
    </animation>
   </tile>
   <tile id="160">
+   <properties>
+    <property name="idle" value="top_left"/>
+   </properties>
    <animation>
     <frame tileid="160" duration="100"/>
     <frame tileid="161" duration="100"/>
@@ -96,6 +114,9 @@
    </animation>
   </tile>
   <tile id="192">
+   <properties>
+    <property name="walk" value="top_right"/>
+   </properties>
    <animation>
     <frame tileid="192" duration="100"/>
     <frame tileid="193" duration="100"/>
@@ -108,6 +129,9 @@
    </animation>
   </tile>
   <tile id="224">
+   <properties>
+    <property name="walk" value="right"/>
+   </properties>
    <animation>
     <frame tileid="224" duration="100"/>
     <frame tileid="225" duration="100"/>
@@ -120,6 +144,9 @@
    </animation>
   </tile>
   <tile id="256">
+   <properties>
+    <property name="walk" value="bottom_right"/>
+   </properties>
    <animation>
     <frame tileid="256" duration="100"/>
     <frame tileid="257" duration="100"/>
@@ -132,6 +159,9 @@
    </animation>
   </tile>
   <tile id="288">
+   <properties>
+    <property name="walk" value="bottom_left"/>
+   </properties>
    <animation>
     <frame tileid="288" duration="100"/>
     <frame tileid="289" duration="100"/>
@@ -144,6 +174,9 @@
    </animation>
   </tile>
   <tile id="320">
+   <properties>
+    <property name="walk" value="left"/>
+   </properties>
    <animation>
     <frame tileid="320" duration="100"/>
     <frame tileid="321" duration="100"/>
@@ -156,6 +189,9 @@
    </animation>
   </tile>
   <tile id="352">
+   <properties>
+    <property name="walk" value="top_left"/>
+   </properties>
    <animation>
     <frame tileid="352" duration="100"/>
     <frame tileid="353" duration="100"/>
@@ -168,6 +204,9 @@
    </animation>
   </tile>
   <tile id="384">
+   <properties>
+    <property name="attack" value="top_right"/>
+   </properties>
    <animation>
     <frame tileid="384" duration="100"/>
     <frame tileid="385" duration="100"/>
@@ -182,6 +221,9 @@
    </animation>
   </tile>
   <tile id="416">
+   <properties>
+    <property name="attack" value="right"/>
+   </properties>
    <animation>
     <frame tileid="416" duration="100"/>
     <frame tileid="417" duration="100"/>
@@ -196,6 +238,9 @@
    </animation>
   </tile>
   <tile id="448">
+   <properties>
+    <property name="attack" value="bottom_right"/>
+   </properties>
    <animation>
     <frame tileid="448" duration="100"/>
     <frame tileid="449" duration="100"/>
@@ -210,6 +255,9 @@
    </animation>
   </tile>
   <tile id="480">
+   <properties>
+    <property name="attack" value="bottom_left"/>
+   </properties>
    <animation>
     <frame tileid="480" duration="100"/>
     <frame tileid="481" duration="100"/>
@@ -224,6 +272,9 @@
    </animation>
   </tile>
   <tile id="512">
+   <properties>
+    <property name="attack" value="left"/>
+   </properties>
    <animation>
     <frame tileid="512" duration="100"/>
     <frame tileid="513" duration="100"/>
@@ -238,6 +289,9 @@
    </animation>
   </tile>
   <tile id="544">
+   <properties>
+    <property name="attack" value="top_left"/>
+   </properties>
    <animation>
     <frame tileid="544" duration="100"/>
     <frame tileid="545" duration="100"/>
@@ -252,6 +306,9 @@
    </animation>
   </tile>
   <tile id="576">
+   <properties>
+    <property name="hit" value="top_right"/>
+   </properties>
    <animation>
     <frame tileid="576" duration="100"/>
     <frame tileid="577" duration="100"/>
@@ -262,6 +319,9 @@
    </animation>
   </tile>
   <tile id="608">
+   <properties>
+    <property name="hit" value="right"/>
+   </properties>
    <animation>
     <frame tileid="608" duration="100"/>
     <frame tileid="609" duration="100"/>
@@ -272,6 +332,9 @@
    </animation>
   </tile>
   <tile id="640">
+   <properties>
+    <property name="hit" value="bottom_right"/>
+   </properties>
    <animation>
     <frame tileid="640" duration="100"/>
     <frame tileid="641" duration="100"/>
@@ -282,6 +345,9 @@
    </animation>
   </tile>
   <tile id="672">
+   <properties>
+    <property name="hit" value="bottom_left"/>
+   </properties>
    <animation>
     <frame tileid="672" duration="100"/>
     <frame tileid="673" duration="100"/>
@@ -292,6 +358,9 @@
    </animation>
   </tile>
   <tile id="704">
+   <properties>
+    <property name="hit" value="left"/>
+   </properties>
    <animation>
     <frame tileid="704" duration="100"/>
     <frame tileid="705" duration="100"/>
@@ -302,6 +371,9 @@
    </animation>
   </tile>
   <tile id="736">
+   <properties>
+    <property name="hit" value="top_left"/>
+   </properties>
    <animation>
     <frame tileid="736" duration="100"/>
     <frame tileid="737" duration="100"/>
@@ -312,6 +384,9 @@
    </animation>
   </tile>
   <tile id="768">
+   <properties>
+    <property name="die" value="top_left"/>
+   </properties>
    <animation>
     <frame tileid="768" duration="100"/>
     <frame tileid="769" duration="100"/>
