@@ -73,7 +73,18 @@ bool Player::PreUpdate() {
 		//if we hadn't any entity selected
 		if (selected_entity == nullptr)
 		{
-			selected_entity = target;
+			if (target != nullptr) {
+				selected_entity = target;
+			}
+			/*
+			else {
+				Building* building;
+				building = App->map->building_tiles[selected_spot.x][selected_spot.y];
+				if ((building != nullptr) && (building->is_static)) {
+					selected_entity = (StaticEntity*)building->static_entity;
+				}
+			}
+			*/
 		}
 		//if we had one
 		else

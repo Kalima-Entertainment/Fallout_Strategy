@@ -6,6 +6,8 @@
 #include "j1Window.h"
 #include "j1Render.h"
 #include "p2Log.h"
+#include "j1EntityManager.h"
+#include "j1Entity.h"
 
 j1Minimap::j1Minimap() : j1Module() {
 	name.create("minimap");
@@ -18,7 +20,6 @@ j1Minimap::j1Minimap() : j1Module() {
 	width = 100;
 	margin = 0;
 	corner = Corner::TOP_LEFT;
-	minimap_test_rect = { 0,0,4,4 };
 }
 
 j1Minimap::~j1Minimap() {
@@ -93,12 +94,14 @@ bool j1Minimap::PostUpdate() {
 
 	App->render->Blit(texture, position.x, position.y, NULL, 1.0, 0);
 	
-	/*
-	iPoint minimap_test_rect_position = App->minimap->WorldToMinimap(App->render->test_rect.x, App->scene->test_rect.y);
-	minimap_test_rect.x = minimap_test_rect_position.x;
-	minimap_test_rect.y = minimap_test_rect_position.y;
-	App->render->DrawQuad(minimap_test_rect, 255, 0, 0, 255,true,false);
-	*/
+	for (int i = 0; i < App->entities->entities.size(); i++)
+	{
+		SDL_Rect entity_rect = {0,0,3,3};
+		iPoint entity_position = App->minimap->WorldToMinimap(App->entities->entities[i]->position.x, App->entities->entities[i]->position.y);
+		entity_rect.x = entity_position.x;
+		entity_rect.y = entity_position.y;
+		App->render->DrawQuad(entity_rect, 0, 255, 0, 255, true, false);
+	}
 
 	SDL_Rect rect = { 0,0,0,0 };
 	iPoint rect_position = WorldToMinimap(-App->render->camera.x, -App->render->camera.y);

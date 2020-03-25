@@ -36,7 +36,6 @@ private:
 	int margin;
 	Corner corner;
 	SDL_Texture* texture;
-	SDL_Rect minimap_test_rect;
 	j1PerfTimer	ptimer;
 };
 

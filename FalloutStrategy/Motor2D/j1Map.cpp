@@ -615,10 +615,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 				}
 
 				static_entity = (StaticEntity*)App->entities->CreateEntity(GHOUL, type, x,y);
-				building->static_entity = static_entity;
-				building->is_static = true;
-				AddBuildingToMap(first_tile_position, width, height, building);
-				static_entity->tiles = building->static_entity->tiles;
+				AddBuildingToMap(first_tile_position, width, height,(Building*) &static_entity);
 			}
 			
 			object_node = object_node.next_sibling();
@@ -710,6 +707,7 @@ bool j1Map::AddBuildingToMap(iPoint first_tile_position, int width, int height, 
 		for (int j = 0; j < height; j++)
 		{
 			building_tiles[first_tile_position.x + i][first_tile_position.y + j] = building;
+
 			if (building->is_static) {
 				iPoint tile_position = { first_tile_position.x + i,first_tile_position.y + j };
 				building->static_entity->tiles.push_back(tile_position);
