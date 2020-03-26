@@ -5,6 +5,7 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "j1Module.h"
+#include <vector>
 
 #define TILE_SIZE 64
 #define HALF_TILE 32
@@ -147,7 +148,7 @@ public:
 	iPoint fWorldToMap(float x, float y) const;
 	iPoint IsometricWorldToMap(int x, int y) const;
 	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
-	bool AddBuildingToMap(iPoint first_tile_position, int width, int height, Building* building);
+	std::vector<iPoint> CalculateArea(iPoint first_tile_position, int width, int height);
 
 	TileSet* GetTilesetFromTileId(int id) const;
 

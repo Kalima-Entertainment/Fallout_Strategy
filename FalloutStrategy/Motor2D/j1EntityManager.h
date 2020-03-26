@@ -29,12 +29,6 @@ struct ResourceBuilding {
 	std::vector<iPoint> tiles;
 };
 
-union Building {
-	ResourceBuilding* resource_building;
-	StaticEntity* static_entity;
-	bool is_static = true;
-};
-
 class j1EntityManager : public j1Module
 {
 public:
@@ -59,7 +53,6 @@ public:
 	j1Entity* CreateEntity(Faction faction, EntityType type, int position_x, int position_y);
 	j1Entity* FindEntityByTile(iPoint position);
 	j1Entity* FindEntityByType(Faction faction, EntityType type);
-	j1Entity* FindBuildingByTile(iPoint position);
 	void DestroyEntity(j1Entity* delete_entity);
 	void DestroyAllEntities();
 	bool LoadReferenceEntityData();
@@ -70,7 +63,6 @@ public:
 
 	std::vector<j1Entity*> entities;
 	std::vector<ResourceBuilding*> resource_buildings;
-	int total_entities;
 	pugi::xml_node config_data;
 
 public:

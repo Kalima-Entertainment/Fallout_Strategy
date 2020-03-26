@@ -8,8 +8,6 @@
 #include "p2DynArray.h"
 #include "p2Log.h"
 
-class DynamicEntity;
-
 #define TILE_SIZE 64
 #define HALF_TILE 32
 

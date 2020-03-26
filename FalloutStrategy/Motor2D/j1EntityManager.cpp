@@ -14,19 +14,17 @@
 #include "Player.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
-
 j1EntityManager::j1EntityManager(){
 	name.create("entities");
 
 	selected_unit_tex = nullptr;
 	blocked_movement = false;
-	total_entities = 0;
 }
 
 j1EntityManager::~j1EntityManager(){}
 
 j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int position_x, int position_y){
-	//BROFILER_CATEGORY("EntityCreation", Profiler::Color::Linen)
+	BROFILER_CATEGORY("EntityCreation", Profiler::Color::Linen)
 	//static_assert(EntityType::UNKNOWN == 4, "code needs update");
 
 	j1Entity* entity = nullptr;
@@ -49,7 +47,6 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 
 			if (entity->reference_entity != nullptr){
 				entities.push_back(entity);
-				total_entities++;
 				entity->LoadReferenceData();
 			}
 		}
@@ -70,7 +67,6 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 
 			if (entity->reference_entity != nullptr) {
 				entities.push_back(entity);
-				total_entities++;
 				entity->LoadReferenceData();
 			}
 		}
@@ -170,10 +166,29 @@ bool j1EntityManager::PostUpdate()
 	if (App->render->debug) {
 		for (int i = 0; i < entities.size(); i++)
 		{
-			SDL_Rect rect = { 0,0,64,64 };
 			if (entities[i]->is_dynamic)
 			{
+				SDL_Rect rect = { 0,0,64,64 };
 				tex_position = App->map->MapToWorld(entities[i]->current_tile.x, entities[i]->current_tile.y);
+				App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &rect);
+			}
+			else
+			{
+				StaticEntity* static_entity = (StaticEntity*)entities[i];
+				for (int j = 0; j < static_entity->tiles.size(); j++)
+				{
+					SDL_Rect rect = { 256,0,64,64 };
+					tex_position = App->map->MapToWorld(static_entity->tiles[j].x, static_entity->tiles[j].y);
+					App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &rect);
+				}
+			}
+		}
+		for (int i = 0; i < resource_buildings.size(); i++)
+		{
+			for (int j = 0; j < resource_buildings[i]->tiles.size(); j++)
+			{
+				SDL_Rect rect = { 128,0,64,64 };
+				tex_position = App->map->MapToWorld(resource_buildings[i]->tiles[j].x, resource_buildings[i]->tiles[j].y);
 				App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &rect);
 			}
 		}
@@ -280,6 +295,7 @@ bool j1EntityManager::LoadReferenceEntityData() {
 			faction_node = faction_node.next_sibling();
 		}
 		type_node = type_node.next_sibling();
+		faction_node = type_node.first_child();
 	}
 
 	return ret;
@@ -306,34 +322,30 @@ void j1EntityManager::Swap(int i, int j)
 j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
 	for (int i = 0; i < entities.size(); i++)
 	{
-		if (entities[i]->current_tile == tile)
+		if (entities[i]->is_dynamic)
 		{
+			if(entities[i]->current_tile == tile)
 			return entities[i];
 		}
-	}
-	return nullptr;
-}
-
-j1Entity* j1EntityManager::FindBuildingByTile(iPoint tile) {
-	for (int i = 0; i < entities.size(); i++)
-	{
-		/*
-		if ((entities[i]->positions[i].x == tile.x) && (entities[i]->positions[i].y == tile.y))
+		else
 		{
-			return entities[i];
+			StaticEntity* static_entity = (StaticEntity*)entities[i];
+			for (int j = 0; j < static_entity->tiles.size(); j++)
+			{
+				if (static_entity->tiles[j] == tile)
+					return entities[i];
+			}
 		}
-		*/
 	}
 	return nullptr;
 }
 
 void j1EntityManager::DestroyEntity(j1Entity* entity) {
 	delete entity;
-	total_entities--;
 }
 
 void j1EntityManager::DestroyAllEntities() {
-	for (int i = REFERENCE_ENTITIES; i < total_entities; i++)
+	for (int i = REFERENCE_ENTITIES; i < entities.size(); i++)
 	{
 		entities[i]->to_destroy = true;
 	}

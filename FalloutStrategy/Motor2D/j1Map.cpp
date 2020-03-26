@@ -75,6 +75,7 @@ void j1Map::Draw()
 					iPoint position = MapToWorld(i, j);
 					SDL_Rect resource_debug_rect = { 0,0,64,64 };
 					SDL_Rect static_debug_rect = { 256,0,64,64 };
+					/*
 					if (building_tiles[i][j]->is_static)
 					{
 						App->render->Blit(App->render->debug_tex, position.x, position.y, &static_debug_rect);
@@ -83,7 +84,7 @@ void j1Map::Draw()
 					{
 						App->render->Blit(App->render->debug_tex, position.x, position.y, &resource_debug_rect);
 					}
-
+					*/
 				}
 			}
 		}
@@ -562,7 +563,6 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 			int width = object_node.attribute("width").as_int() / (HALF_TILE)+1;
 			int height = object_node.attribute("height").as_int() / (HALF_TILE)+1;
 			iPoint first_tile_position = { x,y };
-			Building* building = new Building();
 
 			if (object_name == "Resources") {
 				ResourceBuilding* resource_building = new ResourceBuilding();
@@ -581,10 +581,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 					}
 					property = property.next_sibling();
 				}
-
-				building->resource_building = resource_building;
-				building->is_static = false;
-				AddBuildingToMap(first_tile_position, width, height, building);
+				resource_building->tiles = CalculateArea(first_tile_position, width, height);
 				App->entities->resource_buildings.push_back(resource_building);
 			}
 			else if (object_name == "Static") {
@@ -615,7 +612,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 				}
 
 				static_entity = (StaticEntity*)App->entities->CreateEntity(GHOUL, type, x,y);
-				AddBuildingToMap(first_tile_position, width, height,(Building*) &static_entity);
+				static_entity->tiles = CalculateArea(first_tile_position, width, height);
 			}
 			
 			object_node = object_node.next_sibling();
@@ -706,14 +703,10 @@ bool j1Map::AddBuildingToMap(iPoint first_tile_position, int width, int height, 
 	{
 		for (int j = 0; j < height; j++)
 		{
-			building_tiles[first_tile_position.x + i][first_tile_position.y + j] = building;
-
-			if (building->is_static) {
-				iPoint tile_position = { first_tile_position.x + i,first_tile_position.y + j };
-				building->static_entity->tiles.push_back(tile_position);
-			}
+			iPoint tile_position = { first_tile_position.x + i,first_tile_position.y + j };
+			area.push_back(tile_position);
 		}
 	}
 
-	return ret;
+	return area;
 }
