@@ -7,6 +7,7 @@
 #include "j1Textures.h"
 #include "j1EntityManager.h"
 #include "Player.h"
+#include "StaticEntity.h"
 
 DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 
@@ -61,7 +62,7 @@ bool DynamicEntity::Update(float dt) {
 		if (timer.ReadSec() > action_time)
 		{
 			Gather();
-			state = IDLE;
+			state = WALK;
 		}
 		break;
 	case HIT:
@@ -268,6 +269,8 @@ void DynamicEntity::Gather() {
 	resource_building->quantity -= damage;
 	resource_collected += damage;
 	resource_type = resource_building->resource_type;
+	StaticEntity* base = (StaticEntity*)App->entities->FindEntityByType(faction, BASE);
+	PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
 }
 
 void DynamicEntity::PathfindToPosition(iPoint destination) {

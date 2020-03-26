@@ -59,10 +59,10 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(font);
 	AddModule(menu_manager);
 	AddModule(scene);
-	AddModule(gui);
 
 	// scene last
 	AddModule(minimap);
+	AddModule(gui);
 
 	// render last to swap buffer
 	AddModule(render);

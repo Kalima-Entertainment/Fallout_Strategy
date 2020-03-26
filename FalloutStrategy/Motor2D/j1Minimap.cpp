@@ -13,8 +13,6 @@ j1Minimap::j1Minimap() : j1Module() {
 	name.create("minimap");
 
 	texture = nullptr;
-	height = 100;
-	width = 200;
 	map_height = 200;
 	scale = 1;
 	width = 100;
