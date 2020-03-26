@@ -7,18 +7,6 @@
 #include "j1Input.h"
 
 StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
-	switch (type)
-	{
-	case BASE:
-		break;
-	case LABORATORY:
-		break;
-	case BARRACK:
-		break;
-	default:
-		break;
-	}
-
 	type = g_type;
 	faction = g_faction;
 }
@@ -43,9 +31,9 @@ bool StaticEntity::Update(float dt) {
 	if (this == App->player->selected_entity) {		
 		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
 			if (type == BASE)
-				App->entities->CreateEntity(VAULT, GATHERER, 3, 3);
+				App->entities->CreateEntity(VAULT, GATHERER, spawnPosition.x, spawnPosition.y);
 			else if (type == BARRACK)
-				App->entities->CreateEntity(VAULT, MELEE, 5, 5);
+				App->entities->CreateEntity(VAULT, MELEE, spawnPosition.x, spawnPosition.y);
 			else if (type == LABORATORY)
 				LOG("Upgrade 1 on laboratory");
 		}
@@ -53,7 +41,7 @@ bool StaticEntity::Update(float dt) {
 			if (type == BASE)
 				LOG("Second Option on base");
 			else if (type == BARRACK)
-				App->entities->CreateEntity(VAULT, RANGED, 7, 7);
+				App->entities->CreateEntity(VAULT, RANGED, spawnPosition.x, spawnPosition.y);
 			else if (type == LABORATORY)
 				LOG("Upgrade 2 on laboratory");
 		}

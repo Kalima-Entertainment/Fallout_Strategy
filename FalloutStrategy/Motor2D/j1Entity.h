@@ -58,7 +58,8 @@ public:
 	iPoint target_tile;
 	p2DynArray<iPoint>* path_to_target = nullptr;
 	fPoint speed;
-	
+	iPoint spawnPosition;
+
 	int current_health;
 	int max_health;
 	int damage;

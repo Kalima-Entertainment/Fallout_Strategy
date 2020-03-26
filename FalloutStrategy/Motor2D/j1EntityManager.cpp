@@ -69,6 +69,13 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 				entities.push_back(entity);
 				entity->LoadReferenceData();
 			}
+
+			//Add spawn position for units
+			//TODO: It works for GHOULS, needs to be adapted for all the factions
+			if(type == BASE)
+				entity->spawnPosition = { entity->current_tile.x + 14, entity->current_tile.y + 9 };
+			else if(type == BARRACK)
+				entity->spawnPosition = { entity->current_tile.x + 14, entity->current_tile.y + 9 };
 		}
 	}
 
@@ -115,7 +122,7 @@ bool j1EntityManager::Start()
 	//reference_entities[GHOUL][BASE]->LoadAnimations("Ghouls/Ghouls_Base");
 	reference_entities[GHOUL][BARRACK]->LoadAnimations();
 	reference_entities[GHOUL][BARRACK]->texture = reference_entities[GHOUL][BASE]->texture;
-
+	
 	return ret;
 }
 
