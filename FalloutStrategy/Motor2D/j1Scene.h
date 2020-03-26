@@ -4,9 +4,19 @@
 #include "j1Module.h"
 
 struct SDL_Texture;
-class GuiImage;
-class GuiText;
+class UI_Label;
 class DynamicEntity;
+
+enum class StatesMenu
+{
+
+	MAIN_MENU,
+	SETTINGS,
+	FACTION_SELECTION,
+	PAUSE,
+
+	NONE
+};
 
 class j1Scene : public j1Module
 {
@@ -35,14 +45,19 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	StatesMenu GetMenuState();
+	void SetMenuState(const StatesMenu& menu);
+
 public:
 
+	bool create = false;
+	StatesMenu menu_state = StatesMenu::NONE;
+
+	UI_Label* nukas = nullptr;
 private:
 
-	GuiImage* banner;
-	GuiText* text;
-
 	int SongPlaying = 0;
+
 };
 
 #endif // __j1SCENE_H__

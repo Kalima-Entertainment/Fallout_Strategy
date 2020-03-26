@@ -4,8 +4,8 @@
 #include "j1Module.h"
 #include "SDL\include\SDL_pixels.h"
 
-#define DEFAULT_FONT "fonts/open_sans/OpenSans-Regular.ttf"
-#define DEFAULT_FONT_SIZE 12
+#define DEFAULT_FONT "fonts/stacked/StackedPixel.ttf"
+#define DEFAULT_FONT_SIZE 38
 
 struct SDL_Texture;
 struct _TTF_Font;

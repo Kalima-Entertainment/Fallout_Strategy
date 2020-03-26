@@ -14,6 +14,8 @@
 #include "j1Entity.h"
 #include "DynamicEntity.h"
 #include "StaticEntity.h"
+#include "MenuManager.h"
+#include "UI_Label.h"
 #include "Player.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
@@ -38,6 +40,9 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
+
+	menu_state = StatesMenu::NONE;
+
 	DynamicEntity* vault[3], * brotherhood[3], * ghoul[3], *mutant[3];
 	DynamicEntity* test_melee, *test_enemy, *test_ranged, *test_gatherer;
 	StaticEntity* ghoul_base, *ghoul_barrack, *ghoul_laboratory;
@@ -135,6 +140,25 @@ bool j1Scene::PreUpdate()
 bool j1Scene::Update(float dt)
 {
 	App->map->Draw();
+
+	// Gui ---
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
+
+		if (create == true) {
+
+			App->menu_manager->DestroyPauseMenu();
+			create = false;
+
+		}
+
+		else if (create == false) {
+
+			App->menu_manager->CreatePauseMenu();
+			create = true;
+
+		}
+
+	}
 
 	int x, y;
 	App->input->GetMousePosition(x, y);
@@ -240,8 +264,8 @@ bool j1Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
+	/*if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		ret = false;*/
 
 	return ret;
 }
@@ -252,4 +276,14 @@ bool j1Scene::CleanUp()
 	LOG("Freeing scene");
 
 	return true;
+}
+
+StatesMenu j1Scene::GetMenuState()
+{
+	return menu_state;
+}
+
+void j1Scene::SetMenuState(const StatesMenu& menu)
+{
+	menu_state = menu;
 }
