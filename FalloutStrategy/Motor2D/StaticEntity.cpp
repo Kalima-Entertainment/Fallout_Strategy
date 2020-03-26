@@ -21,16 +21,17 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
 
 	type = g_type;
 	faction = g_faction;
-	state = IDLE;
 }
 
 StaticEntity::~StaticEntity() {}
 
 bool StaticEntity::Update(float dt) {
 	switch (state) {
-	case IDLE:
+	case WAIT:
 		break;
-	case DIE:
+	case PRODUCE:
+		break;
+	case EXPLODE:
 		if (current_animation->Finished())
 			to_destroy = true;
 		break;
@@ -62,7 +63,7 @@ bool StaticEntity::Update(float dt) {
 }
 
 bool StaticEntity::PostUpdate() {
-	current_animation = &animations[state][direction];
+	current_animation = &animations[state];
 
 	//Render building
 	iPoint render_position;
@@ -74,14 +75,12 @@ bool StaticEntity::PostUpdate() {
 
 bool StaticEntity::LoadReferenceData() {
 	bool ret = true;
+	StaticEntity* static_reference = (StaticEntity*)reference_entity;
 
 	//load animations
-	for (int i = 0; i < MAX_ANIMATIONS; i++)
+	for (int i = 0; i < 3; i++)
 	{
-		for (int j = 0; j <= 6; j++)
-		{
-			animations[i][j] = reference_entity->animations[i][j];
-		}
+		animations[i] = static_reference->animations[i];
 	}
 
 	//load property data
@@ -140,8 +139,7 @@ bool StaticEntity::LoadAnimations() {
 	{
 		p2SString building_type(animation.child("properties").child("property").attribute("name").as_string());
 		p2SString animation_name(animation.child("properties").child("property").attribute("value").as_string());
-		int direction = TOP_RIGHT;
-		State state = IDLE;
+		StaticState state = NO_STATE;
 		EntityType entity_type;
 		bool loop = true;
 
@@ -155,10 +153,14 @@ bool StaticEntity::LoadAnimations() {
 
 		//animation
 		if (animation_name == "idle") {
-			state = IDLE;
+			state = WAIT;
+		}
+		else if (animation_name == "produce") {
+			state = PRODUCE;
+			loop = false;
 		}
 		else if (animation_name == "die") {
-			state = DIE;
+			state = EXPLODE;
 			loop = false;
 		}
 		else goto CHANGE_ANIMATION;
@@ -172,10 +174,10 @@ bool StaticEntity::LoadAnimations() {
 				speed = frame.attribute("duration").as_int() * 0.001f;
 				rect.x = rect.w * ((tile_id) % columns);
 				rect.y = rect.h * ((tile_id) / columns);
-				animations[state][TOP_RIGHT].PushBack(rect, speed);
+				animations[state].PushBack(rect, speed);
 				frame = frame.next_sibling();
 			}
-			animations[state][TOP_RIGHT].loop = loop;
+			animations[state].loop = loop;
 		}
 
 	CHANGE_ANIMATION: animation = animation.next_sibling();

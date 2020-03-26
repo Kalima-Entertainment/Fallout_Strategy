@@ -317,10 +317,12 @@ j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
 j1Entity* j1EntityManager::FindBuildingByTile(iPoint tile) {
 	for (int i = 0; i < entities.size(); i++)
 	{
+		/*
 		if ((entities[i]->positions[i].x == tile.x) && (entities[i]->positions[i].y == tile.y))
 		{
 			return entities[i];
 		}
+		*/
 	}
 	return nullptr;
 }

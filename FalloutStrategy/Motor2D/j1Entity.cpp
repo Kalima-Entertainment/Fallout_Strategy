@@ -12,8 +12,6 @@
 j1Entity::j1Entity() {
 
 	position = { 0, 0 };
-	lastPosition = { 0, 0 };
-	initialPosition = { 0, 0 };
 	current_tile = { 0, 0 };
 	target_tile = { 0, 0 };
 	path_to_target = nullptr;
@@ -24,12 +22,9 @@ j1Entity::j1Entity() {
 	last_collider = nullptr;
 
 	current_animation = nullptr;
-	direction = TOP_RIGHT;
-	state = IDLE;
 	faction = VAULT;
 
 	texture = nullptr;
-	flip = SDL_FLIP_NONE;
 
 	is_dynamic = false;
 	to_destroy = false;

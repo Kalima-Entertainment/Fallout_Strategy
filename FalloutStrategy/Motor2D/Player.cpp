@@ -99,7 +99,7 @@ bool Player::PreUpdate() {
 
 				//assign a dynamic target to entity
 				if (target != nullptr) {					
-					dynamic_entity->target_entity = target;					
+					dynamic_entity->target_entity = (DynamicEntity*)target;					
 				}
 				else {					
 					dynamic_entity->target_entity = nullptr;
@@ -107,11 +107,13 @@ bool Player::PreUpdate() {
 					building = App->map->building_tiles[selected_spot.x][selected_spot.y];
 					if (building != nullptr) {
 						//if clicking on a static entity
+						/*
 						if (building->is_static)
 							dynamic_entity->target_entity = building->static_entity;
 						//if clicking on a resource building
 						else
 							dynamic_entity->resource_building = building->resource_building;
+							*/
 					}
 					else 
 					{

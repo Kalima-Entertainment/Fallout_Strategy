@@ -6,6 +6,26 @@
 struct ResourceBuilding;
 enum class Resource;
 
+enum Direction {
+	TOP_LEFT,
+	TOP_RIGHT,
+	RIGHT,
+	BOTTOM_RIGHT,
+	BOTTOM_LEFT,
+	LEFT,
+	NO_DIRECTION
+};
+
+enum DynamicState {
+	IDLE,
+	WALK,
+	ATTACK,
+	GATHER,
+	HIT,
+	DIE,
+	MAX_ANIMATIONS
+};
+
 class DynamicEntity : public j1Entity
 {
 public:
@@ -23,16 +43,19 @@ public:
 public:
 	int mov_speed;
 	int attack_speed;
+	float action_time;
 	iPoint current_speed;
 	iPoint next_tile;
 
+	Animation animations[MAX_ANIMATIONS][7];
+	Direction direction;
+	DynamicState state;
 	int range;
 	int resource_collected;
-	j1Entity* target_entity;
+	DynamicEntity* target_entity;
 	ResourceBuilding* resource_building;
 	Resource resource_type;
 	j1Timer timer;
-	float action_time;
 
 	iPoint next_tile_position;
 	SDL_Rect next_tile_rect_center;

@@ -350,7 +350,7 @@ bool DynamicEntity::LoadAnimations() {
 		p2SString animation_direction(animation.child("properties").child("property").attribute("value").as_string());
 		p2SString animation_name(animation.child("properties").child("property").attribute("name").as_string());
 		int direction = TOP_RIGHT;
-		State state = IDLE;
+		DynamicState state = IDLE;
 		bool loop = true;
 
 		//animation
@@ -406,13 +406,13 @@ bool DynamicEntity::LoadAnimations() {
 
 bool DynamicEntity::LoadReferenceData() {
 	bool ret = true;
-
+	DynamicEntity* dynamic_reference = (DynamicEntity*)reference_entity;
 	//load animations
 	for (int i = 0; i < MAX_ANIMATIONS; i++)
 	{
 		for (int j = 0; j <= 6; j++)
 		{
-			animations[i][j] = reference_entity->animations[i][j];
+			animations[i][j] = dynamic_reference->animations[i][j];
 		}
 	}
 
