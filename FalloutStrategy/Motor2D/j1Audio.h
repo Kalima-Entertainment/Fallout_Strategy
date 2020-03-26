@@ -2,6 +2,7 @@
 #define __j1AUDIO_H__
 
 #include "j1Module.h"
+#include "p2List.h"
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
 
@@ -34,9 +35,19 @@ public:
 
 	uint explosion;
 
+	void Change_Volume_Music(float value);
+	void Change_Volume_FX(float value);
+
+	float Music_Volume;
+	float Get_Music_Volume();
+	float Get_FX_Volume();
+
 private:
 
-	_Mix_Music*			music = NULL;
+	float				music_volume;
+	float				fx_volume;
+
+	_Mix_Music*			music = nullptr;
 	p2List<Mix_Chunk*>	fx;
 };
 

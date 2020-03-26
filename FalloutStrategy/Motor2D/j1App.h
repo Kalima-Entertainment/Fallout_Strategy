@@ -22,6 +22,8 @@ class j1EntityManager;
 class j1Collision;
 class Player;
 class j1Minimap;
+class MenuManager;
+class MainMenu;
 
 class j1App
 {
@@ -100,8 +102,11 @@ public:
 	j1EntityManager*	entities = NULL;
 	Player*				player = NULL;
 	j1Minimap*			minimap = NULL;
+	MenuManager*		menu_manager = NULL;
+	MainMenu*			main_menu = NULL;
 
-	bool pause;
+	bool				pause;
+	bool				quitGame = false;
 private:
 
 	p2List<j1Module*>	modules;
