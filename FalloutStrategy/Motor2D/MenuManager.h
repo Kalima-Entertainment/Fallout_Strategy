@@ -120,6 +120,22 @@ struct UI_pause_menu {
 
 };
 
+struct UI_GUI {
+
+	j1Image* nukas = nullptr;
+	j1Image* water = nullptr;
+	j1Image* meat = nullptr;
+
+	j1Image* nukas_background = nullptr;
+	j1Image* water_background = nullptr;
+	j1Image* meat_background = nullptr;
+
+	j1Image* nukas_label = nullptr;
+	j1Image* water_label = nullptr;
+	j1Image* meat_label = nullptr;
+
+};
+
 class MenuManager :public j1Module {
 
 public:
@@ -144,6 +160,8 @@ public:
 	void DestroyPauseMenu();
 	void CreatePauseSettings();
 	void DestroyPauseSettings();
+	void CreateGUI();
+	void DestroyGUI();
 
 public:
 
@@ -152,9 +170,11 @@ public:
 	UI_select_faction	select_faction_menu;
 	UI_settings			settings_menu;
 	UI_pause_menu		pause_menu;
+	UI_GUI				gui_ingame;
 
 	char collaborator = 'M';
 	
+
 };
 
 

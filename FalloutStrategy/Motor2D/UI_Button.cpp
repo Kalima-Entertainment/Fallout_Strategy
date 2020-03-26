@@ -68,7 +68,7 @@ bool UI_Button::Update(float dt)
 
 		//rect is button hover
 		dimensions = Button_hover;
-		//LOG("%i", counter);
+		LOG("%i", counter);
 
 		//only plays fx once
 		if (counter == 1) {
@@ -76,6 +76,65 @@ bool UI_Button::Update(float dt)
 			App->audio->PlayFx(hover_fx, 0);
 		}
 
+		if (observer) {
+			observer->Callback(this);
+		}
+
+		if (t == button_select_ghoul) {
+
+			if (counter == 10) {
+				
+				App->menu_manager->select_faction_menu.ghouls = (j1Image*)App->gui->CreateImage(100, 300, Image, { 2492, 837, 168, 166 }, NULL, this);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.vault);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.brotherhood);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.supermutants);
+
+			}
+		
+		}
+
+		if (t == button_select_vault) {
+
+
+			if (counter == 1) {
+				
+				App->menu_manager->select_faction_menu.vault = (j1Image*)App->gui->CreateImage(310, 300, Image, { 2492, 1013, 309, 134 }, NULL, this);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.ghouls);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.brotherhood);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.supermutants);
+
+			}
+
+		}
+
+		if (t == button_select_brotherhood) {
+
+
+			if (counter == 1) {
+				
+				App->menu_manager->select_faction_menu.brotherhood = (j1Image*)App->gui->CreateImage(550, 300, Image, { 2492, 1161, 155, 180 }, NULL, this);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.ghouls);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.vault);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.supermutants);
+
+			}
+
+		}
+
+		if (t == button_select_supermutant) {
+
+			if (counter == 1) {
+				
+				App->menu_manager->select_faction_menu.supermutants = (j1Image*)App->gui->CreateImage(750, 300, Image, { 2492, 1354, 158, 158 }, NULL, this);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.ghouls);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.vault);
+				App->gui->Delete_Element(App->menu_manager->select_faction_menu.brotherhood);
+
+			}
+
+		}
+
+		
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT)==KEY_DOWN) {
 
 			//rect is button pressed
@@ -263,6 +322,7 @@ bool UI_Button::Update(float dt)
 			{
 				App->menu_manager->DestroySelectFaction();
 				App->audio->PlayFx(back_fx, 0);
+				App->menu_manager->CreateGUI();
 			}
 
 			if (t == button_pause_to_main)

@@ -4,6 +4,9 @@
 #include "j1Scene.h"
 #include "j1Render.h"
 #include "j1Pathfinding.h"
+#include "j1Textures.h"
+#include "j1EntityManager.h"
+#include "Player.h"
 
 DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 
@@ -16,6 +19,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 		range = 3;
 		break;
 	case GATHERER:
+		range = 1;
 		break;
 	default:
 		break;
@@ -27,11 +31,10 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 	direction = TOP_RIGHT;
 
 	current_speed = { 0, 0 };
-	speed = { 1, 0.5f };
-	attack_collider = nullptr;
 	target_entity = nullptr;
-	attack_time = 3.0f;
-	damage = 10;
+	resource_building = nullptr;
+	action_time = 3.0f;
+	resource_collected = 0;
 }
 
 DynamicEntity::~DynamicEntity() {}
@@ -46,7 +49,7 @@ bool DynamicEntity::Update(float dt) {
 		Move();
 		break;
 	case ATTACK:
-		if (attack_timer.ReadSec() > attack_time)
+		if (timer.ReadSec() > action_time)
 		{
 			if (current_tile.DistanceManhattan(target_entity->current_tile) <= range)
 			{
@@ -55,6 +58,11 @@ bool DynamicEntity::Update(float dt) {
 		}
 		break;
 	case GATHER:
+		if (timer.ReadSec() > action_time)
+		{
+			Gather();
+			state = IDLE;
+		}
 		break;
 	case HIT:
 		if (current_animation->Finished())
@@ -87,7 +95,8 @@ bool DynamicEntity::PostUpdate() {
 			for (uint i = 0; i < path_to_target->Count(); ++i)
 			{
 				iPoint pos = App->map->MapToWorld(path_to_target->At(i)->x, path_to_target->At(i)->y);
-				App->render->Blit(App->scene->debug_tex, pos.x, pos.y);
+				SDL_Rect debug_rect = { 192, 0, 64,64 };
+				App->render->Blit(App->render->debug_tex, pos.x, pos.y, &debug_rect);
 			}
 		}
 	}
@@ -95,30 +104,25 @@ bool DynamicEntity::PostUpdate() {
 	//render character
 	iPoint render_position;
 	render_position = App->map->MapToWorld(current_tile.x, current_tile.y);
-	App->render->Blit(reference_entity->texture, position.x - TILE_SIZE, position.y - 2 * TILE_SIZE, &current_animation->GetCurrentFrame());
-	
+	App->render->Blit(reference_entity->texture, position.x - TILE_SIZE, position.y - 1.82f * TILE_SIZE, &current_animation->GetCurrentFrame());
+
+	//health bar
+	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 50, 4 };
+	SDL_Rect foreground_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, (float)current_health/max_health * 50, 4 };
+	if (foreground_bar.w < 0)
+		foreground_bar.w = 0;
+
+	App->render->DrawQuad(background_bar, 255, 255, 255, 255);
+	App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
+
 	//render position
 	if (App->render->debug)
 	{
 		App->render->DrawQuad({ (int)position.x - 2, (int)position.y - 2, 4,4 }, 255, 0, 0, 255);
-		App->render->DrawQuad(next_tile_center_rect, 0, 255, 0, 255);
+		App->render->DrawQuad(next_tile_rect_center, 0, 255, 0, 255);
 	}
 
 	return true;
-}
-
-bool DynamicEntity::LoadReferenceData() {
-	bool ret = true;
-
-	for (int i = 0; i < MAX_ANIMATIONS; i++)
-	{
-		for (int j = 0; j <= 6; j++)
-		{
-			animations[i][j] = reference_entity->animations[i][j];
-		}
-	}
-
-	return ret;
 }
 
 void DynamicEntity::Move() {
@@ -126,68 +130,67 @@ void DynamicEntity::Move() {
 	{
 		if (path_to_target->Count() != 0)
 		{
-			next_tile_center = App->map->MapToWorld(next_tile.x, next_tile.y);
-			next_tile_center_rect = { next_tile_center.x + 30, next_tile_center.y + 30,4,4 };
+			//get next tile center
+			next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
+			next_tile_rect_center = { next_tile_position.x + HALF_TILE - 2, next_tile_position.y + HALF_TILE,4,4 };
 
-			//Method 1
-			/*
-			if ((current_tile.x > next_tile.x) && (current_tile.y == next_tile.y))
-			{
-				direction = TOP_LEFT;
-				position.x -= speed.x;
-				position.y -= speed.y;
-			}
-			else if ((current_tile.x == next_tile.x) && (current_tile.y > next_tile.y))
-			{
-				direction = TOP_RIGHT;
-				position.x += speed.x;
-				position.y -= speed.y;
-			}
-			else if ((current_tile.x == next_tile.x) && (current_tile.y < next_tile.y))
-			{
-				direction = BOTTOM_LEFT;
-				position.x -= speed.x;
-				position.y += speed.y;
-			}
-			else if ((current_tile.x < next_tile.x) && (current_tile.y == next_tile.y))
-			{
-				direction = BOTTOM_RIGHT;
-				position.x += speed.x;
-				position.y += speed.y;
-			}
-			*/
-
-			//Method 2
-			
-			if ((next_tile == target_tile)&&(target_entity != nullptr)){
+			//check what's on next tile and act
+			if (current_tile.LinealDistance(target_tile) <= range) {
+				if (target_entity != nullptr) {
 				//we reach the destination and there is an entity in it
-				if (faction != target_entity->faction)
-				{
-					state = ATTACK;
-					Attack();
+					if ((faction != target_entity->faction) && (type != GATHERER))
+					{
+						state = ATTACK;
+						Attack();
+					}
+					
+					else if (next_tile == target_tile)
+					{
+						iPoint current_tile_center = App->map->MapToWorld(current_tile.x, current_tile.y);
+						position.x = current_tile_center.x + HALF_TILE;
+						position.y = current_tile_center.y + HALF_TILE;
+						state = IDLE;
+					}
+					
 				}
 				else
 				{
-					state = IDLE;
+					if (type == GATHERER) {
+						if ((resource_building != nullptr) && (resource_collected < storage_capacity)) {
+							state = GATHER;
+							timer.Start();
+						}
+					}
+					else
+					{
+						if (current_tile == target_tile)
+						{
+						iPoint current_tile_center = App->map->MapToWorld(current_tile.x, current_tile.y);
+						position.x = current_tile_center.x + HALF_TILE;
+						position.y = current_tile_center.y + HALF_TILE;
+						state = IDLE;
+						}
+					}
 				}
 			}
 
-			if ((position.x > next_tile_center_rect.x + next_tile_center_rect.w) && (position.x > next_tile_center_rect.x) && (position.y > next_tile_center_rect.y) && (position.y > next_tile_center_rect.y + next_tile_center_rect.h)) {
+			//move to next tile
+			if ((position.x > next_tile_rect_center.x + next_tile_rect_center.w) && (position.x > next_tile_rect_center.x) && (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h)) {
 				direction = TOP_LEFT;
 				position.x -= speed.x;
 				position.y -= speed.y;
 			}
-			else if ((position.x < next_tile_center_rect.x) && (position.x < next_tile_center_rect.x + next_tile_center_rect.w) && (position.y > next_tile_center_rect.y) && (position.y > next_tile_center_rect.y + next_tile_center_rect.h)) {
+			else if ((position.x < next_tile_rect_center.x) && (position.x < next_tile_rect_center.x + next_tile_rect_center.w) && (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h)) {
 				direction = TOP_RIGHT;
 				position.x += speed.x;
 				position.y -= speed.y;
 			}
-			else if ((position.x > next_tile_center_rect.x) && (position.x > next_tile_center_rect.x + next_tile_center_rect.w) && (position.y < next_tile_center_rect.y) && (position.y < next_tile_center_rect.y + next_tile_center_rect.h)) {
+			else if ((position.x > next_tile_rect_center.x) && (position.x > next_tile_rect_center.x + next_tile_rect_center.w) && (position.y < next_tile_rect_center.y) && (position.y < next_tile_rect_center.y + next_tile_rect_center.h)) {
 				direction = BOTTOM_LEFT;
 				position.x -= speed.x;
 				position.y += speed.y;
 			}
-			else if ((position.x < next_tile_center_rect.x) && (position.x < next_tile_center_rect.x + next_tile_center_rect.w) && (position.y < next_tile_center_rect.y) && (position.y < next_tile_center_rect.y + next_tile_center_rect.h)) {
+			else if ((position.x < next_tile_rect_center.x) && (position.x < next_tile_rect_center.x + next_tile_rect_center.w) && (position.y < next_tile_rect_center.y) && (position.y < next_tile_rect_center.y + next_tile_rect_center.h)) {
 				direction = BOTTOM_RIGHT;
 				position.x += speed.x;
 				position.y += speed.y;
@@ -197,13 +200,17 @@ void DynamicEntity::Move() {
 				if (*path_to_target->At(0) != target_tile)
 				{
 					current_tile = *path_to_target->At(0);
-					next_tile = *path_to_target->At(1);
+					if (path_to_target->Count() > 1)
+					{
+						next_tile = *path_to_target->At(1);
+					}
 					path_to_target->Advance();
+					
 				}
 				else
 				{
-					position.x = next_tile_center_rect.x + 2;
-					position.y = next_tile_center_rect.y + 2;
+					position.x = next_tile_rect_center.x + 2;
+					position.y = next_tile_rect_center.y + 2;
 					current_tile = target_tile;
 					state = IDLE;
 				}
@@ -220,8 +227,8 @@ void DynamicEntity::Move() {
 
 void DynamicEntity::Attack() {
 
-	attack_timer.Start();
-	target_entity->health -= damage;
+	timer.Start();
+	target_entity->current_health -= damage;
 	target_entity->state = HIT;
 	target_entity->current_animation->Reset();
 
@@ -249,12 +256,18 @@ void DynamicEntity::Attack() {
 		break;
 	}
 
-	if (target_entity->health <= 0) { 
+	if (target_entity->current_health <= 0) { 
 		target_entity->state = DIE;
 		target_entity->direction = TOP_LEFT;
 		target_entity = nullptr;
 		state = IDLE;
 	}
+}
+
+void DynamicEntity::Gather() {
+	resource_building->quantity -= damage;
+	resource_collected += damage;
+	resource_type = resource_building->resource_type;
 }
 
 void DynamicEntity::PathfindToPosition(iPoint destination) {
@@ -280,3 +293,134 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 		if (App->render->debug)App->render->DrawQuad(Debug_rect, 90, 850, 230, 40);
 	}
 }
+
+bool DynamicEntity::LoadAnimations() {
+	bool ret = true;
+	char* faction_char = { "NoFaction" };
+	char* type_char = { "NoType" };
+
+	//entity faction
+	if (faction == VAULT)
+		faction_char = "VaultDwellers";
+	else if (faction == BROTHERHOOD)
+		faction_char = "Brotherhood";
+	else if (faction == MUTANT)
+		faction_char = "SuperMutant";
+	else if (faction == GHOUL)
+		faction_char = "Ghouls";
+
+	//entity type
+	if (type == MELEE)
+		type_char = "Melee";
+	else if (type == RANGED)
+		type_char = "Ranged";
+	if (type == GATHERER)
+		type_char = "Gatherer";
+
+	p2SString file("textures/characters/%s/%s_%s.tmx", faction_char, faction_char, type_char);
+	p2SString texture_path("textures/characters/%s/%s_%s.png", faction_char, faction_char, type_char);
+
+	pugi::xml_document animation_file;
+	pugi::xml_parse_result result = animation_file.load_file(file.GetString());
+	p2SString image(animation_file.child("tileset").child("image").attribute("source").as_string());
+	texture = App->tex->Load(texture_path.GetString());
+
+	if (result == NULL)
+	{
+		LOG("Could not load animation tmx file %s. pugi error: %s", file, result.description());
+		ret = false;
+	}
+
+	int tile_width = animation_file.child("map").child("tileset").attribute("tilewidth").as_int();
+	int tile_height = animation_file.child("map").child("tileset").attribute("tileheight").as_int();
+	int columns = animation_file.child("map").child("tileset").attribute("columns").as_int();
+	int firstgid = animation_file.child("map").child("tileset").attribute("firstgid").as_int();
+	int id, tile_id;
+	float speed;
+
+	pugi::xml_node animation = animation_file.child("map").child("tileset").child("tile");
+	pugi::xml_node frame = animation.child("animation").child("frame");
+
+	SDL_Rect rect;
+	rect.w = tile_width;
+	rect.h = tile_height;
+	int i = 0;
+	while (animation != nullptr)
+	{
+		p2SString animation_direction(animation.child("properties").child("property").attribute("value").as_string());
+		p2SString animation_name(animation.child("properties").child("property").attribute("name").as_string());
+		int direction = TOP_RIGHT;
+		DynamicState state = IDLE;
+		bool loop = true;
+
+		//animation
+		if (animation_name == "idle")
+			state = IDLE;
+		else if (animation_name == "walk")
+			state = WALK;
+		else if (animation_name == "attack")
+			state = ATTACK;
+		else if (animation_name == "gather")
+			state = GATHER;
+		else if (animation_name == "hit") {
+			state = HIT;
+			loop = false;
+		}
+		else if (animation_name == "die") {
+			state = DIE;
+			loop = false;
+		}
+
+		//animation direction
+		if (animation_direction == "top_left")
+			direction = TOP_LEFT;
+		else if (animation_direction == "top_right")
+			direction = TOP_RIGHT;
+		else if (animation_direction == "left")
+			direction = LEFT;
+		else if (animation_direction == "right")
+			direction = RIGHT;
+		else if (animation_direction == "bottom_left")
+			direction = BOTTOM_LEFT;
+		else if (animation_direction == "bottom_right")
+			direction = BOTTOM_RIGHT;
+
+		id = animation.attribute("id").as_int();
+
+		while (frame != nullptr) {
+			tile_id = frame.attribute("tileid").as_int();
+			speed = frame.attribute("duration").as_int() * 0.001f;
+			rect.x = rect.w * ((tile_id) % columns);
+			rect.y = rect.h * ((tile_id) / columns);
+			animations[state][direction].PushBack(rect, speed);
+			frame = frame.next_sibling();
+		}
+		animations[state][direction].loop = loop;
+
+		animation = animation.next_sibling();
+		frame = animation.child("animation").child("frame");
+	}
+
+	return ret;
+}
+
+bool DynamicEntity::LoadReferenceData() {
+	bool ret = true;
+	DynamicEntity* dynamic_reference = (DynamicEntity*)reference_entity;
+	//load animations
+	for (int i = 0; i < MAX_ANIMATIONS; i++)
+	{
+		for (int j = 0; j <= 6; j++)
+		{
+			animations[i][j] = dynamic_reference->animations[i][j];
+		}
+	}
+
+	//load property data
+	current_health = max_health = reference_entity->max_health;
+	damage = reference_entity->damage;
+	speed = reference_entity->speed;
+
+	return ret;
+}
+

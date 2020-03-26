@@ -31,7 +31,9 @@ public:
 	unsigned int LoadFx(const char* path);
 
 	// Play a previously loaded WAV
-	bool PlayFx(unsigned int fx, int repeat = 0);
+	bool PlayFx(int channel, unsigned int fx, int repeat = 0);
+
+	uint explosion;
 
 	void Change_Volume_Music(float value);
 	void Change_Volume_FX(float value);
@@ -45,7 +47,7 @@ private:
 	float				music_volume;
 	float				fx_volume;
 
-	_Mix_Music*			music = nullptr;
+	_Mix_Music*			music = NULL;
 	p2List<Mix_Chunk*>	fx;
 };
 

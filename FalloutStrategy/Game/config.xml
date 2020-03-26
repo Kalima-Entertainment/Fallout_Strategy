@@ -2,19 +2,9 @@
 
 <config>
   <app>
-    <title>Game Development Testbed</title>
+    <title>Loading...</title>
     <organization>UPC</organization>
   </app>
-  <entities>
-   <vault_dwellers health="100">
-   </vault_dwellers>
-   <mutants>
-   </mutants>
-   <ghouls>
-   </ghouls>
-   <brotherhood>
-   </brotherhood>
-  </entities>	
   <renderer>
     <vsync value="true"/>
   </renderer>
@@ -35,5 +25,5 @@
   <map>
     <folder>maps/</folder>
   </map>
-
+  <minimap width="300" corner="bottom_left" margin="20"/>
 </config>

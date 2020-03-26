@@ -5,6 +5,13 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "j1Module.h"
+#include <vector>
+
+#define TILE_SIZE 64
+#define HALF_TILE 32
+#define MODULE_LENGTH 75
+#define MAP_LENGTH 150
+
 
 // ----------------------------------------------------
 struct Properties
@@ -85,6 +92,20 @@ enum MapTypes
 	MAPTYPE_STAGGERED
 };
 // ----------------------------------------------------
+
+struct Object {
+	//ResourceBuilding
+};
+
+
+struct ObjectGroup {
+	p2SString name = "No name";
+	Object* object;
+	uint size = 0u;
+};
+
+// ----------------------------------------------------
+
 struct MapData
 {
 	int					width;
@@ -95,6 +116,7 @@ struct MapData
 	MapTypes			type;
 	p2List<TileSet*>	tilesets;
 	p2List<MapLayer*>	layers;
+	p2List<ObjectGroup*> objectgroups;
 };
 
 // ----------------------------------------------------
@@ -123,7 +145,11 @@ public:
 	fPoint fMapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
 	iPoint fWorldToMap(float x, float y) const;
+	iPoint IsometricWorldToMap(int x, int y) const;
 	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
+	std::vector<iPoint> CalculateArea(iPoint first_tile_position, int width, int height);
+
+	TileSet* GetTilesetFromTileId(int id) const;
 
 private:
 
@@ -131,9 +157,8 @@ private:
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
+	bool LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup);
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
-
-	TileSet* GetTilesetFromTileId(int id) const;
 
 public:
 

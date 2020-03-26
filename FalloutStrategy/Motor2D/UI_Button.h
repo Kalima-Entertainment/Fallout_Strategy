@@ -8,7 +8,7 @@
 
 struct SDL_Texture;
 
-class UI_Button : public UI_element
+class UI_Button : public UI_element, j1Module
 {
 public:
 

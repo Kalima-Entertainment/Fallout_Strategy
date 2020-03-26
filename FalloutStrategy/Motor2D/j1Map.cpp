@@ -5,6 +5,10 @@
 #include "j1Textures.h"
 #include "j1Map.h"
 #include <math.h>
+#include "j1EntityManager.h"
+#include "j1Entity.h"
+#include "StaticEntity.h"
+#include "brofiler/Brofiler/Brofiler.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -28,6 +32,7 @@ bool j1Map::Awake(pugi::xml_node& config)
 
 void j1Map::Draw()
 {
+	BROFILER_CATEGORY("MapDraw", Profiler::Color::MediumPurple)
 	if(map_loaded == false)
 		return;
 
@@ -52,7 +57,7 @@ void j1Map::Draw()
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = MapToWorld(x, y);
 
-					App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+					App->render->Blit(tileset->texture, pos.x + tileset->offset_x, pos.y + tileset->offset_y, &r);
 				}
 			}
 		}
@@ -177,6 +182,13 @@ iPoint j1Map::fWorldToMap(float x, float y) const
 	return ret;
 }
 
+iPoint j1Map::IsometricWorldToMap(int x, int y) const {
+	iPoint map_position;
+	map_position.x = x / (data.tile_width * 0.5f);
+	map_position.y = y / data.tile_height;
+	return map_position;
+}
+
 SDL_Rect TileSet::GetTileRect(int id) const
 {
 	int relative_id = id - firstgid;
@@ -214,6 +226,18 @@ bool j1Map::CleanUp()
 		item2 = item2->next;
 	}
 	data.layers.clear();
+
+	// Remove all objects
+
+	p2List_item<ObjectGroup*>* item3;
+	item3 = data.objectgroups.start;
+	while (item3 != NULL)
+	{
+		//LOG("Objectgroups releasing");
+		RELEASE(item3->data);
+		item3 = item3->next;
+	}
+	data.objectgroups.clear();
 
 	// Clean up the pugui tree
 	map_file.reset();
@@ -298,6 +322,29 @@ bool j1Map::Load(const char* file_name)
 			LOG("tile width: %d tile height: %d", l->width, l->height);
 			item_layer = item_layer->next;
 		}
+
+		p2List_item<ObjectGroup*>* item_object = data.objectgroups.start;
+		while (item_object != NULL)
+		{
+			ObjectGroup* o = item_object->data;
+			LOG("ObjectGroup ----");
+			LOG("name: %s", o->name.GetString());
+			item_object = item_object->next;
+		}
+	}
+
+	//Load objectgroup info -------------------------------------
+
+	pugi::xml_node objectgroup;
+	for (objectgroup = map_file.child("map").child("objectgroup"); objectgroup && ret; objectgroup = objectgroup.next_sibling("objectgroup"))
+	{
+		ObjectGroup* set = new ObjectGroup();
+
+		if (ret == true)
+		{
+			ret = LoadObjectGroup(objectgroup, set);
+		}
+		data.objectgroups.add(set);
 	}
 
 	map_loaded = ret;
@@ -463,6 +510,90 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	return ret;
 }
 
+bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
+	bool ret = true;
+	pugi::xml_node object_node = node.child("object");
+	SDL_Rect rect = { 0,0,0,0 };
+	objectgroup->name = node.attribute("name").as_string();
+	uint i = 0u;
+
+	if (object_node == NULL)
+	{
+		LOG("Error loading object group");
+		ret = false;
+	}
+
+	else
+	{
+		while (object_node != nullptr)
+		{
+			p2SString object_name(object_node.attribute("name").as_string());
+			pugi::xml_node properties = object_node.child("properties");
+			pugi::xml_node property = properties.child("property");
+
+			int x = object_node.attribute("x").as_int();
+			int y = object_node.attribute("y").as_int();
+			int width = object_node.attribute("width").as_int() / (HALF_TILE)+1;
+			int height = object_node.attribute("height").as_int() / (HALF_TILE)+1;
+			iPoint first_tile_position = { x,y };
+
+			if (object_name == "Resources") {
+				ResourceBuilding* resource_building = new ResourceBuilding();
+
+				while (property != nullptr)
+				{
+					p2SString property_name(property.attribute("name").as_string());
+
+					if (property_name == "Nuka-Cola") {
+						resource_building->resource_type = Resource::CAPS;
+						resource_building->quantity = property.attribute("value").as_int();
+					}
+					else if (property_name == "Water") {
+						resource_building->resource_type = Resource::WATER;
+						resource_building->quantity = property.attribute("value").as_int();
+					}
+					property = property.next_sibling();
+				}
+				resource_building->tiles = CalculateArea(first_tile_position, width, height);
+				App->entities->resource_buildings.push_back(resource_building);
+			}
+			else if (object_name == "Static") {
+				//create building
+				StaticEntity* static_entity;
+				iPoint size;
+
+				//Adjust coordinates to tiles
+				x /= HALF_TILE;
+				y /= HALF_TILE;
+
+				//add tiles
+				p2SString object_type(object_node.attribute("type").as_string());
+				EntityType type = NO_TYPE;
+
+				if (object_type == "Base") {
+					type = BASE;
+					x -= 10;
+					y -= 5;
+				}
+				else if (object_type == "Barrack") {
+					type = BARRACK;
+					x -= 12;
+					y -= 6;
+				}
+				else if (object_type == "Laboratory") {
+					type = LABORATORY;
+				}
+
+				static_entity = (StaticEntity*)App->entities->CreateEntity(GHOUL, type, x,y);
+				static_entity->tiles = CalculateArea(first_tile_position, width, height);
+			}
+			
+			object_node = object_node.next_sibling();
+		}
+	}
+	return ret;
+}
+
 // Load a group of properties from a node and fill a list with it
 bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 {
@@ -534,4 +665,22 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 	}
 
 	return ret;
+}
+
+std::vector<iPoint> j1Map::CalculateArea(iPoint first_tile_position, int width, int height) {
+	bool ret = true;
+	std::vector<iPoint> area;
+
+	first_tile_position = IsometricWorldToMap(first_tile_position.x, first_tile_position.y);
+
+	for (int i = 0; i < width; i++)
+	{
+		for (int j = 0; j < height; j++)
+		{
+			iPoint tile_position = { first_tile_position.x + i,first_tile_position.y + j };
+			area.push_back(tile_position);
+		}
+	}
+
+	return area;
 }

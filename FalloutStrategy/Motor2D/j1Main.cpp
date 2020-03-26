@@ -3,12 +3,14 @@
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "j1App.h"
+#include "brofiler/Brofiler/Brofiler.h"
 
 // This is needed here because SDL redefines main function
 // do not add any other libraries here, instead put them in their modules
 #include "SDL/include/SDL.h"
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
+#pragma comment(lib, "brofiler/Brofiler/ProfilerCore32.lib")
 
 enum MainState
 {
@@ -26,7 +28,7 @@ j1App* App = NULL;
 int main(int argc, char* args[])
 {
 	LOG("Engine starting ... %d");
-
+	BROFILER_FRAME("MainLoop")
 	MainState state = MainState::CREATE;
 	int result = EXIT_FAILURE;
 
@@ -62,40 +64,43 @@ int main(int argc, char* args[])
 			break;
 
 			// Call all modules before first frame  ----------------------------
-			case START:
-			LOG("START PHASE ===============================");
-			if(App->Start() == true)
-			{
-				state = LOOP;
-				LOG("UPDATE PHASE ===============================");
+			case START: {
+				LOG("START PHASE ===============================");
+				BROFILER_FRAME("Start")
+					if (App->Start() == true)
+					{
+						state = LOOP;
+						LOG("UPDATE PHASE ===============================");
+					}
+					else
+					{
+						state = FAIL;
+						LOG("ERROR: Start failed");
+					}
+				break;
 			}
-			else
-			{
-				state = FAIL;
-				LOG("ERROR: Start failed");
-			}
-			break;
-
 			// Loop all modules until we are asked to leave ---------------------
-			case LOOP:
-			if(App->Update() == false)
-				state = CLEAN;
-			break;
-
-			// Cleanup allocated memory -----------------------------------------
-			case CLEAN:
-			LOG("CLEANUP PHASE ===============================");
-			if(App->CleanUp() == true)
-			{
-				RELEASE(App);
-				result = EXIT_SUCCESS;
-				state = EXIT;
+			case LOOP: {
+				BROFILER_FRAME("Update")
+					if (App->Update() == false)
+						state = CLEAN;
+				break;
 			}
-			else
-				state = FAIL;
+			// Cleanup allocated memory -----------------------------------------
+			case CLEAN: {
+				LOG("CLEANUP PHASE ===============================");
+				BROFILER_FRAME("CleanUp")
+					if (App->CleanUp() == true)
+					{
+						RELEASE(App);
+						result = EXIT_SUCCESS;
+						state = EXIT;
+					}
+					else
+						state = FAIL;
 
-			break;
-
+				break;
+			}
 			// Exit with errors and shame ---------------------------------------
 			case FAIL:
 			LOG("Exiting with errors :(");

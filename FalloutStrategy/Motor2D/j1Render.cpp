@@ -3,6 +3,8 @@
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Render.h"
+#include "j1Textures.h"
+#include "brofiler/Brofiler/Brofiler.h"
 
 #define VSYNC true
 
@@ -13,7 +15,7 @@ j1Render::j1Render() : j1Module()
 	background.g = 0;
 	background.b = 0;
 	background.a = 0;
-	debug = false;
+	debug = true;
 }
 
 // Destructor
@@ -56,6 +58,7 @@ bool j1Render::Awake(pugi::xml_node& config)
 bool j1Render::Start()
 {
 	LOG("render start");
+	debug_tex = App->tex->Load("maps/debug_textures.png");
 	// back background
 	SDL_RenderGetViewport(renderer, &viewport);
 	return true;
@@ -70,6 +73,7 @@ bool j1Render::PreUpdate()
 
 bool j1Render::PostUpdate()
 {
+	BROFILER_CATEGORY("RenderPostUpdate", Profiler::Color::Purple)
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
 	return true;
@@ -148,16 +152,18 @@ fPoint j1Render::fWorldToScreen(int x, int y) const
 }
 
 // Blit to screen
-bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivot_x, int pivot_y) const
+bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale, float speed, double angle, int pivot_x, int pivot_y) const
 {
 	bool ret = true;
-	uint scale = App->win->GetScale();
+	//float scale = App->win->GetScale();
+
+	//scale *= user_scale;
 
 	SDL_Rect rect;
 	rect.x = (int)(camera.x * speed) + x * scale;
 	rect.y = (int)(camera.y * speed) + y * scale;
 
-	if(section != NULL)
+	if (section != NULL)
 	{
 		rect.w = section->w;
 		rect.h = section->h;
@@ -173,14 +179,14 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	SDL_Point* p = NULL;
 	SDL_Point pivot;
 
-	if(pivot_x != INT_MAX && pivot_y != INT_MAX)
+	if (pivot_x != INT_MAX && pivot_y != INT_MAX)
 	{
 		pivot.x = pivot_x;
 		pivot.y = pivot_y;
 		p = &pivot;
 	}
 
-	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, SDL_FLIP_NONE) != 0)
+	if (SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, SDL_FLIP_NONE) != 0)
 	{
 		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
 		ret = false;

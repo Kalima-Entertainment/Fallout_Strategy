@@ -64,8 +64,8 @@
     <ClCompile Include="Player.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="j1Gui.cpp">
-      <Filter>Desenvolupament  ========\UI</Filter>
+    <ClCompile Include="j1Minimap.cpp">
+      <Filter>Desenvolupament  ========\Modules</Filter>
     </ClCompile>
     <ClCompile Include="j1Image.cpp">
       <Filter>Desenvolupament  ========\UI</Filter>
@@ -82,10 +82,13 @@
     <ClCompile Include="UI_Slider.cpp">
       <Filter>Desenvolupament  ========\UI</Filter>
     </ClCompile>
-    <ClCompile Include="MenuManager.cpp">
-      <Filter>Desenvolupament  ========\Scenes</Filter>
+    <ClCompile Include="j1Gui.cpp">
+      <Filter>Desenvolupament  ========\UI</Filter>
     </ClCompile>
     <ClCompile Include="MainMenu.cpp">
+      <Filter>Desenvolupament  ========\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuManager.cpp">
       <Filter>Desenvolupament  ========\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -174,8 +177,8 @@
     <ClInclude Include="Player.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="j1Gui.h">
-      <Filter>Desenvolupament  ========\UI</Filter>
+    <ClInclude Include="j1Minimap.h">
+      <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
     <ClInclude Include="j1Image.h">
       <Filter>Desenvolupament  ========\UI</Filter>
@@ -192,10 +195,13 @@
     <ClInclude Include="UI_Slider.h">
       <Filter>Desenvolupament  ========\UI</Filter>
     </ClInclude>
-    <ClInclude Include="MenuManager.h">
-      <Filter>Desenvolupament  ========\Scenes</Filter>
+    <ClInclude Include="j1Gui.h">
+      <Filter>Desenvolupament  ========\UI</Filter>
     </ClInclude>
     <ClInclude Include="MainMenu.h">
+      <Filter>Desenvolupament  ========\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuManager.h">
       <Filter>Desenvolupament  ========\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
@@ -222,7 +228,7 @@
       <UniqueIdentifier>{a7375bea-d952-4812-ab4b-82c26caaf0b9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Desenvolupament  ========\UI">
-      <UniqueIdentifier>{9c467762-60d5-401b-a135-28104970e72e}</UniqueIdentifier>
+      <UniqueIdentifier>{cae9da51-1fbe-495e-ad38-f6691ccd446f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
