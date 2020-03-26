@@ -12,7 +12,6 @@
 #define MODULE_LENGTH 75
 #define MAP_LENGTH 150
 
-union Building;
 
 // ----------------------------------------------------
 struct Properties
@@ -164,7 +163,6 @@ private:
 public:
 
 	MapData data;
-	Building* building_tiles[MAP_LENGTH][MAP_LENGTH];
 
 private:
 

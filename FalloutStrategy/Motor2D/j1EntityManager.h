@@ -51,8 +51,9 @@ public:
 	//bool CheckpointLoad();
 
 	j1Entity* CreateEntity(Faction faction, EntityType type, int position_x, int position_y);
-	j1Entity* FindEntityByTile(iPoint position);
+	j1Entity* FindEntityByTile(iPoint tile);
 	j1Entity* FindEntityByType(Faction faction, EntityType type);
+	ResourceBuilding* FindResourceBuildingByTile(iPoint tile);
 	void DestroyEntity(j1Entity* delete_entity);
 	void DestroyAllEntities();
 	bool LoadReferenceEntityData();

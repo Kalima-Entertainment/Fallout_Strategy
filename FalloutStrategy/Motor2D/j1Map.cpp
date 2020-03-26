@@ -62,33 +62,6 @@ void j1Map::Draw()
 			}
 		}
 	}
-
-	//debug resource buildings
-	if (App->render->debug)
-	{
-		for (int i = 0; i < MAP_LENGTH; i++)
-		{
-			for (int j = 0; j < MAP_LENGTH; j++)
-			{
-				if (building_tiles[i][j] != nullptr)
-				{
-					iPoint position = MapToWorld(i, j);
-					SDL_Rect resource_debug_rect = { 0,0,64,64 };
-					SDL_Rect static_debug_rect = { 256,0,64,64 };
-					/*
-					if (building_tiles[i][j]->is_static)
-					{
-						App->render->Blit(App->render->debug_tex, position.x, position.y, &static_debug_rect);
-					}
-					else 
-					{
-						App->render->Blit(App->render->debug_tex, position.x, position.y, &resource_debug_rect);
-					}
-					*/
-				}
-			}
-		}
-	}
 }
 
 int Properties::Get(const char* value, int default_value) const
@@ -694,8 +667,9 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 	return ret;
 }
 
-bool j1Map::AddBuildingToMap(iPoint first_tile_position, int width, int height, Building* building) {
+std::vector<iPoint> j1Map::CalculateArea(iPoint first_tile_position, int width, int height) {
 	bool ret = true;
+	std::vector<iPoint> area;
 
 	first_tile_position = IsometricWorldToMap(first_tile_position.x, first_tile_position.y);
 

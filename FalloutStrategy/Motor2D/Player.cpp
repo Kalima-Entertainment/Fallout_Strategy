@@ -78,9 +78,11 @@ bool Player::PreUpdate() {
 				selected_entity = target;
 			}
 		}
+
 		//if we had one
 		else
 		{
+			//dynamic entities
 			if (selected_entity->is_dynamic)
 			{
 				DynamicEntity* dynamic_entity;
@@ -89,30 +91,25 @@ bool Player::PreUpdate() {
 				dynamic_entity->target_tile = selected_spot;
 				dynamic_entity->state = WALK;
 
-				//assign a dynamic target to entity
-				if (target != nullptr) {					
-					dynamic_entity->target_entity = (DynamicEntity*)target;					
+				if (target != nullptr) {
+					//assign a dynamic target to the entity
+					if (target->is_dynamic)
+						dynamic_entity->target_entity = (DynamicEntity*)target;
+					//assign a static target to the entity
+					else
+						dynamic_entity->target_building = (StaticEntity*)target;
 				}
 				else {					
 					dynamic_entity->target_entity = nullptr;
-					Building* building;
-					building = App->map->building_tiles[selected_spot.x][selected_spot.y];
-					if (building != nullptr) {
-						//if clicking on a static entity
-						/*
-						if (building->is_static)
-							dynamic_entity->target_entity = building->static_entity;
-						//if clicking on a resource building
-						else
-							dynamic_entity->resource_building = building->resource_building;
-							*/
-					}
-					else 
-					{
-						dynamic_entity->resource_building = nullptr;
-					}
+					ResourceBuilding* resource_building;
+					resource_building = App->entities->FindResourceBuildingByTile(selected_spot);
+					//assign a resource building to the entity
+					if (resource_building != nullptr)
+						dynamic_entity->resource_building = resource_building;
 				}
 			}
+
+			//static entities
 			else
 			{
 				StaticEntity* static_entity;

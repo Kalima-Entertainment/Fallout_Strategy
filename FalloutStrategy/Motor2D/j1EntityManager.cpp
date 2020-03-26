@@ -319,27 +319,6 @@ void j1EntityManager::Swap(int i, int j)
 	entities[j] = aux;
 }
 
-j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
-	for (int i = 0; i < entities.size(); i++)
-	{
-		if (entities[i]->is_dynamic)
-		{
-			if(entities[i]->current_tile == tile)
-			return entities[i];
-		}
-		else
-		{
-			StaticEntity* static_entity = (StaticEntity*)entities[i];
-			for (int j = 0; j < static_entity->tiles.size(); j++)
-			{
-				if (static_entity->tiles[j] == tile)
-					return entities[i];
-			}
-		}
-	}
-	return nullptr;
-}
-
 void j1EntityManager::DestroyEntity(j1Entity* entity) {
 	delete entity;
 }
@@ -359,4 +338,37 @@ j1Entity* j1EntityManager::FindEntityByType(Faction faction, EntityType type) {
 			return entities[i];
 		}
 	}
+}
+
+j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
+	for (int i = 0; i < entities.size(); i++)
+	{
+		if (entities[i]->is_dynamic)
+		{
+			if (entities[i]->current_tile == tile)
+				return entities[i];
+		}
+		else
+		{
+			StaticEntity* static_entity = (StaticEntity*)entities[i];
+			for (int j = 0; j < static_entity->tiles.size(); j++)
+			{
+				if (static_entity->tiles[j] == tile)
+					return entities[i];
+			}
+		}
+	}
+	return nullptr;
+}
+
+ResourceBuilding* j1EntityManager::FindResourceBuildingByTile(iPoint tile) {
+	for (int i = 0; i < resource_buildings.size(); i++)
+	{
+		for (int j = 0; j < resource_buildings[i]->tiles.size(); j++)
+		{
+			if (resource_buildings[i]->tiles[j] == tile)
+				return resource_buildings[i];
+		}
+	}
+	return nullptr;
 }
