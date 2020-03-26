@@ -340,11 +340,12 @@ void j1EntityManager::DestroyAllEntities() {
 j1Entity* j1EntityManager::FindEntityByType(Faction faction, EntityType type) {
 	for (int i = 0; i < entities.size(); i++)
 	{
-		if ((entities[i]->faction)&&(entities[i]->type))
+		if ((entities[i]->faction == faction)&&(entities[i]->type == type))
 		{
 			return entities[i];
 		}
 	}
+	return nullptr;
 }
 
 j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
@@ -378,4 +379,14 @@ ResourceBuilding* j1EntityManager::FindResourceBuildingByTile(iPoint tile) {
 		}
 	}
 	return nullptr;
+}
+
+iPoint j1EntityManager::ClosestTile(iPoint position, std::vector<iPoint> entity_tiles) {
+	iPoint pivot = entity_tiles[0];
+	for (int i = 0; i < entity_tiles.size(); i++)
+	{
+		if (position.DistanceManhattan(entity_tiles[i]) < position.DistanceManhattan(pivot))
+			pivot = entity_tiles[i];
+	}
+	return pivot;
 }
