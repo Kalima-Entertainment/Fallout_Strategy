@@ -136,6 +136,7 @@ void MenuManager::CreateSettings()
 	settings_menu.fps_image = (j1Image*)App->gui->CreateImage(595, 600, FPS, { 1599, 1054, 77, 52 }, NULL, this);
 
 	//Labels
+	
 	settings_menu.fps = (UI_Label*)App->gui->CreateLabel(520, 525, text_fps, "REFRESH RATE", NULL, this, NULL);
 	settings_menu.fx_volume = (UI_Label*)App->gui->CreateLabel(360, 335, text_fx_volume, "SOUND EFFECTS VOLUME", NULL, this, NULL);
 	settings_menu.music_volume = (UI_Label*)App->gui->CreateLabel(360, 150, text_music_volume, "MUSIC VOLUME", NULL, this, NULL);
@@ -407,6 +408,19 @@ void MenuManager::CreateGUI()
 	gui_ingame.nukas_label = (j1Image*)App->gui->CreateImage(20, 8, Nukas, { 1285, 725, 43, 14 }, NULL, this);
 	gui_ingame.water_label = (j1Image*)App->gui->CreateImage(135, 8, Water, { 1340, 727, 43, 14 }, NULL, this);
 	gui_ingame.meat_label = (j1Image*)App->gui->CreateImage(253, 8, Meat, { 1407, 727, 34, 14 }, NULL, this);
+
+	if (gui_ingame.count == 0) {
+		
+		p2SString cc("%i", App->player->caps);
+		p2SString ww("%i", App->player->water);
+		p2SString ff("%i", App->player->food);
+		
+		gui_ingame.nukas_count = (UI_Label*)App->gui->CreateLabel(82, 29, Nukas, cc, NULL, this, NULL);
+		gui_ingame.water_count = (UI_Label*)App->gui->CreateLabel(193, 29, Water, ww, NULL, this, NULL);
+		gui_ingame.meat_count = (UI_Label*)App->gui->CreateLabel(307, 29, Meat, ff, NULL, this, NULL);
+
+		gui_ingame.count++;
+	}
 
 	//Labels
 	//settings_menu.fps = (UI_Label*)App->gui->CreateLabel(520, 525, text_fps, "REFRESH RATE", NULL, this, NULL);

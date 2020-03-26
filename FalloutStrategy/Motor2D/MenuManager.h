@@ -55,6 +55,8 @@ struct UI_settings {
 	UI_Button* mute_button = nullptr;
 	UI_Button* back_button = nullptr;
 
+
+
 };
 
 struct UI_credits {
@@ -133,6 +135,11 @@ struct UI_GUI {
 	j1Image* nukas_label = nullptr;
 	j1Image* water_label = nullptr;
 	j1Image* meat_label = nullptr;
+
+	UI_Label* nukas_count = nullptr;
+	UI_Label* water_count = nullptr;
+	UI_Label* meat_count = nullptr;
+	int count = 0;
 
 };
 

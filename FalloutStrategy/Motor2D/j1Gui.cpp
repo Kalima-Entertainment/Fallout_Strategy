@@ -147,7 +147,7 @@ UI_element* j1Gui::CreateSlider(int x, int y, UI_Type type, SDL_Rect scrollbar, 
 }
 
 
-UI_element* j1Gui::CreateLabel(int x, int y, UI_Type type, char* text_input, UI_element* parent, j1Module* Observer, int* counter)
+UI_element* j1Gui::CreateLabel(int x, int y, UI_Type type, p2SString text_input, UI_element* parent, j1Module* Observer, int* counter)
 {
 	UI_Label* label = new UI_Label(x, y, type, text_input, parent, Observer, counter);
 
