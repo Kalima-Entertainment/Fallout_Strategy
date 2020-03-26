@@ -14,6 +14,7 @@
 #include "j1Entity.h"
 #include "DynamicEntity.h"
 #include "MenuManager.h"
+#include "UI_Label.h"
 #include "Player.h"
 
 j1Scene::j1Scene() : j1Module()

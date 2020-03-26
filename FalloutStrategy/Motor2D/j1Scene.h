@@ -4,8 +4,7 @@
 #include "j1Module.h"
 
 struct SDL_Texture;
-class GuiImage;
-class GuiText;
+class UI_Label;
 class DynamicEntity;
 
 enum class StatesMenu 
@@ -57,10 +56,10 @@ public:
 	bool create = false;
 	StatesMenu menu_state = StatesMenu::NONE;
 
+	UI_Label* nukas = nullptr;
+
 private:
 
-	GuiImage* banner;
-	GuiText* text;
 };
 
 #endif // __j1SCENE_H__

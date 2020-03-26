@@ -83,6 +83,8 @@ enum UI_Type {
 	Nukas,
 	Water,
 	Meat,
+
+	nukas_count,
 };
 
 class UI_element 
