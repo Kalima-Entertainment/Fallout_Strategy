@@ -24,23 +24,23 @@
  </static>
  <dynamic>
   <vault>
-   <melee health="100" damage="80" speed="100"/>
-   <ranged health="100" damage="120" speed="100"/>
+   <melee health="100" damage="15" speed="100"/>
+   <ranged health="100" damage="30" speed="100"/>
    <gatherer health="100" damage="100" speed="100"/>
   </vault>
   <brotherhood>
-   <melee health="200" damage="100" speed="80"/>
-   <ranged health="200" damage="220" speed="80"/>
+   <melee health="200" damage="20" speed="80"/>
+   <ranged health="200" damage="40" speed="80"/>
    <gatherer health="200" damage="120" speed="80"/>
   </brotherhood>
   <mutants>
-   <melee health="200" damage="100" speed="80"/>
-   <ranged health="200" damage="200" speed="80"/>
+   <melee health="200" damage="20" speed="80"/>
+   <ranged health="200" damage="40" speed="80"/>
    <gatherer health="80" damage="100" speed="120"/>
   </mutants>
   <ghouls>
-   <melee health="80" damage="80" speed="120"/>
-   <ranged health="80" damage="100" speed="120"/>
+   <melee health="80" damage="15" speed="120"/>
+   <ranged health="80" damage="30" speed="120"/>
    <gatherer health="70" damage="80" speed="120"/>
   </ghouls>
  </dynamic>
