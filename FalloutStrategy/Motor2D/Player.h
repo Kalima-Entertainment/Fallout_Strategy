@@ -24,10 +24,8 @@ public:
 	int water;
 	int food;
 
-
 private:
 	float mouse_speed_multiplier;
-
 };
 
 

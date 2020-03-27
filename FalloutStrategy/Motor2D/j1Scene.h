@@ -13,7 +13,6 @@ enum class StatesMenu
 	SETTINGS,
 	FACTION_SELECTION,
 	PAUSE,
-
 	NONE
 };
 

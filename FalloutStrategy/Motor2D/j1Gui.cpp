@@ -51,13 +51,11 @@ bool j1Gui::PreUpdate()
 
 bool j1Gui::Update(float dt) {
 
-	
-
 	for (int i = 0; i < ui_element.count(); i++) {
 
 		if (ui_element.At(i) != nullptr) {
 
-			ui_element.At(i)->data->Draw();
+			//ui_element.At(i)->data->Draw();
 			ui_element.At(i)->data->Update(dt);
 
 		}
@@ -75,8 +73,14 @@ bool j1Gui::Update(float dt) {
 // Called after all Updates
 bool j1Gui::PostUpdate()
 {
-	
 
+	for (int i = 0; i < ui_element.count(); i++) {
+
+		if (ui_element.At(i) != nullptr) {
+
+			ui_element.At(i)->data->Draw();
+		}
+	}
 	return true;
 }
 
@@ -145,7 +149,6 @@ UI_element* j1Gui::CreateSlider(int x, int y, UI_Type type, SDL_Rect scrollbar, 
 
 	return slider;
 }
-
 
 UI_element* j1Gui::CreateLabel(int x, int y, UI_Type type, p2SString text_input, UI_element* parent, j1Module* Observer, int* counter)
 {

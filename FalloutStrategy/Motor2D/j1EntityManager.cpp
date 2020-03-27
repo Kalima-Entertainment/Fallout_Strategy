@@ -160,6 +160,7 @@ bool j1EntityManager::Update(float dt)
 	{
 		entities[i]->Update(dt);
 	}
+
 	return ret;
 }
 
