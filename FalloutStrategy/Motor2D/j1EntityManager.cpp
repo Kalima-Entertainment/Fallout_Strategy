@@ -38,8 +38,53 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		if (entity != NULL)
 		{
 			entity->faction = faction;
-			entity->current_tile.x = position_x;
-			entity->current_tile.y = position_y;
+
+			//If there's another unit in that tile, we find a new spawn point
+			if (FindEntityByTile({ position_x,position_y }) == nullptr) {
+				//We can spawn here
+				entity->current_tile.x = position_x;
+				entity->current_tile.y = position_y;
+			}
+			else {
+				//There's another unit, let's find a new spawn point
+				bool spawnPointFound = false;
+
+				while (FindEntityByTile({ position_x,position_y}) != nullptr) {
+					for (int k = 0; k < 10; k++) {
+						for (int i = 0; i <= 5; i++) {
+							if (spawnPointFound == false) {
+								if (FindEntityByTile({ position_x - i,position_y + k}) == nullptr) {
+									position_x -= i;
+									position_y += k;
+									entity->current_tile.x = position_x;
+									entity->current_tile.y = position_y;
+									spawnPointFound = true;
+								}
+							}
+						}
+						if (spawnPointFound == false) {
+							for (int j = 0; j <= 5; j++) {
+								if (spawnPointFound == false) {
+									if (FindEntityByTile({ position_x + k,position_y - j }) == nullptr) {
+										position_y -= j;
+										position_x += k;
+										entity->current_tile.x = position_x;
+										entity->current_tile.y = position_y;
+										spawnPointFound = true;
+									}
+								}
+							}
+						}
+						//First line completed. Next look for spawn points in the next line
+					}
+					//We didn't find a free spawn point, so we spawn in the same tile as other unit
+					entity->current_tile.x = position_x;
+					entity->current_tile.y = position_y;
+
+					break;
+				}				
+			}
+			
 
 			entity->position = App->map->fMapToWorld(entity->current_tile.x, entity->current_tile.y);
 			entity->position.x += 32;
