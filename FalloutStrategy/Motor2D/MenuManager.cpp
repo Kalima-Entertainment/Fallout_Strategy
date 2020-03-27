@@ -292,18 +292,18 @@ void MenuManager::CreatePauseMenu()
 {
 
 	//Images
-	pause_menu.panel = (j1Image*)App->gui->CreateImage(434, 213, Image, { 3079, 41, 334, 313 }, NULL, this);
+	pause_menu.panel = (j1Image*)App->gui->CreateImage(434, 183, Image, { 3079, 41, 334, 313 }, NULL, this);
 
 
 	//Buttons
-	pause_menu.resume_button = (UI_Button*)App->gui->CreateButton(480, 240, resume_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
-	pause_menu.settings_button = (UI_Button*)App->gui->CreateButton(480, 330, button_settings_pause, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
-	pause_menu.back_to_main_menu_button = (UI_Button*)App->gui->CreateButton(480, 420, button_pause_to_main, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
+	pause_menu.resume_button = (UI_Button*)App->gui->CreateButton(480, 210, resume_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
+	pause_menu.settings_button = (UI_Button*)App->gui->CreateButton(480, 300, button_settings_pause, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
+	pause_menu.back_to_main_menu_button = (UI_Button*)App->gui->CreateButton(480, 390, button_pause_to_main, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
 
 	//Labels
-	pause_menu.resume_label = (UI_Label*)App->gui->CreateLabel(540, 258, RESUME, "RESUME", NULL, this, NULL);
-	pause_menu.settings_label = (UI_Label*)App->gui->CreateLabel(525, 348, SETTINGS, "SETTINGS", NULL, this, NULL);
-	pause_menu.back_to_main_menu_label = (UI_Label*)App->gui->CreateLabel(515, 438, EXIT, "MAIN MENU", NULL, this, NULL);
+	pause_menu.resume_label = (UI_Label*)App->gui->CreateLabel(540, 228, RESUME, "RESUME", NULL, this, NULL);
+	pause_menu.settings_label = (UI_Label*)App->gui->CreateLabel(530, 318, SETTINGS, "SETTINGS", NULL, this, NULL);
+	pause_menu.back_to_main_menu_label = (UI_Label*)App->gui->CreateLabel(515, 408, EXIT, "MAIN MENU", NULL, this, NULL);
 
 
 }
@@ -397,17 +397,7 @@ void MenuManager::CreateGUI()
 {
 
 	//Images
-	gui_ingame.nukas_background = (j1Image*)App->gui->CreateImage(0, 0, Nukas, { 1275, 586, 113, 69 }, NULL, this);
-	gui_ingame.water_background = (j1Image*)App->gui->CreateImage(114, 0, Water, { 1275, 586, 113, 69 }, NULL, this);
-	gui_ingame.meat_background = (j1Image*)App->gui->CreateImage(228, 0, Meat, { 1275, 586, 113, 69 }, NULL, this);
-
-	gui_ingame.nukas = (j1Image*)App->gui->CreateImage(15, 30, Nukas, { 1285, 678, 29, 30 }, NULL, this);
-	gui_ingame.water = (j1Image*)App->gui->CreateImage(128, 30, Water, { 1329, 676, 15, 30 }, NULL, this);
-	gui_ingame.meat = (j1Image*)App->gui->CreateImage(240, 35, Meat, { 1356, 682, 30, 20 }, NULL, this);
-
-	gui_ingame.nukas_label = (j1Image*)App->gui->CreateImage(20, 8, Nukas, { 1285, 725, 43, 14 }, NULL, this);
-	gui_ingame.water_label = (j1Image*)App->gui->CreateImage(135, 8, Water, { 1340, 727, 43, 14 }, NULL, this);
-	gui_ingame.meat_label = (j1Image*)App->gui->CreateImage(253, 8, Meat, { 1407, 727, 34, 14 }, NULL, this);
+	gui_ingame.ingame_background = (j1Image*)App->gui->CreateImage(0, 0, Nukas, { 0, 2428, 1290, 730 }, NULL, this);
 
 	if (gui_ingame.count == 0) {
 		
@@ -415,9 +405,9 @@ void MenuManager::CreateGUI()
 		p2SString ww("%i", App->player->water);
 		p2SString ff("%i", App->player->food);
 		
-		gui_ingame.nukas_count = (UI_Label*)App->gui->CreateLabel(82, 29, Nukas, cc, NULL, this, NULL);
-		gui_ingame.water_count = (UI_Label*)App->gui->CreateLabel(193, 29, Water, ww, NULL, this, NULL);
-		gui_ingame.meat_count = (UI_Label*)App->gui->CreateLabel(307, 29, Meat, ff, NULL, this, NULL);
+		gui_ingame.nukas_count = (UI_Label*)App->gui->CreateLabel(135, 8, Nukas, cc, NULL, this, NULL);
+		gui_ingame.water_count = (UI_Label*)App->gui->CreateLabel(345, 8, Water, ww, NULL, this, NULL);
+		gui_ingame.meat_count = (UI_Label*)App->gui->CreateLabel(550, 8, Meat, ff, NULL, this, NULL);
 
 		gui_ingame.count++;
 	}
@@ -433,12 +423,8 @@ void MenuManager::DestroyGUI()
 {
 
 	//Destroying images
-	App->gui->Delete_Element(gui_ingame.nukas);
-	App->gui->Delete_Element(gui_ingame.water);
-	App->gui->Delete_Element(gui_ingame.meat);
-	App->gui->Delete_Element(gui_ingame.nukas_background);
-	App->gui->Delete_Element(gui_ingame.water_background);
-	App->gui->Delete_Element(gui_ingame.meat_background);
+	App->gui->Delete_Element(gui_ingame.ingame_background);
+	
 
 	//Destroying Labels
 	//App->gui->Delete_Element(settings_menu.fps);

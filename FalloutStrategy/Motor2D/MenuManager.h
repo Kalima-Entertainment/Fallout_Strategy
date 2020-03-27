@@ -124,13 +124,8 @@ struct UI_pause_menu {
 
 struct UI_GUI {
 
-	j1Image* nukas = nullptr;
-	j1Image* water = nullptr;
-	j1Image* meat = nullptr;
-
-	j1Image* nukas_background = nullptr;
-	j1Image* water_background = nullptr;
-	j1Image* meat_background = nullptr;
+	
+	j1Image* ingame_background = nullptr;
 
 	j1Image* nukas_label = nullptr;
 	j1Image* water_label = nullptr;
