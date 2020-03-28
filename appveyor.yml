@@ -1,26 +1,30 @@
 version: 0.{build}
-pull_requests:
-  do_not_increment_build_number: true
 branches:
   only:
   - master
+image: Visual Studio 2019
 configuration: Release
-platform: Any CPU
+platform: x86
 build:
   project: FalloutStrategy/Fallout_Strategy.sln
-  parallel: true
   verbosity: minimal
 artifacts:
 - path: FalloutStrategy/Game
-  name: Fallout Strategy
+  name: Fallout_Strategy
   type: WebDeployPackage
 deploy:
 - provider: GitHub
   tag: 0.{build}
   release: Fallout Strategy v0.{build}
-  description: 'Changelog: asasdsad'
+  description: 'Changelog:'
   auth_token:
     secure: M8iNekkgCAijnlmChSFFh34jRjsb1NkrcsN3vDOwgyfz7kn1mEzKyvzt0Tb1hZ+H
   artifact: Kalima_Entertainment-Fallout_Strategy_v0.{build}
   draft: true
   prerelease: false
+notifications:
+- provider: GitHubPullRequest
+  template: Release done. Testing*
+  on_build_success: true
+  on_build_failure: false
+  on_build_status_changed: false
