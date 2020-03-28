@@ -47,7 +47,7 @@ bool DynamicEntity::Update(float dt) {
 	case IDLE:
 		break;
 	case WALK:
-		Move();
+		Move(dt);
 		break;
 	case ATTACK:
 		if (timer.ReadSec() > action_time)
@@ -126,7 +126,7 @@ bool DynamicEntity::PostUpdate() {
 	return true;
 }
 
-void DynamicEntity::Move() {
+void DynamicEntity::Move(float dt) {
 	if (path_to_target != NULL)
 	{
 		if (path_to_target->Count() != 0)
@@ -186,23 +186,23 @@ void DynamicEntity::Move() {
 			//move to next tile
 			if ((position.x > next_tile_rect_center.x + next_tile_rect_center.w) && (position.x > next_tile_rect_center.x) && (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h)) {
 				direction = TOP_LEFT;
-				position.x -= speed.x;
-				position.y -= speed.y;
+				position.x -= speed.x * dt;
+				position.y -= speed.y * dt;
 			}
 			else if ((position.x < next_tile_rect_center.x) && (position.x < next_tile_rect_center.x + next_tile_rect_center.w) && (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h)) {
 				direction = TOP_RIGHT;
-				position.x += speed.x;
-				position.y -= speed.y;
+				position.x += speed.x * dt;
+				position.y -= speed.y * dt;
 			}
 			else if ((position.x > next_tile_rect_center.x) && (position.x > next_tile_rect_center.x + next_tile_rect_center.w) && (position.y < next_tile_rect_center.y) && (position.y < next_tile_rect_center.y + next_tile_rect_center.h)) {
 				direction = BOTTOM_LEFT;
-				position.x -= speed.x;
-				position.y += speed.y;
+				position.x -= speed.x * dt;
+				position.y += speed.y * dt;
 			}
 			else if ((position.x < next_tile_rect_center.x) && (position.x < next_tile_rect_center.x + next_tile_rect_center.w) && (position.y < next_tile_rect_center.y) && (position.y < next_tile_rect_center.y + next_tile_rect_center.h)) {
 				direction = BOTTOM_RIGHT;
-				position.x += speed.x;
-				position.y += speed.y;
+				position.x += speed.x * dt;
+				position.y += speed.y * dt;
 			}
 			else
 			{
