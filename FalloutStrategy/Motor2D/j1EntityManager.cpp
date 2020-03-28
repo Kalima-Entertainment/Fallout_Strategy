@@ -340,8 +340,8 @@ bool j1EntityManager::LoadReferenceEntityData() {
 				//load into reference entities
 				reference_entities[faction][type]->max_health = health;
 				reference_entities[faction][type]->damage = damage;
-				reference_entities[faction][type]->speed.x = speed * 0.01;
-				reference_entities[faction][type]->speed.y = speed * 0.005f;
+				reference_entities[faction][type]->speed.x = speed * 1.0f;
+				reference_entities[faction][type]->speed.y = speed * 0.5f;
 
 				entity_node = entity_node.next_sibling();
 			}
