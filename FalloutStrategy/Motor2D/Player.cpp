@@ -9,6 +9,8 @@
 #include "DynamicEntity.h"
 #include "StaticEntity.h"
 #include "p2Log.h"
+#include "UI_Label.h"
+#include "j1Gui.h"
 #include "j1Minimap.h"
 
 Player::Player() : j1Module() {
@@ -59,6 +61,9 @@ bool Player::PreUpdate() {
 			App->render->camera.y = 0;
 		}
 	}
+
+
+	
 
 	//movement
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {

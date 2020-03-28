@@ -7,6 +7,7 @@
 #include "j1Textures.h"
 #include "j1EntityManager.h"
 #include "Player.h"
+#include "StaticEntity.h"
 
 DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 
@@ -61,7 +62,7 @@ bool DynamicEntity::Update(float dt) {
 		if (timer.ReadSec() > action_time)
 		{
 			Gather();
-			state = IDLE;
+			state = WALK;
 		}
 		break;
 	case HIT:
@@ -146,10 +147,18 @@ void DynamicEntity::Move() {
 					
 					else if (next_tile == target_tile)
 					{
-						iPoint current_tile_center = App->map->MapToWorld(current_tile.x, current_tile.y);
-						position.x = current_tile_center.x + HALF_TILE;
-						position.y = current_tile_center.y + HALF_TILE;
-						state = IDLE;
+						if ((resource_collected > 0)&&(target_building != nullptr))
+						{
+							resource_building->quantity += resource_collected;
+							resource_collected = 0;
+						}
+						else
+						{
+							iPoint current_tile_center = App->map->MapToWorld(current_tile.x, current_tile.y);
+							position.x = current_tile_center.x + HALF_TILE;
+							position.y = current_tile_center.y + HALF_TILE;
+							state = IDLE;
+						}
 					}
 					
 				}
@@ -268,6 +277,9 @@ void DynamicEntity::Gather() {
 	resource_building->quantity -= damage;
 	resource_collected += damage;
 	resource_type = resource_building->resource_type;
+	StaticEntity* base = (StaticEntity*)App->entities->FindEntityByType(faction, BASE);
+	PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
+	resource_building = nullptr;
 }
 
 void DynamicEntity::PathfindToPosition(iPoint destination) {

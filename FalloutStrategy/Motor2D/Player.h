@@ -4,6 +4,7 @@
 
 class j1Entity;
 class DynamicEntity;
+class UI_Label;
 
 class Player : public j1Module
 {
@@ -22,6 +23,7 @@ public:
 	int caps;
 	int water;
 	int food;
+
 private:
 	float mouse_speed_multiplier;
 };

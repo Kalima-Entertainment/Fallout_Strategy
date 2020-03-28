@@ -4,7 +4,6 @@
 #include "j1Module.h"
 
 struct SDL_Texture;
-class UI_Label;
 class DynamicEntity;
 
 enum class StatesMenu
@@ -14,7 +13,6 @@ enum class StatesMenu
 	SETTINGS,
 	FACTION_SELECTION,
 	PAUSE,
-
 	NONE
 };
 
@@ -53,7 +51,7 @@ public:
 	bool create = false;
 	StatesMenu menu_state = StatesMenu::NONE;
 
-	UI_Label* nukas = nullptr;
+
 private:
 
 	int SongPlaying = 0;
