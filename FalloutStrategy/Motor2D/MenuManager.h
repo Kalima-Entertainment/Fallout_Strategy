@@ -136,8 +136,77 @@ struct UI_GUI {
 	UI_Label* meat_count = nullptr;
 	int count = 0;
 
+	
+
 };
 
+struct UI_GUI_Bases {
+
+	j1Image* brotherhood_base = nullptr;
+	j1Image* brotherhood_barrack = nullptr;
+	j1Image* brotherhood_lab = nullptr;
+	j1Image* brotherhood_melee = nullptr;
+	j1Image* brotherhood_gatherer = nullptr;
+	j1Image* brotherhood_ranged = nullptr;
+	UI_Button* base_create_brotherhood = nullptr;
+	UI_Button* lab_create_brotherhood = nullptr;
+	UI_Button* barrack_create_brotherhood = nullptr;
+
+	j1Image* ghouls_base = nullptr;
+	j1Image* ghouls_barrack = nullptr;
+	j1Image* ghouls_lab = nullptr;
+	j1Image* ghouls_melee = nullptr;
+	j1Image* ghouls_gatherer = nullptr;
+	j1Image* ghouls_ranged = nullptr;
+	UI_Button* base_create_ghouls = nullptr;
+	UI_Button* lab_create_ghouls = nullptr;
+	UI_Button* barrack_create_ghouls = nullptr;
+
+	j1Image* vault_base = nullptr;
+	j1Image* vault_barrack = nullptr;
+	j1Image* vault_lab = nullptr;
+	j1Image* vault_gatherer = nullptr;
+	j1Image* vault_melee = nullptr;
+	j1Image* vault_ranged = nullptr;
+	UI_Button* base_create_vault = nullptr;
+	UI_Button* lab_create_vault = nullptr;
+	UI_Button* barrack_create_vault = nullptr;
+
+	j1Image* supermutant_base = nullptr;
+	j1Image* supermutant_barrack = nullptr;
+	j1Image* supermutant_lab = nullptr;
+	j1Image* supermutant_gatherer = nullptr;
+	j1Image* supermutant_melee = nullptr;
+	j1Image* supermutant_ranged = nullptr;
+	UI_Button* base_create_supermutant = nullptr;
+	UI_Button* lab_create_supermutant = nullptr;
+	UI_Button* barrack_create_supermutant = nullptr;
+
+
+	UI_Button* craft_boost_brotherhood = nullptr;
+	UI_Button* damage_boost_brotherhood = nullptr;
+	UI_Button* velocity_boost_brotherhood = nullptr;
+	UI_Button* shield_boost_brotherhood = nullptr;
+	UI_Button* resource_boost_brotherhood = nullptr;
+
+	UI_Button* craft_boost_ghouls = nullptr;
+	UI_Button* damage_boost_ghouls = nullptr;
+	UI_Button* velocity_boost_ghouls = nullptr;
+	UI_Button* shield_boost_ghouls = nullptr;
+	UI_Button* resource_boost_ghouls = nullptr;
+
+	UI_Button* craft_boost_vault = nullptr;
+	UI_Button* damage_boost_vault = nullptr;
+	UI_Button* velocity_boost_vault = nullptr;
+	UI_Button* shield_boost_vault = nullptr;
+	UI_Button* resource_boost_vault = nullptr;
+
+	UI_Button* craft_boost_supermutant = nullptr;
+	UI_Button* damage_boost_supermutant = nullptr;
+	UI_Button* velocity_boost_supermutant = nullptr;
+	UI_Button* shield_boost_supermutant = nullptr;
+	UI_Button* resource_boost_supermutant = nullptr;
+};
 class MenuManager :public j1Module {
 
 public:
@@ -162,8 +231,38 @@ public:
 	void DestroyPauseMenu();
 	void CreatePauseSettings();
 	void DestroyPauseSettings();
+	
 	void CreateGUI();
 	void DestroyGUI();
+	
+	void CreateBrotherHood_Base();
+	void DestroyBrotherHood_Base();
+	void CreateBrotherHood_Barrack();
+	void DestroyBrotherHood_Barrack();
+	void CreateBrotherHood_Lab();
+	void DestroyBrotherHood_Lab();
+
+	void CreateSuperMutants_Base();
+	void DestroySuperMutants_Base();
+	void CreateSuperMutants_Barrack();
+	void DestroySuperMutants_Barrack();
+	void CreateSuperMutants_Lab();
+	void DestroySuperMutants_Lab();
+
+	void CreateGhouls_Base();
+	void DestroyGhouls_Base();
+	void CreateGhouls_Barrack();
+	void DestroyGhouls_Barrack();
+	void CreateGhouls_Lab();
+	void DestroyGhouls_Lab();
+
+	void CreateVault_Base();
+	void DestroyVault_Base();
+	void CreateVault_Barrack();
+	void DestroyVault_Barrack();
+	void CreateVault_Lab();
+	void DestroyVault_Lab();
+
 
 public:
 
@@ -173,6 +272,7 @@ public:
 	UI_settings			settings_menu;
 	UI_pause_menu		pause_menu;
 	UI_GUI				gui_ingame;
+	UI_GUI_Bases		bases_hud;
 
 	char collaborator = 'M';
 	
