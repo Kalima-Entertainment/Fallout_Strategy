@@ -5,7 +5,7 @@ branches:
 configuration: Release
 platform: x86
 build:
-  project: Fallout_Strategy.sln
+  project: FalloutStrategy/Fallout_Strategy.sln
   parallel: true
   verbosity: minimal
 artifacts:
