@@ -86,21 +86,21 @@ void MenuManager::DestroyMainMenu()
 void MenuManager::CreateCredits()
 {
 	//Images
-	credits_menu.background = (j1Image*)App->gui->CreateImage(-90, 0, Image, { 0, 1536, 1207, 837 }, NULL, this);
+	credits_menu.background = (j1Image*)App->gui->CreateImage(0, 0, Image, { 1287, 2430, 1281, 730 }, NULL, this);
 
 	//Buttons
-	credits_menu.back_button = (UI_Button*)App->gui->CreateButton(65, 65, button_back_credits, { 1704,1054,48,46 }, { 1765,1054,48,46 }, { 1765,1054,48,46 }, NULL, this);
-	credits_menu.github_button = (UI_Button*)App->gui->CreateButton(110, 550, button_github_credits, { 2181,841,73,78 }, { 2181,919,73,78 }, { 2181,1005,73,78 }, NULL, this);
-	credits_menu.web_button = (UI_Button*)App->gui->CreateButton(230, 550, button_web_credits, { 2268,841,73,78 }, { 2268,919,73,78 }, { 2268,1005,73,78 }, NULL, this);
-	credits_menu.twitter_button = (UI_Button*)App->gui->CreateButton(350, 550, button_twitter_credits, { 2355,841,73,78 }, { 2355,919,73,78 }, { 2355,1005,73,78 }, NULL, this);
-	credits_menu.marc_button = (UI_Button*)App->gui->CreateButton(290, 160, button_marc, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
-	credits_menu.javi_button = (UI_Button*)App->gui->CreateButton(290, 205, button_javi, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
-	credits_menu.pablo_button = (UI_Button*)App->gui->CreateButton(290, 250, button_pablo, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
-	credits_menu.german_button = (UI_Button*)App->gui->CreateButton(290, 295, button_german, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
-	credits_menu.macia_button = (UI_Button*)App->gui->CreateButton(290, 340, button_macia, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
-	credits_menu.pol_button = (UI_Button*)App->gui->CreateButton(290, 385, button_pol, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
-	credits_menu.silvino_button = (UI_Button*)App->gui->CreateButton(290, 430, button_silvino, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
-	credits_menu.cristian_button = (UI_Button*)App->gui->CreateButton(290, 475, button_cristian, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
+	credits_menu.back_button = (UI_Button*)App->gui->CreateButton(65, 65, button_back_credits, { 1243,2014,73,78 }, { 1243,2102,73,79 }, { 1243,2188,73,71 }, NULL, this);
+	credits_menu.github_button = (UI_Button*)App->gui->CreateButton(750, 600, button_github_credits, { 2181,841,73,78 }, { 2181,919,73,78 }, { 2181,1005,73,78 }, NULL, this);
+	credits_menu.web_button = (UI_Button*)App->gui->CreateButton(850, 600, button_web_credits, { 2268,841,73,78 }, { 2268,919,73,78 }, { 2268,1005,73,78 }, NULL, this);
+	credits_menu.twitter_button = (UI_Button*)App->gui->CreateButton(950, 600, button_twitter_credits, { 2355,841,73,78 }, { 2355,919,73,78 }, { 2355,1005,73,78 }, NULL, this);
+	credits_menu.marc_button = (UI_Button*)App->gui->CreateButton(450, 130, button_marc, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
+	credits_menu.javi_button = (UI_Button*)App->gui->CreateButton(450, 175, button_javi, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
+	credits_menu.pablo_button = (UI_Button*)App->gui->CreateButton(450, 220, button_pablo, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
+	credits_menu.german_button = (UI_Button*)App->gui->CreateButton(450, 265, button_german, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
+	credits_menu.macia_button = (UI_Button*)App->gui->CreateButton(450, 310, button_macia, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
+	credits_menu.pol_button = (UI_Button*)App->gui->CreateButton(450, 355, button_pol, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
+	credits_menu.silvino_button = (UI_Button*)App->gui->CreateButton(450, 400, button_silvino, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
+	credits_menu.cristian_button = (UI_Button*)App->gui->CreateButton(450, 445, button_cristian, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
 }
 
 void MenuManager::DestroyCredits()
@@ -136,7 +136,6 @@ void MenuManager::CreateSettings()
 	settings_menu.fps_image = (j1Image*)App->gui->CreateImage(595, 600, FPS, { 1599, 1054, 77, 52 }, NULL, this);
 
 	//Labels
-	
 	settings_menu.fps = (UI_Label*)App->gui->CreateLabel(520, 525, text_fps, "REFRESH RATE", NULL, this, NULL);
 	settings_menu.fx_volume = (UI_Label*)App->gui->CreateLabel(360, 335, text_fx_volume, "SOUND EFFECTS VOLUME", NULL, this, NULL);
 	settings_menu.music_volume = (UI_Label*)App->gui->CreateLabel(360, 150, text_music_volume, "MUSIC VOLUME", NULL, this, NULL);
@@ -196,31 +195,31 @@ void MenuManager::CreateCollaboratorPicture()
 	switch (collaborator) 
 	{
 	case 'M':
-		credits_menu.marc_image = (j1Image*)App->gui->CreateImage(660, 150, Image, { 1230, 1545, 138, 138 }, NULL, this);
+		credits_menu.marc_image = (j1Image*)App->gui->CreateImage(815, 130, Image, { 1230, 1545, 138, 138 }, NULL, this);
 		break;
 	case 'J':
-		credits_menu.javi_image = (j1Image*)App->gui->CreateImage(660, 150, Image, { 1392, 1545, 138, 138 }, NULL, this);
+		credits_menu.javi_image = (j1Image*)App->gui->CreateImage(815, 130, Image, { 1392, 1545, 138, 138 }, NULL, this);
 		break;
 	case 'P':
-		credits_menu.pablo_image = (j1Image*)App->gui->CreateImage(660, 150, Image, { 1563, 1545, 138, 138 }, NULL, this);
+		credits_menu.pablo_image = (j1Image*)App->gui->CreateImage(815, 130, Image, { 1563, 1545, 138, 138 }, NULL, this);
 		break;
 	case 'G':
-		credits_menu.german_image = (j1Image*)App->gui->CreateImage(660, 150, Image, { 1719, 1539, 138, 138 }, NULL, this);
+		credits_menu.german_image = (j1Image*)App->gui->CreateImage(815, 130, Image, { 1719, 1539, 138, 138 }, NULL, this);
 		break;
 	case 'D':
-		credits_menu.macia_image = (j1Image*)App->gui->CreateImage(660, 150, Image, { 1230, 1690, 138, 138 }, NULL, this);
+		credits_menu.macia_image = (j1Image*)App->gui->CreateImage(815, 130, Image, { 1230, 1690, 138, 138 }, NULL, this);
 		break;
 	case 'K':
-		credits_menu.pol_image = (j1Image*)App->gui->CreateImage(660, 150, Image, { 1392, 1690, 138, 138 }, NULL, this);
+		credits_menu.pol_image = (j1Image*)App->gui->CreateImage(815, 130, Image, { 1392, 1690, 138, 138 }, NULL, this);
 		break;
 	case 'S':
-		credits_menu.silvino_image = (j1Image*)App->gui->CreateImage(660, 150, Image, { 1563, 1690, 138, 138 }, NULL, this);
+		credits_menu.silvino_image = (j1Image*)App->gui->CreateImage(815, 130, Image, { 1563, 1690, 138, 138 }, NULL, this);
 		break;
 	case 'C':
-		credits_menu.cristian_image = (j1Image*)App->gui->CreateImage(660, 150, Image, { 1719, 1690, 138, 138 }, NULL, this);
+		credits_menu.cristian_image = (j1Image*)App->gui->CreateImage(815, 130, Image, { 1719, 1690, 138, 138 }, NULL, this);
 		break;
 	default:
-		credits_menu.marc_image = (j1Image*)App->gui->CreateImage(660, 150, Image, { 1230, 1545, 138, 138 }, NULL, this);
+		credits_menu.marc_image = (j1Image*)App->gui->CreateImage(815, 130, Image, { 1230, 1545, 138, 138 }, NULL, this);
 	}
 	
 
@@ -405,9 +404,9 @@ void MenuManager::CreateGUI()
 		p2SString ww("%i", App->player->water);
 		p2SString ff("%i", App->player->food);
 		
-		gui_ingame.nukas_count = (UI_Label*)App->gui->CreateLabel(135, 8, Nukas, cc, NULL, this, NULL);
-		gui_ingame.water_count = (UI_Label*)App->gui->CreateLabel(345, 8, Water, ww, NULL, this, NULL);
-		gui_ingame.meat_count = (UI_Label*)App->gui->CreateLabel(550, 8, Meat, ff, NULL, this, NULL);
+		gui_ingame.meat_count = (UI_Label*)App->gui->CreateLabel(95, 10, Meat, ff, NULL, this, NULL);
+		gui_ingame.water_count = (UI_Label*)App->gui->CreateLabel(240, 10, Water, ww, NULL, this, NULL);
+		gui_ingame.nukas_count = (UI_Label*)App->gui->CreateLabel(385, 10, Nukas, cc, NULL, this, NULL);
 
 		gui_ingame.count++;
 	}
