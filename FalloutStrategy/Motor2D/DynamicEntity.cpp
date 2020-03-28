@@ -36,6 +36,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 	resource_building = nullptr;
 	action_time = 3.0f;
 	resource_collected = 0;
+	reference_entity = nullptr;
 }
 
 DynamicEntity::~DynamicEntity() {}

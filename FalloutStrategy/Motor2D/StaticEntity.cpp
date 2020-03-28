@@ -47,6 +47,8 @@ bool StaticEntity::Update(float dt) {
 		}
 	}	
 
+	state = WAIT;
+
 	return true;
 }
 
@@ -54,8 +56,6 @@ bool StaticEntity::PostUpdate() {
 	current_animation = &animations[state];
 
 	//Render building
-	iPoint render_position;
-	render_position = App->map->MapToWorld(current_tile.x, current_tile.y);
 	App->render->Blit(reference_entity->texture, position.x - TILE_SIZE, position.y - 2 * TILE_SIZE, &current_animation->GetCurrentFrame());
 	
 	return true;

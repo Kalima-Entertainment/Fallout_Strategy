@@ -38,7 +38,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		if (entity != NULL)
 		{
 			entity->faction = faction;
-
+			
 			//If there's another unit in that tile, we find a new spawn point
 			if (FindEntityByTile({ position_x,position_y }) == nullptr) {
 				//We can spawn here
@@ -84,13 +84,13 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 					break;
 				}				
 			}
-			
+
 
 			entity->position = App->map->fMapToWorld(entity->current_tile.x, entity->current_tile.y);
 			entity->position.x += 32;
 			entity->position.y += 32;
 
-			if (entity->reference_entity != nullptr){
+			if (entity->reference_entity != NULL){
 				entities.push_back(entity);
 				entity->LoadReferenceData();
 			}
@@ -110,7 +110,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 
 			entity->position = App->map->fMapToWorld(entity->current_tile.x, entity->current_tile.y);
 
-			if (entity->reference_entity != nullptr) {
+			if (entity->reference_entity != NULL) {
 				entities.push_back(entity);
 				entity->LoadReferenceData();
 			}
@@ -132,11 +132,14 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 
 	config_data = config;
 
+
+
 	//automatic entities loading
 	for (int faction = VAULT; faction < NO_FACTION; faction++)
 	{
 		for (int type = MELEE; type < NO_TYPE; type++)
 		{
+			reference_entities[faction][type] = nullptr;
 			reference_entities[faction][type] = CreateEntity((Faction)faction, (EntityType)type, faction, type);
 		}
 	}
