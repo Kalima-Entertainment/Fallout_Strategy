@@ -4,5 +4,5 @@ build:
 deploy:
 - provider: GitHub
   auth_token:
-    secure: nzhTuExDgav4/YHzASlTMg==
+    secure: M8iNekkgCAijnlmChSFFh34jRjsb1NkrcsN3vDOwgyfz7kn1mEzKyvzt0Tb1hZ+H
   prerelease: true
