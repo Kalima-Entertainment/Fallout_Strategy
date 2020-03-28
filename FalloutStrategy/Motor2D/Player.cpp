@@ -173,9 +173,9 @@ bool Player::Update(float dt) {
 	}
 
 	//Zoom in, zoom out
-	uint zoom;
-	App->input->GetMouseWheel(zoom);
-	if (zoom != 0)App->win->SetScale(zoom);	//Check this condition
+	//uint zoom;
+	//App->input->GetMouseWheel(zoom);
+	//if (zoom != 0)App->win->SetScale(zoom);	//Check this condition
 	//LOG("WHEEL VALUE %i", zoom);
 	
 	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
