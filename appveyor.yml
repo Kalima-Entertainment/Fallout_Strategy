@@ -5,9 +5,10 @@ branches:
   only:
   - master
 configuration: Release
-platform: x86
+platform: Any CPU
 build:
   project: FalloutStrategy/Fallout_Strategy.sln
+  parallel: true
   verbosity: minimal
 artifacts:
 - path: FalloutStrategy/Game
