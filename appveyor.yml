@@ -1,8 +1,25 @@
-version: 1.0.{build}
+version: 0.{build}
+pull_requests:
+  do_not_increment_build_number: true
+branches:
+  only:
+  - master
+configuration: Release
+platform: x86
 build:
+  project: FalloutStrategy/Fallout_Strategy.sln
   verbosity: minimal
+artifacts:
+- path: FalloutStrategy/Game
+  name: Fallout Strategy
+  type: WebDeployPackage
 deploy:
 - provider: GitHub
+  tag: 0.{build}
+  release: Fallout Strategy v0.{build}
+  description: 'Changelog: asasdsad'
   auth_token:
     secure: M8iNekkgCAijnlmChSFFh34jRjsb1NkrcsN3vDOwgyfz7kn1mEzKyvzt0Tb1hZ+H
-  prerelease: true
+  artifact: Kalima_Entertainment-Fallout_Strategy_v0.{build}
+  draft: true
+  prerelease: false
