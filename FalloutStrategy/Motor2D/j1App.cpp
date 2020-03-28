@@ -60,8 +60,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 
 	// scene last
-	AddModule(menu_manager);
-	AddModule(gui);
+	//AddModule(menu_manager);
+	//AddModule(gui);
 	AddModule(minimap);
 
 	// render last to swap buffer
@@ -114,7 +114,7 @@ bool j1App::Awake()
 		title.create(app_config.child("title").child_value());
 		organization.create(app_config.child("organization").child_value());
 
-		int cap = app_config.attribute("framerate_cap").as_int(-1);
+		int cap = app_config.attribute("framerate_cap").as_int();
 
 		if(cap > 0)
 		{
@@ -230,8 +230,10 @@ void j1App::FinishUpdate()
 	uint32 frames_on_last_update = prev_last_sec_frame_count;
 
 	static char title[256];
-	sprintf_s(title, 256, " Fallout Strategy 0.1 | Av.FPS: %.2f Last Frame Ms: %u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %lu %i Camera X: %i Camera Y: %i",
-			  avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count, App->render->camera.x, App->render->camera.y);
+	//sprintf_s(title, 256, " Fallout Strategy 0.2 | Av.FPS: %.2f Last Frame Ms: %u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %lu %i Camera X: %i Camera Y: %i",
+		//	  avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count, App->render->camera.x, App->render->camera.y);
+	sprintf_s(title, 256, " Fallout Strategy 0.2 - Kalima Entertainment | Av.FPS: %.2f ",
+			  avg_fps);
 	App->win->SetTitle(title);
 
 	if(capped_ms > 0 && last_frame_ms < capped_ms)

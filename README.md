@@ -6,13 +6,18 @@ This is a real-time strategy game produced by 2nd year students from CITM/UPC Un
 
 ## Controls
 ### Movement
-Left click on the unit and left click on the position you want to make it go to.
+Left click on the unit and left click on the position you want it to go.
+Hold middle mouse button and drag the mouse to move the camera in the world. 
+Right click to deselect a unit.
 Y - Block/Unblock border scroll
-F - Center camera 
+F - Center camera on selected character
 F9 - Debug mode ON/OFF
 ESC - Close game
+
+Minimap is interactive. 
+
 ### Debug
-In debug mode you will be able to see the path the player follows and how it does so. 
+In debug mode you will be able to see the path the selected character follows and how it does so. 
 
 ## Team
 

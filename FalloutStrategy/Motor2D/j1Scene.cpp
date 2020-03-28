@@ -211,6 +211,7 @@ bool j1Scene::Update(float dt)
 	}
 	*/
 
+	/*
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
 		Mix_HaltChannel(-1);
@@ -235,7 +236,7 @@ bool j1Scene::Update(float dt)
 		Mix_SetPosition(4, 90, 200);
 		App->audio->PlayFx(4, App->audio->explosion, 0);
 	}
-
+	*/
 	/*
 	Mix_HaltChannel(-1);
 	int distance = (App->render->camera.x * App->render->camera.x + App->render->camera.y * App->render->camera.y); // cause remember, inverse square law
