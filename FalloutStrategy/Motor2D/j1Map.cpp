@@ -35,7 +35,7 @@ void j1Map::Draw()
 	BROFILER_CATEGORY("MapDraw", Profiler::Color::MediumPurple)
 	if(map_loaded == false)
 		return;
-
+	int tile_margin = 5;
 	p2List_item<MapLayer*>* item = data.layers.start;
 
 	for(; item != NULL; item = item->next)
@@ -45,6 +45,7 @@ void j1Map::Draw()
 		if(layer->properties.Get("Nodraw") != 0)
 			continue;
 
+		int total_tiles = 0;
 		for(int y = 0; y < data.height; ++y)
 		{
 			for(int x = 0; x < data.width; ++x)
@@ -56,11 +57,18 @@ void j1Map::Draw()
 
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = MapToWorld(x, y);
-
-					App->render->Blit(tileset->texture, pos.x + tileset->offset_x, pos.y + tileset->offset_y, &r);
+					//camera culling
+					if ((pos.x > -(App->render->camera.x + tile_margin * data.tile_width)) && (pos.x < -App->render->camera.x + App->render->camera.w)
+						&& (pos.y > -(App->render->camera.y + data.tile_height)) && (pos.y < (-App->render->camera.y + App->render->camera.h + tile_margin * data.tile_height)))
+					{
+						App->render->Blit(tileset->texture, pos.x + tileset->offset_x, pos.y + tileset->offset_y, &r);
+						//total_tiles++;
+					}
 				}
 			}
 		}
+		//LOG("Tiles drawn: %i", total_tiles);
+		total_tiles = 0;
 	}
 }
 

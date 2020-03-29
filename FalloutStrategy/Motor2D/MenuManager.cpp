@@ -19,6 +19,7 @@
 #include "j1Image.h"
 #include "MenuManager.h"
 #include "Player.h"
+#include "brofiler/Brofiler/Brofiler.h"
 
 MenuManager::MenuManager()
 {

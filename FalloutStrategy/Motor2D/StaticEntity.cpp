@@ -9,6 +9,7 @@
 StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
 	type = g_type;
 	faction = g_faction;
+	state = WAIT;
 }
 
 StaticEntity::~StaticEntity() {}

@@ -137,6 +137,7 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 	{
 		for (int type = MELEE; type < NO_TYPE; type++)
 		{
+			reference_entities[faction][type] = nullptr;
 			reference_entities[faction][type] = CreateEntity((Faction)faction, (EntityType)type, faction, type);
 		}
 	}

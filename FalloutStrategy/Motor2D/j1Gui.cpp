@@ -50,7 +50,7 @@ bool j1Gui::PreUpdate()
 }
 
 bool j1Gui::Update(float dt) {
-
+	BROFILER_CATEGORY("GuiUpdate", Profiler::Color::Yellow)
 	for (int i = 0; i < ui_element.count(); i++) {
 
 		if (ui_element.At(i) != nullptr) {
@@ -71,9 +71,8 @@ bool j1Gui::Update(float dt) {
 }
 
 // Called after all Updates
-bool j1Gui::PostUpdate()
-{
-
+bool j1Gui::PostUpdate(){
+	BROFILER_CATEGORY("GuiPostUpdate", Profiler::Color::LightGreen)
 	for (int i = 0; i < ui_element.count(); i++) {
 
 		if (ui_element.At(i) != nullptr) {
