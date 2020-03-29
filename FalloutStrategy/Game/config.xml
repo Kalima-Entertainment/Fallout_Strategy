@@ -1,7 +1,7 @@
 <!-- Config file for the game -->
 
 <config>
-  <app framerate_cap="30">
+  <app framerate_cap="60">
     <title>Loading...</title>
     <organization>UPC</organization>
   </app>

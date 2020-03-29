@@ -19,6 +19,7 @@
 #include "j1Image.h"
 #include "MenuManager.h"
 #include "Player.h"
+#include "brofiler/Brofiler/Brofiler.h"
 
 MenuManager::MenuManager()
 {
@@ -28,7 +29,6 @@ MenuManager::MenuManager()
 MenuManager::~MenuManager()
 {
 }
-
 
 void MenuManager::CreateMainMenu()
 {
@@ -54,6 +54,8 @@ void MenuManager::CreateMainMenu()
 	main_menu.settings_button = (UI_Button*)App->gui->CreateButton(887, 450, button_settings, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
 	main_menu.credits_button = (UI_Button*)App->gui->CreateButton(887, 527, button_credits, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
 	main_menu.exit_button = (UI_Button*)App->gui->CreateButton(887, 604, button_exit, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
+
+
 
 }
 
@@ -360,7 +362,6 @@ void MenuManager::CreatePauseSettings()
 
 
 }
-
 void MenuManager::DestroyPauseSettings()
 {
 
@@ -417,17 +418,320 @@ void MenuManager::CreateGUI()
 	//settings_menu.music_volume = (UI_Label*)App->gui->CreateLabel(360, 150, text_music_volume, "MUSIC VOLUME", NULL, this, NULL);
 
 }
-
 void MenuManager::DestroyGUI()
 {
 
 	//Destroying images
 	App->gui->Delete_Element(gui_ingame.ingame_background);
 	
-
+	
 	//Destroying Labels
-	//App->gui->Delete_Element(settings_menu.fps);
-	//App->gui->Delete_Element(settings_menu.music_volume);
-	//App->gui->Delete_Element(settings_menu.fx_volume);
+	App->gui->Delete_Element(gui_ingame.meat_count);
+	App->gui->Delete_Element(gui_ingame.water_count);
+	App->gui->Delete_Element(gui_ingame.nukas_count);
 
+}
+
+//Brotherhood
+
+void MenuManager::DestroyAllBuildings() {
+	//Ghouls
+	DestroyGhouls_Base();
+	DestroyGhouls_Barrack();
+	DestroyGhouls_Lab();
+
+	//Mutants
+	DestroySuperMutants_Base();
+	DestroySuperMutants_Barrack();
+	DestroySuperMutants_Lab();
+
+	//Vaults
+	DestroyVault_Base();
+	DestroyVault_Barrack();
+	DestroyVault_Lab();
+
+	//Brotherhood
+	DestroyBrotherHood_Base();
+	DestroyBrotherHood_Barrack();
+	DestroyBrotherHood_Lab();
+}
+
+void MenuManager::CreateBrotherHood_Base()
+{
+
+	//Buttons
+	bases_hud.base_create_brotherhood = (UI_Button*)App->gui->CreateButton(1050, 600, Brotherhood_ghaterer_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+
+	//Images
+	bases_hud.brotherhood_base = (j1Image*)App->gui->CreateImage(880, 575, Brotherhood_base, { 118, 1561, 122, 98 }, NULL, this);
+	bases_hud.brotherhood_gatherer = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_ghaterer, { 138, 1868, 33, 33 }, NULL, this);
+
+	//Labels
+	//p2SString hh("%i", App->entities->); VIDA EDIFICIO
+	//gui_ingame.meat_count = (UI_Label*)App->gui->CreateLabel(95, 10, Meat, hh, NULL, this, NULL);
+	//gui_ingame.meat_count = (UI_Label*)App->gui->CreateLabel(95, 10, Meat, "Brotherhood Base", NULL, this, NULL);
+
+}
+void MenuManager::DestroyBrotherHood_Base()
+{
+
+	App->gui->Delete_Element(bases_hud.base_create_brotherhood);
+	App->gui->Delete_Element(bases_hud.brotherhood_base);
+	App->gui->Delete_Element(bases_hud.brotherhood_gatherer);
+
+}
+
+void MenuManager::CreateBrotherHood_Barrack() {
+
+	//Buttons
+	bases_hud.barrack_create_brotherhood = (UI_Button*)App->gui->CreateButton(1050, 600, Brotherhood_melee, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	bases_hud.barrack_create_brotherhood = (UI_Button*)App->gui->CreateButton(1105, 600, Brotherhood_ranged, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+
+	//Images
+	bases_hud.brotherhood_barrack = (j1Image*)App->gui->CreateImage(885, 570, Brotherhood_barrack, { 17, 1560, 69, 115 }, NULL, this);
+	bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
+	bases_hud.brotherhood_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Brotherhood_ranged, { 83, 1866, 35, 36 }, NULL, this);
+
+}
+void MenuManager::DestroyBrotherHood_Barrack() {
+
+	App->gui->Delete_Element(bases_hud.barrack_create_brotherhood);
+	App->gui->Delete_Element(bases_hud.barrack_create_brotherhood);
+	App->gui->Delete_Element(bases_hud.brotherhood_barrack);
+	App->gui->Delete_Element(bases_hud.brotherhood_melee);
+	App->gui->Delete_Element(bases_hud.brotherhood_ranged);
+
+}
+
+void MenuManager::CreateBrotherHood_Lab() {
+
+	//Buttons
+	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1050, 600, Brotherhood_melee, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1105, 600, Brotherhood_ranged, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+
+	//Images
+	bases_hud.brotherhood_lab = (j1Image*)App->gui->CreateImage(885, 570, Brotherhood_lab, { 663, 1567, 108, 104 }, NULL, this);
+	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
+	//bases_hud.brotherhood_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Brotherhood_ranged, { 83, 1866, 35, 36 }, NULL, this);
+	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
+	//bases_hud.brotherhood_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Brotherhood_ranged, { 83, 1866, 35, 36 }, NULL, this);
+	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
+
+}
+void MenuManager::DestroyBrotherHood_Lab() {
+
+	App->gui->Delete_Element(bases_hud.brotherhood_lab);
+
+}
+
+//Supermutants
+
+void MenuManager::CreateSuperMutants_Base() {
+
+	//Buttons
+	bases_hud.base_create_supermutant = (UI_Button*)App->gui->CreateButton(1050, 600, Supermutant_ghaterer_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+
+	//Images
+	bases_hud.supermutant_base = (j1Image*)App->gui->CreateImage(880, 575, Supermutant_base, { 934, 1577, 129, 91 }, NULL, this);
+	bases_hud.supermutant_gatherer = (j1Image*)App->gui->CreateImage(1055, 605, Supermutant_ghaterer, { 191, 1868, 34, 32 }, NULL, this);
+
+}
+void MenuManager::DestroySuperMutants_Base() {
+
+	App->gui->Delete_Element(bases_hud.base_create_supermutant);
+	App->gui->Delete_Element(bases_hud.supermutant_base);
+	App->gui->Delete_Element(bases_hud.supermutant_gatherer);
+
+}
+
+void MenuManager::CreateSuperMutants_Barrack() {
+
+	//Buttons
+	bases_hud.barrack_create_supermutant = (UI_Button*)App->gui->CreateButton(1050, 600, Supermutant_melee_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	bases_hud.barrack_create_supermutant = (UI_Button*)App->gui->CreateButton(1105, 600, Supermutant_ranged_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+
+	//Images
+	bases_hud.supermutant_barrack = (j1Image*)App->gui->CreateImage(885, 570, Supermutant_barrack, { 801, 1549, 102, 119 }, NULL, this);
+	bases_hud.supermutant_melee = (j1Image*)App->gui->CreateImage(1055, 605, Supermutant_melee, { 246, 1869, 34, 33 }, NULL, this);
+	bases_hud.supermutant_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Supermutant_ranged, { 301, 1865, 34, 35 }, NULL, this);
+	
+}
+void MenuManager::DestroySuperMutants_Barrack() {
+
+	App->gui->Delete_Element(bases_hud.barrack_create_supermutant);
+	App->gui->Delete_Element(bases_hud.barrack_create_supermutant);
+	App->gui->Delete_Element(bases_hud.supermutant_barrack);
+	App->gui->Delete_Element(bases_hud.supermutant_melee);
+	App->gui->Delete_Element(bases_hud.supermutant_ranged);
+
+}
+
+void MenuManager::CreateSuperMutants_Lab() {
+
+	//Buttons
+	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1050, 600, Brotherhood_melee, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1105, 600, Brotherhood_ranged, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+
+	//Images
+	bases_hud.supermutant_lab = (j1Image*)App->gui->CreateImage(885, 570, Supermutant_lab, { 663, 1567, 108, 104 }, NULL, this);
+	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
+	//bases_hud.brotherhood_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Brotherhood_ranged, { 83, 1866, 35, 36 }, NULL, this);
+	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
+	//bases_hud.brotherhood_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Brotherhood_ranged, { 83, 1866, 35, 36 }, NULL, this);
+	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
+
+}
+void MenuManager::DestroySuperMutants_Lab() {
+
+	App->gui->Delete_Element(bases_hud.supermutant_lab);
+}
+
+//Ghouls
+
+void MenuManager::CreateGhouls_Base() {
+
+	//Buttons
+	bases_hud.base_create_ghouls = (UI_Button*)App->gui->CreateButton(1050, 600, Ghouls_ghaterer_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+
+	//Images
+	bases_hud.brotherhood_base = (j1Image*)App->gui->CreateImage(880, 575, Ghouls_base, { 398, 1564, 99, 108 }, NULL, this);
+	bases_hud.brotherhood_gatherer = (j1Image*)App->gui->CreateImage(1060, 605, Ghouls_ghaterer, { 624, 1866, 24, 34 }, NULL, this);
+
+}
+void MenuManager::DestroyGhouls_Base() {
+
+	App->gui->Delete_Element(bases_hud.base_create_ghouls);
+	App->gui->Delete_Element(bases_hud.brotherhood_base);
+	App->gui->Delete_Element(bases_hud.brotherhood_gatherer);
+
+}
+
+void MenuManager::CreateGhouls_Barrack() {
+
+	//Buttons
+	bases_hud.barrack_melee_create_ghouls = (UI_Button*)App->gui->CreateButton(1050, 600, Ghouls_melee_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	bases_hud.barrack_ranged_create_ghouls = (UI_Button*)App->gui->CreateButton(1105, 600, Ghouls_ranged_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+
+	//Images
+	bases_hud.ghouls_barrack = (j1Image*)App->gui->CreateImage(885, 570, Ghouls_barrack, { 270, 1568, 97, 99 }, NULL, this);
+	bases_hud.ghouls_melee = (j1Image*)App->gui->CreateImage(1055, 605, Ghouls_melee, { 513, 1865, 33, 34 }, NULL, this);
+	bases_hud.ghouls_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Ghouls_ranged, { 571, 1866, 28, 33 }, NULL, this);
+
+}
+void MenuManager::DestroyGhouls_Barrack() {
+
+	App->gui->Delete_Element(bases_hud.barrack_melee_create_ghouls);
+	App->gui->Delete_Element(bases_hud.barrack_ranged_create_ghouls);
+	App->gui->Delete_Element(bases_hud.ghouls_barrack);
+	App->gui->Delete_Element(bases_hud.ghouls_melee);
+	App->gui->Delete_Element(bases_hud.ghouls_ranged);
+
+}
+
+void MenuManager::CreateGhouls_Lab() {
+
+	//Buttons
+	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1050, 600, Brotherhood_melee, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1105, 600, Brotherhood_ranged, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+
+	//Images
+	bases_hud.ghouls_lab = (j1Image*)App->gui->CreateImage(885, 570, Ghouls_lab, { 527, 1563, 105, 105 }, NULL, this);
+	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
+	//bases_hud.brotherhood_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Brotherhood_ranged, { 83, 1866, 35, 36 }, NULL, this);
+	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
+	//bases_hud.brotherhood_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Brotherhood_ranged, { 83, 1866, 35, 36 }, NULL, this);
+	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
+
+}
+void MenuManager::DestroyGhouls_Lab() {
+
+	App->gui->Delete_Element(bases_hud.ghouls_lab);
+
+}
+
+//Vault
+
+void MenuManager::CreateVault_Base() {
+
+	//Buttons
+	bases_hud.base_create_vault = (UI_Button*)App->gui->CreateButton(1050, 600, Vault_ghaterer_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+
+	//Images
+	bases_hud.brotherhood_base = (j1Image*)App->gui->CreateImage(890, 569, Vault_base, { 319, 1710, 49, 113 }, NULL, this);
+	bases_hud.brotherhood_gatherer = (j1Image*)App->gui->CreateImage(1058, 609, Vault_ghaterer, { 463, 1871, 25, 29 }, NULL, this);
+
+}
+void MenuManager::DestroyVault_Base() {
+
+	App->gui->Delete_Element(bases_hud.base_create_vault);
+	App->gui->Delete_Element(bases_hud.brotherhood_base);
+	App->gui->Delete_Element(bases_hud.brotherhood_gatherer);
+
+}
+
+void MenuManager::CreateVault_Barrack() {
+
+	//Buttons
+	bases_hud.barrack_create_vault = (UI_Button*)App->gui->CreateButton(1050, 600, Vault_melee_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	bases_hud.barrack_create_vault = (UI_Button*)App->gui->CreateButton(1105, 600, Vault_ranged_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+
+	//Images
+	bases_hud.vault_barrack = (j1Image*)App->gui->CreateImage(885, 570, Vault_barrack, { 148, 1731, 122, 91 }, NULL, this);
+	bases_hud.vault_melee = (j1Image*)App->gui->CreateImage(1055, 605, Vault_melee, { 406, 1866, 32, 34 }, NULL, this);
+	bases_hud.vault_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Vault_ranged, { 355, 1866, 30, 34 }, NULL, this);
+
+}
+void MenuManager::DestroyVault_Barrack() {
+
+	App->gui->Delete_Element(bases_hud.barrack_create_vault);
+	App->gui->Delete_Element(bases_hud.barrack_create_vault);
+	App->gui->Delete_Element(bases_hud.vault_barrack);
+	App->gui->Delete_Element(bases_hud.vault_melee);
+	App->gui->Delete_Element(bases_hud.vault_ranged);
+
+}
+
+void MenuManager::CreateVault_Lab() {
+
+	//Buttons
+	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1050, 600, Brotherhood_melee, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1105, 600, Brotherhood_ranged, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+
+	//Images
+	bases_hud.brotherhood_lab = (j1Image*)App->gui->CreateImage(885, 570, Vault_lab, { 426, 1726, 72, 96 }, NULL, this);
+	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
+	//bases_hud.brotherhood_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Brotherhood_ranged, { 83, 1866, 35, 36 }, NULL, this);
+	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
+	//bases_hud.brotherhood_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Brotherhood_ranged, { 83, 1866, 35, 36 }, NULL, this);
+	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
+
+}
+
+void MenuManager::DestroyVault_Lab() {
+
+	App->gui->Delete_Element(bases_hud.brotherhood_lab);
+
+}
+
+void MenuManager::DestroyMenu(Menu menu) {
+	switch (menu)
+	{
+	case Menu::MAIN_MENU:
+
+		break;
+	case Menu::SETTINGS:
+		break;
+	case Menu::CREDITS:
+		break;
+	case Menu::SELECT_FACTION:
+		break;
+	case Menu::PAUSE_MENU:
+		break;
+	case Menu::GUI:
+		break;
+	case Menu::BUI_BASES:
+		break;
+	default:
+		break;
+	}
 }

@@ -13,6 +13,7 @@
 #include "StaticEntity.h"
 #include "Player.h"
 #include "brofiler/Brofiler/Brofiler.h"
+#include "MenuManager.h"
 
 j1EntityManager::j1EntityManager(){
 	name.create("entities");
@@ -137,6 +138,7 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 	{
 		for (int type = MELEE; type < NO_TYPE; type++)
 		{
+			reference_entities[faction][type] = nullptr;
 			reference_entities[faction][type] = CreateEntity((Faction)faction, (EntityType)type, faction, type);
 		}
 	}
@@ -146,8 +148,8 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 	return ret;
 }
 
-bool j1EntityManager::Start()
-{
+bool j1EntityManager::Start() {
+	BROFILER_CATEGORY("EntitiesStart", Profiler::Color::Linen)
 	bool ret = true;
 	//create reference entities
 
@@ -174,16 +176,15 @@ bool j1EntityManager::Start()
 bool j1EntityManager::CleanUp()
 {
 	bool ret = true;
-	/*
-	for (int i = 0; i < REFERENCE_ENTITIES; i++)
+
+	for (int faction = VAULT; faction < NO_FACTION; faction++)
 	{
-		if (i < REFERENCE_ENTITIES)
+		for (int type = MELEE; type <= BASE; type++)
 		{
-			App->tex->UnLoad(reference_entities[i]->texture);
+			App->tex->UnLoad(reference_entities[faction][type]->texture);
 		}
-		delete entities[i];
 	}
-	*/
+
 	entities.clear();
 	return ret;
 }
@@ -211,7 +212,7 @@ bool j1EntityManager::Update(float dt)
 
 bool j1EntityManager::PostUpdate()
 {
-	BROFILER_CATEGORY("EntitiesPostUpdate", Profiler::Color::CadetBlue)
+	BROFILER_CATEGORY("EntitiesPostUpdate", Profiler::Color::Orange)
 	bool ret = true;
 	SDL_Rect tex_rect = {64,0,64,64 };
 	iPoint tex_position;
@@ -261,6 +262,56 @@ bool j1EntityManager::PostUpdate()
 			{
 				tex_position = App->map->MapToWorld(static_entity->tiles[j].x, static_entity->tiles[j].y);
 				App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tex_rect);
+			}
+
+			//Create HUD for the building
+			switch (static_entity->faction) {
+			case GHOUL:
+				if (static_entity->type == BASE) {
+					
+					if(count==0){
+						
+						App->menu_manager->CreateGhouls_Base();
+						count++;
+						LOG("%i", count);
+					}
+
+				}
+				else if (static_entity->type == BARRACK) {
+
+					if (count == 0) {
+						
+						App->menu_manager->CreateGhouls_Barrack();
+						count++;
+					
+					}
+
+				}
+				else if (static_entity->type == LABORATORY) {
+					
+					if (count == 0) {
+						
+						App->menu_manager->CreateGhouls_Lab();
+						count++;
+					}
+
+				}
+				break;
+			case BROTHERHOOD:
+				if (static_entity->type == BASE)App->menu_manager->CreateBrotherHood_Base();
+				else if (static_entity->type == BARRACK)App->menu_manager->CreateBrotherHood_Barrack();
+				else if (static_entity->type == LABORATORY)App->menu_manager->CreateBrotherHood_Lab();
+				break;
+			case VAULT:
+				if (static_entity->type == BASE)App->menu_manager->CreateVault_Base();
+				else if (static_entity->type == BARRACK)App->menu_manager->CreateVault_Barrack();
+				else if (static_entity->type == LABORATORY)App->menu_manager->CreateVault_Lab();
+				break;
+			case MUTANT:
+				if (static_entity->type == BASE)App->menu_manager->CreateSuperMutants_Base();
+				else if (static_entity->type == BARRACK)App->menu_manager->CreateSuperMutants_Barrack();
+				else if (static_entity->type == LABORATORY)App->menu_manager->CreateSuperMutants_Lab();
+				break;
 			}
 		}
 	}
