@@ -4,7 +4,7 @@
 #include "j1Module.h"
 #include "p2List.h"
 #include "p2Point.h"
-
+#include <vector>
 
 #define CURSOR_WIDTH 2
 
@@ -46,6 +46,8 @@ public:
 
 	// TODO 2: Create the factory methods
 
+	void DestroyVectorElements(std::vector<UI_element*> vector);
+
 	// Gui creation functions
 	UI_element* CreateButton(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, SDL_Rect click, UI_element* parent, j1Module* Observer);
 	UI_element* CreateImage(int x, int y, UI_Type type, SDL_Rect rect, UI_element* parent, j1Module* Observer);
@@ -61,7 +63,8 @@ public:
 
 public:
 
-	p2List<UI_element*> ui_element;
+	//p2List<UI_element*> ui_element;
+	std::vector<UI_element*> ui_element;
 
 	bool debug_UI = false;
 

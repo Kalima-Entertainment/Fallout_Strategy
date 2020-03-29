@@ -61,7 +61,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 
 	// scene last
 	AddModule(menu_manager);
-	//AddModule(gui);
+	AddModule(gui);
 	AddModule(minimap);
 
 	// render last to swap buffer

@@ -2,12 +2,26 @@
 #define __MENUMANAGER_H__
 
 #include "j1Module.h"
+#include <vector>
 
 enum UI_Type;
 class j1Image;
 class UI_Slider;
 class UI_Button;
 class UI_Label;
+
+#define MAX_UI_ELEMENTS 60
+
+enum class Menu {
+	MAIN_MENU,
+	SETTINGS,
+	CREDITS,
+	SELECT_FACTION,
+	PAUSE_MENU,
+	GUI,
+	BUI_BASES
+};
+
 
 struct UI_main_menu {
 
@@ -54,9 +68,6 @@ struct UI_settings {
 	UI_Button* cap_button = nullptr;
 	UI_Button* mute_button = nullptr;
 	UI_Button* back_button = nullptr;
-
-
-
 };
 
 struct UI_credits {
@@ -208,6 +219,8 @@ struct UI_GUI_Bases {
 	UI_Button* shield_boost_supermutant = nullptr;
 	UI_Button* resource_boost_supermutant = nullptr;
 };
+
+
 class MenuManager :public j1Module {
 
 public:
@@ -218,6 +231,9 @@ public:
 
 public:
 	
+	void CreateMenu(Menu menu);
+	void DestroyMenu(Menu menu);
+
 	void CreateMainMenu();
 	void DestroyMainMenu();
 	void CreateCredits();
@@ -268,6 +284,7 @@ public:
 
 public:
 
+	
 	UI_main_menu		main_menu;
 	UI_credits			credits_menu;
 	UI_select_faction	select_faction_menu;
@@ -275,6 +292,20 @@ public:
 	UI_pause_menu		pause_menu;
 	UI_GUI				gui_ingame;
 	UI_GUI_Bases		bases_hud;
+	
+
+	//UI_element	
+	/*
+	std::vector<UI_element*> main_menu;
+	std::vector<UI_element*> credits_menu;
+	std::vector<UI_element*> select_faction_menu;
+	std::vector<UI_element*> settings_menu;
+	std::vector<UI_element*> pause_menu;
+	std::vector<UI_element*> gui_ingame;
+	std::vector<UI_element*> bases_hud;
+	*/
+
+	std::vector<UI_element*> displaying_elements[MAX_UI_ELEMENTS];
 
 	char collaborator = 'M';
 	

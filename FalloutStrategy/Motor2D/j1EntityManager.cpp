@@ -176,16 +176,15 @@ bool j1EntityManager::Start() {
 bool j1EntityManager::CleanUp()
 {
 	bool ret = true;
-	/*
-	for (int i = 0; i < REFERENCE_ENTITIES; i++)
+
+	for (int faction = VAULT; faction < NO_FACTION; faction++)
 	{
-		if (i < REFERENCE_ENTITIES)
+		for (int type = MELEE; type <= BASE; type++)
 		{
-			App->tex->UnLoad(reference_entities[i]->texture);
+			App->tex->UnLoad(reference_entities[faction][type]->texture);
 		}
-		delete entities[i];
 	}
-	*/
+
 	entities.clear();
 	return ret;
 }

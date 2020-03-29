@@ -51,12 +51,12 @@ bool j1Gui::PreUpdate()
 
 bool j1Gui::Update(float dt) {
 	BROFILER_CATEGORY("GuiUpdate", Profiler::Color::Yellow)
-	for (int i = 0; i < ui_element.count(); i++) {
+	for (int i = 0; i < ui_element.size(); i++) {
 
-		if (ui_element.At(i) != nullptr) {
+		if (ui_element[i] != nullptr) {
 
 			//ui_element.At(i)->data->Draw();
-			ui_element.At(i)->data->Update(dt);
+			ui_element[i]->Update(dt);
 
 		}
 	}
@@ -73,22 +73,22 @@ bool j1Gui::Update(float dt) {
 // Called after all Updates
 bool j1Gui::PostUpdate(){
 	BROFILER_CATEGORY("GuiPostUpdate", Profiler::Color::LightGreen)
-	for (int i = 0; i < ui_element.count(); i++) {
+	for (int i = 0; i < ui_element.size(); i++) {
 
-		if (ui_element.At(i) != nullptr) {
+		if (ui_element[i] != nullptr) {
 
-			ui_element.At(i)->data->Draw();
+			ui_element[i]->Draw();
 		}
 	}
 	return true;
 }
-
 
 // Called before quitting
 bool j1Gui::CleanUp()
 {
 	LOG("Freeing GUI");
 	
+	/*
 	p2List_item<UI_element*>* element = ui_element.start;
 	
 	while (element != nullptr)
@@ -97,23 +97,20 @@ bool j1Gui::CleanUp()
 		delete element->data;
 		element = element->next;
 	} 
+	*/
 
 	return true;
 }
 
 bool j1Gui::Delete_Element(UI_element* element) {
 	
-	ui_element.find(element);
-	p2List_item<UI_element*>* item = nullptr;
-	for (item = ui_element.start; item; item = item->next)
+	for (int i = 0; i < ui_element.size(); i++)
 	{
-		if (item->data == element)
-		{
-			ui_element.del(item);
+		if (element == ui_element[i]) {
+			ui_element.erase(ui_element.begin() + i);
 		}
 	}
 
-	
 	return true;
 }
 
@@ -126,7 +123,7 @@ UI_element* j1Gui::CreateButton(int x, int y, UI_Type type, SDL_Rect idle, SDL_R
 	
 	UI_Button* button = new UI_Button(x, y, type, idle, hover, click, parent, Observer);
 
-	ui_element.add(button);
+	ui_element.push_back(button);
 
 	return button;
 }
@@ -135,7 +132,7 @@ UI_element* j1Gui::CreateImage(int x, int y, UI_Type type, SDL_Rect rect, UI_ele
 {
 	j1Image* image = new j1Image(x, y, type, rect, parent, Observer);
 
-	ui_element.add(image);
+	ui_element.push_back(image);
 
 	return image;
 }
@@ -144,7 +141,7 @@ UI_element* j1Gui::CreateSlider(int x, int y, UI_Type type, SDL_Rect scrollbar, 
 {
 	UI_Slider* slider = new UI_Slider(x, y, type, scrollbar, button, width, parent, Observer);
 
-	ui_element.add(slider);
+	ui_element.push_back(slider);
 
 	return slider;
 }
@@ -154,7 +151,7 @@ UI_element* j1Gui::CreateLabel(int x, int y, UI_Type type, p2SString text_input,
 	UI_Label* label = new UI_Label(x, y, type, text_input, parent, Observer, counter);
 
 	label->SetLabelText(text_input);
-	ui_element.add(label);
+	ui_element.push_back(label);
 
 	return label;
 }
