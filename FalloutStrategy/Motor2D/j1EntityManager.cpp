@@ -268,9 +268,35 @@ bool j1EntityManager::PostUpdate()
 			//Create HUD for the building
 			switch (static_entity->faction) {
 			case GHOUL:
-				if (static_entity->type == BASE)App->menu_manager->CreateGhouls_Base();
-				else if (static_entity->type == BARRACK)App->menu_manager->CreateGhouls_Barrack();
-				else if (static_entity->type == LABORATORY)App->menu_manager->CreateGhouls_Lab();
+				if (static_entity->type == BASE) {
+					
+					if(count==0){
+						
+						App->menu_manager->CreateGhouls_Base();
+						count++;
+						LOG("%i", count);
+					}
+
+				}
+				else if (static_entity->type == BARRACK) {
+
+					if (count == 0) {
+						
+						App->menu_manager->CreateGhouls_Barrack();
+						count++;
+					
+					}
+
+				}
+				else if (static_entity->type == LABORATORY) {
+					
+					if (count == 0) {
+						
+						App->menu_manager->CreateGhouls_Lab();
+						count++;
+					}
+
+				}
 				break;
 			case BROTHERHOOD:
 				if (static_entity->type == BASE)App->menu_manager->CreateBrotherHood_Base();

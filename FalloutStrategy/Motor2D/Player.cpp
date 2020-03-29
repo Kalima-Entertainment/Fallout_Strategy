@@ -129,6 +129,7 @@ bool Player::PreUpdate() {
 
 		//Remove HUD data from the UI
 		App->menu_manager->DestroyAllBuildings();
+		App->entities->count = 0;
 	}
 
 	//move camera

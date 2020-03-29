@@ -603,8 +603,8 @@ void MenuManager::DestroyGhouls_Base() {
 void MenuManager::CreateGhouls_Barrack() {
 
 	//Buttons
-	bases_hud.barrack_create_ghouls = (UI_Button*)App->gui->CreateButton(1050, 600, Ghouls_melee_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
-	bases_hud.barrack_create_ghouls = (UI_Button*)App->gui->CreateButton(1105, 600, Ghouls_ranged_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	bases_hud.barrack_melee_create_ghouls = (UI_Button*)App->gui->CreateButton(1050, 600, Ghouls_melee_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	bases_hud.barrack_ranged_create_ghouls = (UI_Button*)App->gui->CreateButton(1105, 600, Ghouls_ranged_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 
 	//Images
 	bases_hud.ghouls_barrack = (j1Image*)App->gui->CreateImage(885, 570, Ghouls_barrack, { 270, 1568, 97, 99 }, NULL, this);
@@ -614,8 +614,8 @@ void MenuManager::CreateGhouls_Barrack() {
 }
 void MenuManager::DestroyGhouls_Barrack() {
 
-	App->gui->Delete_Element(bases_hud.barrack_create_ghouls);
-	App->gui->Delete_Element(bases_hud.barrack_create_ghouls);
+	App->gui->Delete_Element(bases_hud.barrack_melee_create_ghouls);
+	App->gui->Delete_Element(bases_hud.barrack_ranged_create_ghouls);
 	App->gui->Delete_Element(bases_hud.ghouls_barrack);
 	App->gui->Delete_Element(bases_hud.ghouls_melee);
 	App->gui->Delete_Element(bases_hud.ghouls_ranged);
