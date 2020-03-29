@@ -147,8 +147,8 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 	return ret;
 }
 
-bool j1EntityManager::Start()
-{
+bool j1EntityManager::Start() {
+	BROFILER_CATEGORY("EntitiesStart", Profiler::Color::Linen)
 	bool ret = true;
 	//create reference entities
 
@@ -212,7 +212,7 @@ bool j1EntityManager::Update(float dt)
 
 bool j1EntityManager::PostUpdate()
 {
-	BROFILER_CATEGORY("EntitiesPostUpdate", Profiler::Color::CadetBlue)
+	BROFILER_CATEGORY("EntitiesPostUpdate", Profiler::Color::Orange)
 	bool ret = true;
 	SDL_Rect tex_rect = {64,0,64,64 };
 	iPoint tex_position;
