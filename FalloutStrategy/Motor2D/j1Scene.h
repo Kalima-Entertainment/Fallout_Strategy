@@ -15,6 +15,27 @@ enum class StatesMenu
 	PAUSE,
 	NONE
 };
+// TR = TOP RIGHT TL = TOP LEFT BL = BOTTOM LEFT BR = BOTTOM RIGHT
+enum MapModules
+{
+	TL_DESERT = 0,
+	TL_WASTELAND,
+	TL_OLDSTONE,
+	TL_GREENLAND,
+	TR_DESERT,
+	TR_WASTELAND,
+	TR_OLDSTONE,
+	TR_GREENLAND,
+	BL_DESERT,
+	BL_WASTELAND,
+	BL_OLDSTONE,
+	BL_GREENLAND,
+	BR_DESERT,
+	BR_WASTELAND,
+	BR_OLDSTONE,
+	BR_GREENLAND
+
+};
 
 class j1Scene : public j1Module
 {
@@ -48,6 +69,10 @@ public:
 
 public:
 
+	int topleft;
+	int topright;
+	int bottomleft;
+	int bottomright;
 	bool create = false;
 	StatesMenu menu_state = StatesMenu::NONE;
 
