@@ -9,6 +9,7 @@
 StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
 	type = g_type;
 	faction = g_faction;
+	state = WAIT;
 }
 
 StaticEntity::~StaticEntity() {}
@@ -29,21 +30,22 @@ bool StaticEntity::Update(float dt) {
 
 	//Interact with the building to spawn units or investigate upgrades
 	if (this == App->player->selected_entity) {		
-		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-			if (type == BASE)
-				App->entities->CreateEntity(VAULT, GATHERER, spawnPosition.x, spawnPosition.y);
-			else if (type == BARRACK)
-				App->entities->CreateEntity(VAULT, MELEE, spawnPosition.x, spawnPosition.y);
-			else if (type == LABORATORY)
-				LOG("Upgrade 1 on laboratory");
-		}
-		if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-			if (type == BASE)
-				LOG("Second Option on base");
-			else if (type == BARRACK)
-				App->entities->CreateEntity(VAULT, RANGED, spawnPosition.x, spawnPosition.y);
-			else if (type == LABORATORY)
-				LOG("Upgrade 2 on laboratory");
+		if (type == BASE) {
+			//Spawn GATHERER
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+				App->entities->CreateEntity(GHOUL, GATHERER, spawnPosition.x, spawnPosition.y);
+			else if (type == BARRACK) {
+				//Spawn MELEE
+				if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+					App->entities->CreateEntity(GHOUL, MELEE, spawnPosition.x, spawnPosition.y);
+
+				//Spawn RANGED
+				if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+					App->entities->CreateEntity(GHOUL, RANGED, spawnPosition.x, spawnPosition.y);
+			}
+			else if (type == LABORATORY) {
+				//Upgrades
+			}
 		}
 	}	
 

@@ -19,6 +19,7 @@
 #include "j1Image.h"
 #include "MenuManager.h"
 #include "Player.h"
+#include "brofiler/Brofiler/Brofiler.h"
 
 MenuManager::MenuManager()
 {
@@ -28,7 +29,6 @@ MenuManager::MenuManager()
 MenuManager::~MenuManager()
 {
 }
-
 
 void MenuManager::CreateMainMenu()
 {
@@ -55,7 +55,10 @@ void MenuManager::CreateMainMenu()
 	main_menu.credits_button = (UI_Button*)App->gui->CreateButton(887, 527, button_credits, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
 	main_menu.exit_button = (UI_Button*)App->gui->CreateButton(887, 604, button_exit, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
 
+
+
 }
+
 void MenuManager::DestroyMainMenu()
 {
 
@@ -101,6 +104,7 @@ void MenuManager::CreateCredits()
 	credits_menu.silvino_button = (UI_Button*)App->gui->CreateButton(450, 400, button_silvino, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
 	credits_menu.cristian_button = (UI_Button*)App->gui->CreateButton(450, 445, button_cristian, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
 }
+
 void MenuManager::DestroyCredits()
 {
 	//Destroying Images
@@ -156,6 +160,7 @@ void MenuManager::CreateSettings()
 
 
 }
+
 void MenuManager::DestroySettings()
 {
 
@@ -221,6 +226,7 @@ void MenuManager::CreateCollaboratorPicture()
 	
 
 }
+
 void MenuManager::DestroyAllCollaboratorsPictures()
 {
 
@@ -258,6 +264,7 @@ void MenuManager::CreateSelectFaction()
 
 
 }
+
 void MenuManager::DestroySelectFaction()
 {
 
@@ -301,6 +308,7 @@ void MenuManager::CreatePauseMenu()
 
 
 }
+
 void MenuManager::DestroyPauseMenu()
 {
 
@@ -425,6 +433,28 @@ void MenuManager::DestroyGUI()
 }
 
 //Brotherhood
+
+void MenuManager::DestroyAllBuildings() {
+	//Ghouls
+	DestroyGhouls_Base();
+	DestroyGhouls_Barrack();
+	DestroyGhouls_Lab();
+
+	//Mutants
+	DestroySuperMutants_Base();
+	DestroySuperMutants_Barrack();
+	DestroySuperMutants_Lab();
+
+	//Vaults
+	DestroyVault_Base();
+	DestroyVault_Barrack();
+	DestroyVault_Lab();
+
+	//Brotherhood
+	DestroyBrotherHood_Base();
+	DestroyBrotherHood_Barrack();
+	DestroyBrotherHood_Lab();
+}
 
 void MenuManager::CreateBrotherHood_Base()
 {
@@ -554,7 +584,6 @@ void MenuManager::CreateSuperMutants_Lab() {
 void MenuManager::DestroySuperMutants_Lab() {
 
 	App->gui->Delete_Element(bases_hud.supermutant_lab);
-
 }
 
 //Ghouls
@@ -580,8 +609,8 @@ void MenuManager::DestroyGhouls_Base() {
 void MenuManager::CreateGhouls_Barrack() {
 
 	//Buttons
-	bases_hud.barrack_create_ghouls = (UI_Button*)App->gui->CreateButton(1050, 600, Ghouls_melee_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
-	bases_hud.barrack_create_ghouls = (UI_Button*)App->gui->CreateButton(1105, 600, Ghouls_ranged_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	bases_hud.barrack_melee_create_ghouls = (UI_Button*)App->gui->CreateButton(1050, 600, Ghouls_melee_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	bases_hud.barrack_ranged_create_ghouls = (UI_Button*)App->gui->CreateButton(1105, 600, Ghouls_ranged_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 
 	//Images
 	bases_hud.ghouls_barrack = (j1Image*)App->gui->CreateImage(885, 570, Ghouls_barrack, { 270, 1568, 97, 99 }, NULL, this);
@@ -591,8 +620,8 @@ void MenuManager::CreateGhouls_Barrack() {
 }
 void MenuManager::DestroyGhouls_Barrack() {
 
-	App->gui->Delete_Element(bases_hud.barrack_create_ghouls);
-	App->gui->Delete_Element(bases_hud.barrack_create_ghouls);
+	App->gui->Delete_Element(bases_hud.barrack_melee_create_ghouls);
+	App->gui->Delete_Element(bases_hud.barrack_ranged_create_ghouls);
 	App->gui->Delete_Element(bases_hud.ghouls_barrack);
 	App->gui->Delete_Element(bases_hud.ghouls_melee);
 	App->gui->Delete_Element(bases_hud.ghouls_ranged);
@@ -677,8 +706,32 @@ void MenuManager::CreateVault_Lab() {
 	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
 
 }
+
 void MenuManager::DestroyVault_Lab() {
 
 	App->gui->Delete_Element(bases_hud.brotherhood_lab);
 
+}
+
+void MenuManager::DestroyMenu(Menu menu) {
+	switch (menu)
+	{
+	case Menu::MAIN_MENU:
+
+		break;
+	case Menu::SETTINGS:
+		break;
+	case Menu::CREDITS:
+		break;
+	case Menu::SELECT_FACTION:
+		break;
+	case Menu::PAUSE_MENU:
+		break;
+	case Menu::GUI:
+		break;
+	case Menu::BUI_BASES:
+		break;
+	default:
+		break;
+	}
 }
