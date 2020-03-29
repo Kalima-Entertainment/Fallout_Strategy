@@ -160,7 +160,8 @@ struct UI_GUI_Bases {
 	j1Image* ghouls_ranged = nullptr;
 	UI_Button* base_create_ghouls = nullptr;
 	UI_Button* lab_create_ghouls = nullptr;
-	UI_Button* barrack_create_ghouls = nullptr;
+	UI_Button* barrack_melee_create_ghouls = nullptr;
+	UI_Button* barrack_ranged_create_ghouls = nullptr;
 
 	j1Image* vault_base = nullptr;
 	j1Image* vault_barrack = nullptr;
@@ -235,6 +236,7 @@ public:
 	void CreateGUI();
 	void DestroyGUI();
 	
+	void DestroyAllBuildings();
 	void CreateBrotherHood_Base();
 	void DestroyBrotherHood_Base();
 	void CreateBrotherHood_Barrack();

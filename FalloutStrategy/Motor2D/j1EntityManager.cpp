@@ -13,6 +13,7 @@
 #include "StaticEntity.h"
 #include "Player.h"
 #include "brofiler/Brofiler/Brofiler.h"
+#include "MenuManager.h"
 
 j1EntityManager::j1EntityManager(){
 	name.create("entities");
@@ -262,6 +263,56 @@ bool j1EntityManager::PostUpdate()
 			{
 				tex_position = App->map->MapToWorld(static_entity->tiles[j].x, static_entity->tiles[j].y);
 				App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tex_rect);
+			}
+
+			//Create HUD for the building
+			switch (static_entity->faction) {
+			case GHOUL:
+				if (static_entity->type == BASE) {
+					
+					if(count==0){
+						
+						App->menu_manager->CreateGhouls_Base();
+						count++;
+						LOG("%i", count);
+					}
+
+				}
+				else if (static_entity->type == BARRACK) {
+
+					if (count == 0) {
+						
+						App->menu_manager->CreateGhouls_Barrack();
+						count++;
+					
+					}
+
+				}
+				else if (static_entity->type == LABORATORY) {
+					
+					if (count == 0) {
+						
+						App->menu_manager->CreateGhouls_Lab();
+						count++;
+					}
+
+				}
+				break;
+			case BROTHERHOOD:
+				if (static_entity->type == BASE)App->menu_manager->CreateBrotherHood_Base();
+				else if (static_entity->type == BARRACK)App->menu_manager->CreateBrotherHood_Barrack();
+				else if (static_entity->type == LABORATORY)App->menu_manager->CreateBrotherHood_Lab();
+				break;
+			case VAULT:
+				if (static_entity->type == BASE)App->menu_manager->CreateVault_Base();
+				else if (static_entity->type == BARRACK)App->menu_manager->CreateVault_Barrack();
+				else if (static_entity->type == LABORATORY)App->menu_manager->CreateVault_Lab();
+				break;
+			case MUTANT:
+				if (static_entity->type == BASE)App->menu_manager->CreateSuperMutants_Base();
+				else if (static_entity->type == BARRACK)App->menu_manager->CreateSuperMutants_Barrack();
+				else if (static_entity->type == LABORATORY)App->menu_manager->CreateSuperMutants_Lab();
+				break;
 			}
 		}
 	}

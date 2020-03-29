@@ -68,6 +68,8 @@ public:
 	std::vector<ResourceBuilding*> resource_buildings;
 	pugi::xml_node config_data;
 
+	int count = 0;
+
 public:
 
 	j1Entity* reference_entities[4][6];
