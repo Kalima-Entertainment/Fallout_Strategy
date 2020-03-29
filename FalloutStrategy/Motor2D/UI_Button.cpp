@@ -331,6 +331,10 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->CreateMainMenu();
 				App->audio->PlayFx(back_fx, 0);
 			}
+
+			if (t == Ghouls_ghaterer_button) {
+
+			}
 		}
 		else {
 			

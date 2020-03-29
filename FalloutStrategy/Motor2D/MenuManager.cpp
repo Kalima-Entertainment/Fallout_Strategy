@@ -427,6 +427,28 @@ void MenuManager::DestroyGUI()
 
 //Brotherhood
 
+void MenuManager::DestroyAllBuildings() {
+	//Ghouls
+	DestroyGhouls_Base();
+	DestroyGhouls_Barrack();
+	DestroyGhouls_Lab();
+
+	//Mutants
+	DestroySuperMutants_Base();
+	DestroySuperMutants_Barrack();
+	DestroySuperMutants_Lab();
+
+	//Vaults
+	DestroyVault_Base();
+	DestroyVault_Barrack();
+	DestroyVault_Lab();
+
+	//Brotherhood
+	DestroyBrotherHood_Base();
+	DestroyBrotherHood_Barrack();
+	DestroyBrotherHood_Lab();
+}
+
 void MenuManager::CreateBrotherHood_Base()
 {
 

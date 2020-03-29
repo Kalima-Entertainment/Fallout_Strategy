@@ -12,6 +12,7 @@
 #include "UI_Label.h"
 #include "j1Gui.h"
 #include "j1Minimap.h"
+#include "MenuManager.h"
 
 Player::Player() : j1Module() {
 	selected_entity = nullptr;
@@ -113,12 +114,11 @@ bool Player::PreUpdate() {
 						dynamic_entity->resource_building = resource_building;
 				}
 			}
-
 			//static entities
 			else
 			{
 				StaticEntity* static_entity;
-				static_entity = (StaticEntity*)selected_entity;
+				static_entity = (StaticEntity*)selected_entity;				
 			}
 		}
 	}
@@ -126,6 +126,9 @@ bool Player::PreUpdate() {
 	//deselect entity
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
 		selected_entity = nullptr;
+
+		//Remove HUD data from the UI
+		App->menu_manager->DestroyAllBuildings();
 	}
 
 	//move camera

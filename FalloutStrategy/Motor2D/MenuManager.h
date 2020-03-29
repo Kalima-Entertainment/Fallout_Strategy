@@ -235,6 +235,7 @@ public:
 	void CreateGUI();
 	void DestroyGUI();
 	
+	void DestroyAllBuildings();
 	void CreateBrotherHood_Base();
 	void DestroyBrotherHood_Base();
 	void CreateBrotherHood_Barrack();
