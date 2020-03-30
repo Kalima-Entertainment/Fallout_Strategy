@@ -283,14 +283,12 @@ bool j1EntityManager::PostUpdate()
 						
 						App->menu_manager->CreateGhouls_Barrack();
 						count++;
-					
 					}
 
 				}
 				else if (static_entity->type == LABORATORY) {
 					
 					if (count == 0) {
-						
 						App->menu_manager->CreateGhouls_Lab();
 						count++;
 					}

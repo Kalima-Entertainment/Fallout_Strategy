@@ -22,53 +22,6 @@ enum class Menu {
 	BUI_BASES
 };
 
-struct UI_main_menu {
-
-	j1Image* background = nullptr;
-	j1Image* logo = nullptr;
-	j1Image* panel = nullptr;
-	j1Image* image = nullptr;
-
-	UI_Label* new_game_text = nullptr;
-	UI_Label* load_game_text = nullptr;
-	UI_Label* settings_text = nullptr;
-	UI_Label* credits_text = nullptr;
-	UI_Label* exit_text = nullptr;
-
-	UI_Button* new_game_button = nullptr;
-	UI_Button* load_game_button = nullptr;
-	UI_Button* settings_button = nullptr;
-	UI_Button* credits_button = nullptr;
-	UI_Button* exit_button = nullptr;
-	
-};
-
-struct UI_settings {
-
-	UI_Label* fps = nullptr;
-	UI_Label* fx_volume = nullptr;
-	UI_Label* music_volume = nullptr;
-	UI_Label* settings_text = nullptr;
-
-	j1Image* background = nullptr;
-	j1Image* panel_volume = nullptr;
-	j1Image* mute = nullptr;
-	j1Image* panel_cap = nullptr;
-	j1Image* fps_image = nullptr;
-
-	UI_Slider* volume_music_slider = nullptr;
-	UI_Button* left_music_button = nullptr;
-	UI_Button* right_music_button = nullptr;
-
-	UI_Slider* volume_fx_slider = nullptr;
-	UI_Button* left_fx_button = nullptr;
-	UI_Button* right_fx_button = nullptr;
-
-	UI_Button* cap_button = nullptr;
-	UI_Button* mute_button = nullptr;
-	UI_Button* back_button = nullptr;
-};
-
 struct UI_credits {
 
 	j1Image* background = nullptr;
@@ -234,11 +187,9 @@ public:
 	void DestroyMenu(Menu menu);
 
 	void CreateMainMenu();
-	//void DestroyMainMenu();
 	void CreateCredits();
 	void DestroyCredits();
 	void CreateSettings();
-	//void DestroySettings();
 	void CreateCollaboratorPicture();
 	void DestroyAllCollaboratorsPictures();
 	void CreateSelectFaction();
@@ -246,7 +197,6 @@ public:
 	void CreatePauseMenu();
 	void DestroyPauseMenu();
 	void CreatePauseSettings();
-	//void DestroyPauseSettings();
 	
 	void CreateGUI();
 	void DestroyGUI();
@@ -283,11 +233,8 @@ public:
 
 public:
 
-	
-	//UI_main_menu		main_menu;
 	UI_credits			credits_menu;
 	UI_select_faction	select_faction_menu;
-	//UI_settings		settings_menu;
 	UI_pause_menu		pause_menu;
 	UI_GUI				gui_ingame;
 	UI_GUI_Bases		bases_hud;
@@ -302,13 +249,8 @@ public:
 	//UI_element* pause_menu[];
 	//UI_element* gui_ingame[];
 	//UI_element* bases_hud[];
-	
-
-	std::vector<UI_element*> displaying_elements[MAX_UI_ELEMENTS];
 
 	char collaborator = 'M';
-	
-
 };
 
 

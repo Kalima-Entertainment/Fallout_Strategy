@@ -20,6 +20,7 @@
 #include "SDL_mixer/include/SDL_mixer.h"
 #include <stdlib.h>
 #include <time.h> 
+#include <string>
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -37,6 +38,7 @@ bool j1Scene::Awake()
 	bool ret = true;
 
 
+
 	return ret;
 }
 
@@ -44,10 +46,6 @@ bool j1Scene::Awake()
 bool j1Scene::Start()
 {
 	srand(time(NULL));
-	topleft = rand() % 4;
-	topright = rand() % 4 + 4;
-	bottomleft = rand() % 4 + 8;
-	bottomright = rand() % 4 + 12;
 	menu_state = StatesMenu::NONE;
 
 	DynamicEntity* vault[3], * brotherhood[3], * ghoul[3], *mutant[3];
@@ -57,10 +55,35 @@ bool j1Scene::Start()
 	StaticEntity* mutant_base, *mutant_barrack, *mutant_laboratory;
 	StaticEntity* brotherhood_base, *brotherhood_barrack, *brotherhood_laboratory;
 
-	//if(App->map->Load("iso_walk.tmx") == true)
+	//random map ----------------------------
+
+	std::string modules[4];
+
+	for (int i = 0; i < 4; i++)
+	{
+		int type = rand() % 4;
+		if (type == 0)
+			modules[i] = ("grassland");
+		else if (type == 1)
+			modules[i] = ("wasteland");
+		else if (type == 2)
+			modules[i] = ("desert");
+		else if (type == 3)
+			modules[i] = ("oldstone");
+	}
+
+	modules[0] += ("_up_left.tmx");
+	modules[1] += ("_up_right.tmx");
+	modules[2] += ("_low_left.tmx");
+	modules[3] += ("_low_right.tmx");
+
+    // --------------------------------------
+
+	App->map->CreateFullMap(modules);
+
 	switch (bottomleft)
 	{
-	case 8:
+	case 0:
 		if (App->map->Load("desert_low_left.tmx") == true)
 		{
 			int w, h;
@@ -71,7 +94,7 @@ bool j1Scene::Start()
 			RELEASE_ARRAY(data);
 		}
 		break;
-	case 9:
+	case 1:
 		if (App->map->Load("wasteland_low_left.tmx") == true)
 		{
 			int w, h;
@@ -82,7 +105,7 @@ bool j1Scene::Start()
 			RELEASE_ARRAY(data);
 		}
 		break;
-	case 10:
+	case 2:
 		if (App->map->Load("oldstone_low_left.tmx") == true)
 		{
 			int w, h;
@@ -93,7 +116,7 @@ bool j1Scene::Start()
 			RELEASE_ARRAY(data);
 		}
 		break;
-	case 11:
+	case 3:
 		if (App->map->Load("grassland_low_left.tmx") == true)
 		{
 			int w, h;
@@ -107,6 +130,9 @@ bool j1Scene::Start()
 	default:
 		break;
 	}
+
+	p2SString top_left_string;
+
 	vault[0] = (DynamicEntity*)App->entities->CreateEntity(VAULT, MELEE, 14, 6);
 	vault[1] = (DynamicEntity*)App->entities->CreateEntity(VAULT, RANGED, 15, 6);
 	vault[2] = (DynamicEntity*)App->entities->CreateEntity(VAULT, GATHERER, 16, 6);
