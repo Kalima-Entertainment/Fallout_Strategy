@@ -22531,37 +22531,37 @@
   </data>
  </layer>
  <objectgroup name="resources">
-  <object id="1" x="1846.97" y="1809.09" width="374.242" height="416.667">
+  <object id="1" name="Resources" x="1846.97" y="1809.09" width="374.242" height="416.667">
    <properties>
     <property name="Water" type="int" value="150"/>
    </properties>
   </object>
-  <object id="2" x="889.394" y="3.0303" width="410.606" height="428.788">
+  <object id="2" name="Resources" x="889.394" y="3.0303" width="410.606" height="428.788">
    <properties>
     <property name="Water" type="int" value="250"/>
    </properties>
   </object>
-  <object id="3" x="53.0303" y="854.545" width="383.333" height="353.03">
+  <object id="3" name="Resources" x="53.0303" y="854.545" width="383.333" height="353.03">
    <properties>
     <property name="Water" type="int" value="200"/>
    </properties>
   </object>
-  <object id="4" x="1901" y="171" width="384" height="352">
+  <object id="4" name="Resources" x="1901" y="171" width="384" height="352">
    <properties>
     <property name="Nuka-Cola" type="int" value="230"/>
    </properties>
   </object>
-  <object id="5" x="880.303" y="842.424" width="380.303" height="362.121">
+  <object id="5" name="Resources" x="880.303" y="842.424" width="380.303" height="362.121">
    <properties>
     <property name="Nuka-Cola" type="int" value="150"/>
    </properties>
   </object>
-  <object id="6" x="945.455" y="1689.39" width="389.394" height="346.97">
+  <object id="6" name="Resources" x="945.455" y="1689.39" width="389.394" height="346.97">
    <properties>
     <property name="Nuka-Cola" type="int" value="200"/>
    </properties>
   </object>
-  <object id="7" x="121.212" y="1684.85" width="206.061" height="351.515">
+  <object id="7" name="Resources" x="121.212" y="1684.85" width="206.061" height="351.515">
    <properties>
     <property name="Nuka-Cola" type="int" value="130"/>
    </properties>
