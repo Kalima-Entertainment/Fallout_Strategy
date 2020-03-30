@@ -19,6 +19,7 @@
 #include "j1Image.h"
 #include "MenuManager.h"
 #include "Player.h"
+#include "p2Defs.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
 MenuManager::MenuManager()
@@ -36,29 +37,27 @@ void MenuManager::CreateMainMenu()
 	App->player->Disable();
 
 	//Images															
-	main_menu.background = (j1Image*)App->gui->CreateImage(-5, 0, Image, { 1529, 0, 1502, 775 }, NULL, this);
-	main_menu.image = (j1Image*)App->gui->CreateImage(0, 350, Image1, { 0, 1016, 871, 516 }, NULL, this);
-	main_menu.logo = (j1Image*)App->gui->CreateImage(40, 40, Logo, { 938, 903, 505, 233 }, NULL, this);
-	main_menu.panel = (j1Image*)App->gui->CreateImage(827, 260, Panel, { 0, 0, 416, 448 }, NULL, this);
+	main_menu[0] = (j1Image*)App->gui->CreateImage(-5, 0, Image, { 1529, 0, 1502, 775 }, NULL, this);
+	main_menu[1] = (j1Image*)App->gui->CreateImage(0, 350, Image1, { 0, 1016, 871, 516 }, NULL, this);
+	main_menu[2] = (j1Image*)App->gui->CreateImage(40, 40, Logo, { 938, 903, 505, 233 }, NULL, this);
+	main_menu[3] = (j1Image*)App->gui->CreateImage(827, 260, Panel, { 0, 0, 416, 448 }, NULL, this);
 	
 	//Labels
-	main_menu.new_game_text = (UI_Label*)App->gui->CreateLabel(957,310, text_new_game, "NEW GAME", NULL, this, NULL);
-	main_menu.load_game_text = (UI_Label*)App->gui->CreateLabel(957, 387, text_load_game, "LOAD GAME", NULL, this, NULL);
-	main_menu.settings_text = (UI_Label*)App->gui->CreateLabel(957, 464, text_settings, "SETTINGS", NULL, this, NULL);
-	main_menu.credits_text = (UI_Label*)App->gui->CreateLabel(957, 541, text_credits, "CREDITS", NULL, this, NULL);
-	main_menu.exit_text = (UI_Label*)App->gui->CreateLabel(957, 618, text_exit, "EXIT", NULL, this, NULL);
+	main_menu[4] = (UI_Label*)App->gui->CreateLabel(957,310, text_new_game, "NEW GAME", NULL, this, NULL);
+	main_menu[5] = (UI_Label*)App->gui->CreateLabel(957, 387, text_load_game, "LOAD GAME", NULL, this, NULL);
+	main_menu[6] = (UI_Label*)App->gui->CreateLabel(957, 464, text_settings, "SETTINGS", NULL, this, NULL);
+	main_menu[7] = (UI_Label*)App->gui->CreateLabel(957, 541, text_credits, "CREDITS", NULL, this, NULL);
+	main_menu[8] = (UI_Label*)App->gui->CreateLabel(957, 618, text_exit, "EXIT", NULL, this, NULL);
 
 	//Buttons
-	main_menu.new_game_button = (UI_Button*)App->gui->CreateButton(887, 295, button_new_game, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
-	main_menu.load_game_button = (UI_Button*)App->gui->CreateButton(887, 373, button_load_game, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
-	main_menu.settings_button = (UI_Button*)App->gui->CreateButton(887, 450, button_settings, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
-	main_menu.credits_button = (UI_Button*)App->gui->CreateButton(887, 527, button_credits, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
-	main_menu.exit_button = (UI_Button*)App->gui->CreateButton(887, 604, button_exit, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
-
-
-
+	main_menu[9] = (UI_Button*)App->gui->CreateButton(887, 295, button_new_game, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
+	main_menu[10] = (UI_Button*)App->gui->CreateButton(887, 373, button_load_game, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
+	main_menu[11] = (UI_Button*)App->gui->CreateButton(887, 450, button_settings, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
+	main_menu[12] = (UI_Button*)App->gui->CreateButton(887, 527, button_credits, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
+	main_menu[13] = (UI_Button*)App->gui->CreateButton(887, 604, button_exit, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
 }
 
+/*
 void MenuManager::DestroyMainMenu()
 {
 
@@ -84,6 +83,7 @@ void MenuManager::DestroyMainMenu()
 	App->gui->Delete_Element(main_menu.credits_button);
 	App->gui->Delete_Element(main_menu.exit_button);
 }
+*/
 
 void MenuManager::CreateCredits()
 {
@@ -131,39 +131,39 @@ void MenuManager::CreateSettings()
 {
 
 	//Images
-	settings_menu.background = (j1Image*)App->gui->CreateImage(-5, 0, Image, { 1529, 0, 1502, 775 }, NULL, this);
-	settings_menu.panel_volume = (j1Image*)App->gui->CreateImage(310, 125, Volume_Panel, { 0, 537, 658, 358 }, NULL, this);
-	settings_menu.panel_cap = (j1Image*)App->gui->CreateImage(420, 500, Cap_Panel, { 1017, 352, 455, 190 }, NULL, this);
-	settings_menu.mute = (j1Image*)App->gui->CreateImage(395, 275, Mute, { 1674, 981, 20, 36 }, NULL, this);
-	settings_menu.fps_image = (j1Image*)App->gui->CreateImage(595, 600, FPS, { 1599, 1054, 77, 52 }, NULL, this);
+	settings_menu[0] = (j1Image*)App->gui->CreateImage(-5, 0, Image, { 1529, 0, 1502, 775 }, NULL, this);
+	settings_menu[1] = (j1Image*)App->gui->CreateImage(310, 125, Volume_Panel, { 0, 537, 658, 358 }, NULL, this);
+	settings_menu[2] = (j1Image*)App->gui->CreateImage(420, 500, Cap_Panel, { 1017, 352, 455, 190 }, NULL, this);
+	settings_menu[3] = (j1Image*)App->gui->CreateImage(395, 275, Mute, { 1674, 981, 20, 36 }, NULL, this);
+	settings_menu[4] = (j1Image*)App->gui->CreateImage(595, 600, FPS, { 1599, 1054, 77, 52 }, NULL, this);
 
 	//Labels
-	settings_menu.fps = (UI_Label*)App->gui->CreateLabel(520, 525, text_fps, "REFRESH RATE", NULL, this, NULL);
-	settings_menu.fx_volume = (UI_Label*)App->gui->CreateLabel(360, 335, text_fx_volume, "SOUND EFFECTS VOLUME", NULL, this, NULL);
-	settings_menu.music_volume = (UI_Label*)App->gui->CreateLabel(360, 150, text_music_volume, "MUSIC VOLUME", NULL, this, NULL);
-	settings_menu.settings_text = (UI_Label*)App->gui->CreateLabel(555, 50, text_settings, "SETTINGS", NULL, this, NULL);
+	settings_menu[5] = (UI_Label*)App->gui->CreateLabel(520, 525, text_fps, "REFRESH RATE", NULL, this, NULL);
+	settings_menu[6] = (UI_Label*)App->gui->CreateLabel(360, 335, text_fx_volume, "SOUND EFFECTS VOLUME", NULL, this, NULL);
+	settings_menu[7] = (UI_Label*)App->gui->CreateLabel(360, 150, text_music_volume, "MUSIC VOLUME", NULL, this, NULL);
+	settings_menu[8] = (UI_Label*)App->gui->CreateLabel(555, 50, text_settings, "SETTINGS", NULL, this, NULL);
 
 	//Music Slider
-	settings_menu.volume_music_slider = (UI_Slider*)App->gui->CreateSlider(465, 220, Slider_music, { 1834,842,329,27 }, { 1792,926,33,16 }, 400, NULL, this);
-	settings_menu.left_music_button = (UI_Button*)App->gui->CreateButton(435, 220, Button_slider_music_left, { 1671,880,26,25 }, { 1738,880,26,25 }, { 1738,880,26,25 }, NULL, this);
-	settings_menu.right_music_button = (UI_Button*)App->gui->CreateButton(787, 220, Button_slider_music_right, { 1704,880,26,25 }, { 1771,880,26,25 }, { 1771,880,26,25 }, NULL, this);
+	settings_menu[9] = (UI_Slider*)App->gui->CreateSlider(465, 220, Slider_music, { 1834,842,329,27 }, { 1792,926,33,16 }, 400, NULL, this);
+	settings_menu[10] = (UI_Button*)App->gui->CreateButton(435, 220, Button_slider_music_left, { 1671,880,26,25 }, { 1738,880,26,25 }, { 1738,880,26,25 }, NULL, this);
+	settings_menu[11] = (UI_Button*)App->gui->CreateButton(787, 220, Button_slider_music_right, { 1704,880,26,25 }, { 1771,880,26,25 }, { 1771,880,26,25 }, NULL, this);
 
 	//Fx Slider
-	settings_menu.volume_fx_slider = (UI_Slider*)App->gui->CreateSlider(465, 405, Slider_fx, { 1834,842,329,27 }, { 1792,926,33,16 }, 400, NULL, this);
-	settings_menu.left_fx_button = (UI_Button*)App->gui->CreateButton(435, 405, Button_slider_fx_left, { 1671,880,26,25 }, { 1738,880,26,25 }, { 1738,880,26,25 }, NULL, this);
-	settings_menu.right_fx_button = (UI_Button*)App->gui->CreateButton(796, 405, Button_slider_fx_right, { 1704,880,26,25 }, { 1771,880,26,25 }, { 1771,880,26,25 }, NULL, this);
+	settings_menu[12] = (UI_Slider*)App->gui->CreateSlider(465, 405, Slider_fx, { 1834,842,329,27 }, { 1792,926,33,16 }, 400, NULL, this);
+	settings_menu[13] = (UI_Button*)App->gui->CreateButton(435, 405, Button_slider_fx_left, { 1671,880,26,25 }, { 1738,880,26,25 }, { 1738,880,26,25 }, NULL, this);
+	settings_menu[14] = (UI_Button*)App->gui->CreateButton(796, 405, Button_slider_fx_right, { 1704,880,26,25 }, { 1771,880,26,25 }, { 1771,880,26,25 }, NULL, this);
 
 	//Buttons
-	settings_menu.cap_button = (UI_Button*)App->gui->CreateButton(545, 615, button_cap, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this);
-	settings_menu.mute_button = (UI_Button*)App->gui->CreateButton(360, 280, button_mute, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this);
-	settings_menu.back_button = (UI_Button*)App->gui->CreateButton(40, 40, button_back, { 1704,1054,48,46 }, { 1765,1054,48,46 }, { 1765,1054,48,46 }, NULL, this);
+	settings_menu[15] = (UI_Button*)App->gui->CreateButton(545, 615, button_cap, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this);
+	settings_menu[16] = (UI_Button*)App->gui->CreateButton(360, 280, button_mute, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this);
+	settings_menu[17] = (UI_Button*)App->gui->CreateButton(40, 40, button_back, { 1704,1054,48,46 }, { 1765,1054,48,46 }, { 1765,1054,48,46 }, NULL, this);
 
 
 }
 
+/*
 void MenuManager::DestroySettings()
 {
-
 	//Destroying images
 	App->gui->Delete_Element(settings_menu.background);
 	App->gui->Delete_Element(settings_menu.mute);
@@ -191,6 +191,7 @@ void MenuManager::DestroySettings()
 	App->gui->Delete_Element(settings_menu.settings_text);
 
 }
+*/
 
 void MenuManager::CreateCollaboratorPicture()
 {
@@ -246,7 +247,6 @@ void MenuManager::CreateSelectFaction()
 	//Images
 	select_faction_menu.background = (j1Image*)App->gui->CreateImage(-5, 0, Image, { 1900, 1531, 1290, 842 }, NULL, this);
 	
-
 	//Buttons
 	select_faction_menu.ghouls_button = (UI_Button*)App->gui->CreateButton(200, 200, button_select_ghoul, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
 	select_faction_menu.vault_button = (UI_Button*)App->gui->CreateButton(200, 300, button_select_vault, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
@@ -329,39 +329,42 @@ void MenuManager::DestroyPauseMenu()
 
 }
 
+
 void MenuManager::CreatePauseSettings()
 {
 
 	//Images
-	settings_menu.background = (j1Image*)App->gui->CreateImage(-5, 0, Image, { 1529, 0, 1502, 775 }, NULL, this);
-	settings_menu.panel_volume = (j1Image*)App->gui->CreateImage(310, 125, Volume_Panel, { 0, 537, 658, 358 }, NULL, this);
-	settings_menu.panel_cap = (j1Image*)App->gui->CreateImage(420, 500, Cap_Panel, { 1017, 352, 455, 190 }, NULL, this);
-	settings_menu.mute = (j1Image*)App->gui->CreateImage(395, 275, Mute, { 1674, 981, 20, 36 }, NULL, this);
-	settings_menu.fps_image = (j1Image*)App->gui->CreateImage(595, 600, FPS, { 1599, 1054, 77, 52 }, NULL, this);
+	settings_menu[0] = (j1Image*)App->gui->CreateImage(-5, 0, Image, { 1529, 0, 1502, 775 }, NULL, this);
+	settings_menu[1] = (j1Image*)App->gui->CreateImage(310, 125, Volume_Panel, { 0, 537, 658, 358 }, NULL, this);
+	settings_menu[2] = (j1Image*)App->gui->CreateImage(420, 500, Cap_Panel, { 1017, 352, 455, 190 }, NULL, this);
+	settings_menu[3] = (j1Image*)App->gui->CreateImage(395, 275, Mute, { 1674, 981, 20, 36 }, NULL, this);
+	settings_menu[4] = (j1Image*)App->gui->CreateImage(595, 600, FPS, { 1599, 1054, 77, 52 }, NULL, this);
 
 	//Labels
-	settings_menu.fps = (UI_Label*)App->gui->CreateLabel(520, 525, text_fps, "REFRESH RATE", NULL, this, NULL);
-	settings_menu.fx_volume = (UI_Label*)App->gui->CreateLabel(360, 335, text_fx_volume, "SOUND EFFECTS VOLUME", NULL, this, NULL);
-	settings_menu.music_volume = (UI_Label*)App->gui->CreateLabel(360, 150, text_music_volume, "MUSIC VOLUME", NULL, this, NULL);
-	settings_menu.settings_text = (UI_Label*)App->gui->CreateLabel(555, 50, text_settings, "SETTINGS", NULL, this, NULL);
+	settings_menu[5] = (UI_Label*)App->gui->CreateLabel(520, 525, text_fps, "REFRESH RATE", NULL, this, NULL);
+	settings_menu[6] = (UI_Label*)App->gui->CreateLabel(360, 335, text_fx_volume, "SOUND EFFECTS VOLUME", NULL, this, NULL);
+	settings_menu[7] = (UI_Label*)App->gui->CreateLabel(360, 150, text_music_volume, "MUSIC VOLUME", NULL, this, NULL);
+	settings_menu[8] = (UI_Label*)App->gui->CreateLabel(555, 50, text_settings, "SETTINGS", NULL, this, NULL);
 
 	//Music Slider
-	settings_menu.volume_music_slider = (UI_Slider*)App->gui->CreateSlider(465, 220, Slider_music, { 1834,842,329,27 }, { 1792,926,33,16 }, 400, NULL, this);
-	settings_menu.left_music_button = (UI_Button*)App->gui->CreateButton(435, 220, Button_slider_music_left, { 1671,880,26,25 }, { 1738,880,26,25 }, { 1738,880,26,25 }, NULL, this);
-	settings_menu.right_music_button = (UI_Button*)App->gui->CreateButton(796, 220, Button_slider_music_right, { 1704,880,26,25 }, { 1771,880,26,25 }, { 1771,880,26,25 }, NULL, this);
+	settings_menu[9] = (UI_Slider*)App->gui->CreateSlider(465, 220, Slider_music, { 1834,842,329,27 }, { 1792,926,33,16 }, 400, NULL, this);
+	settings_menu[10] = (UI_Button*)App->gui->CreateButton(435, 220, Button_slider_music_left, { 1671,880,26,25 }, { 1738,880,26,25 }, { 1738,880,26,25 }, NULL, this);
+	settings_menu[11] = (UI_Button*)App->gui->CreateButton(796, 220, Button_slider_music_right, { 1704,880,26,25 }, { 1771,880,26,25 }, { 1771,880,26,25 }, NULL, this);
 
 	//Fx Slider
-	settings_menu.volume_fx_slider = (UI_Slider*)App->gui->CreateSlider(465, 405, Slider_fx, { 1834,842,329,27 }, { 1792,926,33,16 }, 400, NULL, this);
-	settings_menu.left_fx_button = (UI_Button*)App->gui->CreateButton(435, 405, Button_slider_fx_left, { 1671,880,26,25 }, { 1738,880,26,25 }, { 1738,880,26,25 }, NULL, this);
-	settings_menu.right_fx_button = (UI_Button*)App->gui->CreateButton(796, 405, Button_slider_fx_right, { 1704,880,26,25 }, { 1771,880,26,25 }, { 1771,880,26,25 }, NULL, this);
+	settings_menu[12] = (UI_Slider*)App->gui->CreateSlider(465, 405, Slider_fx, { 1834,842,329,27 }, { 1792,926,33,16 }, 400, NULL, this);
+	settings_menu[13] = (UI_Button*)App->gui->CreateButton(435, 405, Button_slider_fx_left, { 1671,880,26,25 }, { 1738,880,26,25 }, { 1738,880,26,25 }, NULL, this);
+	settings_menu[14] = (UI_Button*)App->gui->CreateButton(796, 405, Button_slider_fx_right, { 1704,880,26,25 }, { 1771,880,26,25 }, { 1771,880,26,25 }, NULL, this);
 
 	//Buttons
-	settings_menu.cap_button = (UI_Button*)App->gui->CreateButton(545, 615, button_cap, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this);
-	settings_menu.mute_button = (UI_Button*)App->gui->CreateButton(360, 280, button_mute, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this);
-	settings_menu.back_button = (UI_Button*)App->gui->CreateButton(40, 40, button_back_pause, { 1704,1054,48,46 }, { 1765,1054,48,46 }, { 1765,1054,48,46 }, NULL, this);
+	settings_menu[15] = (UI_Button*)App->gui->CreateButton(545, 615, button_cap, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this);
+	settings_menu[16] = (UI_Button*)App->gui->CreateButton(360, 280, button_mute, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this);
+	settings_menu[17] = (UI_Button*)App->gui->CreateButton(40, 40, button_back_pause, { 1704,1054,48,46 }, { 1765,1054,48,46 }, { 1765,1054,48,46 }, NULL, this);
 
 
 }
+
+/*
 void MenuManager::DestroyPauseSettings()
 {
 
@@ -392,6 +395,7 @@ void MenuManager::DestroyPauseSettings()
 	App->gui->Delete_Element(settings_menu.settings_text);
 
 }
+*/
 
 void MenuManager::CreateGUI()
 {
@@ -717,9 +721,10 @@ void MenuManager::DestroyMenu(Menu menu) {
 	switch (menu)
 	{
 	case Menu::MAIN_MENU:
-
+		App->gui->DeleteArrayElements(main_menu, 14);
 		break;
 	case Menu::SETTINGS:
+		App->gui->DeleteArrayElements(settings_menu, 18);
 		break;
 	case Menu::CREDITS:
 		break;

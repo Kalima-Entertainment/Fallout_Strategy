@@ -22,7 +22,6 @@ enum class Menu {
 	BUI_BASES
 };
 
-
 struct UI_main_menu {
 
 	j1Image* background = nullptr;
@@ -235,11 +234,11 @@ public:
 	void DestroyMenu(Menu menu);
 
 	void CreateMainMenu();
-	void DestroyMainMenu();
+	//void DestroyMainMenu();
 	void CreateCredits();
 	void DestroyCredits();
 	void CreateSettings();
-	void DestroySettings();
+	//void DestroySettings();
 	void CreateCollaboratorPicture();
 	void DestroyAllCollaboratorsPictures();
 	void CreateSelectFaction();
@@ -247,7 +246,7 @@ public:
 	void CreatePauseMenu();
 	void DestroyPauseMenu();
 	void CreatePauseSettings();
-	void DestroyPauseSettings();
+	//void DestroyPauseSettings();
 	
 	void CreateGUI();
 	void DestroyGUI();
@@ -285,25 +284,25 @@ public:
 public:
 
 	
-	UI_main_menu		main_menu;
+	//UI_main_menu		main_menu;
 	UI_credits			credits_menu;
 	UI_select_faction	select_faction_menu;
-	UI_settings			settings_menu;
+	//UI_settings		settings_menu;
 	UI_pause_menu		pause_menu;
 	UI_GUI				gui_ingame;
 	UI_GUI_Bases		bases_hud;
 	
 
 	//UI_element	
-	/*
-	std::vector<UI_element*> main_menu;
-	std::vector<UI_element*> credits_menu;
-	std::vector<UI_element*> select_faction_menu;
-	std::vector<UI_element*> settings_menu;
-	std::vector<UI_element*> pause_menu;
-	std::vector<UI_element*> gui_ingame;
-	std::vector<UI_element*> bases_hud;
-	*/
+	
+	UI_element* main_menu[14];
+	UI_element* settings_menu[18];
+	//UI_element* credits_menu[18];
+	//UI_element* select_faction_menu[16];
+	//UI_element* pause_menu[];
+	//UI_element* gui_ingame[];
+	//UI_element* bases_hud[];
+	
 
 	std::vector<UI_element*> displaying_elements[MAX_UI_ELEMENTS];
 

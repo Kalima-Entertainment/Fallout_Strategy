@@ -87,19 +87,21 @@ bool j1Gui::PostUpdate(){
 bool j1Gui::CleanUp()
 {
 	LOG("Freeing GUI");
-	
-	/*
-	p2List_item<UI_element*>* element = ui_element.start;
-	
-	while (element != nullptr)
+
+	for (int i = 0; i < ui_element.size(); i++)
 	{
-		ui_element.del(element);
-		delete element->data;
-		element = element->next;
-	} 
-	*/
+		Delete_Element(ui_element[i]);
+	}
 
 	return true;
+}
+
+void j1Gui::DeleteArrayElements(UI_element* array[], int size) {
+	for (int i = 0; i < size; i++)
+	{
+		Delete_Element(array[i]);
+		delete array[i];
+	}
 }
 
 bool j1Gui::Delete_Element(UI_element* element) {

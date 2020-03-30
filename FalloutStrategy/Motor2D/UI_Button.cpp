@@ -168,14 +168,14 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_new_game) 
 			{
-				App->menu_manager->DestroyMainMenu();
+				App->menu_manager->DestroyMenu(Menu::MAIN_MENU);
 				App->menu_manager->CreateSelectFaction();
 				App->audio->PlayFx(click_fx, 0);
 			}
 			
 			if (t == button_credits)
 			{
-				App->menu_manager->DestroyMainMenu();
+				App->menu_manager->DestroyMenu(Menu::MAIN_MENU);
 				App->menu_manager->CreateCredits();
 				App->audio->PlayFx(click_fx, 0);
 			}
@@ -281,7 +281,7 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_settings) {
 
-				App->menu_manager->DestroyMainMenu();
+				App->menu_manager->DestroyMenu(Menu::MAIN_MENU);
 				App->menu_manager->CreateSettings();
 				App->audio->PlayFx(click_fx, 0);
 			}
@@ -294,13 +294,13 @@ bool UI_Button::Update(float dt)
 			}
 
 			if (t == button_back) {
-				App->menu_manager->DestroySettings();
+				App->menu_manager->DestroyMenu(Menu::SETTINGS);
 				App->menu_manager->CreateMainMenu();
 				App->audio->PlayFx(back_fx, 0);
 			}
 
 			if (t == button_back_pause) {
-				App->menu_manager->DestroyPauseSettings();
+				App->menu_manager->DestroyMenu(Menu::SETTINGS);
 				App->menu_manager->CreatePauseMenu();
 				App->audio->PlayFx(back_fx, 0);
 			}

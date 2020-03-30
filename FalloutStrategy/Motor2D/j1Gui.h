@@ -42,6 +42,7 @@ public:
 
 	SDL_Texture* GetAtlas() const;
 
+	void DeleteArrayElements(UI_element* array[], int size);
 	bool Delete_Element(UI_element* element);
 
 	// TODO 2: Create the factory methods
