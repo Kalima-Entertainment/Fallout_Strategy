@@ -14,7 +14,6 @@ j1Entity::j1Entity() {
 	position = { 0, 0 };
 	current_tile = { 0, 0 };
 	target_tile = { 0, 0 };
-	path_to_target = nullptr;
 
 	spawnPosition = {NULL,NULL};
 

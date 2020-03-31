@@ -56,7 +56,7 @@ public:
 	iPoint current_tile;
 	fPoint position;
 	iPoint target_tile;
-	p2DynArray<iPoint>* path_to_target = nullptr;
+	std::vector<iPoint> path_to_target;
 	fPoint speed;
 	iPoint spawnPosition;
 

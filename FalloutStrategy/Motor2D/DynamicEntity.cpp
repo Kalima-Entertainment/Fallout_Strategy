@@ -92,11 +92,11 @@ bool DynamicEntity::PostUpdate() {
 	//render path
 	if (App->render->debug)
 	{
-		if (path_to_target != NULL)
+		if (path_to_target .size() > 0)
 		{
-			for (uint i = 0; i < path_to_target->Count(); ++i)
+			for (uint i = 0; i < path_to_target.size(); ++i)
 			{
-				iPoint pos = App->map->MapToWorld(path_to_target->At(i)->x, path_to_target->At(i)->y);
+				iPoint pos = App->map->MapToWorld(path_to_target[i].x, path_to_target[i].y);
 				SDL_Rect debug_rect = { 192, 0, 64,64 };
 				App->render->Blit(App->render->debug_tex, pos.x, pos.y, &debug_rect);
 			}
@@ -128,9 +128,9 @@ bool DynamicEntity::PostUpdate() {
 }
 
 void DynamicEntity::Move(float dt) {
-	if (path_to_target != NULL)
-	{
-		if (path_to_target->Count() != 0)
+	//if (path_to_target != NULL)
+	//{
+		if (path_to_target.size() > 0)
 		{
 			//get next tile center
 			next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
@@ -207,14 +207,14 @@ void DynamicEntity::Move(float dt) {
 			}
 			else
 			{
-				if (*path_to_target->At(0) != target_tile)
+				if (path_to_target.front() != target_tile)
 				{
-					current_tile = *path_to_target->At(0);
-					if (path_to_target->Count() > 1)
+					current_tile = path_to_target.front();
+					if (path_to_target.size() > 1)
 					{
-						next_tile = *path_to_target->At(1);
+						next_tile = path_to_target[1];
 					}
-					path_to_target->Advance();
+					//path_to_target->Advance();
 					
 				}
 				else
@@ -232,7 +232,7 @@ void DynamicEntity::Move(float dt) {
 			target_tile = current_tile;
 			current_tile = target_tile;
 		}
-	}
+//	}
 }
 
 void DynamicEntity::Attack() {
@@ -286,21 +286,22 @@ void DynamicEntity::Gather() {
 void DynamicEntity::PathfindToPosition(iPoint destination) {
 
 	current_tile = App->map->WorldToMap(position.x, position.y);
-	App->pathfinding->CreatePath(current_tile, destination);
+	App->pathfinding->RequestPath(current_tile, destination);
 
 	//pathfinding debug
 	int x, y;
 	SDL_Rect Debug_rect = { 0,0,32,32 };
 
-	path_to_target = (p2DynArray<iPoint>*)App->pathfinding->GetLastPath();
-	if (path_to_target->Count() != 0)
+	App->pathfinding->pathfinderList[1]->GetLastPath(path_to_target);
+
+	if (path_to_target.size() > 0)
 	{
-		next_tile = *path_to_target->At(0);
+		next_tile = path_to_target.front();
 	}
 
-	for (uint i = 0; i < path_to_target->Count(); ++i)
+	for (uint i = 0; i < path_to_target.size(); ++i)
 	{
-		iPoint pos = App->map->MapToWorld(path_to_target->At(i)->x, path_to_target->At(i)->y);
+		iPoint pos = App->map->MapToWorld(path_to_target[i].x, path_to_target[i].y);
 		Debug_rect.x = pos.x;
 		Debug_rect.y = pos.y;
 		if (App->render->debug)App->render->DrawQuad(Debug_rect, 90, 850, 230, 40);
