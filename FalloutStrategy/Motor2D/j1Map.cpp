@@ -25,7 +25,7 @@ bool j1Map::Awake(pugi::xml_node& config)
 	LOG("Loading Map Parser");
 	bool ret = true;
 
-	folder.create(config.child("folder").child_value());
+	folder = (config.child("folder").child_value());
 
 	return ret;
 }
@@ -257,9 +257,11 @@ bool j1Map::CleanUp()
 bool j1Map::Load(const char* file_name)
 {
 	bool ret = true;
-	p2SString tmp("%s%s", folder.GetString(), file_name);
+	//p2SString tmp("%s%s", folder.GetString(), file_name);
+	std::string tmp = folder;
+	tmp.append(file_name);
 
-	pugi::xml_parse_result result = map_file.load_file(tmp.GetString());
+	pugi::xml_parse_result result = map_file.load_file(tmp.c_str());
 
 	if(result == NULL)
 	{
@@ -463,7 +465,7 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	}
 	else
 	{
-		set->texture = App->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
+		set->texture = App->tex->Load(PATH(folder.c_str(), image.attribute("source").as_string()));
 		int w, h;
 		SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
 		set->tex_width = image.attribute("width").as_int();

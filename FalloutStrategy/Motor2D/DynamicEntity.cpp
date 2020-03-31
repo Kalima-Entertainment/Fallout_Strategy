@@ -8,6 +8,7 @@
 #include "j1EntityManager.h"
 #include "Player.h"
 #include "StaticEntity.h"
+#include <string>
 
 DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 
@@ -329,17 +330,21 @@ bool DynamicEntity::LoadAnimations() {
 	if (type == GATHERER)
 		type_char = "Gatherer";
 
-	p2SString file("textures/characters/%s/%s_%s.tmx", faction_char, faction_char, type_char);
-	p2SString texture_path("textures/characters/%s/%s_%s.png", faction_char, faction_char, type_char);
+	std::string file = std::string("textures/characters/").append(faction_char).append("/").append(faction_char).append("_").append(type_char);
+	std::string animation_path = file;
+	animation_path.append(".tmx");
+	std::string texture_path = file;
+	texture_path.append(".png");
 
 	pugi::xml_document animation_file;
-	pugi::xml_parse_result result = animation_file.load_file(file.GetString());
-	p2SString image(animation_file.child("tileset").child("image").attribute("source").as_string());
-	texture = App->tex->Load(texture_path.GetString());
+	pugi::xml_parse_result result = animation_file.load_file(animation_path.c_str());
+
+	std::string image = std::string(animation_file.child("tileset").child("image").attribute("source").as_string());
+	texture = App->tex->Load(texture_path.c_str());
 
 	if (result == NULL)
 	{
-		LOG("Could not load animation tmx file %s. pugi error: %s", file, result.description());
+		LOG("Could not load animation tmx file %s. pugi error: %s", file.c_str(), result.description());
 		ret = false;
 	}
 
@@ -359,8 +364,8 @@ bool DynamicEntity::LoadAnimations() {
 	int i = 0;
 	while (animation != nullptr)
 	{
-		p2SString animation_direction(animation.child("properties").child("property").attribute("value").as_string());
-		p2SString animation_name(animation.child("properties").child("property").attribute("name").as_string());
+		std::string animation_direction = std::string(animation.child("properties").child("property").attribute("value").as_string());
+		std::string animation_name = std::string(animation.child("properties").child("property").attribute("name").as_string());
 		int direction = TOP_RIGHT;
 		DynamicState state = IDLE;
 		bool loop = true;

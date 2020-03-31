@@ -194,6 +194,7 @@ bool j1EntityManager::PreUpdate()
 	//BROFILER_CATEGORY("EntitiesPreUpdate", Profiler::Color::Bisque)
 
 	bool ret = true;
+
 	return ret;
 }
 
@@ -350,7 +351,7 @@ bool j1EntityManager::LoadReferenceEntityData() {
 	while (type_node != nullptr) {
 		while (faction_node != nullptr)
 		{
-			p2SString faction_string(faction_node.name());
+			std::string faction_string = std::string(faction_node.name());
 
 			//check faction
 			if (faction_string == "vault")
@@ -365,7 +366,7 @@ bool j1EntityManager::LoadReferenceEntityData() {
 			pugi::xml_node entity_node = faction_node.first_child();
 			while (entity_node != nullptr)
 			{
-				p2SString type_string(entity_node.name());
+				std::string type_string = std::string(entity_node.name());
 
 				//check type
 				if (type_string == "melee")

@@ -79,59 +79,15 @@ bool j1Scene::Start()
 
     // --------------------------------------
 
-	App->map->CreateFullMap(modules);
-
-	switch (bottomleft)
+	if (App->map->Load("grassland_low_left.tmx") == true)
 	{
-	case 0:
-		if (App->map->Load("desert_low_left.tmx") == true)
-		{
-			int w, h;
-			uchar* data = NULL;
-			if (App->map->CreateWalkabilityMap(w, h, &data))
-				App->pathfinding->SetMap(w, h, data);
+		int w, h;
+		uchar* data = NULL;
+		if (App->map->CreateWalkabilityMap(w, h, &data))
+			App->pathfinding->SetMap(w, h, data);
 
-			RELEASE_ARRAY(data);
-		}
-		break;
-	case 1:
-		if (App->map->Load("wasteland_low_left.tmx") == true)
-		{
-			int w, h;
-			uchar* data = NULL;
-			if (App->map->CreateWalkabilityMap(w, h, &data))
-				App->pathfinding->SetMap(w, h, data);
-
-			RELEASE_ARRAY(data);
-		}
-		break;
-	case 2:
-		if (App->map->Load("oldstone_low_left.tmx") == true)
-		{
-			int w, h;
-			uchar* data = NULL;
-			if (App->map->CreateWalkabilityMap(w, h, &data))
-				App->pathfinding->SetMap(w, h, data);
-
-			RELEASE_ARRAY(data);
-		}
-		break;
-	case 3:
-		if (App->map->Load("grassland_low_left.tmx") == true)
-		{
-			int w, h;
-			uchar* data = NULL;
-			if (App->map->CreateWalkabilityMap(w, h, &data))
-				App->pathfinding->SetMap(w, h, data);
-
-			RELEASE_ARRAY(data);
-		}
-		break;
-	default:
-		break;
+		RELEASE_ARRAY(data);
 	}
-
-	p2SString top_left_string;
 
 	vault[0] = (DynamicEntity*)App->entities->CreateEntity(VAULT, MELEE, 14, 6);
 	vault[1] = (DynamicEntity*)App->entities->CreateEntity(VAULT, RANGED, 15, 6);

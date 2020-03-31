@@ -111,8 +111,8 @@ bool j1App::Awake()
 		// self-config
 		ret = true;
 		app_config = config.child("app");
-		title.create(app_config.child("title").child_value());
-		organization.create(app_config.child("organization").child_value());
+		title = (app_config.child("title").child_value());
+		organization = (app_config.child("organization").child_value());
 
 		int cap = app_config.attribute("framerate_cap").as_int(-1);
 
@@ -344,7 +344,7 @@ const char* j1App::GetArgv(int index) const
 // ---------------------------------------
 const char* j1App::GetTitle() const
 {
-	return title.GetString();
+	return title.c_str();
 }
 
 // ---------------------------------------
@@ -356,7 +356,7 @@ float j1App::GetDT() const
 // ---------------------------------------
 const char* j1App::GetOrganization() const
 {
-	return organization.GetString();
+	return organization.c_str();
 }
 
 // Load / Save
@@ -375,7 +375,7 @@ void j1App::SaveGame(const char* file) const
 	// from the "GetSaveGames" list ... should we overwrite ?
 
 	want_to_save = true;
-	save_game.create(file);
+	save_game = (file);
 }
 
 // ---------------------------------------
@@ -391,11 +391,11 @@ bool j1App::LoadGameNow()
 	pugi::xml_document data;
 	pugi::xml_node root;
 
-	pugi::xml_parse_result result = data.load_file(load_game.GetString());
+	pugi::xml_parse_result result = data.load_file(load_game.c_str());
 
 	if(result != NULL)
 	{
-		LOG("Loading new Game State from %s...", load_game.GetString());
+		LOG("Loading new Game State from %s...", load_game.c_str());
 
 		root = data.child("game_state");
 
@@ -415,7 +415,7 @@ bool j1App::LoadGameNow()
 			LOG("...loading process interrupted with error on module %s", (item != NULL) ? item->data->name.GetString() : "unknown");
 	}
 	else
-		LOG("Could not parse game state xml file %s. pugi error: %s", load_game.GetString(), result.description());
+		LOG("Could not parse game state xml file %s. pugi error: %s", load_game.c_str(), result.description());
 
 	want_to_load = false;
 	return ret;
@@ -425,7 +425,7 @@ bool j1App::SavegameNow() const
 {
 	bool ret = true;
 
-	LOG("Saving Game State to %s...", save_game.GetString());
+	LOG("Saving Game State to %s...", save_game.c_str());
 
 	// xml object were we will store all data
 	pugi::xml_document data;
@@ -448,7 +448,7 @@ bool j1App::SavegameNow() const
 
 		// we are done, so write data to disk
 		//fs->Save(save_game.GetString(), stream.str().c_str(), stream.str().length());
-		LOG("... finished saving", save_game.GetString());
+		LOG("... finished saving", save_game.c_str());
 	}
 	else
 		LOG("Save process halted from an error in module %s", (item != NULL) ? item->data->name.GetString() : "unknown");

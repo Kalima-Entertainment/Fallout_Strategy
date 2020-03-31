@@ -114,13 +114,13 @@ private:
 	int					argc;
 	char**				args;
 
-	p2SString			title;
-	p2SString			organization;
+	std::string			title;
+	std::string			organization;
 
 	mutable bool		want_to_save = false;
 	bool				want_to_load = false;
-	p2SString			load_game;
-	mutable p2SString	save_game;
+	std::string			load_game;
+	mutable std::string	save_game;
 
 	j1PerfTimer			ptimer;
 	uint64				frame_count = 0;
