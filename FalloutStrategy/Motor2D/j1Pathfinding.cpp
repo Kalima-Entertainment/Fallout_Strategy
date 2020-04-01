@@ -4,7 +4,7 @@
 #include "j1PathFinding.h"
 
 
-j1PathFinding::j1PathFinding() : j1Module(), map(NULL),width(0), height(0),requestPath(false)
+j1PathFinding::j1PathFinding() : j1Module(), map(NULL),width(0), height(0)
 {
 	name = ("pathfinding");
 }
@@ -20,11 +20,7 @@ bool j1PathFinding::CleanUp()
 {
 	LOG("Freeing pathfinding library");
 
-	for (int i = 0; i < pathfinderList.size(); i++)
-	{
-	pathfinderList[i]->last_path.clear();
-	}
-	pathfinderList.clear();
+	last_path.clear();
 	RELEASE_ARRAY(map);
 	return true;
 }
@@ -63,52 +59,181 @@ uchar j1PathFinding::GetTileAt(const iPoint& pos) const
 	return INVALID_WALK_CODE;
 }
 
-void j1PathFinding::RequestPath(const iPoint& origin, const iPoint& destination)
+// To request all tiles involved in the last generated path
+void j1PathFinding::GetLastPath(std::vector<iPoint>& vector_to_fill) const
 {
-	LOG("Requesting a path...");
+	vector_to_fill.clear();
+	for (int i = 0; i < last_path.size(); i++)
+	{
+		vector_to_fill.push_back(last_path[i]);
+	}
+}
+
+void j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
+{
 	if (!IsWalkable(origin) || !IsWalkable(destination))
 	{
 		LOG("Origin or destination are not walkable");
 		return;
 	}
-	requestPath = true;
+	PathVector open, close;
+	PathNode node(0, origin.DistanceNoSqrt(destination), origin, nullptr);
 
-	for (int i = 0; i < pathfinderList.size(); i++)
+	node.pos = origin;
+	open.vector.push_back(node);
+
+	while ((open.vector.size() > 0) && (close.vector.size() < MAX_PATH_ITERATIONS))
 	{
-		if (pathfinderList[i]->available) {
-			pathfinderList[i]->PreparePath(origin, destination);		
-			LOG("Requested succeed");
-			return;
+		PathNode item;
+		item = open.vector[open.GetNodeLowestScore()];
+		close.vector.push_back(item);
+		open.vector.erase(open.vector.begin() + open.GetNodeLowestScore());
+
+		if (item.pos != destination)
+		{
+			PathVector adjacentNodes;
+			close.vector.back().FindWalkableAdjacents(adjacentNodes);
+
+			for (int i = 0; i < adjacentNodes.vector.size(); i++)
+			{
+				if (close.Find(adjacentNodes.vector[i].pos) == -1) {
+					// If it is NOT found, calculate its F and add it to the open list
+					if (open.Find(adjacentNodes.vector[i].pos) == -1) {
+						adjacentNodes.vector[i].CalculateF(destination);
+						open.vector.push_back(adjacentNodes.vector[i]);
+					}
+					// If it is already in the open list, check if it is a better path (compare G)
+					else {
+						if (adjacentNodes.vector[i].g < open.vector[open.Find(adjacentNodes.vector[i].pos)].g) {
+							// If it is a better path, Update the parent
+							open.vector.erase(open.vector.begin() + i);
+							open.vector.push_back(adjacentNodes.vector[i]);
+						}
+					}
+				}
+			}
+			adjacentNodes.vector.clear();
+		}
+		else
+		{
+			last_path.clear();
+			for (int i = close.vector.size(); i >= 0; i--)
+			{
+				last_path.push_back(close.vector[i].pos);
+			}
+
+			std::reverse(last_path.begin(), last_path.end());
+			open.vector.clear();
+			close.vector.clear();
 		}
 	}
 }
 
-bool j1PathFinding::Start()
+
+#pragma region PathVector
+
+// PathList ------------------------------------------------------------------------
+// Looks for a node in this list and returns it's list node or NULL
+// ---------------------------------------------------------------------------------
+int PathVector::Find(const iPoint& point) const
 {
-	PathFinder* pathfinder01 = new PathFinder;
-	PathFinder* pathfinder02 = new PathFinder;
-	pathfinderList.push_back(pathfinder01);
-	pathfinderList.push_back(pathfinder02);
-	return true;
-}
-
-
-
-bool j1PathFinding::Update(float dt)
-{
-	if (!requestPath)
-		return true;
-
-	for (int i = 0; i < pathfinderList.size(); i++)
+	if (vector.size() > 0)
 	{
-		if (!pathfinderList[i]->available)
-			requestPath = pathfinderList[i]->Update();
+		PathNode item = vector.at(0);
+		for (int i = 0; i < vector.size(); i++)
+		{
+			if (vector[i].pos == point) {
+				return i;
+			}
+		}
 	}
-		
-	return true;
+	return -1;
 }
 
+// PathList ------------------------------------------------------------------------
+// Returns the Pathnode with lowest score in this list or NULL if empty
+// ---------------------------------------------------------------------------------
+int PathVector::GetNodeLowestScore() const
+{
+	int ret = -1;
+	int min = 65535;
 
+	for (int i = 0; i < vector.size(); i++)
+	{
+		if (vector[i].Score() < min) {
+			min = vector[i].Score();
+			ret = i;
+		}
+	}
+
+	return ret;
+}
+#pragma endregion
+
+#pragma region PathNode
+
+// PathNode -------------------------------------------------------------------------
+// Convenient constructors
+// ----------------------------------------------------------------------------------
+PathNode::PathNode() : g(-1), h(-1), pos(-1, -1), parent(NULL)
+{}
+
+PathNode::PathNode(int g, int h, const iPoint& pos, const PathNode* parent) : g(g), h(h), pos(pos), parent(parent)
+{}
+
+PathNode::PathNode(const PathNode& node) : g(node.g), h(node.h), pos(node.pos), parent(node.parent)
+{}
+
+// PathNode -------------------------------------------------------------------------
+// Fills a vector (PathVector) of all valid adjacent pathnodes
+// ----------------------------------------------------------------------------------
+uint PathNode::FindWalkableAdjacents(PathVector& vector_to_fill) const
+{
+	iPoint cell;
+	uint before = vector_to_fill.vector.size();
+
+	// north
+	cell.create(pos.x, pos.y + 1);
+	if (App->pathfinding->IsWalkable(cell))
+		vector_to_fill.vector.push_back(PathNode(-1, -1, cell, this));
+
+	// south
+	cell.create(pos.x, pos.y - 1);
+	if (App->pathfinding->IsWalkable(cell))
+		vector_to_fill.vector.push_back(PathNode(-1, -1, cell, this));
+
+	// east
+	cell.create(pos.x + 1, pos.y);
+	if (App->pathfinding->IsWalkable(cell))
+		vector_to_fill.vector.push_back(PathNode(-1, -1, cell, this));
+
+	// west
+	cell.create(pos.x - 1, pos.y);
+	if (App->pathfinding->IsWalkable(cell))
+		vector_to_fill.vector.push_back(PathNode(-1, -1, cell, this));
+
+	return vector_to_fill.vector.size();
+}
+
+// PathNode -------------------------------------------------------------------------
+// Calculates this tile score
+// ----------------------------------------------------------------------------------
+int PathNode::Score() const
+{
+	return g + h;
+}
+
+// PathNode -------------------------------------------------------------------------
+// Calculate the F for a specific destination tile
+// ----------------------------------------------------------------------------------
+int PathNode::CalculateF(const iPoint& destination)
+{
+	g = parent->g + 1;
+	h = pos.DistanceManhattan(destination);
+
+	return g + h;
+}
+#pragma endregion
 // ----------------------------------------------------------------------------------
 // Actual A* algorithm: return number of steps in the creation of the path or -1 ----
 // ----------------------------------------------------------------------------------

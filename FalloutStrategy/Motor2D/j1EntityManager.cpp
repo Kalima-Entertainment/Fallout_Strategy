@@ -161,6 +161,7 @@ bool j1EntityManager::Start() {
 		{
 			reference_entities[faction][type]->LoadAnimations();
 		}
+
 		reference_entities[faction][BARRACK]->texture = reference_entities[faction][BASE]->texture;
 		reference_entities[faction][LABORATORY]->texture = reference_entities[faction][BASE]->texture;
 	}
@@ -408,10 +409,12 @@ void j1EntityManager::SortEntities() {
 	int i, j;
 	int n = entities.size();
 
-	for (i = 0; i < n - 1; i++)
-		for (j = 0; j < n - i - 1; j++)
+	for (i = 0; i < n - 1; i++) {
+		for (j = 0; j < n - i - 1; j++) {
 			if (entities[j]->render_position.y > entities[j + 1]->render_position.y)
 				Swap(j, j + 1);
+		}
+	}
 }
 
 void j1EntityManager::Swap(int i, int j)
