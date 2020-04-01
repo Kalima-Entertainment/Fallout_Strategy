@@ -409,7 +409,7 @@ void MenuManager::CreateGUI()
 	//Images
 	gui_ingame.ingame_background = (j1Image*)App->gui->CreateImage(0, 0, Nukas, { 0, 2428, 1290, 730 }, NULL, this);
 
-	if (gui_ingame.count == 0) {
+	if (App->gui->count == 0) {
 		
 		p2SString cc("%i", App->player->caps);
 		p2SString ww("%i", App->player->water);
@@ -419,7 +419,7 @@ void MenuManager::CreateGUI()
 		gui_ingame.water_count = (UI_Label*)App->gui->CreateLabel(240, 10, Water, ww, NULL, this, NULL);
 		gui_ingame.nukas_count = (UI_Label*)App->gui->CreateLabel(385, 10, Nukas, cc, NULL, this, NULL);
 
-		gui_ingame.count++;
+		App->gui->count++;
 	}
 
 	//Labels

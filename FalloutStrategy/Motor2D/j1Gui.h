@@ -58,6 +58,7 @@ public:
 
 	int volume_up = 0;
 	int fx_up = 0;
+	int count = 0;
 	/*void CreateImage(SDL_Rect& dimensions);
 	void CreateText(SDL_Rect& dimensions);
 	void CreateSlider(SDL_Rect& dimensions);*/

@@ -98,7 +98,6 @@ struct UI_GUI {
 	UI_Label* nukas_count = nullptr;
 	UI_Label* water_count = nullptr;
 	UI_Label* meat_count = nullptr;
-	int count = 0;
 
 	
 
