@@ -6,7 +6,7 @@
 
 j1PathFinding::j1PathFinding() : j1Module(), map(NULL),width(0), height(0),requestPath(false)
 {
-	name.create("pathfinding");
+	name = ("pathfinding");
 }
 
 // Destructor

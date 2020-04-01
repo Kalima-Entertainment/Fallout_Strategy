@@ -19,9 +19,6 @@ j1Entity::j1Entity() {
 
 	max_health = current_health = 100;
 
-	collider = nullptr;
-	last_collider = nullptr;
-
 	current_animation = nullptr;
 	faction = VAULT;
 

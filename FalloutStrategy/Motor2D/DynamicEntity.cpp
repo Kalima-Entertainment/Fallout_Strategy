@@ -128,9 +128,8 @@ bool DynamicEntity::PostUpdate() {
 	}
 
 	//render character
-	iPoint render_position;
-	render_position = App->map->MapToWorld(current_tile.x, current_tile.y);
-	App->render->Blit(reference_entity->texture, position.x - TILE_SIZE, position.y - 1.82f * TILE_SIZE, &current_animation->GetCurrentFrame(last_dt));
+	render_position = { (int)(position.x - TILE_SIZE), (int)(position.y - 1.82f * TILE_SIZE)};
+	App->render->Blit(reference_entity->texture,render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
 	//health bar
 	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 50, 4 };

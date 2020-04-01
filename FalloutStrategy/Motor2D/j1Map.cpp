@@ -9,10 +9,11 @@
 #include "j1Entity.h"
 #include "StaticEntity.h"
 #include "brofiler/Brofiler/Brofiler.h"
+#include "p2SString.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
-	name.create("map");
+	name = ("map");
 }
 
 // Destructor

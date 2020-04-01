@@ -24,7 +24,7 @@
 
 MenuManager::MenuManager()
 {
-	name.create("menu_manager");
+	name = ("menu_manager");
 	current_menu = last_menu = Menu::NO_MENU;
 }
 
@@ -334,7 +334,6 @@ void MenuManager::DestroyPauseMenu()
 	last_menu = current_menu;
 	current_menu = Menu::NO_MENU;
 }
-
 
 void MenuManager::CreatePauseSettings()
 {

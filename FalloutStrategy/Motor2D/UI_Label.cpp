@@ -56,7 +56,7 @@ bool UI_Label::SetLabelText(p2SString text_input)
 
 	if (text.Length() > 0){
 
-		text_texture = App->font->Print(text.GetString(), { 244,244,244,255 }, App->font->fonts.start->data);
+		text_texture = App->font->Print(text.GetString(), { 244,244,244,255 }, App->font->fonts[0]);
 	}
 
 	if (text_texture != nullptr)
@@ -85,7 +85,7 @@ void UI_Label::SetTextTimer(const char* text)
 {
 	
 	App->tex->UnLoad(texture);
-	texture = App->font->Print(text, { 255,255,255,255 }, App->font->fonts.start->data);
+	texture = App->font->Print(text, { 255,255,255,255 }, App->font->fonts[0]);
 	App->font->CalcSize(text, dimensions.w, dimensions.h);
 
 }

@@ -16,7 +16,7 @@
 #include "MenuManager.h"
 
 j1EntityManager::j1EntityManager(){
-	name.create("entities");
+	name = ("entities");
 
 	selected_unit_tex = nullptr;
 	blocked_movement = false;
@@ -410,7 +410,7 @@ void j1EntityManager::SortEntities() {
 
 	for (i = 0; i < n - 1; i++)
 		for (j = 0; j < n - i - 1; j++)
-			if (entities[j]->GetPositionScore() > entities[j + 1]->GetPositionScore())
+			if (entities[j]->render_position.y > entities[j + 1]->render_position.y)
 				Swap(j, j + 1);
 }
 

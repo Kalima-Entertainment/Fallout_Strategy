@@ -11,7 +11,7 @@
 #include "MenuManager.h"
 
 j1Minimap::j1Minimap() : j1Module() {
-	name.create("minimap");
+	name = ("minimap");
 
 	texture = nullptr;
 	map_height = 200;

@@ -1,7 +1,8 @@
 #ifndef __j1APP_H__
 #define __j1APP_H__
 
-#include "p2List.h"
+#include <vector>
+#include <string>
 #include "j1Module.h"
 #include "j1PerfTimer.h"
 #include "j1Timer.h"
@@ -59,7 +60,7 @@ public:
 
 	void LoadGame(const char* file);
 	void SaveGame(const char* file) const;
-	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
+	void GetSaveGames(std::vector<std::string>& vector_to_fill) const;
 
 private:
 
@@ -110,7 +111,7 @@ public:
 
 private:
 
-	p2List<j1Module*>	modules;
+	std::vector<j1Module*>	modules;
 	int					argc;
 	char**				args;
 

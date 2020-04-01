@@ -2,6 +2,7 @@
 #define __j1FONTS_H__
 
 #include "j1Module.h"
+#include <vector>
 #include "SDL\include\SDL_pixels.h"
 
 #define DEFAULT_FONT "fonts/stacked/StackedPixel.ttf"
@@ -34,8 +35,7 @@ public:
 	bool CalcSize(const char* text, int& width, int& height, _TTF_Font* font = NULL) const;
 
 public:
-
-	p2List<_TTF_Font*>	fonts;
+	std::vector<_TTF_Font*> fonts;
 	_TTF_Font*			default;
 };
 

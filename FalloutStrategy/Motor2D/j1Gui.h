@@ -4,6 +4,7 @@
 #include "j1Module.h"
 #include "p2List.h"
 #include "p2Point.h"
+#include "p2SString.h"
 #include <vector>
 
 #define CURSOR_WIDTH 2
@@ -63,8 +64,6 @@ public:
 
 
 public:
-
-	//p2List<UI_element*> ui_element;
 	std::vector<UI_element*> ui_element;
 
 	bool debug_UI = false;

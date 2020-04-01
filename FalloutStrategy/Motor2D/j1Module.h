@@ -6,7 +6,7 @@
 #ifndef __j1MODULE_H__
 #define __j1MODULE_H__
 
-#include "p2SString.h"
+#include <string>
 #include "PugiXml\src\pugixml.hpp"
 
 class j1App;
@@ -91,7 +91,7 @@ public:
 
 public:
 
-	p2SString	name;
+	std::string	name;
 	bool		active;
 
 };

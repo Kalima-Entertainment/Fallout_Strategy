@@ -22,7 +22,7 @@
 
 MainMenu::MainMenu()
 {
-	name.create("main_menu");
+	name = ("main_menu");
 }
 
 MainMenu::~MainMenu() {}

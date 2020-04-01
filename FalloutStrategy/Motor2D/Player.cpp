@@ -64,8 +64,6 @@ bool Player::PreUpdate() {
 	}
 
 
-	
-
 	//movement
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
 		App->input->GetMousePosition(tx, ty);

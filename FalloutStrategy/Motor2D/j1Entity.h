@@ -55,6 +55,7 @@ public:
 public:
 	iPoint current_tile;
 	fPoint position;
+	iPoint render_position;
 	iPoint target_tile;
 	std::vector<iPoint> path_to_target;
 	fPoint speed;
@@ -69,9 +70,6 @@ public:
 	Faction faction;
 	j1Entity* reference_entity;
 	DynamicEntity* attacking_entity;
-
-	Collider* collider;
-	Collider* last_collider;
 	
 	Animation* current_animation;
 	SDL_Texture* texture;

@@ -58,9 +58,10 @@ bool StaticEntity::PostUpdate() {
 	current_animation = &animations[state];
 
 	//Render building
-	iPoint render_position;
-	render_position = App->map->MapToWorld(current_tile.x, current_tile.y);
-	App->render->Blit(reference_entity->texture, position.x - TILE_SIZE, position.y - 2 * TILE_SIZE, &current_animation->GetCurrentFrame(last_dt));
+	//render_position = App->map->MapToWorld(current_tile.x, current_tile.y);
+	render_position = {(int)(position.x - TILE_SIZE),(int)(position.y - 2 * TILE_SIZE)};
+	//App->render->DrawQuad({ (int)position.x, (int)position.y, 4,4 }, 255, 0, 0, 255);
+	App->render->Blit(reference_entity->texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 	
 	return true;
 }
@@ -94,16 +95,16 @@ bool StaticEntity::LoadAnimations() {
 	else if (faction == MUTANT)
 		faction_char = "SuperMutant";
 
-	p2SString file("textures/characters/%s/%s_Buildings.tmx", faction_char, faction_char);
+	std::string file = std::string("textures/characters/").append(faction_char).append("/").append(faction_char).append("_Buildings.tmx");
 
 	pugi::xml_document animation_file;
-	pugi::xml_parse_result result = animation_file.load_file(file.GetString());
-	p2SString image(animation_file.child("tileset").child("image").attribute("source").as_string());
-	p2SString texture_path("textures/characters/%s/%s_Buildings.png",faction_char,faction_char);
+	pugi::xml_parse_result result = animation_file.load_file(file.c_str());
+	std::string image = std::string(animation_file.child("tileset").child("image").attribute("source").as_string());
+	std::string texture_path = std::string("textures/characters/").append(faction_char).append("/").append(faction_char).append("_Buildings.png");
 
 	if (type == BASE)
 	{
-		this->texture = App->tex->Load(texture_path.GetString());
+		this->texture = App->tex->Load(texture_path.c_str());
 	}
 	
 	if (result == NULL)
@@ -129,8 +130,8 @@ bool StaticEntity::LoadAnimations() {
 
 	while (animation != nullptr)
 	{
-		p2SString building_type(animation.child("properties").child("property").attribute("name").as_string());
-		p2SString animation_name(animation.child("properties").child("property").attribute("value").as_string());
+		std::string building_type = std::string(animation.child("properties").child("property").attribute("name").as_string());
+		std::string animation_name = std::string(animation.child("properties").child("property").attribute("value").as_string());
 		StaticState state = NO_STATE;
 		EntityType entity_type;
 		bool loop = true;
