@@ -33,43 +33,64 @@ bool j1Map::Awake(pugi::xml_node& config)
 
 void j1Map::Draw()
 {
+
 	BROFILER_CATEGORY("MapDraw", Profiler::Color::MediumPurple)
 	if(map_loaded == false)
 		return;
 	int tile_margin = 3;
 	p2List_item<MapLayer*>* item = data.layers.start;
 
-	for(; item != NULL; item = item->next)
+	for (; item != NULL; item = item->next)
 	{
 		MapLayer* layer = item->data;
 
-		if(layer->properties.Get("Nodraw") != 0)
+		if (layer->properties.Get("Nodraw") != 0)
 			continue;
 
 		int total_tiles = 0;
-		for(int y = 0; y < data.height; ++y)
+		for (int y = 0; y < data.height; ++y)
 		{
-			for(int x = 0; x < data.width; ++x)
+			for (int x = 0; x < data.width; ++x)
 			{
 				int tile_id = layer->Get(x, y);
-				if(tile_id > 0)
+				if (tile_id > 0)
 				{
 					TileSet* tileset = GetTilesetFromTileId(tile_id);
 
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = MapToWorld(x, y);
 					//camera culling
-					if ((pos.x - tileset->offset_x > -(App->render->camera.x + tile_margin * data.tile_width)) && (pos.x < -App->render->camera.x + App->render->camera.w)
+					/*if ((pos.x - tileset->offset_x > -(App->render->camera.x + tile_margin * data.tile_width)) && (pos.x < -App->render->camera.x + App->render->camera.w)
 						&& (pos.y > -(App->render->camera.y + data.tile_height)) && (pos.y + tileset->offset_y < (-App->render->camera.y + App->render->camera.h + tile_margin * data.tile_height)))
+					{*/
+					if (App->map->mapcounter == 0)
 					{
 						App->render->Blit(tileset->texture, pos.x + tileset->offset_x, pos.y + tileset->offset_y, &r);
-						//total_tiles++;
 					}
+					if (App->map->mapcounter == 1)
+					{
+						nummodule = MapToWorld(75, 0);
+						App->render->Blit(tileset->texture, pos.x + tileset->offset_x + nummodule.x, pos.y + tileset->offset_y + nummodule.y, &r);
+	
+					}
+					if (App->map->mapcounter == 2)
+					{
+						nummodule = MapToWorld(-75, -53);
+						App->render->Blit(tileset->texture, pos.x + tileset->offset_x + nummodule.x, pos.y + tileset->offset_y + nummodule.y, &r);
+					}
+					if (App->map->mapcounter >= 3)
+					{
+						nummodule = MapToWorld(-75, 106);
+						App->render->Blit(tileset->texture, pos.x + tileset->offset_x + nummodule.x, pos.y + tileset->offset_y + nummodule.y, &r);
+					}
+						//total_tiles++;
+					/*}*/
 				}
 			}
 		}
 		//LOG("Tiles drawn: %i", total_tiles);
 		total_tiles = 0;
+
 	}
 }
 
@@ -255,7 +276,7 @@ bool j1Map::CleanUp()
 }
 
 // Load new map
-bool j1Map::Load(const char* file_name)
+bool j1Map::Load(const std::string file_name)
 {
 	bool ret = true;
 	std::string tmp = folder;
@@ -302,8 +323,9 @@ bool j1Map::Load(const char* file_name)
 
 		ret = LoadLayer(layer, lay);
 
-		if(ret == true)
+		if (ret == true) {
 			data.layers.add(lay);
+		}
 	}
 
 	if(ret == true)
@@ -358,6 +380,7 @@ bool j1Map::Load(const char* file_name)
 	}
 
 	map_loaded = ret;
+
 
 	return ret;
 }
@@ -424,7 +447,6 @@ bool j1Map::LoadMap()
 			data.type = MAPTYPE_UNKNOWN;
 		}
 	}
-
 	return ret;
 }
 
@@ -449,7 +471,7 @@ bool j1Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 		set->offset_x = 0;
 		set->offset_y = 0;
 	}
-
+	
 	return ret;
 }
 
@@ -673,7 +695,6 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 
 		break;
 	}
-
 	return ret;
 }
 

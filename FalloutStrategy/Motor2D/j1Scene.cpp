@@ -79,15 +79,32 @@ bool j1Scene::Start()
 
     // --------------------------------------
 
-	if (App->map->Load("grassland_low_left.tmx") == true)
+	if (App->map->Load(modules[0]) == true)
 	{
 		int w, h;
 		uchar* data = NULL;
-		if (App->map->CreateWalkabilityMap(w, h, &data))
+		if (App->map->CreateWalkabilityMap(w, h, &data)) {
 			App->pathfinding->SetMap(w, h, data);
-
+		}
 		RELEASE_ARRAY(data);
 	}
+	if (App->map->Load(modules[1]) == true)
+	{
+		App->map->mapcounter++;
+	}
+	if (App->map->Load(modules[2]) == true)
+	{
+		App->map->mapcounter++;
+	}
+	if (App->map->Load(modules[3]) == true)
+	{
+		App->map->mapcounter++;
+	}
+
+
+
+
+
 
 	vault[0] = (DynamicEntity*)App->entities->CreateEntity(VAULT, MELEE, 14, 6);
 	vault[1] = (DynamicEntity*)App->entities->CreateEntity(VAULT, RANGED, 15, 6);
@@ -168,7 +185,6 @@ bool j1Scene::PreUpdate()
 bool j1Scene::Update(float dt)
 {
 	App->map->Draw();
-
 	// Gui ---
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
 

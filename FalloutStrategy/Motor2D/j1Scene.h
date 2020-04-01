@@ -47,10 +47,6 @@ public:
 
 public:
 
-	int topleft;
-	int topright;
-	int bottomleft;
-	int bottomright;
 	bool create = false;
 	StatesMenu menu_state = StatesMenu::NONE;
 

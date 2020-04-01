@@ -139,7 +139,7 @@ public:
 	bool CleanUp();
 
 	// Load new map
-	bool Load(const char* path);
+	bool Load(const std::string path);
 
 	iPoint MapToWorld(int x, int y) const;
 	fPoint fMapToWorld(int x, int y) const;
@@ -163,7 +163,8 @@ private:
 public:
 
 	MapData data;
-
+	int mapcounter;
+	iPoint nummodule;
 private:
 
 	pugi::xml_document	map_file;
