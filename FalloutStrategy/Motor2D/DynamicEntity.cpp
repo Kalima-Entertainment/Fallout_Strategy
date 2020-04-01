@@ -104,6 +104,8 @@ bool DynamicEntity::Update(float dt) {
 		if (App->render->debug)App->render->DrawQuad(Debug_rect, 90, 850, 230, 40);
 	}
 
+	last_dt = dt;
+
 	return true;
 }
 
@@ -128,7 +130,7 @@ bool DynamicEntity::PostUpdate() {
 	//render character
 	iPoint render_position;
 	render_position = App->map->MapToWorld(current_tile.x, current_tile.y);
-	App->render->Blit(reference_entity->texture, position.x - TILE_SIZE, position.y - 1.82f * TILE_SIZE, &current_animation->GetCurrentFrame());
+	App->render->Blit(reference_entity->texture, position.x - TILE_SIZE, position.y - 1.82f * TILE_SIZE, &current_animation->GetCurrentFrame(last_dt));
 
 	//health bar
 	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 50, 4 };
@@ -236,7 +238,7 @@ void DynamicEntity::Move(float dt) {
 					{
 						next_tile = path_to_target[1];
 					}
-					//path_to_target->Advance();
+					path_to_target.erase(path_to_target.begin());
 					
 				}
 				else
@@ -311,6 +313,7 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 	App->pathfinding->RequestPath(current_tile, destination);
 	path_requested = true;
 }
+
 /*
 bool DynamicEntity::LoadFx() {
 	bool ret = true;
@@ -354,6 +357,7 @@ bool DynamicEntity::LoadAnimations() {
 	bool ret = true;
 	char* faction_char = { "NoFaction" };
 	char* type_char = { "NoType" };
+	float speed_reducer = 0.065f;
 
 	//entity faction
 	if (faction == VAULT)
@@ -449,7 +453,7 @@ bool DynamicEntity::LoadAnimations() {
 
 		while (frame != nullptr) {
 			tile_id = frame.attribute("tileid").as_int();
-			speed = frame.attribute("duration").as_int() * 0.001f;
+			speed = frame.attribute("duration").as_int() * speed_reducer;
 			rect.x = rect.w * ((tile_id) % columns);
 			rect.y = rect.h * ((tile_id) / columns);
 			animations[state][direction].PushBack(rect, speed);

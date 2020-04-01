@@ -257,7 +257,6 @@ bool j1Map::CleanUp()
 bool j1Map::Load(const char* file_name)
 {
 	bool ret = true;
-	//p2SString tmp("%s%s", folder.GetString(), file_name);
 	std::string tmp = folder;
 	tmp.append(file_name);
 
@@ -317,7 +316,7 @@ bool j1Map::Load(const char* file_name)
 		{
 			TileSet* s = item->data;
 			LOG("Tileset ----");
-			LOG("name: %s firstgid: %d", s->name.GetString(), s->firstgid);
+			LOG("name: %s firstgid: %d", s->name.c_str(), s->firstgid);
 			LOG("tile width: %d tile height: %d", s->tile_width, s->tile_height);
 			LOG("spacing: %d margin: %d", s->spacing, s->margin);
 			item = item->next;
@@ -328,7 +327,7 @@ bool j1Map::Load(const char* file_name)
 		{
 			MapLayer* l = item_layer->data;
 			LOG("Layer ----");
-			LOG("name: %s", l->name.GetString());
+			LOG("name: %s", l->name.c_str());
 			LOG("tile width: %d tile height: %d", l->width, l->height);
 			item_layer = item_layer->next;
 		}
@@ -338,7 +337,7 @@ bool j1Map::Load(const char* file_name)
 		{
 			ObjectGroup* o = item_object->data;
 			LOG("ObjectGroup ----");
-			LOG("name: %s", o->name.GetString());
+			LOG("name: %s", o->name.c_str());
 			item_object = item_object->next;
 		}
 	}
@@ -405,7 +404,7 @@ bool j1Map::LoadMap()
 			if(v >= 0 && v <= 255) data.background_color.b = v;
 		}
 
-		p2SString orientation(map.attribute("orientation").as_string());
+		std::string orientation = std::string(map.attribute("orientation").as_string());
 
 		if(orientation == "orthogonal")
 		{
@@ -431,7 +430,7 @@ bool j1Map::LoadMap()
 bool j1Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 {
 	bool ret = true;
-	set->name.create(tileset_node.attribute("name").as_string());
+	set->name = std::string(tileset_node.attribute("name").as_string());
 	set->firstgid = tileset_node.attribute("firstgid").as_int();
 	set->tile_width = tileset_node.attribute("tilewidth").as_int();
 	set->tile_height = tileset_node.attribute("tileheight").as_int();
@@ -537,7 +536,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 	{
 		while (object_node != nullptr)
 		{
-			p2SString object_name(object_node.attribute("name").as_string());
+			std::string object_name = std::string(object_node.attribute("name").as_string());
 			pugi::xml_node properties = object_node.child("properties");
 			pugi::xml_node property = properties.child("property");
 
@@ -552,7 +551,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 
 				while (property != nullptr)
 				{
-					p2SString property_name(property.attribute("name").as_string());
+					std::string property_name = std::string(property.attribute("name").as_string());
 
 					if (property_name == "Nuka-Cola") {
 						resource_building->resource_type = Resource::CAPS;
@@ -577,7 +576,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 				y /= HALF_TILE;
 
 				//add tiles
-				p2SString object_type(object_node.attribute("type").as_string());
+				std::string object_type = std::string(object_node.attribute("type").as_string());
 				EntityType type = NO_TYPE;
 
 				if (object_type == "Base") {

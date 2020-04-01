@@ -75,6 +75,7 @@ public:
 	
 	Animation* current_animation;
 	SDL_Texture* texture;
+	float last_dt;
 
 	bool is_dynamic;
 	bool to_destroy;

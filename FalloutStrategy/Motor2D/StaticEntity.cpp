@@ -49,6 +49,8 @@ bool StaticEntity::Update(float dt) {
 		}
 	}	
 
+	last_dt = dt;
+
 	return true;
 }
 
@@ -58,7 +60,7 @@ bool StaticEntity::PostUpdate() {
 	//Render building
 	iPoint render_position;
 	render_position = App->map->MapToWorld(current_tile.x, current_tile.y);
-	App->render->Blit(reference_entity->texture, position.x - TILE_SIZE, position.y - 2 * TILE_SIZE, &current_animation->GetCurrentFrame());
+	App->render->Blit(reference_entity->texture, position.x - TILE_SIZE, position.y - 2 * TILE_SIZE, &current_animation->GetCurrentFrame(last_dt));
 	
 	return true;
 }

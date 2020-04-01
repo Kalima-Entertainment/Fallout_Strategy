@@ -8,6 +8,7 @@
 #include "p2Log.h"
 #include "j1EntityManager.h"
 #include "j1Entity.h"
+#include "MenuManager.h"
 
 j1Minimap::j1Minimap() : j1Module() {
 	name.create("minimap");
@@ -30,7 +31,7 @@ bool j1Minimap::Awake(pugi::xml_node& config) {
 	width = config.attribute("width").as_int();
 
 	//corner
-	p2SString corner_string(config.attribute("corner").as_string());
+	std::string corner_string = std::string(config.attribute("corner").as_string());
 	margin = config.attribute("margin").as_int();
 
 	if (corner_string == "top_left") {
@@ -90,20 +91,24 @@ bool j1Minimap::Start() {
 
 bool j1Minimap::PostUpdate() {
 
-	App->render->Blit(texture, position.x, position.y, NULL, 1.0, 0);
-	
-	for (int i = 0; i < App->entities->entities.size(); i++)
-	{
-		SDL_Rect entity_rect = {0,0,3,3};
-		iPoint entity_position = App->minimap->WorldToMinimap(App->entities->entities[i]->position.x, App->entities->entities[i]->position.y);
-		entity_rect.x = entity_position.x;
-		entity_rect.y = entity_position.y;
-		App->render->DrawQuad(entity_rect, 0, 255, 0, 255, true, false);
-	}
+	if ((App->menu_manager->current_menu == Menu::NO_MENU)||(App->menu_manager->current_menu == Menu::PAUSE_MENU)) {
 
-	SDL_Rect rect = { 0,0,0,0 };
-	iPoint rect_position = WorldToMinimap(-App->render->camera.x, -App->render->camera.y);
-	App->render->DrawQuad({ rect_position.x, rect_position.y, (int)(App->render->camera.w * scale),(int)(App->render->camera.h * scale) }, 255, 255, 255, 255, false, false);
+		App->render->Blit(texture, position.x, position.y, NULL, 1.0, 0);
+	
+		for (int i = 0; i < App->entities->entities.size(); i++)
+		{
+			SDL_Rect entity_rect = {0,0,3,3};
+			iPoint entity_position = App->minimap->WorldToMinimap(App->entities->entities[i]->position.x, App->entities->entities[i]->position.y);
+			entity_rect.x = entity_position.x;
+			entity_rect.y = entity_position.y;
+			App->render->DrawQuad(entity_rect, 0, 255, 0, 255, true, false);
+		}
+
+		SDL_Rect rect = { 0,0,0,0 };
+		iPoint rect_position = WorldToMinimap(-App->render->camera.x, -App->render->camera.y);
+		App->render->DrawQuad({ rect_position.x, rect_position.y, (int)(App->render->camera.w * scale),(int)(App->render->camera.h * scale) }, 255, 255, 255, 255, false, false);
+
+	}
 
 	return true;
 }

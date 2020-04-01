@@ -19,7 +19,8 @@ enum class Menu {
 	SELECT_FACTION,
 	PAUSE_MENU,
 	GUI,
-	BUI_BASES
+	BUI_BASES, 
+	NO_MENU
 };
 
 struct UI_credits {
@@ -249,6 +250,9 @@ public:
 	//UI_element* pause_menu[];
 	//UI_element* gui_ingame[];
 	//UI_element* bases_hud[];
+
+	Menu current_menu;
+	Menu last_menu;
 
 	char collaborator = 'M';
 };

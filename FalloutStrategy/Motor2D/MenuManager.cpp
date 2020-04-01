@@ -25,6 +25,7 @@
 MenuManager::MenuManager()
 {
 	name.create("menu_manager");
+	current_menu = last_menu = Menu::NO_MENU;
 }
 
 MenuManager::~MenuManager()
@@ -55,6 +56,8 @@ void MenuManager::CreateMainMenu()
 	main_menu[11] = (UI_Button*)App->gui->CreateButton(887, 450, button_settings, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
 	main_menu[12] = (UI_Button*)App->gui->CreateButton(887, 527, button_credits, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
 	main_menu[13] = (UI_Button*)App->gui->CreateButton(887, 604, button_exit, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
+
+	current_menu = Menu::MAIN_MENU;
 }
 
 /*
@@ -158,7 +161,8 @@ void MenuManager::CreateSettings()
 	settings_menu[16] = (UI_Button*)App->gui->CreateButton(360, 280, button_mute, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this);
 	settings_menu[17] = (UI_Button*)App->gui->CreateButton(40, 40, button_back, { 1704,1054,48,46 }, { 1765,1054,48,46 }, { 1765,1054,48,46 }, NULL, this);
 
-
+	last_menu = current_menu;
+	current_menu = Menu::SETTINGS;
 }
 
 /*
@@ -306,7 +310,8 @@ void MenuManager::CreatePauseMenu()
 	pause_menu.settings_label = (UI_Label*)App->gui->CreateLabel(530, 318, SETTINGS, "SETTINGS", NULL, this, NULL);
 	pause_menu.back_to_main_menu_label = (UI_Label*)App->gui->CreateLabel(515, 408, EXIT, "MAIN MENU", NULL, this, NULL);
 
-
+	last_menu = current_menu;
+	current_menu = Menu::PAUSE_MENU;
 }
 
 void MenuManager::DestroyPauseMenu()
@@ -326,7 +331,8 @@ void MenuManager::DestroyPauseMenu()
 	App->gui->Delete_Element(pause_menu.settings_label);
 	App->gui->Delete_Element(pause_menu.back_to_main_menu_label);
 	
-
+	last_menu = current_menu;
+	current_menu = Menu::NO_MENU;
 }
 
 
@@ -361,7 +367,8 @@ void MenuManager::CreatePauseSettings()
 	settings_menu[16] = (UI_Button*)App->gui->CreateButton(360, 280, button_mute, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this);
 	settings_menu[17] = (UI_Button*)App->gui->CreateButton(40, 40, button_back_pause, { 1704,1054,48,46 }, { 1765,1054,48,46 }, { 1765,1054,48,46 }, NULL, this);
 
-
+	last_menu = current_menu;
+	current_menu = Menu::SETTINGS;
 }
 
 /*
@@ -739,4 +746,6 @@ void MenuManager::DestroyMenu(Menu menu) {
 	default:
 		break;
 	}
+
+	current_menu = last_menu;
 }

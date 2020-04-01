@@ -18,7 +18,7 @@ struct Properties
 {
 	struct Property
 	{
-		p2SString name;
+		std::string name;
 		int value;
 	};
 
@@ -44,7 +44,7 @@ struct Properties
 // ----------------------------------------------------
 struct MapLayer
 {
-	p2SString	name;
+	std::string	name;
 	int			width;
 	int			height;
 	uint*		data;
@@ -69,7 +69,7 @@ struct TileSet
 {
 	SDL_Rect GetTileRect(int id) const;
 
-	p2SString			name;
+	std::string			name;
 	int					firstgid;
 	int					margin;
 	int					spacing;
@@ -99,7 +99,7 @@ struct Object {
 
 
 struct ObjectGroup {
-	p2SString name = "No name";
+	std::string name = ("No name");
 	Object* object;
 	uint size = 0u;
 };
