@@ -71,60 +71,67 @@ void j1PathFinding::GetLastPath(std::vector<iPoint>& vector_to_fill) const
 
 void j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
-	if (!IsWalkable(origin) || !IsWalkable(destination))
+	//BROFILER_CATEGORY("CreatePath", Profiler::Color::Azure)
+
+	if ((!IsWalkable(origin)) || (!IsWalkable(destination)))
 	{
-		LOG("Origin or destination are not walkable");
 		return;
 	}
+	last_path.clear();
+
 	PathVector open, close;
 	PathNode node(0, origin.DistanceNoSqrt(destination), origin, nullptr);
 
 	node.pos = origin;
 	open.vector.push_back(node);
 
-	while ((open.vector.size() > 0) && (close.vector.size() < MAX_PATH_ITERATIONS))
-	{
-		PathNode item;
-		item = open.vector[open.GetNodeLowestScore()];
-		close.vector.push_back(item);
+	while ((open.vector.size() > 0) && (close.vector.size() < MAX_PATH_ITERATIONS)) {
+		PathNode* item;
+
+		item = &open.vector[open.GetNodeLowestScore()];
+		close.vector.push_back(*item);
 		open.vector.erase(open.vector.begin() + open.GetNodeLowestScore());
 
-		if (item.pos != destination)
+		if (item->pos != destination)
 		{
-			PathVector adjacentNodes;
-			close.vector.back().FindWalkableAdjacents(adjacentNodes);
+			PathVector adjacentSquares;
+			close.vector.back().FindWalkableAdjacents(adjacentSquares);
 
-			for (int i = 0; i < adjacentNodes.vector.size(); i++)
+			for (int i = 0; i < adjacentSquares.vector.size(); i++)
 			{
-				if (close.Find(adjacentNodes.vector[i].pos) == -1) {
-					// If it is NOT found, calculate its F and add it to the open list
-					if (open.Find(adjacentNodes.vector[i].pos) == -1) {
-						adjacentNodes.vector[i].CalculateF(destination);
-						open.vector.push_back(adjacentNodes.vector[i]);
-					}
-					// If it is already in the open list, check if it is a better path (compare G)
-					else {
-						if (adjacentNodes.vector[i].g < open.vector[open.Find(adjacentNodes.vector[i].pos)].g) {
-							// If it is a better path, Update the parent
-							open.vector.erase(open.vector.begin() + i);
-							open.vector.push_back(adjacentNodes.vector[i]);
-						}
-					}
+				if (close.Find(adjacentSquares.vector[i].pos) != -1)
+				{
+					continue;
+				}
+				else if (open.Find(adjacentSquares.vector[i].pos) != -1)
+				{
+					PathNode probable_path = open.vector[open.Find(adjacentSquares.vector[i].pos)];
+					adjacentSquares.vector[i].CalculateF(destination);
+					if (probable_path.g > adjacentSquares.vector[i].g)
+						probable_path.parent = adjacentSquares.vector[i].parent;
+				}
+				else
+				{
+					adjacentSquares.vector[i].CalculateF(destination);
+					open.vector.push_back(adjacentSquares.vector[i]);
 				}
 			}
-			adjacentNodes.vector.clear();
+			adjacentSquares.vector.clear();
 		}
 		else
 		{
-			last_path.clear();
-			for (int i = close.vector.size(); i >= 0; i--)
+			PathNode item = close.vector.back();
+
+			for (item; item.parent != nullptr; item = close.vector[close.Find(item.parent->pos)])
 			{
-				last_path.push_back(close.vector[i].pos);
+				last_path.push_back(item.pos);
+				if (item.parent == nullptr) {
+					last_path.push_back(close.vector.front().pos);
+				}
 			}
 
 			std::reverse(last_path.begin(), last_path.end());
-			open.vector.clear();
-			close.vector.clear();
+			return;
 		}
 	}
 }
