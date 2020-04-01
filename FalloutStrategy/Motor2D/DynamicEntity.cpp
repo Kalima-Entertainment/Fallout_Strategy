@@ -307,6 +307,44 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 		if (App->render->debug)App->render->DrawQuad(Debug_rect, 90, 850, 230, 40);
 	}
 }
+/*
+bool DynamicEntity::LoadFx() {
+	bool ret = true;
+	char* faction_char = { "NoFaction" };
+	char* state_char = { "NoState" };
+
+	//entity faction
+	if (faction == VAULT)
+		faction_char = "VaultDwellers";
+	else if (faction == BROTHERHOOD)
+		faction_char = "Brotherhood";
+	else if (faction == MUTANT)
+		faction_char = "SuperMutant";
+	else if (faction == GHOUL)
+		faction_char = "Ghouls";
+
+	//entity action
+	if (state == WALK)
+		state_char == "Walk";
+	else if (state == ATTACK)
+		state_char == "Attack";
+	else if (state == HIT)
+		state_char == "Hit";
+	else if (state == DIE)
+		state_char == "Die";
+	else if (state == GATHER)
+		state_char == "Gather";
+
+	std::string file = std::string("audio/fx/Characters Sounds").append(faction_char).append("/").append(state_char);
+	std::string audio_path = file;
+	audio_path.append(".wav");
+
+	pugi::xml_document audio_file;
+	pugi::xml_parse_result result = audio_file.load_file(audio_path.c_str());
+
+	return ret;
+}
+*/
 
 bool DynamicEntity::LoadAnimations() {
 	bool ret = true;
