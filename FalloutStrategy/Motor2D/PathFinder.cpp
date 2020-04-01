@@ -89,7 +89,7 @@ bool PathFinder::IteratePath()
 
 
 // To request all tiles involved in the last generated path
-const std::vector<iPoint> PathFinder::GetLastPath(std::vector<iPoint> vector_to_fill) const
+void PathFinder::GetLastPath(std::vector<iPoint>& vector_to_fill) const
 {
 	vector_to_fill.clear();
 
@@ -97,8 +97,6 @@ const std::vector<iPoint> PathFinder::GetLastPath(std::vector<iPoint> vector_to_
 	{
 		vector_to_fill.push_back(last_path[i]);
 	}
-
-	return last_path;
 }
 
 bool PathFinder::Update()

@@ -37,11 +37,19 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 	resource_building = nullptr;
 	action_time = 3.0f;
 	resource_collected = 0;
+	path_requested = false;
 }
 
 DynamicEntity::~DynamicEntity() {}
 
 bool DynamicEntity::Update(float dt) {
+
+	if (path_requested)
+	{
+		App->pathfinding->pathfinderList[0]->GetLastPath(path_to_target);
+		next_tile = path_to_target[0];
+		path_requested = false;
+	}
 
 	switch (state)
 	{
@@ -82,6 +90,20 @@ bool DynamicEntity::Update(float dt) {
 	default:
 		break;
 	}
+
+	//pathfinding debug
+
+	int x, y;
+	SDL_Rect Debug_rect = { 0,0,32,32 };
+
+	for (uint i = 0; i < path_to_target.size(); ++i)
+	{
+		iPoint pos = App->map->MapToWorld(path_to_target[i].x, path_to_target[i].y);
+		Debug_rect.x = pos.x;
+		Debug_rect.y = pos.y;
+		if (App->render->debug)App->render->DrawQuad(Debug_rect, 90, 850, 230, 40);
+	}
+
 	return true;
 }
 
@@ -287,25 +309,7 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 
 	current_tile = App->map->WorldToMap(position.x, position.y);
 	App->pathfinding->RequestPath(current_tile, destination);
-
-	//pathfinding debug
-	int x, y;
-	SDL_Rect Debug_rect = { 0,0,32,32 };
-
-	App->pathfinding->pathfinderList[1]->GetLastPath(path_to_target);
-
-	if (path_to_target.size() > 0)
-	{
-		next_tile = path_to_target.front();
-	}
-
-	for (uint i = 0; i < path_to_target.size(); ++i)
-	{
-		iPoint pos = App->map->MapToWorld(path_to_target[i].x, path_to_target[i].y);
-		Debug_rect.x = pos.x;
-		Debug_rect.y = pos.y;
-		if (App->render->debug)App->render->DrawQuad(Debug_rect, 90, 850, 230, 40);
-	}
+	path_requested = true;
 }
 
 bool DynamicEntity::LoadAnimations() {

@@ -57,7 +57,7 @@ public:
 	bool IteratePath();
 
 	// To request all tiles involved in the last generated path
-	const std::vector<iPoint> GetLastPath(std::vector<iPoint> vector_to_fill) const;
+	void GetLastPath(std::vector<iPoint>& vector) const;
 	
 	std::vector<iPoint> last_path;
 
