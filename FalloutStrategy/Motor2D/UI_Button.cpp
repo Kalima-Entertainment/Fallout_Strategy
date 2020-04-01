@@ -323,6 +323,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->DestroySelectFaction();
 				App->audio->PlayFx(back_fx, 0);
 				App->gui->count = 0;
+				App->player->Enable();
 				App->menu_manager->CreateGUI();
 			}
 
