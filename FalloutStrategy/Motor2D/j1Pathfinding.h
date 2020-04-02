@@ -3,11 +3,14 @@
 
 #include "j1Module.h"
 #include "p2Point.h"
-#include <list>
+#include "p2DynArray.h"
 #include <vector>
 
 #define DEFAULT_PATH_LENGTH 50
 #define INVALID_WALK_CODE 255
+#define NORMAL_MOVEMENT_COST 1
+#define DIAGONAL_MOVEMENT_COST 2
+#define MAX_PATH_ITERATIONS 150
 
 class j1PathFinding : public j1Module
 {
@@ -42,16 +45,16 @@ public:
 private:
 
 	// size of the map
-	uint width;
-	uint height;
+	uint width = 0u;
+	uint height = 0u;
 	// all map walkability values [0..255]
-	uchar* map;
+	uchar* map = nullptr;
 	// we store the created path here
-	std::vector <iPoint> last_path;
+	std::vector<iPoint> last_path;
 };
 
 // forward declaration
-struct PathList;
+struct PathVector;
 
 // ---------------------------------------------------------------------
 // Pathnode: Helper struct to represent a node in the path creation
@@ -60,40 +63,37 @@ struct PathNode
 {
 	// Convenient constructors
 	PathNode();
-	PathNode(float g, float h, const iPoint& pos, const PathNode* parent, const bool diagonal);
+	PathNode(int g, int h, const iPoint& pos, const PathNode* parent);
 	PathNode(const PathNode& node);
 
 	// Fills a list (PathList) of all valid adjacent pathnodes
-	uint FindWalkableAdjacents(PathList& list_to_fill) const;
+	uint FindWalkableAdjacents(PathVector& list_to_fill) const;
 	// Calculates this tile score
 	int Score() const;
 	// Calculate the F for a specific destination tile
 	int CalculateF(const iPoint& destination);
 
 	// -----------
-	float g = 0;
-	float h = 0;
-	iPoint pos = { 0, 0 };
-	const PathNode* parent; // needed to reconstruct the path in the end
-	bool diagonal = false;
-
+	int g = 0;
+	int h = 0;
+	iPoint pos = iPoint({ 0, 0 });
+	const PathNode* parent = nullptr; // needed to reconstruct the path in the end
 };
 
 // ---------------------------------------------------------------------
 // Helper struct to include a list of path nodes
 // ---------------------------------------------------------------------
-struct PathList
+struct PathVector
 {
-	PathList() {}
 	// Looks for a node in this list and returns it's list node or NULL
-	const PathNode* Find(const iPoint& point) const;
+	std::vector<PathNode>::const_iterator Find(const iPoint& point) const;
 
 	// Returns the Pathnode with lowest score in this list or NULL if empty
-	const PathNode* GetNodeLowestScore() const;
+	std::vector<PathNode>::const_iterator GetNodeLowestScore() const;
 
 	// -----------
 	// The list itself, note they are not pointers!
-	std::list <PathNode> list;
+	std::vector<PathNode> vector;
 };
 
 

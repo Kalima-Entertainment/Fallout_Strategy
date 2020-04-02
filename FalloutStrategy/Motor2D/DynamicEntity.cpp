@@ -290,6 +290,7 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 
 	current_tile = App->map->WorldToMap(position.x, position.y);
 	App->pathfinding->CreatePath(current_tile, destination);
+	LOG("Path exited 2");
 
 	//pathfinding debug
 	int x, y;
