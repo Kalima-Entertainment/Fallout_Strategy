@@ -6,7 +6,7 @@
 #include "UI_element.h"
 #include <string.h>
 
-UI_Label::UI_Label(int x, int y, UI_Type type, p2SString text_input, UI_element * parent, j1Module * Observer, int* counter) : UI_element(x, y, type, parent, Observer)
+UI_Label::UI_Label(int x, int y, UI_Type type, std::string text_input, UI_element * parent, j1Module * Observer, int* counter) : UI_element(x, y, type, parent, Observer)
 {
 	t = type;
 	timer_out = counter;
@@ -49,14 +49,14 @@ bool UI_Label::CleanUp()
 	return true;
 }
 
-bool UI_Label::SetLabelText(p2SString text_input)
+bool UI_Label::SetLabelText(std::string text_input)
 {
 	bool ret = false;
 	text = text_input;
 
-	if (text.Length() > 0){
+	if (text.size() > 0){
 
-		text_texture = App->font->Print(text.GetString(), { 244,244,244,255 }, App->font->fonts[0]);
+		text_texture = App->font->Print(text.data(), { 244,244,244,255 }, App->font->fonts[0]);
 	}
 
 	if (text_texture != nullptr)

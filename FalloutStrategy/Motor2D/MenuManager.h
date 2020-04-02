@@ -3,6 +3,7 @@
 
 #include "j1Module.h"
 #include <vector>
+#include <string>
 
 enum UI_Type;
 class j1Image;
@@ -254,6 +255,9 @@ public:
 	Menu last_menu;
 
 	char collaborator = 'M';
+	std::string cc;
+	std::string ww;
+	std::string ff;
 };
 
 

@@ -411,9 +411,9 @@ void MenuManager::CreateGUI()
 
 	if (App->gui->count == 0) {
 		
-		p2SString cc("%i", App->player->caps);
-		p2SString ww("%i", App->player->water);
-		p2SString ff("%i", App->player->food);
+		cc = std::to_string(App->player->caps);
+		ww = std::to_string(App->player->water);
+		ff = std::to_string(App->player->food);
 		
 		gui_ingame.meat_count = (UI_Label*)App->gui->CreateLabel(95, 10, Meat, ff, NULL, this, NULL);
 		gui_ingame.water_count = (UI_Label*)App->gui->CreateLabel(240, 10, Water, ww, NULL, this, NULL);
