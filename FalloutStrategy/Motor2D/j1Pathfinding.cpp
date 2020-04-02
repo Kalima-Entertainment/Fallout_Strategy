@@ -220,7 +220,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 				{
 					PathNode probable_path = *open.Find(node_item->pos);
 					node_item._Ptr->CalculateF(origin, destination);
-					if (probable_path.g > node_item._Ptr->g);
+					if (probable_path.g > node_item._Ptr->g)
 						probable_path.parent = node_item._Ptr->parent;
 				}
 			}
@@ -232,6 +232,11 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 	//create final path -------------------
 	last_path.clear();
+	for (int i = close.vector.size() - 1 ; i >= 0; i--)
+	{
+		last_path.push_back(close.vector[i].pos);
+	}
+	/*
 	PathNode* path_item = &close.vector.back();
  	for (path_item; path_item->parent != nullptr; path_item = (PathNode*)path_item->parent)
 	{
@@ -241,6 +246,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 			break;
 		}
 	}
+	*/
 	std::reverse(last_path.begin(), last_path.end());
 	return last_path.size();
 	LOG("Path completed");
