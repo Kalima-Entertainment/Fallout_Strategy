@@ -61,6 +61,8 @@ public:
 
 	iPoint next_tile_position;
 	SDL_Rect next_tile_rect_center;
+
+	uint fx[6];
 };
 
 

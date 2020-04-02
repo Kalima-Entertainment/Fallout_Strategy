@@ -184,7 +184,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	PathVector open, close;
 	PathNode node(0,origin.DistanceNoSqrt(destination),origin, nullptr);
 
-	node.pos = origin;
+	//node.pos = origin;
 	open.vector.push_back(node);
 	int iterations = 0;
 
@@ -196,11 +196,10 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 		close.vector.push_back(*item._Ptr);
 		open.vector.erase(item);
 
-		if (close.vector.back().pos == destination) {
+		if (close.Find(destination)._Ptr != NULL) {
 			break;
 		}
-		else
-		{
+		else {
 			PathVector adjacentSquares;
 			close.vector.back().FindWalkableAdjacents(adjacentSquares);
 			
@@ -221,7 +220,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 				{
 					PathNode probable_path = *open.Find(node_item._Ptr->pos);
 					node_item._Ptr->CalculateF(destination);
-					if (probable_path.g > node_item._Ptr->g)
+					if (probable_path.g > node_item._Ptr->g) 
 						probable_path.parent = node_item._Ptr->parent;
 				}
 			}
@@ -232,11 +231,8 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	}
 
 	//create final path -------------------
-	
-	LOG("1");
 	last_path.clear();
 	PathNode* path_item = &close.vector.back();
-	LOG("2");
 	for (path_item; path_item->parent != nullptr; path_item = (PathNode*)path_item->parent)
 	{
 		last_path.push_back(path_item->pos);
@@ -245,11 +241,9 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 			break;
 		}
 	}
-	LOG("3");
 	std::reverse(last_path.begin(), last_path.end());
 	return last_path.size();
 	LOG("Path completed");
-
 	//-------------------------------------
 
 	return -1;
