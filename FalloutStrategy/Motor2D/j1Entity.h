@@ -50,6 +50,8 @@ public:
 
 	iPoint MapPosition();
 
+	void SpatialAudio(int fx, int channel, int positionx, int positiony);
+
 	//Check if mouse pointer its inside the same spot than the entity and if pressed returns any advice
 
 public:
@@ -65,6 +67,7 @@ public:
 	int max_health;
 	int damage;
 	int storage_capacity = 100;
+	int volume;
 
 	EntityType type;
 	Faction faction;

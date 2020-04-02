@@ -51,6 +51,7 @@ bool j1Audio::Awake(pugi::xml_node& config)
 	}
 
 	explosion = LoadFx("audio/fx/Others/Weapons/bigexplode1.wav");
+	explosion2 = LoadFx("audio/fx/Others/Weapons/bigexplode2.wav");
 
 	return ret;
 }

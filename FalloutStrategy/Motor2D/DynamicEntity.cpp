@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "j1Scene.h"
 #include "j1Render.h"
+#include "j1Audio.h"
 #include "j1Pathfinding.h"
 #include "j1Textures.h"
 #include "j1EntityManager.h"
@@ -37,6 +38,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 	resource_building = nullptr;
 	action_time = 3.0f;
 	resource_collected = 0;
+
 }
 
 DynamicEntity::~DynamicEntity() {}
@@ -46,6 +48,7 @@ bool DynamicEntity::Update(float dt) {
 	switch (state)
 	{
 	case IDLE:
+		//SpatialAudio(App->audio->explosion, 1, position.x, position.y);
 		break;
 	case WALK:
 		Move(dt);
@@ -340,8 +343,6 @@ bool DynamicEntity::LoadFx() {
 		state_char == "Gather";
 
 	std::string file = std::string("audio/fx/Characters Sounds").append(faction_char).append("/").append(state_char);
-	std::string audio_path = file;
-	audio_path.append(".wav");
 
 	pugi::xml_document audio_file;
 	pugi::xml_parse_result result = audio_file.load_file(audio_path.c_str());
@@ -349,6 +350,7 @@ bool DynamicEntity::LoadFx() {
 	return ret;
 }
 */
+
 
 bool DynamicEntity::LoadAnimations() {
 	bool ret = true;
