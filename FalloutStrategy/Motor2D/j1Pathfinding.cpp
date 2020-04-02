@@ -160,9 +160,9 @@ int PathNode::Score() const
 // PathNode -------------------------------------------------------------------------
 // Calculate the F for a specific destination tile
 // ----------------------------------------------------------------------------------
-int PathNode::CalculateF(const iPoint& destination)
+int PathNode::CalculateF(const iPoint& origin, const iPoint& destination)
 {
-	g = parent->g + 1;
+	g = pos.DistanceTo(origin);
 	h = pos.DistanceTo(destination);
 
 	return g + h;
@@ -184,7 +184,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	PathVector open, close;
 	PathNode node(0,origin.DistanceNoSqrt(destination),origin, nullptr);
 
-	//node.pos = origin;
+	node.pos = origin;
 	open.vector.push_back(node);
 	int iterations = 0;
 
@@ -196,31 +196,31 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 		close.vector.push_back(*item._Ptr);
 		open.vector.erase(item);
 
-		if (close.Find(destination)._Ptr != NULL) {
+		if ((close.Find(destination)._Ptr) != NULL) {
 			break;
 		}
 		else {
 			PathVector adjacentSquares;
 			close.vector.back().FindWalkableAdjacents(adjacentSquares);
 			
-			for (std::vector<PathNode>::const_iterator node_item = adjacentSquares.vector.begin(); node_item != adjacentSquares.vector.end(); node_item++)
+			for (std::vector<PathNode>::iterator node_item = adjacentSquares.vector.begin(); node_item != adjacentSquares.vector.end(); ++node_item)
 			{
 				//if it's in the closed list
-				if ((close.Find(node_item._Ptr->pos)._Ptr) != NULL)
+				if (close.Find(node_item->pos)._Ptr != NULL)
 				{
 					continue;
 				}
 				//if it's not in the open list
-				if ((open.Find(node_item._Ptr->pos)._Ptr) == NULL)
+				if (open.Find(node_item->pos)._Ptr == NULL)
 				{
-					node_item._Ptr->CalculateF(destination);
-					open.vector.push_back(*node_item._Ptr);
+					node_item._Ptr->CalculateF(origin, destination);
+					open.vector.push_back(*node_item);
 				}
 				else
 				{
-					PathNode probable_path = *open.Find(node_item._Ptr->pos);
-					node_item._Ptr->CalculateF(destination);
-					if (probable_path.g > node_item._Ptr->g) 
+					PathNode probable_path = *open.Find(node_item->pos);
+					node_item._Ptr->CalculateF(origin, destination);
+					if (probable_path.g > node_item._Ptr->g);
 						probable_path.parent = node_item._Ptr->parent;
 				}
 			}
@@ -233,7 +233,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	//create final path -------------------
 	last_path.clear();
 	PathNode* path_item = &close.vector.back();
-	for (path_item; path_item->parent != nullptr; path_item = (PathNode*)path_item->parent)
+ 	for (path_item; path_item->parent != nullptr; path_item = (PathNode*)path_item->parent)
 	{
 		last_path.push_back(path_item->pos);
 		if (path_item->parent == nullptr) {

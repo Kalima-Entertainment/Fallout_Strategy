@@ -311,7 +311,7 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 		if (App->render->debug)App->render->DrawQuad(Debug_rect, 90, 850, 230, 40);
 	}
 }
-
+/*
 bool DynamicEntity::LoadFx() {
 	bool ret = true;
 	char* faction_char = { "NoFaction" };
@@ -355,7 +355,7 @@ bool DynamicEntity::LoadFx() {
 
 	return ret;
 }
-
+*/
 
 bool DynamicEntity::LoadAnimations() {
 	bool ret = true;
