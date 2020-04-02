@@ -28,7 +28,7 @@ bool j1Gui::Awake(pugi::xml_node& config)
 	LOG("Loading GUI atlas");
 	bool ret = true;
 	node = config;
-	folder.create(node.child("folder").child_value());
+	folder.append(node.child("folder").child_value());
 	UI_file_name = config.child("ui").attribute("file1").as_string();
 
 	return ret;
@@ -37,7 +37,7 @@ bool j1Gui::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Gui::Start()
 {
-	texture = App->tex->Load(PATH(folder.GetString(),UI_file_name.GetString()));
+	texture = App->tex->Load(PATH(folder.data(),UI_file_name.data()));
 
 	return true;
 }
@@ -148,7 +148,7 @@ UI_element* j1Gui::CreateSlider(int x, int y, UI_Type type, SDL_Rect scrollbar, 
 	return slider;
 }
 
-UI_element* j1Gui::CreateLabel(int x, int y, UI_Type type, p2SString text_input, UI_element* parent, j1Module* Observer, int* counter)
+UI_element* j1Gui::CreateLabel(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer, int* counter)
 {
 	UI_Label* label = new UI_Label(x, y, type, text_input, parent, Observer, counter);
 

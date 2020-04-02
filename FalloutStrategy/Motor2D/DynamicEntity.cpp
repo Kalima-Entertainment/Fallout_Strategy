@@ -293,6 +293,7 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 
 	current_tile = App->map->WorldToMap(position.x, position.y);
 	App->pathfinding->CreatePath(current_tile, destination);
+	LOG("Path exited 2");
 
 	//pathfinding debug
 	int x, y;
@@ -313,7 +314,6 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 		if (App->render->debug)App->render->DrawQuad(Debug_rect, 90, 850, 230, 40);
 	}
 }
-
 /*
 bool DynamicEntity::LoadFx() {
 	bool ret = true;
@@ -346,6 +346,33 @@ bool DynamicEntity::LoadFx() {
 
 	pugi::xml_document audio_file;
 	pugi::xml_parse_result result = audio_file.load_file(audio_path.c_str());
+
+	for (int i = IDLE; i < MAX_ANIMATIONS; i++)
+	{
+		//entity action
+		if (i == WALK)
+			state_char == "Walk";
+		if (i == IDLE)
+			state_char == "Idle";
+		else if (state == ATTACK)
+			state_char == "Attack";
+		else if (state == HIT)
+			state_char == "Hit";
+		else if (state == DIE)
+			state_char == "Die";
+		else if (state == GATHER)
+			state_char == "Gather";
+
+		std::string file = std::string("audio/fx/CharactersSounds/").append(faction_char).append("/").append(state_char).append(".WAV");
+		std::string audio_path = file;
+		audio_path.append(".wav");
+
+		pugi::xml_document audio_file;
+		pugi::xml_parse_result result = audio_file.load_file(audio_path.c_str());
+
+		fx[i] = result;
+	}
+
 
 	return ret;
 }
