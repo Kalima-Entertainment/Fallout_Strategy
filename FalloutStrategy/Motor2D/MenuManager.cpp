@@ -504,6 +504,30 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 
 			switch (faction)
 			{
+				case FACTION::ALL:
+					switch (type)
+					{
+					
+						case BUILDING_TYPE::ALL:
+							App->gui->DeleteArrayElements(brotherhood_base, 3);
+							App->gui->DeleteArrayElements(brotherhood_barrack, 5);
+							App->gui->DeleteArrayElements(brotherhood_lab, 1);
+							App->gui->DeleteArrayElements(supermutant_base, 3);
+							App->gui->DeleteArrayElements(supermutant_barrack, 5);
+							App->gui->DeleteArrayElements(supermutant_lab, 1);
+							App->gui->DeleteArrayElements(ghoul_base, 3);
+							App->gui->DeleteArrayElements(ghoul_barrack, 5);
+							App->gui->DeleteArrayElements(ghoul_lab, 1);
+							App->gui->DeleteArrayElements(vault_base, 3);
+							App->gui->DeleteArrayElements(vault_barrack, 5);
+							App->gui->DeleteArrayElements(vault_lab, 1);
+							break;
+						case BUILDING_TYPE::NONE:
+							break;
+						default:
+							break;
+					}
+					break;
 
 				case FACTION::BROTHERHOOD:
 					switch (type)
@@ -516,6 +540,8 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 							break;
 						case BUILDING_TYPE::LAB:
 							App->gui->DeleteArrayElements(brotherhood_lab, 1);
+							break;
+						case BUILDING_TYPE::ALL:
 							break;
 						case BUILDING_TYPE::NONE:
 							break;

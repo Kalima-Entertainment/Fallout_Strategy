@@ -126,7 +126,7 @@ bool Player::PreUpdate() {
 		selected_entity = nullptr;
 
 		//Remove HUD data from the UI
-		App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::NONE, BUILDING_TYPE::NONE);
+		App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::ALL, BUILDING_TYPE::ALL);
 		App->entities->count = 0;
 	}
 

@@ -176,6 +176,7 @@ bool UI_Button::Update(float dt)
 			{
 				App->menu_manager->CreateMainMenu();
 				App->menu_manager->DestroyMenu(Menu::CREDITS);
+				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS);
 				App->audio->PlayFx(back_fx, 0);
 			}
 

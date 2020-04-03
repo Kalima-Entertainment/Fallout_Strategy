@@ -30,6 +30,7 @@ enum class FACTION {
 	SUPERMUTANT,
 	GHOUL,
 	VAULT,
+	ALL,
 	NONE,
 };
 
@@ -38,6 +39,7 @@ enum class BUILDING_TYPE {
 	BASE,
 	BARRACK,
 	LAB,
+	ALL,
 	NONE,
 };
 
