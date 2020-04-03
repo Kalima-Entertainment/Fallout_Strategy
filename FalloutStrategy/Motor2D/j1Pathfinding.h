@@ -4,13 +4,13 @@
 #include "j1Module.h"
 #include "p2Point.h"
 #include "p2DynArray.h"
-#include <vector>
+#include "p2List.h"
 
-#define DEFAULT_PATH_LENGTH 50
+#define DEFAULT_PATH_LENGTH 100
 #define INVALID_WALK_CODE 255
 #define NORMAL_MOVEMENT_COST 1
 #define DIAGONAL_MOVEMENT_COST 2
-#define MAX_PATH_ITERATIONS 150
+#define MAX_PATH_ITERATIONS 500
 
 class j1PathFinding : public j1Module
 {
@@ -31,7 +31,7 @@ public:
 	int CreatePath(const iPoint& origin, const iPoint& destination);
 
 	// To request all tiles involved in the last generated path
-	const std::vector<iPoint>* GetLastPath() const;
+	std::vector<iPoint> GetLastPath() const;
 
 	// Utility: return true if pos is inside the map boundaries
 	bool CheckBoundaries(const iPoint& pos) const;
@@ -54,7 +54,7 @@ private:
 };
 
 // forward declaration
-struct PathVector;
+struct PathList;
 
 // ---------------------------------------------------------------------
 // Pathnode: Helper struct to represent a node in the path creation
@@ -67,11 +67,11 @@ struct PathNode
 	PathNode(const PathNode& node);
 
 	// Fills a list (PathList) of all valid adjacent pathnodes
-	uint FindWalkableAdjacents(PathVector& list_to_fill) const;
+	uint FindWalkableAdjacents(PathList& list_to_fill) const;
 	// Calculates this tile score
 	int Score() const;
 	// Calculate the F for a specific destination tile
-	int CalculateF(const iPoint& origin, const iPoint& destination);
+	int CalculateF(const iPoint& destination);
 
 	// -----------
 	int g = 0;
@@ -83,17 +83,17 @@ struct PathNode
 // ---------------------------------------------------------------------
 // Helper struct to include a list of path nodes
 // ---------------------------------------------------------------------
-struct PathVector
+struct PathList
 {
 	// Looks for a node in this list and returns it's list node or NULL
-	std::vector<PathNode>::const_iterator Find(const iPoint& point) const;
+	p2List_item<PathNode>* Find(const iPoint& point) const;
 
 	// Returns the Pathnode with lowest score in this list or NULL if empty
-	std::vector<PathNode>::const_iterator GetNodeLowestScore() const;
+	p2List_item<PathNode>* GetNodeLowestScore() const;
 
 	// -----------
 	// The list itself, note they are not pointers!
-	std::vector<PathNode> vector;
+	p2List<PathNode> list;
 };
 
 
