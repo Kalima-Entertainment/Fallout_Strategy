@@ -28,7 +28,7 @@ enum UI_Type {
 	button_macia,
 	button_pol,
 	button_silvino,
-	button_cristian,
+	button_christian,
 	button_load_game,
 	button_settings,
 	button_settings_pause,
@@ -85,6 +85,47 @@ enum UI_Type {
 	Meat,
 
 	nukas_count,
+
+	Brotherhood_base,
+	Brotherhood_lab,
+	Brotherhood_barrack,
+	Brotherhood_ghaterer,
+	Brotherhood_melee,
+	Brotherhood_ranged,
+	Brotherhood_ghaterer_button,
+	Brotherhood_melee_button,
+	Brotherhood_ranged_button,
+
+	Vault_base,
+	Vault_lab,
+	Vault_barrack,
+	Vault_ghaterer,
+	Vault_melee,
+	Vault_ranged,
+	Vault_ghaterer_button,
+	Vault_melee_button,
+	Vault_ranged_button,
+
+	Supermutant_base,
+	Supermutant_lab,
+	Supermutant_barrack,
+	Supermutant_ghaterer,
+	Supermutant_melee,
+	Supermutant_ranged,
+	Supermutant_ghaterer_button,
+	Supermutant_melee_button,
+	Supermutant_ranged_button,
+
+	Ghouls_base,
+	Ghouls_lab,
+	Ghouls_barrack,
+	Ghouls_ghaterer,
+	Ghouls_melee,
+	Ghouls_ranged,
+	Ghouls_ghaterer_button,
+	Ghouls_melee_button,
+	Ghouls_ranged_button,
+
 };
 
 class UI_element 
@@ -126,6 +167,5 @@ public:
 	UI_element*	element_UI;
 
 };
-
 
 #endif //_!_UI_ELEMENT

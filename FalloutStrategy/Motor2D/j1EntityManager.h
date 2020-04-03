@@ -12,9 +12,22 @@ struct SDL_Texture;
 enum Faction;
 enum class BuildingType;
 class DynamicEntity;
+class StaticEntity;
 enum EntityType;
 
-#define REFERENCE_ENTITIES 12
+#define REFERENCE_ENTITIES 24
+
+enum class Resource {
+	CAPS,
+	WATER,
+	FOOD
+};
+
+struct ResourceBuilding {
+	Resource resource_type;
+	int quantity;
+	std::vector<iPoint> tiles;
+};
 
 class j1EntityManager : public j1Module
 {
@@ -38,25 +51,30 @@ public:
 	//bool CheckpointLoad();
 
 	j1Entity* CreateEntity(Faction faction, EntityType type, int position_x, int position_y);
-	j1Entity* CreateStaticEntity(Faction faction, BuildingType building_type , int position_x, int position_y);
-	j1Entity* FindEntityByTile(iPoint position);
+	j1Entity* FindEntityByTile(iPoint tile);
+	j1Entity* FindEntityByType(Faction faction, EntityType type);
+	ResourceBuilding* FindResourceBuildingByTile(iPoint tile);
+	iPoint ClosestTile(iPoint position, std::vector<iPoint> entity_tiles);
+
 	void DestroyEntity(j1Entity* delete_entity);
 	void DestroyAllEntities();
-	void LoadReferenceEntityData(pugi::xml_node& reference_entities_node, DynamicEntity* reference_entity);
-    //void RellocateEntities();
+	bool LoadReferenceEntityData();
+	void SortEntities();
+	void Swap(int i, int j);
 
 public:
 
 	std::vector<j1Entity*> entities;
-	int total_entities;
+	std::vector<ResourceBuilding*> resource_buildings;
 	pugi::xml_node config_data;
+
+	int count = 0;
 
 public:
 
 	j1Entity* reference_entities[4][6];
 
 	bool blocked_movement;
-	SDL_Texture* debug_tex;
 	SDL_Texture* selected_unit_tex;
 };
 

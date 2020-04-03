@@ -84,10 +84,8 @@ bool UI_Button::Update(float dt)
 
 			if (counter == 10) {
 				
-				App->menu_manager->select_faction_menu.ghouls = (j1Image*)App->gui->CreateImage(100, 300, Image, { 2492, 837, 168, 166 }, NULL, this);
-				App->gui->Delete_Element(App->menu_manager->select_faction_menu.vault);
-				App->gui->Delete_Element(App->menu_manager->select_faction_menu.brotherhood);
-				App->gui->Delete_Element(App->menu_manager->select_faction_menu.supermutants);
+				App->menu_manager->select_faction_menu[12] = (j1Image*)App->gui->CreateImage(100, 300, Image, { 2492, 837, 168, 166 }, NULL, this);
+				App->menu_manager->DestroyMenu(Menu::BUI_BASES, FACTION::NONE, BUILDING_TYPE::NONE);
 
 			}
 		
@@ -98,10 +96,8 @@ bool UI_Button::Update(float dt)
 
 			if (counter == 1) {
 				
-				App->menu_manager->select_faction_menu.vault = (j1Image*)App->gui->CreateImage(310, 300, Image, { 2492, 1013, 309, 134 }, NULL, this);
-				App->gui->Delete_Element(App->menu_manager->select_faction_menu.ghouls);
-				App->gui->Delete_Element(App->menu_manager->select_faction_menu.brotherhood);
-				App->gui->Delete_Element(App->menu_manager->select_faction_menu.supermutants);
+				App->menu_manager->select_faction_menu[13] = (j1Image*)App->gui->CreateImage(310, 300, Image, { 2492, 1013, 309, 134 }, NULL, this);
+				App->menu_manager->DestroyMenu(Menu::BUI_BASES, FACTION::NONE, BUILDING_TYPE::NONE);
 
 			}
 
@@ -112,10 +108,8 @@ bool UI_Button::Update(float dt)
 
 			if (counter == 1) {
 				
-				App->menu_manager->select_faction_menu.brotherhood = (j1Image*)App->gui->CreateImage(550, 300, Image, { 2492, 1161, 155, 180 }, NULL, this);
-				App->gui->Delete_Element(App->menu_manager->select_faction_menu.ghouls);
-				App->gui->Delete_Element(App->menu_manager->select_faction_menu.vault);
-				App->gui->Delete_Element(App->menu_manager->select_faction_menu.supermutants);
+				App->menu_manager->select_faction_menu[14] = (j1Image*)App->gui->CreateImage(550, 300, Image, { 2492, 1161, 155, 180 }, NULL, this);
+				App->menu_manager->DestroyMenu(Menu::BUI_BASES, FACTION::NONE, BUILDING_TYPE::NONE);
 
 			}
 
@@ -125,10 +119,8 @@ bool UI_Button::Update(float dt)
 
 			if (counter == 1) {
 				
-				App->menu_manager->select_faction_menu.supermutants = (j1Image*)App->gui->CreateImage(750, 300, Image, { 2492, 1354, 158, 158 }, NULL, this);
-				App->gui->Delete_Element(App->menu_manager->select_faction_menu.ghouls);
-				App->gui->Delete_Element(App->menu_manager->select_faction_menu.vault);
-				App->gui->Delete_Element(App->menu_manager->select_faction_menu.brotherhood);
+				App->menu_manager->select_faction_menu[15] = (j1Image*)App->gui->CreateImage(750, 300, Image, { 2492, 1354, 158, 158 }, NULL, this);
+				App->menu_manager->DestroyMenu(Menu::BUI_BASES, FACTION::NONE, BUILDING_TYPE::NONE);
 
 			}
 
@@ -168,14 +160,14 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_new_game) 
 			{
-				App->menu_manager->DestroyMainMenu();
+				App->menu_manager->DestroyMenu(Menu::MAIN_MENU, FACTION::NONE, BUILDING_TYPE::NONE);
 				App->menu_manager->CreateSelectFaction();
 				App->audio->PlayFx(click_fx, 0);
 			}
 			
 			if (t == button_credits)
 			{
-				App->menu_manager->DestroyMainMenu();
+				App->menu_manager->DestroyMenu(Menu::MAIN_MENU, FACTION::NONE, BUILDING_TYPE::NONE);
 				App->menu_manager->CreateCredits();
 				App->audio->PlayFx(click_fx, 0);
 			}
@@ -183,13 +175,13 @@ bool UI_Button::Update(float dt)
 			if (t == button_back_credits)
 			{
 				App->menu_manager->CreateMainMenu();
-				App->menu_manager->DestroyCredits();
+				App->menu_manager->DestroyMenu(Menu::CREDITS, FACTION::NONE, BUILDING_TYPE::NONE);
 				App->audio->PlayFx(back_fx, 0);
 			}
 
 			if (t == button_marc)
 			{
-				App->menu_manager->DestroyAllCollaboratorsPictures();
+				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS, FACTION::NONE, BUILDING_TYPE::NONE);
 				App->menu_manager->collaborator = 'M';
 				App->menu_manager->CreateCollaboratorPicture();
 				App->audio->PlayFx(members_fx, 0);
@@ -197,7 +189,7 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_javi)
 			{
-				App->menu_manager->DestroyAllCollaboratorsPictures();
+				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS, FACTION::NONE, BUILDING_TYPE::NONE);
 				App->menu_manager->collaborator = 'J';
 				App->menu_manager->CreateCollaboratorPicture();
 				App->audio->PlayFx(members_fx, 0);
@@ -205,7 +197,7 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_pablo)
 			{
-				App->menu_manager->DestroyAllCollaboratorsPictures();
+				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS, FACTION::NONE, BUILDING_TYPE::NONE);
 				App->menu_manager->collaborator = 'P';
 				App->menu_manager->CreateCollaboratorPicture();
 				App->audio->PlayFx(members_fx, 0);
@@ -213,7 +205,7 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_german)
 			{
-				App->menu_manager->DestroyAllCollaboratorsPictures();
+				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS, FACTION::NONE, BUILDING_TYPE::NONE);
 				App->menu_manager->collaborator = 'G';
 				App->menu_manager->CreateCollaboratorPicture();
 				App->audio->PlayFx(members_fx, 0);
@@ -221,7 +213,7 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_macia)
 			{
-				App->menu_manager->DestroyAllCollaboratorsPictures();
+				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS, FACTION::NONE, BUILDING_TYPE::NONE);
 				App->menu_manager->collaborator = 'D';
 				App->menu_manager->CreateCollaboratorPicture();
 				App->audio->PlayFx(members_fx, 0);
@@ -229,7 +221,7 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_pol)
 			{
-				App->menu_manager->DestroyAllCollaboratorsPictures();
+				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS, FACTION::NONE, BUILDING_TYPE::NONE);
 				App->menu_manager->collaborator = 'K';
 				App->menu_manager->CreateCollaboratorPicture();
 				App->audio->PlayFx(members_fx, 0);
@@ -237,15 +229,15 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_silvino)
 			{
-				App->menu_manager->DestroyAllCollaboratorsPictures();
+				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS, FACTION::NONE, BUILDING_TYPE::NONE);
 				App->menu_manager->collaborator = 'S';
 				App->menu_manager->CreateCollaboratorPicture();
 				App->audio->PlayFx(members_fx, 0);
 			}
 
-			if (t == button_cristian)
+			if (t == button_christian)
 			{
-				App->menu_manager->DestroyAllCollaboratorsPictures();
+				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS, FACTION::NONE, BUILDING_TYPE::NONE);
 				App->menu_manager->collaborator = 'C';
 				App->menu_manager->CreateCollaboratorPicture();
 				App->audio->PlayFx(members_fx, 0);
@@ -281,32 +273,32 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_settings) {
 
-				App->menu_manager->DestroyMainMenu();
+				App->menu_manager->DestroyMenu(Menu::MAIN_MENU, FACTION::NONE, BUILDING_TYPE::NONE);
 				App->menu_manager->CreateSettings();
 				App->audio->PlayFx(click_fx, 0);
 			}
 
 			if (t == button_settings_pause) {
 
-				App->menu_manager->DestroyPauseMenu();
+				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU, FACTION::NONE, BUILDING_TYPE::NONE);
 				App->menu_manager->CreatePauseSettings();
 				App->audio->PlayFx(click_fx, 0);
 			}
 
 			if (t == button_back) {
-				App->menu_manager->DestroySettings();
+				App->menu_manager->DestroyMenu(Menu::SETTINGS, FACTION::NONE, BUILDING_TYPE::NONE);
 				App->menu_manager->CreateMainMenu();
 				App->audio->PlayFx(back_fx, 0);
 			}
 
 			if (t == button_back_pause) {
-				App->menu_manager->DestroyPauseSettings();
+				App->menu_manager->DestroyMenu(Menu::SETTINGS, FACTION::NONE, BUILDING_TYPE::NONE);
 				App->menu_manager->CreatePauseMenu();
 				App->audio->PlayFx(back_fx, 0);
 			}
 
 			if (t == resume_button) {
-				App->menu_manager->DestroyPauseMenu();
+				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU, FACTION::NONE, BUILDING_TYPE::NONE);
 				App->scene->create = false;
 				App->audio->PlayFx(back_fx, 0);
 			}
@@ -314,23 +306,37 @@ bool UI_Button::Update(float dt)
 			if(t == button_back_to_menu)
 			{
 				App->menu_manager->CreateMainMenu();
-				App->menu_manager->DestroySelectFaction();
+				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION, FACTION::NONE, BUILDING_TYPE::NONE);
 				App->audio->PlayFx(back_fx, 0);
 			}
 	
 			if (t == button_start_game)
 			{
-				App->menu_manager->DestroySelectFaction();
+				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION, FACTION::NONE, BUILDING_TYPE::NONE);
 				App->audio->PlayFx(back_fx, 0);
+				App->gui->count = 0;
+				App->player->Enable();
 				App->menu_manager->CreateGUI();
 			}
 
 			if (t == button_pause_to_main)
 			{
-				App->menu_manager->DestroyPauseMenu();
+				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU, FACTION::NONE, BUILDING_TYPE::NONE);
 				App->menu_manager->CreateMainMenu();
 				App->audio->PlayFx(back_fx, 0);
 			}
+
+			//Spawn Gatherer from any faction
+			if (t == Ghouls_ghaterer_button || t == Vault_ghaterer_button || t == Supermutant_ghaterer_button || t == Brotherhood_ghaterer_button)
+				App->entities->CreateEntity(App->player->selected_entity->faction, GATHERER, App->player->selected_entity->spawnPosition.x, App->player->selected_entity->spawnPosition.y);
+
+			//Spawn Melee from any faction
+			if (t == Ghouls_melee_button || t == Vault_melee_button || t == Supermutant_melee_button || t == Brotherhood_melee_button)
+				App->entities->CreateEntity(App->player->selected_entity->faction, MELEE, App->player->selected_entity->spawnPosition.x, App->player->selected_entity->spawnPosition.y);
+			
+			//Spawn Ranged from any faction
+			if (t == Ghouls_ranged_button || t == Vault_ranged_button || t == Supermutant_ranged_button || t == Brotherhood_ranged_button)
+				App->entities->CreateEntity(App->player->selected_entity->faction, RANGED, App->player->selected_entity->spawnPosition.x, App->player->selected_entity->spawnPosition.y);
 		}
 		else {
 			

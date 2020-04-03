@@ -1,7 +1,8 @@
 #ifndef __j1APP_H__
 #define __j1APP_H__
 
-#include "p2List.h"
+#include <vector>
+#include <string>
 #include "j1Module.h"
 #include "j1PerfTimer.h"
 #include "j1Timer.h"
@@ -21,6 +22,7 @@ class j1Gui;
 class j1EntityManager;
 class j1Collision;
 class Player;
+class j1Minimap;
 class MenuManager;
 class MainMenu;
 
@@ -58,7 +60,7 @@ public:
 
 	void LoadGame(const char* file);
 	void SaveGame(const char* file) const;
-	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
+	void GetSaveGames(std::vector<std::string>& vector_to_fill) const;
 
 private:
 
@@ -100,24 +102,26 @@ public:
 	j1Collision	*		collision = NULL;
 	j1EntityManager*	entities = NULL;
 	Player*				player = NULL;
+	j1Minimap*			minimap = NULL;
 	MenuManager*		menu_manager = NULL;
 	MainMenu*			main_menu = NULL;
 
-	bool				pause;
+	bool pause;
 	bool				quitGame = false;
+
 private:
 
-	p2List<j1Module*>	modules;
+	std::vector<j1Module*>	modules;
 	int					argc;
 	char**				args;
 
-	p2SString			title;
-	p2SString			organization;
+	std::string			title;
+	std::string			organization;
 
 	mutable bool		want_to_save = false;
 	bool				want_to_load = false;
-	p2SString			load_game;
-	mutable p2SString	save_game;
+	std::string			load_game;
+	mutable std::string	save_game;
 
 	j1PerfTimer			ptimer;
 	uint64				frame_count = 0;

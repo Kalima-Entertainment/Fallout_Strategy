@@ -5,10 +5,15 @@
 #include "j1Textures.h"
 #include "j1Map.h"
 #include <math.h>
+#include "j1EntityManager.h"
+#include "j1Entity.h"
+#include "StaticEntity.h"
+#include "brofiler/Brofiler/Brofiler.h"
+#include "p2SString.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
-	name.create("map");
+	name = ("map");
 }
 
 // Destructor
@@ -21,16 +26,17 @@ bool j1Map::Awake(pugi::xml_node& config)
 	LOG("Loading Map Parser");
 	bool ret = true;
 
-	folder.create(config.child("folder").child_value());
+	folder = (config.child("folder").child_value());
 
 	return ret;
 }
 
 void j1Map::Draw()
 {
+	BROFILER_CATEGORY("MapDraw", Profiler::Color::MediumPurple)
 	if(map_loaded == false)
 		return;
-
+	int tile_margin = 3;
 	p2List_item<MapLayer*>* item = data.layers.start;
 
 	for(; item != NULL; item = item->next)
@@ -40,6 +46,7 @@ void j1Map::Draw()
 		if(layer->properties.Get("Nodraw") != 0)
 			continue;
 
+		int total_tiles = 0;
 		for(int y = 0; y < data.height; ++y)
 		{
 			for(int x = 0; x < data.width; ++x)
@@ -51,11 +58,18 @@ void j1Map::Draw()
 
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = MapToWorld(x, y);
-
-					App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+					//camera culling
+					if ((pos.x - tileset->offset_x > -(App->render->camera.x + tile_margin * data.tile_width)) && (pos.x < -App->render->camera.x + App->render->camera.w)
+						&& (pos.y > -(App->render->camera.y + data.tile_height)) && (pos.y + tileset->offset_y < (-App->render->camera.y + App->render->camera.h + tile_margin * data.tile_height)))
+					{
+						App->render->Blit(tileset->texture, pos.x + tileset->offset_x, pos.y + tileset->offset_y, &r);
+						//total_tiles++;
+					}
 				}
 			}
 		}
+		//LOG("Tiles drawn: %i", total_tiles);
+		total_tiles = 0;
 	}
 }
 
@@ -177,6 +191,13 @@ iPoint j1Map::fWorldToMap(float x, float y) const
 	return ret;
 }
 
+iPoint j1Map::IsometricWorldToMap(int x, int y) const {
+	iPoint map_position;
+	map_position.x = x / (data.tile_width * 0.5f);
+	map_position.y = y / data.tile_height;
+	return map_position;
+}
+
 SDL_Rect TileSet::GetTileRect(int id) const
 {
 	int relative_id = id - firstgid;
@@ -215,6 +236,18 @@ bool j1Map::CleanUp()
 	}
 	data.layers.clear();
 
+	// Remove all objects
+
+	p2List_item<ObjectGroup*>* item3;
+	item3 = data.objectgroups.start;
+	while (item3 != NULL)
+	{
+		//LOG("Objectgroups releasing");
+		RELEASE(item3->data);
+		item3 = item3->next;
+	}
+	data.objectgroups.clear();
+
 	// Clean up the pugui tree
 	map_file.reset();
 
@@ -225,9 +258,10 @@ bool j1Map::CleanUp()
 bool j1Map::Load(const char* file_name)
 {
 	bool ret = true;
-	p2SString tmp("%s%s", folder.GetString(), file_name);
+	std::string tmp = folder;
+	tmp.append(file_name);
 
-	pugi::xml_parse_result result = map_file.load_file(tmp.GetString());
+	pugi::xml_parse_result result = map_file.load_file(tmp.c_str());
 
 	if(result == NULL)
 	{
@@ -283,7 +317,7 @@ bool j1Map::Load(const char* file_name)
 		{
 			TileSet* s = item->data;
 			LOG("Tileset ----");
-			LOG("name: %s firstgid: %d", s->name.GetString(), s->firstgid);
+			LOG("name: %s firstgid: %d", s->name.c_str(), s->firstgid);
 			LOG("tile width: %d tile height: %d", s->tile_width, s->tile_height);
 			LOG("spacing: %d margin: %d", s->spacing, s->margin);
 			item = item->next;
@@ -294,10 +328,33 @@ bool j1Map::Load(const char* file_name)
 		{
 			MapLayer* l = item_layer->data;
 			LOG("Layer ----");
-			LOG("name: %s", l->name.GetString());
+			LOG("name: %s", l->name.c_str());
 			LOG("tile width: %d tile height: %d", l->width, l->height);
 			item_layer = item_layer->next;
 		}
+
+		p2List_item<ObjectGroup*>* item_object = data.objectgroups.start;
+		while (item_object != NULL)
+		{
+			ObjectGroup* o = item_object->data;
+			LOG("ObjectGroup ----");
+			LOG("name: %s", o->name.c_str());
+			item_object = item_object->next;
+		}
+	}
+
+	//Load objectgroup info -------------------------------------
+
+	pugi::xml_node objectgroup;
+	for (objectgroup = map_file.child("map").child("objectgroup"); objectgroup && ret; objectgroup = objectgroup.next_sibling("objectgroup"))
+	{
+		ObjectGroup* set = new ObjectGroup();
+
+		if (ret == true)
+		{
+			ret = LoadObjectGroup(objectgroup, set);
+		}
+		data.objectgroups.add(set);
 	}
 
 	map_loaded = ret;
@@ -348,7 +405,7 @@ bool j1Map::LoadMap()
 			if(v >= 0 && v <= 255) data.background_color.b = v;
 		}
 
-		p2SString orientation(map.attribute("orientation").as_string());
+		std::string orientation = std::string(map.attribute("orientation").as_string());
 
 		if(orientation == "orthogonal")
 		{
@@ -374,7 +431,7 @@ bool j1Map::LoadMap()
 bool j1Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 {
 	bool ret = true;
-	set->name.create(tileset_node.attribute("name").as_string());
+	set->name = std::string(tileset_node.attribute("name").as_string());
 	set->firstgid = tileset_node.attribute("firstgid").as_int();
 	set->tile_width = tileset_node.attribute("tilewidth").as_int();
 	set->tile_height = tileset_node.attribute("tileheight").as_int();
@@ -408,7 +465,7 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	}
 	else
 	{
-		set->texture = App->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
+		set->texture = App->tex->Load(PATH(folder.c_str(), image.attribute("source").as_string()));
 		int w, h;
 		SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
 		set->tex_width = image.attribute("width").as_int();
@@ -460,6 +517,90 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		}
 	}
 
+	return ret;
+}
+
+bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
+	bool ret = true;
+	pugi::xml_node object_node = node.child("object");
+	SDL_Rect rect = { 0,0,0,0 };
+	objectgroup->name = node.attribute("name").as_string();
+	uint i = 0u;
+
+	if (object_node == NULL)
+	{
+		LOG("Error loading object group");
+		ret = false;
+	}
+
+	else
+	{
+		while (object_node != nullptr)
+		{
+			std::string object_name = std::string(object_node.attribute("name").as_string());
+			pugi::xml_node properties = object_node.child("properties");
+			pugi::xml_node property = properties.child("property");
+
+			int x = object_node.attribute("x").as_int();
+			int y = object_node.attribute("y").as_int();
+			int width = object_node.attribute("width").as_int() / (HALF_TILE)+1;
+			int height = object_node.attribute("height").as_int() / (HALF_TILE)+1;
+			iPoint first_tile_position = { x,y };
+
+			if (object_name == "Resources") {
+				ResourceBuilding* resource_building = new ResourceBuilding();
+
+				while (property != nullptr)
+				{
+					std::string property_name = std::string(property.attribute("name").as_string());
+
+					if (property_name == "Nuka-Cola") {
+						resource_building->resource_type = Resource::CAPS;
+						resource_building->quantity = property.attribute("value").as_int();
+					}
+					else if (property_name == "Water") {
+						resource_building->resource_type = Resource::WATER;
+						resource_building->quantity = property.attribute("value").as_int();
+					}
+					property = property.next_sibling();
+				}
+				resource_building->tiles = CalculateArea(first_tile_position, width, height);
+				App->entities->resource_buildings.push_back(resource_building);
+			}
+			else if (object_name == "Static") {
+				//create building
+				StaticEntity* static_entity;
+				iPoint size;
+
+				//Adjust coordinates to tiles
+				x /= HALF_TILE;
+				y /= HALF_TILE;
+
+				//add tiles
+				std::string object_type = std::string(object_node.attribute("type").as_string());
+				EntityType type = NO_TYPE;
+
+				if (object_type == "Base") {
+					type = BASE;
+					x -= 10;
+					y -= 5;
+				}
+				else if (object_type == "Barrack") {
+					type = BARRACK;
+					x -= 12;
+					y -= 6;
+				}
+				else if (object_type == "Laboratory") {
+					type = LABORATORY;
+				}
+
+				static_entity = (StaticEntity*)App->entities->CreateEntity(GHOUL, type, x,y);
+				static_entity->tiles = CalculateArea(first_tile_position, width, height);
+			}
+			
+			object_node = object_node.next_sibling();
+		}
+	}
 	return ret;
 }
 
@@ -534,4 +675,22 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 	}
 
 	return ret;
+}
+
+std::vector<iPoint> j1Map::CalculateArea(iPoint first_tile_position, int width, int height) {
+	bool ret = true;
+	std::vector<iPoint> area;
+
+	first_tile_position = IsometricWorldToMap(first_tile_position.x, first_tile_position.y);
+
+	for (int i = 0; i < width; i++)
+	{
+		for (int j = 0; j < height; j++)
+		{
+			iPoint tile_position = { first_tile_position.x + i,first_tile_position.y + j };
+			area.push_back(tile_position);
+		}
+	}
+
+	return area;
 }

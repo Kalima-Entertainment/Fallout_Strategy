@@ -4,17 +4,14 @@
 #include "j1Module.h"
 
 struct SDL_Texture;
-class UI_Label;
 class DynamicEntity;
 
-enum class StatesMenu 
+enum class StatesMenu
 {
-	
 	MAIN_MENU,
 	SETTINGS,
 	FACTION_SELECTION,
 	PAUSE,
-
 	NONE
 };
 
@@ -45,20 +42,22 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	/*bool Save(pugi::xml_node&) const;
-	bool Load(pugi::xml_node&);*/
-
 	StatesMenu GetMenuState();
 	void SetMenuState(const StatesMenu& menu);
 
 public:
-	SDL_Texture* debug_tex;
+
+	int topleft;
+	int topright;
+	int bottomleft;
+	int bottomright;
 	bool create = false;
 	StatesMenu menu_state = StatesMenu::NONE;
 
-	UI_Label* nukas = nullptr;
 
 private:
+
+	int SongPlaying = 0;
 
 };
 

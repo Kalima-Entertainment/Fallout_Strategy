@@ -3,6 +3,29 @@
 #include "j1Entity.h"
 #include "j1Timer.h"
 
+struct ResourceBuilding;
+enum class Resource;
+
+enum Direction {
+	TOP_LEFT,
+	TOP_RIGHT,
+	RIGHT,
+	BOTTOM_RIGHT,
+	BOTTOM_LEFT,
+	LEFT,
+	NO_DIRECTION
+};
+
+enum DynamicState {
+	IDLE,
+	WALK,
+	ATTACK,
+	GATHER,
+	HIT,
+	DIE,
+	MAX_ANIMATIONS
+};
+
 class DynamicEntity : public j1Entity
 {
 public:
@@ -10,30 +33,34 @@ public:
 	~DynamicEntity();
 	bool Update(float dt);
 	bool PostUpdate();
+	bool LoadAnimations();
+	//bool LoadFx();
 	bool LoadReferenceData();
 	void PathfindToPosition(iPoint target);
-	void Move();
+	void Move(float dt);
 	void Attack();
+	void Gather();
 
 public:
 	int mov_speed;
 	int attack_speed;
+	float action_time;
 	iPoint current_speed;
-	fPoint speed;
 	iPoint next_tile;
 
-	int damage;
+	Animation animations[MAX_ANIMATIONS][7];
+	Direction direction;
+	DynamicState state;
 	int range;
-	j1Entity* target_entity;
-	j1Timer attack_timer;
-	float attack_time;
+	int resource_collected;
+	DynamicEntity*	target_entity;
+	StaticEntity*	target_building;
+	ResourceBuilding* resource_building;
+	Resource resource_type;
+	j1Timer timer;
 
-	Collider* attack_collider;
-
-	iPoint next_tile_center;
-	SDL_Rect next_tile_center_rect;
-
-
+	iPoint next_tile_position;
+	SDL_Rect next_tile_rect_center;
 };
 
 

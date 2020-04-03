@@ -10,7 +10,7 @@
 j1Audio::j1Audio() : j1Module()
 {
 	music = NULL;
-	name.create("audio");
+	name = ("audio");
 }
 
 // Destructor
@@ -50,6 +50,8 @@ bool j1Audio::Awake(pugi::xml_node& config)
 		ret = true;
 	}
 
+	explosion = LoadFx("audio/fx/Others/Weapons/bigexplode1.wav");
+
 	return ret;
 }
 
@@ -66,9 +68,10 @@ bool j1Audio::CleanUp()
 		Mix_FreeMusic(music);
 	}
 
-	p2List_item<Mix_Chunk*>* item;
-	for(item = fx.start; item != NULL; item = item->next)
-		Mix_FreeChunk(item->data);
+	for (int i = 0; i < fx.size(); i++) {
+		Mix_FreeChunk(fx[i]);
+	}
+	
 
 	fx.clear();
 
@@ -149,29 +152,29 @@ unsigned int j1Audio::LoadFx(const char* path)
 	}
 	else
 	{
-		fx.add(chunk);
-		ret = fx.count();
+		fx.push_back(chunk);
+		ret = fx.size();
 	}
 
 	return ret;
 }
 
 // Play WAV
-bool j1Audio::PlayFx(unsigned int id, int repeat)
+bool j1Audio::PlayFx(int channel, unsigned int id, int repeat)
 {
 	bool ret = false;
+	id += 0;
 
 	if(!active)
 		return false;
 
-	if(id > 0 && id <= fx.count())
+	if(id > 0 && id <= fx.size())
 	{
-		Mix_PlayChannel(-1, fx[id - 1], repeat);
+		Mix_PlayChannel(channel, fx[id - 1], repeat);
 	}
 
 	return ret;
 }
-
 
 void j1Audio::Change_Volume_Music(float value)
 {

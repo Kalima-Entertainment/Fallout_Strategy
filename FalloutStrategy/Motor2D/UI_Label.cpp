@@ -6,7 +6,7 @@
 #include "UI_element.h"
 #include <string.h>
 
-UI_Label::UI_Label(int x, int y, UI_Type type, char* text_input, UI_element * parent, j1Module * Observer, int* counter) : UI_element(x, y, type, parent, Observer)
+UI_Label::UI_Label(int x, int y, UI_Type type, p2SString text_input, UI_element * parent, j1Module * Observer, int* counter) : UI_element(x, y, type, parent, Observer)
 {
 	t = type;
 	timer_out = counter;
@@ -49,14 +49,19 @@ bool UI_Label::CleanUp()
 	return true;
 }
 
-bool UI_Label::SetLabelText(const char* text_input)
+bool UI_Label::SetLabelText(p2SString text_input)
 {
 	bool ret = false;
+	text = text_input;
 
-	text_texture = App->font->Print(text_input, { 244,244,244,255 }, App->font->fonts.start->data);
-	
+	if (text.Length() > 0){
+
+		text_texture = App->font->Print(text.GetString(), { 244,244,244,255 }, App->font->fonts[0]);
+	}
+
 	if (text_texture != nullptr)
 	{
+
 		uint w = 0, h = 0;
 
 		App->tex->GetSize(text_texture, w, h);
@@ -80,7 +85,7 @@ void UI_Label::SetTextTimer(const char* text)
 {
 	
 	App->tex->UnLoad(texture);
-	texture = App->font->Print(text, { 255,255,255,255 }, App->font->fonts.start->data);
+	texture = App->font->Print(text, { 255,255,255,255 }, App->font->fonts[0]);
 	App->font->CalcSize(text, dimensions.w, dimensions.h);
 
 }
