@@ -174,7 +174,7 @@ bool j1Scene::Update(float dt)
 
 		if (create == true) {
 
-			App->menu_manager->DestroyMenu(Menu::PAUSE_MENU, FACTION::NONE, BUILDING_TYPE::NONE);
+			App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
 			create = false;
 
 		}

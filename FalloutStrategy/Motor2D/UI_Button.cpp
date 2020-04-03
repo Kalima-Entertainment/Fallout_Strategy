@@ -85,7 +85,7 @@ bool UI_Button::Update(float dt)
 			if (counter == 10) {
 				
 				App->menu_manager->select_faction_menu[12] = (j1Image*)App->gui->CreateImage(100, 300, Image, { 2492, 837, 168, 166 }, NULL, this);
-				App->menu_manager->DestroyMenu(Menu::BUI_BASES, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::NONE, BUILDING_TYPE::NONE);
 
 			}
 		
@@ -97,7 +97,7 @@ bool UI_Button::Update(float dt)
 			if (counter == 1) {
 				
 				App->menu_manager->select_faction_menu[13] = (j1Image*)App->gui->CreateImage(310, 300, Image, { 2492, 1013, 309, 134 }, NULL, this);
-				App->menu_manager->DestroyMenu(Menu::BUI_BASES, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::NONE, BUILDING_TYPE::NONE);
 
 			}
 
@@ -109,7 +109,7 @@ bool UI_Button::Update(float dt)
 			if (counter == 1) {
 				
 				App->menu_manager->select_faction_menu[14] = (j1Image*)App->gui->CreateImage(550, 300, Image, { 2492, 1161, 155, 180 }, NULL, this);
-				App->menu_manager->DestroyMenu(Menu::BUI_BASES, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::NONE, BUILDING_TYPE::NONE);
 
 			}
 
@@ -120,7 +120,7 @@ bool UI_Button::Update(float dt)
 			if (counter == 1) {
 				
 				App->menu_manager->select_faction_menu[15] = (j1Image*)App->gui->CreateImage(750, 300, Image, { 2492, 1354, 158, 158 }, NULL, this);
-				App->menu_manager->DestroyMenu(Menu::BUI_BASES, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::NONE, BUILDING_TYPE::NONE);
 
 			}
 
@@ -160,14 +160,14 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_new_game) 
 			{
-				App->menu_manager->DestroyMenu(Menu::MAIN_MENU, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyMenu(Menu::MAIN_MENU);
 				App->menu_manager->CreateSelectFaction();
 				App->audio->PlayFx(click_fx, 0);
 			}
 			
 			if (t == button_credits)
 			{
-				App->menu_manager->DestroyMenu(Menu::MAIN_MENU, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyMenu(Menu::MAIN_MENU);
 				App->menu_manager->CreateCredits();
 				App->audio->PlayFx(click_fx, 0);
 			}
@@ -175,13 +175,13 @@ bool UI_Button::Update(float dt)
 			if (t == button_back_credits)
 			{
 				App->menu_manager->CreateMainMenu();
-				App->menu_manager->DestroyMenu(Menu::CREDITS, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyMenu(Menu::CREDITS);
 				App->audio->PlayFx(back_fx, 0);
 			}
 
 			if (t == button_marc)
 			{
-				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS);
 				App->menu_manager->collaborator = 'M';
 				App->menu_manager->CreateCollaboratorPicture();
 				App->audio->PlayFx(members_fx, 0);
@@ -189,7 +189,7 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_javi)
 			{
-				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS);
 				App->menu_manager->collaborator = 'J';
 				App->menu_manager->CreateCollaboratorPicture();
 				App->audio->PlayFx(members_fx, 0);
@@ -197,7 +197,7 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_pablo)
 			{
-				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS);
 				App->menu_manager->collaborator = 'P';
 				App->menu_manager->CreateCollaboratorPicture();
 				App->audio->PlayFx(members_fx, 0);
@@ -205,7 +205,7 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_german)
 			{
-				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS);
 				App->menu_manager->collaborator = 'G';
 				App->menu_manager->CreateCollaboratorPicture();
 				App->audio->PlayFx(members_fx, 0);
@@ -213,7 +213,7 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_macia)
 			{
-				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS);
 				App->menu_manager->collaborator = 'D';
 				App->menu_manager->CreateCollaboratorPicture();
 				App->audio->PlayFx(members_fx, 0);
@@ -221,7 +221,7 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_pol)
 			{
-				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS);
 				App->menu_manager->collaborator = 'K';
 				App->menu_manager->CreateCollaboratorPicture();
 				App->audio->PlayFx(members_fx, 0);
@@ -229,7 +229,7 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_silvino)
 			{
-				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS);
 				App->menu_manager->collaborator = 'S';
 				App->menu_manager->CreateCollaboratorPicture();
 				App->audio->PlayFx(members_fx, 0);
@@ -237,7 +237,7 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_christian)
 			{
-				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyMenu(Menu::COLLABORATORS_CREDITS);
 				App->menu_manager->collaborator = 'C';
 				App->menu_manager->CreateCollaboratorPicture();
 				App->audio->PlayFx(members_fx, 0);
@@ -273,32 +273,32 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_settings) {
 
-				App->menu_manager->DestroyMenu(Menu::MAIN_MENU, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyMenu(Menu::MAIN_MENU);
 				App->menu_manager->CreateSettings();
 				App->audio->PlayFx(click_fx, 0);
 			}
 
 			if (t == button_settings_pause) {
 
-				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
 				App->menu_manager->CreatePauseSettings();
 				App->audio->PlayFx(click_fx, 0);
 			}
 
 			if (t == button_back) {
-				App->menu_manager->DestroyMenu(Menu::SETTINGS, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyMenu(Menu::SETTINGS);
 				App->menu_manager->CreateMainMenu();
 				App->audio->PlayFx(back_fx, 0);
 			}
 
 			if (t == button_back_pause) {
-				App->menu_manager->DestroyMenu(Menu::SETTINGS, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyMenu(Menu::SETTINGS);
 				App->menu_manager->CreatePauseMenu();
 				App->audio->PlayFx(back_fx, 0);
 			}
 
 			if (t == resume_button) {
-				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
 				App->scene->create = false;
 				App->audio->PlayFx(back_fx, 0);
 			}
@@ -306,13 +306,13 @@ bool UI_Button::Update(float dt)
 			if(t == button_back_to_menu)
 			{
 				App->menu_manager->CreateMainMenu();
-				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
 				App->audio->PlayFx(back_fx, 0);
 			}
 	
 			if (t == button_start_game)
 			{
-				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
 				App->audio->PlayFx(back_fx, 0);
 				App->gui->count = 0;
 				App->player->Enable();
@@ -321,7 +321,7 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_pause_to_main)
 			{
-				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
 				App->menu_manager->CreateMainMenu();
 				App->audio->PlayFx(back_fx, 0);
 			}

@@ -52,7 +52,8 @@ public:
 public:
 	
 	void CreateMenu(Menu menu);
-	void DestroyMenu(Menu menu, FACTION faction, BUILDING_TYPE type);
+	void DestroyMenu(Menu menu);
+	void DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type);
 
 	void CreateMainMenu();
 	void CreateCredits();

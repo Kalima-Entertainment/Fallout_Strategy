@@ -461,7 +461,7 @@ void MenuManager::CreateVault_Lab() {
 }
 
 
-void MenuManager::DestroyMenu(Menu menu, FACTION faction, BUILDING_TYPE type) {
+void MenuManager::DestroyMenu(Menu menu) {
 	
 	switch (menu)
 	{
@@ -487,98 +487,7 @@ void MenuManager::DestroyMenu(Menu menu, FACTION faction, BUILDING_TYPE type) {
 	case Menu::GUI:
 		App->gui->DeleteArrayElements(gui_ingame, 4);
 		break;
-	case Menu::BUI_BASES:
-
-		switch (faction)
-		{
-			
-		case FACTION::BROTHERHOOD:
-				switch (type)
-				{
-					case BUILDING_TYPE::BASE:
-						App->gui->DeleteArrayElements(brotherhood_base, 3);
-						break;
-					case BUILDING_TYPE::BARRACK:
-						App->gui->DeleteArrayElements(brotherhood_barrack, 5);
-						break;
-					case BUILDING_TYPE::LAB:
-						App->gui->DeleteArrayElements(brotherhood_lab, 1);
-						break;
-					case BUILDING_TYPE::NONE:
-						break;
-					default:
-						break;
-				}
-				break;
-			
-			case FACTION::SUPERMUTANT:
-				switch (type)
-				{
-				
-					case BUILDING_TYPE::BASE:
-						App->gui->DeleteArrayElements(supermutant_base, 3);
-						break;
-					case BUILDING_TYPE::BARRACK:
-						App->gui->DeleteArrayElements(supermutant_barrack, 5);
-						break;
-					case BUILDING_TYPE::LAB:
-						App->gui->DeleteArrayElements(supermutant_lab, 1);
-						break;
-					case BUILDING_TYPE::NONE:
-						break;
-					default:
-					break;
-				}
-				break;
-			
-			case FACTION::GHOUL:
-				switch (type)
-				{
-				
-					case BUILDING_TYPE::BASE:
-						App->gui->DeleteArrayElements(ghoul_base, 3);
-						break;
-					case BUILDING_TYPE::BARRACK:
-						App->gui->DeleteArrayElements(ghoul_barrack, 5);
-						break;
-					case BUILDING_TYPE::LAB:
-						App->gui->DeleteArrayElements(ghoul_lab, 1);
-						break;
-					case BUILDING_TYPE::NONE:
-						break;
-					default:
-						break;
-				}
-				break;
-			
-			case FACTION::VAULT:
-				switch (type)
-				{
-				case BUILDING_TYPE::BASE:
-					App->gui->DeleteArrayElements(vault_base, 3);
-					break;
-				case BUILDING_TYPE::BARRACK:
-					App->gui->DeleteArrayElements(vault_barrack, 5);
-					break;
-				case BUILDING_TYPE::LAB:
-					App->gui->DeleteArrayElements(vault_lab, 1);
-					break;
-				case BUILDING_TYPE::NONE:
-					break;
-				default:
-					break;
-				}
-				break;
-			
-			case FACTION::NONE:
-				break;
-			
-			default:
-				break;
-		
-		}
-		break;
-		
+	
 		default:
 		break;
 	}
@@ -586,3 +495,106 @@ void MenuManager::DestroyMenu(Menu menu, FACTION faction, BUILDING_TYPE type) {
 	current_menu = last_menu;
 }
 
+void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type) {
+
+	switch (menu)
+	{
+
+		case Menu::BUI_BASES:
+
+			switch (faction)
+			{
+
+				case FACTION::BROTHERHOOD:
+					switch (type)
+					{
+						case BUILDING_TYPE::BASE:
+							App->gui->DeleteArrayElements(brotherhood_base, 3);
+							break;
+						case BUILDING_TYPE::BARRACK:
+							App->gui->DeleteArrayElements(brotherhood_barrack, 5);
+							break;
+						case BUILDING_TYPE::LAB:
+							App->gui->DeleteArrayElements(brotherhood_lab, 1);
+							break;
+						case BUILDING_TYPE::NONE:
+							break;
+						default:
+							break;
+					}
+					break;
+
+				case FACTION::SUPERMUTANT:
+					switch (type)
+					{
+
+						case BUILDING_TYPE::BASE:
+							App->gui->DeleteArrayElements(supermutant_base, 3);
+							break;
+						case BUILDING_TYPE::BARRACK:
+							App->gui->DeleteArrayElements(supermutant_barrack, 5);
+							break;
+						case BUILDING_TYPE::LAB:
+							App->gui->DeleteArrayElements(supermutant_lab, 1);
+							break;
+						case BUILDING_TYPE::NONE:
+							break;
+						default:
+							break;
+					}
+					break;
+
+				case FACTION::GHOUL:
+					switch (type)
+					{
+
+						case BUILDING_TYPE::BASE:
+							App->gui->DeleteArrayElements(ghoul_base, 3);
+							break;
+						case BUILDING_TYPE::BARRACK:
+							App->gui->DeleteArrayElements(ghoul_barrack, 5);
+							break;
+						case BUILDING_TYPE::LAB:
+							App->gui->DeleteArrayElements(ghoul_lab, 1);
+							break;
+						case BUILDING_TYPE::NONE:
+							break;
+						default:
+							break;
+					}
+					break;
+
+				case FACTION::VAULT:
+					switch (type)
+					{
+						case BUILDING_TYPE::BASE:
+							App->gui->DeleteArrayElements(vault_base, 3);
+							break;
+						case BUILDING_TYPE::BARRACK:
+							App->gui->DeleteArrayElements(vault_barrack, 5);
+							break;
+						case BUILDING_TYPE::LAB:
+							App->gui->DeleteArrayElements(vault_lab, 1);
+							break;
+						case BUILDING_TYPE::NONE:
+							break;
+						default:
+							break;
+					}
+					break;
+
+				case FACTION::NONE:
+					break;
+
+				default:
+				break;
+
+			}
+			break;
+
+		default:
+			break;
+	}
+
+	current_menu = last_menu;
+}
