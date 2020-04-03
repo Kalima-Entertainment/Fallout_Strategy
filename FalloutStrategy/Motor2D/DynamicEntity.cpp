@@ -321,7 +321,7 @@ bool DynamicEntity::LoadFx() {
 	char* state_char = { "NoState" };
 
 	//entity faction
-	if (faction == VAULT)
+	if (faction == )
 		faction_char = "VaultDwellers";
 	else if (faction == BROTHERHOOD)
 		faction_char = "Brotherhood";
@@ -377,6 +377,7 @@ bool DynamicEntity::LoadFx() {
 	return ret;
 }
 */
+
 
 
 bool DynamicEntity::LoadAnimations() {
