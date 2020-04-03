@@ -10,7 +10,6 @@ UI_Label::UI_Label(int x, int y, UI_Type type, std::string text_input, UI_elemen
 {
 	t = type;
 	timer_out = counter;
-	
 
 }
 
