@@ -60,7 +60,7 @@ bool StaticEntity::PostUpdate() {
 	//Render building
 	//render_position = App->map->MapToWorld(current_tile.x, current_tile.y);
 	render_position = {(int)(position.x - TILE_SIZE),(int)(position.y - 2 * TILE_SIZE)};
-	//App->render->DrawQuad({ (int)position.x, (int)position.y, 4,4 }, 255, 0, 0, 255);
+	App->render->DrawQuad({ (int)position.x, (int)position.y, 4,4 }, 255, 0, 0, 255);
 	App->render->Blit(reference_entity->texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 	
 	return true;
