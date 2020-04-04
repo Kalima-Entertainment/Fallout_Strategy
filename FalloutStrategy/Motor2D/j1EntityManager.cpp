@@ -84,8 +84,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 
 					break;
 				}				
-			}
-			
+			}			
 
 			entity->position = App->map->fMapToWorld(entity->current_tile.x, entity->current_tile.y);
 			entity->position.x += 32;
@@ -114,14 +113,19 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 			if (entity->reference_entity != nullptr) {
 				entities.push_back(entity);
 				entity->LoadReferenceData();
-			}
+			}			
 
 			//Add spawn position for units
 			//TODO: It works for GHOULS, needs to be adapted for all the factions
-			if(type == BASE)
+			if (type == BASE)
 				entity->spawnPosition = { entity->current_tile.x + 14, entity->current_tile.y + 9 };
-			else if(type == BARRACK)
+			else if (type == BARRACK)
 				entity->spawnPosition = { entity->current_tile.x + 14, entity->current_tile.y + 9 };
+			else if (type == LABORATORY)
+				entity->spawnPosition = { entity->current_tile.x + 14, entity->current_tile.y + 9 };
+
+			//Add render position for correct blitting
+			entity->render_position = App->map->MapToWorld(entity->spawnPosition.x+1, entity->spawnPosition.y);			
 		}
 	}
 
