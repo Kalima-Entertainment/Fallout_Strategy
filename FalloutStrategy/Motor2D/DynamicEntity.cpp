@@ -295,7 +295,7 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 	int x, y;
 	SDL_Rect Debug_rect = { 0,0,32,32 };
 
-	App->pathfinding->GetLastPath(path_to_target);
+	path_to_target = *App->pathfinding->GetLastPath();
 	if (path_to_target.size() > 0)
 	{
 		next_tile = path_to_target.front();

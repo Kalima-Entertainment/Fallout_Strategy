@@ -3,17 +3,11 @@
 
 #include "j1Module.h"
 #include "p2Point.h"
-
-#include "j1Timer.h"
-
+#include <list>
 #include <vector>
 
 #define DEFAULT_PATH_LENGTH 50
 #define INVALID_WALK_CODE 255
-#define NORMAL_MOVEMENT_COST 1
-#define DIAGONAL_MOVEMENT_COST 2
-#define MAX_PATH_ITERATIONS 150
-
 
 class j1PathFinding : public j1Module
 {
@@ -30,10 +24,11 @@ public:
 	// Sets up the walkability map
 	void SetMap(uint width, uint height, uchar* data);
 
-	void CreatePath(const iPoint& origin, const iPoint& destination);
+	// Main function to request a path from A to B
+	int CreatePath(const iPoint& origin, const iPoint& destination);
 
 	// To request all tiles involved in the last generated path
-	void GetLastPath(std::vector<iPoint>& vector) const;
+	const std::vector<iPoint>* GetLastPath() const;
 
 	// Utility: return true if pos is inside the map boundaries
 	bool CheckBoundaries(const iPoint& pos) const;
@@ -44,53 +39,63 @@ public:
 	// Utility: return the walkability value of a tile
 	uchar GetTileAt(const iPoint& pos) const;
 
-	j1Timer timer;
-
 private:
+
+
+	// size of the map
 	uint width;
 	uint height;
+	// all map walkability values [0..255]
 	uchar* map;
-
-	std::vector<iPoint> last_path;
+	// we store the created path here
+	std::vector <iPoint> last_path;
 };
 
-struct PathVector;
+// forward declaration
+struct PathList;
 
+// ---------------------------------------------------------------------
+// Pathnode: Helper struct to represent a node in the path creation
+// ---------------------------------------------------------------------
 struct PathNode
 {
 	// Convenient constructors
 	PathNode();
-	PathNode(int g, int h, const iPoint& pos, const PathNode* parent);
+	PathNode(float g, float h, const iPoint& pos, const PathNode* parent, const bool diagonal);
 	PathNode(const PathNode& node);
 
 	// Fills a list (PathList) of all valid adjacent pathnodes
-	uint FindWalkableAdjacents(PathVector& list_to_fill) const;
+	uint FindWalkableAdjacents(PathList& list_to_fill) const;
 	// Calculates this tile score
 	int Score() const;
 	// Calculate the F for a specific destination tile
 	int CalculateF(const iPoint& destination);
 
 	// -----------
-	int g;
-	int h;
-	iPoint pos = {0,0};
-	const PathNode* parent = nullptr;; // needed to reconstruct the path in the end
+	float g = 0;
+	float h = 0;
+	iPoint pos = { 0, 0 };
+	const PathNode* parent; // needed to reconstruct the path in the end
+	bool diagonal = false;
+
 };
 
 // ---------------------------------------------------------------------
 // Helper struct to include a list of path nodes
 // ---------------------------------------------------------------------
-struct PathVector
+struct PathList
 {
+	PathList() {}
 	// Looks for a node in this list and returns it's list node or NULL
-	int Find(const iPoint& point) const;
+	const PathNode* Find(const iPoint& point) const;
 
 	// Returns the Pathnode with lowest score in this list or NULL if empty
-	int GetNodeLowestScore() const;
+	const PathNode* GetNodeLowestScore() const;
 
 	// -----------
-// The vector itself, note they are not pointers!
-	std::vector<PathNode> vector;
+	// The list itself, note they are not pointers!
+	std::list <PathNode> list;
 };
+
 
 #endif // __j1PATHFINDING_H__
