@@ -23,7 +23,7 @@ bool j1Fonts::Awake(pugi::xml_node& conf)
 	LOG("Init True Type Font library");
 	bool ret = true;
 
-	if(TTF_Init() == -1)
+	if (TTF_Init() == -1)
 	{
 		LOG("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
 		ret = false;
@@ -62,7 +62,7 @@ bool j1Fonts::CleanUp()
 
 	for (int i = 0; i < fonts.size(); i++)
 	{
-		TTF_CloseFont(fonts[i]);
+		TTF_CloseFont(fonts[i].font);
 	}
 
 	fonts.clear();
@@ -75,14 +75,13 @@ TTF_Font* const j1Fonts::Load(const char* path, int size)
 {
 	TTF_Font* font = TTF_OpenFont(path, size);
 
-	if(font == NULL)
+	if (font == NULL)
 	{
 		LOG("Could not load TTF font with path: %s. TTF_OpenFont: %s", path, TTF_GetError());
 	}
 	else
 	{
 		LOG("Successfully loaded font %s size %d", path, size);
-		fonts.push_back(font);
 	}
 
 	return font;
@@ -102,7 +101,7 @@ SDL_Texture* j1Fonts::Print(const char* text, SDL_Color color, std::string font_
 
 	SDL_Surface* surface = TTF_RenderText_Blended((font) ? font : default, text, color);
 
-	if(surface == NULL)
+	if (surface == NULL)
 	{
 		LOG("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
 	}
@@ -120,7 +119,7 @@ bool j1Fonts::CalcSize(const char* text, int& width, int& height, _TTF_Font* fon
 {
 	bool ret = false;
 
-	if(TTF_SizeText((font) ? font : default, text, &width, &height) != 0)
+	if (TTF_SizeText((font) ? font : default, text, & width, & height) != 0)
 		LOG("Unable to calc size of text surface! SDL_ttf Error: %s\n", TTF_GetError());
 	else
 		ret = true;

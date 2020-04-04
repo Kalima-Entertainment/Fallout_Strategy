@@ -29,13 +29,10 @@ bool j1Console::Awake(pugi::xml_node& config) {
 bool j1Console::Start() {
 	bool ret = true;
 	AddLogText("Console started");
-
-	//Log box definitions 
 	uint width, height;
 	App->win->GetWindowSize(width, height);
-	log_box = { -App->render->camera.x, -App->render->camera.y, (int)width, 350};
+	log_box = { -App->render->camera.x, -App->render->camera.y, (int)width, 350 };
 	command_background = { -App->render->camera.x, log_box.h, (int)width, 40 };
-
 
 	//CreateCommand("list", (j1Module*)this, "List all console commands");
 	//App->console->CreateCommand("quit", (j1Module*)this, "Quit the game");
@@ -135,8 +132,19 @@ bool j1Console::PostUpdate() {
 	if (isVisible)
 	{
 		//Draw console
+
+		//background 
+		log_box.x = command_background.x = -App->render->camera.x;
+		log_box.y = -App->render->camera.y;
+		command_background.y = log_box.y + log_box.h;
 		App->render->DrawQuad(log_box, 0, 115, 25, 225);
 		App->render->DrawQuad(command_background, 0, 80, 10, 245);
+
+		//log text
+		for (int i = 0; i < on_screen_log.size(); i++)
+		{
+			on_screen_log[i]->Draw();
+		}
 	}
 	return ret;
 }
@@ -160,11 +168,12 @@ void j1Console::AddLogText(std::string incoming_text) {
 }
 
 void j1Console::CreateInterface() {
-
+	int font_size = 38;
 	for (int i = 0; i < log_record.size(); i++)
 	{
-		on_screen_log.push_back((UI_Label*)App->gui->CreateLabel(-App->render->camera.x + 10, -App->render->camera.y, text_new_game, log_record[i].c_str(), NULL, this, NULL));
+		on_screen_log.push_back((UI_Label*)App->gui->CreateLabel(-App->render->camera.x + 10, command_background.y -font_size - (i * font_size), Label, log_record[i].c_str(), NULL, this, NULL));
 	}
+
 }
 
 void j1Console::DestroyInterface() {

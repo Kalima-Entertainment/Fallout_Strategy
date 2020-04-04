@@ -5,7 +5,7 @@
 
 enum StaticState {
 	WAIT,
-	PRODUCE,
+	WORK,
 	EXPLODE,
 	NO_STATE
 };

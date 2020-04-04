@@ -18,7 +18,7 @@ bool StaticEntity::Update(float dt) {
 	switch (state) {
 	case WAIT:
 		break;
-	case PRODUCE:
+	case WORK:
 		break;
 	case EXPLODE:
 		if (current_animation->Finished())
@@ -147,8 +147,8 @@ bool StaticEntity::LoadAnimations() {
 		if (animation_name == "idle") {
 			state = WAIT;
 		}
-		else if (animation_name == "produce") {
-			state = PRODUCE;
+		else if (animation_name == "work") {
+			state = WORK;
 			loop = false;
 		}
 		else if (animation_name == "die") {
