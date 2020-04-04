@@ -479,7 +479,7 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->gui->DeleteArrayElements(collaborators, 9);
 		break;
 	case Menu::SELECT_FACTION:
-		App->gui->DeleteArrayElements(select_faction_menu, 16);
+		App->gui->DeleteArrayElements(select_faction_menu, 12);
 		break;
 	case Menu::PAUSE_MENU:
 		App->gui->DeleteArrayElements(pause_menu, 7);
@@ -544,6 +544,9 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 						case BUILDING_TYPE::ALL:
 							break;
 						case BUILDING_TYPE::NONE:
+							App->gui->Delete_Element(select_faction_photos[0]);
+							App->gui->Delete_Element(select_faction_photos[1]);
+							App->gui->Delete_Element(select_faction_photos[3]);
 							break;
 						default:
 							break;
@@ -564,6 +567,9 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 							App->gui->DeleteArrayElements(supermutant_lab, 1);
 							break;
 						case BUILDING_TYPE::NONE:
+							App->gui->Delete_Element(select_faction_photos[0]);
+							App->gui->Delete_Element(select_faction_photos[1]);
+							App->gui->Delete_Element(select_faction_photos[2]);
 							break;
 						default:
 							break;
@@ -584,6 +590,9 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 							App->gui->DeleteArrayElements(ghoul_lab, 1);
 							break;
 						case BUILDING_TYPE::NONE:
+							App->gui->Delete_Element(select_faction_photos[1]);
+							App->gui->Delete_Element(select_faction_photos[2]);
+							App->gui->Delete_Element(select_faction_photos[3]);
 							break;
 						default:
 							break;
@@ -603,6 +612,9 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 							App->gui->DeleteArrayElements(vault_lab, 1);
 							break;
 						case BUILDING_TYPE::NONE:
+							App->gui->Delete_Element(select_faction_photos[0]);
+							App->gui->Delete_Element(select_faction_photos[2]);
+							App->gui->Delete_Element(select_faction_photos[3]);
 							break;
 						default:
 							break;

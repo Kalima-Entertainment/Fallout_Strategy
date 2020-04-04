@@ -84,8 +84,8 @@ bool UI_Button::Update(float dt)
 
 			if (counter == 10) {
 				
-				App->menu_manager->select_faction_menu[12] = (j1Image*)App->gui->CreateImage(100, 300, Image, { 2492, 837, 168, 166 }, NULL, this);
-				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->select_faction_menu[0] = (j1Image*)App->gui->CreateImage(100, 300, Image, { 2492, 837, 168, 166 }, NULL, this);
+				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::GHOUL, BUILDING_TYPE::NONE);
 
 			}
 		
@@ -94,10 +94,10 @@ bool UI_Button::Update(float dt)
 		if (t == button_select_vault) {
 
 
-			if (counter == 1) {
+			if (counter == 10) {
 				
-				App->menu_manager->select_faction_menu[13] = (j1Image*)App->gui->CreateImage(310, 300, Image, { 2492, 1013, 309, 134 }, NULL, this);
-				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->select_faction_photos[1] = (j1Image*)App->gui->CreateImage(310, 300, Image, { 2492, 1013, 309, 134 }, NULL, this);
+				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::VAULT, BUILDING_TYPE::NONE);
 
 			}
 
@@ -106,10 +106,10 @@ bool UI_Button::Update(float dt)
 		if (t == button_select_brotherhood) {
 
 
-			if (counter == 1) {
+			if (counter == 10) {
 				
-				App->menu_manager->select_faction_menu[14] = (j1Image*)App->gui->CreateImage(550, 300, Image, { 2492, 1161, 155, 180 }, NULL, this);
-				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->select_faction_menu[2] = (j1Image*)App->gui->CreateImage(550, 300, Image, { 2492, 1161, 155, 180 }, NULL, this);
+				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::BROTHERHOOD, BUILDING_TYPE::NONE);
 
 			}
 
@@ -117,10 +117,10 @@ bool UI_Button::Update(float dt)
 
 		if (t == button_select_supermutant) {
 
-			if (counter == 1) {
+			if (counter == 10) {
 				
-				App->menu_manager->select_faction_menu[15] = (j1Image*)App->gui->CreateImage(750, 300, Image, { 2492, 1354, 158, 158 }, NULL, this);
-				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::NONE, BUILDING_TYPE::NONE);
+				App->menu_manager->select_faction_menu[3] = (j1Image*)App->gui->CreateImage(750, 300, Image, { 2492, 1354, 158, 158 }, NULL, this);
+				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::SUPERMUTANT, BUILDING_TYPE::NONE);
 
 			}
 
