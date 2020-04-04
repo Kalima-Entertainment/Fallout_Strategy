@@ -46,8 +46,6 @@ public:
 	void DeleteArrayElements(UI_element* array[], int size);
 	bool Delete_Element(UI_element* element);
 
-	// TODO 2: Create the factory methods
-
 	void DestroyVectorElements(std::vector<UI_element*> vector);
 
 	// Gui creation functions

@@ -27,7 +27,6 @@ j1Minimap::~j1Minimap() {
 bool j1Minimap::Awake(pugi::xml_node& config) {
 	uint window_width, window_height;
 
-	//TODO 0: Take into account for the next TODO that the minimap widht is set in config
 	width = config.attribute("width").as_int();
 
 	//corner
@@ -151,7 +150,6 @@ bool j1Minimap::CreateMinimap() {
 }
 
 iPoint j1Minimap::WorldToMinimap(int x, int y) {
-	//TODO 4.1: Fill this function
 	iPoint minimap_position;
 	minimap_position.x = position.x + width * 0.5f + x * scale;
 	minimap_position.y = position.y + y * scale;
@@ -160,7 +158,6 @@ iPoint j1Minimap::WorldToMinimap(int x, int y) {
 }
 
 iPoint j1Minimap::ScreenToMinimapToWorld(int x, int y) {
-	//TODO 5: Fill this function to convert a position from screen to the Minimap and directly to world
 	iPoint minimap_position;
 	minimap_position.x = (x - position.x - width * 0.5f)/scale;
 	minimap_position.y = (y - position.y)/scale;

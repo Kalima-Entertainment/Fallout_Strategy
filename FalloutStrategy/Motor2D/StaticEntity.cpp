@@ -28,20 +28,19 @@ bool StaticEntity::Update(float dt) {
 		break;
 	}
 
-	//Interact with the building to spawn units or investigate upgrades
+	//Interact with the building to spawn units or investigate upgrades by keyboard only
 	if (this == App->player->selected_entity) {		
 		if (type == BASE) {
 			//Spawn GATHERER
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-				App->entities->CreateEntity(GHOUL, GATHERER, spawnPosition.x, spawnPosition.y);
+				App->entities->CreateEntity(faction, GATHERER, spawnPosition.x, spawnPosition.y);
 			else if (type == BARRACK) {
 				//Spawn MELEE
 				if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-					App->entities->CreateEntity(GHOUL, MELEE, spawnPosition.x, spawnPosition.y);
-
+					App->entities->CreateEntity(faction, MELEE, spawnPosition.x, spawnPosition.y);
 				//Spawn RANGED
 				if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-					App->entities->CreateEntity(GHOUL, RANGED, spawnPosition.x, spawnPosition.y);
+					App->entities->CreateEntity(faction, RANGED, spawnPosition.x, spawnPosition.y);
 			}
 			else if (type == LABORATORY) {
 				//Upgrades

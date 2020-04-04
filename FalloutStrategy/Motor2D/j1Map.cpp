@@ -574,27 +574,70 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 
 				//Adjust coordinates to tiles
 				x /= HALF_TILE;
-				y /= HALF_TILE;
+				y /= HALF_TILE;				
 
-				//add tiles
+				std::string faction_number = std::string(object_node.child("properties").child("property").attribute("value").as_string());
+				Faction building_faction;
+
+				if (faction_number == "1") {
+					building_faction = GHOUL;
+				}else if (faction_number == "2") {
+					building_faction = VAULT;
+				}else if (faction_number == "3") {
+					building_faction = MUTANT;
+				}else if (faction_number == "4") {
+					building_faction = BROTHERHOOD;
+				}
+
+				//add tiles and adjust render texture position
 				std::string object_type = std::string(object_node.attribute("type").as_string());
 				EntityType type = NO_TYPE;
 
 				if (object_type == "Base") {
 					type = BASE;
-					x -= 10;
-					y -= 5;
+					if (building_faction == GHOUL) {
+						x -= 10;
+						y -= 5;
+					}else if (building_faction == VAULT) {
+						x += 1;
+						y += 2;
+					}else if (building_faction == MUTANT) {
+						x -= 1;
+						y += 1;
+					}else if (building_faction == BROTHERHOOD) {
+						y += 1;
+					}
 				}
 				else if (object_type == "Barrack") {
 					type = BARRACK;
-					x -= 12;
-					y -= 6;
+					if (building_faction == GHOUL) {
+						x -= 12;
+						y -= 6;
+					}else if (building_faction == VAULT) {
+						x -= 0;
+						y -= 0;
+					}else if (building_faction == MUTANT) {
+						x -= 0;
+						y -= 0;
+					}else if (building_faction == BROTHERHOOD) {
+						x -= 0;
+						y -= 0;
+					}
 				}
 				else if (object_type == "Laboratory") {
 					type = LABORATORY;
+					if (building_faction == GHOUL) {
+
+					}else if (building_faction == VAULT) {
+
+					}else if (building_faction == MUTANT) {
+
+					}else if (building_faction == BROTHERHOOD) {
+
+					}
 				}
 
-				static_entity = (StaticEntity*)App->entities->CreateEntity(GHOUL, type, x,y);
+				static_entity = (StaticEntity*)App->entities->CreateEntity(building_faction, type, x,y);
 				static_entity->tiles = CalculateArea(first_tile_position, width, height);
 			}
 			
