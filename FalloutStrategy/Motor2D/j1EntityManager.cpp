@@ -125,7 +125,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 				entity->spawnPosition = { entity->current_tile.x + 14, entity->current_tile.y + 9 };
 
 			//Add render position for correct blitting
-			entity->render_position = App->map->MapToWorld(entity->spawnPosition.x+1, entity->spawnPosition.y);			
+			entity->render_position = App->map->MapToWorld(entity->spawnPosition.x+1, entity->spawnPosition.y);	
 		}
 	}
 
