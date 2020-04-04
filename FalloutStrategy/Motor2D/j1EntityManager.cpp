@@ -117,12 +117,33 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 
 			//Add spawn position for units
 			//TODO: It works for GHOULS, needs to be adapted for all the factions
-			if (type == BASE)
-				entity->spawnPosition = { entity->current_tile.x + 14, entity->current_tile.y + 9 };
-			else if (type == BARRACK)
-				entity->spawnPosition = { entity->current_tile.x + 14, entity->current_tile.y + 9 };
-			else if (type == LABORATORY)
-				entity->spawnPosition = { entity->current_tile.x + 14, entity->current_tile.y + 9 };
+			if (faction == GHOUL) {
+				if (type == BASE)
+					entity->spawnPosition = { entity->current_tile.x + 14, entity->current_tile.y + 9 };
+				else if (type == BARRACK)
+					entity->spawnPosition = { entity->current_tile.x + 14, entity->current_tile.y + 9 };
+			}
+			else if(faction == VAULT){
+				if (type == BASE)
+					entity->spawnPosition = { entity->current_tile.x + 3, entity->current_tile.y+2};
+				else if (type == BARRACK)
+					entity->spawnPosition = { entity->current_tile.x+2, entity->current_tile.y+3};
+			}
+			else if (faction == MUTANT) {
+				if (type == BASE)
+					entity->spawnPosition = { entity->current_tile.x+5, entity->current_tile.y+3 };
+				else if (type == BARRACK)
+					entity->spawnPosition = { entity->current_tile.x+2, entity->current_tile.y+3 };
+			}
+			else if (faction == BROTHERHOOD) {
+				if (type == BASE)
+					entity->spawnPosition = { entity->current_tile.x+4, entity->current_tile.y+3 };
+				else if (type == BARRACK)
+					entity->spawnPosition = { entity->current_tile.x+2, entity->current_tile.y+3 };
+			}
+			//Laboratory is the same for all factions. We save code
+			if (type == LABORATORY)
+				entity->spawnPosition = { entity->current_tile.x + 2, entity->current_tile.y + 2 };
 
 			//Add render position for correct blitting
 			entity->render_position = App->map->MapToWorld(entity->spawnPosition.x+1, entity->spawnPosition.y);	
