@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="isometric" renderorder="right-down" width="75" height="75" tilewidth="64" tileheight="32" nextobjectid="46">
+<map version="1.0" orientation="isometric" renderorder="right-down" width="75" height="75" tilewidth="64" tileheight="32" nextobjectid="58">
  <tileset firstgid="1" name="floor" tilewidth="64" tileheight="32" tilecount="512" columns="16">
   <image source="Floors64x32.png" width="1024" height="1024"/>
   <tile id="37">
@@ -28274,9 +28274,85 @@
     <property name="Nuka-Cola" type="int" value="50"/>
    </properties>
   </object>
-  <object id="42" name="Static" type="Base" x="570.5" y="531.5" width="113.833" height="118.309"/>
-  <object id="43" name="Static" type="Barrack" x="706.5" y="411.5" width="50.6667" height="77.3333"/>
-  <object id="44" name="Static" type="Barrack" x="835.333" y="414.833" width="50.6667" height="79.3333"/>
-  <object id="45" name="Static" type="Laboratory" x="512.833" y="441.5" width="49.3333" height="46.3333"/>
+  <object id="42" name="Static" type="Base" x="570.5" y="531.5" width="113.833" height="118.309">
+   <properties>
+    <property name="faction" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="43" name="Static" type="Barrack" x="712.5" y="567.5" width="50.6667" height="77.3333">
+   <properties>
+    <property name="faction" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="44" name="Static" type="Barrack" x="815.333" y="578.833" width="50.6667" height="79.3333">
+   <properties>
+    <property name="faction" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="45" name="Static" type="Laboratory" x="509.333" y="605" width="49.3333" height="46.3333">
+   <properties>
+    <property name="faction" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="46" name="Static" type="Laboratory" x="497.917" y="840.346" width="49.3333" height="46.3333">
+   <properties>
+    <property name="faction" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="47" name="Static" type="Barrack" x="862.417" y="785.678" width="50.6667" height="79.3333">
+   <properties>
+    <property name="faction" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="48" name="Static" type="Barrack" x="752.084" y="777.845" width="50.6667" height="77.3333">
+   <properties>
+    <property name="faction" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="49" name="Static" type="Base" x="578.584" y="765.345" width="113.833" height="118.309">
+   <properties>
+    <property name="faction" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="50" name="Static" type="Laboratory" x="517.417" y="1060.85" width="49.3333" height="46.3333">
+   <properties>
+    <property name="faction" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="51" name="Static" type="Barrack" x="861.417" y="986.678" width="50.6667" height="79.3333">
+   <properties>
+    <property name="faction" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="52" name="Static" type="Barrack" x="750.584" y="977.345" width="50.6667" height="77.3333">
+   <properties>
+    <property name="faction" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="53" name="Static" type="Base" x="593.584" y="990.345" width="113.833" height="118.309">
+   <properties>
+    <property name="faction" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="54" name="Static" type="Laboratory" x="732.917" y="451.346" width="49.3333" height="46.3333">
+   <properties>
+    <property name="faction" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="55" name="Static" type="Barrack" x="895.917" y="424.178" width="50.6667" height="79.3333">
+   <properties>
+    <property name="faction" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="56" name="Static" type="Barrack" x="808.584" y="421.345" width="50.6667" height="77.3333">
+   <properties>
+    <property name="faction" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="57" name="Static" type="Base" x="572.584" y="363.345" width="113.833" height="118.309">
+   <properties>
+    <property name="faction" type="int" value="1"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>
