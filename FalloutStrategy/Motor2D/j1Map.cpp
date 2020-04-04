@@ -150,7 +150,7 @@ iPoint j1Map::WorldToMap(int x, int y) const
 	}
 	else if(data.type == MAPTYPE_ISOMETRIC)
 	{
-		
+
 		float half_width = data.tile_width * 0.5f;
 		float half_height = data.tile_height * 0.5f;
 		ret.x = int( (x / half_width + y / half_height) / 2) - 1;
@@ -574,7 +574,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 
 				//Adjust coordinates to tiles
 				x /= HALF_TILE;
-				y /= HALF_TILE;				
+				y /= HALF_TILE;
 
 				std::string faction_number = std::string(object_node.child("properties").child("property").attribute("value").as_string());
 				Faction building_faction;
@@ -640,7 +640,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 				static_entity = (StaticEntity*)App->entities->CreateEntity(building_faction, type, x,y);
 				static_entity->tiles = CalculateArea(first_tile_position, width, height);
 			}
-			
+
 			object_node = object_node.next_sibling();
 		}
 	}
@@ -696,7 +696,7 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 
 				int tile_id = layer->Get(x, y);
 				TileSet* tileset = (tile_id > 0) ? GetTilesetFromTileId(tile_id) : NULL;
-				
+
 				if(tileset != NULL)
 				{
 					map[i] = (tile_id - tileset->firstgid) > 0 ? 0 : 1;

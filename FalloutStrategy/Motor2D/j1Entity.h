@@ -29,7 +29,7 @@ enum Faction {
 	NO_FACTION
 };
 
-class j1Entity 
+class j1Entity
 {
 public:
 	j1Entity();
@@ -73,7 +73,7 @@ public:
 	Faction faction;
 	j1Entity* reference_entity;
 	DynamicEntity* attacking_entity;
-	
+
 	Animation* current_animation;
 	SDL_Texture* texture;
 	float last_dt;
@@ -85,4 +85,3 @@ public:
 };
 
 #endif // !_j1ENTITY_H
-

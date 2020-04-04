@@ -26,7 +26,7 @@ public:
 	std::string text;
 	SDL_Texture* text_texture=nullptr;
 	UI_Type t;
-	
+
 	//Timer
 	int d;
 	char timer[7] = "";

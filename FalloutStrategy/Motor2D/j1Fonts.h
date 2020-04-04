@@ -11,6 +11,11 @@
 struct SDL_Texture;
 struct _TTF_Font;
 
+struct Font {
+	std::string name;
+	_TTF_Font* font;
+};
+
 class j1Fonts : public j1Module
 {
 public:

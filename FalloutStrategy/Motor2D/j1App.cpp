@@ -1,5 +1,5 @@
 #include <iostream> 
-#include <sstream> 
+#include <sstream>
 
 #include "p2Defs.h"
 #include "p2Log.h"
@@ -104,7 +104,7 @@ bool j1App::Awake()
 	pugi::xml_node		app_config;
 
 	bool ret = false;
-		
+
 	config = LoadConfig(config_file);
 
 	if(config.empty() == false)
@@ -415,7 +415,7 @@ bool j1App::SavegameNow() const
 	// xml object were we will store all data
 	pugi::xml_document data;
 	pugi::xml_node root;
-	
+
 	root = data.append_child("game_state");
 	j1Module* pModule = modules[0];
 

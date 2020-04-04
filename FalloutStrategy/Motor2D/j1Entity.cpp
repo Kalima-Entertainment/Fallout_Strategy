@@ -53,14 +53,14 @@ void j1Entity::SpatialAudio(int fx, int channel, int positionx, int positiony) {
 
 	Mix_Playing(channel);
 	Mix_HaltChannel(channel);
-	
+
 	iPoint distance = { positionx - (-App->render->camera.x + App->render->camera.w / 2), positiony - (-App->render->camera.y + App->render->camera.h / 2 )};
 
 	int distance_normalized = (distance.x * distance.x + distance.y * distance.y);
 	distance_normalized = distance_normalized / 500;
 	volume = (distance_normalized * 255) / App->render->camera.w;
 
-	if (volume < 0) { volume = 0; } 
+	if (volume < 0) { volume = 0; }
 	if (volume > 255) { volume = 255; }
 
 	Mix_SetPosition(channel, 0, volume);

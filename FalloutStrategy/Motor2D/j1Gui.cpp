@@ -45,7 +45,7 @@ bool j1Gui::Start()
 // Update all guis
 bool j1Gui::PreUpdate()
 {
-	
+
 	return true;
 }
 
@@ -105,13 +105,14 @@ void j1Gui::DeleteArrayElements(UI_element* array[], int size) {
 }
 
 bool j1Gui::Delete_Element(UI_element* element) {
-	
+
 	for (int i = 0; i < ui_element.size(); i++)
 	{
 		if (element == ui_element[i]) {
 			ui_element.erase(ui_element.begin() + i);
 		}
 	}
+}
 
 	return true;
 }
@@ -122,7 +123,7 @@ SDL_Texture* j1Gui::GetAtlas() const { return texture; }
 // class Gui
 
 UI_element* j1Gui::CreateButton(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, SDL_Rect click, UI_element* parent, j1Module* Observer) {
-	
+
 	UI_Button* button = new UI_Button(x, y, type, idle, hover, click, parent, Observer);
 
 	ui_element.push_back(button);
@@ -157,4 +158,3 @@ UI_element* j1Gui::CreateLabel(int x, int y, UI_Type type, std::string text_inpu
 
 	return label;
 }
-

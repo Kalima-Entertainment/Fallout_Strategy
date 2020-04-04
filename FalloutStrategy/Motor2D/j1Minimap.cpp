@@ -60,7 +60,7 @@ bool j1Minimap::Start() {
 	height = (map_height) * scale;
 
 	texture = SDL_CreateTexture(App->render->renderer, SDL_GetWindowPixelFormat(App->win->window), SDL_TEXTUREACCESS_TARGET, width, height);
-	
+
 	SDL_SetRenderTarget(App->render->renderer, texture);
 	CreateMinimap();
 	SDL_SetRenderTarget(App->render->renderer, NULL);
@@ -93,7 +93,7 @@ bool j1Minimap::PostUpdate() {
 	if ((App->menu_manager->current_menu == Menu::NO_MENU)||(App->menu_manager->current_menu == Menu::PAUSE_MENU)) {
 
 		App->render->Blit(texture, position.x, position.y, NULL, 1.0, 0);
-	
+
 		for (int i = 0; i < App->entities->entities.size(); i++)
 		{
 			SDL_Rect entity_rect = {0,0,3,3};

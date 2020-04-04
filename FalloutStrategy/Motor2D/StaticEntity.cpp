@@ -28,8 +28,8 @@ bool StaticEntity::Update(float dt) {
 		break;
 	}
 
-	//Interact with the building to spawn units or investigate upgrades by keyboard only
-	if (this == App->player->selected_entity) {		
+	//Interact with the building to spawn units or investigate upgrades
+	if (this == App->player->selected_entity) {
 		if (type == BASE) {
 			//Spawn GATHERER
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
@@ -46,7 +46,7 @@ bool StaticEntity::Update(float dt) {
 				//Upgrades
 			}
 		}
-	}	
+	}
 
 	last_dt = dt;
 
@@ -105,7 +105,7 @@ bool StaticEntity::LoadAnimations() {
 	{
 		this->texture = App->tex->Load(texture_path.c_str());
 	}
-	
+
 	if (result == NULL)
 	{
 		LOG("Could not load animation tmx file %s. pugi error: %s", file, result.description());

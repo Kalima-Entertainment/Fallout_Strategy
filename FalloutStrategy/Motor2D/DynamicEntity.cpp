@@ -150,7 +150,7 @@ void DynamicEntity::Move(float dt) {
 						state = ATTACK;
 						Attack();
 					}
-					
+
 					else if (next_tile == target_tile)
 					{
 						if ((resource_collected > 0)&&(target_building != nullptr))
@@ -166,7 +166,7 @@ void DynamicEntity::Move(float dt) {
 							state = IDLE;
 						}
 					}
-					
+
 				}
 				else
 				{
@@ -221,7 +221,7 @@ void DynamicEntity::Move(float dt) {
 						next_tile = path_to_target[1];
 					}
 					path_to_target.erase(path_to_target.begin());
-					
+
 				}
 				else
 				{
@@ -272,7 +272,7 @@ void DynamicEntity::Attack() {
 		break;
 	}
 
-	if (target_entity->current_health <= 0) { 
+	if (target_entity->current_health <= 0) {
 		target_entity->state = DIE;
 		target_entity->direction = TOP_LEFT;
 		target_entity = nullptr;
@@ -293,6 +293,7 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 
 	current_tile = App->map->WorldToMap(position.x, position.y);
 	App->pathfinding->CreatePath(current_tile, destination);
+	LOG("Path exited 2");
 
 	//pathfinding debug
 	int x, y;
@@ -302,9 +303,9 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 	path_to_target = App->pathfinding->GetLastPath();
 
 
-	if (path_to_target.size() > 0) 
+	if (path_to_target.size() > 0)
 		next_tile = path_to_target.front();
-	
+
 	for (uint i = 0; i < path_to_target.size(); ++i)
 	{
 		iPoint pos = App->map->MapToWorld(path_to_target[i].x, path_to_target[i].y);

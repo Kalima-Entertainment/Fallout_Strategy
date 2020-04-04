@@ -19,22 +19,22 @@ UI_Label::~UI_Label()
 
 bool UI_Label::Update(float dt)
 {
-	
+
 	if (t == Label_timer) {
-		
+
 		timer_count = *timer_out;
 		d = 100000;
 
 		for (int i = 0; i < 6; i++) {
-			
+
 			timer[i] = (char)(timer_count/d);
-			
+
 			timer_count = timer_count%d;
-			
+
 			d = d / 10;
-		
+
 		}
-		
+
 		SetTextTimer(timer);
 
 	}
@@ -53,9 +53,9 @@ bool UI_Label::SetLabelText(std::string text_input)
 	bool ret = false;
 	text = text_input;
 
-	if (text.size() > 0){
+	if (text.Length() > 0){
 
-		text_texture = App->font->Print(text.data(), { 244,244,244,255 }, App->font->fonts[0]);
+		text_texture = App->font->Print(text.GetString(), { 244,244,244,255 }, "StackedPixel");
 	}
 
 	if (text_texture != nullptr)
@@ -73,7 +73,7 @@ bool UI_Label::SetLabelText(std::string text_input)
 		this->dimensions = rect;
 
 		ret = true;
-		
+
 	}
 
 
@@ -82,9 +82,9 @@ bool UI_Label::SetLabelText(std::string text_input)
 
 void UI_Label::SetTextTimer(const char* text)
 {
-	
+
 	App->tex->UnLoad(texture);
-	texture = App->font->Print(text, { 255,255,255,255 }, App->font->fonts[0]);
+	texture = App->font->Print(text, { 255,255,255,255 }, "StackedPixel");
 	App->font->CalcSize(text, dimensions.w, dimensions.h);
 
 }

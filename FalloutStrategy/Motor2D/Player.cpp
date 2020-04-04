@@ -43,7 +43,7 @@ bool Player::PreUpdate() {
 	//enable/disable debug mode
 	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 		App->render->debug = !App->render->debug;
-	
+
 	//block border scroll
 	if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
 		border_scroll = !border_scroll;
@@ -103,7 +103,7 @@ bool Player::PreUpdate() {
 					else
 						dynamic_entity->target_building = (StaticEntity*)target;
 				}
-				else {					
+				else {
 					dynamic_entity->target_entity = nullptr;
 					ResourceBuilding* resource_building;
 					resource_building = App->entities->FindResourceBuildingByTile(selected_spot);
@@ -116,7 +116,7 @@ bool Player::PreUpdate() {
 			else
 			{
 				StaticEntity* static_entity;
-				static_entity = (StaticEntity*)selected_entity;				
+				static_entity = (StaticEntity*)selected_entity;
 			}
 		}
 	}
@@ -126,7 +126,7 @@ bool Player::PreUpdate() {
 		selected_entity = nullptr;
 
 		//Remove HUD data from the UI
-		App->menu_manager->DestroyAllBuildings();
+		App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::ALL, BUILDING_TYPE::ALL);
 		App->entities->count = 0;
 	}
 

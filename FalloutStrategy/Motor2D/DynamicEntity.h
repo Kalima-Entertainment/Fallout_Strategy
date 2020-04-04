@@ -68,4 +68,3 @@ public:
 
 
 #endif // !_DYNAMIC_ENTITY_H
-

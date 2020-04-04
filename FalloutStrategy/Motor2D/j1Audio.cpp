@@ -72,7 +72,7 @@ bool j1Audio::CleanUp()
 	for (int i = 0; i < fx.size(); i++) {
 		Mix_FreeChunk(fx[i]);
 	}
-	
+
 
 	fx.clear();
 

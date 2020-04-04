@@ -28,7 +28,7 @@ enum UI_Type {
 	button_macia,
 	button_pol,
 	button_silvino,
-	button_cristian,
+	button_christian,
 	button_load_game,
 	button_settings,
 	button_settings_pause,

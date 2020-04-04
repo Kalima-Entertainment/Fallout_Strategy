@@ -83,8 +83,8 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 					entity->current_tile.y = position_y;
 
 					break;
-				}				
-			}			
+				}
+			}
 
 			entity->position = App->map->fMapToWorld(entity->current_tile.x, entity->current_tile.y);
 			entity->position.x += 32;
@@ -113,7 +113,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 			if (entity->reference_entity != nullptr) {
 				entities.push_back(entity);
 				entity->LoadReferenceData();
-			}			
+			}
 
 			//Add spawn position for units
 			//TODO: It works for GHOULS, needs to be adapted for all the factions
@@ -146,7 +146,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 				entity->spawnPosition = { entity->current_tile.x + 2, entity->current_tile.y + 2 };
 
 			//Add render position for correct blitting
-			entity->render_position = App->map->MapToWorld(entity->spawnPosition.x+1, entity->spawnPosition.y);	
+			entity->render_position = App->map->MapToWorld(entity->spawnPosition.x+1, entity->spawnPosition.y);
 		}
 	}
 
@@ -195,7 +195,7 @@ bool j1EntityManager::Start() {
 	//reference_entities[GHOUL][BASE]->LoadAnimations("Ghouls/Ghouls_Base");
 	reference_entities[GHOUL][BARRACK]->LoadAnimations();
 	reference_entities[GHOUL][BARRACK]->texture = reference_entities[GHOUL][BASE]->texture;
-	
+
 	return ret;
 }
 
@@ -283,7 +283,7 @@ bool j1EntityManager::PostUpdate()
 			App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tex_rect);
 		}
 		//Selected entity is a building
-		else { 
+		else {
 			StaticEntity* static_entity = (StaticEntity*)App->player->selected_entity;
 			for (int j = 0; j < static_entity->tiles.size(); j++)
 			{
@@ -295,9 +295,9 @@ bool j1EntityManager::PostUpdate()
 			switch (static_entity->faction) {
 			case GHOUL:
 				if (static_entity->type == BASE) {
-					
+
 					if(count==0){
-						
+
 						App->menu_manager->CreateGhouls_Base();
 						count++;
 						LOG("%i", count);
@@ -307,14 +307,14 @@ bool j1EntityManager::PostUpdate()
 				else if (static_entity->type == BARRACK) {
 
 					if (count == 0) {
-						
+
 						App->menu_manager->CreateGhouls_Barrack();
 						count++;
 					}
 
 				}
 				else if (static_entity->type == LABORATORY) {
-					
+
 					if (count == 0) {
 						App->menu_manager->CreateGhouls_Lab();
 						count++;
