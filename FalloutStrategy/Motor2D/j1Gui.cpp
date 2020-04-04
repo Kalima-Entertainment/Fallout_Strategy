@@ -28,7 +28,7 @@ bool j1Gui::Awake(pugi::xml_node& config)
 	LOG("Loading GUI atlas");
 	bool ret = true;
 	node = config;
-	folder.append(node.child("folder").child_value());
+	folder = node.child("folder").child_value();
 	UI_file_name = config.child("ui").attribute("file1").as_string();
 
 	return ret;
@@ -37,7 +37,7 @@ bool j1Gui::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Gui::Start()
 {
-	texture = App->tex->Load(PATH(folder.data(),UI_file_name.data()));
+	texture = App->tex->Load(PATH(folder.c_str(), UI_file_name.c_str()));
 
 	return true;
 }
@@ -51,15 +51,13 @@ bool j1Gui::PreUpdate()
 
 bool j1Gui::Update(float dt) {
 	BROFILER_CATEGORY("GuiUpdate", Profiler::Color::Yellow)
-	for (int i = 0; i < ui_element.size(); i++) {
+		for (int i = 0; i < ui_element.size(); i++) {
+			if (ui_element[i] != nullptr) {
 
-		if (ui_element[i] != nullptr) {
+				ui_element[i]->Update(dt);
 
-			//ui_element.At(i)->data->Draw();
-			ui_element[i]->Update(dt);
-
+			}
 		}
-	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
 
@@ -71,15 +69,15 @@ bool j1Gui::Update(float dt) {
 }
 
 // Called after all Updates
-bool j1Gui::PostUpdate(){
+bool j1Gui::PostUpdate() {
 	BROFILER_CATEGORY("GuiPostUpdate", Profiler::Color::LightGreen)
-	for (int i = 0; i < ui_element.size(); i++) {
+		for (int i = 0; i < ui_element.size(); i++) {
 
-		if (ui_element[i] != nullptr) {
+			if (ui_element[i] != nullptr) {
 
-			ui_element[i]->Draw();
+				ui_element[i]->Draw();
+			}
 		}
-	}
 	return true;
 }
 
@@ -97,10 +95,12 @@ bool j1Gui::CleanUp()
 }
 
 void j1Gui::DeleteArrayElements(UI_element* array[], int size) {
-	for (int i = 0; i < size; i++)
-	{
-		Delete_Element(array[i]);
-		delete array[i];
+
+	if (size != NULL) {
+		for (int i = 0; i < size; i++)
+		{
+			Delete_Element(array[i]);
+		}
 	}
 }
 
@@ -112,7 +112,6 @@ bool j1Gui::Delete_Element(UI_element* element) {
 			ui_element.erase(ui_element.begin() + i);
 		}
 	}
-}
 
 	return true;
 }
