@@ -35,6 +35,23 @@ bool j1Fonts::Awake(pugi::xml_node& conf)
 		default = Load(path, size);
 	}
 
+	
+	pugi::xml_node font_node = conf.first_child();
+	
+	while (font_node) {
+		Font font;
+		std::string path = ("fonts/");
+		std::string font_name = std::string(font_node.attribute("folder").as_string());
+		std::string folder = std::string(font_node.attribute("folder").as_string());
+		font.name = font_name;
+
+		path.append(folder).append("/").append(font_name).append(".ttf");
+		int size = font_node.attribute("size").as_int(DEFAULT_FONT_SIZE);
+		font.font = Load(path.c_str(), size);
+		fonts.push_back(font);
+		font_node = font_node.next_sibling();
+	}
+	
 	return ret;
 }
 
@@ -45,7 +62,7 @@ bool j1Fonts::CleanUp()
 
 	for (int i = 0; i < fonts.size(); i++)
 	{
-		TTF_CloseFont(fonts[i]);
+		TTF_CloseFont(fonts[i].font);
 	}
 
 	fonts.clear();
@@ -65,16 +82,23 @@ TTF_Font* const j1Fonts::Load(const char* path, int size)
 	else
 	{
 		LOG("Successfully loaded font %s size %d", path, size);
-		fonts.push_back(font);
 	}
 
 	return font;
 }
 
 // Print text using font
-SDL_Texture* j1Fonts::Print(const char* text, SDL_Color color, TTF_Font* font)
+SDL_Texture* j1Fonts::Print(const char* text, SDL_Color color, std::string font_name)
 {
 	SDL_Texture* ret = NULL;
+	_TTF_Font* font = NULL;
+
+	for (int i = 0; i < fonts.size(); i++)
+	{
+		if (fonts[i].name == font_name)
+			font = fonts[i].font;
+	}
+
 	SDL_Surface* surface = TTF_RenderText_Blended((font) ? font : default, text, color);
 
 	if(surface == NULL)

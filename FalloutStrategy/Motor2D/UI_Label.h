@@ -10,7 +10,7 @@ class UI_Label : public UI_element
 {
 public:
 
-	UI_Label(int x, int y, UI_Type type, p2SString text_input, UI_element * parent, j1Module * Observer, int* counter);
+	UI_Label(int x, int y, UI_Type type, p2SString text_input, UI_element* parent, j1Module* Observer, int* counter);
 	~UI_Label();
 
 	bool Update(float dt);
