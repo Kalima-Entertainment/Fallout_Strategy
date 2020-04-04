@@ -248,11 +248,6 @@ bool UI_Button::Update(float dt)
 				App->audio->PlayFx(click_fx, 0);
 			}
 
-			if (t == Button_close) {
-				LOG("HOLA");
-							
-			}
-
 			if (t == button_github_credits) 
 			{
 				ShellExecuteA(NULL, "open", "https://github.com/Kalima-Entertainment/Fallout_Strategy", NULL, NULL, SW_SHOWNORMAL);
@@ -263,11 +258,6 @@ bool UI_Button::Update(float dt)
 			{
 				ShellExecuteA(NULL, "open", "https://twitter.com/KalimaEntmt", NULL, NULL, SW_SHOWNORMAL);
 				App->audio->PlayFx(click_fx, 0);
-			}
-
-			if (t == Button_restart) {
-				App->audio->PlayFx(click_fx, 0);
-			
 			}
 
 			if (t == button_settings) {
