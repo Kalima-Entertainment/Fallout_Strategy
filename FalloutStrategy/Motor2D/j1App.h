@@ -25,6 +25,7 @@ class Player;
 class j1Minimap;
 class MenuManager;
 class MainMenu;
+class j1Console;
 
 class j1App
 {
@@ -105,6 +106,7 @@ public:
 	j1Minimap*			minimap = NULL;
 	MenuManager*		menu_manager = NULL;
 	MainMenu*			main_menu = NULL;
+	j1Console*			console = NULL;
 
 	bool pause;
 	bool				quitGame = false;

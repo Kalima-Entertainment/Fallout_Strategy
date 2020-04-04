@@ -78,6 +78,7 @@
   <ItemGroup>
     <ClCompile Include="DynamicEntity.cpp" />
     <ClCompile Include="j1Collision.cpp" />
+    <ClCompile Include="j1Console.cpp" />
     <ClCompile Include="j1Entity.cpp" />
     <ClCompile Include="j1EntityManager.cpp" />
     <ClCompile Include="j1Fonts.cpp" />
@@ -111,6 +112,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="DynamicEntity.h" />
     <ClInclude Include="j1Collision.h" />
+    <ClInclude Include="j1Console.h" />
     <ClInclude Include="j1Entity.h" />
     <ClInclude Include="j1EntityManager.h" />
     <ClInclude Include="j1Fonts.h" />

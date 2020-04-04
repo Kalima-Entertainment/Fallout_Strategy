@@ -68,11 +68,10 @@ bool UI_Button::Update(float dt)
 
 		//rect is button hover
 		dimensions = Button_hover;
-		LOG("%i", counter);
+		//LOG("%i", counter);
 
 		//only plays fx once
 		if (counter == 1) {
-
 			App->audio->PlayFx(hover_fx, 0);
 		}
 

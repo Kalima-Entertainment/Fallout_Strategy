@@ -298,15 +298,17 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 	int x, y;
 	SDL_Rect Debug_rect = { 0,0,32,32 };
 
+	path_to_target.clear();
 	path_to_target = App->pathfinding->GetLastPath();
 
 
-	if (path_to_target.size() > 0) next_tile = path_to_target.front();
+	if (path_to_target.size() > 0) 
+		next_tile = path_to_target.front();
 	
 	for (uint i = 0; i < path_to_target.size(); ++i)
 	{
 		iPoint pos = App->map->MapToWorld(path_to_target[i].x, path_to_target[i].y);
-		LOG("CURRENT PATH IS: x: %i || y: %i ", path_to_target[i].x, path_to_target[i].y);
+		//LOG("CURRENT PATH IS: x: %i || y: %i ", path_to_target[i].x, path_to_target[i].y);
 
 		Debug_rect.x = pos.x;
 		Debug_rect.y = pos.y;
