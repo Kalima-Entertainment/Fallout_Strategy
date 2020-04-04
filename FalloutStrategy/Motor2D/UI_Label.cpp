@@ -21,7 +21,7 @@ UI_Label::~UI_Label()
 bool UI_Label::Update(float dt)
 {
 	
-	if (t == Label_timer) {
+	/*if (t == Label) {
 		
 		timer_count = *timer_out;
 		d = 100000;
@@ -38,7 +38,7 @@ bool UI_Label::Update(float dt)
 		
 		SetTextTimer(timer);
 
-	}
+	}*/
 
 	return true;
 }
