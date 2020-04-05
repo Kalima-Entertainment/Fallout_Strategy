@@ -9,6 +9,7 @@
 #include "j1EntityManager.h"
 #include "j1Entity.h"
 #include "MenuManager.h"
+#include "Player.h"
 
 j1Minimap::j1Minimap() : j1Module() {
 	name = ("minimap");
@@ -90,7 +91,7 @@ bool j1Minimap::Start() {
 
 bool j1Minimap::PostUpdate() {
 
-	if ((App->menu_manager->current_menu == Menu::NO_MENU)||(App->menu_manager->current_menu == Menu::PAUSE_MENU)) {
+	if ((App->menu_manager->current_menu == Menu::NO_MENU)||(App->menu_manager->current_menu == Menu::PAUSE_MENU) || (App->menu_manager->current_menu == Menu::GUI)) {
 
 		App->render->Blit(texture, position.x, position.y, NULL, 1.0, 0);
 
@@ -100,7 +101,10 @@ bool j1Minimap::PostUpdate() {
 			iPoint entity_position = App->minimap->WorldToMinimap(App->entities->entities[i]->position.x, App->entities->entities[i]->position.y);
 			entity_rect.x = entity_position.x;
 			entity_rect.y = entity_position.y;
-			App->render->DrawQuad(entity_rect, 0, 255, 0, 255, true, false);
+
+			Faction entity_faction = App->entities->entities[i]->faction;
+			if (App->player->factions[entity_faction] == true) { App->render->DrawQuad(entity_rect, 0, 255, 0, 255, true, false);}
+			else { App->render->DrawQuad(entity_rect, 255, 0, 0, 255, true, false);}
 		}
 
 		SDL_Rect rect = { 0,0,0,0 };

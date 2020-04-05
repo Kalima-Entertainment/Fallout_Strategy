@@ -157,6 +157,7 @@ void DynamicEntity::Move(float dt) {
 						{
 							resource_building->quantity += resource_collected;
 							resource_collected = 0;
+							App->player->UpdateResourceData();
 						}
 						else
 						{

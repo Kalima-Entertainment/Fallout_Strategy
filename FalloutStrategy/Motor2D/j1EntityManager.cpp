@@ -181,10 +181,9 @@ bool j1EntityManager::Start() {
 	//create reference entities
 
 	//load all textures
-
 	for (int faction = VAULT; faction < NO_FACTION; faction++)
 	{
-		for (int type = MELEE; type <= BASE; type++)
+		for (int type = MELEE; type < NO_TYPE; type++)
 		{
 			reference_entities[faction][type]->LoadAnimations();
 		}
@@ -192,11 +191,6 @@ bool j1EntityManager::Start() {
 		reference_entities[faction][BARRACK]->texture = reference_entities[faction][BASE]->texture;
 		reference_entities[faction][LABORATORY]->texture = reference_entities[faction][BASE]->texture;
 	}
-	
-	//Ghouls
-	//reference_entities[GHOUL][BASE]->LoadAnimations("Ghouls/Ghouls_Base");
-	reference_entities[GHOUL][BARRACK]->LoadAnimations();
-	reference_entities[GHOUL][BARRACK]->texture = reference_entities[GHOUL][BASE]->texture;
 
 	return ret;
 }
@@ -231,9 +225,12 @@ bool j1EntityManager::Update(float dt)
 	BROFILER_CATEGORY("EntitiesUpdate", Profiler::Color::GreenYellow)
 	bool ret = true;
 
-	for (int i = 0; i < entities.size(); i++)
+	if (!App->isPaused)
 	{
-		entities[i]->Update(dt);
+		for (int i = 0; i < entities.size(); i++)
+		{
+			entities[i]->Update(dt);
+		}
 	}
 
 	return ret;
@@ -438,7 +435,7 @@ void j1EntityManager::SortEntities() {
 
 	for (i = 0; i < n - 1; i++) {
 		for (j = 0; j < n - i - 1; j++) {
-			if (entities[j]->render_position.y > entities[j + 1]->render_position.y)
+			if (entities[j]->position.y > entities[j + 1]->position.y)
 				Swap(j, j + 1);
 		}
 	}

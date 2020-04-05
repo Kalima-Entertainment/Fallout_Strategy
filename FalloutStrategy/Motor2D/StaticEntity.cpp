@@ -84,6 +84,7 @@ bool StaticEntity::LoadReferenceData() {
 bool StaticEntity::LoadAnimations() {
 	bool ret = true;
 	char* faction_char = "NoFaction";
+	float speed_multiplier = 0.065f;
 
 	if (faction == VAULT)
 		faction_char = "VaultDwellers";
@@ -163,7 +164,7 @@ bool StaticEntity::LoadAnimations() {
 		{
 			while (frame != nullptr) {
 				tile_id = frame.attribute("tileid").as_int();
-				speed = frame.attribute("duration").as_int() * 0.001f;
+				speed = frame.attribute("duration").as_int() * speed_multiplier;
 				rect.x = rect.w * ((tile_id) % columns);
 				rect.y = rect.h * ((tile_id) / columns);
 				animations[state].PushBack(rect, speed);

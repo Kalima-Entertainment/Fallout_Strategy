@@ -74,7 +74,6 @@ bool j1Gui::PostUpdate() {
 		for (int i = 0; i < ui_element.size(); i++) {
 
 			if (ui_element[i] != nullptr) {
-
 				ui_element[i]->Draw();
 			}
 		}

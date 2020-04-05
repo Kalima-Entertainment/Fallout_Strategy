@@ -26,7 +26,7 @@
   </tile>
   <tile id="16">
    <properties>
-    <property name="base" value="idle"/>
+    <property name="base" value=""/>
    </properties>
    <animation>
     <frame tileid="16" duration="100"/>
@@ -76,7 +76,7 @@
   </tile>
   <tile id="64">
    <properties>
-    <property name="base" value="die"/>
+    <property name="base" value=""/>
    </properties>
    <animation>
     <frame tileid="64" duration="100"/>
@@ -138,7 +138,7 @@
   </tile>
   <tile id="128">
    <properties>
-    <property name="barrack" value="idle"/>
+    <property name="barrack" value=""/>
    </properties>
    <animation>
     <frame tileid="128" duration="100"/>
@@ -185,7 +185,7 @@
   </tile>
   <tile id="176">
    <properties>
-    <property name="barrack" value="die"/>
+    <property name="barrack" value=""/>
    </properties>
    <animation>
     <frame tileid="191" duration="100"/>
