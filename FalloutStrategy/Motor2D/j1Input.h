@@ -69,6 +69,9 @@ public:
 	void GetMouseMotion(int& x, int& y);
 	void GetMouseWheel(uint& y);
 
+	char* newLetter = nullptr;
+	bool isPresed = false;
+
 private:
 	bool		windowEvents[WE_COUNT];
 	j1KeyState*	keyboard;

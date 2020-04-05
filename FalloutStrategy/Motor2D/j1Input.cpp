@@ -107,6 +107,12 @@ bool j1Input::PreUpdate()
 				}
 			break;
 
+			case SDL_TEXTINPUT:
+
+				newLetter = event.text.text;
+				isPresed = true;
+				break;
+
 			case SDL_MOUSEBUTTONDOWN:
 				mouse_buttons[event.button.button - 1] = KEY_DOWN;
 				//LOG("Mouse button %d down", event.button.button-1);
