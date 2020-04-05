@@ -79,7 +79,7 @@ bool j1Scene::Start()
 
     // --------------------------------------
 
-	if (App->map->Load("grassland_low_left.tmx") == true)
+	if (App->map->Load(modules[0].c_str()) == true)
 	{
 		int w, h;
 		uchar* data = NULL;

@@ -25,7 +25,6 @@ public:
 public:
 	std::vector<iPoint> tiles;
 private:
-	iPoint render_tex_position;
 	int gen_speed;
 	Animation animations[3];
 	StaticState state;

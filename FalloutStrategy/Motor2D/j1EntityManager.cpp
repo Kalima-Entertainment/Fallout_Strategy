@@ -352,8 +352,13 @@ bool j1EntityManager::PostUpdate()
 		}
 		else
 		{
-			SortEntities();
-			entities[i]->PostUpdate();
+			if ((entities[i]->position.x > -App->render->camera.x) && (entities[i]->position.x < -App->render->camera.x + App->render->camera.w)
+				&& (entities[i]->position.y > -App->render->camera.y))
+			{
+				// && (entities[i]->position.y - TILE_SIZE > -(App->render->camera.y + App->render->camera.h))) {
+				SortEntities();
+				entities[i]->PostUpdate();
+			}
 		}
 	}
 	return ret;
