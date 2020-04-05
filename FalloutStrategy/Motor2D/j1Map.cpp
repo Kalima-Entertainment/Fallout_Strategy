@@ -576,18 +576,10 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 				x /= HALF_TILE;
 				y /= HALF_TILE;
 
-				std::string faction_number = std::string(object_node.child("properties").child("property").attribute("value").as_string());
-				Faction building_faction;
+				int faction_number = (object_node.child("properties").child("property").attribute("value").as_int());
+				Faction building_faction;				
 
-				if (faction_number == "1") {
-					building_faction = GHOUL;
-				}else if (faction_number == "2") {
-					building_faction = VAULT;
-				}else if (faction_number == "3") {
-					building_faction = MUTANT;
-				}else if (faction_number == "4") {
-					building_faction = BROTHERHOOD;
-				}
+				building_faction = App->entities->FactionByIndex(faction_number);
 
 				//add tiles and adjust render texture position
 				std::string object_type = std::string(object_node.attribute("type").as_string());

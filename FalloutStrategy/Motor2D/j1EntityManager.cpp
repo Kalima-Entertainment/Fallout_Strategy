@@ -158,6 +158,8 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 
 	config_data = config;
 
+	RandomFactions();
+
 	//automatic entities loading
 	for (int faction = VAULT; faction < NO_FACTION; faction++)
 	{
@@ -513,4 +515,15 @@ iPoint j1EntityManager::ClosestTile(iPoint position, std::vector<iPoint> entity_
 			pivot = entity_tiles[i];
 	}
 	return pivot;
+}
+
+void j1EntityManager::RandomFactions() {
+	enum Factions {
+		testGHOUL,
+		testMUTANT,
+		testVAULT,
+	};
+	Factions test = static_cast<Factions>(rand() % testVAULT);
+
+	//Faction test = static_cast<Faction>(rand() % 3);
 }

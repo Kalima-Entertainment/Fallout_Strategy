@@ -22,10 +22,10 @@ enum EntityType {
 };
 
 enum Faction {
-	VAULT,
-	GHOUL,
+	VAULT,	
 	BROTHERHOOD,
 	MUTANT,
+	GHOUL,
 	NO_FACTION
 };
 

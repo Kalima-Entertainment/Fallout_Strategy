@@ -20,8 +20,8 @@ public:
 	bool PostUpdate();
 
 	bool LoadAnimations();
-	bool LoadReferenceData();
-
+	bool LoadReferenceData();	
+	
 public:
 	std::vector<iPoint> tiles;
 private:

@@ -62,6 +62,8 @@ public:
 	void SortEntities();
 	void Swap(int i, int j);
 
+	void RandomFactions();
+	Faction FactionByIndex(int i) { return static_cast<Faction>(i); }
 public:
 
 	std::vector<j1Entity*> entities;
