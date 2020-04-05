@@ -55,10 +55,12 @@ bool j1Console::Update(float dt) {
 		if (isVisible){
 			DestroyInterface();
 			isVisible = false;
+			App->isPaused = false;
 		}
 		else {
 			CreateInterface();
 			isVisible = true;
+			App->isPaused = true;
 		}
 	}
 
@@ -168,10 +170,14 @@ void j1Console::AddLogText(std::string incoming_text) {
 }
 
 void j1Console::CreateInterface() {
-	int font_size = 38;
-	for (int i = 0; i < log_record.size(); i++)
+	int font_size = 14;
+	int x_margin = 14;
+	int spacing = 6;
+	int j = 0;
+	for (int i = log_record.size(); i > 0; i--)
 	{
-		on_screen_log.push_back((UI_Label*)App->gui->CreateLabel(-App->render->camera.x + 10, command_background.y -font_size - (i * font_size), Label, log_record[i].c_str(), NULL, this, NULL));
+		on_screen_log.push_back((UI_Label*)App->gui->CreateLabel(0 + x_margin, log_box.h - (j * (font_size + spacing)) -spacing, Label, log_record[i].c_str(), NULL, this, NULL, "OpenSans-Light"));
+		j++;
 	}
 
 }
@@ -181,6 +187,7 @@ void j1Console::DestroyInterface() {
 	{
 		App->gui->Delete_Element(on_screen_log[i]);
 	}
+	on_screen_log.clear();
 }
 
 /*

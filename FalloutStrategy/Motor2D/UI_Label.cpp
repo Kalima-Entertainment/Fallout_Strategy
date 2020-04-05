@@ -10,7 +10,6 @@ UI_Label::UI_Label(int x, int y, UI_Type type, std::string text_input, UI_elemen
 {
 	t = type;
 	timer_out = counter;
-
 }
 
 UI_Label::~UI_Label()
@@ -48,14 +47,14 @@ bool UI_Label::CleanUp()
 	return true;
 }
 
-bool UI_Label::SetLabelText(std::string text_input)
+bool UI_Label::SetLabelText(std::string text_input, std::string font)
 {
 	bool ret = false;
 	text = text_input;
 
 	if (text.size() > 0){
 
-		text_texture = App->font->Print(text.c_str(), { 244,244,244,255 }, "StackedPixel");
+		text_texture = App->font->Print(text.c_str(), { 244,244,244,255 }, font);
 	}
 
 	if (text_texture != nullptr)

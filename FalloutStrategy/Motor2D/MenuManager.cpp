@@ -57,6 +57,7 @@ void MenuManager::CreateMainMenu()
 	main_menu[12] = (UI_Button*)App->gui->CreateButton(887, 527, button_credits, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
 	main_menu[13] = (UI_Button*)App->gui->CreateButton(887, 604, button_exit, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
 
+	last_menu = current_menu;
 	current_menu = Menu::MAIN_MENU;
 }
 
@@ -79,8 +80,8 @@ void MenuManager::CreateCredits()
 	credits_menu[11] = (UI_Button*)App->gui->CreateButton(450, 400, button_silvino, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
 	credits_menu[12] = (UI_Button*)App->gui->CreateButton(450, 445, button_christian, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
 
+	last_menu = current_menu;
 	current_menu = Menu::CREDITS;
-
 }
 
 void MenuManager::CreateSettings()
@@ -196,6 +197,7 @@ void MenuManager::CreatePauseMenu()
 	pause_menu[5] = (UI_Label*)App->gui->CreateLabel(530, 318, Label, "SETTINGS", NULL, this, NULL);
 	pause_menu[6] = (UI_Label*)App->gui->CreateLabel(515, 408, Label, "MAIN MENU", NULL, this, NULL);
 
+	last_menu = current_menu;
 	current_menu = Menu::PAUSE_MENU;
 }
 
@@ -253,6 +255,7 @@ void MenuManager::CreateGUI()
 	//settings_menu.fps = (UI_Label*)App->gui->CreateLabel(520, 525, text_fps, "REFRESH RATE", NULL, this, NULL);
 	//settings_menu.fx_volume = (UI_Label*)App->gui->CreateLabel(360, 335, text_fx_volume, "SOUND EFFECTS VOLUME", NULL, this, NULL);
 	//settings_menu.music_volume = (UI_Label*)App->gui->CreateLabel(360, 150, text_music_volume, "MUSIC VOLUME", NULL, this, NULL);
+	
 	last_menu = current_menu;
 	current_menu = Menu::GUI;
 }
