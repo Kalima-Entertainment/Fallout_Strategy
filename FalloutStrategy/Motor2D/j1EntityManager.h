@@ -78,6 +78,8 @@ public:
 
 	bool blocked_movement;
 	SDL_Texture* selected_unit_tex;
+
+	int randomFaction[4];
 };
 
 #endif // !_ENTITY_MANAGER_H_

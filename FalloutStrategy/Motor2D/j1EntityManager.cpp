@@ -14,6 +14,10 @@
 #include "Player.h"
 #include "brofiler/Brofiler/Brofiler.h"
 #include "MenuManager.h"
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <string>
 
 j1EntityManager::j1EntityManager(){
 	name = ("entities");
@@ -515,12 +519,28 @@ iPoint j1EntityManager::ClosestTile(iPoint position, std::vector<iPoint> entity_
 }
 
 void j1EntityManager::RandomFactions() {
-	enum Factions {
-		testGHOUL,
-		testMUTANT,
-		testVAULT,
-	};
-	Factions test = static_cast<Factions>(rand() % testVAULT);
+	Faction faction = static_cast<Faction>(rand() % GHOUL);
 
-	//Faction test = static_cast<Faction>(rand() % 3);
+	//Initialize at { 0,1,2,3 }
+	for(int i = 0; i < 4; i++)
+		randomFaction[i] = i;
+	
+	//Randomize faction order
+	//std::random_shuffle(&randomFaction[0], &randomFaction[3]);
+
+	srand(time(NULL));
+
+	int temp = 0;
+	int randomIndex = 0;
+
+	for (int i = 0; i < 4; i++) {
+		randomIndex = rand() % 4;
+		temp = randomFaction[i];
+		randomFaction[i] = randomFaction[randomIndex];
+		randomFaction[randomIndex] = temp;
+	}
+
+	
+	for (int i = 0; i < 4; i++)
+		LOG("faction %i", randomFaction[i]);
 }

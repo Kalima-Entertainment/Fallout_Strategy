@@ -579,7 +579,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup) {
 				int faction_number = (object_node.child("properties").child("property").attribute("value").as_int());
 				Faction building_faction;				
 
-				building_faction = App->entities->FactionByIndex(faction_number);
+				building_faction = App->entities->FactionByIndex(App->entities->randomFaction[faction_number]);
 
 				//add tiles and adjust render texture position
 				std::string object_type = std::string(object_node.attribute("type").as_string());
