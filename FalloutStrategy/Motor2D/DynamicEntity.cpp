@@ -316,70 +316,59 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 		if (App->render->debug)App->render->DrawQuad(Debug_rect, 90, 850, 230, 40);
 	}
 }
-/*
+
 bool DynamicEntity::LoadFx() {
 	bool ret = true;
 	char* faction_char = { "NoFaction" };
 	char* state_char = { "NoState" };
 
-	//entity faction
-	if (faction == )
-		faction_char = "VaultDwellers";
-	else if (faction == BROTHERHOOD)
-		faction_char = "Brotherhood";
-	else if (faction == MUTANT)
-		faction_char = "SuperMutant";
-	else if (faction == GHOUL)
-		faction_char = "Ghouls";
-
-	//entity action
-	if (state == WALK)
-		state_char == "Walk";
-	else if (state == ATTACK)
-		state_char == "Attack";
-	else if (state == HIT)
-		state_char == "Hit";
-	else if (state == DIE)
-		state_char == "Die";
-	else if (state == GATHER)
-		state_char == "Gather";
-
-	std::string file = std::string("audio/fx/Characters Sounds").append(faction_char).append("/").append(state_char);
-
-	pugi::xml_document audio_file;
-	pugi::xml_parse_result result = audio_file.load_file(audio_path.c_str());
+	
+	for (int faction = VAULT; faction < NO_FACTION; faction++)
+	{
+		//entity faction
+		if (faction == VAULT)
+			faction_char = "VaultDwellers";
+		else if (faction == BROTHERHOOD)
+			faction_char = "Brotherhood";
+		else if (faction == MUTANT)
+			faction_char = "SuperMutant";
+		else if (faction == GHOUL)
+			faction_char = "Ghouls";
+	}
 
 	for (int i = IDLE; i < MAX_ANIMATIONS; i++)
 	{
 		//entity action
-		if (i == WALK)
-			state_char == "Walk";
 		if (i == IDLE)
 			state_char == "Idle";
-		else if (state == ATTACK)
+		else if (i == WALK)
+			state_char == "Walk";
+		else if (i == ATTACK)
 			state_char == "Attack";
-		else if (state == HIT)
+		else if (i == HIT)
 			state_char == "Hit";
-		else if (state == DIE)
+		else if (i == DIE)
 			state_char == "Die";
-		else if (state == GATHER)
+		else if (i == GATHER)
 			state_char == "Gather";
 
-		std::string file = std::string("audio/fx/CharactersSounds/").append(faction_char).append("/").append(state_char).append(".WAV");
+		std::string file = std::string("audio/fx/CharactersSounds/").append(faction_char).append("/").append(faction_char).append("_").append(state_char).append(".WAV");
 		std::string audio_path = file;
-		audio_path.append(".wav");
 
 		pugi::xml_document audio_file;
 		pugi::xml_parse_result result = audio_file.load_file(audio_path.c_str());
 
 		fx[i] = result;
-	}
 
+		if (result == NULL)
+		{
+			LOG("Could not load AUDIO WAV file %s. pugi error: %s", file.c_str(), result.description());
+			ret = false;
+		}
+	}
 
 	return ret;
 }
-*/
-
 
 
 bool DynamicEntity::LoadAnimations() {

@@ -190,7 +190,7 @@ bool j1EntityManager::Start() {
 		reference_entities[faction][BARRACK]->texture = reference_entities[faction][BASE]->texture;
 		reference_entities[faction][LABORATORY]->texture = reference_entities[faction][BASE]->texture;
 	}
-
+	
 	//Ghouls
 	//reference_entities[GHOUL][BASE]->LoadAnimations("Ghouls/Ghouls_Base");
 	reference_entities[GHOUL][BARRACK]->LoadAnimations();
