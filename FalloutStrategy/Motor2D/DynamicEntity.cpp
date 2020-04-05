@@ -133,113 +133,88 @@ bool DynamicEntity::PostUpdate() {
 }
 
 void DynamicEntity::Move(float dt) {
-	//if (path_to_target != NULL)
-	//{
-		if (path_to_target.size() > 0)
-		{
-			//get next tile center
-			next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
-			next_tile_rect_center = { next_tile_position.x + HALF_TILE - 2, next_tile_position.y + HALF_TILE,4,4 };
+	if (path_to_target.size() > 0) {
+		//get next tile center
+		next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
+		next_tile_rect_center = { next_tile_position.x + HALF_TILE - 2, next_tile_position.y + HALF_TILE,4,4 };
 
-			//check what's on next tile and act
+			//if the entitiy is about to reach it's target tile
 			if (current_tile.LinealDistance(target_tile) <= range) {
-				if (target_entity != nullptr) {
-				//we reach the destination and there is an entity in it
-					if ((faction != target_entity->faction) && (type != GATHERER))
+			//we reach the destination and there is an entity in it
+				//ranged and melee
+				if (type != GATHERER){
+					if ((faction != target_entity->faction))
 					{
 						state = ATTACK;
 						Attack();
 					}
-
-					else if (next_tile == target_tile)
-					{
-						if ((resource_collected > 0)&&(target_building != nullptr))
-						{
-							resource_building->quantity += resource_collected;
-							resource_collected = 0;
-							App->player->UpdateResourceData();
-						}
-						else
-						{
-							iPoint current_tile_center = App->map->MapToWorld(current_tile.x, current_tile.y);
-							position.x = current_tile_center.x + HALF_TILE;
-							position.y = current_tile_center.y + HALF_TILE;
-							state = IDLE;
-						}
-					}
-
 				}
-				else
-				{
-					if (type == GATHERER) {
+				//gatherer
+				else {
+					if (next_tile == target_tile) {
+						//gather
 						if ((resource_building != nullptr) && (resource_collected < storage_capacity)) {
 							state = GATHER;
 							timer.Start();
 							return;
 						}
-					}
-					else
-					{
-						if (current_tile == target_tile)
-						{
-						iPoint current_tile_center = App->map->MapToWorld(current_tile.x, current_tile.y);
-						position.x = current_tile_center.x + HALF_TILE;
-						position.y = current_tile_center.y + HALF_TILE;
-						state = IDLE;
+						//give gathered resources
+						else if ((resource_collected > 0) && (target_building != nullptr) && (target_building->volume < target_building->storage_capacity)) {
+							target_building->volume += resource_collected;
+							App->player->UpdateResourceData(resource_type, resource_collected);
+							resource_collected = 0;
+							target_building = nullptr;
 						}
-					}
+					}	
 				}
 			}
 
-			//move to next tile
-			if ((position.x > next_tile_rect_center.x + next_tile_rect_center.w) && (position.x > next_tile_rect_center.x) && (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h)) {
-				direction = TOP_LEFT;
-				position.x -= speed.x * dt;
-				position.y -= speed.y * dt;
-			}
-			else if ((position.x < next_tile_rect_center.x) && (position.x < next_tile_rect_center.x + next_tile_rect_center.w) && (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h)) {
-				direction = TOP_RIGHT;
-				position.x += speed.x * dt;
-				position.y -= speed.y * dt;
-			}
-			else if ((position.x > next_tile_rect_center.x) && (position.x > next_tile_rect_center.x + next_tile_rect_center.w) && (position.y < next_tile_rect_center.y) && (position.y < next_tile_rect_center.y + next_tile_rect_center.h)) {
-				direction = BOTTOM_LEFT;
-				position.x -= speed.x * dt;
-				position.y += speed.y * dt;
-			}
-			else if ((position.x < next_tile_rect_center.x) && (position.x < next_tile_rect_center.x + next_tile_rect_center.w) && (position.y < next_tile_rect_center.y) && (position.y < next_tile_rect_center.y + next_tile_rect_center.h)) {
-				direction = BOTTOM_RIGHT;
-				position.x += speed.x * dt;
-				position.y += speed.y * dt;
-			}
-			else
-			{
-				if (path_to_target.front() != target_tile)
-				{
-					current_tile = path_to_target.front();
-					if (path_to_target.size() > 1)
-					{
-						next_tile = path_to_target[1];
-					}
-					path_to_target.erase(path_to_target.begin());
-
-				}
-				else
-				{
-					position.x = next_tile_rect_center.x + 2;
-					position.y = next_tile_rect_center.y + 2;
-					current_tile = target_tile;
-					state = IDLE;
-				}
-			}
+		//move to next tile
+		if ((position.x > next_tile_rect_center.x + next_tile_rect_center.w) && (position.x > next_tile_rect_center.x) && (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h)) {
+			direction = TOP_LEFT;
+			position.x -= speed.x * dt;
+			position.y -= speed.y * dt;
+		}
+		else if ((position.x < next_tile_rect_center.x) && (position.x < next_tile_rect_center.x + next_tile_rect_center.w) && (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h)) {
+			direction = TOP_RIGHT;
+			position.x += speed.x * dt;
+			position.y -= speed.y * dt;
+		}
+		else if ((position.x > next_tile_rect_center.x) && (position.x > next_tile_rect_center.x + next_tile_rect_center.w) && (position.y < next_tile_rect_center.y) && (position.y < next_tile_rect_center.y + next_tile_rect_center.h)) {
+			direction = BOTTOM_LEFT;
+			position.x -= speed.x * dt;
+			position.y += speed.y * dt;
+		}
+		else if ((position.x < next_tile_rect_center.x) && (position.x < next_tile_rect_center.x + next_tile_rect_center.w) && (position.y < next_tile_rect_center.y) && (position.y < next_tile_rect_center.y + next_tile_rect_center.h)) {
+			direction = BOTTOM_RIGHT;
+			position.x += speed.x * dt;
+			position.y += speed.y * dt;
 		}
 		else
 		{
-			state = IDLE;
-			target_tile = current_tile;
-			current_tile = target_tile;
+			if (path_to_target.front() != target_tile)
+			{
+				current_tile = path_to_target.front();
+				if (path_to_target.size() > 1)
+				{
+					next_tile = path_to_target[1];
+				}
+				path_to_target.erase(path_to_target.begin());
+
+			}
+			else
+			{
+				position.x = next_tile_rect_center.x + 2;
+				position.y = next_tile_rect_center.y + 2;
+				current_tile = target_tile;
+				state = IDLE;
+			}
 		}
-//	}
+	}
+	else
+	{
+		state = IDLE;
+	}
 }
 
 void DynamicEntity::Attack() {
@@ -287,14 +262,15 @@ void DynamicEntity::Gather() {
 	resource_type = resource_building->resource_type;
 	StaticEntity* base = (StaticEntity*)App->entities->FindEntityByType(faction, BASE);
 	PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
+	target_building = base;
 	resource_building = nullptr;
 }
 
 void DynamicEntity::PathfindToPosition(iPoint destination) {
 
 	current_tile = App->map->WorldToMap(position.x, position.y);
+	target_tile = destination;
 	App->pathfinding->CreatePath(current_tile, destination);
-	LOG("Path exited 2");
 
 	//pathfinding debug
 	int x, y;

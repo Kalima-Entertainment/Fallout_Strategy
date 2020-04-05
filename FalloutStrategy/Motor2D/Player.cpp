@@ -192,7 +192,6 @@ void Player::InteractWithEntity() {
 			DynamicEntity* dynamic_entity;
 			dynamic_entity = (DynamicEntity*)selected_entity;
 			dynamic_entity->PathfindToPosition(selected_spot);
-			dynamic_entity->target_tile = selected_spot;
 			dynamic_entity->state = WALK;
 
 			if (target != nullptr) {
@@ -221,7 +220,16 @@ void Player::InteractWithEntity() {
 	}
 }
 
-void Player::UpdateResourceData() {
+void Player::UpdateResourceData(Resource resource_type, int quantity) {
+	//update resoucres
+	if (resource_type == Resource::CAPS)
+		caps += quantity;
+	else if (resource_type == Resource::WATER)
+		water += quantity;
+	else if (resource_type == Resource::FOOD)
+		food += quantity;
+
+	//update gui
 	App->gui->DeleteArrayElements(App->menu_manager->gui_ingame, 4);
 	App->menu_manager->CreateGUI();
 }

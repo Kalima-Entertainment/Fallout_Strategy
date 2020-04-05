@@ -4,6 +4,7 @@
 
 class j1Entity;
 class DynamicEntity;
+enum class Resource;
 
 class Player : public j1Module
 {
@@ -16,7 +17,7 @@ public:
 	bool Update(float dt);
 
 	void InteractWithEntity();
-	void UpdateResourceData();
+	void UpdateResourceData(Resource resource_type, int quantity);
 
 public:
 	j1Entity* selected_entity;
