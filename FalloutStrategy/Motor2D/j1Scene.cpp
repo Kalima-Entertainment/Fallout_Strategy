@@ -175,15 +175,15 @@ bool j1Scene::Update(float dt)
 		if (create == true) {
 
 			App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
+			App->isPaused = false;
 			create = false;
-
 		}
 
 		else if (create == false) {
 
 			App->menu_manager->CreatePauseMenu();
+			App->isPaused = true;
 			create = true;
-
 		}
 
 	}

@@ -72,7 +72,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 
 	PERF_PEEK(ptimer);
 
-	pause = false;
+	isPaused = false;
 }
 
 // Destructor

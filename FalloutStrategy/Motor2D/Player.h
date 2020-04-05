@@ -4,7 +4,6 @@
 
 class j1Entity;
 class DynamicEntity;
-class UI_Label;
 
 class Player : public j1Module
 {
@@ -16,16 +15,20 @@ public:
 	bool PreUpdate();
 	bool Update(float dt);
 
-public:
-	bool border_scroll;
+	void InteractWithEntity();
+	void UpdateResourceData();
 
+public:
 	j1Entity* selected_entity;
 	int caps;
 	int water;
 	int food;
+	bool factions[4];
 
 private:
 	float mouse_speed_multiplier;
+	bool border_scroll;
+	bool god_mode;
 };
 
 

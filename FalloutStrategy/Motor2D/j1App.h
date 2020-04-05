@@ -108,8 +108,8 @@ public:
 	MainMenu*			main_menu = NULL;
 	j1Console*			console = NULL;
 
-	bool pause;
-	bool				quitGame = false;
+	bool isPaused;
+	bool quitGame = false;
 
 private:
 

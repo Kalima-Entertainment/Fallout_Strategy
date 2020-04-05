@@ -100,7 +100,6 @@ public:
 
 
 
-
 	UI_element* brotherhood_base[3];
 	UI_element* brotherhood_barrack[5];
 	UI_element* brotherhood_lab[1];
