@@ -20,6 +20,7 @@
 #include "MenuManager.h"
 #include "Player.h"
 #include "p2Defs.h"
+#include "UI_ImputText.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
 MenuManager::MenuManager()
@@ -239,7 +240,7 @@ void MenuManager::CreateGUI()
 
 	//Images
 	gui_ingame[0] = (j1Image*)App->gui->CreateImage(0, 0, Image, { 0, 2428, 1290, 730 }, NULL, this);
-
+	gui_ingame[4] = (ImputText*)App->gui->CreateInputBox(100, 200, InputBox, nullptr, NULL, this);
 	if (App->gui->count == 0) {
 		
 		p2SString cc("%i", App->player->caps);

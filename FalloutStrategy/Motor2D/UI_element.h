@@ -69,6 +69,8 @@ enum UI_Type {
 	Ghouls_melee_button,
 	Ghouls_ranged_button,
 
+	InputBox,
+
 };
 
 class UI_element 

@@ -95,7 +95,7 @@ public:
 	UI_element* select_faction_menu[12];
 	UI_element* select_faction_photos[4];
 	UI_element* pause_menu[7];
-	UI_element* gui_ingame[4];
+	UI_element* gui_ingame[5];
 	
 
 
