@@ -48,7 +48,7 @@ bool j1Console::PreUpdate() {
 
 bool j1Console::Update(float dt) {
 	BROFILER_CATEGORY("ConsoleUpdate", Profiler::Color::MediumPurple)
-		bool ret = true;
+	bool ret = true;
 
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN)
 	{

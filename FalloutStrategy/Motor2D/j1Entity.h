@@ -63,6 +63,7 @@ public:
 	std::vector<iPoint> path_to_target;
 	fPoint speed;
 	iPoint spawnPosition;
+	int sprite_size;
 
 	int current_health;
 	int max_health;

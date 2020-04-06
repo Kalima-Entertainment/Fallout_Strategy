@@ -20,6 +20,7 @@
 #include "MenuManager.h"
 #include "Player.h"
 #include "p2Defs.h"
+#include "UI_ImputText.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
 MenuManager::MenuManager()
@@ -45,6 +46,7 @@ void MenuManager::CreateMainMenu()
 
 	//Labels
 	main_menu[4] = (UI_Label*)App->gui->CreateLabel(957, 310, Label, "NEW GAME", NULL, this, NULL);
+
 	main_menu[5] = (UI_Label*)App->gui->CreateLabel(957, 387, Label, "LOAD GAME", NULL, this, NULL);
 	main_menu[6] = (UI_Label*)App->gui->CreateLabel(957, 464, Label, "SETTINGS", NULL, this, NULL);
 	main_menu[7] = (UI_Label*)App->gui->CreateLabel(957, 541, Label, "CREDITS", NULL, this, NULL);
@@ -241,15 +243,21 @@ void MenuManager::CreateGUI()
 
 	//Images
 	gui_ingame[0] = (j1Image*)App->gui->CreateImage(0, 0, Image, { 0, 2428, 1290, 730 }, NULL, this);
+	gui_ingame[4] = (ImputText*)App->gui->CreateInputBox(25, 400, InputBox, "", NULL, this);
 
+	if (App->gui->count == 0) {
+		
+		std::string water = std::to_string(App->player->water);
+		std::string food = std::to_string(App->player->food);
+		std::string caps = std::to_string(App->player->caps);
+		
+		gui_ingame[1] = (UI_Label*)App->gui->CreateLabel(95, 10, Label, food, NULL, this, NULL);
+		gui_ingame[2] = (UI_Label*)App->gui->CreateLabel(240, 10, Label, water, NULL, this, NULL);
+		gui_ingame[3] = (UI_Label*)App->gui->CreateLabel(385, 10, Label, caps, NULL, this, NULL);
 
-	std::string water = std::to_string(App->player->water);
-	std::string food = std::to_string(App->player->food);
-	std::string caps = std::to_string(App->player->caps);
+		App->gui->count++;
+	}
 
-	gui_ingame[1] = (UI_Label*)App->gui->CreateLabel(95, 10, Label, food, NULL, this, NULL);
-	gui_ingame[2] = (UI_Label*)App->gui->CreateLabel(240, 10, Label, water, NULL, this, NULL);
-	gui_ingame[3] = (UI_Label*)App->gui->CreateLabel(385, 10, Label, caps, NULL, this, NULL);
 
 	//Labels
 	//settings_menu.fps = (UI_Label*)App->gui->CreateLabel(520, 525, text_fps, "REFRESH RATE", NULL, this, NULL);

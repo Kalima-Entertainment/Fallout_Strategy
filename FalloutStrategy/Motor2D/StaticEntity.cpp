@@ -58,10 +58,12 @@ bool StaticEntity::PostUpdate() {
 	current_animation = &animations[state];
 
 	//Render building
-	//render_position = App->map->MapToWorld(current_tile.x, current_tile.y);
-	render_tex_position = {(int)(position.x - TILE_SIZE),(int)(position.y - 2 * TILE_SIZE)};
-	App->render->Blit(reference_entity->texture, render_tex_position.x, render_tex_position.y, &current_animation->GetCurrentFrame(last_dt));
-	if (App->render->debug) { App->render->DrawQuad({ (int)render_position.x, (int)render_position.y, 4,4 }, 255, 0, 0, 255); }
+	render_position = {(int)(position.x - 0.5f * sprite_size),(int)(position.y - sprite_size)};
+
+	App->render->Blit(reference_entity->texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
+
+	if (App->render->debug) 
+	{ App->render->DrawQuad({ (int)position.x, (int)position.y, 4,4 }, 255, 0, 0, 255); }
 	return true;
 }
 
@@ -117,6 +119,7 @@ bool StaticEntity::LoadAnimations() {
 	int tile_height = animation_file.child("map").child("tileset").attribute("tileheight").as_int();
 	int columns = animation_file.child("map").child("tileset").attribute("columns").as_int();
 	int firstgid = animation_file.child("map").child("tileset").attribute("firstgid").as_int();
+	sprite_size = tile_height;
 	int id, tile_id;
 	float speed;
 

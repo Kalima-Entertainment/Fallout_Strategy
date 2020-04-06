@@ -38,7 +38,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 	resource_building = nullptr;
 	action_time = 3.0f;
 	resource_collected = 0;
-
+	int sprite_size = 128;
 }
 
 DynamicEntity::~DynamicEntity() {}
@@ -79,6 +79,7 @@ bool DynamicEntity::Update(float dt) {
 	case DIE:
 		if (current_animation->Finished())
 		{
+			attacking_entity->target_entity = nullptr;
 			to_destroy = true;
 		}
 		break;
@@ -143,10 +144,11 @@ void DynamicEntity::Move(float dt) {
 			//we reach the destination and there is an entity in it
 				//ranged and melee
 				if (type != GATHERER){
-					if ((faction != target_entity->faction))
+					if ((target_entity != nullptr)&&(faction != target_entity->faction))
 					{
 						state = ATTACK;
 						Attack();
+						target_entity->attacking_entity = this;
 					}
 				}
 				//gatherer
