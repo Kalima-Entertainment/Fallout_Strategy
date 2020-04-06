@@ -526,9 +526,9 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 
 	iPoint offset[4];
 	offset[0] = { 0,0 };
-	offset[1] = { MODULE_LENGTH * 32,  MODULE_LENGTH * 16 };
-	offset[2] = { -MODULE_LENGTH * 32, MODULE_LENGTH * 16 };
-	offset[3] = { MODULE_LENGTH * 32, MODULE_LENGTH * 32 };
+	offset[1] = { MODULE_LENGTH * HALF_TILE,  0 };
+	offset[2] = { 0, MODULE_LENGTH * HALF_TILE };
+	offset[3] = { MODULE_LENGTH * HALF_TILE, MODULE_LENGTH * HALF_TILE };
 
 	if (object_node == NULL)
 	{
@@ -544,8 +544,8 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 			pugi::xml_node properties = object_node.child("properties");
 			pugi::xml_node property = properties.child("property");
 
-			int x = object_node.attribute("x").as_int();
-			int y = object_node.attribute("y").as_int();
+			int x = object_node.attribute("x").as_int() + offset[module_number].x;
+			int y = object_node.attribute("y").as_int() + offset[module_number].y;
 			int width = object_node.attribute("width").as_int() / (HALF_TILE)+1;
 			int height = object_node.attribute("height").as_int() / (HALF_TILE)+1;
 			iPoint first_tile_position = { x,y };

@@ -10,7 +10,7 @@
 #include "j1Image.h"
 #include "j1Input.h"
 
-ImputText::ImputText(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer, std::string font) : UI_element(x, y, type, parent, Observer) {
+InputText::InputText(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer, std::string font) : UI_element(x, y, type, parent, Observer) {
 
 	type = InputBox;
 	this->pos.x = x;
