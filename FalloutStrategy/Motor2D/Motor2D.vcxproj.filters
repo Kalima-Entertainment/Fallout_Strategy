@@ -94,7 +94,9 @@
     <ClCompile Include="j1Console.cpp">
       <Filter>Desenvolupament  ========\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="UI_ImputText.cpp" />
+    <ClCompile Include="UI_ImputText.cpp">
+      <Filter>Desenvolupament  ========\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -211,7 +213,9 @@
     <ClInclude Include="j1Console.h">
       <Filter>Desenvolupament  ========\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="UI_ImputText.h" />
+    <ClInclude Include="UI_ImputText.h">
+      <Filter>Desenvolupament  ========\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">

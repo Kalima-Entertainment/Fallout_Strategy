@@ -98,6 +98,7 @@ public:
 
 	//UI elements position and dimensions
 	iPoint pos;
+	
 	SDL_Rect dimensions;
 	
 	SDL_Texture* texture;
@@ -105,6 +106,8 @@ public:
 	iPoint mouse_pos;
 
 	j1Module* observer = nullptr;
+
+	std::string font_text;
 
 	bool destroy;
 

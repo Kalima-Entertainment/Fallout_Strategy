@@ -11,11 +11,10 @@ private:
 
 public:
 
-	ImputText(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer);
+	ImputText(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer, std::string font);
 	~ImputText();
 
 	bool Update(float dt);
-
 
 
 
