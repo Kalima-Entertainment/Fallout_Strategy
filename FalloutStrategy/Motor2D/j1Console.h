@@ -9,6 +9,7 @@
 
 class UI_Label;
 struct SDL_Rect;
+class UI_InputText;
 
 struct Command {
 	char* text;

@@ -2,6 +2,11 @@
 <map version="1.0" orientation="isometric" renderorder="right-down" width="75" height="75" tilewidth="64" tileheight="32" nextobjectid="43">
  <tileset firstgid="1" name="Floor" tilewidth="64" tileheight="32" tilecount="512" columns="16">
   <image source="Floors64x32.png" width="1024" height="1024"/>
+  <tile id="0">
+   <properties>
+    <property name="Navigation" value="1"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="513" name="Ground" tilewidth="64" tileheight="32" tilecount="352" columns="16">
   <image source="Ground64x32.png" width="1024" height="704"/>

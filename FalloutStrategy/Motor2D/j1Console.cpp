@@ -179,6 +179,7 @@ void j1Console::CreateInterface() {
 		on_screen_log.push_back((UI_Label*)App->gui->CreateLabel(0 + x_margin, log_box.h - (j * (font_size + spacing)) -spacing, Label, log_record[i].c_str(), NULL, this, NULL, "OpenSans-Light"));
 		j++;
 	}
+	App->gui->CreateInputBox(x_margin, log_box.h, InputBox, "Write command", NULL, NULL);
 
 }
 

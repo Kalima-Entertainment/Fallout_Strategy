@@ -1,4 +1,4 @@
-#include "UI_ImputText.h"
+#include "UI_InputText.h"
 #include "UI_element.h"
 #include "j1Gui.h"
 #include "j1Fonts.h"
@@ -10,7 +10,7 @@
 #include "j1Image.h"
 #include "j1Input.h"
 
-ImputText::ImputText(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer) : UI_element(x, y, type, parent, Observer) {
+InputText::InputText(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer) : UI_element(x, y, type, parent, Observer) {
 
 	type = InputBox;
 	this->pos.x = x;
@@ -21,12 +21,12 @@ ImputText::ImputText(int x, int y, UI_Type type, std::string text_input, UI_elem
 
 }
 
-ImputText::~ImputText() {
+InputText::~InputText() {
 
 }
 
 
-bool ImputText::Update(float dt) {
+bool InputText::Update(float dt) {
 	
 	if (InputText_Actived) {	
 		
@@ -49,7 +49,7 @@ bool ImputText::Update(float dt) {
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN) {
 		InputText_Actived = !InputText_Actived;
 		if (InputText_Actived) {
-			labelInputText->SetLabelText("");
+			labelInputText->SetLabelText(" ");
 			SDL_StartTextInput();
 
 		}

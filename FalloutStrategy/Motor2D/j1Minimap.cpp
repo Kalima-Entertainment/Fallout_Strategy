@@ -55,8 +55,8 @@ bool j1Minimap::Start() {
 	uint window_width, window_height;
 	App->win->GetWindowSize(window_width, window_height);
 
-	map_width = App->map->data.tile_width * App->map->data.width;
-	map_height = App->map->data.tile_height * App->map->data.height;
+	map_width = TILE_SIZE * MAP_LENGTH;
+	map_height = HALF_TILE * MAP_LENGTH;
 	scale = ((width) / ((float)map_width));
 	height = (map_height) * scale;
 
@@ -120,6 +120,7 @@ bool j1Minimap::CreateMinimap() {
 
 	PERF_START(ptimer);
 	int tile_margin = 3;
+	int half_width = map_width * 0.5f;
 
 	for (int l = 0; l < MAX_LAYERS; l++)
 	{
@@ -129,9 +130,9 @@ bool j1Minimap::CreateMinimap() {
 			continue;
 
 		int total_tiles = 0;
-		for (int y = 0; y < App->map->data.height; ++y)
+		for (int y = 0; y < MAP_LENGTH; ++y)
 		{
-			for (int x = 0; x < App->map->data.width; ++x)
+			for (int x = 0; x < MAP_LENGTH; ++x)
 			{
 				int tile_id = layer->Get(x, y);
 				if (tile_id > 0)
@@ -141,12 +142,9 @@ bool j1Minimap::CreateMinimap() {
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = App->map->MapToWorld(x, y);
 					//camera culling
-					if ((pos.x - tileset->offset_x > -(App->render->camera.x + tile_margin * App->map->data.tile_width)) && (pos.x < -App->render->camera.x + App->render->camera.w)
-						&& (pos.y > -(App->render->camera.y + App->map->data.tile_height)) && (pos.y + tileset->offset_y < (-App->render->camera.y + App->render->camera.h + tile_margin * App->map->data.tile_height)))
-					{
-						App->render->Blit(tileset->texture, pos.x + tileset->offset_x, pos.y + tileset->offset_y, &r);
-						//total_tiles++;
-					}
+
+					App->render->Blit(tileset->texture, pos.x + half_width + tileset->offset_x, pos.y + tileset->offset_y, &r, scale);
+					//total_tiles++;
 				}
 			}
 		}

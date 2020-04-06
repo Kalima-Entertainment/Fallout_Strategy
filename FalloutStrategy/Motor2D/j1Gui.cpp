@@ -11,7 +11,7 @@
 #include "UI_element.h"
 #include "UI_Button.h"
 #include "UI_Label.h"
-#include "UI_ImputText.h"
+#include "UI_InputText.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
 j1Gui::j1Gui() : j1Module()
@@ -161,7 +161,7 @@ UI_element* j1Gui::CreateLabel(int x, int y, UI_Type type, std::string text_inpu
 
 UI_element* j1Gui::CreateInputBox(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer)
 {
-	ImputText* inputtext = new ImputText(x, y, type, text_input, parent, Observer);
+	InputText* inputtext = new InputText(x, y, type, text_input, parent, Observer);
 
 	ui_element.push_back(inputtext);
 

@@ -312,7 +312,7 @@ bool j1Map::Load(std::string modules[4])
 		{
 			if (ret == true)
 			{
-				ret = LoadObjectGroup(objectgroup,data.objectgroup);
+				ret = LoadObjectGroup(objectgroup,data.objectgroup, i);
 			}
 		}
 
@@ -498,9 +498,9 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer, int module_number)
 
 		int first_tile[4];
 		first_tile[0] = 0;
-		first_tile[1] = 76;
-		first_tile[2] = 5626;
-		first_tile[3] = 5701;
+		first_tile[1] = 75;
+		first_tile[2] = 11250;
+		first_tile[3] = 11325;
 		int i = first_tile[module_number];
 		int iterations = 0;
 		for(pugi::xml_node tile = layer_data.child("tile"); tile; tile = tile.next_sibling("tile"))
@@ -508,7 +508,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer, int module_number)
 			layer->data[i] = tile.attribute("gid").as_int(0);
 			i++;
 			iterations++;
-			if (iterations > MODULE_LENGTH) {
+			if (iterations == MODULE_LENGTH) {
 				i += MODULE_LENGTH;
 				iterations = 0;
 			}
@@ -518,11 +518,17 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer, int module_number)
 	return ret;
 }
 
-bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup) {
+bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int module_number) {
 	bool ret = true;
 	objectgroup.name = node.attribute("name").as_string();
 	pugi::xml_node object_node = node.child("object");
 	SDL_Rect rect = { 0,0,0,0 };
+
+	iPoint offset[4];
+	offset[0] = { 0,0 };
+	offset[1] = { MODULE_LENGTH * 32,  MODULE_LENGTH * 16 };
+	offset[2] = { -MODULE_LENGTH * 32, MODULE_LENGTH * 16 };
+	offset[3] = { MODULE_LENGTH * 32, MODULE_LENGTH * 32 };
 
 	if (object_node == NULL)
 	{
