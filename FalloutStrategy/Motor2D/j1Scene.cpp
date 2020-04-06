@@ -74,12 +74,17 @@ bool j1Scene::Start()
 
 	modules[0] += ("_up_left.tmx");
 	modules[1] += ("_up_right.tmx");
-	modules[2] += ("_low_left.tmx");
-	modules[3] += ("_low_right.tmx");
+	modules[2] += ("_low_right.tmx");
+	modules[3] += ("_low_left.tmx");
+
+	modules[0] = ("oldstone_up_left.tmx");
+	modules[1] = ("grassland_up_right.tmx");
+	modules[2] = ("grassland_low_left.tmx");
+	modules[3] = ("grassland_low_right.tmx");
 
     // --------------------------------------
 
-	if (App->map->Load(modules[0].c_str()) == true)
+	if (App->map->Load(modules) == true)
 	{
 		int w, h;
 		uchar* data = NULL;
