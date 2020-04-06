@@ -48,7 +48,7 @@ bool DynamicEntity::Update(float dt) {
 	switch (state)
 	{
 	case IDLE:
-		//SpatialAudio(App->audio->explosion, 1, position.x, position.y);
+		SpatialAudio(fx[HIT], 1, position.x, position.y);
 		break;
 	case WALK:
 		Move(dt);
@@ -313,35 +313,25 @@ bool DynamicEntity::LoadFx() {
 			faction_char = "Ghouls";
 	}
 
-	for (int i = IDLE; i < MAX_ANIMATIONS; i++)
+	for (int animation = IDLE; animation < MAX_ANIMATIONS; animation++)
 	{
 		//entity action
-		if (i == IDLE)
-			state_char == "Idle";
-		else if (i == WALK)
-			state_char == "Walk";
-		else if (i == ATTACK)
-			state_char == "Attack";
-		else if (i == HIT)
-			state_char == "Hit";
-		else if (i == DIE)
-			state_char == "Die";
-		else if (i == GATHER)
-			state_char == "Gather";
-
+		if (animation == IDLE)
+			state_char = "Idle";
+		else if (animation == WALK)
+			state_char = "Walk";
+		else if (animation == ATTACK)
+			state_char = "Attack";
+		else if (animation == GATHER)
+			state_char = "Gather";
+		else if (animation == HIT)
+			state_char = "Hit";
+		else if (animation == DIE)
+			state_char = "Die";
+		
 		std::string file = std::string("audio/fx/CharactersSounds/").append(faction_char).append("/").append(faction_char).append("_").append(state_char).append(".WAV");
-		std::string audio_path = file;
 
-		pugi::xml_document audio_file;
-		pugi::xml_parse_result result = audio_file.load_file(audio_path.c_str());
-
-		fx[i] = result;
-
-		if (result == NULL)
-		{
-			LOG("Could not load AUDIO WAV file %s. pugi error: %s", file.c_str(), result.description());
-			ret = false;
-		}
+		fx[animation] = App->audio->LoadFx(file.c_str());
 	}
 
 	return ret;
