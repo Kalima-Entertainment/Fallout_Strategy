@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="5" height="5" tilewidth="256" tileheight="256" nextobjectid="1">
+ <tileset firstgid="1" source="VaultDwellers_Buildings.tsx"/>
+ <layer name="Capa de Patrones 1" width="5" height="5">
+  <data>
+   <tile gid="1"/>
+   <tile gid="21"/>
+   <tile gid="33"/>
+   <tile gid="43"/>
+   <tile gid="61"/>
+   <tile gid="70"/>
+   <tile gid="97"/>
+   <tile gid="113"/>
+   <tile gid="134"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+  </data>
+ </layer>
+</map>
