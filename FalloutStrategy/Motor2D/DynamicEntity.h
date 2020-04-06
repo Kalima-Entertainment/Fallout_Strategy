@@ -34,7 +34,7 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool LoadAnimations();
-	bool LoadFx();
+	//bool LoadFx();
 	bool LoadReferenceData();
 	void PathfindToPosition(iPoint target);
 	void Move(float dt);
