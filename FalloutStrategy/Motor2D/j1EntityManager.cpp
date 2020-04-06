@@ -190,7 +190,7 @@ bool j1EntityManager::Start() {
 		for (int type = MELEE; type < NO_TYPE; type++)
 		{
 			reference_entities[faction][type]->LoadAnimations();
-			reference_entities[faction][type]->LoadFx();
+			//reference_entities[faction][type]->LoadFx();
 		}
 
 		reference_entities[faction][BARRACK]->texture = reference_entities[faction][BASE]->texture;

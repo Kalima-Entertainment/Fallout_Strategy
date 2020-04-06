@@ -11,10 +11,12 @@ private:
 
 public:
 
-	InputText(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer);
-	~InputText();
+	ImputText(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer, std::string font);
+	~ImputText();
 
 	bool Update(float dt);
+
+
 
 public:
 
@@ -29,6 +31,3 @@ public:
 	UI_Label* labelInputText;
 
 };
-
-
-

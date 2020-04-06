@@ -48,7 +48,7 @@ bool DynamicEntity::Update(float dt) {
 	switch (state)
 	{
 	case IDLE:
-		SpatialAudio(fx[HIT], 1, position.x, position.y);
+		//SpatialAudio(App->audio->explosion, 1, position.x, position.y);
 		break;
 	case WALK:
 		Move(dt);
@@ -295,7 +295,7 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 		if (App->render->debug)App->render->DrawQuad(Debug_rect, 90, 850, 230, 40);
 	}
 }
-
+/*
 bool DynamicEntity::LoadFx() {
 	bool ret = true;
 	char* faction_char = { "NoFaction" };
@@ -338,7 +338,7 @@ bool DynamicEntity::LoadFx() {
 
 	return ret;
 }
-
+*/
 
 bool DynamicEntity::LoadAnimations() {
 	bool ret = true;

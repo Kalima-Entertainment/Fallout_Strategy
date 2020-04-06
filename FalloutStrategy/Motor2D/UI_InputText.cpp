@@ -10,7 +10,7 @@
 #include "j1Image.h"
 #include "j1Input.h"
 
-InputText::InputText(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer) : UI_element(x, y, type, parent, Observer) {
+ImputText::ImputText(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer, std::string font) : UI_element(x, y, type, parent, Observer) {
 
 	type = InputBox;
 	this->pos.x = x;
@@ -18,6 +18,7 @@ InputText::InputText(int x, int y, UI_Type type, std::string text_input, UI_elem
 
 	labelInputText = (UI_Label*)App->gui->CreateLabel(x, y, Label, text_input, NULL, NULL, NULL);
 
+	this->font_text = font;
 
 }
 
@@ -27,9 +28,9 @@ InputText::~InputText() {
 
 
 bool InputText::Update(float dt) {
-	
-	if (InputText_Actived) {	
-		
+
+	if (InputText_Actived) {
+
 		App->render->DrawQuad({ pos.x + r.w,pos.y,3,30 }, 255, 255, 255, 255);
 		if (App->input->isPresed) {
 			text += App->input->newLetter;
@@ -49,7 +50,7 @@ bool InputText::Update(float dt) {
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN) {
 		InputText_Actived = !InputText_Actived;
 		if (InputText_Actived) {
-			labelInputText->SetLabelText(" ");
+			labelInputText->SetLabelText("", font_text);
 			SDL_StartTextInput();
 
 		}

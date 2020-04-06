@@ -213,7 +213,7 @@
     <ClInclude Include="j1Console.h">
       <Filter>Desenvolupament  ========\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="UI_InputText.h">
+    <ClInclude Include="UI_ImputText.h">
       <Filter>Desenvolupament  ========\UI</Filter>
     </ClInclude>
   </ItemGroup>
