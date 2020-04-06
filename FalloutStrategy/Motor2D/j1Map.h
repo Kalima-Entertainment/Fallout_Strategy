@@ -6,12 +6,14 @@
 #include "p2Point.h"
 #include "j1Module.h"
 #include <vector>
+#include <string>
 
 #define TILE_SIZE 64
 #define HALF_TILE 32
 #define MODULE_LENGTH 75
 #define MAP_LENGTH 150
-
+#define MAX_LAYERS 6
+#define MAX_TILESETS 4
 
 // ----------------------------------------------------
 struct Properties
@@ -47,16 +49,12 @@ struct MapLayer
 	std::string	name;
 	int			width;
 	int			height;
-	uint*		data;
+	uint		data[MAP_LENGTH * MAP_LENGTH];
 	Properties	properties;
 
-	MapLayer() : data(NULL)
-	{}
+	MapLayer() {}
 
-	~MapLayer()
-	{
-		RELEASE(data);
-	}
+	~MapLayer() {}
 
 	inline uint Get(int x, int y) const
 	{
@@ -114,9 +112,9 @@ struct MapData
 	int					tile_height;
 	SDL_Color			background_color;
 	MapTypes			type;
-	p2List<TileSet*>	tilesets;
-	p2List<MapLayer*>	layers;
-	p2List<ObjectGroup*> objectgroups;
+	TileSet				tilesets[MAX_TILESETS];
+	MapLayer			layers[MAX_LAYERS];
+	ObjectGroup			objectgroup;
 };
 
 // ----------------------------------------------------
@@ -139,7 +137,7 @@ public:
 	bool CleanUp();
 
 	// Load new map
-	bool Load(const char* path);
+	bool Load(std::string modules[4]);
 
 	iPoint MapToWorld(int x, int y) const;
 	fPoint fMapToWorld(int x, int y) const;
@@ -156,8 +154,8 @@ private:
 	bool LoadMap();
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
-	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
-	bool LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup);
+	bool LoadLayer(pugi::xml_node& node, MapLayer* layer, int module_number);
+	bool LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup);
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
 
 public:

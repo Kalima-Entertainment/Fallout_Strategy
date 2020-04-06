@@ -84,6 +84,7 @@ bool StaticEntity::LoadReferenceData() {
 }
 
 bool StaticEntity::LoadAnimations() {
+	
 	bool ret = true;
 	char* faction_char = "NoFaction";
 	float speed_multiplier = 0.065f;
