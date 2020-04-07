@@ -19,7 +19,6 @@ public:
 
 	// Called each loop iteration
 	bool Update(float dt);
-
 	// Called each loop iteration
 	bool Draw();
 
@@ -48,6 +47,13 @@ public:
 	int volume_fx;
 	int members_fx;
 	int counter;
+
+private:
+
+	bool supermutant_created = false;
+	bool brotherhood_created = false;
+	bool vault_created = false;
+	bool ghoul_created = false;
 
 
 };
