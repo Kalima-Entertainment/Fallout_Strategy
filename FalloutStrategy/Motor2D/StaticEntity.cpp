@@ -58,7 +58,7 @@ bool StaticEntity::PostUpdate() {
 	current_animation = &animations[state];
 
 	//Render building
-	render_position = {(int)(position.x - 0.5f * sprite_size),(int)(position.y - sprite_size)};
+	render_position = {(int)(position.x - 0.5f * sprite_size),(int)(position.y - sprite_size * 0.75)};
 
 	App->render->Blit(reference_entity->texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
@@ -79,7 +79,7 @@ bool StaticEntity::LoadReferenceData() {
 
 	//load property data
 	current_health = max_health = reference_entity->max_health;
-
+	sprite_size = reference_entity->sprite_size;
 	return ret;
 }
 
@@ -116,8 +116,8 @@ bool StaticEntity::LoadAnimations() {
 		ret = false;
 	}
 
-	int tile_width = animation_file.child("map").child("tileset").attribute("tilewidth").as_int();
-	int tile_height = animation_file.child("map").child("tileset").attribute("tileheight").as_int();
+	int tile_width = animation_file.child("map").attribute("tilewidth").as_int();
+	int tile_height = animation_file.child("map").attribute("tileheight").as_int();
 	int columns = animation_file.child("map").child("tileset").attribute("columns").as_int();
 	int firstgid = animation_file.child("map").child("tileset").attribute("firstgid").as_int();
 	sprite_size = tile_height;
@@ -137,7 +137,7 @@ bool StaticEntity::LoadAnimations() {
 		std::string building_type = std::string(animation.child("properties").child("property").attribute("name").as_string());
 		std::string animation_name = std::string(animation.child("properties").child("property").attribute("value").as_string());
 		StaticState state = NO_STATE;
-		EntityType entity_type;
+		EntityType entity_type = BASE;
 		bool loop = true;
 
 		//building type

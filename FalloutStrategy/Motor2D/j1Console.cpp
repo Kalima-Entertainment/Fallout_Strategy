@@ -12,11 +12,11 @@
 
 j1Console::j1Console() : j1Module() {
 	isVisible = false;
+	input_box = nullptr;
 	CleanUpStarted = false;
 	l = 0;
 	//command_input = nullptr;
-
-//	current_consulting_command = nullptr;
+	//current_consulting_command = nullptr;
 }
 
 j1Console::~j1Console() {}
@@ -191,6 +191,7 @@ void j1Console::DestroyInterface() {
 		App->gui->Delete_Element(on_screen_log[i]);
 	}
 	App->gui->Delete_Element(input_box);
+	input_box = nullptr;
 	on_screen_log.clear();
 }
 

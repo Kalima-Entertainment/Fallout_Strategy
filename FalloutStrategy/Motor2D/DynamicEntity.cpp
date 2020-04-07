@@ -144,11 +144,21 @@ void DynamicEntity::Move(float dt) {
 			//we reach the destination and there is an entity in it
 				//ranged and melee
 				if (type != GATHERER){
-					if ((target_entity != nullptr)&&(faction != target_entity->faction))
+					if (target_entity != nullptr)
 					{
-						state = ATTACK;
-						Attack();
-						target_entity->attacking_entity = this;
+						//enemy target
+						if (faction != target_entity->faction) {
+							state = ATTACK;
+							Attack();
+							target_entity->attacking_entity = this;
+						}
+						//ally
+						else if (next_tile == target_tile)
+						{
+							state = IDLE;
+							next_tile = current_tile;
+							path_to_target.clear();
+						}
 					}
 				}
 				//gatherer
@@ -224,30 +234,23 @@ void DynamicEntity::Attack() {
 	timer.Start();
 	target_entity->current_health -= damage;
 	target_entity->state = HIT;
-	target_entity->current_animation->Reset();
 
-	switch (direction)
-	{
-	case TOP_LEFT:
+
+	if ((current_tile.x > target_entity->current_tile.x) && (current_tile.y == target_entity->current_tile.y)) {
+		direction = TOP_LEFT;
 		target_entity->direction = BOTTOM_RIGHT;
-		break;
-	case TOP_RIGHT:
+	}
+	else if ((current_tile.x == target_entity->current_tile.x) && (current_tile.y > target_entity->current_tile.y)) {
+		direction = TOP_RIGHT;	
 		target_entity->direction = BOTTOM_LEFT;
-		break;
-	case RIGHT:
-		target_entity->direction = LEFT;
-		break;
-	case BOTTOM_RIGHT:
-		target_entity->direction = TOP_LEFT;
-		break;
-	case BOTTOM_LEFT:
+	}																		  
+	else if ((current_tile.x == target_entity->current_tile.x) && (current_tile.y < target_entity->current_tile.y)) {
+		direction = BOTTOM_LEFT;				
 		target_entity->direction = TOP_RIGHT;
-		break;
-	case LEFT:
-		target_entity->direction = RIGHT;
-		break;
-	default:
-		break;
+	}																		   
+	else if ((current_tile.x < target_entity->current_tile.x) && (current_tile.y == target_entity->current_tile.y)) {
+		direction = BOTTOM_RIGHT;
+		target_entity->direction = TOP_LEFT;
 	}
 
 	if (target_entity->current_health <= 0) {

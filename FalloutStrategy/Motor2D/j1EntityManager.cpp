@@ -245,20 +245,27 @@ bool j1EntityManager::PostUpdate()
 {
 	BROFILER_CATEGORY("EntitiesPostUpdate", Profiler::Color::Orange)
 	bool ret = true;
-	SDL_Rect tex_rect = {64,0,64,64 };
+	SDL_Rect tex_rect = {128,0,64,64 };
 	iPoint tex_position;
 
+	//debug kind of entity
 	if (App->render->debug) {
 		for (int i = 0; i < entities.size(); i++)
 		{
 			if (entities[i]->is_dynamic)
 			{
-				SDL_Rect rect = { 0,0,64,64 };
+				//dynamic entities debug
+				//change color depending on if it's an ally or an enemy
+				SDL_Rect rect;
+				if(App->player->factions[entities[i]->faction] == true) rect = { 0,0,64,64 };
+				else rect = { 64,0,64,64 };
+
 				tex_position = App->map->MapToWorld(entities[i]->current_tile.x, entities[i]->current_tile.y);
 				App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &rect);
 			}
 			else
 			{
+				//static entities debug
 				StaticEntity* static_entity = (StaticEntity*)entities[i];
 				for (int j = 0; j < static_entity->tiles.size(); j++)
 				{
@@ -268,6 +275,7 @@ bool j1EntityManager::PostUpdate()
 				}
 			}
 		}
+		//resource buildings debug
 		for (int i = 0; i < resource_buildings.size(); i++)
 		{
 			for (int j = 0; j < resource_buildings[i]->tiles.size(); j++)
@@ -353,8 +361,8 @@ bool j1EntityManager::PostUpdate()
 		}
 		else
 		{
-			if ((entities[i]->position.x > -App->render->camera.x) && (entities[i]->position.x < -App->render->camera.x + App->render->camera.w)
-				&& (entities[i]->position.y > -App->render->camera.y))
+			if ((entities[i]->position.x + entities[i]->sprite_size * 0.5f > -App->render->camera.x) && (entities[i]->position.x - entities[i]->sprite_size * 0.5f < -App->render->camera.x + App->render->camera.w)
+				&& (entities[i]->position.y + entities[i]->sprite_size * 0.25f > -App->render->camera.y) && (entities[i]->position.y - entities[i]->sprite_size * 0.25f < -App->render->camera.y + App->render->camera.h))
 			{
 				// && (entities[i]->position.y - TILE_SIZE > -(App->render->camera.y + App->render->camera.h))) {
 				SortEntities();
