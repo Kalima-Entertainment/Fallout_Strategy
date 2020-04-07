@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string>
+#include "j1MovementManager.h"
 
 j1Scene::j1Scene() : j1Module()
 {

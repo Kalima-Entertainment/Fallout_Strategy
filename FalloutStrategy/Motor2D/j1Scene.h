@@ -54,7 +54,6 @@ public:
 	bool create = false;
 	StatesMenu menu_state = StatesMenu::NONE;
 
-
 private:
 
 	int SongPlaying = 0;

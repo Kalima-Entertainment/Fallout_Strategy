@@ -7,6 +7,8 @@
 #include "j1EntityManager.h"
 #include "p2DynArray.h"
 #include "p2Log.h"
+#include "j1MovementManager.h"
+#include "j1Group.h"
 
 #define TILE_SIZE 64
 #define HALF_TILE 32
@@ -84,6 +86,8 @@ public:
 	bool to_destroy;
 	bool particles_created;
 	bool playing_fx;
+
+	Group_Unit info;
 };
 
 #endif // !_j1ENTITY_H
