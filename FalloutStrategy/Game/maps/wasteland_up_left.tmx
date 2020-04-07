@@ -28160,6 +28160,9 @@
   </data>
  </layer>
  <layer name="colisions" width="75" height="75">
+  <properties>
+   <property name="Navigation" value="1"/>
+  </properties>
   <data>
    <tile gid="0"/>
    <tile gid="0"/>

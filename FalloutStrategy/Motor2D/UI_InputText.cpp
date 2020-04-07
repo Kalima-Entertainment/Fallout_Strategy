@@ -16,15 +16,12 @@ InputText::InputText(int x, int y, UI_Type type, std::string text_input, UI_elem
 	this->pos.x = x;
 	this->pos.y = y;
 
-	labelInputText = (UI_Label*)App->gui->CreateLabel(x, y, Label, text_input, NULL, NULL, NULL);
+	labelInputText = (UI_Label*)App->gui->CreateLabel(x, y, Label, text_input, NULL, NULL, NULL, font);
 
-	this->font_text = font;
-
+	font_text = font;
 }
 
-InputText::~InputText() {
-
-}
+InputText::~InputText() {}
 
 
 bool InputText::Update(float dt) {
@@ -35,16 +32,21 @@ bool InputText::Update(float dt) {
 		if (App->input->isPresed) {
 			text += App->input->newLetter;
 			App->font->CalcSize(text.data(), r.w, r.h);
-			texture = App->font->Print(text.data());
+			texture = App->font->Print(text.data(), {255,255,255,255}, font_text);
 			App->input->isPresed = false;
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN) {
-			text.pop_back();
-			App->font->CalcSize(text.data(), r.w, r.h);
-			texture = App->font->Print(text.data());
+			if (text.size() > 0)
+			{
+				text.pop_back();
+				App->font->CalcSize(text.data(), r.w, r.h);
+				texture = App->font->Print(text.data(), {255, 255, 255, 255}, font_text);
+			}
 		}
-		App->render->Blit(texture, pos.x, pos.y, &r);
+
+		if(text.size() > 0)
+			App->render->Blit(texture, pos.x, pos.y, &r);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN) {
@@ -52,7 +54,6 @@ bool InputText::Update(float dt) {
 		if (InputText_Actived) {
 			labelInputText->SetLabelText("", font_text);
 			SDL_StartTextInput();
-
 		}
 	}
 

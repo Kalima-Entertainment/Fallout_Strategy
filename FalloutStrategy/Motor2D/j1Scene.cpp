@@ -37,8 +37,6 @@ bool j1Scene::Awake()
 	LOG("Loading Scene");
 	bool ret = true;
 
-
-
 	return ret;
 }
 
@@ -77,7 +75,9 @@ bool j1Scene::Start()
 	modules[2] += ("_low_left.tmx");
 	modules[3] += ("_low_right.tmx");
 
-    // --------------------------------------
+	modules[0] = "grassland_low_left.tmx";
+
+	// --------------------------------------
 
 	if (App->map->Load(modules) == true)
 	{

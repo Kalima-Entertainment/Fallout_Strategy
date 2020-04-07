@@ -16,8 +16,6 @@ public:
 
 	bool Update(float dt);
 
-
-
 public:
 
 	bool InputText_Actived = false;

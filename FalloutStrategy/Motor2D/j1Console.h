@@ -9,7 +9,7 @@
 
 class UI_Label;
 struct SDL_Rect;
-class UI_InputText;
+class InputText;
 
 struct Command {
 	char* text;
@@ -41,15 +41,17 @@ public:
 public:
 	std::vector<std::string> log_record;
 	std::vector<UI_Label*> on_screen_log;
-	//GuiInputText* command_input;
-	//p2List<p2SString> input_commands;
-	//p2List<j1Command*> commands;
-	//p2List_item<p2SString>* current_consulting_command;
+	InputText* input_box;
 	int l;
 	bool isVisible;
 	SDL_Rect log_box;
 	SDL_Rect command_background;
 	bool CleanUpStarted;
+	float last_dt;
+	//GuiInputText* command_input;
+	//p2List<p2SString> input_commands;
+	//p2List<j1Command*> commands;
+	//p2List_item<p2SString>* current_consulting_command;
 };
 
 #endif // !_j1CONSOLE_H_

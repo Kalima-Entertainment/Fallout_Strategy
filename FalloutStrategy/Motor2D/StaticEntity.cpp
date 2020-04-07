@@ -63,7 +63,7 @@ bool StaticEntity::PostUpdate() {
 	App->render->Blit(reference_entity->texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
 	if (App->render->debug) 
-	{ App->render->DrawQuad({ (int)position.x, (int)position.y, 4,4 }, 255, 0, 0, 255); }
+	{ App->render->DrawQuad({ (int)position.x -2, (int)position.y-2, 4,4 }, 255, 0, 0, 255); }
 	return true;
 }
 

@@ -7,6 +7,7 @@
 #include "p2Log.h"
 #include "j1EntityManager.h"
 #include "j1Gui.h"
+#include "UI_InputText.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
 j1Console::j1Console() : j1Module() {
@@ -123,6 +124,7 @@ bool j1Console::Update(float dt) {
 		}
 
 	//	if (command_input != nullptr)command_input->Input();
+		last_dt = dt;
 	}
 	return ret;
 }
@@ -147,6 +149,7 @@ bool j1Console::PostUpdate() {
 		{
 			on_screen_log[i]->Draw();
 		}
+		input_box->Update(last_dt);
 	}
 	return ret;
 }
@@ -179,8 +182,7 @@ void j1Console::CreateInterface() {
 		on_screen_log.push_back((UI_Label*)App->gui->CreateLabel(0 + x_margin, log_box.h - (j * (font_size + spacing)) -spacing, Label, log_record[i].c_str(), NULL, this, NULL, "OpenSans-Light"));
 		j++;
 	}
-	App->gui->CreateInputBox(x_margin, log_box.h, InputBox, "Write command", NULL, NULL);
-
+	input_box = (InputText*)App->gui->CreateInputBox(x_margin, log_box.h , InputBox, "Write command", NULL, NULL, "OpenSans-Light");
 }
 
 void j1Console::DestroyInterface() {
@@ -188,6 +190,7 @@ void j1Console::DestroyInterface() {
 	{
 		App->gui->Delete_Element(on_screen_log[i]);
 	}
+	App->gui->Delete_Element(input_box);
 	on_screen_log.clear();
 }
 

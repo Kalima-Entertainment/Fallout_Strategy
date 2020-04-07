@@ -88,11 +88,11 @@ TileSet* j1Map::GetTilesetFromTileId(int id) const
 {
 	TileSet* set = (TileSet*)&data.tilesets[0];
 	for (int i = 0; i < 4; i++){
+		set = (TileSet*)&data.tilesets[i];
 		if (id < data.tilesets[i + 1].firstgid)
 		{
 			break;
 		}
-		set = (TileSet*)&data.tilesets[i];
 	}
 	return set;
 }
@@ -670,14 +670,10 @@ bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 {
 	bool ret = false;
-	//TODO
-	/*
-	p2List_item<MapLayer*>* item;
-	item = data.layers[0];
 
-	for(item = data.layers.start; item != NULL; item = item->next)
+	for(int i = 0; i < MAX_LAYERS; i++)
 	{
-		MapLayer* layer = item->data;
+		MapLayer* layer = (MapLayer*)&data.layers[i];
 
 		if(layer->properties.Get("Navigation", 0) == 0)
 			continue;
@@ -708,7 +704,7 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 
 		break;
 	}
-	*/
+	
 	return ret;
 }
 

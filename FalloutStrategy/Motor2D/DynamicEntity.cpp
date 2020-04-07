@@ -38,7 +38,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 	resource_building = nullptr;
 	action_time = 3.0f;
 	resource_collected = 0;
-	int sprite_size = 128;
+	sprite_size = 128;
 }
 
 DynamicEntity::~DynamicEntity() {}
@@ -111,7 +111,7 @@ bool DynamicEntity::PostUpdate() {
 	}
 
 	//render character
-	render_position = { (int)(position.x - TILE_SIZE), (int)(position.y - 1.82f * TILE_SIZE)};
+	render_position = { (int)(position.x - sprite_size * 0.5f), (int)(position.y - 1.82f * TILE_SIZE)};
 	App->render->Blit(reference_entity->texture,render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
 	//health bar

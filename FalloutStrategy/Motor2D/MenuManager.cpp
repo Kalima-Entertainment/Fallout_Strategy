@@ -243,7 +243,6 @@ void MenuManager::CreateGUI()
 
 	//Images
 	gui_ingame[0] = (j1Image*)App->gui->CreateImage(0, 0, Image, { 0, 2428, 1290, 730 }, NULL, this);
-	gui_ingame[4] = (InputText*)App->gui->CreateInputBox(25, 400, InputBox, "", NULL, this);
 
 	if (App->gui->count == 0) {
 		
