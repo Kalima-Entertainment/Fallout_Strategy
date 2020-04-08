@@ -50,8 +50,11 @@ bool j1Audio::Awake(pugi::xml_node& config)
 		ret = true;
 	}
 
-	explosion = LoadFx("audio/fx/Others/Weapons/bigexplode1.wav");
-	explosion2 = LoadFx("audio/fx/Others/Weapons/bigexplode2.wav");
+	Brotherhood_walk = LoadFx("audio/fx/CharactersSounds/Brotherhood/Brotherhood_Walk.wav");
+	Brotherhood_die = LoadFx("audio/fx/CharactersSounds/Brotherhood/Brotherhood_Die.wav");
+	Brotherhood_hit = LoadFx("audio/fx/CharactersSounds/Brotherhood/Brotherhood_Hit.wav");
+	Brotherhood_attack = LoadFx("audio/fx/CharactersSounds/Brotherhood/Brotherhood_Attack.wav");
+	explode = LoadFx("audio/fx/Others/Weapons/bigexplode1.wav");
 
 	return ret;
 }

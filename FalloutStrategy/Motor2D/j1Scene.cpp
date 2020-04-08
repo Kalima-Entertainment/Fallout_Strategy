@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string>
+#include "j1MovementManager.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -75,7 +76,10 @@ bool j1Scene::Start()
 	modules[2] += ("_low_left.tmx");
 	modules[3] += ("_low_right.tmx");
 
-	modules[0] = "grassland_low_left.tmx";
+	modules[0] = "oldstone_up_left.tmx";
+	modules[1] = "oldstone_up_right.tmx";
+	modules[2] = "oldstone_low_left.tmx";
+	modules[3] = "oldstone_low_right.tmx";
 
 	// --------------------------------------
 

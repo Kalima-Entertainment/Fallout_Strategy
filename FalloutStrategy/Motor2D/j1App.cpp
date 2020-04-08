@@ -22,6 +22,7 @@
 #include "MenuManager.h"
 #include "MainMenu.h"
 #include "j1Console.h"
+#include "j1MovementManager.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -45,6 +46,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	menu_manager = new MenuManager();
 	main_menu = new MainMenu();
 	console = new j1Console();
+	Mmanager = new j1MovementManager();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -60,6 +62,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(player);
 	AddModule(font);
 	AddModule(scene);
+	AddModule(Mmanager);
 
 	// scene last
 	AddModule(menu_manager);

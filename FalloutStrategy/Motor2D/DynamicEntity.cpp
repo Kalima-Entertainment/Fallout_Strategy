@@ -43,15 +43,23 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 
 DynamicEntity::~DynamicEntity() {}
 
+bool DynamicEntity::PreUpdate(float dt) {
+	const SDL_Rect unit_rect{ 0,0, 10,10 };
+
+	if (info.IsSelected) DrawQuad();
+
+	return true;
+}
+
 bool DynamicEntity::Update(float dt) {
 
 	switch (state)
 	{
 	case IDLE:
-		//SpatialAudio(App->audio->explosion, 1, position.x, position.y);
 		break;
 	case WALK:
 		Move(dt);
+		SpatialAudio(App->audio->Brotherhood_walk, 1, position.x, position.y);
 		break;
 	case ATTACK:
 		if (timer.ReadSec() > action_time)
@@ -61,6 +69,7 @@ bool DynamicEntity::Update(float dt) {
 				Attack();
 			}
 		}
+		SpatialAudio(App->audio->Brotherhood_attack, 1, position.x, position.y);
 		break;
 	case GATHER:
 		if (timer.ReadSec() > action_time)
@@ -75,6 +84,7 @@ bool DynamicEntity::Update(float dt) {
 			state = IDLE;
 			current_animation->Reset();
 		}
+		SpatialAudio(App->audio->Brotherhood_hit, 1, position.x, position.y);
 		break;
 	case DIE:
 		if (current_animation->Finished())
@@ -82,9 +92,16 @@ bool DynamicEntity::Update(float dt) {
 			attacking_entity->target_entity = nullptr;
 			to_destroy = true;
 		}
+		SpatialAudio(App->audio->Brotherhood_die, 1, position.x, position.y);
 		break;
 	default:
 		break;
+	}
+
+	if (this->info.current_group != nullptr)
+	{
+		if (info.current_group->IsGroupLead(this))
+			info.current_group->CheckForMovementRequest(dt);
 	}
 
 	last_dt = dt;
@@ -478,3 +495,17 @@ bool DynamicEntity::LoadReferenceData() {
 
 	return ret;
 }
+
+void DynamicEntity::DrawQuad()
+{
+	LOG("DRAWING QUAD");
+	const SDL_Rect entityrect = { position.x + App->map->data.tile_width / 3,  position.y + App->map->data.tile_height / 2,  100,  100 };
+	App->render->DrawQuad(entityrect, unitinfo.color.r, unitinfo.color.g, unitinfo.color.b, unitinfo.color.a, false);
+}
+
+// --- UnitInfo Constructors and Destructor ---
+UnitInfo::UnitInfo() {}
+
+UnitInfo::~UnitInfo() {}
+
+UnitInfo::UnitInfo(const UnitInfo& info) : color(info.color) {}
