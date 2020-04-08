@@ -176,6 +176,7 @@ void DynamicEntity::Move(float dt) {
 							App->player->UpdateResourceData(resource_type, resource_collected);
 							resource_collected = 0;
 							target_building = nullptr;
+							state = IDLE;
 						}
 					}	
 				}

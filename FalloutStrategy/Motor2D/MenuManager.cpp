@@ -243,8 +243,6 @@ void MenuManager::CreateGUI()
 
 	//Images
 	gui_ingame[0] = (j1Image*)App->gui->CreateImage(0, 0, Image, { 0, 2428, 1290, 730 }, NULL, this);
-
-	if (App->gui->count == 0) {
 		
 		std::string water = std::to_string(App->player->water);
 		std::string food = std::to_string(App->player->food);
@@ -253,9 +251,6 @@ void MenuManager::CreateGUI()
 		gui_ingame[1] = (UI_Label*)App->gui->CreateLabel(95, 10, Label, food, NULL, this, NULL);
 		gui_ingame[2] = (UI_Label*)App->gui->CreateLabel(240, 10, Label, water, NULL, this, NULL);
 		gui_ingame[3] = (UI_Label*)App->gui->CreateLabel(385, 10, Label, caps, NULL, this, NULL);
-
-		App->gui->count++;
-	}
 
 
 	//Labels
