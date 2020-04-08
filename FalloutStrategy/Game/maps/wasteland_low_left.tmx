@@ -5796,7 +5796,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="3221225769"/>
+   <tile gid="301"/>
    <tile gid="298"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -33842,12 +33842,12 @@
     <property name="Water" type="int" value="200"/>
    </properties>
   </object>
-  <object id="26" name="Resources" x="1220.52" y="700.693" width="134.666" height="148">
+  <object id="26" name="Resources" x="1223.85" y="711.36" width="134.666" height="148">
    <properties>
     <property name="Water" type="int" value="100"/>
    </properties>
   </object>
-  <object id="28" name="Resources" x="1367.08" y="15.2269" width="84" height="158.167">
+  <object id="28" name="Resources" x="1394.58" y="36.3936" width="84" height="158.167">
    <properties>
     <property name="Water" type="int" value="50"/>
    </properties>
@@ -33857,12 +33857,12 @@
     <property name="Nuka-Cola" type="int" value="50"/>
    </properties>
   </object>
-  <object id="31" name="Resources" x="1151.83" y="-2.75733" width="213.333" height="107.181">
+  <object id="31" name="Resources" x="1140.83" y="18.576" width="227" height="107.181">
    <properties>
     <property name="Water" type="int" value="200"/>
    </properties>
   </object>
-  <object id="33" name="Resources" x="2040.83" y="1857.17" width="42.3333" height="41.6667">
+  <object id="33" name="Resources" x="2055.83" y="1861.17" width="42.3333" height="41.6667">
    <properties>
     <property name="Nuka-Cola" type="int" value="50"/>
    </properties>
@@ -33897,12 +33897,12 @@
     <property name="Nuka-Cola" type="int" value="50"/>
    </properties>
   </object>
-  <object id="40" name="Resources" x="1095.5" y="695.583" width="35.6663" height="153.833">
+  <object id="40" name="Resources" x="1096" y="720.416" width="35.6663" height="153.833">
    <properties>
     <property name="Water" type="int" value="50"/>
    </properties>
   </object>
-  <object id="41" name="Resources" x="1445.17" y="703.25" width="51.6663" height="148.5">
+  <object id="41" name="Resources" x="1446.67" y="721.75" width="51.6663" height="148.5">
    <properties>
     <property name="Water" type="int" value="50"/>
    </properties>

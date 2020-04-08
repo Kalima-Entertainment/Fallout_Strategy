@@ -33827,7 +33827,7 @@
     <property name="Nuka-Cola" type="int" value="50"/>
    </properties>
   </object>
-  <object id="23" name="Resources" x="1507.66" y="1288.67" width="255" height="131.5">
+  <object id="23" name="Resources" x="1503.66" y="1318.34" width="259" height="127.833">
    <properties>
     <property name="Water" type="int" value="200"/>
    </properties>
@@ -33837,7 +33837,7 @@
     <property name="Water" type="int" value="150"/>
    </properties>
   </object>
-  <object id="26" name="Resources" x="1522.84" y="1427.5" width="194.499" height="203.333">
+  <object id="26" name="Resources" x="1522.84" y="1427.5" width="189.832" height="203.333">
    <properties>
     <property name="Water" type="int" value="150"/>
    </properties>
