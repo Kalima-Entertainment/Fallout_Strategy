@@ -64,6 +64,6 @@ void j1Entity::SpatialAudio(int fx, int channel, int positionx, int positiony) {
 	if (volume > 255) { volume = 255; }
 
 	Mix_SetPosition(channel, 0, volume);
-	App->audio->PlayFx(channel, fx, -1);
+	App->audio->PlayFx(channel, fx, 0);
 
 }

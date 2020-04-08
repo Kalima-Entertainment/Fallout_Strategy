@@ -46,6 +46,7 @@ public:
 	int Brotherhood_hit;
 	int Brotherhood_attack;
 	int explode;
+	int factory;
 
 private:
 
