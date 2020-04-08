@@ -41,8 +41,11 @@ public:
 	float Get_Music_Volume();
 	float Get_FX_Volume();
 
-	int explosion;
-	int explosion2;
+	int Brotherhood_walk;
+	int Brotherhood_die;
+	int Brotherhood_hit;
+	int Brotherhood_attack;
+	int explode;
 
 private:
 

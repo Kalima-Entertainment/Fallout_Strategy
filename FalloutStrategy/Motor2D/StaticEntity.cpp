@@ -2,6 +2,7 @@
 #include "j1App.h"
 #include "j1Render.h"
 #include "j1Map.h"
+#include "j1Audio.h"
 #include "j1Textures.h"
 #include "Player.h"
 #include "j1Input.h"
@@ -24,6 +25,7 @@ bool StaticEntity::Update(float dt) {
 	case EXPLODE:
 		if (current_animation->Finished())
 			to_destroy = true;
+		SpatialAudio(App->audio->explode, 1, position.x, position.y);
 		break;
 	default:
 		break;

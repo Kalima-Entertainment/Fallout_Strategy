@@ -56,10 +56,10 @@ bool DynamicEntity::Update(float dt) {
 	switch (state)
 	{
 	case IDLE:
-		//SpatialAudio(App->audio->explosion, 1, position.x, position.y);
 		break;
 	case WALK:
 		Move(dt);
+		SpatialAudio(App->audio->Brotherhood_walk, 1, position.x, position.y);
 		break;
 	case ATTACK:
 		if (timer.ReadSec() > action_time)
@@ -69,6 +69,7 @@ bool DynamicEntity::Update(float dt) {
 				Attack();
 			}
 		}
+		SpatialAudio(App->audio->Brotherhood_attack, 1, position.x, position.y);
 		break;
 	case GATHER:
 		if (timer.ReadSec() > action_time)
@@ -83,6 +84,7 @@ bool DynamicEntity::Update(float dt) {
 			state = IDLE;
 			current_animation->Reset();
 		}
+		SpatialAudio(App->audio->Brotherhood_hit, 1, position.x, position.y);
 		break;
 	case DIE:
 		if (current_animation->Finished())
@@ -90,6 +92,7 @@ bool DynamicEntity::Update(float dt) {
 			attacking_entity->target_entity = nullptr;
 			to_destroy = true;
 		}
+		SpatialAudio(App->audio->Brotherhood_die, 1, position.x, position.y);
 		break;
 	default:
 		break;
