@@ -77,7 +77,7 @@ bool UI_Button::Update(float dt)
 
 		if (t == button_select_ghoul) 
 		{
-			ghoul_image = (j1Image*)App->gui->CreateImage(940, 300, Image, { 2492, 837, 168, 166 }, NULL, this);
+			ghoul_image = (j1Image*)App->gui->CreateImage(940, 300, Image, { 2606, 835, 590, 182 }, NULL, this);
 			ghoul_image->hover = true;
 			elements_to_show.push_back(ghoul_image);
 			current_state = BUTTON_STATE::HOVER;
@@ -85,7 +85,7 @@ bool UI_Button::Update(float dt)
 
 		if (t == button_select_vault) 
 		{
-			vault_image = (j1Image*)App->gui->CreateImage(860, 300, Image, { 2492, 1013, 309, 134 }, NULL, this);
+			vault_image = (j1Image*)App->gui->CreateImage(860, 300, Image, { 2606, 1013, 309, 134 }, NULL, this);
 			vault_image->hover = true;
 			elements_to_show.push_back(vault_image);
 			current_state = BUTTON_STATE::HOVER;
@@ -93,7 +93,7 @@ bool UI_Button::Update(float dt)
 
 		if (t == button_select_brotherhood) 
 		{
-			brotherhood_image = (j1Image*)App->gui->CreateImage(950, 300, Image, { 2492, 1161, 155, 180 }, NULL, this);
+			brotherhood_image = (j1Image*)App->gui->CreateImage(950, 300, Image, { 2606, 1161, 155, 180 }, NULL, this);
 			brotherhood_image->hover = true;
 			elements_to_show.push_back(brotherhood_image);
 			current_state = BUTTON_STATE::HOVER;
@@ -101,7 +101,7 @@ bool UI_Button::Update(float dt)
 
 		if (t == button_select_supermutant) 
 		{
-			supermutant_image = (j1Image*)App->gui->CreateImage(950, 300, Image, { 2492, 1354, 158, 158 }, NULL, this);
+			supermutant_image = (j1Image*)App->gui->CreateImage(950, 300, Image, { 2606, 1354, 158, 158 }, NULL, this);
 			supermutant_image->hover = true;
 			elements_to_show.push_back(supermutant_image);
 			current_state = BUTTON_STATE::HOVER;
@@ -239,6 +239,12 @@ bool UI_Button::Update(float dt)
 			if (t == button_twitter_credits)
 			{
 				ShellExecuteA(NULL, "open", "https://twitter.com/KalimaEntmt", NULL, NULL, SW_SHOWNORMAL);
+				App->audio->PlayFx(click_fx, 0);
+			}
+
+			if (t == button_web_credits)
+			{
+				ShellExecuteA(NULL, "open", "https://kalima-entertainment.github.io/Fallout_Strategy/", NULL, NULL, SW_SHOWNORMAL);
 				App->audio->PlayFx(click_fx, 0);
 			}
 
