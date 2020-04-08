@@ -77,7 +77,7 @@ bool UI_Button::Update(float dt)
 
 		if (t == button_select_ghoul) 
 		{
-			ghoul_image = (j1Image*)App->gui->CreateImage(940, 300, Image, { 2606, 835, 590, 182 }, NULL, this);
+			ghoul_image = (j1Image*)App->gui->CreateImage(510, 300, Image, { 2600, 835, 591, 180 }, NULL, this);
 			ghoul_image->hover = true;
 			elements_to_show.push_back(ghoul_image);
 			current_state = BUTTON_STATE::HOVER;
@@ -85,7 +85,7 @@ bool UI_Button::Update(float dt)
 
 		if (t == button_select_vault) 
 		{
-			vault_image = (j1Image*)App->gui->CreateImage(860, 300, Image, { 2606, 1013, 309, 134 }, NULL, this);
+			vault_image = (j1Image*)App->gui->CreateImage(510, 300, Image, { 2600, 2886, 656, 180 }, NULL, this);
 			vault_image->hover = true;
 			elements_to_show.push_back(vault_image);
 			current_state = BUTTON_STATE::HOVER;
@@ -93,7 +93,7 @@ bool UI_Button::Update(float dt)
 
 		if (t == button_select_brotherhood) 
 		{
-			brotherhood_image = (j1Image*)App->gui->CreateImage(950, 300, Image, { 2606, 1161, 155, 180 }, NULL, this);
+			brotherhood_image = (j1Image*)App->gui->CreateImage(510, 300, Image, { 2600, 2351, 580, 185 }, NULL, this);
 			brotherhood_image->hover = true;
 			elements_to_show.push_back(brotherhood_image);
 			current_state = BUTTON_STATE::HOVER;
@@ -101,7 +101,7 @@ bool UI_Button::Update(float dt)
 
 		if (t == button_select_supermutant) 
 		{
-			supermutant_image = (j1Image*)App->gui->CreateImage(950, 300, Image, { 2606, 1354, 158, 158 }, NULL, this);
+			supermutant_image = (j1Image*)App->gui->CreateImage(510, 300, Image, { 2600, 2649, 602, 181 }, NULL, this);
 			supermutant_image->hover = true;
 			elements_to_show.push_back(supermutant_image);
 			current_state = BUTTON_STATE::HOVER;
