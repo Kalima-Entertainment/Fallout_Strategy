@@ -107,9 +107,12 @@ public:
 	j1Module* observer = nullptr;
 
 	bool destroy;
+	bool drawable = true;
+	bool hover = false;
 
 	//pointer to an element
 	UI_element*	element_UI;
+
 
 };
 

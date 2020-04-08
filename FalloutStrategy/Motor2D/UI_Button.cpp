@@ -74,82 +74,39 @@ bool UI_Button::Update(float dt)
 			App->audio->PlayFx(hover_fx, 0);
 		}
 
-		
 
-		if (t == button_select_ghoul) {
-
-			if (ghoul_created == false) {
-
-				App->menu_manager->select_faction_photos[0] = (j1Image*)App->gui->CreateImage(100, 300, Image, { 2492, 837, 168, 166 }, NULL, this);
-				ghoul_created = true;
-				
-			}
-			else {
-				supermutant_created = false;
-				vault_created = false;
-				brotherhood_created = false;
-				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::GHOUL, BUILDING_TYPE::NONE);
-			}
-
+		if (t == button_select_ghoul) 
+		{
+			ghoul_image = (j1Image*)App->gui->CreateImage(940, 300, Image, { 2492, 837, 168, 166 }, NULL, this);
+			ghoul_image->hover = true;
+			elements_to_show.push_back(ghoul_image);
+			current_state = BUTTON_STATE::HOVER;
 		}
 
-	
-
-		if (t == button_select_vault) {
-
-			if (vault_created == false) {
-
-				App->menu_manager->select_faction_photos[1] = (j1Image*)App->gui->CreateImage(310, 300, Image, { 2492, 1013, 309, 134 }, NULL, this);
-				vault_created = true;
-				
-			}
-			else {
-				ghoul_created = false;
-				supermutant_created = false;
-				brotherhood_created = false;
-				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::VAULT, BUILDING_TYPE::NONE);
-			}
-
+		if (t == button_select_vault) 
+		{
+			vault_image = (j1Image*)App->gui->CreateImage(860, 300, Image, { 2492, 1013, 309, 134 }, NULL, this);
+			vault_image->hover = true;
+			elements_to_show.push_back(vault_image);
+			current_state = BUTTON_STATE::HOVER;
 		}
 
-		if (t == button_select_brotherhood) {
-
-			if (brotherhood_created == false) {
-
-				App->menu_manager->select_faction_photos[2] = (j1Image*)App->gui->CreateImage(550, 300, Image, { 2492, 1161, 155, 180 }, NULL, this);
-				brotherhood_created = true;
-			}
-			else {
-				ghoul_created = false;
-				vault_created = false;
-				supermutant_created = false;
-				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::BROTHERHOOD, BUILDING_TYPE::NONE);
-			}
-
+		if (t == button_select_brotherhood) 
+		{
+			brotherhood_image = (j1Image*)App->gui->CreateImage(950, 300, Image, { 2492, 1161, 155, 180 }, NULL, this);
+			brotherhood_image->hover = true;
+			elements_to_show.push_back(brotherhood_image);
+			current_state = BUTTON_STATE::HOVER;
 		}
 
-		if (t == button_select_supermutant) {
-
-			if (supermutant_created == false) {
-
-				App->menu_manager->select_faction_photos[3] = (j1Image*)App->gui->CreateImage(750, 300, Image, { 2492, 1354, 158, 158 }, NULL, this);
-				supermutant_created = true;
-				
-			}
-			else {
-				ghoul_created = false;
-				vault_created = false;
-				brotherhood_created = false;
-				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::SUPERMUTANT, BUILDING_TYPE::NONE);
-			}
-
+		if (t == button_select_supermutant) 
+		{
+			supermutant_image = (j1Image*)App->gui->CreateImage(950, 300, Image, { 2492, 1354, 158, 158 }, NULL, this);
+			supermutant_image->hover = true;
+			elements_to_show.push_back(supermutant_image);
+			current_state = BUTTON_STATE::HOVER;
 		}
 
-		LOG("%d", supermutant_created);
-		LOG("%d", vault_created);
-		LOG("%d", brotherhood_created);
-		LOG("%d", ghoul_created);
-		
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT)==KEY_DOWN) {
 
 			//rect is button pressed
@@ -356,6 +313,7 @@ bool UI_Button::Update(float dt)
 			
 			App->gui->volume_up = 0;
 			App->gui->fx_up = 0;
+			
 		}
 
 	}
@@ -363,13 +321,27 @@ bool UI_Button::Update(float dt)
 	else {
 		dimensions = Button_idle;
 		counter = 0;
-		/*supermutant_created = false;
-		vault_created = false;
-		brotherhood_created = false;
-		ghoul_created = false;*/
+		current_state = BUTTON_STATE::HOVER_EXIT;
 	}
 	
 
+	if(current_state == BUTTON_STATE::HOVER_EXIT)
+	{
+		for (std::list<UI_element*>::iterator item = elements_to_show.begin(); item != elements_to_show.end(); ++item) {
+
+			if ((*item)->hover == true)
+			{
+				AddElementToShow((*item));
+			}
+		}
+	}
+	
+	
 	return true;
 
+}
+
+void UI_Button::AddElementToShow(UI_element* element)
+{
+	element->drawable = false;
 }
