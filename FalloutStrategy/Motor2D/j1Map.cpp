@@ -591,32 +591,32 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 				if (object_type == "Base") {
 					type = BASE;
 					if (building_faction == GHOUL) {
-						x -= 10;
-						y -= 5;
-					}else if (building_faction == VAULT) {
 						x += 1;
-						y += 2;
+					}else if (building_faction == VAULT) {
+						x += 4;
+						y += 3;
 					}else if (building_faction == MUTANT) {
-						x -= 1;
-						y += 1;
+						x += 3;
+						y += 2;
 					}else if (building_faction == BROTHERHOOD) {
-						y += 1;
+						x += 3;
+						y += 2;
 					}
 				}
 				else if (object_type == "Barrack") {
 					type = BARRACK;
 					if (building_faction == GHOUL) {
-						x -= 12;
-						y -= 6;
+						x -= 1;
+						y -= 1;
 					}else if (building_faction == VAULT) {
-						x -= 0;
-						y -= 0;
+						x += 3;
+						y += 3;
 					}else if (building_faction == MUTANT) {
-						x -= 0;
-						y -= 0;
+						x += 2;
+						y += 1;
 					}else if (building_faction == BROTHERHOOD) {
-						x -= 0;
-						y -= 0;
+						x += 1;
+						y += 1;
 					}
 				}
 				else if (object_type == "Laboratory") {
@@ -624,11 +624,14 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 					if (building_faction == GHOUL) {
 
 					}else if (building_faction == VAULT) {
-
+						x += 5;
+						y += 4;
 					}else if (building_faction == MUTANT) {
-
+						x += 3;
+						y += 1;
 					}else if (building_faction == BROTHERHOOD) {
-
+						x += 2;
+						y += 1;
 					}
 				}
 

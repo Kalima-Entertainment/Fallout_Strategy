@@ -49,10 +49,6 @@ bool j1Scene::Start()
 
 	DynamicEntity* vault[3], * brotherhood[3], * ghoul[3], *mutant[3];
 	DynamicEntity* test_melee, *test_enemy, *test_ranged, *test_gatherer;
-	StaticEntity* ghoul_base, *ghoul_barrack, *ghoul_laboratory;
-	StaticEntity* vault_base, *vault_barrack, *vault_laboratory;
-	StaticEntity* mutant_base, *mutant_barrack, *mutant_laboratory;
-	StaticEntity* brotherhood_base, *brotherhood_barrack, *brotherhood_laboratory;
 
 	//random map ----------------------------
 
@@ -76,10 +72,11 @@ bool j1Scene::Start()
 	modules[2] += ("_low_left.tmx");
 	modules[3] += ("_low_right.tmx");
 
-	modules[0] = "oldstone_up_left.tmx";
-	modules[1] = "oldstone_up_right.tmx";
-	modules[2] = "oldstone_low_left.tmx";
-	modules[3] = "oldstone_low_right.tmx";
+	modules[0] = "grassland_low_left.tmx";
+	//modules[0] = "oldstone_up_left.tmx";
+	//modules[1] = "oldstone_up_right.tmx";
+	//modules[2] = "oldstone_low_left.tmx";
+	//modules[3] = "oldstone_low_right.tmx";
 
 	// --------------------------------------
 
@@ -114,23 +111,7 @@ bool j1Scene::Start()
 	brotherhood[0] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, MELEE, 18, 6);
 	brotherhood[1] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, RANGED, 19, 6);
 	brotherhood[2] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, GATHERER, 20, 6);
-
-	//ghoul_base = (StaticEntity*)App->entities->CreateBuilding(GHOUL, BASE, {0,0}, {3,3});
-	//ghoul_barrack = (StaticEntity*)App->entities->CreateBuilding(GHOUL, BARRACK, { 64,64 }, { 3,3 });
-	//ghoul_laboratory = (StaticEntity*)App->entities->CreateBuilding(GHOUL, LABORATORY, { 6,6 }, { 3,3 });
-
-	//vault_base = (StaticEntity*)App->entities->CreateBuilding(VAULT, BASE, { 0,0 }, { 3,3 });
-	//vault_barrack = (StaticEntity*)App->entities->CreateBuilding(VAULT, BARRACK, { 3,3 }, { 3,3 });
-	//vault_laboratory = (StaticEntity*)App->entities->CreateBuilding(VAULT, LABORATORY, { 6,6 }, { 3,3 });
-
-	//mutant_base = (StaticEntity*)App->entities->CreateBuilding(MUTANT, BASE, { 0,0 }, { 3,3 });
-	//mutant_barrack = (StaticEntity*)App->entities->CreateBuilding(MUTANT, BARRACK, { 3,3 }, { 3,3 });
-	//mutant_laboratory = (StaticEntity*)App->entities->CreateBuilding(MUTANT, LABORATORY, { 6,6 }, { 3,3 });
-
-	//brotherhood_base = (StaticEntity*)App->entities->CreateBuilding(BROTHERHOOD, BASE, { 0,0 }, { 3,3 });
-	//brotherhood_barrack = (StaticEntity*)App->entities->CreateBuilding(BROTHERHOOD, BARRACK, { 3,3 }, { 3,3 });
-	//brotherhood_laboratory = (StaticEntity*)App->entities->CreateBuilding(BROTHERHOOD, LABORATORY, { 6,6 }, { 3,3 });
-
+	
 	//App->audio->PlayMusic("audio/music/elevator_music.ogg", 4.0F);
 	App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
 
