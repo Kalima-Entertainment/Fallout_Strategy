@@ -2,6 +2,7 @@
 #define _STATIC_ENTITY_H
 #include "j1Entity.h"
 #include <vector>
+#include <string>
 
 enum StaticState {
 	WAIT,
@@ -21,6 +22,8 @@ public:
 
 	bool LoadAnimations();
 	bool LoadReferenceData();	
+
+	void Upgrade(Faction faction, std::string upgrade_name);
 	
 public:
 	std::vector<iPoint> tiles;
