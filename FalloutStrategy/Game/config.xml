@@ -25,7 +25,7 @@
   <gui>
     <folder>gui/</folder>
     <ui file1="atlas.png"/>
-  </gui>
+   </gui>
 
   <map>
     <folder>maps/</folder>

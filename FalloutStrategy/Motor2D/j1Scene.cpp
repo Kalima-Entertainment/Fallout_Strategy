@@ -11,6 +11,7 @@
 #include "j1Gui.h"
 #include "j1Scene.h"
 #include "j1EntityManager.h"
+#include "j1Transition.h"
 #include "j1Entity.h"
 #include "DynamicEntity.h"
 #include "StaticEntity.h"
@@ -188,7 +189,11 @@ bool j1Scene::Update(float dt)
 		}
 
 	}
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
 
+		App->transition->Transition();
+
+	}
 	int x, y;
 	App->input->GetMousePosition(x, y);
 	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);

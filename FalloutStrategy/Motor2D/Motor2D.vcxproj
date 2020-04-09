@@ -14,14 +14,14 @@
     <ProjectGuid>{2AF9969B-F202-497B-AF30-7BEF9CE8005E}</ProjectGuid>
     <RootNamespace>programacio_2</RootNamespace>
     <ProjectName>Fallout_Strategy</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -93,6 +93,7 @@
     <ClCompile Include="j1PerfTimer.cpp" />
     <ClCompile Include="j1Scene.cpp" />
     <ClCompile Include="j1Timer.cpp" />
+    <ClCompile Include="j1Transition.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MenuManager.cpp" />
     <ClCompile Include="p2Log.cpp" />
@@ -123,6 +124,7 @@
     <ClInclude Include="j1PerfTimer.h" />
     <ClInclude Include="j1Scene.h" />
     <ClInclude Include="j1Timer.h" />
+    <ClInclude Include="j1Transition.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MenuManager.h" />
     <ClInclude Include="p2DynArray.h" />

@@ -6,6 +6,12 @@
 struct SDL_Texture;
 class DynamicEntity;
 
+enum class Map
+{
+	NO_MAP,
+	LEVEL,
+};
+
 enum class StatesMenu
 {
 	MAIN_MENU,

@@ -16,6 +16,7 @@
 #include "j1Gui.h"
 #include "j1App.h"
 #include "j1Collision.h"
+#include "j1Transition.h"
 #include "j1EntityManager.h"
 #include "Player.h"
 #include "j1Minimap.h"
@@ -43,7 +44,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	minimap = new j1Minimap();
 	menu_manager = new MenuManager();
 	main_menu = new MainMenu();
-
+	transition = new j1Transition();
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 	AddModule(input);
@@ -58,7 +59,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(player);
 	AddModule(font);
 	AddModule(scene);
-
+	AddModule(transition);
 	// scene last
 	AddModule(menu_manager);
 	AddModule(gui);
