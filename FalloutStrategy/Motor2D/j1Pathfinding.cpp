@@ -59,6 +59,30 @@ uchar j1PathFinding::GetTileAt(const iPoint& pos) const
 	return INVALID_WALK_CODE;
 }
 
+iPoint j1PathFinding::FindWalkableAdjacentTile(iPoint point) const {
+	iPoint tile;
+	
+	//north
+	tile = { point.x, point.y - 1 };
+	if (App->pathfinding->IsWalkable(tile))
+			return tile;
+
+	// south
+	tile = { point.x, point.y + 1 };
+	if (App->pathfinding->IsWalkable(tile))
+		return tile;
+
+	// east
+	tile = { point.x + 1, point.y };
+	if (App->pathfinding->IsWalkable(tile))
+		return tile;
+
+	// west
+	tile = { point.x - 1, point.y };
+	if (App->pathfinding->IsWalkable(tile))
+		return tile;
+}
+
 std::vector<iPoint> j1PathFinding::GetLastPath() const
 {
 	std::vector<iPoint> vector;

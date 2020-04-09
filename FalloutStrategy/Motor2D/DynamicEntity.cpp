@@ -339,7 +339,9 @@ void DynamicEntity::Gather() {
 }
 
 void DynamicEntity::PathfindToPosition(iPoint destination) {
-
+	if ((!App->pathfinding->IsWalkable(destination)) && (App->pathfinding->CheckBoundaries(destination))) {
+		destination = App->pathfinding->FindWalkableAdjacentTile(destination);
+	}
 	current_tile = App->map->WorldToMap(position.x, position.y);
 	target_tile = destination;
 	App->pathfinding->CreatePath(current_tile, destination);
@@ -365,6 +367,7 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 		if (App->render->debug)App->render->DrawQuad(Debug_rect, 90, 850, 230, 40);
 	}
 }
+
 /*
 bool DynamicEntity::LoadFx() {
 	bool ret = true;
@@ -539,7 +542,7 @@ bool DynamicEntity::LoadReferenceData() {
 
 	//load property data
 	current_health = max_health = reference_entity->max_health;
-	damage = reference_entity->damage;
+	storage_capacity= damage = reference_entity->damage;
 	speed = reference_entity->speed;
 
 	return ret;

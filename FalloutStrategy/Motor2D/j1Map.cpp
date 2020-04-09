@@ -46,8 +46,8 @@ void j1Map::Draw()
 	{
 		MapLayer* layer = &data.layers[l];
 
-	//	if(layer->properties.Get("Nodraw") != 0)
-	//		continue;
+		if(layer->properties.Get("Nodraw") != 0)
+			continue;
 
 		int total_tiles = 0;
 		for(int y = 0; y < data.height; ++y)
@@ -746,7 +746,7 @@ std::vector<iPoint> j1Map::CalculateArea(iPoint first_tile_position, int width, 
 		{
 			iPoint tile_position = { first_tile_position.x + i,first_tile_position.y + j };
 			area.push_back(tile_position);
-			uint position = ((tile_position.y+1) * MAP_LENGTH) + (tile_position.x +1);
+			uint position = ((tile_position.y) * MAP_LENGTH) + (tile_position.x);
 			data.layers[5].data[position] = 1;
 		}
 	}
