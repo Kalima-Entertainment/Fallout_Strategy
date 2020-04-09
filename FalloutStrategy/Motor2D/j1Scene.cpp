@@ -113,7 +113,7 @@ bool j1Scene::Start()
 	brotherhood[2] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, GATHERER, 20, 6);
 	
 	//App->audio->PlayMusic("audio/music/elevator_music.ogg", 4.0F);
-	//App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
+	App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
 
 	return true;
 }
