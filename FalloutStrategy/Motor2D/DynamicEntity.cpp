@@ -54,16 +54,15 @@ bool DynamicEntity::PreUpdate(float dt) {
 
 bool DynamicEntity::Update(float dt) {
 
+	Mix_AllocateChannels(20);
+
 	switch (state)
 	{
 	case IDLE:
 		break;
 	case WALK:
 		Move(dt);
-			
-		if (Mix_Playing(2) == 0)
-			SpatialAudio(App->audio->Brotherhood_walk, 2, position.x, position.y);
-			
+		if (Mix_Playing(2) == 0) { SpatialAudio(App->audio->Brotherhood_walk, 2, position.x, position.y); }
 		break;
 	case ATTACK:
 		if (timer.ReadSec() > action_time)
@@ -73,8 +72,21 @@ bool DynamicEntity::Update(float dt) {
 				Attack();
 			}
 		}
-		if (Mix_Playing(3) == 0)
-			SpatialAudio(App->audio->Brotherhood_attack, 3, position.x, position.y);
+		
+		if (reference_entity->faction == MUTANT || reference_entity->faction == BROTHERHOOD && reference_entity->type == RANGED)
+			if (Mix_Playing(15) == 0) { SpatialAudio(App->audio->minigun, 15, position.x, position.y); }
+		if (reference_entity->faction == VAULT || reference_entity->faction == GHOUL && reference_entity->type == RANGED)
+			if (Mix_Playing(16) == 0) { SpatialAudio(App->audio->pistol, 16, position.x, position.y); }
+	
+		if (reference_entity->faction == MUTANT && reference_entity->type != RANGED)
+			if (Mix_Playing(3) == 0) { SpatialAudio(App->audio->Mutant_attack, 3, position.x, position.y); }
+		if (reference_entity->faction == VAULT && reference_entity->type != RANGED)
+			if (Mix_Playing(4) == 0) { SpatialAudio(App->audio->Vault_attack, 4, position.x, position.y); }
+		if (reference_entity->faction == BROTHERHOOD && reference_entity->type != RANGED)
+			if (Mix_Playing(5) == 0) { SpatialAudio(App->audio->Brotherhood_attack, 5, position.x, position.y); }
+		if (reference_entity->faction == GHOUL && reference_entity->type != RANGED)
+			if (Mix_Playing(6) == 0) { SpatialAudio(App->audio->Ghoul_attack, 6, position.x, position.y); }
+		
 		break;
 	case GATHER:
 		if (timer.ReadSec() > action_time)
@@ -89,8 +101,14 @@ bool DynamicEntity::Update(float dt) {
 			state = IDLE;
 			current_animation->Reset();
 		}
-		if (Mix_Playing(4) == 0)
-			SpatialAudio(App->audio->Brotherhood_hit, 4, position.x, position.y);
+		if (reference_entity->faction == MUTANT)
+			if (Mix_Playing(7) == 0) { SpatialAudio(App->audio->Mutant_hit, 7, position.x, position.y); }
+		if (reference_entity->faction == VAULT)
+			if (Mix_Playing(8) == 0) { SpatialAudio(App->audio->Vault_hit, 8, position.x, position.y); }
+		if (reference_entity->faction == BROTHERHOOD)
+			if (Mix_Playing(9) == 0) { SpatialAudio(App->audio->Brotherhood_hit, 9, position.x, position.y); }
+		if (reference_entity->faction == GHOUL)
+			if (Mix_Playing(10) == 0) { SpatialAudio(App->audio->Ghoul_hit, 10, position.x, position.y); }
 		break;
 	case DIE:
 		if (current_animation->Finished())
@@ -98,8 +116,14 @@ bool DynamicEntity::Update(float dt) {
 			attacking_entity->target_entity = nullptr;
 			to_destroy = true;
 		}
-		if (Mix_Playing(5) == 0)
-			SpatialAudio(App->audio->Brotherhood_die, 5, position.x, position.y);
+		if (reference_entity->faction == MUTANT)
+			if (Mix_Playing(11) == 0) { SpatialAudio(App->audio->Mutant_die, 11, position.x, position.y); }
+		if (reference_entity->faction == VAULT)
+			if (Mix_Playing(12) == 0) { SpatialAudio(App->audio->Vault_die, 12, position.x, position.y); }
+		if (reference_entity->faction == BROTHERHOOD)
+			if (Mix_Playing(13) == 0) { SpatialAudio(App->audio->Brotherhood_die, 13, position.x, position.y); }
+		if (reference_entity->faction == GHOUL)
+			if (Mix_Playing(14) == 0) { SpatialAudio(App->audio->Ghoul_die, 14, position.x, position.y); }
 		break;
 	default:
 		break;
