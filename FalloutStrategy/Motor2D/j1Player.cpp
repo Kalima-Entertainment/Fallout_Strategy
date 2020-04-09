@@ -158,6 +158,9 @@ bool j1Player::Update(float dt) {
 	if ((App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) && (App->render->camera.x > -MAP_LENGTH* HALF_TILE + App->render->camera.w * 0.75f))
 		App->render->camera.x -= floor(200.0f * dt);
 
+	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_REPEAT)
+		caps += 100;
+
 	return ret;
 }
 
@@ -227,6 +230,8 @@ void j1Player::UpdateResourceData(Resource resource_type, int quantity) {
 		water += quantity;
 	else if (resource_type == Resource::FOOD)
 		food += quantity;
+	
+	
 
 	//update gui
 	App->gui->DeleteArrayElements(App->menu_manager->gui_ingame, 4);
