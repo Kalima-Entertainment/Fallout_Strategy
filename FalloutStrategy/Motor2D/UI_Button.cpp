@@ -319,7 +319,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->CreateMainMenu();
 				App->audio->PlayFx(1, back_fx, 0);
 			}
-
+			
 			//Spawn Gatherer from any faction
 			if (t == Ghouls_ghaterer_button || t == Vault_ghaterer_button || t == Supermutant_ghaterer_button || t == Brotherhood_ghaterer_button)
 				App->audio->PlayFx(1, character_fx, 0);
@@ -334,6 +334,7 @@ bool UI_Button::Update(float dt)
 			if (t == Ghouls_ranged_button || t == Vault_ranged_button || t == Supermutant_ranged_button || t == Brotherhood_ranged_button)
 				App->audio->PlayFx(1, character_fx, 0);
 				App->entities->CreateEntity(App->player->selected_entity->faction, RANGED, App->player->selected_entity->spawnPosition.x, App->player->selected_entity->spawnPosition.y);
+			
 		}
 		else {
 			
