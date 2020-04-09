@@ -11,7 +11,7 @@
 #include "UI_element.h"
 #include "UI_Button.h"
 #include "UI_Label.h"
-#include "UI_InputText.h"
+#include "UI_ImputText.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
 j1Gui::j1Gui() : j1Module()
@@ -29,7 +29,7 @@ bool j1Gui::Awake(pugi::xml_node& config)
 	LOG("Loading GUI atlas");
 	bool ret = true;
 	node = config;
-	folder = node.child("folder").child_value();
+	folder.create(node.child("folder").child_value());
 	UI_file_name = config.child("ui").attribute("file1").as_string();
 
 	return ret;
@@ -38,7 +38,7 @@ bool j1Gui::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Gui::Start()
 {
-	texture = App->tex->Load(PATH(folder.c_str(), UI_file_name.c_str()));
+	texture = App->tex->Load(PATH(folder.GetString(),UI_file_name.GetString()));
 
 	return true;
 }
@@ -46,19 +46,19 @@ bool j1Gui::Start()
 // Update all guis
 bool j1Gui::PreUpdate()
 {
-
+	
 	return true;
 }
 
 bool j1Gui::Update(float dt) {
 	BROFILER_CATEGORY("GuiUpdate", Profiler::Color::Yellow)
-		for (int i = 0; i < ui_element.size(); i++) {
-			if (ui_element[i] != nullptr) {
+	for (int i = 0; i < ui_element.size(); i++) {
+		if (ui_element[i] != nullptr) {
 
-				ui_element[i]->Update(dt);
+			ui_element[i]->Update(dt);
 
-			}
 		}
+	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
 
@@ -70,14 +70,15 @@ bool j1Gui::Update(float dt) {
 }
 
 // Called after all Updates
-bool j1Gui::PostUpdate() {
+bool j1Gui::PostUpdate(){
 	BROFILER_CATEGORY("GuiPostUpdate", Profiler::Color::LightGreen)
-		for (int i = 0; i < ui_element.size(); i++) {
+	for (int i = 0; i < ui_element.size(); i++) {
 
-			if (ui_element[i] != nullptr) {
-				ui_element[i]->Draw();
-			}
+		if (ui_element[i] != nullptr) {
+
+			ui_element[i]->Draw();
 		}
+	}
 	return true;
 }
 
@@ -95,8 +96,8 @@ bool j1Gui::CleanUp()
 }
 
 void j1Gui::DeleteArrayElements(UI_element* array[], int size) {
-
-	if (size != NULL) {
+	
+	if(size!=NULL){
 		for (int i = 0; i < size; i++)
 		{
 			Delete_Element(array[i]);
@@ -105,7 +106,7 @@ void j1Gui::DeleteArrayElements(UI_element* array[], int size) {
 }
 
 bool j1Gui::Delete_Element(UI_element* element) {
-
+	
 	for (int i = 0; i < ui_element.size(); i++)
 	{
 		if (element == ui_element[i]) {
@@ -122,7 +123,7 @@ SDL_Texture* j1Gui::GetAtlas() const { return texture; }
 // class Gui
 
 UI_element* j1Gui::CreateButton(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, SDL_Rect click, UI_element* parent, j1Module* Observer) {
-
+	
 	UI_Button* button = new UI_Button(x, y, type, idle, hover, click, parent, Observer);
 
 	ui_element.push_back(button);
@@ -148,22 +149,22 @@ UI_element* j1Gui::CreateSlider(int x, int y, UI_Type type, SDL_Rect scrollbar, 
 	return slider;
 }
 
-UI_element* j1Gui::CreateLabel(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer, int* counter, std::string font)
+UI_element* j1Gui::CreateLabel(int x, int y, UI_Type type, p2SString text_input, UI_element* parent, j1Module* Observer, int* counter)
 {
 	UI_Label* label = new UI_Label(x, y, type, text_input, parent, Observer, counter);
 
-	label->SetLabelText(text_input, font);
+	label->SetLabelText(text_input);
 	ui_element.push_back(label);
 
 	return label;
 }
 
-
-UI_element* j1Gui::CreateInputBox(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer, std::string font)
+UI_element* j1Gui::CreateInputBox(int x, int y, UI_Type type, p2SString text_input, UI_element* parent, j1Module* Observer)
 {
-	InputText* inputtext = new InputText(x, y, type, text_input, parent, Observer, font);
+	ImputText* inputtext = new ImputText(x, y, type, text_input, parent, Observer);
 
 	ui_element.push_back(inputtext);
 
 	return inputtext;
 }
+

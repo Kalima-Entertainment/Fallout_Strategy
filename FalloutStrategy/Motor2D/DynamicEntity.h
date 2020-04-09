@@ -26,26 +26,13 @@ enum DynamicState {
 	MAX_ANIMATIONS
 };
 
-struct UnitInfo {
-
-	UnitInfo();
-	~UnitInfo();
-	UnitInfo(const UnitInfo& info);
-
-	SDL_Color color = { 255,255,255,255 };
-};
-
 class DynamicEntity : public j1Entity
 {
 public:
 	DynamicEntity(Faction faction, EntityType type);
 	~DynamicEntity();
-
-	//Core
-	bool PreUpdate(float dt);
 	bool Update(float dt);
 	bool PostUpdate();
-
 	bool LoadAnimations();
 	//bool LoadFx();
 	bool LoadReferenceData();
@@ -53,7 +40,6 @@ public:
 	void Move(float dt);
 	void Attack();
 	void Gather();
-	void DrawQuad();
 
 public:
 	int mov_speed;
@@ -75,12 +61,9 @@ public:
 
 	iPoint next_tile_position;
 	SDL_Rect next_tile_rect_center;
-
-	uint fx[6];
-
-	UnitInfo unitinfo;
 };
 
 
 
 #endif // !_DYNAMIC_ENTITY_H
+
