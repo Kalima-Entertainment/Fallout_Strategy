@@ -31994,9 +31994,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -32069,6 +32069,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -32216,9 +32219,6 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="73"/>
-   <tile gid="73"/>
-   <tile gid="73"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -32291,9 +32291,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="73"/>
-   <tile gid="73"/>
-   <tile gid="73"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -33044,10 +33044,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -33104,10 +33104,6 @@
    <tile gid="73"/>
    <tile gid="73"/>
    <tile gid="73"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -33123,6 +33119,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -33179,6 +33179,8 @@
    <tile gid="73"/>
    <tile gid="73"/>
    <tile gid="73"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -33204,15 +33206,13 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
    <tile gid="0"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -33254,6 +33254,8 @@
    <tile gid="73"/>
    <tile gid="73"/>
    <tile gid="73"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -33271,9 +33273,6 @@
    <tile gid="73"/>
    <tile gid="73"/>
    <tile gid="73"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -33282,12 +33281,13 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
    <tile gid="0"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -33342,10 +33342,6 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="73"/>
-   <tile gid="73"/>
-   <tile gid="73"/>
-   <tile gid="73"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -33354,15 +33350,19 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="73"/>
-   <tile gid="73"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
    <tile gid="0"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -33417,10 +33417,6 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="73"/>
-   <tile gid="73"/>
-   <tile gid="73"/>
-   <tile gid="73"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -33429,13 +33425,19 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="73"/>
-   <tile gid="73"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
+   <tile gid="0"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
+   <tile gid="73"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -33504,8 +33506,6 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="73"/>
-   <tile gid="73"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -33579,8 +33579,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="73"/>
-   <tile gid="73"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -33832,22 +33832,22 @@
     <property name="Water" type="int" value="220"/>
    </properties>
   </object>
-  <object id="16" name="Static" type="Barrack" x="574.667" y="2226.17" width="50.6667" height="106.833">
+  <object id="16" name="Static" type="Barrack" x="647.667" y="2163.17" width="50.6667" height="106.833">
    <properties>
     <property name="faction" type="int" value="1"/>
    </properties>
   </object>
-  <object id="17" name="Static" type="Base" x="65.3336" y="2144.84" width="113.833" height="118.309">
+  <object id="17" name="Static" type="Base" x="138.334" y="2081.84" width="113.833" height="118.309">
    <properties>
     <property name="faction" type="int" value="1"/>
    </properties>
   </object>
-  <object id="18" name="Static" type="Barrack" x="464.834" y="2224.34" width="50.6667" height="108.333">
+  <object id="18" name="Static" type="Barrack" x="537.834" y="2161.34" width="50.6667" height="108.333">
    <properties>
     <property name="faction" type="int" value="1"/>
    </properties>
   </object>
-  <object id="19" name="Static" type="Laboratory" x="54.6666" y="1712.34" width="74.8333" height="75.8333">
+  <object id="19" name="Static" type="Laboratory" x="127.667" y="1649.34" width="74.8333" height="75.8333">
    <properties>
     <property name="faction" type="int" value="1"/>
    </properties>

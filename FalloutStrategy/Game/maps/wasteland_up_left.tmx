@@ -33863,22 +33863,22 @@
     <property name="Nuka-Cola" type="int" value="50"/>
    </properties>
   </object>
-  <object id="33" name="Static" type="Barrack" x="520.834" y="57.2494" width="50.6667" height="101.333">
+  <object id="33" name="Static" type="Barrack" x="629.834" y="192.249" width="50.6667" height="101.333">
    <properties>
     <property name="faction" type="int" value="3"/>
    </properties>
   </object>
-  <object id="34" name="Static" type="Base" x="52.5" y="54.7497" width="113.833" height="118.309">
+  <object id="34" name="Static" type="Base" x="161.5" y="189.75" width="113.833" height="118.309">
    <properties>
     <property name="faction" type="int" value="3"/>
    </properties>
   </object>
-  <object id="35" name="Static" type="Laboratory" x="107" y="469.917" width="78.3333" height="73.3333">
+  <object id="35" name="Static" type="Laboratory" x="216" y="604.917" width="78.3333" height="73.3333">
    <properties>
     <property name="faction" type="int" value="3"/>
    </properties>
   </object>
-  <object id="36" name="Static" type="Barrack" x="390.667" y="42.2497" width="50.6667" height="102.333">
+  <object id="36" name="Static" type="Barrack" x="499.667" y="177.25" width="50.6667" height="102.333">
    <properties>
     <property name="faction" type="int" value="3"/>
    </properties>
