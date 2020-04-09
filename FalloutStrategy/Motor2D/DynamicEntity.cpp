@@ -162,21 +162,22 @@ bool DynamicEntity::PostUpdate() {
 	render_position = { (int)(position.x - sprite_size * 0.5f), (int)(position.y - 1.82f * TILE_SIZE)};
 	App->render->Blit(reference_entity->texture,render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
-	//health bar
+	//Health Bar
 	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 50, 4 };
 	SDL_Rect foreground_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, (float)current_health/max_health * 50, 4 };
 	if (foreground_bar.w < 0)
 		foreground_bar.w = 0;
 
+	//Life Bar Render
 	App->render->DrawQuad(background_bar, 255, 255, 255, 255);
 	App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
 
 	//render position
-	if (App->render->debug)
+	/*if (App->render->debug)
 	{
 		App->render->DrawQuad({ (int)position.x - 2, (int)position.y - 2, 4,4 }, 255, 0, 0, 255);
 		App->render->DrawQuad(next_tile_rect_center, 0, 255, 0, 255);
-	}
+	}*/
 
 	return true;
 }

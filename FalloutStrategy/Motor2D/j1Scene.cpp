@@ -277,6 +277,9 @@ bool j1Scene::Update(float dt)
 	}
 	*/
 
+
+	RectangleSelection();
+
 	return true;
 }
 
@@ -285,8 +288,6 @@ bool j1Scene::PostUpdate()
 {
 	bool ret = true;
 
-	/*if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;*/
 
 	return ret;
 }
@@ -307,4 +308,45 @@ StatesMenu j1Scene::GetMenuState()
 void j1Scene::SetMenuState(const StatesMenu& menu)
 {
 	menu_state = menu;
+}
+
+
+void j1Scene::RectangleSelection()
+{
+	rectangle_width = mouse_pos.x - rectangle_origin.x;
+	rectangle_height = mouse_pos.y - rectangle_origin.y;
+
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) rectangle_origin = mouse_pos; 
+
+	else if (std::abs(rectangle_width) >= RECT_MIN_AREA && std::abs(rectangle_height) >= RECT_MIN_AREA && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) {
+
+		LOG("CREATING RECTANGLE");
+
+		// --- Rectangle size ---
+		int width = mouse_pos.x - rectangle_origin.x;
+		int height = mouse_pos.y - rectangle_origin.y;
+
+		// --- Draw Rectangle ---
+		SDL_Rect SRect = { rectangle_origin.x, rectangle_origin.y, width, height };
+		App->render->DrawQuad(SRect, 255, 255, 255, 255, false);
+
+		// --- Once we get to the negative side of SRect numbers must be adjusted ---
+		if (width < 0) {
+			SRect.x = mouse_pos.x;
+			SRect.w *= -1;
+		}
+		if (height < 0) {
+			SRect.y = mouse_pos.y;
+			SRect.h *= -1;
+		}
+
+		// --- Check for Units in the rectangle, select them ---
+
+		App->Mmanager->SelectEntities_inRect(SRect);
+	}
+
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
+		App->Mmanager->CreateGroup();
+
 }
