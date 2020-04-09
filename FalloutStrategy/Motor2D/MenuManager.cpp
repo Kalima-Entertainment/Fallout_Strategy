@@ -18,9 +18,9 @@
 #include "UI_Label.h"
 #include "j1Image.h"
 #include "MenuManager.h"
-#include "j1Player.h"
+#include "Player.h"
 #include "p2Defs.h"
-#include "UI_InputText.h"
+#include "UI_ImputText.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
 MenuManager::MenuManager()
@@ -43,10 +43,9 @@ void MenuManager::CreateMainMenu()
 	main_menu[1] = (j1Image*)App->gui->CreateImage(0, 350, Image, { 0, 1016, 871, 516 }, NULL, this);
 	main_menu[2] = (j1Image*)App->gui->CreateImage(40, 40, Image, { 938, 903, 505, 233 }, NULL, this);
 	main_menu[3] = (j1Image*)App->gui->CreateImage(827, 260, Image, { 0, 0, 416, 448 }, NULL, this);
-
+	
 	//Labels
-	main_menu[4] = (UI_Label*)App->gui->CreateLabel(957, 310, Label, "NEW GAME", NULL, this, NULL);
-
+	main_menu[4] = (UI_Label*)App->gui->CreateLabel(957,310, Label, "NEW GAME", NULL, this, NULL);
 	main_menu[5] = (UI_Label*)App->gui->CreateLabel(957, 387, Label, "LOAD GAME", NULL, this, NULL);
 	main_menu[6] = (UI_Label*)App->gui->CreateLabel(957, 464, Label, "SETTINGS", NULL, this, NULL);
 	main_menu[7] = (UI_Label*)App->gui->CreateLabel(957, 541, Label, "CREDITS", NULL, this, NULL);
@@ -59,7 +58,6 @@ void MenuManager::CreateMainMenu()
 	main_menu[12] = (UI_Button*)App->gui->CreateButton(887, 527, button_credits, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
 	main_menu[13] = (UI_Button*)App->gui->CreateButton(887, 604, button_exit, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
 
-	last_menu = current_menu;
 	current_menu = Menu::MAIN_MENU;
 }
 
@@ -82,8 +80,8 @@ void MenuManager::CreateCredits()
 	credits_menu[11] = (UI_Button*)App->gui->CreateButton(450, 400, button_silvino, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
 	credits_menu[12] = (UI_Button*)App->gui->CreateButton(450, 445, button_christian, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
 
-	last_menu = current_menu;
 	current_menu = Menu::CREDITS;
+
 }
 
 void MenuManager::CreateSettings()
@@ -123,7 +121,7 @@ void MenuManager::CreateSettings()
 
 void MenuManager::CreateCollaboratorPicture()
 {
-	switch (collaborator)
+	switch (collaborator) 
 	{
 	case 'M':
 		collaborators[0] = (j1Image*)App->gui->CreateImage(815, 130, Image, { 1230, 1545, 138, 138 }, NULL, this);
@@ -162,20 +160,15 @@ void MenuManager::CreateSelectFaction()
 {
 	//Images
 	select_faction_menu[0] = (j1Image*)App->gui->CreateImage(-5, 0, Image, { 1900, 1531, 1290, 842 }, NULL, this);
-
+	
 	//Buttons
 	select_faction_menu[1] = (UI_Button*)App->gui->CreateButton(200, 200, button_select_ghoul, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
 	select_faction_menu[2] = (UI_Button*)App->gui->CreateButton(200, 300, button_select_vault, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
 	select_faction_menu[3] = (UI_Button*)App->gui->CreateButton(200, 400, button_select_brotherhood, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
 	select_faction_menu[4] = (UI_Button*)App->gui->CreateButton(200, 500, button_select_supermutant, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
 	select_faction_menu[5] = (UI_Button*)App->gui->CreateButton(120, 605, button_back_to_menu, { 1243,2014,73,78 }, { 1243,2102,73,79 }, { 1243,2188,73,71 }, NULL, this);
-<<<<<<< HEAD
 	select_faction_menu[6] = (UI_Button*)App->gui->CreateButton(900, 605, button_start_game, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
 	
-=======
-	select_faction_menu[6] = (UI_Button*)App->gui->CreateButton(900, 605, button_start_game, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
-
->>>>>>> programming
 	//Labels
 	select_faction_menu[7] = (UI_Label*)App->gui->CreateLabel(280, 215, Label, "GHOUL", NULL, this, NULL);
 	select_faction_menu[8] = (UI_Label*)App->gui->CreateLabel(278, 315, Label, "VAULT", NULL, this, NULL);
@@ -204,7 +197,6 @@ void MenuManager::CreatePauseMenu()
 	pause_menu[5] = (UI_Label*)App->gui->CreateLabel(530, 318, Label, "SETTINGS", NULL, this, NULL);
 	pause_menu[6] = (UI_Label*)App->gui->CreateLabel(515, 408, Label, "MAIN MENU", NULL, this, NULL);
 
-	last_menu = current_menu;
 	current_menu = Menu::PAUSE_MENU;
 }
 
@@ -248,21 +240,24 @@ void MenuManager::CreateGUI()
 
 	//Images
 	gui_ingame[0] = (j1Image*)App->gui->CreateImage(0, 0, Image, { 0, 2428, 1290, 730 }, NULL, this);
+	gui_ingame[4] = (ImputText*)App->gui->CreateInputBox(100, 200, InputBox, nullptr, NULL, this);
+	if (App->gui->count == 0) {
 		
-		std::string water = std::to_string(App->player->water);
-		std::string food = std::to_string(App->player->food);
-		std::string caps = std::to_string(App->player->caps);
+		p2SString cc("%i", App->player->caps);
+		p2SString ww("%i", App->player->water);
+		p2SString ff("%i", App->player->food);
 		
-		gui_ingame[1] = (UI_Label*)App->gui->CreateLabel(95, 10, Label, food, NULL, this, NULL);
-		gui_ingame[2] = (UI_Label*)App->gui->CreateLabel(240, 10, Label, water, NULL, this, NULL);
-		gui_ingame[3] = (UI_Label*)App->gui->CreateLabel(385, 10, Label, caps, NULL, this, NULL);
+		gui_ingame[1] = (UI_Label*)App->gui->CreateLabel(95, 10, Label, ff, NULL, this, NULL);
+		gui_ingame[2] = (UI_Label*)App->gui->CreateLabel(240, 10, Label, ww, NULL, this, NULL);
+		gui_ingame[3] = (UI_Label*)App->gui->CreateLabel(385, 10, Label, cc, NULL, this, NULL);
 
+		App->gui->count++;
+	}
 
 	//Labels
 	//settings_menu.fps = (UI_Label*)App->gui->CreateLabel(520, 525, text_fps, "REFRESH RATE", NULL, this, NULL);
 	//settings_menu.fx_volume = (UI_Label*)App->gui->CreateLabel(360, 335, text_fx_volume, "SOUND EFFECTS VOLUME", NULL, this, NULL);
 	//settings_menu.music_volume = (UI_Label*)App->gui->CreateLabel(360, 150, text_music_volume, "MUSIC VOLUME", NULL, this, NULL);
-	
 	last_menu = current_menu;
 	current_menu = Menu::GUI;
 }
@@ -297,7 +292,7 @@ void MenuManager::CreateBrotherHood_Barrack() {
 	brotherhood_barrack[2] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 17, 1560, 69, 115 }, NULL, this);
 	brotherhood_barrack[3] = (j1Image*)App->gui->CreateImage(1055, 605, Image, { 28, 1869, 35, 33 }, NULL, this);
 	brotherhood_barrack[4] = (j1Image*)App->gui->CreateImage(1110, 605, Image, { 83, 1866, 35, 36 }, NULL, this);
-
+	
 	last_menu = current_menu;
 	current_menu = Menu::BUI_BASES;
 }
@@ -348,7 +343,7 @@ void MenuManager::CreateSuperMutants_Barrack() {
 
 	last_menu = current_menu;
 	current_menu = Menu::BUI_BASES;
-
+	
 }
 void MenuManager::CreateSuperMutants_Lab() {
 
@@ -469,7 +464,7 @@ void MenuManager::CreateVault_Lab() {
 
 
 void MenuManager::DestroyMenu(Menu menu) {
-
+	
 	switch (menu)
 	{
 
@@ -494,8 +489,8 @@ void MenuManager::DestroyMenu(Menu menu) {
 	case Menu::GUI:
 		App->gui->DeleteArrayElements(gui_ingame, 4);
 		break;
-
-	default:
+	
+		default:
 		break;
 	}
 
@@ -507,138 +502,138 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 	switch (menu)
 	{
 
-	case Menu::BUI_BASES:
+		case Menu::BUI_BASES:
 
-		switch (faction)
-		{
-		case FACTION::ALL:
-			switch (type)
+			switch (faction)
 			{
+				case FACTION::ALL:
+					switch (type)
+					{
+					
+						case BUILDING_TYPE::ALL:
+							App->gui->DeleteArrayElements(brotherhood_base, 3);
+							App->gui->DeleteArrayElements(brotherhood_barrack, 5);
+							App->gui->DeleteArrayElements(brotherhood_lab, 1);
+							App->gui->DeleteArrayElements(supermutant_base, 3);
+							App->gui->DeleteArrayElements(supermutant_barrack, 5);
+							App->gui->DeleteArrayElements(supermutant_lab, 1);
+							App->gui->DeleteArrayElements(ghoul_base, 3);
+							App->gui->DeleteArrayElements(ghoul_barrack, 5);
+							App->gui->DeleteArrayElements(ghoul_lab, 1);
+							App->gui->DeleteArrayElements(vault_base, 3);
+							App->gui->DeleteArrayElements(vault_barrack, 5);
+							App->gui->DeleteArrayElements(vault_lab, 1);
+							break;
+						case BUILDING_TYPE::NONE:
+							break;
+						default:
+							break;
+					}
+					break;
 
-			case BUILDING_TYPE::ALL:
-				App->gui->DeleteArrayElements(brotherhood_base, 3);
-				App->gui->DeleteArrayElements(brotherhood_barrack, 5);
-				App->gui->DeleteArrayElements(brotherhood_lab, 1);
-				App->gui->DeleteArrayElements(supermutant_base, 3);
-				App->gui->DeleteArrayElements(supermutant_barrack, 5);
-				App->gui->DeleteArrayElements(supermutant_lab, 1);
-				App->gui->DeleteArrayElements(ghoul_base, 3);
-				App->gui->DeleteArrayElements(ghoul_barrack, 5);
-				App->gui->DeleteArrayElements(ghoul_lab, 1);
-				App->gui->DeleteArrayElements(vault_base, 3);
-				App->gui->DeleteArrayElements(vault_barrack, 5);
-				App->gui->DeleteArrayElements(vault_lab, 1);
+				case FACTION::BROTHERHOOD:
+					switch (type)
+					{
+						case BUILDING_TYPE::BASE:
+							App->gui->DeleteArrayElements(brotherhood_base, 3);
+							break;
+						case BUILDING_TYPE::BARRACK:
+							App->gui->DeleteArrayElements(brotherhood_barrack, 5);
+							break;
+						case BUILDING_TYPE::LAB:
+							App->gui->DeleteArrayElements(brotherhood_lab, 1);
+							break;
+						case BUILDING_TYPE::ALL:
+							break;
+						case BUILDING_TYPE::NONE:
+							App->gui->Delete_Element(select_faction_photos[0]);
+							App->gui->Delete_Element(select_faction_photos[1]);
+							App->gui->Delete_Element(select_faction_photos[3]);
+							break;
+						default:
+							break;
+					}
+					break;
+
+				case FACTION::SUPERMUTANT:
+					switch (type)
+					{
+
+						case BUILDING_TYPE::BASE:
+							App->gui->DeleteArrayElements(supermutant_base, 3);
+							break;
+						case BUILDING_TYPE::BARRACK:
+							App->gui->DeleteArrayElements(supermutant_barrack, 5);
+							break;
+						case BUILDING_TYPE::LAB:
+							App->gui->DeleteArrayElements(supermutant_lab, 1);
+							break;
+						case BUILDING_TYPE::NONE:
+							App->gui->Delete_Element(select_faction_photos[0]);
+							App->gui->Delete_Element(select_faction_photos[1]);
+							App->gui->Delete_Element(select_faction_photos[2]);
+							break;
+						default:
+							break;
+					}
+					break;
+
+				case FACTION::GHOUL:
+					switch (type)
+					{
+
+						case BUILDING_TYPE::BASE:
+							App->gui->DeleteArrayElements(ghoul_base, 3);
+							break;
+						case BUILDING_TYPE::BARRACK:
+							App->gui->DeleteArrayElements(ghoul_barrack, 5);
+							break;
+						case BUILDING_TYPE::LAB:
+							App->gui->DeleteArrayElements(ghoul_lab, 1);
+							break;
+						case BUILDING_TYPE::NONE:
+							App->gui->Delete_Element(select_faction_photos[1]);
+							App->gui->Delete_Element(select_faction_photos[2]);
+							App->gui->Delete_Element(select_faction_photos[3]);
+							break;
+						default:
+							break;
+					}
+					break;
+
+				case FACTION::VAULT:
+					switch (type)
+					{
+						case BUILDING_TYPE::BASE:
+							App->gui->DeleteArrayElements(vault_base, 3);
+							break;
+						case BUILDING_TYPE::BARRACK:
+							App->gui->DeleteArrayElements(vault_barrack, 5);
+							break;
+						case BUILDING_TYPE::LAB:
+							App->gui->DeleteArrayElements(vault_lab, 1);
+							break;
+						case BUILDING_TYPE::NONE:
+							App->gui->Delete_Element(select_faction_photos[0]);
+							App->gui->Delete_Element(select_faction_photos[2]);
+							App->gui->Delete_Element(select_faction_photos[3]);
+							break;
+						default:
+							break;
+					}
+					break;
+
+				case FACTION::NONE:
+					break;
+
+				default:
 				break;
-			case BUILDING_TYPE::NONE:
-				break;
-			default:
-				break;
+
 			}
-			break;
-
-		case FACTION::BROTHERHOOD:
-			switch (type)
-			{
-			case BUILDING_TYPE::BASE:
-				App->gui->DeleteArrayElements(brotherhood_base, 3);
-				break;
-			case BUILDING_TYPE::BARRACK:
-				App->gui->DeleteArrayElements(brotherhood_barrack, 5);
-				break;
-			case BUILDING_TYPE::LAB:
-				App->gui->DeleteArrayElements(brotherhood_lab, 1);
-				break;
-			case BUILDING_TYPE::ALL:
-				break;
-			case BUILDING_TYPE::NONE:
-				App->gui->Delete_Element(select_faction_photos[0]);
-				App->gui->Delete_Element(select_faction_photos[1]);
-				App->gui->Delete_Element(select_faction_photos[3]);
-				break;
-			default:
-				break;
-			}
-			break;
-
-		case FACTION::SUPERMUTANT:
-			switch (type)
-			{
-
-			case BUILDING_TYPE::BASE:
-				App->gui->DeleteArrayElements(supermutant_base, 3);
-				break;
-			case BUILDING_TYPE::BARRACK:
-				App->gui->DeleteArrayElements(supermutant_barrack, 5);
-				break;
-			case BUILDING_TYPE::LAB:
-				App->gui->DeleteArrayElements(supermutant_lab, 1);
-				break;
-			case BUILDING_TYPE::NONE:
-				App->gui->Delete_Element(select_faction_photos[0]);
-				App->gui->Delete_Element(select_faction_photos[1]);
-				App->gui->Delete_Element(select_faction_photos[2]);
-				break;
-			default:
-				break;
-			}
-			break;
-
-		case FACTION::GHOUL:
-			switch (type)
-			{
-
-			case BUILDING_TYPE::BASE:
-				App->gui->DeleteArrayElements(ghoul_base, 3);
-				break;
-			case BUILDING_TYPE::BARRACK:
-				App->gui->DeleteArrayElements(ghoul_barrack, 5);
-				break;
-			case BUILDING_TYPE::LAB:
-				App->gui->DeleteArrayElements(ghoul_lab, 1);
-				break;
-			case BUILDING_TYPE::NONE:
-				App->gui->Delete_Element(select_faction_photos[1]);
-				App->gui->Delete_Element(select_faction_photos[2]);
-				App->gui->Delete_Element(select_faction_photos[3]);
-				break;
-			default:
-				break;
-			}
-			break;
-
-		case FACTION::VAULT:
-			switch (type)
-			{
-			case BUILDING_TYPE::BASE:
-				App->gui->DeleteArrayElements(vault_base, 3);
-				break;
-			case BUILDING_TYPE::BARRACK:
-				App->gui->DeleteArrayElements(vault_barrack, 5);
-				break;
-			case BUILDING_TYPE::LAB:
-				App->gui->DeleteArrayElements(vault_lab, 1);
-				break;
-			case BUILDING_TYPE::NONE:
-				App->gui->Delete_Element(select_faction_photos[0]);
-				App->gui->Delete_Element(select_faction_photos[2]);
-				App->gui->Delete_Element(select_faction_photos[3]);
-				break;
-			default:
-				break;
-			}
-			break;
-
-		case FACTION::NONE:
 			break;
 
 		default:
 			break;
-
-		}
-		break;
-
-	default:
-		break;
 	}
 
 	current_menu = last_menu;

@@ -19,7 +19,7 @@
 
   <fonts>
    <font name="r_fallouty" folder="fallout_fonts" size="24"/>
-   <font name="OpenSans-Light" folder="open_sans" size="14"/>
+   <font name="OpenSans-Light" folder="open_sans" size="24"/>
   </fonts>
 
   <gui>
