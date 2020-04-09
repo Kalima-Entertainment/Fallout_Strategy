@@ -174,10 +174,11 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
 	//BROFILER_CATEGORY("CreatePath", Profiler::Color::Azure)
 
-	if ((!IsWalkable(origin)) || (!IsWalkable(destination)))
+	if ((!CheckBoundaries(origin)) || (!CheckBoundaries(destination)))
 	{
 		return -1;
 	}
+	
 	last_path.clear();
 
 	PathList open, close;
