@@ -54,7 +54,8 @@ public:
 	j1Entity* FindEntityByTile(iPoint tile);
 	j1Entity* FindEntityByType(Faction faction, EntityType type);
 	ResourceBuilding* FindResourceBuildingByTile(iPoint tile);
-	iPoint ClosestTile(iPoint position, std::vector<iPoint> entity_tiles);
+	iPoint ClosestTile(iPoint position, std::vector<iPoint> entity_tiles) const;
+	ResourceBuilding* GetClosestResourceBuilding(iPoint current_position);
 
 	void DestroyEntity(j1Entity* delete_entity);
 	void DestroyAllEntities();

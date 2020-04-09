@@ -233,11 +233,17 @@ void DynamicEntity::Move(float dt) {
 								PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
 								state = WALK;
 							}
-							//forget the building
+							//find another building
 							else
 							{
-								resource_building = nullptr;
-								state = IDLE;
+								resource_building = App->entities->GetClosestResourceBuilding(current_tile);
+								//if there is at least a resource building left, go there
+								if (resource_building != nullptr) {
+									PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
+									state = WALK;
+								}
+								//if there are no resource buildings left
+								else { state = IDLE; }
 							}
 						}
 						if (target_entity != nullptr) {

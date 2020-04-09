@@ -608,7 +608,7 @@ ResourceBuilding* j1EntityManager::FindResourceBuildingByTile(iPoint tile) {
 	return nullptr;
 }
 
-iPoint j1EntityManager::ClosestTile(iPoint position, std::vector<iPoint> entity_tiles) {
+iPoint j1EntityManager::ClosestTile(iPoint position, std::vector<iPoint> entity_tiles) const {
 	iPoint pivot = entity_tiles[0];
 	for (int i = 0; i < entity_tiles.size(); i++)
 	{
@@ -616,6 +616,21 @@ iPoint j1EntityManager::ClosestTile(iPoint position, std::vector<iPoint> entity_
 			pivot = entity_tiles[i];
 	}
 	return pivot;
+}
+
+ResourceBuilding* j1EntityManager::GetClosestResourceBuilding(iPoint current_position) {
+	ResourceBuilding* closest_building = nullptr;
+	int distance = 1000;
+	for (int i = 0; i < resource_buildings.size(); i++)
+	{
+		if (resource_buildings[i]->quantity > 0)
+		{
+			if (ClosestTile(current_position, resource_buildings[i]->tiles).DistanceManhattan(current_position) < distance)
+				closest_building = resource_buildings[i];
+		}
+	}
+
+	return closest_building;
 }
 
 void j1EntityManager::RandomFactions() {
