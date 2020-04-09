@@ -45,7 +45,23 @@ public:
 	int Brotherhood_die;
 	int Brotherhood_hit;
 	int Brotherhood_attack;
+
+	int Mutant_die;
+	int Mutant_hit;
+	int Mutant_attack;
+
+	int Vault_die;
+	int Vault_hit;
+	int Vault_attack;
+
+	int Ghoul_die;
+	int Ghoul_hit;
+	int Ghoul_attack;
+
+	int pistol;
+	int minigun;
 	int explode;
+	int factory;
 
 private:
 

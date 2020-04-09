@@ -13,6 +13,7 @@
 #include "j1Gui.h"
 #include "j1Minimap.h"
 #include "MenuManager.h"
+#include "j1Scene.h"
 
 Player::Player() : j1Module() {
 	selected_entity = nullptr;
@@ -82,10 +83,8 @@ bool Player::PreUpdate() {
 	if (!App->isPaused)
 	{
 		//entity selection and interaction
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-		{
-			InteractWithEntity();
-		}
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) InteractWithEntity();
+		
 
 		//move camera
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_REPEAT) {
@@ -148,16 +147,16 @@ bool Player::Update(float dt) {
 
 	//Move map
 
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	if ((App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)&&(App->render->camera.y < App->render->camera.h * 0.25f))
 		App->render->camera.y += floor(200.0f * dt);
 
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	if ((App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)&&(App->render->camera.y > -MAP_LENGTH * HALF_TILE + App->render->camera.h * 0.75f))
 		App->render->camera.y -= floor(200.0f * dt);
 
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	if ((App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) && (App->render->camera.x < MAP_LENGTH * HALF_TILE + App->render->camera.w * 0.25f))
 		App->render->camera.x += floor(200.0f * dt);
 
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if ((App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) && (App->render->camera.x > -MAP_LENGTH* HALF_TILE + App->render->camera.w * 0.75f))
 		App->render->camera.x -= floor(200.0f * dt);
 
 	return ret;

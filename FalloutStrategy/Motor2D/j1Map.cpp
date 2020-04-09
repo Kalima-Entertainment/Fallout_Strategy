@@ -205,44 +205,16 @@ bool j1Map::CleanUp()
 {
 	//TODO 
 	LOG("Unloading map");
-	/*
-	// Remove all tilesets
-	p2List_item<TileSet*>* item;
-	item = data.tilesets.start;
-
-	while(item != NULL)
+	
+	//remove all tilesets
+	for (int i = 0; i < MAX_TILESETS; i++)
 	{
-		RELEASE(item->data);
-		item = item->next;
+		App->tex->UnLoad(data.tilesets[i].texture);
 	}
-	data.tilesets.clear();
-
-	// Remove all layers
-	p2List_item<MapLayer*>* item2;
-	item2 = data.layers.start;
-
-	while(item2 != NULL)
-	{
-		RELEASE(item2->data);
-		item2 = item2->next;
-	}
-	data.layers.clear();
-
-	// Remove all objects
-
-	p2List_item<ObjectGroup*>* item3;
-	item3 = data.objectgroup.start;
-	while (item3 != NULL)
-	{
-		//LOG("Objectgroups releasing");
-		RELEASE(item3->data);
-		item3 = item3->next;
-	}
-	data.objectgroup.clear();
 
 	// Clean up the pugui tree
 	map_file.reset();
-	*/
+	
 	return true;
 }
 

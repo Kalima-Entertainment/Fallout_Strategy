@@ -73,10 +73,7 @@ bool j1Scene::Start()
 	modules[3] += ("_low_right.tmx");
 
 	modules[0] = "grassland_low_left.tmx";
-	//modules[0] = "oldstone_up_left.tmx";
-	//modules[1] = "oldstone_up_right.tmx";
-	//modules[2] = "oldstone_low_left.tmx";
-	//modules[3] = "oldstone_low_right.tmx";
+
 
 	// --------------------------------------
 
@@ -111,8 +108,7 @@ bool j1Scene::Start()
 	brotherhood[0] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, MELEE, 18, 6);
 	brotherhood[1] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, RANGED, 19, 6);
 	brotherhood[2] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, GATHERER, 20, 6);
-	
-	//App->audio->PlayMusic("audio/music/elevator_music.ogg", 4.0F);
+
 	App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
 
 	return true;
@@ -121,31 +117,6 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
-	// debug pathfing ------------------
-	static iPoint origin;
-	static bool origin_selected = false;
-
-	/*
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint p = App->render->ScreenToWorld(x, y);
-	p = App->map->WorldToMap(p.x, p.y);
-
-	if(App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-	{
-		if(origin_selected == true)
-		{
-			App->pathfinding->CreatePath(origin, p);
-			origin_selected = false;
-		}
-		else
-		{
-			origin = p;
-			origin_selected = true;
-		}
-	}
-	*/
-
 	return true;
 }
 
@@ -188,6 +159,8 @@ bool j1Scene::Update(float dt)
 	// Debug pathfinding ------------------------------
 	//int x, y;
 
+	/*
+	//Debug mouse position
 	if (App->player->selected_entity != nullptr)
 	{
 		App->input->GetMousePosition(x, y);
@@ -197,7 +170,7 @@ bool j1Scene::Update(float dt)
 		SDL_Rect debug_rect = { 128,0,64,64 };
 		App->render->Blit(App->render->debug_tex, p.x, p.y, &debug_rect);
 	}
-
+	*/
 	/*
 	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
 
@@ -277,6 +250,9 @@ bool j1Scene::Update(float dt)
 	}
 	*/
 
+
+	RectangleSelection();
+
 	return true;
 }
 
@@ -285,8 +261,6 @@ bool j1Scene::PostUpdate()
 {
 	bool ret = true;
 
-	/*if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;*/
 
 	return ret;
 }
@@ -307,4 +281,45 @@ StatesMenu j1Scene::GetMenuState()
 void j1Scene::SetMenuState(const StatesMenu& menu)
 {
 	menu_state = menu;
+}
+
+
+void j1Scene::RectangleSelection()
+{
+	rectangle_width = mouse_pos.x - rectangle_origin.x;
+	rectangle_height = mouse_pos.y - rectangle_origin.y;
+
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) rectangle_origin = mouse_pos;
+
+	else if (std::abs(rectangle_width) >= RECT_MIN_AREA && std::abs(rectangle_height) >= RECT_MIN_AREA && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) {
+
+		LOG("CREATING RECTANGLE");
+
+		// --- Rectangle size ---
+		int width = mouse_pos.x - rectangle_origin.x;
+		int height = mouse_pos.y - rectangle_origin.y;
+
+		// --- Draw Rectangle ---
+		SDL_Rect SRect = { rectangle_origin.x, rectangle_origin.y, width, height };
+		App->render->DrawQuad(SRect, 255, 255, 255, 255, false);
+
+		// --- Once we get to the negative side of SRect numbers must be adjusted ---
+		if (width < 0) {
+			SRect.x = mouse_pos.x;
+			SRect.w *= -1;
+		}
+		if (height < 0) {
+			SRect.y = mouse_pos.y;
+			SRect.h *= -1;
+		}
+
+		// --- Check for Units in the rectangle, select them ---
+
+		App->Mmanager->SelectEntities_inRect(SRect);
+	}
+
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
+		App->Mmanager->CreateGroup();
+
 }

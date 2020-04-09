@@ -48,6 +48,7 @@ public:
 	int volume_fx;
 	int members_fx;
 	int counter;
+	int character_fx;
 
 
 };
