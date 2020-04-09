@@ -188,9 +188,9 @@ void MenuManager::CreatePauseMenu()
 
 
 	//Buttons
-	pause_menu[1] = (UI_Button*)App->gui->CreateButton(480, 210, resume_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
-	pause_menu[2] = (UI_Button*)App->gui->CreateButton(480, 300, button_settings_pause, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
-	pause_menu[3] = (UI_Button*)App->gui->CreateButton(480, 390, button_pause_to_main, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,144,64 }, NULL, this);
+	pause_menu[1] = (UI_Button*)App->gui->CreateButton(480, 210, resume_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+	pause_menu[2] = (UI_Button*)App->gui->CreateButton(480, 300, button_settings_pause, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+	pause_menu[3] = (UI_Button*)App->gui->CreateButton(480, 390, button_pause_to_main, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
 
 	//Labels
 	pause_menu[4] = (UI_Label*)App->gui->CreateLabel(540, 228, Label, "RESUME", NULL, this, NULL);
@@ -386,7 +386,7 @@ void MenuManager::CreateGhouls_Barrack() {
 	ghoul_barrack[1] = (UI_Button*)App->gui->CreateButton(1105, 600, Ghouls_ranged_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 
 	//Images
-	ghoul_barrack[2] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 270, 1568, 97, 99 }, NULL, this);
+	ghoul_barrack[2] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 527, 1563, 105, 105 }, NULL, this);
 	ghoul_barrack[3] = (j1Image*)App->gui->CreateImage(1055, 605, Image, { 513, 1865, 33, 34 }, NULL, this);
 	ghoul_barrack[4] = (j1Image*)App->gui->CreateImage(1110, 605, Image, { 571, 1866, 28, 33 }, NULL, this);
 
@@ -401,7 +401,7 @@ void MenuManager::CreateGhouls_Lab() {
 	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1105, 600, Brotherhood_ranged, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 
 	//Images
-	ghoul_lab[0] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 527, 1563, 105, 105 }, NULL, this);
+	ghoul_lab[0] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 270, 1568, 97, 99 }, NULL, this);
 	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
 	//bases_hud.brotherhood_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Brotherhood_ranged, { 83, 1866, 35, 36 }, NULL, this);
 	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
