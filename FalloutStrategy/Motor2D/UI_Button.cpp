@@ -321,19 +321,22 @@ bool UI_Button::Update(float dt)
 			}
 			
 			//Spawn Gatherer from any faction
-			if (t == Ghouls_ghaterer_button || t == Vault_ghaterer_button || t == Supermutant_ghaterer_button || t == Brotherhood_ghaterer_button)
+			if (t == Ghouls_ghaterer_button || t == Vault_ghaterer_button || t == Supermutant_ghaterer_button || t == Brotherhood_ghaterer_button){
 				App->audio->PlayFx(1, character_fx, 0);
 				App->entities->CreateEntity(App->player->selected_entity->faction, GATHERER, App->player->selected_entity->spawnPosition.x, App->player->selected_entity->spawnPosition.y);
+			}
 
 			//Spawn Melee from any faction
-			if (t == Ghouls_melee_button || t == Vault_melee_button || t == Supermutant_melee_button || t == Brotherhood_melee_button)
+			if (t == Ghouls_melee_button || t == Vault_melee_button || t == Supermutant_melee_button || t == Brotherhood_melee_button){
 				App->audio->PlayFx(1, character_fx, 0);
 				App->entities->CreateEntity(App->player->selected_entity->faction, MELEE, App->player->selected_entity->spawnPosition.x, App->player->selected_entity->spawnPosition.y);
+			}
 			
 			//Spawn Ranged from any faction
-			if (t == Ghouls_ranged_button || t == Vault_ranged_button || t == Supermutant_ranged_button || t == Brotherhood_ranged_button)
+			if (t == Ghouls_ranged_button || t == Vault_ranged_button || t == Supermutant_ranged_button || t == Brotherhood_ranged_button){
 				App->audio->PlayFx(1, character_fx, 0);
 				App->entities->CreateEntity(App->player->selected_entity->faction, RANGED, App->player->selected_entity->spawnPosition.x, App->player->selected_entity->spawnPosition.y);
+			}
 			
 		}
 		else {
