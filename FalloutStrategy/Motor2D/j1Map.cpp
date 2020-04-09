@@ -558,7 +558,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 
 				//add tiles and adjust render texture position
 				std::string object_type = std::string(object_node.attribute("type").as_string());
-				EntityType type = NO_TYPE;
+				EntityType type = NO_TYPE;				
 
 				if (object_type == "Base") {
 					type = BASE;

@@ -105,7 +105,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		entity = new StaticEntity(faction, type);
 		entity->is_dynamic = false;
 		entity->reference_entity = reference_entities[faction][type];
-
+		
 		if (entity != NULL)
 		{
 			entity->faction = faction;
@@ -119,38 +119,45 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 				entity->LoadReferenceData();
 			}
 
+			//Render building
+			entity->render_position = { (int)(entity->position.x - 0.5f * entity->sprite_size),(int)(entity->position.y - entity->sprite_size * 0.75) };
+
 			//Add spawn position for units
-			//TODO: It works for GHOULS, needs to be adapted for all the factions
 			if (faction == GHOUL) {
 				if (type == BASE)
-					entity->spawnPosition = { entity->current_tile.x + 14, entity->current_tile.y + 9 };
+					entity->render_position += App->map->MapToWorld(20, 12);
 				else if (type == BARRACK)
-					entity->spawnPosition = { entity->current_tile.x + 14, entity->current_tile.y + 9 };
+					entity->render_position += App->map->MapToWorld(20, 13);
+				else if (type == LABORATORY)
+					entity->render_position += App->map->MapToWorld(20, 12);
 			}
 			else if(faction == VAULT){
 				if (type == BASE)
-					entity->spawnPosition = { entity->current_tile.x + 3, entity->current_tile.y+2};
+					entity->render_position += App->map->MapToWorld(9, 5);
 				else if (type == BARRACK)
-					entity->spawnPosition = { entity->current_tile.x+2, entity->current_tile.y+3};
+					entity->render_position += App->map->MapToWorld(8, 5);
+				else if (type == LABORATORY)
+					entity->render_position += App->map->MapToWorld(9, 5);
 			}
 			else if (faction == MUTANT) {
 				if (type == BASE)
-					entity->spawnPosition = { entity->current_tile.x+5, entity->current_tile.y+3 };
+					entity->render_position += App->map->MapToWorld(10, 6);
 				else if (type == BARRACK)
-					entity->spawnPosition = { entity->current_tile.x+2, entity->current_tile.y+3 };
+					entity->render_position += App->map->MapToWorld(9, 7);
+				else if (type == LABORATORY)
+					entity->render_position += App->map->MapToWorld(10, 6);
 			}
 			else if (faction == BROTHERHOOD) {
 				if (type == BASE)
-					entity->spawnPosition = { entity->current_tile.x+4, entity->current_tile.y+3 };
+					entity->render_position += App->map->MapToWorld(10, 6);
 				else if (type == BARRACK)
-					entity->spawnPosition = { entity->current_tile.x+2, entity->current_tile.y+3 };
+					entity->render_position += App->map->MapToWorld(10, 7);
+				else if (type == LABORATORY)
+					entity->render_position += App->map->MapToWorld(10, 6);
 			}
-			//Laboratory is the same for all factions. We save code
-			if (type == LABORATORY)
-				entity->spawnPosition = { entity->current_tile.x + 2, entity->current_tile.y + 2 };
 
-			//Add render position for correct blitting
-			entity->render_position = App->map->MapToWorld(entity->spawnPosition.x+1, entity->spawnPosition.y);
+			//Spawn position is just below render position
+			entity->spawnPosition = { App->map->WorldToMap(entity->render_position.x, entity->render_position.y) };
 		}
 	}
 

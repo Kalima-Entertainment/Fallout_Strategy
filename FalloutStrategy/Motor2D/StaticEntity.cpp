@@ -41,18 +41,19 @@ bool StaticEntity::Update(float dt) {
 			//Spawn GATHERER
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 				App->entities->CreateEntity(faction, GATHERER, spawnPosition.x, spawnPosition.y);
-			else if (type == BARRACK) {
-				//Spawn MELEE
-				if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-					App->entities->CreateEntity(faction, MELEE, spawnPosition.x, spawnPosition.y);
-				//Spawn RANGED
-				if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-					App->entities->CreateEntity(faction, RANGED, spawnPosition.x, spawnPosition.y);
-			}
-			else if (type == LABORATORY) {
-				//Upgrades
-			}
 		}
+		else if (type == BARRACK) {
+			//Spawn MELEE
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+				App->entities->CreateEntity(faction, MELEE, spawnPosition.x, spawnPosition.y);
+			//Spawn RANGED
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+				App->entities->CreateEntity(faction, RANGED, spawnPosition.x, spawnPosition.y);
+		}
+		else if (type == LABORATORY) {
+			//Upgrades
+		}
+		
 	}
 
 	last_dt = dt;
@@ -69,7 +70,7 @@ bool StaticEntity::PostUpdate() {
 	App->render->Blit(reference_entity->texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
 	if (App->render->debug) 
-	{ App->render->DrawQuad({ (int)position.x -2, (int)position.y-2, 4,4 }, 255, 0, 0, 255); }
+		App->render->DrawQuad({ (int)render_position.x, render_position.y, 4,4 }, 255, 0, 0, 255); 
 	return true;
 }
 
