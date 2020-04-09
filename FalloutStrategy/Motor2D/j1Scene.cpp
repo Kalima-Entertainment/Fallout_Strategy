@@ -111,10 +111,9 @@ bool j1Scene::Start()
 	brotherhood[0] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, MELEE, 18, 6);
 	brotherhood[1] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, RANGED, 19, 6);
 	brotherhood[2] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, GATHERER, 20, 6);
-	
-	//App->audio->PlayMusic("audio/music/elevator_music.ogg", 4.0F);
-	//App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
 
+	App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
+	
 	return true;
 }
 
