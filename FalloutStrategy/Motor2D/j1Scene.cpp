@@ -16,7 +16,7 @@
 #include "StaticEntity.h"
 #include "MenuManager.h"
 #include "UI_Label.h"
-#include "Player.h"
+#include "j1Player.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 #include <stdlib.h>
 #include <time.h>
@@ -72,9 +72,6 @@ bool j1Scene::Start()
 	modules[2] += ("_low_left.tmx");
 	modules[3] += ("_low_right.tmx");
 
-	modules[0] = "grassland_low_left.tmx";
-
-
 	// --------------------------------------
 
 	if (App->map->Load(modules) == true)
@@ -87,6 +84,7 @@ bool j1Scene::Start()
 		RELEASE_ARRAY(data);
 	}
 
+	/*
 	vault[0] = (DynamicEntity*)App->entities->CreateEntity(VAULT, MELEE, 14, 6);
 	vault[1] = (DynamicEntity*)App->entities->CreateEntity(VAULT, RANGED, 15, 6);
 	vault[2] = (DynamicEntity*)App->entities->CreateEntity(VAULT, GATHERER, 16, 6);
@@ -108,6 +106,7 @@ bool j1Scene::Start()
 	brotherhood[0] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, MELEE, 18, 6);
 	brotherhood[1] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, RANGED, 19, 6);
 	brotherhood[2] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, GATHERER, 20, 6);
+	*/
 
 	App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
 

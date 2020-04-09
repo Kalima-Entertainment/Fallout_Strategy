@@ -11,7 +11,7 @@
 #include "j1Audio.h"
 #include "DynamicEntity.h"
 #include "StaticEntity.h"
-#include "Player.h"
+#include "j1Player.h"
 #include "brofiler/Brofiler/Brofiler.h"
 #include "MenuManager.h"
 #include <iostream>

@@ -6,11 +6,11 @@ class j1Entity;
 class DynamicEntity;
 enum class Resource;
 
-class Player : public j1Module
+class j1Player : public j1Module
 {
 public:
-	Player();
-	~Player();
+	j1Player();
+	~j1Player();
 
 	bool Start();
 	bool PreUpdate();

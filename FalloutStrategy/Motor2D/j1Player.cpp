@@ -1,4 +1,4 @@
-#include "Player.h"
+#include "j1Player.h"
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Render.h"
@@ -15,7 +15,7 @@
 #include "MenuManager.h"
 #include "j1Scene.h"
 
-Player::Player() : j1Module() {
+j1Player::j1Player() : j1Module() {
 	selected_entity = nullptr;
 	border_scroll = false;
 	mouse_speed_multiplier = 1.5f;
@@ -30,13 +30,13 @@ Player::Player() : j1Module() {
 	factions[GHOUL] = factions[BROTHERHOOD] = factions[MUTANT] = false;
 }
 
-Player::~Player() {}
+j1Player::~j1Player() {}
 
-bool Player::Start() {
+bool j1Player::Start() {
 	return true;
 }
 
-bool Player::PreUpdate() {
+bool j1Player::PreUpdate() {
 	bool ret = true;
 
 	//debug keys
@@ -114,7 +114,7 @@ bool Player::PreUpdate() {
 	return ret;
 }
 
-bool Player::Update(float dt) {
+bool j1Player::Update(float dt) {
 	bool ret = true;
 
 	//Margin camera movement
@@ -162,7 +162,7 @@ bool Player::Update(float dt) {
 	return ret;
 }
 
-void Player::InteractWithEntity() {
+void j1Player::InteractWithEntity() {
 	int tx, ty;
 	iPoint selected_spot;
 
@@ -205,8 +205,9 @@ void Player::InteractWithEntity() {
 				dynamic_entity->target_entity = nullptr;
 				ResourceBuilding* resource_building;
 				resource_building = App->entities->FindResourceBuildingByTile(selected_spot);
+
 				//assign a resource building to the entity
-				if (resource_building != nullptr)
+				if ((resource_building != nullptr)&&(resource_building->quantity > 0))
 					dynamic_entity->resource_building = resource_building;
 			}
 		}
@@ -219,7 +220,7 @@ void Player::InteractWithEntity() {
 	}
 }
 
-void Player::UpdateResourceData(Resource resource_type, int quantity) {
+void j1Player::UpdateResourceData(Resource resource_type, int quantity) {
 	//update resoucres
 	if (resource_type == Resource::CAPS)
 		caps += quantity;

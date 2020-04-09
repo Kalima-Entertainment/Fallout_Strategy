@@ -4,7 +4,7 @@
 #include "j1Map.h"
 #include "j1Audio.h"
 #include "j1Textures.h"
-#include "Player.h"
+#include "j1Player.h"
 #include "j1Input.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 

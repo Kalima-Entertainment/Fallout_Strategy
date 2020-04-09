@@ -574,6 +574,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 						x += 3;
 						y += 2;
 					}
+					App->entities->CreateEntity(building_faction, GATHERER, x + 1, y + 1);
 				}
 				else if (object_type == "Barrack") {
 					type = BARRACK;
@@ -590,6 +591,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 						x += 1;
 						y += 1;
 					}
+					App->entities->CreateEntity(building_faction, MELEE, x + 1, y + 1);
 				}
 				else if (object_type == "Laboratory") {
 					type = LABORATORY;
@@ -605,6 +607,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 						x += 2;
 						y += 1;
 					}
+					App->entities->CreateEntity(building_faction, RANGED, x + 1, y + 1);
 				}
 
 				static_entity = (StaticEntity*)App->entities->CreateEntity(building_faction, type, x,y);

@@ -7,7 +7,7 @@
 #include "j1Pathfinding.h"
 #include "j1Textures.h"
 #include "j1EntityManager.h"
-#include "Player.h"
+#include "j1Player.h"
 #include "StaticEntity.h"
 #include <string>
 #include "SDL_mixer/include/SDL_mixer.h"
@@ -213,25 +213,30 @@ void DynamicEntity::Move(float dt) {
 				//gatherer
 				else {
 					if (next_tile == target_tile) {
+
 						//gather
 						if ((resource_building != nullptr) && (resource_collected < storage_capacity)) {
 							state = GATHER;
 							timer.Start();
 							return;
 						}
+
 						//give gathered resources
 						else if ((resource_collected > 0) && (target_building != nullptr) && (target_building->volume < target_building->storage_capacity)) {
 							target_building->volume += resource_collected;
 							App->player->UpdateResourceData(resource_type, resource_collected);
 							resource_collected = 0;
 							target_building = nullptr;
+
 							//go back to resource building to get more resources
 							if (resource_building->quantity > 0) {
 								PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
 								state = WALK;
 							}
+							//forget the building
 							else
 							{
+								resource_building = nullptr;
 								state = IDLE;
 							}
 						}
@@ -323,8 +328,9 @@ void DynamicEntity::Attack() {
 }
 
 void DynamicEntity::Gather() {
-	resource_building->quantity -= damage;
-	resource_collected += damage;
+	uint resource = resource_building->quantity - (resource_building->quantity - damage);
+	resource_building->quantity -= resource;
+	resource_collected += resource;
 	resource_type = resource_building->resource_type;
 	StaticEntity* base = (StaticEntity*)App->entities->FindEntityByType(faction, BASE);
 	PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));

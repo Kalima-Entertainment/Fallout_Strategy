@@ -9,7 +9,7 @@
 #include "j1Map.h"
 #include "j1Input.h"
 #include "j1Render.h"
-#include "Player.h"
+#include "j1Player.h"
 
 j1MovementManager::j1MovementManager()
 {

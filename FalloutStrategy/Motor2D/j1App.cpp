@@ -17,12 +17,13 @@
 #include "j1App.h"
 #include "j1Collision.h"
 #include "j1EntityManager.h"
-#include "Player.h"
+#include "j1Player.h"
 #include "j1Minimap.h"
 #include "MenuManager.h"
 #include "MainMenu.h"
 #include "j1Console.h"
 #include "j1MovementManager.h"
+#include "AI_Manager.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -41,12 +42,13 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	gui = new j1Gui();
 	collision = new j1Collision();
 	entities = new j1EntityManager();
-	player = new Player();
+	player = new j1Player();
 	minimap = new j1Minimap();
 	menu_manager = new MenuManager();
 	main_menu = new MainMenu();
 	console = new j1Console();
 	Mmanager = new j1MovementManager();
+	ai_manager = new AI_Manager();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -54,7 +56,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
-	AddModule(scene);
 
 	AddModule(map);
 	AddModule(collision);
@@ -62,7 +63,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(main_menu);
 	AddModule(entities);
 	AddModule(player);
+	AddModule(ai_manager);
 	AddModule(font);
+	AddModule(scene);
 	AddModule(Mmanager);
 
 	// scene last
@@ -231,8 +234,8 @@ void j1App::FinishUpdate()
 	static char title[256];
 	//sprintf_s(title, 256, " Fallout Strategy 0.1 | Av.FPS: %.2f Last Frame Ms: %u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %lu %i Camera X: %i Camera Y: %i",
 		//	  avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count, App->render->camera.x, App->render->camera.y);
-	sprintf_s(title, 256, " Fallout Strategy 0.2 | Av.FPS: %.2f | Last dt: %.3f | Time since startup: %.3f | Camera X: %i Camera Y: %i",
-			  avg_fps, dt, seconds_since_startup, App->render->camera.x, App->render->camera.y);
+	sprintf_s(title, 256, " Fallout Strategy 0.2 - Kalima Entertainment | Av.FPS: %.2f | Last dt: %.3f | Camera X: %i Camera Y: %i",
+			  avg_fps, dt, App->render->camera.x, App->render->camera.y);
 	App->win->SetTitle(title);
 
 	if(capped_ms > 0 && last_frame_ms < capped_ms)

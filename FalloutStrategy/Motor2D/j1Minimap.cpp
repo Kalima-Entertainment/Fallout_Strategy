@@ -9,7 +9,7 @@
 #include "j1EntityManager.h"
 #include "j1Entity.h"
 #include "MenuManager.h"
-#include "Player.h"
+#include "j1Player.h"
 
 j1Minimap::j1Minimap() : j1Module() {
 	name = ("minimap");
