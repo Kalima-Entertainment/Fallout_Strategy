@@ -129,7 +129,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 				else if (type == BARRACK)
 					entity->render_position += App->map->MapToWorld(20, 13);
 				else if (type == LABORATORY)
-					entity->render_position += App->map->MapToWorld(20, 12);
+					entity->render_position += App->map->MapToWorld(20, 11);
 			}
 			else if(faction == VAULT){
 				if (type == BASE)
@@ -137,7 +137,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 				else if (type == BARRACK)
 					entity->render_position += App->map->MapToWorld(8, 5);
 				else if (type == LABORATORY)
-					entity->render_position += App->map->MapToWorld(9, 5);
+					entity->render_position += App->map->MapToWorld(7, 3);
 			}
 			else if (faction == MUTANT) {
 				if (type == BASE)
@@ -145,7 +145,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 				else if (type == BARRACK)
 					entity->render_position += App->map->MapToWorld(9, 7);
 				else if (type == LABORATORY)
-					entity->render_position += App->map->MapToWorld(10, 6);
+					entity->render_position += App->map->MapToWorld(9, 6);
 			}
 			else if (faction == BROTHERHOOD) {
 				if (type == BASE)

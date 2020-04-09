@@ -46,10 +46,7 @@ bool j1Scene::Start()
 {
 	srand(time(NULL));
 	menu_state = StatesMenu::NONE;
-
-	DynamicEntity* vault[3], * brotherhood[3], * ghoul[3], *mutant[3];
-	DynamicEntity* test_melee, *test_enemy, *test_ranged, *test_gatherer;
-
+	
 	//random map ----------------------------
 
 	std::string modules[4];
@@ -83,30 +80,6 @@ bool j1Scene::Start()
 
 		RELEASE_ARRAY(data);
 	}
-
-	/*
-	vault[0] = (DynamicEntity*)App->entities->CreateEntity(VAULT, MELEE, 14, 6);
-	vault[1] = (DynamicEntity*)App->entities->CreateEntity(VAULT, RANGED, 15, 6);
-	vault[2] = (DynamicEntity*)App->entities->CreateEntity(VAULT, GATHERER, 16, 6);
-
-	ghoul[0] = (DynamicEntity*)App->entities->CreateEntity(GHOUL, MELEE, 14, 3);
-	ghoul[0]->direction = BOTTOM_LEFT;
-	ghoul[1] = (DynamicEntity*)App->entities->CreateEntity(GHOUL, RANGED, 15, 3);
-	ghoul[1]->direction = BOTTOM_LEFT;
-	ghoul[2] = (DynamicEntity*)App->entities->CreateEntity(GHOUL, GATHERER, 16, 3);
-	ghoul[2]->direction = BOTTOM_LEFT;
-
-	mutant[0] = (DynamicEntity*)App->entities->CreateEntity(MUTANT, MELEE, 18, 3);
-	mutant[0]->direction = BOTTOM_LEFT;
-	mutant[1] = (DynamicEntity*)App->entities->CreateEntity(MUTANT, RANGED, 19, 3);
-	mutant[1]->direction = BOTTOM_LEFT;
-	mutant[2] = (DynamicEntity*)App->entities->CreateEntity(MUTANT, GATHERER, 20, 3);
-	mutant[2]->direction = BOTTOM_LEFT;
-
-	brotherhood[0] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, MELEE, 18, 6);
-	brotherhood[1] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, RANGED, 19, 6);
-	brotherhood[2] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, GATHERER, 20, 6);
-	*/
 
 	App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
 

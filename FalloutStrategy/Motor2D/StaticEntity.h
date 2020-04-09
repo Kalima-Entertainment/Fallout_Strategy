@@ -28,6 +28,7 @@ private:
 	int gen_speed;
 	Animation animations[3];
 	StaticState state;
+	iPoint render_texture_pos;
 };
 
 #endif // !_STATIC_ENTITY_H

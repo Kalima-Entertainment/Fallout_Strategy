@@ -165,7 +165,6 @@ bool j1Console::CleanUp() {
 void j1Console::AddLogText(std::string incoming_text) {
 	
 	log_record.push_back(incoming_text);
-
 	if (log_record.size() > MAX_LOG_RECORD)
 	{
 		log_record.erase(log_record.begin());
