@@ -1,41 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="2" height="2" tilewidth="1280" tileheight="720" nextobjectid="1">
- <tileset firstgid="1" name="gif_loadscreen" tilewidth="1280" tileheight="720" tilecount="108" columns="4">
-  <image source="gif_loadscreen.png" width="5120" height="19440"/>
-  <tile id="0">
-   <animation>
-    <frame tileid="0" duration="100"/>
-    <frame tileid="1" duration="100"/>
-    <frame tileid="2" duration="100"/>
-    <frame tileid="3" duration="100"/>
-    <frame tileid="4" duration="100"/>
-    <frame tileid="5" duration="100"/>
-    <frame tileid="6" duration="100"/>
-    <frame tileid="7" duration="100"/>
-    <frame tileid="8" duration="100"/>
-    <frame tileid="9" duration="100"/>
-    <frame tileid="10" duration="100"/>
-    <frame tileid="11" duration="100"/>
-    <frame tileid="12" duration="100"/>
-    <frame tileid="13" duration="100"/>
-    <frame tileid="14" duration="100"/>
-    <frame tileid="15" duration="100"/>
-    <frame tileid="16" duration="100"/>
-    <frame tileid="17" duration="100"/>
-    <frame tileid="18" duration="100"/>
-    <frame tileid="19" duration="100"/>
-    <frame tileid="20" duration="100"/>
-    <frame tileid="21" duration="100"/>
-    <frame tileid="22" duration="100"/>
-    <frame tileid="23" duration="100"/>
-    <frame tileid="24" duration="100"/>
-    <frame tileid="25" duration="100"/>
-    <frame tileid="26" duration="100"/>
-   </animation>
-  </tile>
- </tileset>
- <tileset firstgid="109" name="logo_spritesheet" tilewidth="640" tileheight="640" tilecount="1" columns="25">
-  <image source="logo_spritesheet.png" width="16384" height="8192"/>
+ <tileset firstgid="1" name="logo_spritesheet" tilewidth="640" tileheight="640" tilecount="200" columns="25">
+  <image source="logo_spritesheet.png" width="16015" height="5196"/>
   <tile id="0">
    <animation>
     <frame tileid="0" duration="100"/>
@@ -221,9 +187,68 @@
    </animation>
   </tile>
  </tileset>
+ <tileset firstgid="201" name="gif_loadscreen" tilewidth="1200" tileheight="720" tilecount="52" columns="4">
+  <image source="gif_loadscreen.png" width="4800" height="10079"/>
+  <tile id="0">
+   <animation>
+    <frame tileid="0" duration="100"/>
+    <frame tileid="1" duration="100"/>
+    <frame tileid="4" duration="100"/>
+    <frame tileid="5" duration="100"/>
+    <frame tileid="8" duration="100"/>
+    <frame tileid="9" duration="100"/>
+    <frame tileid="12" duration="100"/>
+    <frame tileid="13" duration="100"/>
+    <frame tileid="16" duration="100"/>
+    <frame tileid="17" duration="100"/>
+    <frame tileid="20" duration="100"/>
+    <frame tileid="21" duration="100"/>
+    <frame tileid="24" duration="100"/>
+    <frame tileid="25" duration="100"/>
+    <frame tileid="28" duration="100"/>
+    <frame tileid="29" duration="100"/>
+    <frame tileid="32" duration="100"/>
+    <frame tileid="33" duration="100"/>
+    <frame tileid="36" duration="100"/>
+    <frame tileid="37" duration="100"/>
+    <frame tileid="40" duration="100"/>
+    <frame tileid="41" duration="100"/>
+    <frame tileid="44" duration="100"/>
+    <frame tileid="45" duration="100"/>
+    <frame tileid="48" duration="100"/>
+    <frame tileid="49" duration="100"/>
+    <frame tileid="2" duration="100"/>
+    <frame tileid="3" duration="100"/>
+    <frame tileid="6" duration="100"/>
+    <frame tileid="7" duration="100"/>
+    <frame tileid="10" duration="100"/>
+    <frame tileid="11" duration="100"/>
+    <frame tileid="14" duration="100"/>
+    <frame tileid="15" duration="100"/>
+    <frame tileid="18" duration="100"/>
+    <frame tileid="19" duration="100"/>
+    <frame tileid="22" duration="100"/>
+    <frame tileid="23" duration="100"/>
+    <frame tileid="26" duration="100"/>
+    <frame tileid="27" duration="100"/>
+    <frame tileid="30" duration="100"/>
+    <frame tileid="31" duration="100"/>
+    <frame tileid="34" duration="100"/>
+    <frame tileid="35" duration="100"/>
+    <frame tileid="38" duration="100"/>
+    <frame tileid="39" duration="100"/>
+    <frame tileid="42" duration="100"/>
+    <frame tileid="43" duration="100"/>
+    <frame tileid="46" duration="100"/>
+    <frame tileid="47" duration="100"/>
+    <frame tileid="50" duration="100"/>
+    <frame tileid="51" duration="100"/>
+   </animation>
+  </tile>
+ </tileset>
  <layer name="background" width="2" height="2">
   <data>
-   <tile gid="1"/>
+   <tile gid="201"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -232,7 +257,7 @@
  <layer name="logo" width="2" height="2">
   <data>
    <tile gid="0"/>
-   <tile gid="109"/>
+   <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
   </data>
