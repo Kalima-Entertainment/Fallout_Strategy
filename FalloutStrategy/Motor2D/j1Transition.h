@@ -8,6 +8,8 @@
 #include "p2Point.h"
 #include "j1Timer.h"
 
+struct SDL_Texture;
+
 class j1Transition : public j1Module
 {
 public:
@@ -23,6 +25,11 @@ public:
 private:
 	int alpha;
 	float deltatime;
+	SDL_Texture* gif;
+	SDL_Texture* logo;
+	Animation	animationLogo;
+	Animation	animationGif;
+
 public:
 	bool fade;
 	j1Timer fadetimer;

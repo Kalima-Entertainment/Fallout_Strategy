@@ -406,7 +406,7 @@ bool DynamicEntity::LoadAnimations() {
 	SDL_Rect rect;
 	rect.w = tile_width;
 	rect.h = tile_height;
-	int i = 0;
+
 	while (animation != nullptr)
 	{
 		std::string animation_direction = std::string(animation.child("properties").child("property").attribute("value").as_string());

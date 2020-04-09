@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="2" height="2" tilewidth="1280" tileheight="720" nextobjectid="1">
- <tileset firstgid="1" name="gif_loadscreen" tilewidth="1280" tileheight="720" tilecount="27" columns="1">
-  <image source="gif_loadscreen.png" width="2400" height="19440"/>
+ <tileset firstgid="1" name="gif_loadscreen" tilewidth="1280" tileheight="720" tilecount="108" columns="4">
+  <image source="gif_loadscreen.png" width="5120" height="19440"/>
   <tile id="0">
    <animation>
     <frame tileid="0" duration="100"/>
@@ -34,7 +34,7 @@
    </animation>
   </tile>
  </tileset>
- <tileset firstgid="28" name="logo_spritesheet" tilewidth="640" tileheight="640" tilecount="300" columns="25">
+ <tileset firstgid="109" name="logo_spritesheet" tilewidth="640" tileheight="640" tilecount="1" columns="25">
   <image source="logo_spritesheet.png" width="16384" height="8192"/>
   <tile id="0">
    <animation>
@@ -222,15 +222,19 @@
   </tile>
  </tileset>
  <layer name="background" width="2" height="2">
-  <data encoding="csv">
-1,0,
-0,0
-</data>
+  <data>
+   <tile gid="1"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+  </data>
  </layer>
  <layer name="logo" width="2" height="2">
-  <data encoding="csv">
-0,28,
-0,0
-</data>
+  <data>
+   <tile gid="0"/>
+   <tile gid="109"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+  </data>
  </layer>
 </map>
