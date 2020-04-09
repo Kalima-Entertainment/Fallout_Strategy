@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="isometric" renderorder="right-down" width="75" height="75" tilewidth="64" tileheight="32" nextobjectid="29">
+<map version="1.0" orientation="isometric" renderorder="right-down" width="75" height="75" tilewidth="64" tileheight="32" nextobjectid="33">
  <tileset firstgid="1" name="Floor" tilewidth="64" tileheight="32" tilecount="512" columns="16">
   <image source="Floors64x32.png" width="1024" height="1024"/>
  </tileset>
@@ -33860,6 +33860,26 @@
   <object id="28" name="Resources" x="1610" y="1641.33" width="142" height="70.6667">
    <properties>
     <property name="Water" type="int" value="50"/>
+   </properties>
+  </object>
+  <object id="29" name="Static" type="Base" x="47.1365" y="44.6207" width="113.833" height="118.309">
+   <properties>
+    <property name="faction" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="30" name="Static" type="Barrack" x="385.303" y="32.1207" width="50.6667" height="102.333">
+   <properties>
+    <property name="faction" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="31" name="Static" type="Laboratory" x="33.1362" y="432.288" width="78.3333" height="73.3333">
+   <properties>
+    <property name="faction" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="32" name="Static" type="Barrack" x="515.47" y="47.1204" width="50.6667" height="101.333">
+   <properties>
+    <property name="faction" type="int" value="3"/>
    </properties>
   </object>
  </objectgroup>
