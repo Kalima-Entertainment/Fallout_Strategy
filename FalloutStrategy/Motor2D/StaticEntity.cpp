@@ -13,6 +13,7 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
 	faction = g_faction;
 	state = WAIT;
 	storage_capacity = 2000;
+	render_texture_pos = { 0,0 };
 }
 
 StaticEntity::~StaticEntity() {}
@@ -65,9 +66,9 @@ bool StaticEntity::PostUpdate() {
 	current_animation = &animations[state];
 
 	//Render building
-	render_position = {(int)(position.x - 0.5f * sprite_size),(int)(position.y - sprite_size * 0.75)};
+	render_texture_pos = {(int)(position.x - 0.5f * sprite_size),(int)(position.y - sprite_size * 0.75)};
 
-	App->render->Blit(reference_entity->texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
+	App->render->Blit(reference_entity->texture, render_texture_pos.x, render_texture_pos.y, &current_animation->GetCurrentFrame(last_dt));
 
 	if (App->render->debug) 
 		App->render->DrawQuad({ (int)render_position.x, render_position.y, 4,4 }, 255, 0, 0, 255); 
