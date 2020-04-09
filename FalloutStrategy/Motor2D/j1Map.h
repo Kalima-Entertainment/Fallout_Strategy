@@ -147,6 +147,7 @@ public:
 	iPoint IsometricWorldToMap(int x, int y) const;
 	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
 	std::vector<iPoint> CalculateArea(iPoint first_tile_position, int width, int height);
+	void SetBuildingTilesUnwalkable(std::vector<iPoint> tiles);
 
 	TileSet* GetTilesetFromTileId(int id) const;
 
@@ -168,6 +169,7 @@ private:
 	pugi::xml_document	map_file;
 	std::string			folder;
 	bool				map_loaded;
+	uchar*				walkability_map;
 };
 
 #endif // __j1MAP_H__

@@ -28162,6 +28162,7 @@
  <layer name="Colisions" width="75" height="75">
   <properties>
    <property name="Navigation" value="1"/>
+   <property name="Nodraw" value="1"/>
   </properties>
   <data>
    <tile gid="0"/>
