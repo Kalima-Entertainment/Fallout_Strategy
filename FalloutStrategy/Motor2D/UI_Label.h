@@ -2,7 +2,7 @@
 #define __UI_LABEL_H__
 
 #include "UI_element.h"
-#include "p2SString.h"
+#include <string>
 #include "p2List.h"
 #include "SDL\include\SDL.h"
 
@@ -10,23 +10,23 @@ class UI_Label : public UI_element
 {
 public:
 
-	UI_Label(int x, int y, UI_Type type, p2SString text_input, UI_element* parent, j1Module* Observer, int* counter);
+	UI_Label(int x, int y, UI_Type type, std::string text_input, UI_element * parent, j1Module * Observer, int* counter);
 	~UI_Label();
 
 	bool Update(float dt);
 	bool CleanUp();
 
-	bool SetLabelText(p2SString text_input);
+	bool SetLabelText(std::string text_input, std::string font = "StackedPixel");
 	void SetTextTimer(const char* text);
 
 	bool Draw();
 
 public:
 
-	p2SString text;
+	std::string text;
 	SDL_Texture* text_texture=nullptr;
 	UI_Type t;
-	
+
 	//Timer
 	int d;
 	char timer[7] = "";

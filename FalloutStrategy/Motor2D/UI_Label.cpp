@@ -6,12 +6,10 @@
 #include "UI_element.h"
 #include <string.h>
 
-UI_Label::UI_Label(int x, int y, UI_Type type, p2SString text_input, UI_element * parent, j1Module * Observer, int* counter) : UI_element(x, y, type, parent, Observer)
+UI_Label::UI_Label(int x, int y, UI_Type type, std::string text_input, UI_element * parent, j1Module * Observer, int* counter) : UI_element(x, y, type, parent, Observer)
 {
 	t = type;
 	timer_out = counter;
-	
-
 }
 
 UI_Label::~UI_Label()
@@ -20,22 +18,23 @@ UI_Label::~UI_Label()
 
 bool UI_Label::Update(float dt)
 {
+
 	
 	/*if (t == Label) {
-		
+
 		timer_count = *timer_out;
 		d = 100000;
 
 		for (int i = 0; i < 6; i++) {
-			
+
 			timer[i] = (char)(timer_count/d);
-			
+
 			timer_count = timer_count%d;
-			
+
 			d = d / 10;
-		
+
 		}
-		
+
 		SetTextTimer(timer);
 
 	}*/
@@ -49,14 +48,14 @@ bool UI_Label::CleanUp()
 	return true;
 }
 
-bool UI_Label::SetLabelText(p2SString text_input)
+bool UI_Label::SetLabelText(std::string text_input, std::string font)
 {
 	bool ret = false;
 	text = text_input;
 
-	if (text.Length() > 0){
+	if (text.size() > 0){
 
-		text_texture = App->font->Print(text.GetString(), { 244,244,244,255 }, "StackedPixel");
+		text_texture = App->font->Print(text.c_str(), { 244,244,244,255 }, font);
 	}
 
 	if (text_texture != nullptr)
@@ -74,7 +73,7 @@ bool UI_Label::SetLabelText(p2SString text_input)
 		this->dimensions = rect;
 
 		ret = true;
-		
+
 	}
 
 
@@ -83,7 +82,7 @@ bool UI_Label::SetLabelText(p2SString text_input)
 
 void UI_Label::SetTextTimer(const char* text)
 {
-	
+
 	App->tex->UnLoad(texture);
 	texture = App->font->Print(text, { 255,255,255,255 }, "StackedPixel");
 	App->font->CalcSize(text, dimensions.w, dimensions.h);

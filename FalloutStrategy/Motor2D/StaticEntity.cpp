@@ -2,14 +2,27 @@
 #include "j1App.h"
 #include "j1Render.h"
 #include "j1Map.h"
+#include "j1Audio.h"
 #include "j1Textures.h"
-#include "Player.h"
+#include "j1Player.h"
 #include "j1Input.h"
+#include "SDL_mixer/include/SDL_mixer.h"
 
 StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
 	type = g_type;
 	faction = g_faction;
 	state = WAIT;
+	storage_capacity = 1000;
+	max_capacity = 3000;
+	render_texture_pos = { 0,0 };
+
+	//Initialize upgrades
+	base_resource_limit = { "base_resource_limit", 0, 250, 250};
+	gatherer_resource_limit = { "gatherer_resource_limit", 0, 0, 0 };
+	units_damage = { "units_damage", 0, 350, 250 };
+	units_speed = { "units_speed", 0, 350, 250 };
+	units_health = { "units_health", 0, 150, 250 };
+	units_creation_time = { "units_creation_time", 0, 150, 250 };
 }
 
 StaticEntity::~StaticEntity() {}
@@ -17,37 +30,54 @@ StaticEntity::~StaticEntity() {}
 bool StaticEntity::Update(float dt) {
 	switch (state) {
 	case WAIT:
+		if (Mix_Playing(6) == 0)
+			SpatialAudio(App->audio->factory, 6, position.x, position.y);
 		break;
-	case PRODUCE:
+	case WORK:
 		break;
 	case EXPLODE:
 		if (current_animation->Finished())
 			to_destroy = true;
+		if (Mix_Playing(7) == 0)
+		SpatialAudio(App->audio->explode, 7, position.x, position.y);
 		break;
 	default:
 		break;
 	}
 
 	//Interact with the building to spawn units or investigate upgrades
-	if (this == App->player->selected_entity) {		
+	if (this == App->player->selected_entity) {
 		if (type == BASE) {
 			//Spawn GATHERER
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-				App->entities->CreateEntity(GHOUL, GATHERER, spawnPosition.x, spawnPosition.y);
-			else if (type == BARRACK) {
-				//Spawn MELEE
-				if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-					App->entities->CreateEntity(GHOUL, MELEE, spawnPosition.x, spawnPosition.y);
-
-				//Spawn RANGED
-				if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-					App->entities->CreateEntity(GHOUL, RANGED, spawnPosition.x, spawnPosition.y);
-			}
-			else if (type == LABORATORY) {
-				//Upgrades
-			}
+				App->entities->CreateEntity(faction, GATHERER, spawnPosition.x, spawnPosition.y);
+			//Upgrades
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+				Upgrade(faction, "base_resource_limit");
+			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+				Upgrade(faction, "gatherer_resource_limit");
 		}
-	}	
+		else if (type == BARRACK) {
+			//Spawn MELEE
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+				App->entities->CreateEntity(faction, MELEE, spawnPosition.x, spawnPosition.y);
+			//Spawn RANGED
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+				App->entities->CreateEntity(faction, RANGED, spawnPosition.x, spawnPosition.y);
+			//Upgrades
+			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+				Upgrade(faction, "units_damage");
+			if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+				Upgrade(faction, "units_speed");
+		}
+		else if (type == LABORATORY) {
+			//Upgrades
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+				Upgrade(faction, "units_health");
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+				Upgrade(faction, "units_creation_time");
+		}		
+	}
 
 	last_dt = dt;
 
@@ -58,11 +88,12 @@ bool StaticEntity::PostUpdate() {
 	current_animation = &animations[state];
 
 	//Render building
-	//render_position = App->map->MapToWorld(current_tile.x, current_tile.y);
-	render_position = {(int)(position.x - TILE_SIZE),(int)(position.y - 2 * TILE_SIZE)};
-	//App->render->DrawQuad({ (int)position.x, (int)position.y, 4,4 }, 255, 0, 0, 255);
-	App->render->Blit(reference_entity->texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
-	
+	render_texture_pos = {(int)(position.x - 0.5f * sprite_size),(int)(position.y - sprite_size * 0.75)};
+
+	App->render->Blit(reference_entity->texture, render_texture_pos.x, render_texture_pos.y, &current_animation->GetCurrentFrame(last_dt));
+
+	if (App->render->debug) 
+		App->render->DrawQuad({ (int)render_position.x, render_position.y, 4,4 }, 255, 0, 0, 255); 
 	return true;
 }
 
@@ -78,13 +109,15 @@ bool StaticEntity::LoadReferenceData() {
 
 	//load property data
 	current_health = max_health = reference_entity->max_health;
-
+	sprite_size = reference_entity->sprite_size;
 	return ret;
 }
 
 bool StaticEntity::LoadAnimations() {
+	
 	bool ret = true;
 	char* faction_char = "NoFaction";
+	float speed_multiplier = 0.065f;
 
 	if (faction == VAULT)
 		faction_char = "VaultDwellers";
@@ -106,17 +139,18 @@ bool StaticEntity::LoadAnimations() {
 	{
 		this->texture = App->tex->Load(texture_path.c_str());
 	}
-	
+
 	if (result == NULL)
 	{
 		LOG("Could not load animation tmx file %s. pugi error: %s", file, result.description());
 		ret = false;
 	}
 
-	int tile_width = animation_file.child("map").child("tileset").attribute("tilewidth").as_int();
-	int tile_height = animation_file.child("map").child("tileset").attribute("tileheight").as_int();
+	int tile_width = animation_file.child("map").attribute("tilewidth").as_int();
+	int tile_height = animation_file.child("map").attribute("tileheight").as_int();
 	int columns = animation_file.child("map").child("tileset").attribute("columns").as_int();
 	int firstgid = animation_file.child("map").child("tileset").attribute("firstgid").as_int();
+	sprite_size = tile_height;
 	int id, tile_id;
 	float speed;
 
@@ -133,7 +167,7 @@ bool StaticEntity::LoadAnimations() {
 		std::string building_type = std::string(animation.child("properties").child("property").attribute("name").as_string());
 		std::string animation_name = std::string(animation.child("properties").child("property").attribute("value").as_string());
 		StaticState state = NO_STATE;
-		EntityType entity_type;
+		EntityType entity_type = BASE;
 		bool loop = true;
 
 		//building type
@@ -148,8 +182,8 @@ bool StaticEntity::LoadAnimations() {
 		if (animation_name == "idle") {
 			state = WAIT;
 		}
-		else if (animation_name == "produce") {
-			state = PRODUCE;
+		else if (animation_name == "work") {
+			state = WORK;
 			loop = false;
 		}
 		else if (animation_name == "die") {
@@ -164,7 +198,7 @@ bool StaticEntity::LoadAnimations() {
 		{
 			while (frame != nullptr) {
 				tile_id = frame.attribute("tileid").as_int();
-				speed = frame.attribute("duration").as_int() * 0.001f;
+				speed = frame.attribute("duration").as_int() * speed_multiplier;
 				rect.x = rect.w * ((tile_id) % columns);
 				rect.y = rect.h * ((tile_id) / columns);
 				animations[state].PushBack(rect, speed);
@@ -178,4 +212,44 @@ bool StaticEntity::LoadAnimations() {
 	}
 
 	return ret;
+}
+
+void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
+	
+	if (upgrade_name == "base_resource_limit") {
+		if (storage_capacity < max_capacity) {
+
+			int cost = base_resource_limit.first_price + (base_resource_limit.price_increment * base_resource_limit.upgrade_num);
+
+			if (App->player->caps > cost && App->player->water >= cost && App->player->food > cost) {
+				storage_capacity += (int)storage_capacity * 0.3;
+
+				if (storage_capacity > max_capacity)
+					storage_capacity = max_capacity;
+
+				App->player->UpdateResourceData(Resource::CAPS, -cost);
+				App->player->UpdateResourceData(Resource::WATER, -cost);
+				App->player->UpdateResourceData(Resource::FOOD, -cost);
+
+				LOG("Resource Limit Upgraded. New limit is: %i", storage_capacity);
+			}
+		}
+	}
+	else if (upgrade_name == "gatherer_resource_limit") {
+		App->player->UpdateResourceData(Resource::CAPS, 1000);
+		App->player->UpdateResourceData(Resource::WATER, 1000);
+		App->player->UpdateResourceData(Resource::FOOD, 1000);
+	}
+	else if (upgrade_name == "units_damage") {
+				
+	}
+	else if (upgrade_name == "units_speed") {
+
+	}
+	else if (upgrade_name == "units_health") {
+
+	}
+	else if (upgrade_name == "units_creation_time") {
+
+	}
 }
