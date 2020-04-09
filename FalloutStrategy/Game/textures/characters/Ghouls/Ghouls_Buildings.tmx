@@ -55,7 +55,7 @@
   </tile>
   <tile id="64">
    <properties>
-    <property name="barrack" value="idle"/>
+    <property name="laboratory" value="idle"/>
    </properties>
    <animation>
     <frame tileid="64" duration="100"/>
@@ -92,7 +92,7 @@
   </tile>
   <tile id="96">
    <properties>
-    <property name="laboratory" value="idle"/>
+    <property name="barrack" value="idle"/>
    </properties>
    <animation>
     <frame tileid="96" duration="100"/>
