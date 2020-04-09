@@ -76,10 +76,8 @@ bool j1Scene::Start()
 	modules[2] += ("_low_left.tmx");
 	modules[3] += ("_low_right.tmx");
 
-	modules[0] = "oldstone_up_left.tmx";
-	modules[1] = "oldstone_up_right.tmx";
-	modules[2] = "oldstone_low_left.tmx";
-	modules[3] = "oldstone_low_right.tmx";
+	modules[0] = "grassland_low_left.tmx";
+
 
 	// --------------------------------------
 
@@ -140,31 +138,6 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
-	// debug pathfing ------------------
-	static iPoint origin;
-	static bool origin_selected = false;
-
-	/*
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint p = App->render->ScreenToWorld(x, y);
-	p = App->map->WorldToMap(p.x, p.y);
-
-	if(App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-	{
-		if(origin_selected == true)
-		{
-			App->pathfinding->CreatePath(origin, p);
-			origin_selected = false;
-		}
-		else
-		{
-			origin = p;
-			origin_selected = true;
-		}
-	}
-	*/
-
 	return true;
 }
 
@@ -207,6 +180,8 @@ bool j1Scene::Update(float dt)
 	// Debug pathfinding ------------------------------
 	//int x, y;
 
+	/*
+	//Debug mouse position
 	if (App->player->selected_entity != nullptr)
 	{
 		App->input->GetMousePosition(x, y);
@@ -216,7 +191,7 @@ bool j1Scene::Update(float dt)
 		SDL_Rect debug_rect = { 128,0,64,64 };
 		App->render->Blit(App->render->debug_tex, p.x, p.y, &debug_rect);
 	}
-
+	*/
 	/*
 	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
 

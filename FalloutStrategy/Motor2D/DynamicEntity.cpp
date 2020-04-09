@@ -59,7 +59,7 @@ bool DynamicEntity::Update(float dt) {
 		break;
 	case WALK:
 		Move(dt);
-		SpatialAudio(App->audio->Brotherhood_walk, 1, position.x, position.y);
+		//SpatialAudio(App->audio->Brotherhood_walk, 1, position.x, position.y);
 		break;
 	case ATTACK:
 		if (timer.ReadSec() > action_time)
@@ -69,7 +69,7 @@ bool DynamicEntity::Update(float dt) {
 				Attack();
 			}
 		}
-		SpatialAudio(App->audio->Brotherhood_attack, 1, position.x, position.y);
+		//SpatialAudio(App->audio->Brotherhood_attack, 1, position.x, position.y);
 		break;
 	case GATHER:
 		if (timer.ReadSec() > action_time)
@@ -84,7 +84,7 @@ bool DynamicEntity::Update(float dt) {
 			state = IDLE;
 			current_animation->Reset();
 		}
-		SpatialAudio(App->audio->Brotherhood_hit, 1, position.x, position.y);
+		//SpatialAudio(App->audio->Brotherhood_hit, 1, position.x, position.y);
 		break;
 	case DIE:
 		if (current_animation->Finished())
@@ -92,7 +92,7 @@ bool DynamicEntity::Update(float dt) {
 			attacking_entity->target_entity = nullptr;
 			to_destroy = true;
 		}
-		SpatialAudio(App->audio->Brotherhood_die, 1, position.x, position.y);
+		//SpatialAudio(App->audio->Brotherhood_die, 1, position.x, position.y);
 		break;
 	default:
 		break;
@@ -193,6 +193,17 @@ void DynamicEntity::Move(float dt) {
 							App->player->UpdateResourceData(resource_type, resource_collected);
 							resource_collected = 0;
 							target_building = nullptr;
+							//go back to resource building to get more resources
+							if (resource_building->quantity > 0) {
+								PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
+								state = WALK;
+							}
+							else
+							{
+								state = IDLE;
+							}
+						}
+						if (target_entity != nullptr) {
 							state = IDLE;
 						}
 					}	
@@ -286,7 +297,7 @@ void DynamicEntity::Gather() {
 	StaticEntity* base = (StaticEntity*)App->entities->FindEntityByType(faction, BASE);
 	PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
 	target_building = base;
-	resource_building = nullptr;
+	//resource_building = nullptr;
 }
 
 void DynamicEntity::PathfindToPosition(iPoint destination) {

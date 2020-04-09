@@ -67,7 +67,7 @@
   </tile>
   <tile id="42">
    <properties>
-    <property name="barrack" value="idle"/>
+    <property name="barrack" value="die"/>
    </properties>
    <animation>
     <frame tileid="42" duration="100"/>
@@ -88,6 +88,13 @@
     <frame tileid="57" duration="100"/>
     <frame tileid="58" duration="100"/>
     <frame tileid="59" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="60">
+   <properties>
+    <property name="barrack" value="idle"/>
+   </properties>
+   <animation>
     <frame tileid="60" duration="100"/>
     <frame tileid="61" duration="100"/>
     <frame tileid="62" duration="100"/>
@@ -96,6 +103,10 @@
     <frame tileid="65" duration="100"/>
     <frame tileid="66" duration="100"/>
     <frame tileid="67" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="69">
+   <animation>
     <frame tileid="69" duration="100"/>
     <frame tileid="70" duration="100"/>
     <frame tileid="71" duration="100"/>
@@ -187,8 +198,8 @@
    <tile gid="1"/>
    <tile gid="21"/>
    <tile gid="33"/>
+   <tile gid="61"/>
    <tile gid="43"/>
-   <tile gid="97"/>
    <tile gid="134"/>
    <tile gid="113"/>
    <tile gid="0"/>
