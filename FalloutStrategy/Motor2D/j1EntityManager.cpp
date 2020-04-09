@@ -315,7 +315,7 @@ bool j1EntityManager::PostUpdate()
 			case GHOUL:
 				if (static_entity->type == BASE) {
 
-					if(count==0){
+					if (count == 0) {
 
 						App->menu_manager->CreateGhouls_Base();
 						count++;
@@ -342,19 +342,98 @@ bool j1EntityManager::PostUpdate()
 				}
 				break;
 			case BROTHERHOOD:
-				if (static_entity->type == BASE)App->menu_manager->CreateBrotherHood_Base();
-				else if (static_entity->type == BARRACK)App->menu_manager->CreateBrotherHood_Barrack();
-				else if (static_entity->type == LABORATORY)App->menu_manager->CreateBrotherHood_Lab();
+				if (static_entity->type == BASE) {
+
+					if (count == 0) {
+						count++;
+						App->menu_manager->CreateBrotherHood_Base();
+					}
+
+				}
+				else if (static_entity->type == BARRACK) {
+
+					if (count == 0) {
+
+						count++;
+						App->menu_manager->CreateBrotherHood_Barrack();
+
+					}
+
+				}
+				else if (static_entity->type == LABORATORY) {
+
+					if (count == 0) {
+
+						count++;
+						App->menu_manager->CreateBrotherHood_Lab();
+
+					}
+				}
 				break;
+
 			case VAULT:
-				if (static_entity->type == BASE)App->menu_manager->CreateVault_Base();
-				else if (static_entity->type == BARRACK)App->menu_manager->CreateVault_Barrack();
-				else if (static_entity->type == LABORATORY)App->menu_manager->CreateVault_Lab();
+
+				if (static_entity->type == BASE) {
+
+					if (count == 0) {
+
+						count++;
+						App->menu_manager->CreateVault_Base();
+
+					}
+				}
+				else if (static_entity->type == BARRACK){
+
+					if (count == 0) {
+
+						count++;
+						App->menu_manager->CreateVault_Barrack();
+
+					}
+
+				}
+				else if (static_entity->type == LABORATORY) {
+
+					if (count == 0) {
+
+						count++;
+						App->menu_manager->CreateVault_Lab();
+
+					}
+
+				}
 				break;
 			case MUTANT:
-				if (static_entity->type == BASE)App->menu_manager->CreateSuperMutants_Base();
-				else if (static_entity->type == BARRACK)App->menu_manager->CreateSuperMutants_Barrack();
-				else if (static_entity->type == LABORATORY)App->menu_manager->CreateSuperMutants_Lab();
+				if (static_entity->type == BASE) {
+
+					if (count == 0) {
+
+						count++;
+						App->menu_manager->CreateSuperMutants_Base();
+
+					}
+				
+				}
+				else if (static_entity->type == BARRACK) {
+
+					if (count == 0) {
+
+						count++;
+						App->menu_manager->CreateSuperMutants_Barrack();
+
+					}
+
+				}
+				else if (static_entity->type == LABORATORY) {
+
+					if (count == 0) {
+
+						count++;
+						App->menu_manager->CreateSuperMutants_Lab();
+
+					}
+
+				}
 				break;
 			}
 		}
