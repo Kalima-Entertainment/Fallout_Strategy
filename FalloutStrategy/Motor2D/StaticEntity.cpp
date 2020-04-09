@@ -42,6 +42,11 @@ bool StaticEntity::Update(float dt) {
 			//Spawn GATHERER
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 				App->entities->CreateEntity(faction, GATHERER, spawnPosition.x, spawnPosition.y);
+			//Upgrades
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+				Upgrade(faction, "base_resource_limit");
+			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+				Upgrade(faction, "gatherer_resource_limit");
 		}
 		else if (type == BARRACK) {
 			//Spawn MELEE
@@ -50,9 +55,18 @@ bool StaticEntity::Update(float dt) {
 			//Spawn RANGED
 			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 				App->entities->CreateEntity(faction, RANGED, spawnPosition.x, spawnPosition.y);
+			//Upgrades
+			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+				Upgrade(faction, "units_damage");
+			if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+				Upgrade(faction, "units_speed");
 		}
 		else if (type == LABORATORY) {
 			//Upgrades
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+				Upgrade(faction, "units_health");
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+				Upgrade(faction, "units_creation_time");
 		}
 		
 	}
@@ -190,4 +204,26 @@ bool StaticEntity::LoadAnimations() {
 	}
 
 	return ret;
+}
+
+void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
+	
+	if (upgrade_name == "base_resource_limit") {
+
+	}
+	else if (upgrade_name == "gatherer_resource_limit") {
+
+	}
+	else if (upgrade_name == "units_damage") {
+
+	}
+	else if (upgrade_name == "units_speed") {
+
+	}
+	else if (upgrade_name == "units_health") {
+
+	}
+	else if (upgrade_name == "units_creation_time") {
+
+	}
 }
