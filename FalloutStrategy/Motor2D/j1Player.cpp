@@ -15,7 +15,7 @@
 #include "MenuManager.h"
 #include "j1Scene.h"
 
-j1Player::j1Player() : j1Module() {
+j1Player::j1Player() : GenericPlayer() {
 	selected_entity = nullptr;
 	border_scroll = false;
 	mouse_speed_multiplier = 1.5f;
@@ -26,8 +26,7 @@ j1Player::j1Player() : j1Module() {
 
 	god_mode = false;
 
-	factions[VAULT] = true;
-	factions[GHOUL] = factions[BROTHERHOOD] = factions[MUTANT] = false;
+	faction = VAULT;
 }
 
 j1Player::~j1Player() {}

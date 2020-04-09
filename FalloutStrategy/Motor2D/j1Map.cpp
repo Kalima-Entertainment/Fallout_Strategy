@@ -10,6 +10,10 @@
 #include "StaticEntity.h"
 #include "brofiler/Brofiler/Brofiler.h"
 #include "p2SString.h"
+#include "AI_Manager.h"
+#include "GenericPlayer.h"
+#include "j1Player.h"
+#include "AI_Player.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -559,9 +563,11 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 				//add tiles and adjust render texture position
 				std::string object_type = std::string(object_node.attribute("type").as_string());
 				EntityType type = NO_TYPE;				
+				EntityType dynamic_type = NO_TYPE;
 
 				if (object_type == "Base") {
 					type = BASE;
+					dynamic_type = GATHERER;
 					if (building_faction == GHOUL) {
 						x += 1;
 					}else if (building_faction == VAULT) {
@@ -574,10 +580,10 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 						x += 3;
 						y += 2;
 					}
-					App->entities->CreateEntity(building_faction, GATHERER, x + 1, y + 1);
 				}
 				else if (object_type == "Barrack") {
 					type = BARRACK;
+					dynamic_type = MELEE;
 					if (building_faction == GHOUL) {
 						x -= 1;
 						y -= 1;
@@ -591,10 +597,10 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 						x += 1;
 						y += 1;
 					}
-					App->entities->CreateEntity(building_faction, MELEE, x + 1, y + 1);
 				}
 				else if (object_type == "Laboratory") {
 					type = LABORATORY;
+					dynamic_type = RANGED;
 					if (building_faction == GHOUL) {
 
 					}else if (building_faction == VAULT) {
@@ -607,11 +613,20 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 						x += 2;
 						y += 1;
 					}
-					App->entities->CreateEntity(building_faction, RANGED, x + 1, y + 1);
 				}
 
+				//create building
 				static_entity = (StaticEntity*)App->entities->CreateEntity(building_faction, type, x,y);
 				static_entity->tiles = CalculateArea(first_tile_position, width, height);
+
+				//spawn entity
+				if (building_faction == App->player->faction) {
+					App->player->entities.push_back(App->entities->CreateEntity(building_faction, dynamic_type, x + 1, y + 1));
+				}
+				else
+				{
+					App->ai_manager->ai_player[building_faction]->entities.push_back(App->entities->CreateEntity(building_faction, dynamic_type, x + 1, y + 1));
+				}
 			}
 
 			object_node = object_node.next_sibling();

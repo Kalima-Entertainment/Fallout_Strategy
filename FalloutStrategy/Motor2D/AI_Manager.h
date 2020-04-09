@@ -14,8 +14,10 @@ public:
 	bool Start();
 	bool Update(float dt);
 
+public:
+	AI_Player* ai_player[4];
 private:
-	AI_Player* ai_player[3];
+
 };
 
 #endif // !_AI_MANAGER_H_

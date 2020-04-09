@@ -1,12 +1,8 @@
 #ifndef _PLAYER_H
 #define _PLAYER_H
-#include "j1Module.h"
+#include "GenericPlayer.h"
 
-class j1Entity;
-class DynamicEntity;
-enum class Resource;
-
-class j1Player : public j1Module
+class j1Player : public GenericPlayer
 {
 public:
 	j1Player();
@@ -21,10 +17,6 @@ public:
 
 public:
 	j1Entity* selected_entity;
-	int caps;
-	int water;
-	int food;
-	bool factions[4];
 
 private:
 	float mouse_speed_multiplier;

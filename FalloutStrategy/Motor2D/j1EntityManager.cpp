@@ -264,7 +264,7 @@ bool j1EntityManager::PostUpdate()
 				//dynamic entities debug
 				//change color depending on if it's an ally or an enemy
 				SDL_Rect rect;
-				if(App->player->factions[entities[i]->faction] == true) rect = { 0,0,64,64 };
+				if(App->player->faction == entities[i]->faction ) rect = { 0,0,64,64 };
 				else rect = { 64,0,64,64 };
 
 				tex_position = App->map->MapToWorld(entities[i]->current_tile.x, entities[i]->current_tile.y);

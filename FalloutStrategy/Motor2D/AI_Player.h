@@ -1,17 +1,20 @@
 #ifndef _AI_PLAYER_H_
 #define _AI_PLAYER_H_
-#include "j1Module.h"
+#include "GenericPlayer.h"
+#include <vector>
 
+class j1Entity;
 enum Faction;
 
-class AI_Player : public j1Module 
+class AI_Player : public GenericPlayer
 {
 public:
 	AI_Player(Faction faction);
 	~AI_Player();
 
+	bool Update(float dt);
+
 private:
-	Faction faction;
 };
 
 
