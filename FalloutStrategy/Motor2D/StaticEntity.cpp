@@ -12,8 +12,17 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
 	type = g_type;
 	faction = g_faction;
 	state = WAIT;
-	storage_capacity = 2000;
+	storage_capacity = 1000;
+	max_capacity = 3000;
 	render_texture_pos = { 0,0 };
+
+	//Initialize upgrades
+	base_resource_limit = { "base_resource_limit", 0, 250, 250};
+	gatherer_resource_limit = { "gatherer_resource_limit", 0, 0, 0 };
+	units_damage = { "units_damage", 0, 350, 250 };
+	units_speed = { "units_speed", 0, 350, 250 };
+	units_health = { "units_health", 0, 150, 250 };
+	units_creation_time = { "units_creation_time", 0, 150, 250 };
 }
 
 StaticEntity::~StaticEntity() {}
@@ -67,8 +76,7 @@ bool StaticEntity::Update(float dt) {
 				Upgrade(faction, "units_health");
 			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 				Upgrade(faction, "units_creation_time");
-		}
-		
+		}		
 	}
 
 	last_dt = dt;
@@ -209,13 +217,31 @@ bool StaticEntity::LoadAnimations() {
 void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
 	
 	if (upgrade_name == "base_resource_limit") {
+		if (storage_capacity < max_capacity) {
 
+			int cost = base_resource_limit.first_price + (base_resource_limit.price_increment * base_resource_limit.upgrade_num);
+
+			if (App->player->caps > cost && App->player->water >= cost && App->player->food > cost) {
+				storage_capacity += (int)storage_capacity * 0.3;
+
+				if (storage_capacity > max_capacity)
+					storage_capacity = max_capacity;
+
+				App->player->UpdateResourceData(Resource::CAPS, -cost);
+				App->player->UpdateResourceData(Resource::WATER, -cost);
+				App->player->UpdateResourceData(Resource::FOOD, -cost);
+
+				LOG("Resource Limit Upgraded. New limit is: %i", storage_capacity);
+			}
+		}
 	}
 	else if (upgrade_name == "gatherer_resource_limit") {
-
+		App->player->UpdateResourceData(Resource::CAPS, 1000);
+		App->player->UpdateResourceData(Resource::WATER, 1000);
+		App->player->UpdateResourceData(Resource::FOOD, 1000);
 	}
 	else if (upgrade_name == "units_damage") {
-
+				
 	}
 	else if (upgrade_name == "units_speed") {
 

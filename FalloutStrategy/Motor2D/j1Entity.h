@@ -70,7 +70,8 @@ public:
 	int current_health;
 	int max_health;
 	int damage;
-	int storage_capacity = 100;
+	int storage_capacity;
+	int max_capacity;
 	int volume;
 
 	EntityType type;

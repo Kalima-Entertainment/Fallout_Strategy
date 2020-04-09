@@ -229,9 +229,7 @@ void j1Player::UpdateResourceData(Resource resource_type, int quantity) {
 	else if (resource_type == Resource::WATER)
 		water += quantity;
 	else if (resource_type == Resource::FOOD)
-		food += quantity;
-	
-	
+		food += quantity;	
 
 	//update gui
 	App->gui->DeleteArrayElements(App->menu_manager->gui_ingame, 4);
