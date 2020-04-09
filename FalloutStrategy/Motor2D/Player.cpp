@@ -13,6 +13,7 @@
 #include "j1Gui.h"
 #include "j1Minimap.h"
 #include "MenuManager.h"
+#include "j1Scene.h"
 
 Player::Player() : j1Module() {
 	selected_entity = nullptr;
@@ -82,10 +83,8 @@ bool Player::PreUpdate() {
 	if (!App->isPaused)
 	{
 		//entity selection and interaction
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-		{
-			InteractWithEntity();
-		}
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) InteractWithEntity();
+		
 
 		//move camera
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_REPEAT) {

@@ -30,6 +30,8 @@ UI_Button::UI_Button(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, 
 	back_fx = App->audio->LoadFx("audio/fx/UISounds/Butn_ReadyOff.wav");
 	volume_fx = App->audio->LoadFx("audio/fx/UISounds/Butn_Text.wav");
 	members_fx = App->audio->LoadFx("audio/fx/UISounds/Butn_Skill.wav");
+	character_fx = App->audio->LoadFx("audio/fx/UISounds/Butn_Character.wav");
+	
 
 }
 
@@ -83,6 +85,7 @@ bool UI_Button::Update(float dt)
 				
 				App->menu_manager->select_faction_menu[0] = (j1Image*)App->gui->CreateImage(100, 300, Image, { 2492, 837, 168, 166 }, NULL, this);
 				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::GHOUL, BUILDING_TYPE::NONE);
+				App->audio->PlayFx(1, click_fx, 0);
 
 			}
 		
@@ -95,6 +98,7 @@ bool UI_Button::Update(float dt)
 				
 				App->menu_manager->select_faction_photos[1] = (j1Image*)App->gui->CreateImage(310, 300, Image, { 2492, 1013, 309, 134 }, NULL, this);
 				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::VAULT, BUILDING_TYPE::NONE);
+				App->audio->PlayFx(1, click_fx, 0);
 
 			}
 
@@ -107,6 +111,7 @@ bool UI_Button::Update(float dt)
 				
 				App->menu_manager->select_faction_menu[2] = (j1Image*)App->gui->CreateImage(550, 300, Image, { 2492, 1161, 155, 180 }, NULL, this);
 				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::BROTHERHOOD, BUILDING_TYPE::NONE);
+				App->audio->PlayFx(1, click_fx, 0);
 
 			}
 
@@ -118,6 +123,7 @@ bool UI_Button::Update(float dt)
 				
 				App->menu_manager->select_faction_menu[3] = (j1Image*)App->gui->CreateImage(750, 300, Image, { 2492, 1354, 158, 158 }, NULL, this);
 				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::SUPERMUTANT, BUILDING_TYPE::NONE);
+				App->audio->PlayFx(1, click_fx, 0);
 
 			}
 
@@ -276,7 +282,7 @@ bool UI_Button::Update(float dt)
 			if (t == button_back) {
 				App->menu_manager->DestroyMenu(Menu::SETTINGS);
 				App->menu_manager->CreateMainMenu();
-				App->audio->PlayFx(back_fx, 0);
+				App->audio->PlayFx(1, back_fx, 0);
 			}
 
 			if (t == button_back_pause) {
@@ -313,18 +319,22 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->CreateMainMenu();
 				App->audio->PlayFx(1, back_fx, 0);
 			}
-
+			
 			//Spawn Gatherer from any faction
 			if (t == Ghouls_ghaterer_button || t == Vault_ghaterer_button || t == Supermutant_ghaterer_button || t == Brotherhood_ghaterer_button)
+				App->audio->PlayFx(1, character_fx, 0);
 				App->entities->CreateEntity(App->player->selected_entity->faction, GATHERER, App->player->selected_entity->spawnPosition.x, App->player->selected_entity->spawnPosition.y);
 
 			//Spawn Melee from any faction
 			if (t == Ghouls_melee_button || t == Vault_melee_button || t == Supermutant_melee_button || t == Brotherhood_melee_button)
+				App->audio->PlayFx(1, character_fx, 0);
 				App->entities->CreateEntity(App->player->selected_entity->faction, MELEE, App->player->selected_entity->spawnPosition.x, App->player->selected_entity->spawnPosition.y);
 			
 			//Spawn Ranged from any faction
 			if (t == Ghouls_ranged_button || t == Vault_ranged_button || t == Supermutant_ranged_button || t == Brotherhood_ranged_button)
+				App->audio->PlayFx(1, character_fx, 0);
 				App->entities->CreateEntity(App->player->selected_entity->faction, RANGED, App->player->selected_entity->spawnPosition.x, App->player->selected_entity->spawnPosition.y);
+			
 		}
 		else {
 			

@@ -33903,82 +33903,22 @@
     <property name="Nuka-Cola" type="int" value="50"/>
    </properties>
   </object>
-  <object id="42" name="Static" type="Base" x="570.5" y="531.5" width="113.833" height="118.309">
-   <properties>
-    <property name="faction" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="43" name="Static" type="Barrack" x="712.5" y="567.5" width="50.6667" height="77.3333">
-   <properties>
-    <property name="faction" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="44" name="Static" type="Barrack" x="815.333" y="578.833" width="50.6667" height="79.3333">
-   <properties>
-    <property name="faction" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="45" name="Static" type="Laboratory" x="908.833" y="609.5" width="49.3333" height="46.3333">
-   <properties>
-    <property name="faction" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="46" name="Static" type="Laboratory" x="939.917" y="836.346" width="49.3333" height="46.3333">
-   <properties>
-    <property name="faction" type="int" value="3"/>
-   </properties>
-  </object>
-  <object id="47" name="Static" type="Barrack" x="842.917" y="807.178" width="50.6667" height="79.3333">
-   <properties>
-    <property name="faction" type="int" value="3"/>
-   </properties>
-  </object>
-  <object id="48" name="Static" type="Barrack" x="750.084" y="805.845" width="50.6667" height="77.3333">
-   <properties>
-    <property name="faction" type="int" value="3"/>
-   </properties>
-  </object>
-  <object id="49" name="Static" type="Base" x="578.584" y="765.345" width="113.833" height="118.309">
-   <properties>
-    <property name="faction" type="int" value="3"/>
-   </properties>
-  </object>
-  <object id="50" name="Static" type="Laboratory" x="941.917" y="1058.35" width="49.3333" height="46.3333">
-   <properties>
-    <property name="faction" type="int" value="0"/>
-   </properties>
-  </object>
-  <object id="51" name="Static" type="Barrack" x="844.417" y="1025.68" width="50.6667" height="79.3333">
-   <properties>
-    <property name="faction" type="int" value="0"/>
-   </properties>
-  </object>
-  <object id="52" name="Static" type="Barrack" x="752.084" y="1027.85" width="50.6667" height="77.3333">
-   <properties>
-    <property name="faction" type="int" value="0"/>
-   </properties>
-  </object>
-  <object id="53" name="Static" type="Base" x="593.584" y="990.345" width="113.833" height="118.309">
-   <properties>
-    <property name="faction" type="int" value="0"/>
-   </properties>
-  </object>
-  <object id="54" name="Static" type="Laboratory" x="942.417" y="419.846" width="49.3333" height="46.3333">
+  <object id="54" name="Static" type="Laboratory" x="65.917" y="1742.85" width="74.8333" height="75.8333">
    <properties>
     <property name="faction" type="int" value="1"/>
    </properties>
   </object>
-  <object id="55" name="Static" type="Barrack" x="848.917" y="393.178" width="50.6667" height="79.3333">
+  <object id="55" name="Static" type="Barrack" x="585.917" y="2256.68" width="50.6667" height="106.833">
    <properties>
     <property name="faction" type="int" value="1"/>
    </properties>
   </object>
-  <object id="56" name="Static" type="Barrack" x="749.084" y="396.845" width="50.6667" height="77.3333">
+  <object id="56" name="Static" type="Barrack" x="476.084" y="2254.85" width="50.6667" height="108.333">
    <properties>
     <property name="faction" type="int" value="1"/>
    </properties>
   </object>
-  <object id="57" name="Static" type="Base" x="572.584" y="363.345" width="113.833" height="118.309">
+  <object id="57" name="Static" type="Base" x="76.584" y="2175.35" width="113.833" height="118.309">
    <properties>
     <property name="faction" type="int" value="1"/>
    </properties>

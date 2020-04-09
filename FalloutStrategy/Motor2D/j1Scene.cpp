@@ -49,10 +49,6 @@ bool j1Scene::Start()
 
 	DynamicEntity* vault[3], * brotherhood[3], * ghoul[3], *mutant[3];
 	DynamicEntity* test_melee, *test_enemy, *test_ranged, *test_gatherer;
-	StaticEntity* ghoul_base, *ghoul_barrack, *ghoul_laboratory;
-	StaticEntity* vault_base, *vault_barrack, *vault_laboratory;
-	StaticEntity* mutant_base, *mutant_barrack, *mutant_laboratory;
-	StaticEntity* brotherhood_base, *brotherhood_barrack, *brotherhood_laboratory;
 
 	//random map ----------------------------
 
@@ -113,23 +109,6 @@ bool j1Scene::Start()
 	brotherhood[1] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, RANGED, 19, 6);
 	brotherhood[2] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, GATHERER, 20, 6);
 
-	//ghoul_base = (StaticEntity*)App->entities->CreateBuilding(GHOUL, BASE, {0,0}, {3,3});
-	//ghoul_barrack = (StaticEntity*)App->entities->CreateBuilding(GHOUL, BARRACK, { 64,64 }, { 3,3 });
-	//ghoul_laboratory = (StaticEntity*)App->entities->CreateBuilding(GHOUL, LABORATORY, { 6,6 }, { 3,3 });
-
-	//vault_base = (StaticEntity*)App->entities->CreateBuilding(VAULT, BASE, { 0,0 }, { 3,3 });
-	//vault_barrack = (StaticEntity*)App->entities->CreateBuilding(VAULT, BARRACK, { 3,3 }, { 3,3 });
-	//vault_laboratory = (StaticEntity*)App->entities->CreateBuilding(VAULT, LABORATORY, { 6,6 }, { 3,3 });
-
-	//mutant_base = (StaticEntity*)App->entities->CreateBuilding(MUTANT, BASE, { 0,0 }, { 3,3 });
-	//mutant_barrack = (StaticEntity*)App->entities->CreateBuilding(MUTANT, BARRACK, { 3,3 }, { 3,3 });
-	//mutant_laboratory = (StaticEntity*)App->entities->CreateBuilding(MUTANT, LABORATORY, { 6,6 }, { 3,3 });
-
-	//brotherhood_base = (StaticEntity*)App->entities->CreateBuilding(BROTHERHOOD, BASE, { 0,0 }, { 3,3 });
-	//brotherhood_barrack = (StaticEntity*)App->entities->CreateBuilding(BROTHERHOOD, BARRACK, { 3,3 }, { 3,3 });
-	//brotherhood_laboratory = (StaticEntity*)App->entities->CreateBuilding(BROTHERHOOD, LABORATORY, { 6,6 }, { 3,3 });
-
-	//App->audio->PlayMusic("audio/music/elevator_music.ogg", 4.0F);
 	App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
 
 	return true;
@@ -271,6 +250,9 @@ bool j1Scene::Update(float dt)
 	}
 	*/
 
+
+	RectangleSelection();
+
 	return true;
 }
 
@@ -279,8 +261,6 @@ bool j1Scene::PostUpdate()
 {
 	bool ret = true;
 
-	/*if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;*/
 
 	return ret;
 }
@@ -301,4 +281,45 @@ StatesMenu j1Scene::GetMenuState()
 void j1Scene::SetMenuState(const StatesMenu& menu)
 {
 	menu_state = menu;
+}
+
+
+void j1Scene::RectangleSelection()
+{
+	rectangle_width = mouse_pos.x - rectangle_origin.x;
+	rectangle_height = mouse_pos.y - rectangle_origin.y;
+
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) rectangle_origin = mouse_pos;
+
+	else if (std::abs(rectangle_width) >= RECT_MIN_AREA && std::abs(rectangle_height) >= RECT_MIN_AREA && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) {
+
+		LOG("CREATING RECTANGLE");
+
+		// --- Rectangle size ---
+		int width = mouse_pos.x - rectangle_origin.x;
+		int height = mouse_pos.y - rectangle_origin.y;
+
+		// --- Draw Rectangle ---
+		SDL_Rect SRect = { rectangle_origin.x, rectangle_origin.y, width, height };
+		App->render->DrawQuad(SRect, 255, 255, 255, 255, false);
+
+		// --- Once we get to the negative side of SRect numbers must be adjusted ---
+		if (width < 0) {
+			SRect.x = mouse_pos.x;
+			SRect.w *= -1;
+		}
+		if (height < 0) {
+			SRect.y = mouse_pos.y;
+			SRect.h *= -1;
+		}
+
+		// --- Check for Units in the rectangle, select them ---
+
+		App->Mmanager->SelectEntities_inRect(SRect);
+	}
+
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
+		App->Mmanager->CreateGroup();
+
 }
