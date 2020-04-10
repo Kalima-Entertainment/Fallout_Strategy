@@ -78,7 +78,7 @@ public:
 
 	uint fx[6];
 
-	UnitInfo unitinfo;
+	UnitInfo unitinfo;	
 };
 
 

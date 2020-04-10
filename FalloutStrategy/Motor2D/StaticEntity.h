@@ -18,6 +18,11 @@ struct Upgrades_Data{
 	int price_increment;
 };
 
+struct Spawn_Stack {
+	EntityType type;
+	int spawn_seconds; //Seconds it requires to spawn
+};
+
 class StaticEntity : public j1Entity
 
 {
@@ -31,9 +36,12 @@ public:
 	bool LoadReferenceData();	
 
 	void Upgrade(Faction faction, std::string upgrade_name);
+	void SpawnUnit(EntityType type);
 	
 public:
 	std::vector<iPoint> tiles;
+
+	Spawn_Stack spawn_stack[10];
 private:
 	int gen_speed;
 	Animation animations[3];
@@ -45,7 +53,7 @@ private:
 	Upgrades_Data units_damage;
 	Upgrades_Data units_speed;
 	Upgrades_Data units_health;
-	Upgrades_Data units_creation_time;
+	Upgrades_Data units_creation_time;	
 };
 
 #endif // !_STATIC_ENTITY_H

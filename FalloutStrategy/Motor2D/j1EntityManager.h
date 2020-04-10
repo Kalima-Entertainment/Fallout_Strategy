@@ -29,6 +29,13 @@ struct ResourceBuilding {
 	std::vector<iPoint> tiles;
 };
 
+struct Unit_Data {
+	Faction faction;
+	EntityType type;
+	int cost;
+	int spawn_seconds;
+};
+
 class j1EntityManager : public j1Module
 {
 public:
@@ -73,6 +80,7 @@ public:
 
 	int count = 0;
 
+	Unit_Data unit_data[12];
 public:
 
 	j1Entity* reference_entities[4][6];

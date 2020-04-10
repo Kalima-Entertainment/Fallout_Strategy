@@ -7,6 +7,8 @@
 #include "j1Player.h"
 #include "j1Input.h"
 #include "SDL_mixer/include/SDL_mixer.h"
+#include <iostream>
+#include <chrono>
 
 StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
 	type = g_type;
@@ -39,10 +41,22 @@ bool StaticEntity::Update(float dt) {
 		if (current_animation->Finished())
 			to_destroy = true;
 		if (Mix_Playing(7) == 0)
-		SpatialAudio(App->audio->explode, 7, position.x, position.y);
+			SpatialAudio(App->audio->explode, 7, position.x, position.y);
 		break;
 	default:
 		break;
+	}
+
+	//Spawning Units with timer and stack
+	{
+		//TODO: Only initiate chrono if there is spawning at this moment to avoid an infinite loop
+		//TODO: Don't initiate chrono if there are no units in stack
+		//std::chrono::steady_clock::time_point spawn_time = std::chrono::steady_clock::now() + std::chrono::seconds(spawn_stack[0].spawn_seconds);
+		///if (std::chrono::steady_clock::now() < spawn_time) {
+			//App->entities->CreateEntity(faction, spawn_stack[0].type, spawnPosition.x, spawnPosition.y);
+
+			//TODO: Delete [0] in the stack and move the others one less
+		//}
 	}
 
 	//Interact with the building to spawn units or investigate upgrades
@@ -50,7 +64,7 @@ bool StaticEntity::Update(float dt) {
 		if (type == BASE) {
 			//Spawn GATHERER
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-				App->entities->CreateEntity(faction, GATHERER, spawnPosition.x, spawnPosition.y);
+				SpawnUnit(GATHERER);
 			//Upgrades
 			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 				Upgrade(faction, "base_resource_limit");
@@ -252,4 +266,35 @@ void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
 	else if (upgrade_name == "units_creation_time") {
 
 	}
+}
+
+void StaticEntity::SpawnUnit(EntityType type) {
+
+	int cost;
+	int spawn_seconds;
+	//Look for that unit data (spawn_seconds and cost)
+	for (int j = 0; j < 12; j++) {
+		if (App->entities->unit_data[j].faction == faction)
+			if (App->entities->unit_data[j].type == type) {
+				cost = App->entities->unit_data[j].cost;
+				spawn_seconds = App->entities->unit_data[j].spawn_seconds;
+				break;
+			}
+	}
+
+	if (App->player->caps > cost && App->player->water >= cost && App->player->food > cost) {
+		//Substract resources
+		App->player->UpdateResourceData(Resource::CAPS, -cost);
+		App->player->UpdateResourceData(Resource::WATER, -cost);
+		App->player->UpdateResourceData(Resource::FOOD, -cost);
+
+		//Add to stack
+		for (int i = 0; i < 10; i++) {
+			if (spawn_stack[i].type == NULL) {
+
+				spawn_stack[i].type = type;
+				spawn_stack[i].spawn_seconds = spawn_seconds;
+			}
+		}
+	}	
 }
