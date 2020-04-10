@@ -70,60 +70,12 @@ bool j1Console::Update(float dt) {
 			//DestroyInterface();
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
-		{
-			/*
-			p2SString input_text(App->input->text);
-			App->console->AddLogText(input_text);
-			command_input->GetText()->text.Clear();
-
-			input_commands.add(input_text);
-
-			CheckCommand(input_text);
-			*/
-		}
-
 		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN) {
-			/*
-			if (input_commands.end != nullptr)
-			{
-				if (current_consulting_command == nullptr)
-				{
-					current_consulting_command = input_commands.end;
-					command_input->GetText()->text = current_consulting_command->data;
-				}
-				else
-				{
-					if (current_consulting_command->prev != nullptr) {
-						current_consulting_command = current_consulting_command->prev;
-						command_input->GetText()->text = current_consulting_command->data;
-					}
-				}
-			}
-			*/
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN) {
-			/*
-			if (input_commands.end != nullptr)
-			{
-				if (current_consulting_command == nullptr)
-				{
-					current_consulting_command = input_commands.end;
-					command_input->GetText()->text = current_consulting_command->data;
-				}
-				else
-				{
-					if (current_consulting_command->next != nullptr) {
-						current_consulting_command = current_consulting_command->next;
-						command_input->GetText()->text = current_consulting_command->data;
-					}
-				}
-			}
-			*/
 		}
 
-	//	if (command_input != nullptr)command_input->Input();
 		last_dt = dt;
 	}
 	return ret;
@@ -181,7 +133,7 @@ void j1Console::CreateInterface() {
 		on_screen_log.push_back((UI_Label*)App->gui->CreateLabel(0 + x_margin, log_box.h - (j * (font_size + spacing)) -spacing, Label, log_record[i].c_str(), NULL, this, NULL, "OpenSans-Light"));
 		j++;
 	}
-	input_box = (InputText*)App->gui->CreateInputBox(x_margin, log_box.h , InputBox, "Write command", NULL, NULL, "OpenSans-Light");
+	input_box = (InputText*)App->gui->CreateInputBox(x_margin, log_box.h , InputBox, "Write command", NULL, this, "OpenSans-Light");
 }
 
 void j1Console::DestroyInterface() {
@@ -192,6 +144,20 @@ void j1Console::DestroyInterface() {
 	App->gui->Delete_Element(input_box);
 	input_box = nullptr;
 	on_screen_log.clear();
+}
+
+void j1Console::ProcessCommand(std::string command_text) {
+	std::vector<std::string> command_parts;
+	int cut_beginning = 0;
+	for (int i = 0; i < command_text.size(); i++)
+	{
+		if (command_text[i] == ' ') {
+			command_parts.push_back(command_text.substr(cut_beginning, i-cut_beginning));
+			cut_beginning = i+1;
+		}
+	}
+	command_parts.push_back(command_text.substr(cut_beginning, command_text.size() - cut_beginning));
+	return;
 }
 
 /*

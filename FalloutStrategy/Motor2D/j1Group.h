@@ -29,7 +29,7 @@ public:
 
 	// --- Check Movement Request ---
 	void CheckForMovementRequest(float dt);
-
+	
 	// --- Enquiries ---
 	bool IsGroupLead(j1Entity* entity);
 	void SetUnitGoalTile(j1Entity* entity);

@@ -28,7 +28,8 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
-	//void OnCommand(p2SString command);
+
+	void ProcessCommand(std::string command);
 
 	void AddLogText(std::string incoming_text);
 
