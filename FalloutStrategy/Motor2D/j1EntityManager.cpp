@@ -25,7 +25,7 @@ j1EntityManager::j1EntityManager(){
 	selected_unit_tex = nullptr;
 	blocked_movement = false;
 
-	unit_data[0] = { GHOUL, GATHERER, 1, 250, 30000000 };
+	unit_data[0] = { GHOUL, GATHERER, 1, 250, 250, 15, 200 };
 	unit_data[1] = { GHOUL, MELEE, 1, 0, 0 };
 	unit_data[2] = { GHOUL, RANGED, 1, 0, 0 };
 	unit_data[3] = { VAULT, GATHERER, 1, 250, 30000000 };

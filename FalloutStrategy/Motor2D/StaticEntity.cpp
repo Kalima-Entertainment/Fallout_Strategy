@@ -240,6 +240,7 @@ void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
 		if (storage_capacity < max_capacity) {
 
 			int cost = base_resource_limit.first_price + (base_resource_limit.price_increment * base_resource_limit.upgrade_num);
+			base_resource_limit.upgrade_num++;
 
 			if (App->player->caps > cost && App->player->water >= cost && App->player->food > cost) {
 				storage_capacity += (int)storage_capacity * 0.3;
