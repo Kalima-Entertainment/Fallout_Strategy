@@ -634,13 +634,16 @@ iPoint j1EntityManager::ClosestTile(iPoint position, std::vector<iPoint> entity_
 
 ResourceBuilding* j1EntityManager::GetClosestResourceBuilding(iPoint current_position) {
 	ResourceBuilding* closest_building = nullptr;
-	int distance = 1000;
+	int min_distance = 1000;
 	for (int i = 0; i < resource_buildings.size(); i++)
 	{
 		if (resource_buildings[i]->quantity > 0)
 		{
-			if (ClosestTile(current_position, resource_buildings[i]->tiles).DistanceManhattan(current_position) < distance)
+			int building_distance = ClosestTile(current_position, resource_buildings[i]->tiles).DistanceManhattan(current_position);
+			if (building_distance < min_distance) {
 				closest_building = resource_buildings[i];
+				min_distance = building_distance;
+			}
 		}
 	}
 

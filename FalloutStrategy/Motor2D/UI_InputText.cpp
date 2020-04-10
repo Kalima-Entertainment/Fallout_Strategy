@@ -9,6 +9,7 @@
 #include "UI_Label.h"
 #include "j1Image.h"
 #include "j1Input.h"
+#include "j1Console.h"
 
 InputText::InputText(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer, std::string font) : UI_element(x, y, type, parent, Observer) {
 
@@ -42,6 +43,12 @@ bool InputText::Update(float dt) {
 				text.pop_back();
 				App->font->CalcSize(text.data(), r.w, r.h);
 				texture = App->font->Print(text.data(), {255, 255, 255, 255}, font_text);
+			}
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
+			if (observer == (j1Module*)App->console) {
+				App->console->ProcessCommand(text.data());
 			}
 		}
 

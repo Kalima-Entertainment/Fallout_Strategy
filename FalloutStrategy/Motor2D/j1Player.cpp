@@ -135,13 +135,14 @@ bool j1Player::Update(float dt) {
 	App->input->GetMouseWheel(zoom);
 	if (zoom != 0)App->win->SetScale(zoom);	//Check this condition
 	//LOG("WHEEL VALUE %i", zoom);
-	*/
+
 
 	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		App->LoadGame("save_game.xml");
 
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 		App->SaveGame("save_game.xml");
+	*/
 
 	//Move map
 
