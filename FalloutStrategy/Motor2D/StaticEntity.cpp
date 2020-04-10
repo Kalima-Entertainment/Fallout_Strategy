@@ -18,7 +18,7 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
 
 	//Initialize upgrades
 	base_resource_limit = { "base_resource_limit", 0, 250, 250};
-	gatherer_resource_limit = { "gatherer_resource_limit", 0, 0, 0 };
+	gatherer_resource_limit = { "gatherer_resource_limit", 0, 250, 250 };
 	units_damage = { "units_damage", 0, 350, 250 };
 	units_speed = { "units_speed", 0, 350, 250 };
 	units_health = { "units_health", 0, 150, 250 };
@@ -238,39 +238,88 @@ void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
 	
 	if (upgrade_name == "base_resource_limit") {
 		if (storage_capacity < max_capacity) {
+			int cost = base_resource_limit.first_price + (base_resource_limit.price_increment * base_resource_limit.upgrade_num);			
 
-			int cost = base_resource_limit.first_price + (base_resource_limit.price_increment * base_resource_limit.upgrade_num);
-			base_resource_limit.upgrade_num++;
-
-			if (App->player->caps > cost && App->player->water >= cost && App->player->food > cost) {
+			if (App->player->caps >= cost) {
 				storage_capacity += (int)storage_capacity * 0.3;
 
 				if (storage_capacity > max_capacity)
 					storage_capacity = max_capacity;
 
 				App->player->UpdateResourceData(Resource::CAPS, -cost);
-				App->player->UpdateResourceData(Resource::WATER, -cost);
-				App->player->UpdateResourceData(Resource::FOOD, -cost);
-
 				LOG("Resource Limit Upgraded. New limit is: %i", storage_capacity);
+
+				base_resource_limit.upgrade_num++;
 			}
 		}
 	}
 	else if (upgrade_name == "gatherer_resource_limit") {
+		int cost = gatherer_resource_limit.first_price + (gatherer_resource_limit.price_increment * gatherer_resource_limit.upgrade_num);
+
+		if (App->player->caps >= cost) {
+			for (int i = 0; i < App->entities->entities.size(); i++) {
+				if (App->entities->entities[i]->type == GATHERER) 
+					App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.5);	
+			}
+			//Pay the price
+			App->player->UpdateResourceData(Resource::CAPS, -cost);
+			LOG("Gatherer Resource Limit Upgraded");
+
+			gatherer_resource_limit.upgrade_num++;
+		}
+	}
+	else if (upgrade_name == "units_damage") {
+		int cost = units_damage.first_price + (units_damage.price_increment * units_damage.upgrade_num);
+		
+		if (App->player->caps >= cost) {
+			for (int i = 0; i < App->entities->entities.size(); i++) {
+				if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED)
+					App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.15);
+			}
+			//Pay the price
+			App->player->UpdateResourceData(Resource::CAPS, -cost);
+			LOG("Units Damage Upgraded");
+
+			units_damage.upgrade_num++;
+		}
+	}
+	else if (upgrade_name == "units_speed") {
+		int cost = units_speed.first_price + (units_speed.price_increment * units_speed.upgrade_num);
+
+		if (App->player->caps >= cost) {
+			for (int i = 0; i < App->entities->entities.size(); i++) {
+				App->entities->entities[i]->speed.x += App->entities->entities[i]->speed.x * 0.15;
+				App->entities->entities[i]->speed.y += App->entities->entities[i]->speed.y * 0.15;
+			}
+			//Pay the price
+			App->player->UpdateResourceData(Resource::CAPS, -cost);
+			LOG("Units Speed Upgraded");
+
+			units_speed.upgrade_num++;
+		}
+	}
+	else if (upgrade_name == "units_health") {
+		int cost = units_health.first_price + (units_health.price_increment * units_health.upgrade_num);
+
+		if (App->player->caps >= cost) {
+
+
+			units_health.upgrade_num++;
+		}
+
+		//Hacking resources
 		App->player->UpdateResourceData(Resource::CAPS, 1000);
 		App->player->UpdateResourceData(Resource::WATER, 1000);
 		App->player->UpdateResourceData(Resource::FOOD, 1000);
 	}
-	else if (upgrade_name == "units_damage") {
-				
-	}
-	else if (upgrade_name == "units_speed") {
-
-	}
-	else if (upgrade_name == "units_health") {
-
-	}
 	else if (upgrade_name == "units_creation_time") {
+		int cost = units_creation_time.first_price + (units_creation_time.price_increment * units_creation_time.upgrade_num);
+
+		if (App->player->caps >= cost) {
+
+
+			units_creation_time.upgrade_num++;
+		}
 
 	}
 }
