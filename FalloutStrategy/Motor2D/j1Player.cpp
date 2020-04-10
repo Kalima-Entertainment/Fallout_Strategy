@@ -70,14 +70,12 @@ bool j1Player::PreUpdate() {
 	}
 
 
-	//deselect entity
+	//Deselect entity
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
-		
 		selected_entity = nullptr;
 		//Remove HUD data from the UI
 		App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::ALL, BUILDING_TYPE::ALL);
 		App->entities->count = 0;
-		
 	}
 
 	if (!App->isPaused)

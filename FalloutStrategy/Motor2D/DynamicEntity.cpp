@@ -126,8 +126,10 @@ bool DynamicEntity::Update(float dt) {
 		break;
 	}
 
+	//Group Movement Request
 	if (this->info.current_group != nullptr)
 	{
+		LOG("This unit belongs to any group");
 		if (info.current_group->IsGroupLead(this))
 			info.current_group->CheckForMovementRequest(dt);
 	}
@@ -141,7 +143,7 @@ bool DynamicEntity::PostUpdate() {
 
 	current_animation = &animations[state][direction];
 
-	//render path
+	//Render path
 	if (App->render->debug)
 	{
 		if (path_to_target .size() > 0)
@@ -155,30 +157,22 @@ bool DynamicEntity::PostUpdate() {
 		}
 	}
 
-	//render character
+	//Render character
 	render_position = { (int)(position.x - sprite_size * 0.5f), (int)(position.y - 1.82f * TILE_SIZE)};
 	App->render->Blit(reference_entity->texture,render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
-	//Rendering Selected Units
+	//Rendering Selected Units Quad
 	if (this->info.IsSelected) DrawQuad();
-
 
 	//Health Bar
 	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 50, 4 };
 	SDL_Rect foreground_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, (float)current_health/max_health * 50, 4 };
-	if (foreground_bar.w < 0)
-		foreground_bar.w = 0;
+	if (foreground_bar.w < 0) foreground_bar.w = 0;
 
 	//Life Bar Render
 	App->render->DrawQuad(background_bar, 255, 255, 255, 255);
 	App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
 
-	//render position
-	/*if (App->render->debug)
-	{
-		App->render->DrawQuad({ (int)position.x - 2, (int)position.y - 2, 4,4 }, 255, 0, 0, 255);
-		App->render->DrawQuad(next_tile_rect_center, 0, 255, 0, 255);
-	}*/
 
 	return true;
 }
@@ -557,7 +551,6 @@ bool DynamicEntity::LoadReferenceData() {
 
 void DynamicEntity::DrawQuad()
 {
-	LOG("Drawing Unit Quad");
 	const SDL_Rect entityrect = { position.x - sprite_size * 0.5f ,  position.y - 1.82f * TILE_SIZE,  128,  128 };
 	App->render->DrawQuad(entityrect, unitinfo.color.r, unitinfo.color.g, unitinfo.color.b, unitinfo.color.a, false);
 }
