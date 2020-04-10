@@ -17,12 +17,30 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
 	render_texture_pos = { 0,0 };
 
 	//Initialize upgrades
-	base_resource_limit = { "base_resource_limit", 0, 250, 250};
-	gatherer_resource_limit = { "gatherer_resource_limit", 0, 250, 250 };
-	units_damage = { "units_damage", 0, 350, 250 };
-	units_speed = { "units_speed", 0, 350, 250 };
-	units_health = { "units_health", 0, 150, 250 };
-	units_creation_time = { "units_creation_time", 0, 150, 250 };
+	base_resource_limit[0] = { VAULT,"base_resource_limit", 0, 250, 250};
+	base_resource_limit[1] = { BROTHERHOOD,"base_resource_limit", 0, 250, 250 };
+	base_resource_limit[2] = { MUTANT,"base_resource_limit", 0, 250, 250 };
+	base_resource_limit[3] = { GHOUL,"base_resource_limit", 0, 250, 250 };
+	gatherer_resource_limit[0] = { VAULT,"gatherer_resource_limit", 0, 250, 250 };
+	gatherer_resource_limit[1] = { BROTHERHOOD,"gatherer_resource_limit", 0, 250, 250 };
+	gatherer_resource_limit[2] = { MUTANT,"gatherer_resource_limit", 0, 250, 250 };
+	gatherer_resource_limit[3] = { GHOUL,"gatherer_resource_limit", 0, 250, 250 };
+	units_damage[0] = { VAULT,"units_damage", 0, 350, 250 };
+	units_damage[1] = { BROTHERHOOD,"units_damage", 0, 350, 250 };
+	units_damage[2] = { MUTANT,"units_damage", 0, 350, 250 };
+	units_damage[3] = { GHOUL,"units_damage", 0, 350, 250 };
+	units_speed[0] = { VAULT, "units_speed", 0, 350, 250 };
+	units_speed[1] = { BROTHERHOOD,"units_speed", 0, 350, 250 };
+	units_speed[2] = { MUTANT,"units_speed", 0, 350, 250 };
+	units_speed[3] = { GHOUL,"units_speed", 0, 350, 250 };
+	units_health[0] = { VAULT,"units_health", 0, 150, 250 };
+	units_health[1] = { BROTHERHOOD,"units_health", 0, 150, 250 };
+	units_health[2] = { MUTANT,"units_health", 0, 150, 250 };
+	units_health[3] = { GHOUL,"units_health", 0, 150, 250 };
+	units_creation_time[0] = { VAULT, "units_creation_time", 0, 150, 250 };
+	units_creation_time[1] = { BROTHERHOOD,"units_creation_time", 0, 150, 250 };
+	units_creation_time[2] = { MUTANT, "units_creation_time", 0, 150, 250 };
+	units_creation_time[3] = { GHOUL,"units_creation_time", 0, 150, 250 };
 
 	for (int i = 0; i < 10; i++)
 		spawn_stack[i].type = NO_TYPE;
