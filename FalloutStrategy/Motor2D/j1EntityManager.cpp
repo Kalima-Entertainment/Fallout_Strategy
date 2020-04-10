@@ -37,6 +37,7 @@ j1EntityManager::j1EntityManager(){
 	unit_data[9] = { BROTHERHOOD, GATHERER, 1, 250, 15 };
 	unit_data[10] = { BROTHERHOOD, MELEE, 1, 0, 30 };
 	unit_data[11] = { BROTHERHOOD, RANGED, 1, 0, 40 };
+
 }
 
 j1EntityManager::~j1EntityManager(){}
