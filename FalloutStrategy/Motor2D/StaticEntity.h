@@ -3,6 +3,8 @@
 #include "j1Entity.h"
 #include <vector>
 #include <string>
+#include <iostream>
+#include <chrono>
 
 enum StaticState {
 	WAIT,
@@ -37,6 +39,7 @@ public:
 
 	void Upgrade(Faction faction, std::string upgrade_name);
 	void SpawnUnit(EntityType type);
+	void UpdateSpawnStack();
 	
 public:
 	std::vector<iPoint> tiles;
@@ -54,6 +57,9 @@ private:
 	Upgrades_Data units_speed;
 	Upgrades_Data units_health;
 	Upgrades_Data units_creation_time;	
+
+	std::chrono::steady_clock::time_point spawn_time;
+	bool spawning;
 };
 
 #endif // !_STATIC_ENTITY_H

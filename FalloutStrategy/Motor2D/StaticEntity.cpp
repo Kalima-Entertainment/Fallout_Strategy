@@ -7,8 +7,6 @@
 #include "j1Player.h"
 #include "j1Input.h"
 #include "SDL_mixer/include/SDL_mixer.h"
-#include <iostream>
-#include <chrono>
 
 StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
 	type = g_type;
@@ -25,6 +23,10 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
 	units_speed = { "units_speed", 0, 350, 250 };
 	units_health = { "units_health", 0, 150, 250 };
 	units_creation_time = { "units_creation_time", 0, 150, 250 };
+
+	for (int i = 0; i < 10; i++)
+		spawn_stack[i].type = NO_TYPE;
+	spawning = false;
 }
 
 StaticEntity::~StaticEntity() {}
@@ -49,14 +51,18 @@ bool StaticEntity::Update(float dt) {
 
 	//Spawning Units with timer and stack
 	{
-		//TODO: Only initiate chrono if there is spawning at this moment to avoid an infinite loop
-		//TODO: Don't initiate chrono if there are no units in stack
-		//std::chrono::steady_clock::time_point spawn_time = std::chrono::steady_clock::now() + std::chrono::seconds(spawn_stack[0].spawn_seconds);
-		///if (std::chrono::steady_clock::now() < spawn_time) {
-			//App->entities->CreateEntity(faction, spawn_stack[0].type, spawnPosition.x, spawnPosition.y);
-
-			//TODO: Delete [0] in the stack and move the others one less
-		//}
+		if (spawning == false && spawn_stack[0].type != NO_TYPE) {
+			spawn_time = std::chrono::steady_clock::now() + std::chrono::seconds(spawn_stack[0].spawn_seconds);
+			spawning = true;
+			LOG("Chrono started");
+		}
+		else if (spawning == true) {
+			if (std::chrono::steady_clock::now() < spawn_time) {
+				LOG("Entity Spawned");
+				App->entities->CreateEntity(faction, spawn_stack[0].type, spawnPosition.x, spawnPosition.y);
+				UpdateSpawnStack();
+			}
+		}
 	}
 
 	//Interact with the building to spawn units or investigate upgrades
@@ -74,10 +80,10 @@ bool StaticEntity::Update(float dt) {
 		else if (type == BARRACK) {
 			//Spawn MELEE
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-				App->entities->CreateEntity(faction, MELEE, spawnPosition.x, spawnPosition.y);
+				SpawnUnit(MELEE);
 			//Spawn RANGED
 			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-				App->entities->CreateEntity(faction, RANGED, spawnPosition.x, spawnPosition.y);
+				SpawnUnit(RANGED);
 			//Upgrades
 			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 				Upgrade(faction, "units_damage");
@@ -282,19 +288,33 @@ void StaticEntity::SpawnUnit(EntityType type) {
 			}
 	}
 
-	if (App->player->caps > cost && App->player->water >= cost && App->player->food > cost) {
-		//Substract resources
-		App->player->UpdateResourceData(Resource::CAPS, -cost);
-		App->player->UpdateResourceData(Resource::WATER, -cost);
-		App->player->UpdateResourceData(Resource::FOOD, -cost);
+	if (cost != NULL) { //TODO: Delete this "if" once unit_data[] is filled in EntityManager
+		if (App->player->caps > cost && App->player->water >= cost && App->player->food > cost) {
+			//Substract resources
+			App->player->UpdateResourceData(Resource::CAPS, -cost);
+			App->player->UpdateResourceData(Resource::WATER, -cost);
+			App->player->UpdateResourceData(Resource::FOOD, -cost);
 
-		//Add to stack
-		for (int i = 0; i < 10; i++) {
-			if (spawn_stack[i].type == NULL) {
+			//Add to stack
+			for (int i = 0; i < 10; i++) {
+				if (spawn_stack[i].type == NO_TYPE) {
 
-				spawn_stack[i].type = type;
-				spawn_stack[i].spawn_seconds = spawn_seconds;
+					spawn_stack[i].type = type;
+					spawn_stack[i].spawn_seconds = spawn_seconds;
+					LOG("Added to stack. Waiting %i seconds to spawn", spawn_seconds);
+					break;
+				}
 			}
 		}
 	}	
+}
+
+void StaticEntity::UpdateSpawnStack() {
+	//First entity in queue has been spawned
+	//Now let's start timer for the next entity
+	for (int i = 0; i < 9; i++) {
+		spawn_stack[i] = spawn_stack[i + 1];
+	}
+	spawn_stack[9] = { NO_TYPE, 0 };
+	spawning = false;
 }

@@ -25,18 +25,18 @@ j1EntityManager::j1EntityManager(){
 	selected_unit_tex = nullptr;
 	blocked_movement = false;
 
-	unit_data[0] = { GHOUL, GATHERER, 250, 5 };
-	unit_data[1] = { GHOUL, MELEE, 0, 0 };
-	unit_data[2] = { GHOUL, RANGED, 0, 0 };
-	unit_data[3] = { GHOUL, GATHERER, 0, 0 };
-	unit_data[4] = { GHOUL, GATHERER, 0, 0 };
-	unit_data[5] = { GHOUL, GATHERER, 0, 0 };
-	unit_data[6] = { GHOUL, GATHERER, 0, 0 };
-	unit_data[7] = { GHOUL, GATHERER, 0, 0 };
-	unit_data[8] = { GHOUL, GATHERER, 0, 0 };
-	unit_data[9] = { GHOUL, GATHERER, 0, 0 };
-	unit_data[10] = { GHOUL, GATHERER, 0, 0 };
-	unit_data[11] = { GHOUL, GATHERER, 0, 0 };
+	unit_data[0] = { GHOUL, GATHERER, 1, 250, 5 };
+	unit_data[1] = { GHOUL, MELEE, 1, 0, 0 };
+	unit_data[2] = { GHOUL, RANGED, 1, 0, 0 };
+	unit_data[3] = { GHOUL, GATHERER, 1, 0, 0 };
+	unit_data[4] = { GHOUL, GATHERER, 1, 0, 0 };
+	unit_data[5] = { GHOUL, GATHERER, 1, 0, 0 };
+	unit_data[6] = { GHOUL, GATHERER, 1, 0, 0 };
+	unit_data[7] = { GHOUL, GATHERER, 1, 0, 0 };
+	unit_data[8] = { GHOUL, GATHERER, 1, 0, 0 };
+	unit_data[9] = { GHOUL, GATHERER, 1, 0, 0 };
+	unit_data[10] = { GHOUL, GATHERER, 1, 0, 0 };
+	unit_data[11] = { GHOUL, GATHERER, 1, 0, 0 };
 }
 
 j1EntityManager::~j1EntityManager(){}
