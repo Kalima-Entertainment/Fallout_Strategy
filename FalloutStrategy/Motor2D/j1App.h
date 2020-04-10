@@ -51,6 +51,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	void OnCommand(std::vector<std::string> command_parts);
+
 	// Add a new module to handle
 	void AddModule(j1Module* module);
 

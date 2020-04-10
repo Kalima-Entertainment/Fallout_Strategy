@@ -156,6 +156,8 @@ bool j1App::Start()
 
 	startup_time.Start();
 
+	console->CreateCommand("quit", "Quit the game", (j1Module*)this);
+
 	PERF_PEEK(ptimer);
 
 	return ret;
@@ -447,4 +449,12 @@ bool j1App::SavegameNow() const
 	data.reset();
 	want_to_save = false;
 	return ret;
+}
+
+void j1App::OnCommand(std::vector<std::string> command_parts) {
+	std::string command_beginning = command_parts[0];
+
+	if (command_beginning == "quit") {
+		//quitGame = true;
+	}
 }

@@ -14,6 +14,7 @@
 #include "j1Player.h"
 #include "brofiler/Brofiler/Brofiler.h"
 #include "MenuManager.h"
+#include "j1Console.h"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -202,9 +203,10 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 bool j1EntityManager::Start() {
 	BROFILER_CATEGORY("EntitiesStart", Profiler::Color::Linen)
 	bool ret = true;
-	//create reference entities
+	
+	App->console->CreateCommand("destroy_all_entities", "remove all dynamic entities", (j1Module*)this);
 
-	//load all textures
+	//load all textures and animations
 	for (int faction = VAULT; faction < NO_FACTION; faction++)
 	{
 		for (int type = MELEE; type < NO_TYPE; type++)
@@ -688,4 +690,14 @@ void j1EntityManager::RandomFactions() {
 	
 	for (int i = 0; i < 4; i++)
 		LOG("faction %i", randomFaction[i]);
+}
+
+void j1EntityManager::OnCommand(std::vector<std::string> command_parts) {
+	if (command_parts[0] == "destroy_all_entities") {
+		for (int i = 0; i < entities.size(); i++)
+		{
+			if (entities[i]->is_dynamic)
+				entities[i]->to_destroy = true;
+		}
+	}
 }

@@ -53,6 +53,8 @@ public:
 
 	bool CleanUp();
 
+	void OnCommand(std::vector<std::string> command_parts);
+
 	//bool Load(pugi::xml_node& data);
 	//bool Save(pugi::xml_node& data) const;
 	//bool CheckpointSave();
