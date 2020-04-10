@@ -39,7 +39,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 	resource_building = nullptr;
 	action_time = 3.0f;
 	resource_collected = 0;
-	sprite_size = 128;
+	sprite_size = 128;	
 }
 
 DynamicEntity::~DynamicEntity() {}
