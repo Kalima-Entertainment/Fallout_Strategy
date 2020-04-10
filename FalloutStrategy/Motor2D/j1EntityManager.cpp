@@ -255,12 +255,26 @@ bool j1EntityManager::PostUpdate()
 	SDL_Rect tex_rect = {128,0,64,64 };
 	iPoint tex_position;
 
-	//debug kind of entity
+	//debug kind of entity and path
 	if (App->render->debug) {
 		for (int i = 0; i < entities.size(); i++)
 		{
 			if (entities[i]->is_dynamic)
 			{
+				//Render path
+				if (App->render->debug)
+				{
+					if (entities[i]->path_to_target.size() > 0)
+					{
+						for (uint j = 0; j < entities[i]->path_to_target.size(); ++j)
+						{
+							iPoint pos = App->map->MapToWorld(entities[i]->path_to_target[j].x, entities[i]->path_to_target[j].y);
+							SDL_Rect debug_rect = { 192, 0, 64,64 };
+							App->render->Blit(App->render->debug_tex, pos.x, pos.y, &debug_rect);
+						}
+					}
+				}
+
 				//dynamic entities debug
 				//change color depending on if it's an ally or an enemy
 				SDL_Rect rect;

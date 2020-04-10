@@ -211,7 +211,8 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	node.pos = origin;
 	open.list.add(node);
 
-	while ((open.list.count() > 0) && (close.list.count() < MAX_PATH_ITERATIONS)) {
+	while (open.list.count() > 0) {
+		// && (close.list.count() < MAX_PATH_ITERATIONS)) 
 		p2List_item<PathNode>* item;
 
 		item = open.GetNodeLowestScore();

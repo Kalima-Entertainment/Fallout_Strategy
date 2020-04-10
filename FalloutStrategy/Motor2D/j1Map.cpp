@@ -40,7 +40,7 @@ void j1Map::Draw()
 	BROFILER_CATEGORY("MapDraw", Profiler::Color::MediumPurple)
 	if(map_loaded == false)
 		return;
-	int tile_margin = 3;
+	int tile_margin = 6;
 
 	for(int l = 0; l < MAX_LAYERS; l++)
 	{
@@ -61,6 +61,7 @@ void j1Map::Draw()
 
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = MapToWorld(x, y);
+
 					//camera culling
 					if ((pos.x - tileset->offset_x > -(App->render->camera.x + tile_margin * data.tile_width)) && (pos.x < -App->render->camera.x + App->render->camera.w)
 						&& (pos.y > -(App->render->camera.y + data.tile_height)) && (pos.y + tileset->offset_y < (-App->render->camera.y + App->render->camera.h + tile_margin * data.tile_height)))

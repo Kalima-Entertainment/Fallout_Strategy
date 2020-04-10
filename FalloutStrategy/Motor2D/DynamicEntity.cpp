@@ -142,20 +142,6 @@ bool DynamicEntity::PostUpdate() {
 
 	current_animation = &animations[state][direction];
 
-	//Render path
-	if (App->render->debug)
-	{
-		if (path_to_target .size() > 0)
-		{
-			for (uint i = 0; i < path_to_target.size(); ++i)
-			{
-				iPoint pos = App->map->MapToWorld(path_to_target[i].x, path_to_target[i].y);
-				SDL_Rect debug_rect = { 192, 0, 64,64 };
-				App->render->Blit(App->render->debug_tex, pos.x, pos.y, &debug_rect);
-			}
-		}
-	}
-
 	//Render character
 	render_position = { (int)(position.x - sprite_size * 0.5f), (int)(position.y - 1.82f * TILE_SIZE)};
 	App->render->Blit(reference_entity->texture,render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
