@@ -104,10 +104,7 @@ void j1MovementManager::CreateGroup()
 
 void j1MovementManager::Move(j1Group* group, float dt)
 {
-
 	std::list <j1Entity*>::const_iterator unit = group->Units.begin();
-
-	LOG("On Move Function");
 
 	iPoint Map_Entityposition;
 	fPoint distanceToNextTile;
@@ -157,7 +154,7 @@ void j1MovementManager::Move(j1Group* group, float dt)
 
 				if (App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile) != -1)
 				{
-					(*unit)->info.Current_path = App->pathfinding->GetLastPath();			///CHECK THIS
+					(*unit)->info.Current_path = App->pathfinding->GetLastPath();
 					(*unit)->info.Current_path.erase((*unit)->info.Current_path.begin());
 					(*unit)->info.Current_path.erase((*unit)->info.Current_path.begin());
 
@@ -186,7 +183,6 @@ void j1MovementManager::Move(j1Group* group, float dt)
 			// --- We compute the module of our vector ---
 			DirectDistance = sqrtf(pow(distanceToNextTile.x, 2.0f) + pow(distanceToNextTile.y, 2.0f));
 
-			//LOG("Next tile pos : x = %i y= %i", next_tile_world.x, next_tile_world.y);
 
 			// --- We want a unitary vector to update the unit's direction/position ---
 			if (DirectDistance > 0.0f)
@@ -207,7 +203,6 @@ void j1MovementManager::Move(j1Group* group, float dt)
 			{
 				(*unit)->position.x = next_tile_world.x;
 				(*unit)->position.y = next_tile_world.y;
-
 				(*unit)->info.UnitMovementState = MovementState::MovementState_NextStep;
 			}
 
@@ -217,9 +212,6 @@ void j1MovementManager::Move(j1Group* group, float dt)
 				(*unit)->position.y += distanceToNextTile.y;
 			}
 
-			// --- Blit Unit's goal tile ---
-			goal_world = App->map->MapToWorld((*unit)->info.goal_tile.x, (*unit)->info.goal_tile.y);
-			//App->render->Blit(App->scene->debug_tex2, goal_world.x, goal_world.y);
 
 			break;
 
@@ -244,7 +236,6 @@ void j1MovementManager::Move(j1Group* group, float dt)
 		case MovementState::MovementState_DestinationReached:
 
 			// --- The unit reaches the end of the path, thus stopping and returning to NoState ---
-
 			(*unit)->info.UnitMovementState = MovementState::MovementState_NoState;
 
 			break;
@@ -256,9 +247,6 @@ void j1MovementManager::Move(j1Group* group, float dt)
 			stop_iteration = false;
 			break;
 		}
-
 		unit++;
-
 	}
-
 }

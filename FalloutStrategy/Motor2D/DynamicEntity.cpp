@@ -129,9 +129,8 @@ bool DynamicEntity::Update(float dt) {
 	//Group Movement Request
 	if (this->info.current_group != nullptr)
 	{
-		LOG("This unit belongs to any group");
 		if (info.current_group->IsGroupLead(this))
-			info.current_group->CheckForMovementRequest(dt);
+		info.current_group->CheckForMovementRequest(dt);
 	}
 
 	last_dt = dt;
@@ -551,7 +550,7 @@ bool DynamicEntity::LoadReferenceData() {
 
 void DynamicEntity::DrawQuad()
 {
-	const SDL_Rect entityrect = { position.x - sprite_size * 0.5f ,  position.y - 1.82f * TILE_SIZE,  128,  128 };
+	const SDL_Rect entityrect = { position.x - sprite_size * 0.5f  + 32,  position.y - 1.82f * TILE_SIZE + 32,  64,  96 };
 	App->render->DrawQuad(entityrect, unitinfo.color.r, unitinfo.color.g, unitinfo.color.b, unitinfo.color.a, false);
 }
 
