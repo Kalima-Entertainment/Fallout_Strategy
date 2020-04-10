@@ -48,6 +48,7 @@ bool DynamicEntity::PreUpdate(float dt) {
 	const SDL_Rect unit_rect{ 0,0, 10,10 };
 
 	if (info.IsSelected) DrawQuad();
+	if (!info.IsSelected) LOG("HI IM A SELECTED UNIT");
 
 	return true;
 }
@@ -556,7 +557,7 @@ bool DynamicEntity::LoadReferenceData() {
 
 void DynamicEntity::DrawQuad()
 {
-	LOG("DRAWING QUAD");
+	LOG("Drawing Unit Quad");
 	const SDL_Rect entityrect = { position.x + App->map->data.tile_width / 3,  position.y + App->map->data.tile_height / 2,  100,  100 };
 	App->render->DrawQuad(entityrect, unitinfo.color.r, unitinfo.color.g, unitinfo.color.b, unitinfo.color.a, false);
 }

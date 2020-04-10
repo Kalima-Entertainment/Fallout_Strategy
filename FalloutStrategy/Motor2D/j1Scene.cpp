@@ -269,8 +269,6 @@ void j1Scene::RectangleSelection()
 	rectangle_width = mouse_pos.x - rectangle_origin.x;
 	rectangle_height = mouse_pos.y - rectangle_origin.y;
 
-	LOG("Mouse Position x: %i || y: %i", mouse_pos.x, mouse_pos.y);
-
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) rectangle_origin = mouse_pos;
 	else if (std::abs(rectangle_width) >= RECT_MIN_AREA && std::abs(rectangle_height) >= RECT_MIN_AREA && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) {
 
@@ -293,7 +291,6 @@ void j1Scene::RectangleSelection()
 		}
 
 		// --- Check for Units in the rectangle, select them ---
-
 		App->Mmanager->SelectEntities_inRect(SRect);
 	}
 
