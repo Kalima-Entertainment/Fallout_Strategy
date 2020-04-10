@@ -35,6 +35,7 @@ bool j1Console::Start() {
 	log_box = { -App->render->camera.x, -App->render->camera.y, (int)width, 350 };
 	command_background = { -App->render->camera.x, log_box.h, (int)width, 40 };
 
+	CreateCommand("help", "list all console commands", this);
 	//CreateCommand("list", (j1Module*)this, "List all console commands");
 	//App->console->CreateCommand("quit", (j1Module*)this, "Quit the game");
 	//App->console->CreateCommand("fps_", (j1Module*)this, "Change FPS cap");
@@ -146,7 +147,20 @@ void j1Console::DestroyInterface() {
 	on_screen_log.clear();
 }
 
+void j1Console::CreateCommand(std::string name, std::string description, j1Module* callback) {
+	Command command;
+
+	command.name = name;
+	command.description = description;
+	command.callback = callback;
+
+	command_vector.push_back(command);
+}
+
 void j1Console::ProcessCommand(std::string command_text) {
+	AddLogText(command_text);
+
+	//break the command in parts
 	std::vector<std::string> command_parts;
 	int cut_beginning = 0;
 	for (int i = 0; i < command_text.size(); i++)
@@ -157,7 +171,36 @@ void j1Console::ProcessCommand(std::string command_text) {
 		}
 	}
 	command_parts.push_back(command_text.substr(cut_beginning, command_text.size() - cut_beginning));
-	return;
+	
+	//check if the command has been created
+	j1Module* command_callback;
+	command_callback = FindModule(command_parts[0]);
+
+	//if yes send it to its creator
+	if (command_callback != nullptr)
+		command_callback->OnCommand(command_parts);
+}
+
+j1Module* j1Console::FindModule(std::string command_beginning) {
+	for (int i = 0; i < command_vector.size(); i++)
+	{
+		if (command_vector[i].name == command_beginning)
+			return command_vector[i].callback;
+	}
+	return nullptr;
+}
+
+void j1Console::OnCommand(std::vector<std::string> command_parts) {
+	std::string command_beginning = command_parts[0];
+	
+	if (command_beginning == "help") {
+		for (int i = 0; i < command_vector.size(); i++)
+		{
+			std::string command_and_description = command_vector[i].name;
+			command_and_description.append(": ").append(command_vector[i].description);
+			AddLogText(command_and_description);
+		}
+	}
 }
 
 /*

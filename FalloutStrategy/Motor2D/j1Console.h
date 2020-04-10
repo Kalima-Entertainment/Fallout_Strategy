@@ -12,7 +12,8 @@ struct SDL_Rect;
 class InputText;
 
 struct Command {
-	char* text;
+	std::string name;
+	std::string description;
 	j1Module* callback;
 };
 
@@ -28,10 +29,13 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
+	void OnCommand(std::vector<std::string> command_parts);
 
+	void CreateCommand(std::string name, std::string description, j1Module* callback);
 	void ProcessCommand(std::string command);
 
 	void AddLogText(std::string incoming_text);
+	j1Module* FindModule(std::string command_parts);
 
 	void CreateInterface();
 	void DestroyInterface();
@@ -41,6 +45,7 @@ public:
 
 public:
 	std::vector<std::string> log_record;
+	std::vector<Command> command_vector;
 	std::vector<UI_Label*> on_screen_log;
 	InputText* input_box;
 	int l;
@@ -49,6 +54,7 @@ public:
 	SDL_Rect command_background;
 	bool CleanUpStarted;
 	float last_dt;
+
 	//GuiInputText* command_input;
 	//p2List<p2SString> input_commands;
 	//p2List<j1Command*> commands;
