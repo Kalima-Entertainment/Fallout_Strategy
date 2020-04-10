@@ -32,7 +32,6 @@ struct ResourceBuilding {
 struct Unit_Data {
 	Faction faction;
 	EntityType type;
-	int level;
 	int cost_water;
 	int cost_meat;
 	int spawn_seconds;
