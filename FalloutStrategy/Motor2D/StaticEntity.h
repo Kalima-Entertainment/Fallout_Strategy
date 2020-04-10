@@ -14,6 +14,7 @@ enum StaticState {
 };
 
 struct Upgrades_Data{
+	Faction faction;
 	std::string name;
 	int upgrade_num;
 	int first_price;
@@ -51,12 +52,12 @@ private:
 	StaticState state;
 	iPoint render_texture_pos;
 
-	Upgrades_Data base_resource_limit;
-	Upgrades_Data gatherer_resource_limit;
-	Upgrades_Data units_damage;
-	Upgrades_Data units_speed;
-	Upgrades_Data units_health;
-	Upgrades_Data units_creation_time;	
+	Upgrades_Data base_resource_limit[4];
+	Upgrades_Data gatherer_resource_limit[4];
+	Upgrades_Data units_damage[4];
+	Upgrades_Data units_speed[4];
+	Upgrades_Data units_health[4];
+	Upgrades_Data units_creation_time[4];
 
 	std::chrono::steady_clock::time_point spawn_time;
 	bool spawning;
