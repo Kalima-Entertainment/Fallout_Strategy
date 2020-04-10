@@ -44,28 +44,19 @@ void j1MovementManager::SelectEntities_inRect(SDL_Rect SRect)
 {
 	//This method needs to check only dynamic entities adapt
 	std::vector<j1Entity*>::iterator entity = App->entities->entities.begin();
-	j1Entity* it;
 	SDL_Rect entityrect = { 0,0,0,0 };
 
 	while (entity != App->entities->entities.end())
 	{
-		it = *entity;
-		
 		//If entity list find some dynamic entity and its inside the Selection Rect we make this dynamic entity info isSelected True
-		if (it->is_dynamic) {
-			entityrect = { (int)it->position.x, (int)it->position.y, 10 , 10 };
+		if ((*entity)->is_dynamic) {
+			entityrect = { (int)(*entity)->position.x, (int)(*entity)->position.y, 5 , 5 };
 
 			//Comparing if intersection between Selection Rect and Entity Rect
-			if (SDL_HasIntersection(&entityrect, &SRect)) {
-				it->info.IsSelected = true;
-				if (it->info.IsSelected) LOG("IS SELECTED TRUE");
-			}
-			else {
-				it->info.IsSelected = false;
-				if(!it->info.IsSelected) LOG("IS SELECTED FALSE");
-			}
+			if (SDL_HasIntersection(&entityrect, &SRect))(*entity)->info.IsSelected = true;
+			else (*entity)->info.IsSelected = false;
+
 		}
-		
 		entity++;
 	}
 }

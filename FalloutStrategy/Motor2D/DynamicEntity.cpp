@@ -45,17 +45,13 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 DynamicEntity::~DynamicEntity() {}
 
 bool DynamicEntity::PreUpdate(float dt) {
-	const SDL_Rect unit_rect{ 0,0, 10,10 };
-
-	if (info.IsSelected) DrawQuad();
-	if (!info.IsSelected) LOG("HI IM A SELECTED UNIT");
-
 	return true;
 }
 
 bool DynamicEntity::Update(float dt) {
 
 	Mix_AllocateChannels(20);
+
 
 	switch (state)
 	{
@@ -162,6 +158,10 @@ bool DynamicEntity::PostUpdate() {
 	//render character
 	render_position = { (int)(position.x - sprite_size * 0.5f), (int)(position.y - 1.82f * TILE_SIZE)};
 	App->render->Blit(reference_entity->texture,render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
+
+	//Rendering Selected Units
+	if (this->info.IsSelected) DrawQuad();
+
 
 	//Health Bar
 	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 50, 4 };
@@ -558,7 +558,7 @@ bool DynamicEntity::LoadReferenceData() {
 void DynamicEntity::DrawQuad()
 {
 	LOG("Drawing Unit Quad");
-	const SDL_Rect entityrect = { position.x + App->map->data.tile_width / 3,  position.y + App->map->data.tile_height / 2,  100,  100 };
+	const SDL_Rect entityrect = { position.x - sprite_size * 0.5f ,  position.y - 1.82f * TILE_SIZE,  128,  128 };
 	App->render->DrawQuad(entityrect, unitinfo.color.r, unitinfo.color.g, unitinfo.color.b, unitinfo.color.a, false);
 }
 
