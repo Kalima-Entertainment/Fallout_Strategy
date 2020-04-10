@@ -25,18 +25,18 @@ j1EntityManager::j1EntityManager(){
 	selected_unit_tex = nullptr;
 	blocked_movement = false;
 
-	unit_data[0] = { GHOUL, GATHERER, 1, 250, 15 };
-	unit_data[1] = { GHOUL, MELEE, 1, 0, 30 };
-	unit_data[2] = { GHOUL, RANGED, 1, 0, 40 };
-	unit_data[3] = { VAULT, GATHERER, 1, 250, 15 };
-	unit_data[4] = { VAULT, MELEE, 1, 0, 30 };
-	unit_data[5] = { VAULT, RANGED, 1, 0, 40 };
-	unit_data[6] = { MUTANT, GATHERER, 1, 250, 15 };
-	unit_data[7] = { MUTANT, MELEE, 1, 0, 30 };
-	unit_data[8] = { MUTANT, RANGED, 1, 0, 40 };
-	unit_data[9] = { BROTHERHOOD, GATHERER, 1, 250, 15 };
-	unit_data[10] = { BROTHERHOOD, MELEE, 1, 0, 30 };
-	unit_data[11] = { BROTHERHOOD, RANGED, 1, 0, 40 };
+	unit_data[0] = { GHOUL, GATHERER, 1, 40, 0 , 15, 70};
+	unit_data[1] = { GHOUL, MELEE, 1, 80, 60, 30, 80 };
+	unit_data[2] = { GHOUL, RANGED, 1, 80, 80, 40, 80 };
+	unit_data[3] = { VAULT, GATHERER, 1, 40, 0, 15, 100 };
+	unit_data[4] = { VAULT, MELEE, 1, 60, 60, 30, 100 };
+	unit_data[5] = { VAULT, RANGED, 1, 80, 80, 40, 100 };
+	unit_data[6] = { MUTANT, GATHERER, 1, 50, 0, 15, 80 };
+	unit_data[7] = { MUTANT, MELEE, 1, 80, 100, 30, 200 };
+	unit_data[8] = { MUTANT, RANGED, 1, 80, 120, 40, 200 };
+	unit_data[9] = { BROTHERHOOD, GATHERER, 1, 50, 0, 15, 200 };
+	unit_data[10] = { BROTHERHOOD, MELEE, 1, 100, 80, 30, 200  };
+	unit_data[11] = { BROTHERHOOD, RANGED, 1, 100, 100, 40, 200 };
 
 }
 
