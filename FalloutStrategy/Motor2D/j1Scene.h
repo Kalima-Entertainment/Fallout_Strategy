@@ -6,7 +6,7 @@
 struct SDL_Texture;
 class DynamicEntity;
 
-#define RECT_MIN_AREA 2
+#define RECT_MIN_AREA 5
 
 enum class StatesMenu
 {

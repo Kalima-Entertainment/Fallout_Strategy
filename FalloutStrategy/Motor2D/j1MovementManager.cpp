@@ -48,14 +48,13 @@ void j1MovementManager::SelectEntities_inRect(SDL_Rect SRect)
 
 	while (entity != App->entities->entities.end())
 	{
-		entityrect = { (int)(*entity)->position.x, (int)(*entity)->position.y, 90000 , 300 };
+		entityrect = { (int)(*entity)->position.x, (int)(*entity)->position.y, 100 , 100 };
 
 		// --- Check entity's rect against the given SRect, select it if overlap is positive ---
 		if (SDL_HasIntersection(&entityrect, &SRect))(*entity)->info.IsSelected = true;
 		else (*entity)->info.IsSelected = false;
 		entity++;
 	}
-
 }
 
 void j1MovementManager::CreateGroup()
