@@ -36,7 +36,7 @@ struct Unit_Data {
 	int cost_water;
 	int cost_meat;
 	int spawn_seconds;
-	int health;
+
 };
 
 class j1EntityManager : public j1Module
