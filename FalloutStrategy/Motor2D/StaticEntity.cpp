@@ -56,7 +56,7 @@ bool StaticEntity::Update(float dt) {
 			spawning = true;
 			LOG("Chrono started");
 		}
-		else if (spawning == true) {
+		if (spawning == true) {
 			if (std::chrono::steady_clock::now() < spawn_time) {
 				LOG("Entity Spawned");
 				App->entities->CreateEntity(faction, spawn_stack[0].type, spawnPosition.x, spawnPosition.y);
