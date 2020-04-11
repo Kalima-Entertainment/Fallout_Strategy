@@ -10,6 +10,9 @@ struct SDL_Texture;
 
 enum UI_Type {
 
+	Image,
+	Label,
+
 	button_start_game,
 	button_back_to_menu,
 	button_select_ghoul,
@@ -28,19 +31,17 @@ enum UI_Type {
 	button_macia,
 	button_pol,
 	button_silvino,
-	button_cristian,
+	button_christian,
 	button_load_game,
 	button_settings,
 	button_settings_pause,
 	button_credits,
 	button_exit,
 	button_pause_to_main,
-	Button_settings,
-	Button_restart,
-	Button_info,
-	Button_close,
-	Button_close_game,
-	Button_menu,
+	button_back,
+	button_back_pause,
+	button_cap,
+	button_mute,
 
 	Slider_music,
 	Slider_fx,
@@ -49,42 +50,27 @@ enum UI_Type {
 	Button_slider_fx_left,
 	Button_slider_fx_right,
 
-	Mute,
-	FPS,
-	Volume_Panel,
-	Cap_Panel,
-	button_cap,
-	button_mute,
-	button_back,
-	button_back_pause,
-
-	Label,
-	Label_timer,
-	Image,
-	Image1,
-	Logo,
-	Panel,
-	text_new_game,
-	text_load_game,
-	text_settings,
-	text_credits,
-	text_exit,
-	text_fx_volume,
-	text_music_volume,
-	text_fps,
-	ghouls_label,
-	start_game_label,
-
 	resume_button,
-	RESUME,
-	SETTINGS,
-	EXIT,
+	
+	Brotherhood_ghaterer_button,
+	Brotherhood_melee_button,
+	Brotherhood_ranged_button,
 
-	Nukas,
-	Water,
-	Meat,
 
-	nukas_count,
+	Vault_ghaterer_button,
+	Vault_melee_button,
+	Vault_ranged_button,
+
+	Supermutant_ghaterer_button,
+	Supermutant_melee_button,
+	Supermutant_ranged_button,
+
+	Ghouls_ghaterer_button,
+	Ghouls_melee_button,
+	Ghouls_ranged_button,
+
+	InputBox,
+
 };
 
 class UI_element 
@@ -112,6 +98,7 @@ public:
 
 	//UI elements position and dimensions
 	iPoint pos;
+	
 	SDL_Rect dimensions;
 	
 	SDL_Texture* texture;
@@ -120,12 +107,13 @@ public:
 
 	j1Module* observer = nullptr;
 
+	std::string font_text;
+
 	bool destroy;
 
 	//pointer to an element
 	UI_element*	element_UI;
 
 };
-
 
 #endif //_!_UI_ELEMENT

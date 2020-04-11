@@ -7,6 +7,8 @@
 #include "j1EntityManager.h"
 #include "p2DynArray.h"
 #include "p2Log.h"
+#include "j1MovementManager.h"
+#include "j1Group.h"
 
 #define TILE_SIZE 64
 #define HALF_TILE 32
@@ -22,14 +24,14 @@ enum EntityType {
 };
 
 enum Faction {
-	VAULT,
-	GHOUL,
+	VAULT,	
 	BROTHERHOOD,
 	MUTANT,
+	GHOUL,
 	NO_FACTION
 };
 
-class j1Entity 
+class j1Entity
 {
 public:
 	j1Entity();
@@ -44,43 +46,49 @@ public:
 	virtual void OnCollision(Collider* c1, Collider* c2) {};
 
 	virtual bool LoadAnimations() { return true; };
+	virtual bool LoadFx() { return true; };
 	virtual bool LoadReferenceData() { return true; };
 
 	int GetPositionScore() const;
 
 	iPoint MapPosition();
 
+	void SpatialAudio(int fx, int channel, int positionx, int positiony);
+
 	//Check if mouse pointer its inside the same spot than the entity and if pressed returns any advice
 
 public:
 	iPoint current_tile;
 	fPoint position;
+	iPoint render_position;
 	iPoint target_tile;
-	p2DynArray<iPoint>* path_to_target = nullptr;
+	std::vector<iPoint> path_to_target;
 	fPoint speed;
 	iPoint spawnPosition;
+	int sprite_size;
 
 	int current_health;
 	int max_health;
 	int damage;
-	int storage_capacity = 100;
+	int storage_capacity;
+	int max_capacity;
+	int volume;
 
 	EntityType type;
 	Faction faction;
 	j1Entity* reference_entity;
 	DynamicEntity* attacking_entity;
 
-	Collider* collider;
-	Collider* last_collider;
-	
 	Animation* current_animation;
 	SDL_Texture* texture;
+	float last_dt;
 
 	bool is_dynamic;
 	bool to_destroy;
 	bool particles_created;
 	bool playing_fx;
+
+	Group_Unit info;
 };
 
 #endif // !_j1ENTITY_H
-

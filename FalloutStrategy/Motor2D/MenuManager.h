@@ -2,6 +2,7 @@
 #define __MENUMANAGER_H__
 
 #include "j1Module.h"
+#include <vector>
 
 enum UI_Type;
 class j1Image;
@@ -9,134 +10,39 @@ class UI_Slider;
 class UI_Button;
 class UI_Label;
 
-struct UI_main_menu {
+#define MAX_UI_ELEMENTS 60
 
-	j1Image* background = nullptr;
-	j1Image* logo = nullptr;
-	j1Image* panel = nullptr;
-	j1Image* image = nullptr;
-
-	UI_Label* new_game_text = nullptr;
-	UI_Label* load_game_text = nullptr;
-	UI_Label* settings_text = nullptr;
-	UI_Label* credits_text = nullptr;
-	UI_Label* exit_text = nullptr;
-
-	UI_Button* new_game_button = nullptr;
-	UI_Button* load_game_button = nullptr;
-	UI_Button* settings_button = nullptr;
-	UI_Button* credits_button = nullptr;
-	UI_Button* exit_button = nullptr;
-	
+enum class Menu {
+	MAIN_MENU,
+	SETTINGS,
+	CREDITS,
+	COLLABORATORS_CREDITS,
+	SELECT_FACTION,
+	PAUSE_MENU,
+	GUI,
+	BUI_BASES,
+	NO_MENU,
 };
 
-struct UI_settings {
+enum class FACTION {
 
-	UI_Label* fps = nullptr;
-	UI_Label* fx_volume = nullptr;
-	UI_Label* music_volume = nullptr;
-	UI_Label* settings_text = nullptr;
-
-	j1Image* background = nullptr;
-	j1Image* panel_volume = nullptr;
-	j1Image* mute = nullptr;
-	j1Image* panel_cap = nullptr;
-	j1Image* fps_image = nullptr;
-
-	UI_Slider* volume_music_slider = nullptr;
-	UI_Button* left_music_button = nullptr;
-	UI_Button* right_music_button = nullptr;
-
-	UI_Slider* volume_fx_slider = nullptr;
-	UI_Button* left_fx_button = nullptr;
-	UI_Button* right_fx_button = nullptr;
-
-	UI_Button* cap_button = nullptr;
-	UI_Button* mute_button = nullptr;
-	UI_Button* back_button = nullptr;
-
-
-
+	BROTHERHOOD,
+	SUPERMUTANT,
+	GHOUL,
+	VAULT,
+	ALL,
+	NONE,
 };
 
-struct UI_credits {
+enum class BUILDING_TYPE {
 
-	j1Image* background = nullptr;
-	j1Image* marc_image = nullptr;
-	j1Image* javi_image = nullptr;
-	j1Image* pablo_image = nullptr;
-	j1Image* german_image = nullptr;
-	j1Image* macia_image = nullptr;
-	j1Image* pol_image = nullptr;
-	j1Image* silvino_image = nullptr;
-	j1Image* cristian_image = nullptr;
-
-	UI_Button* back_button = nullptr;
-	UI_Button* github_button = nullptr;
-	UI_Button* web_button = nullptr;
-	UI_Button* twitter_button = nullptr;
-	UI_Button* marc_button = nullptr;
-	UI_Button* javi_button = nullptr;
-	UI_Button* pablo_button = nullptr;
-	UI_Button* german_button = nullptr;
-	UI_Button* macia_button = nullptr;
-	UI_Button* pol_button = nullptr;
-	UI_Button* silvino_button = nullptr;
-	UI_Button* cristian_button = nullptr;
-
+	BASE,
+	BARRACK,
+	LAB,
+	ALL,
+	NONE,
 };
 
-struct UI_select_faction {
-
-	j1Image* background = nullptr;
-	j1Image* ghouls = nullptr;
-	j1Image* brotherhood = nullptr;
-	j1Image* supermutants = nullptr;
-	j1Image* vault = nullptr;
-
-	UI_Button* ghouls_button = nullptr;
-	UI_Button* brotherhood_button = nullptr;
-	UI_Button* supermutants_button = nullptr;
-	UI_Button* vault_button = nullptr;
-	UI_Button* back_button = nullptr;
-	UI_Button* start_game_button = nullptr;
-
-	UI_Label* ghouls_label = nullptr;
-	UI_Label* brotherhood_label = nullptr;
-	UI_Label* supermutants_label = nullptr;
-	UI_Label* vault_label = nullptr;
-	UI_Label* start_game_label = nullptr;
-};
-
-struct UI_pause_menu {
-
-	j1Image* panel = nullptr;
-
-	UI_Button* resume_button = nullptr;
-	UI_Button* settings_button = nullptr;
-	UI_Button* back_to_main_menu_button = nullptr;
-
-	UI_Label* resume_label = nullptr;
-	UI_Label* settings_label = nullptr;
-	UI_Label* back_to_main_menu_label = nullptr;
-
-};
-
-struct UI_GUI {
-
-	
-	j1Image* ingame_background = nullptr;
-
-	j1Image* nukas_label = nullptr;
-	j1Image* water_label = nullptr;
-	j1Image* meat_label = nullptr;
-
-	UI_Label* nukas_count = nullptr;
-	UI_Label* water_count = nullptr;
-	UI_Label* meat_count = nullptr;
-	int count = 0;
-
-};
 
 class MenuManager :public j1Module {
 
@@ -147,36 +53,74 @@ public:
 
 
 public:
-	
+
+	void CreateMenu(Menu menu);
+	void DestroyMenu(Menu menu);
+	void DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type);
+
 	void CreateMainMenu();
-	void DestroyMainMenu();
 	void CreateCredits();
-	void DestroyCredits();
 	void CreateSettings();
-	void DestroySettings();
 	void CreateCollaboratorPicture();
-	void DestroyAllCollaboratorsPictures();
 	void CreateSelectFaction();
-	void DestroySelectFaction();
 	void CreatePauseMenu();
-	void DestroyPauseMenu();
 	void CreatePauseSettings();
-	void DestroyPauseSettings();
 	void CreateGUI();
-	void DestroyGUI();
+
+	void CreateBrotherHood_Base();
+	void CreateBrotherHood_Barrack();
+	void CreateBrotherHood_Lab();
+
+	void CreateSuperMutants_Base();
+	void CreateSuperMutants_Barrack();
+	void CreateSuperMutants_Lab();
+
+
+	void CreateGhouls_Base();
+	void CreateGhouls_Barrack();
+	void CreateGhouls_Lab();
+
+
+	void CreateVault_Base();
+	void CreateVault_Barrack();
+	void CreateVault_Lab();
+
+
 
 public:
 
-	UI_main_menu		main_menu;
-	UI_credits			credits_menu;
-	UI_select_faction	select_faction_menu;
-	UI_settings			settings_menu;
-	UI_pause_menu		pause_menu;
-	UI_GUI				gui_ingame;
+	UI_element* main_menu[14];
+	UI_element* settings_menu[18];
+	UI_element* credits_menu[13];
+	UI_element* collaborators[9];
+	UI_element* select_faction_menu[12];
+	UI_element* select_faction_photos[4];
+	UI_element* pause_menu[7];
+	UI_element* gui_ingame[5];
+
+
+
+
+	UI_element* brotherhood_base[3];
+	UI_element* brotherhood_barrack[5];
+	UI_element* brotherhood_lab[1];
+
+	UI_element* ghoul_base[3];
+	UI_element* ghoul_barrack[5];
+	UI_element* ghoul_lab[1];
+
+	UI_element* vault_base[3];
+	UI_element* vault_barrack[5];
+	UI_element* vault_lab[1];
+
+	UI_element* supermutant_base[3];
+	UI_element* supermutant_barrack[5];
+	UI_element* supermutant_lab[1];
+
+	Menu current_menu;
+	Menu last_menu;
 
 	char collaborator = 'M';
-	
-
 };
 
 

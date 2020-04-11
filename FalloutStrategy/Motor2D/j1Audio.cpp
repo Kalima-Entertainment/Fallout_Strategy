@@ -2,7 +2,6 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Audio.h"
-#include "p2List.h"
 
 #include "SDL/include/SDL.h"
 #include "SDL_mixer\include\SDL_mixer.h"
@@ -11,7 +10,7 @@
 j1Audio::j1Audio() : j1Module()
 {
 	music = NULL;
-	name.create("audio");
+	name = ("audio");
 }
 
 // Destructor
@@ -51,7 +50,27 @@ bool j1Audio::Awake(pugi::xml_node& config)
 		ret = true;
 	}
 
-	explosion = LoadFx("audio/fx/Others/Weapons/bigexplode1.wav");
+	Brotherhood_walk = LoadFx("audio/fx/CharactersSounds/Brotherhood/Brotherhood_Walk.wav");
+	Brotherhood_die = LoadFx("audio/fx/CharactersSounds/Brotherhood/Brotherhood_Die.wav");
+	Brotherhood_hit = LoadFx("audio/fx/CharactersSounds/Brotherhood/Brotherhood_Hit.wav");
+	Brotherhood_attack = LoadFx("audio/fx/CharactersSounds/Brotherhood/Brotherhood_Attack.wav");
+
+	Mutant_die = LoadFx("audio/fx/CharactersSounds/Mutants/SuperMutant_Die.wav");
+	Mutant_hit = LoadFx("audio/fx/CharactersSounds/Mutants/SuperMutant_Hit.wav");
+	Mutant_attack = LoadFx("audio/fx/CharactersSounds/Mutants/SuperMutant_Attack.wav");
+
+	Vault_die = LoadFx("audio/fx/CharactersSounds/VaultDwellers/VaultDwellers_Die.wav");
+	Vault_hit = LoadFx("audio/fx/CharactersSounds/VaultDwellers/VaultDwellers_Hit.wav");
+	Vault_attack = LoadFx("audio/fx/CharactersSounds/VaultDwellers/VaultDwellers_Attack.wav");
+
+	Ghoul_die = LoadFx("audio/fx/CharactersSounds/Ghouls/Ghouls_Die.wav");
+	Ghoul_hit = LoadFx("audio/fx/CharactersSounds/Ghouls/Ghouls_Hit.wav");
+	Ghoul_attack = LoadFx("audio/fx/CharactersSounds/Ghouls/Ghouls_Attack.wav");
+
+	pistol = LoadFx("audio/fx/Others/Weapons/pistolheavySingle1.wav");
+	minigun = LoadFx("audio/fx/Others/Weapons/minigunBurst1.wav");
+	explode = LoadFx("audio/fx/Others/Weapons/bigexplode1.wav");
+	factory = LoadFx("audio/fx/Others/Weapons/factory_working.wav");
 
 	return ret;
 }
@@ -69,9 +88,10 @@ bool j1Audio::CleanUp()
 		Mix_FreeMusic(music);
 	}
 
-	p2List_item<Mix_Chunk*>* item;
-	for(item = fx.start; item != NULL; item = item->next)
-		Mix_FreeChunk(item->data);
+	for (int i = 0; i < fx.size(); i++) {
+		Mix_FreeChunk(fx[i]);
+	}
+
 
 	fx.clear();
 
@@ -152,8 +172,8 @@ unsigned int j1Audio::LoadFx(const char* path)
 	}
 	else
 	{
-		fx.add(chunk);
-		ret = fx.count();
+		fx.push_back(chunk);
+		ret = fx.size();
 	}
 
 	return ret;
@@ -168,7 +188,7 @@ bool j1Audio::PlayFx(int channel, unsigned int id, int repeat)
 	if(!active)
 		return false;
 
-	if(id > 0 && id <= fx.count())
+	if(id > 0 && id <= fx.size())
 	{
 		Mix_PlayChannel(channel, fx[id - 1], repeat);
 	}

@@ -9,7 +9,7 @@
 
 j1Input::j1Input() : j1Module()
 {
-	name.create("input");
+	name = ("input");
 
 	keyboard = new j1KeyState[MAX_KEYS];
 	memset(keyboard, KEY_IDLE, sizeof(j1KeyState) * MAX_KEYS);
@@ -106,6 +106,12 @@ bool j1Input::PreUpdate()
 					break;
 				}
 			break;
+
+			case SDL_TEXTINPUT:
+
+				newLetter = event.text.text;
+				isPresed = true;
+				break;
 
 			case SDL_MOUSEBUTTONDOWN:
 				mouse_buttons[event.button.button - 1] = KEY_DOWN;

@@ -2,12 +2,13 @@
 #define __j1AUDIO_H__
 
 #include "j1Module.h"
-#include "p2List.h"
+#include <vector>
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
 
 struct _Mix_Music;
 struct Mix_Chunk;
+typedef unsigned int uint;
 
 class j1Audio : public j1Module
 {
@@ -33,8 +34,6 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(int channel, unsigned int fx, int repeat = 0);
 
-	uint explosion;
-
 	void Change_Volume_Music(float value);
 	void Change_Volume_FX(float value);
 
@@ -42,13 +41,36 @@ public:
 	float Get_Music_Volume();
 	float Get_FX_Volume();
 
+	int Brotherhood_walk;
+	int Brotherhood_die;
+	int Brotherhood_hit;
+	int Brotherhood_attack;
+
+	int Mutant_die;
+	int Mutant_hit;
+	int Mutant_attack;
+
+	int Vault_die;
+	int Vault_hit;
+	int Vault_attack;
+
+	int Ghoul_die;
+	int Ghoul_hit;
+	int Ghoul_attack;
+
+	int pistol;
+	int minigun;
+	int explode;
+	int factory;
+
 private:
 
 	float				music_volume;
 	float				fx_volume;
 
+
 	_Mix_Music*			music = NULL;
-	p2List<Mix_Chunk*>	fx;
+	std::vector<Mix_Chunk*> fx;
 };
 
 #endif // __j1AUDIO_H__

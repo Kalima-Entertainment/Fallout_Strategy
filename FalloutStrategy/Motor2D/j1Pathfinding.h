@@ -6,11 +6,11 @@
 #include "p2DynArray.h"
 #include "p2List.h"
 
-#define DEFAULT_PATH_LENGTH 50
+#define DEFAULT_PATH_LENGTH 100
 #define INVALID_WALK_CODE 255
 #define NORMAL_MOVEMENT_COST 1
 #define DIAGONAL_MOVEMENT_COST 2
-#define MAX_PATH_ITERATIONS 150
+#define MAX_PATH_ITERATIONS 500
 
 class j1PathFinding : public j1Module
 {
@@ -31,7 +31,7 @@ public:
 	int CreatePath(const iPoint& origin, const iPoint& destination);
 
 	// To request all tiles involved in the last generated path
-	const p2DynArray<iPoint>* GetLastPath() const;
+	std::vector<iPoint> GetLastPath() const;
 
 	// Utility: return true if pos is inside the map boundaries
 	bool CheckBoundaries(const iPoint& pos) const;
@@ -42,6 +42,8 @@ public:
 	// Utility: return the walkability value of a tile
 	uchar GetTileAt(const iPoint& pos) const;
 
+	iPoint FindWalkableAdjacentTile(iPoint point) const; 
+
 private:
 
 	// size of the map
@@ -50,7 +52,7 @@ private:
 	// all map walkability values [0..255]
 	uchar* map = nullptr;
 	// we store the created path here
-	p2DynArray<iPoint> last_path;
+	std::vector<iPoint> last_path;
 };
 
 // forward declaration

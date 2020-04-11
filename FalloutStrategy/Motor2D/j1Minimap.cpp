@@ -8,9 +8,11 @@
 #include "p2Log.h"
 #include "j1EntityManager.h"
 #include "j1Entity.h"
+#include "MenuManager.h"
+#include "j1Player.h"
 
 j1Minimap::j1Minimap() : j1Module() {
-	name.create("minimap");
+	name = ("minimap");
 
 	texture = nullptr;
 	map_height = 200;
@@ -26,11 +28,10 @@ j1Minimap::~j1Minimap() {
 bool j1Minimap::Awake(pugi::xml_node& config) {
 	uint window_width, window_height;
 
-	//TODO 0: Take into account for the next TODO that the minimap widht is set in config
 	width = config.attribute("width").as_int();
 
 	//corner
-	p2SString corner_string(config.attribute("corner").as_string());
+	std::string corner_string = std::string(config.attribute("corner").as_string());
 	margin = config.attribute("margin").as_int();
 
 	if (corner_string == "top_left") {
@@ -54,13 +55,13 @@ bool j1Minimap::Start() {
 	uint window_width, window_height;
 	App->win->GetWindowSize(window_width, window_height);
 
-	map_width = App->map->data.tile_width * App->map->data.width;
-	map_height = App->map->data.tile_height * App->map->data.height;
+	map_width = TILE_SIZE * MAP_LENGTH;
+	map_height = HALF_TILE * MAP_LENGTH;
 	scale = ((width) / ((float)map_width));
 	height = (map_height) * scale;
 
 	texture = SDL_CreateTexture(App->render->renderer, SDL_GetWindowPixelFormat(App->win->window), SDL_TEXTUREACCESS_TARGET, width, height);
-	
+
 	SDL_SetRenderTarget(App->render->renderer, texture);
 	CreateMinimap();
 	SDL_SetRenderTarget(App->render->renderer, NULL);
@@ -90,20 +91,27 @@ bool j1Minimap::Start() {
 
 bool j1Minimap::PostUpdate() {
 
-	App->render->Blit(texture, position.x, position.y, NULL, 1.0, 0);
-	
-	for (int i = 0; i < App->entities->entities.size(); i++)
-	{
-		SDL_Rect entity_rect = {0,0,3,3};
-		iPoint entity_position = App->minimap->WorldToMinimap(App->entities->entities[i]->position.x, App->entities->entities[i]->position.y);
-		entity_rect.x = entity_position.x;
-		entity_rect.y = entity_position.y;
-		App->render->DrawQuad(entity_rect, 0, 255, 0, 255, true, false);
-	}
+	if ((App->menu_manager->current_menu == Menu::NO_MENU)||(App->menu_manager->current_menu == Menu::PAUSE_MENU) || (App->menu_manager->current_menu == Menu::GUI)) {
 
-	SDL_Rect rect = { 0,0,0,0 };
-	iPoint rect_position = WorldToMinimap(-App->render->camera.x, -App->render->camera.y);
-	App->render->DrawQuad({ rect_position.x, rect_position.y, (int)(App->render->camera.w * scale),(int)(App->render->camera.h * scale) }, 255, 255, 255, 255, false, false);
+		App->render->Blit(texture, position.x, position.y, NULL, 1.0, 0);
+
+		for (int i = 0; i < App->entities->entities.size(); i++)
+		{
+			SDL_Rect entity_rect = {0,0,3,3};
+			iPoint entity_position = App->minimap->WorldToMinimap(App->entities->entities[i]->position.x, App->entities->entities[i]->position.y);
+			entity_rect.x = entity_position.x;
+			entity_rect.y = entity_position.y;
+
+			Faction entity_faction = App->entities->entities[i]->faction;
+			if (App->player->faction == entity_faction) { App->render->DrawQuad(entity_rect, 0, 255, 0, 255, true, false);}
+			else { App->render->DrawQuad(entity_rect, 255, 0, 0, 255, true, false);}
+		}
+
+		SDL_Rect rect = { 0,0,0,0 };
+		iPoint rect_position = WorldToMinimap(-App->render->camera.x, -App->render->camera.y);
+		App->render->DrawQuad({ rect_position.x, rect_position.y, (int)(App->render->camera.w * scale),(int)(App->render->camera.h * scale) }, 255, 255, 255, 255, false, false);
+
+	}
 
 	return true;
 }
@@ -111,20 +119,20 @@ bool j1Minimap::PostUpdate() {
 bool j1Minimap::CreateMinimap() {
 
 	PERF_START(ptimer);
-	p2List_item<MapLayer*>* item = App->map->data.layers.start;
+	int tile_margin = 3;
+	int half_width = map_width * 0.5f;
 
-	for (; item != NULL; item = item->next)
+	for (int l = 0; l < MAX_LAYERS; l++)
 	{
-		MapLayer* layer = item->data;
+		MapLayer* layer = &App->map->data.layers[l];
 
 		if (layer->properties.Get("Nodraw") != 0)
 			continue;
 
-		int half_width = map_width * 0.5f;
-
-		for (int y = 0; y < App->map->data.height; ++y)
+		int total_tiles = 0;
+		for (int y = 0; y < MAP_LENGTH; ++y)
 		{
-			for (int x = 0; x < App->map->data.width; ++x)
+			for (int x = 0; x < MAP_LENGTH; ++x)
 			{
 				int tile_id = layer->Get(x, y);
 				if (tile_id > 0)
@@ -133,9 +141,10 @@ bool j1Minimap::CreateMinimap() {
 
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = App->map->MapToWorld(x, y);
-					pos = App->render->WorldToScreen(pos.x, pos.y);
+					//camera culling
 
 					App->render->Blit(tileset->texture, pos.x + half_width + tileset->offset_x, pos.y + tileset->offset_y, &r, scale);
+					//total_tiles++;
 				}
 			}
 		}
@@ -146,7 +155,6 @@ bool j1Minimap::CreateMinimap() {
 }
 
 iPoint j1Minimap::WorldToMinimap(int x, int y) {
-	//TODO 4.1: Fill this function
 	iPoint minimap_position;
 	minimap_position.x = position.x + width * 0.5f + x * scale;
 	minimap_position.y = position.y + y * scale;
@@ -155,7 +163,6 @@ iPoint j1Minimap::WorldToMinimap(int x, int y) {
 }
 
 iPoint j1Minimap::ScreenToMinimapToWorld(int x, int y) {
-	//TODO 5: Fill this function to convert a position from screen to the Minimap and directly to world
 	iPoint minimap_position;
 	minimap_position.x = (x - position.x - width * 0.5f)/scale;
 	minimap_position.y = (y - position.y)/scale;

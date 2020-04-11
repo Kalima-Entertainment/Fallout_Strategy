@@ -6,7 +6,8 @@
 #ifndef __j1MODULE_H__
 #define __j1MODULE_H__
 
-#include "p2SString.h"
+#include <string>
+#include <vector>
 #include "PugiXml\src\pugixml.hpp"
 
 class j1App;
@@ -88,10 +89,11 @@ public:
 
 	virtual void OnCollision(Collider* c1, Collider* c2) {}
 	virtual void Callback(UI_element* element) {}
+	virtual void OnCommand(std::vector<std::string> command) {}
 
 public:
 
-	p2SString	name;
+	std::string	name;
 	bool		active;
 
 };
