@@ -9,7 +9,7 @@ build:
   verbosity: minimal
 after_build:
 - cmd: >-
-    copy C:\projects\Fallout_Strategy\FalloutStrategy\Release\Fallout_Strategy.exe C:\projects\Fallout_Strategy\FalloutStrategy\Game\
+    copy C:\projects\Fallout_Strategy\FalloutStrategy\Release\*.exe C:\projects\Fallout_Strategy\FalloutStrategy\Game\
 
 
     copy C:\projects\Fallout_Strategy\README.md C:\projects\Fallout_Strategy\FalloutStrategy\Game\
