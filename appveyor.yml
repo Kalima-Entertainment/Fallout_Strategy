@@ -4,13 +4,16 @@ branches:
   only:
   - master
 configuration: Release
+shallow_clone: true
 build:
   project: FalloutStrategy/Fallout_Strategy.sln
   verbosity: minimal
 after_build:
 - cmd: >-
-    copy C:\projects\fallout-strategy\FalloutStrategy\Release\Fallout_Strategy.exe C:\projects\fallout-strategy\FalloutStrategy\Game\
-    copy C:\projects\fallout-strategy\README.md C:\projects\fallout-strategy\FalloutStrategy\Game\
+    copy C:\projects\automatic-builds\FalloutStrategy\Release\Fallout_Strategy.exe C:\projects\automatic-builds\FalloutStrategy\Game\
+
+
+    copy C:\projects\automatic-builds\README.md C:\projects\automatic-builds\FalloutStrategy\Game\
 artifacts:
 - path: FalloutStrategy/Game
   name: Fallout_Strategy
@@ -19,7 +22,7 @@ deploy:
 - provider: GitHub
   tag: v$(appveyor_build_version)
   release: Fallout Test v$(appveyor_build_version)
-  description: Automatic Release v$(appveyor_build_version)
+  description: Automatic Release
   auth_token:
     secure: M8iNekkgCAijnlmChSFFh34jRjsb1NkrcsN3vDOwgyfz7kn1mEzKyvzt0Tb1hZ+H
   draft: false
