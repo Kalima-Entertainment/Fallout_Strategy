@@ -81,6 +81,8 @@ iPoint j1PathFinding::FindWalkableAdjacentTile(iPoint point) const {
 	tile = { point.x - 1, point.y };
 	if (App->pathfinding->IsWalkable(tile))
 		return tile;
+
+	return { -1,-1 };
 }
 
 std::vector<iPoint> j1PathFinding::GetLastPath() const

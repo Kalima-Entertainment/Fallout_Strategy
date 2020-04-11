@@ -156,7 +156,7 @@ bool j1App::Start()
 
 	startup_time.Start();
 
-	console->CreateCommand("quit", "Quit the game", (j1Module*)this);
+	//console->CreateCommand("quit", "Quit the game", (j1Module*)this);
 
 	PERF_PEEK(ptimer);
 

@@ -326,7 +326,23 @@ void DynamicEntity::Gather() {
 
 void DynamicEntity::PathfindToPosition(iPoint destination) {
 	if ((!App->pathfinding->IsWalkable(destination)) && (App->pathfinding->CheckBoundaries(destination))) {
-		destination = App->pathfinding->FindWalkableAdjacentTile(destination);
+		iPoint destination_copy = App->pathfinding->FindWalkableAdjacentTile(destination);
+		if (destination_copy == iPoint(-1,-1)) {
+			ResourceBuilding* reference_resource_building = App->entities->FindResourceBuildingByTile(destination);
+			if (reference_resource_building != nullptr) 
+				destination  = App->entities->ClosestTile(current_tile, reference_resource_building->tiles);
+			else {
+				StaticEntity* reference_static_entity = (StaticEntity*)App->entities->FindEntityByTile(destination);
+				if (reference_static_entity != nullptr) 
+					destination = App->entities->ClosestTile(current_tile, reference_static_entity->tiles);
+			}
+			if (!App->pathfinding->IsWalkable(destination))
+				destination = App->pathfinding->FindWalkableAdjacentTile(destination);
+		}
+		else
+		{
+			destination = destination_copy;
+		}
 	}
 	current_tile = App->map->WorldToMap(position.x, position.y);
 	target_tile = destination;
