@@ -9,10 +9,10 @@ build:
   verbosity: minimal
 after_build:
 - cmd: >-
-    copy C:\projects\Fallout_Strategy\FalloutStrategy\Release\*.exe C:\projects\Fallout_Strategy\FalloutStrategy\Game\
+    copy C:\projects\fallout-strategy\FalloutStrategy\Release\Fallout_Strategy.exe C:\projects\fallout-strategy\FalloutStrategy\Game\
 
 
-    copy C:\projects\Fallout_Strategy\README.md C:\projects\Fallout_Strategy\FalloutStrategy\Game\
+    copy C:\projects\fallout-strategy\README.md C:\projects\fallout-strategy\FalloutStrategy\Game\
 artifacts:
 - path: FalloutStrategy/Game
   name: Fallout_Strategy
