@@ -9,6 +9,7 @@
 #include "j1EntityManager.h"
 #include "j1Player.h"
 #include "StaticEntity.h"
+#include <iostream>
 #include <string>
 #include "SDL_mixer/include/SDL_mixer.h"
 

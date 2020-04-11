@@ -7,12 +7,17 @@ This is a real-time strategy game produced by 2nd year students from CITM/UPC Un
 ## Controls
 ### Movement
 Left click on the unit and left click on the position you want to make it go to.
+º - Turn console ON/OFF
 Y - Block/Unblock border scroll
 F - Center camera 
 F9 - Debug mode ON/OFF
 ESC - Close game
 ### Debug
 In debug mode you will be able to see the path the player follows and how it does so. 
+
+### Console commands
+help - list all commands
+destroy_all_entities - delete all characters from the map
 
 ## Team
 
