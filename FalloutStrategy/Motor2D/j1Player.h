@@ -12,6 +12,8 @@ public:
 	bool PreUpdate();
 	bool Update(float dt);
 
+	void OnCommand(std::vector<std::string> command_parts);
+
 	void InteractWithEntity();
 	void UpdateResourceData(Resource resource_type, int quantity);
 

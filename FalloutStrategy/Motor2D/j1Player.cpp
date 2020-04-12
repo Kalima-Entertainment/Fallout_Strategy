@@ -14,6 +14,7 @@
 #include "j1Minimap.h"
 #include "MenuManager.h"
 #include "j1Scene.h"
+#include "j1Console.h"
 
 j1Player::j1Player() : GenericPlayer() {
 	selected_entity = nullptr;
@@ -32,6 +33,9 @@ j1Player::j1Player() : GenericPlayer() {
 j1Player::~j1Player() {}
 
 bool j1Player::Start() {
+	App->console->CreateCommand("caps+", "increase the amount of caps", this);
+	App->console->CreateCommand("food+", "increase the amount of food", this);
+	App->console->CreateCommand("water+", "increase the amount of water", this);
 	return true;
 }
 
@@ -236,4 +240,26 @@ void j1Player::UpdateResourceData(Resource resource_type, int quantity) {
 	//update gui
 	App->gui->DeleteArrayElements(App->menu_manager->gui_ingame, 4);
 	App->menu_manager->CreateGUI();
+}
+
+void j1Player::OnCommand(std::vector<std::string> command_parts) {
+	std::string command_beginning = command_parts[0];
+	
+	if (command_beginning == "caps+") {
+		int caps_increase = std::stoi(command_parts[1].c_str());
+		caps += caps_increase;
+		UpdateResourceData(Resource::CAPS, caps_increase);
+	}
+
+	if (command_beginning == "food+") {
+		int food_increase = std::stoi(command_parts[1].c_str());
+		food += food_increase;
+		UpdateResourceData(Resource::FOOD, food_increase);
+	}
+
+	if (command_beginning == "water+") {
+		int water_increase = std::stoi(command_parts[1].c_str());
+		water += water_increase;
+		UpdateResourceData(Resource::WATER, water_increase);
+	}
 }

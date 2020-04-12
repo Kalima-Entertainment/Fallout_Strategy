@@ -146,7 +146,7 @@ void j1Console::CreateInterface() {
 		j++;
 	}
 
-	input_box = (InputText*)App->gui->CreateInputBox(x_margin, log_box.h , InputBox, " ", NULL, this, "OpenSans-Light");
+	input_box = (InputText*)App->gui->CreateInputBox(x_margin, log_box.h , InputBox, " ", NULL, this);
 }
 
 void j1Console::DestroyInterface() {

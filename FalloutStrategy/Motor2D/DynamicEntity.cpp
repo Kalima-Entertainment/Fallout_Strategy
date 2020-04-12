@@ -33,7 +33,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 	type = g_type;
 	faction = g_faction;
 	state = IDLE;
-	direction = TOP_RIGHT;
+	direction = BOTTOM_RIGHT;
 
 	current_speed = { 0, 0 };
 	target_entity = nullptr;
@@ -53,16 +53,85 @@ bool DynamicEntity::Update(float dt) {
 
 	Mix_AllocateChannels(20);
 
+	current_tile = App->map->WorldToMap(position.x, position.y);
 
 	switch (state)
 	{
 	case IDLE:
 		break;
 	case WALK:
+		//if the entitiy is about to reach it's target tile
+		if (current_tile.LinealDistance(target_tile) <= range) {
+			//we reach the destination and there is an entity in it
+				//ranged and melee
+			if (type != GATHERER) {
+				if (target_entity != nullptr)
+				{
+					//enemy target
+					if (faction != target_entity->faction) {
+						state = ATTACK;
+						target_entity->attacking_entity = this;
+						Attack();
+					}
+					//ally
+					else if (next_tile == target_tile)
+					{
+						state = IDLE;
+						next_tile = current_tile;
+						path_to_target.clear();
+					}
+				}
+			}
+			//gatherer
+			else {
+				if (next_tile == target_tile) {
+
+					//gather
+					if ((resource_building != nullptr) && (resource_collected < storage_capacity)) {
+						state = GATHER;
+						timer.Start();
+						//return;
+					}
+
+					//give gathered resources
+					else if ((resource_collected > 0) && (target_entity != nullptr) && (target_entity->volume < target_entity->storage_capacity)) {
+						target_entity->volume += resource_collected;
+						App->player->UpdateResourceData(resource_type, resource_collected);
+						resource_collected = 0;
+						target_entity = nullptr;
+
+						//go back to resource building to get more resources
+						if (resource_building->quantity > 0) {
+							PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
+							state = WALK;
+						}
+						//find another building
+						else
+						{
+							resource_building = App->entities->GetClosestResourceBuilding(current_tile);
+							//if there is at least a resource building left, go there
+							if (resource_building != nullptr) {
+								PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
+								state = WALK;
+							}
+							//if there are no resource buildings left
+							else { state = IDLE; }
+						}
+					}
+					if (target_entity != nullptr) {
+						state = IDLE;
+					}
+				}
+			}
+		}
+
 		Move(dt);
+
 		if (Mix_Playing(2) == 0) { SpatialAudio(App->audio->Brotherhood_walk, 2, position.x, position.y); }
 		break;
+
 	case ATTACK:
+
 		if (timer.ReadSec() > action_time)
 		{
 			Attack();
@@ -163,71 +232,6 @@ void DynamicEntity::Move(float dt) {
 		//get next tile center
 		next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
 		next_tile_rect_center = { next_tile_position.x + HALF_TILE - 2, next_tile_position.y + HALF_TILE,4,4 };
-
-			//if the entitiy is about to reach it's target tile
-			if (current_tile.LinealDistance(target_tile) <= range) {
-			//we reach the destination and there is an entity in it
-				//ranged and melee
-				if (type != GATHERER){
-					if (target_entity != nullptr)
-					{
-						//enemy target
-						if (faction != target_entity->faction) {
-							state = ATTACK;
-							Attack();
-							target_entity->attacking_entity = this;
-						}
-						//ally
-						else if (next_tile == target_tile)
-						{
-							state = IDLE;
-							next_tile = current_tile;
-							path_to_target.clear();
-						}
-					}
-				}
-				//gatherer
-				else {
-					if (next_tile == target_tile) {
-
-						//gather
-						if ((resource_building != nullptr) && (resource_collected < storage_capacity)) {
-							state = GATHER;
-							timer.Start();
-							return;
-						}
-
-						//give gathered resources
-						else if ((resource_collected > 0) && (target_entity != nullptr) && (target_entity->volume < target_entity->storage_capacity)) {
-							target_entity->volume += resource_collected;
-							App->player->UpdateResourceData(resource_type, resource_collected);
-							resource_collected = 0;
-							target_entity = nullptr;
-
-							//go back to resource building to get more resources
-							if (resource_building->quantity > 0) {
-								PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
-								state = WALK;
-							}
-							//find another building
-							else
-							{
-								resource_building = App->entities->GetClosestResourceBuilding(current_tile);
-								//if there is at least a resource building left, go there
-								if (resource_building != nullptr) {
-									PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
-									state = WALK;
-								}
-								//if there are no resource buildings left
-								else { state = IDLE; }
-							}
-						}
-						if (target_entity != nullptr) {
-							state = IDLE;
-						}
-					}
-				}
-			}
 
 		//move to next tile
 		if ((position.x > next_tile_rect_center.x + next_tile_rect_center.w) && (position.x > next_tile_rect_center.x) && (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h)) {
