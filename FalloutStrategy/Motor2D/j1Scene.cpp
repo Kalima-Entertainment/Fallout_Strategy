@@ -83,6 +83,8 @@ bool j1Scene::Start()
 
 	App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
 
+	App->entities->CreateEntity(VAULT, RANGED, 20, 20);
+
 	return true;
 }
 

@@ -65,10 +65,7 @@ bool DynamicEntity::Update(float dt) {
 	case ATTACK:
 		if (timer.ReadSec() > action_time)
 		{
-			if (current_tile.DistanceManhattan(target_entity->current_tile) <= range)
-			{
-				Attack();
-			}
+			Attack();
 		}
 
 		if (reference_entity->faction == MUTANT || reference_entity->faction == BROTHERHOOD && reference_entity->type == RANGED)
@@ -154,8 +151,6 @@ bool DynamicEntity::PostUpdate() {
 	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 50, 4 };
 	SDL_Rect foreground_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, (float)current_health/max_health * 50, 4 };
 	if (foreground_bar.w < 0) foreground_bar.w = 0;
-
-	//Life Bar Render
 	App->render->DrawQuad(background_bar, 255, 255, 255, 255);
 	App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
 
@@ -203,11 +198,11 @@ void DynamicEntity::Move(float dt) {
 						}
 
 						//give gathered resources
-						else if ((resource_collected > 0) && (target_building != nullptr) && (target_building->volume < target_building->storage_capacity)) {
-							target_building->volume += resource_collected;
+						else if ((resource_collected > 0) && (target_entity != nullptr) && (target_entity->volume < target_entity->storage_capacity)) {
+							target_entity->volume += resource_collected;
 							App->player->UpdateResourceData(resource_type, resource_collected);
 							resource_collected = 0;
-							target_building = nullptr;
+							target_entity = nullptr;
 
 							//go back to resource building to get more resources
 							if (resource_building->quantity > 0) {
@@ -285,32 +280,51 @@ void DynamicEntity::Move(float dt) {
 void DynamicEntity::Attack() {
 
 	timer.Start();
-	target_entity->current_health -= damage;
-	target_entity->state = HIT;
 
+	//damage unit if god_mode isn't activated 
+	if ((target_entity->faction != App->player->faction) || (!App->player->god_mode)) {
+		target_entity->current_health -= damage;
 
-	if ((current_tile.x > target_entity->current_tile.x) && (current_tile.y == target_entity->current_tile.y)) {
-		direction = TOP_LEFT;
-		target_entity->direction = BOTTOM_RIGHT;
-	}
-	else if ((current_tile.x == target_entity->current_tile.x) && (current_tile.y > target_entity->current_tile.y)) {
-		direction = TOP_RIGHT;
-		target_entity->direction = BOTTOM_LEFT;
-	}
-	else if ((current_tile.x == target_entity->current_tile.x) && (current_tile.y < target_entity->current_tile.y)) {
-		direction = BOTTOM_LEFT;
-		target_entity->direction = TOP_RIGHT;
-	}
-	else if ((current_tile.x < target_entity->current_tile.x) && (current_tile.y == target_entity->current_tile.y)) {
-		direction = BOTTOM_RIGHT;
-		target_entity->direction = TOP_LEFT;
+		if (target_entity->is_dynamic) {
+			DynamicEntity* dynamic_target = (DynamicEntity*)target_entity;
+			dynamic_target->state = HIT;
+		}
 	}
 
-	if (target_entity->current_health <= 0) {
-		target_entity->state = DIE;
-		target_entity->direction = TOP_LEFT;
-		target_entity = nullptr;
-		state = IDLE;
+	if (target_entity->is_dynamic) {
+		DynamicEntity* dynamic_target = (DynamicEntity*)target_entity;
+		if ((current_tile.x > target_entity->current_tile.x) && (current_tile.y == target_entity->current_tile.y)) {
+			direction = TOP_LEFT;
+			dynamic_target->direction = BOTTOM_RIGHT;
+		}
+		else if ((current_tile.x == target_entity->current_tile.x) && (current_tile.y > target_entity->current_tile.y)) {
+			direction = TOP_RIGHT;
+			dynamic_target->direction = BOTTOM_LEFT;
+		}
+		else if ((current_tile.x == target_entity->current_tile.x) && (current_tile.y < target_entity->current_tile.y)) {
+			direction = BOTTOM_LEFT;
+			dynamic_target->direction = TOP_RIGHT;
+		}
+		else if ((current_tile.x < target_entity->current_tile.x) && (current_tile.y == target_entity->current_tile.y)) {
+			direction = BOTTOM_RIGHT;
+			dynamic_target->direction = TOP_LEFT;
+		}
+
+		if (target_entity->current_health <= 0) {
+			dynamic_target->state = DIE;
+			dynamic_target->direction = TOP_LEFT;
+			target_entity = nullptr;
+			state = IDLE;
+		}
+	}
+	else
+	{
+		StaticEntity* static_target = (StaticEntity*)target_entity;
+		if (target_entity->current_health <= 0) {
+			static_target->state = EXPLODE;
+			target_entity = nullptr;
+			state = IDLE;
+		}
 	}
 }
 
@@ -321,7 +335,7 @@ void DynamicEntity::Gather() {
 	resource_type = resource_building->resource_type;
 	StaticEntity* base = (StaticEntity*)App->entities->FindEntityByType(faction, BASE);
 	PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
-	target_building = base;
+	target_entity = base;
 	//resource_building = nullptr;
 }
 

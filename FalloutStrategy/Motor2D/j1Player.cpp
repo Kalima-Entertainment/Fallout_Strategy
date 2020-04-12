@@ -195,12 +195,15 @@ void j1Player::InteractWithEntity() {
 			dynamic_entity->state = WALK;
 
 			if (target != nullptr) {
+				dynamic_entity->target_entity = target;
+				/*
 				//assign a dynamic target to the entity
 				if (target->is_dynamic)
 					dynamic_entity->target_entity = (DynamicEntity*)target;
 				//assign a static target to the entity
 				else
 					dynamic_entity->target_building = (StaticEntity*)target;
+				*/
 			}
 			else {
 				dynamic_entity->target_entity = nullptr;

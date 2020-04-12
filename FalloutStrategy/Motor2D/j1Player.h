@@ -17,11 +17,11 @@ public:
 
 public:
 	j1Entity* selected_entity;
+	bool god_mode;
 
 private:
 	float mouse_speed_multiplier;
 	bool border_scroll;
-	bool god_mode;
 };
 
 
