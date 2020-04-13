@@ -4,13 +4,13 @@
 #include "j1Module.h"
 #include "p2Point.h"
 #include "p2DynArray.h"
-#include "p2List.h"
+#include <vector>
 
-#define DEFAULT_PATH_LENGTH 100
+#define DEFAULT_PATH_LENGTH 50
 #define INVALID_WALK_CODE 255
 #define NORMAL_MOVEMENT_COST 1
 #define DIAGONAL_MOVEMENT_COST 2
-#define MAX_PATH_ITERATIONS 500
+#define MAX_PATH_ITERATIONS 150
 
 class j1PathFinding : public j1Module
 {
@@ -31,7 +31,7 @@ public:
 	int CreatePath(const iPoint& origin, const iPoint& destination);
 
 	// To request all tiles involved in the last generated path
-	std::vector<iPoint> GetLastPath() const;
+	const std::vector<iPoint>* GetLastPath() const;
 
 	// Utility: return true if pos is inside the map boundaries
 	bool CheckBoundaries(const iPoint& pos) const;
@@ -56,7 +56,7 @@ private:
 };
 
 // forward declaration
-struct PathList;
+struct PathVector;
 
 // ---------------------------------------------------------------------
 // Pathnode: Helper struct to represent a node in the path creation
@@ -69,7 +69,7 @@ struct PathNode
 	PathNode(const PathNode& node);
 
 	// Fills a list (PathList) of all valid adjacent pathnodes
-	uint FindWalkableAdjacents(PathList& list_to_fill) const;
+	uint FindWalkableAdjacents(PathVector& list_to_fill) const;
 	// Calculates this tile score
 	int Score() const;
 	// Calculate the F for a specific destination tile
@@ -85,17 +85,17 @@ struct PathNode
 // ---------------------------------------------------------------------
 // Helper struct to include a list of path nodes
 // ---------------------------------------------------------------------
-struct PathList
+struct PathVector
 {
 	// Looks for a node in this list and returns it's list node or NULL
-	p2List_item<PathNode>* Find(const iPoint& point) const;
+	std::vector<PathNode>::const_iterator Find(const iPoint& point) const;
 
 	// Returns the Pathnode with lowest score in this list or NULL if empty
-	p2List_item<PathNode>* GetNodeLowestScore() const;
+	std::vector<PathNode>::const_iterator GetNodeLowestScore() const;
 
 	// -----------
 	// The list itself, note they are not pointers!
-	p2List<PathNode> list;
+	std::vector<PathNode> vector;
 };
 
 

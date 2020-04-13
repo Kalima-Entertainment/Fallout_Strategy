@@ -68,8 +68,6 @@ public:
 	void SortEntities();
 	void Swap(int i, int j);
 
-	void RandomFactions();
-	Faction FactionByIndex(int i) { return static_cast<Faction>(i); }
 public:
 
 	std::vector<j1Entity*> entities;
@@ -85,8 +83,6 @@ public:
 
 	bool blocked_movement;
 	SDL_Texture* selected_unit_tex;
-
-	int randomFaction[4];
 };
 
 #endif // !_ENTITY_MANAGER_H_
