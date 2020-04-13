@@ -3,16 +3,17 @@ image: Visual Studio 2019
 branches:
   only:
   - master
+skip_branch_with_pr: true
 configuration: Release
 shallow_clone: true
 build:
   verbosity: minimal
 after_build:
 - cmd: >-
-    copy C:\projects\fallout-strategy\FalloutStrategy\Release\Fallout_Strategy.exe C:\projects\fallout-strategy\FalloutStrategy\Game\
+    copy C:\projects\Fallout_Strategy\FalloutStrategy\Release\Fallout_Strategy.exe C:\projects\Fallout_Strategy\FalloutStrategy\Game\
 
 
-    copy C:\projects\fallout-strategy\README.md C:\projects\fallout-strategy\FalloutStrategy\Game\
+    copy C:\projects\Fallout_Strategy\README.md C:\projects\Fallout_Strategy\FalloutStrategy\Game\
 artifacts:
 - path: FalloutStrategy/Game
   name: Fallout_Strategy
