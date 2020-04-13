@@ -8,7 +8,7 @@
 #include "j1Entity.h"
 #include "j1Pathfinding.h"
 #include "MenuManager.h"
-#include "Player.h"
+#include "j1Player.h"
 #include "j1Scene.h"
 #include "j1Map.h"
 #include "StaticEntity.h"

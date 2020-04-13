@@ -16,12 +16,15 @@
 #include "j1Gui.h"
 #include "j1App.h"
 #include "j1Collision.h"
-#include "j1Transition.h"
 #include "j1EntityManager.h"
-#include "Player.h"
+#include "j1Player.h"
 #include "j1Minimap.h"
 #include "MenuManager.h"
 #include "MainMenu.h"
+#include "j1Console.h"
+#include "j1MovementManager.h"
+#include "AI_Manager.h"
+#include "j1Transition.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -40,37 +43,46 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	gui = new j1Gui();
 	collision = new j1Collision();
 	entities = new j1EntityManager();
-	player = new Player();
+	player = new j1Player();
 	minimap = new j1Minimap();
 	menu_manager = new MenuManager();
 	main_menu = new MainMenu();
+	console = new j1Console();
+	Mmanager = new j1MovementManager();
+	ai_manager = new AI_Manager();
 	transition = new j1Transition();
+
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 	AddModule(input);
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
+
 	AddModule(map);
 	AddModule(collision);
 	AddModule(pathfinding);
 	AddModule(main_menu);
 	AddModule(entities);
 	AddModule(player);
+	AddModule(ai_manager);
 	AddModule(font);
 	AddModule(scene);
+	AddModule(Mmanager);
 	AddModule(transition);
+
 	// scene last
 	AddModule(menu_manager);
 	AddModule(gui);
 	AddModule(minimap);
+	AddModule(console);
 
 	// render last to swap buffer
 	AddModule(render);
 
 	PERF_PEEK(ptimer);
 
-	pause = false;
+	isPaused = false;
 }
 
 // Destructor

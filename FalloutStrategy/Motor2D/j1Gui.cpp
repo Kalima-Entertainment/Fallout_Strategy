@@ -11,7 +11,7 @@
 #include "UI_element.h"
 #include "UI_Button.h"
 #include "UI_Label.h"
-#include "UI_ImputText.h"
+#include "UI_InputText.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
 j1Gui::j1Gui() : j1Module()

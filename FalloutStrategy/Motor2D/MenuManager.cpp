@@ -18,9 +18,9 @@
 #include "UI_Label.h"
 #include "j1Image.h"
 #include "MenuManager.h"
-#include "Player.h"
+#include "j1Player.h"
 #include "p2Defs.h"
-#include "UI_ImputText.h"
+#include "UI_InputText.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
 MenuManager::MenuManager()

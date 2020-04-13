@@ -1,16 +1,12 @@
 #ifndef _PLAYER_H
 #define _PLAYER_H
-#include "j1Module.h"
+#include "GenericPlayer.h"
 
-class j1Entity;
-class DynamicEntity;
-class UI_Label;
-
-class Player : public j1Module
+class j1Player : public GenericPlayer
 {
 public:
-	Player();
-	~Player();
+	j1Player();
+	~j1Player();
 
 	bool Start();
 	bool PreUpdate();
@@ -23,8 +19,6 @@ public:
 	void UpdateResourceData(Resource resource_type, int quantity);
 
 public:
-	bool border_scroll;
-
 	j1Entity* selected_entity;
 	bool god_mode;
 
@@ -35,3 +29,4 @@ private:
 
 
 #endif // !_PLAYER_H
+

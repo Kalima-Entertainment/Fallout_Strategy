@@ -17,7 +17,7 @@
 #include "StaticEntity.h"
 #include "MenuManager.h"
 #include "UI_Label.h"
-#include "Player.h"
+#include "j1Player.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 #include <stdlib.h>
 #include <time.h>
@@ -80,7 +80,7 @@ bool j1Scene::Start()
 
     // --------------------------------------
 
-	if (App->map->Load("grassland_low_left.tmx") == true)
+	if (App->map->Load(modules) == true)
 	{
 		int w, h;
 		uchar* data = NULL;
@@ -152,6 +152,8 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
+	bool ret = true;
+
 	App->map->Draw();
 
 	// Gui ---

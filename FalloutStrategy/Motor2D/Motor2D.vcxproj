@@ -76,21 +76,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AI_Manager.cpp" />
+    <ClCompile Include="AI_Player.cpp" />
     <ClCompile Include="DynamicEntity.cpp" />
+    <ClCompile Include="GenericPlayer.cpp" />
+    <ClCompile Include="j1Audio.cpp" />
     <ClCompile Include="j1Collision.cpp" />
     <ClCompile Include="j1Entity.cpp" />
     <ClCompile Include="j1EntityManager.cpp" />
     <ClCompile Include="j1Fonts.cpp" />
+    <ClCompile Include="j1Group.cpp" />
     <ClCompile Include="j1Gui.cpp" />
     <ClCompile Include="j1Image.cpp" />
     <ClCompile Include="j1Main.cpp" />
     <ClCompile Include="j1App.cpp" />
-    <ClCompile Include="j1Audio.cpp" />
     <ClCompile Include="j1Input.cpp" />
     <ClCompile Include="j1Map.cpp" />
     <ClCompile Include="j1Minimap.cpp" />
     <ClCompile Include="j1Pathfinding.cpp" />
     <ClCompile Include="j1PerfTimer.cpp" />
+    <ClCompile Include="j1Player.cpp" />
     <ClCompile Include="j1Scene.cpp" />
     <ClCompile Include="j1Timer.cpp" />
     <ClCompile Include="j1Transition.cpp" />
@@ -100,35 +105,38 @@
     <ClCompile Include="j1Render.cpp" />
     <ClCompile Include="j1Textures.cpp" />
     <ClCompile Include="j1Window.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="StaticEntity.cpp" />
     <ClCompile Include="UI_Button.cpp" />
     <ClCompile Include="UI_element.cpp" />
-    <ClCompile Include="UI_ImputText.cpp" />
+    <ClCompile Include="UI_InputText.cpp" />
     <ClCompile Include="UI_Label.cpp" />
     <ClCompile Include="UI_Slider.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AI_Manager.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="DynamicEntity.h" />
+    <ClInclude Include="GenericPlayer.h" />
+    <ClInclude Include="j1Audio.h" />
     <ClInclude Include="j1Collision.h" />
     <ClInclude Include="j1Entity.h" />
     <ClInclude Include="j1EntityManager.h" />
     <ClInclude Include="j1Fonts.h" />
+    <ClInclude Include="j1Group.h" />
     <ClInclude Include="j1Gui.h" />
     <ClInclude Include="j1Image.h" />
     <ClInclude Include="j1Map.h" />
     <ClInclude Include="j1Minimap.h" />
     <ClInclude Include="j1Pathfinding.h" />
     <ClInclude Include="j1PerfTimer.h" />
+    <ClInclude Include="j1Player.h" />
     <ClInclude Include="j1Scene.h" />
     <ClInclude Include="j1Timer.h" />
     <ClInclude Include="j1Transition.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MenuManager.h" />
     <ClInclude Include="p2DynArray.h" />
-    <ClInclude Include="j1Audio.h" />
     <ClInclude Include="j1Input.h" />
     <ClInclude Include="p2Log.h" />
     <ClInclude Include="j1App.h" />
@@ -140,13 +148,12 @@
     <ClInclude Include="j1Textures.h" />
     <ClInclude Include="j1Window.h" />
     <ClInclude Include="p2SString.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="StaticEntity.h" />
     <ClInclude Include="UI_Button.h" />
     <ClInclude Include="UI_element.h" />
-    <ClInclude Include="UI_ImputText.h" />
+    <ClInclude Include="UI_InputText.h" />
     <ClInclude Include="UI_Label.h" />
     <ClInclude Include="UI_Slider.h" />
   </ItemGroup>
