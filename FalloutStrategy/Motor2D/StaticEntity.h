@@ -44,12 +44,11 @@ public:
 	
 public:
 	std::vector<iPoint> tiles;
-
+	StaticState state;
 	Spawn_Stack spawn_stack[10];
 private:
 	int gen_speed;
 	Animation animations[3];
-	StaticState state;
 	iPoint render_texture_pos;
 
 	Upgrades_Data base_resource_limit[4];

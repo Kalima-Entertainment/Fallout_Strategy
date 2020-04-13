@@ -10,6 +10,7 @@
 #include "j1Input.h"
 #include "j1Render.h"
 #include "j1Player.h"
+#include "DynamicEntity.h"
 
 j1MovementManager::j1MovementManager()
 {
@@ -63,7 +64,7 @@ void j1MovementManager::SelectEntities_inRect(SDL_Rect SRect)
 
 void j1MovementManager::CreateGroup()
 {
-	LOG("Group Creation Called");
+	//LOG("Group Creation Called");
 	bool Validgroup = false;
 
 	j1Group* group = new j1Group;
@@ -117,17 +118,16 @@ void j1MovementManager::Move(j1Group* group, float dt)
 	iPoint Map_mouseposition;
 	Map_mouseposition = App->map->WorldToMap((int)App->scene->mouse_pos.x, (int)App->scene->mouse_pos.y);
 
-
 	while (unit != group->Units.end())
 	{
+		DynamicEntity* dynamic_entity = (DynamicEntity*)(*unit);
+
 		// --- We Get the map coords of the Entity ---
 		Map_Entityposition.x = (*unit)->position.x;
 		Map_Entityposition.y = (*unit)->position.y;
 		Map_Entityposition = App->map->WorldToMap(Map_Entityposition.x, Map_Entityposition.y);
 
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && (*unit)->info.IsSelected) (*unit)->info.UnitMovementState = MovementState::MovementState_NoState;
-
-		
 
 		switch ((*unit)->info.UnitMovementState)
 		{
@@ -138,7 +138,6 @@ void j1MovementManager::Move(j1Group* group, float dt)
 
 			if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && (*unit)->info.IsSelected)
 			{
-
 				if (group->IsGroupLead((*unit)) == false)
 				{
 					// --- If any other unit of the group has the same goal, change the goal tile ---
@@ -174,6 +173,8 @@ void j1MovementManager::Move(j1Group* group, float dt)
 
 		case MovementState::MovementState_FollowPath:
 
+			dynamic_entity->state = WALK;
+
 			// --- If a path is created, the unit will start following it ---
 
 			next_tile_world = App->map->MapToWorld((*unit)->info.next_tile.x, (*unit)->info.next_tile.y);
@@ -182,7 +183,6 @@ void j1MovementManager::Move(j1Group* group, float dt)
 
 			// --- We compute the module of our vector ---
 			DirectDistance = sqrtf(pow(distanceToNextTile.x, 2.0f) + pow(distanceToNextTile.y, 2.0f));
-
 
 			// --- We want a unitary vector to update the unit's direction/position ---
 			if (DirectDistance > 0.0f)
@@ -194,6 +194,13 @@ void j1MovementManager::Move(j1Group* group, float dt)
 			// --- Now we Apply the unit's Speed and the dt to the unitary vector  ---
 			distanceToNextTile.x *= (*unit)->speed.x * dt;
 			distanceToNextTile.y *= (*unit)->speed.y * dt;
+
+			if ((distanceToNextTile.x >= 0) && (distanceToNextTile.y < 0)) { dynamic_entity->direction = TOP_RIGHT; }
+			else if ((distanceToNextTile.x > 0) && (distanceToNextTile.y >= 0)) { dynamic_entity->direction = BOTTOM_RIGHT; }
+			else if ((distanceToNextTile.x <= 0) && (distanceToNextTile.y > 0)) { dynamic_entity->direction = BOTTOM_LEFT; }
+			else if ((distanceToNextTile.x < 0) && (distanceToNextTile.y <= 0)) { dynamic_entity->direction = TOP_LEFT; }
+
+			(*unit)->current_tile = App->map->WorldToMap((*unit)->position.x, (*unit)->position.y);
 
 			// --- We convert an iPoint to fPoint for comparing purposes ---
 			to_fPoint.x = next_tile_world.x;
@@ -223,7 +230,6 @@ void j1MovementManager::Move(j1Group* group, float dt)
 			{
 				(*unit)->info.next_tile = (*unit)->info.Current_path.front();
 				(*unit)->info.Current_path.erase((*unit)->info.Current_path.begin());
-
 				(*unit)->info.UnitMovementState = MovementState::MovementState_FollowPath;
 			}
 			else
@@ -237,6 +243,8 @@ void j1MovementManager::Move(j1Group* group, float dt)
 
 			// --- The unit reaches the end of the path, thus stopping and returning to NoState ---
 			(*unit)->info.UnitMovementState = MovementState::MovementState_NoState;
+			(*unit)->current_tile = App->map->WorldToMap((*unit)->position.x, (*unit)->position.y);
+			dynamic_entity->state = IDLE;
 
 			break;
 		}

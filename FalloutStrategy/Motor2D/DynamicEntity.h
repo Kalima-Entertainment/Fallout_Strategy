@@ -67,8 +67,6 @@ public:
 	DynamicState state;
 	int range;
 	int resource_collected;
-	DynamicEntity*	target_entity;
-	StaticEntity*	target_building;
 	ResourceBuilding* resource_building;
 	Resource resource_type;
 	j1Timer timer;

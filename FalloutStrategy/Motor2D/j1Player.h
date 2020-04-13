@@ -12,16 +12,19 @@ public:
 	bool PreUpdate();
 	bool Update(float dt);
 
-	void InteractWithEntity();
+	void OnCommand(std::vector<std::string> command_parts);
+
+	j1Entity* SelectEntity();
+	void MoveEntity();
 	void UpdateResourceData(Resource resource_type, int quantity);
 
 public:
 	j1Entity* selected_entity;
+	bool god_mode;
 
 private:
 	float mouse_speed_multiplier;
 	bool border_scroll;
-	bool god_mode;
 };
 
 

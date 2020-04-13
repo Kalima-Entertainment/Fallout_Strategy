@@ -3,22 +3,22 @@
  <static>
    <vault>
     <base health="32000"/>
-    <barrack heaalth="28000"/>
+    <barrack health="28000"/>
     <laboratory health="24000"/>
    </vault>
    <brotherhood>
     <base health="32000"/>
-    <barrack heaalth="24000"/>
+    <barrack health="24000"/>
     <laboratory health="28000"/>
    </brotherhood>
    <mutants>
     <base health="32000"/>
-    <barrack heaalth="24000"/>
+    <barrack health="24000"/>
     <laboratory health="28000"/>
    </mutants>
    <ghouls>
     <base health="32000"/>
-    <barrack heaalth="24000"/>
+    <barrack health="24000"/>
     <laboratory health="28000"/>
   </ghouls>
  </static>

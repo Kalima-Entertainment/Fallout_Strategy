@@ -14,15 +14,16 @@
 #include "j1Minimap.h"
 #include "MenuManager.h"
 #include "j1Scene.h"
+#include "j1Console.h"
 
 j1Player::j1Player() : GenericPlayer() {
 	selected_entity = nullptr;
 	border_scroll = false;
 	mouse_speed_multiplier = 1.5f;
 
-	caps = 0;
-	food = 0;
-	water = 0;
+	caps = 2000;
+	food = 2000;
+	water = 2000;
 
 	god_mode = false;
 
@@ -32,6 +33,10 @@ j1Player::j1Player() : GenericPlayer() {
 j1Player::~j1Player() {}
 
 bool j1Player::Start() {
+	App->console->CreateCommand("caps+", "increase the amount of caps", this);
+	App->console->CreateCommand("food+", "increase the amount of food", this);
+	App->console->CreateCommand("water+", "increase the amount of water", this);
+	App->console->CreateCommand("resources+", "increase all resources", this);
 	return true;
 }
 
@@ -72,7 +77,7 @@ bool j1Player::PreUpdate() {
 
 	//Deselect entity
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
-		selected_entity = nullptr;
+		//selected_entity = nullptr;
 		//Remove HUD data from the UI
 		App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::ALL, BUILDING_TYPE::ALL);
 		App->entities->count = 0;
@@ -81,8 +86,13 @@ bool j1Player::PreUpdate() {
 	if (!App->isPaused)
 	{
 		//entity selection and interaction
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) InteractWithEntity();
-		
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
+			selected_entity = SelectEntity();
+		}
+
+		if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)&&(selected_entity != nullptr)) {
+			MoveEntity();
+		}
 
 		//move camera
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_REPEAT) {
@@ -144,7 +154,6 @@ bool j1Player::Update(float dt) {
 	*/
 
 	//Move map
-
 	if ((App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)&&(App->render->camera.y < App->render->camera.h * 0.25f))
 		App->render->camera.y += floor(200.0f * dt);
 
@@ -157,13 +166,10 @@ bool j1Player::Update(float dt) {
 	if ((App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) && (App->render->camera.x > -MAP_LENGTH* HALF_TILE + App->render->camera.w * 0.75f))
 		App->render->camera.x -= floor(200.0f * dt);
 
-	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_REPEAT)
-		caps += 100;
-
 	return ret;
 }
 
-void j1Player::InteractWithEntity() {
+j1Entity* j1Player::SelectEntity() {
 	int tx, ty;
 	iPoint selected_spot;
 
@@ -172,52 +178,57 @@ void j1Player::InteractWithEntity() {
 	selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
 
 	//check if there's an entity in the selected spot
-	j1Entity* target;
-	target = App->entities->FindEntityByTile(selected_spot);
+	j1Entity* target = App->entities->FindEntityByTile(selected_spot);
 
 	//if we hadn't any entity selected
 	if (selected_entity == nullptr)
 	{
 		if (target != nullptr) {
-			selected_entity = target;
+			if ((god_mode) || (target->faction == faction)) {
+				return target;
+			}
 		}
 	}
 
-	//if we had one
+	return nullptr;
+}
+
+void j1Player::MoveEntity(){
+	int tx, ty;
+	iPoint selected_spot;
+
+	App->input->GetMousePosition(tx, ty);
+	selected_spot = App->render->ScreenToWorld(tx, ty);
+	selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
+
+	j1Entity* target = App->entities->FindEntityByTile(selected_spot);
+
+	//dynamic entities
+	if (selected_entity->is_dynamic)
+	{
+		DynamicEntity* dynamic_entity;
+		dynamic_entity = (DynamicEntity*)selected_entity;
+		dynamic_entity->PathfindToPosition(selected_spot);
+		dynamic_entity->state = WALK;
+
+		if (target != nullptr) {
+			dynamic_entity->target_entity = target;
+		}
+		else {
+			dynamic_entity->target_entity = nullptr;
+			ResourceBuilding* resource_building;
+			resource_building = App->entities->FindResourceBuildingByTile(selected_spot);
+
+			//assign a resource building to the entity
+			if ((resource_building != nullptr)&&(resource_building->quantity > 0))
+				dynamic_entity->resource_building = resource_building;
+		}
+	}
+	//static entities
 	else
 	{
-		//dynamic entities
-		if (selected_entity->is_dynamic)
-		{
-			DynamicEntity* dynamic_entity;
-			dynamic_entity = (DynamicEntity*)selected_entity;
-			dynamic_entity->PathfindToPosition(selected_spot);
-			dynamic_entity->state = WALK;
-
-			if (target != nullptr) {
-				//assign a dynamic target to the entity
-				if (target->is_dynamic)
-					dynamic_entity->target_entity = (DynamicEntity*)target;
-				//assign a static target to the entity
-				else
-					dynamic_entity->target_building = (StaticEntity*)target;
-			}
-			else {
-				dynamic_entity->target_entity = nullptr;
-				ResourceBuilding* resource_building;
-				resource_building = App->entities->FindResourceBuildingByTile(selected_spot);
-
-				//assign a resource building to the entity
-				if ((resource_building != nullptr)&&(resource_building->quantity > 0))
-					dynamic_entity->resource_building = resource_building;
-			}
-		}
-		//static entities
-		else
-		{
-			StaticEntity* static_entity;
-			static_entity = (StaticEntity*)selected_entity;
-		}
+		StaticEntity* static_entity;
+		static_entity = (StaticEntity*)selected_entity;
 	}
 }
 
@@ -228,9 +239,40 @@ void j1Player::UpdateResourceData(Resource resource_type, int quantity) {
 	else if (resource_type == Resource::WATER)
 		water += quantity;
 	else if (resource_type == Resource::FOOD)
-		food += quantity;	
+		food += quantity;
 
 	//update gui
 	App->gui->DeleteArrayElements(App->menu_manager->gui_ingame, 4);
 	App->menu_manager->CreateGUI();
+}
+
+void j1Player::OnCommand(std::vector<std::string> command_parts) {
+	std::string command_beginning = command_parts[0];
+
+	//Increase all resources
+	if (command_beginning == "resources+") {
+		int resources_increase = std::stoi(command_parts[1].c_str());
+
+		UpdateResourceData(Resource::CAPS, resources_increase);
+		UpdateResourceData(Resource::FOOD, resources_increase);
+		UpdateResourceData(Resource::WATER, resources_increase);
+	}
+
+	if (command_beginning == "caps+") {
+		int caps_increase = std::stoi(command_parts[1].c_str());
+
+		UpdateResourceData(Resource::CAPS, caps_increase);
+	}
+
+	if (command_beginning == "food+") {
+		int food_increase = std::stoi(command_parts[1].c_str());
+
+		UpdateResourceData(Resource::FOOD, food_increase);
+	}
+
+	if (command_beginning == "water+") {
+		int water_increase = std::stoi(command_parts[1].c_str());
+
+		UpdateResourceData(Resource::WATER, water_increase);
+	}
 }

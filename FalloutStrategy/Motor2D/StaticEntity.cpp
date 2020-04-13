@@ -72,12 +72,11 @@ bool StaticEntity::Update(float dt) {
 		if (spawning == false && spawn_stack[0].type != NO_TYPE) {
 			spawn_time = std::chrono::steady_clock::now() + std::chrono::seconds(spawn_stack[0].spawn_seconds);
 			spawning = true;
-			LOG("Chrono started");
 		}
 		if (spawning == true) {
-			if (std::chrono::steady_clock::now() < spawn_time) {
-				LOG("Entity Spawned");
+			if (std::chrono::steady_clock::now() > spawn_time) {				
 				App->entities->CreateEntity(faction, spawn_stack[0].type, spawnPosition.x, spawnPosition.y);
+				LOG("Unit Spawned");
 				UpdateSpawnStack();
 			}
 		}
@@ -132,8 +131,18 @@ bool StaticEntity::PostUpdate() {
 
 	App->render->Blit(reference_entity->texture, render_texture_pos.x, render_texture_pos.y, &current_animation->GetCurrentFrame(last_dt));
 
-	if (App->render->debug)
-		App->render->DrawQuad({ (int)render_position.x, render_position.y, 4,4 }, 255, 0, 0, 255);
+
+	if (App->render->debug) 
+		App->render->DrawQuad({ (int)render_position.x, render_position.y, 4,4 }, 255, 0, 0, 255); 
+
+	//Health bar stats
+	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 80, 4 };
+	SDL_Rect foreground_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, (float)current_health / max_health * background_bar.w, 4 };
+	if (foreground_bar.w < 0) foreground_bar.w = 0;
+	App->render->DrawQuad(background_bar, 255, 255, 255, 255);
+	App->render->DrawQuad(foreground_bar, 230, 165, 30, 255);
+
+
 	return true;
 }
 
@@ -335,11 +344,6 @@ void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
 			}
 			units_health[faction].upgrade_num++;
 		}
-
-		//Hacking resources
-		App->player->UpdateResourceData(Resource::CAPS, 1000);
-		App->player->UpdateResourceData(Resource::WATER, 1000);
-		App->player->UpdateResourceData(Resource::FOOD, 1000);
 	}
 	else if (upgrade_name == "units_creation_time") {
 		int cost = units_creation_time[faction].first_price + (units_creation_time[faction].price_increment * units_creation_time[faction].upgrade_num);

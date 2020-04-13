@@ -3,6 +3,9 @@
 
 AI_Player::AI_Player(Faction g_faction) : GenericPlayer() {
 	faction = g_faction;
+	caps = 100;
+	water = 100;
+	food = 100;
 }
 
 AI_Player::~AI_Player() {
