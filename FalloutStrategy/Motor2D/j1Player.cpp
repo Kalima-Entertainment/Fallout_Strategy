@@ -37,6 +37,7 @@ bool j1Player::Start() {
 	App->console->CreateCommand("food+", "increase the amount of food", this);
 	App->console->CreateCommand("water+", "increase the amount of water", this);
 	App->console->CreateCommand("resources+", "increase all resources", this);
+	App->console->CreateCommand("god_mode", "turn god mode on and off", this);
 	return true;
 }
 
@@ -274,5 +275,10 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 		int water_increase = std::stoi(command_parts[1].c_str());
 
 		UpdateResourceData(Resource::WATER, water_increase);
+	}
+
+	if (command_beginning == "god_mode") {
+		if (command_parts[1] == "on") god_mode = true;
+		if (command_parts[1] == "off") god_mode = false;
 	}
 }

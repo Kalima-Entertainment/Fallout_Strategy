@@ -37,6 +37,7 @@ bool j1Console::Start() {
 	command_background = { -App->render->camera.x, log_box.h, (int)width, 40 };
 
 	CreateCommand("help", "list all console commands", this);
+	CreateCommand("fps", "Change FPS cap", this);
 	//CreateCommand("list", (j1Module*)this, "List all console commands");
 	//App->console->CreateCommand("quit", (j1Module*)this, "Quit the game");
 	//App->console->CreateCommand("fps_", (j1Module*)this, "Change FPS cap");
@@ -192,6 +193,8 @@ void j1Console::ProcessCommand(std::string command_text) {
 	//if yes send it to its creator
 	if (command_callback != nullptr)
 		command_callback->OnCommand(command_parts);
+	else
+		AddLogText("Invalid command");
 }
 
 j1Module* j1Console::FindModule(std::string command_beginning) {
@@ -212,6 +215,22 @@ void j1Console::OnCommand(std::vector<std::string> command_parts) {
 			std::string command_and_description = command_vector[i].name;
 			command_and_description.append(": ").append(command_vector[i].description);
 			AddLogText(command_and_description);
+		}
+	}
+
+	if (command_beginning == "fps") {
+		int framerate_cap = std::stoi(command_parts[1].c_str());
+		if (framerate_cap < 30)
+		{
+			AddLogText("Framerate cap too low");
+		}
+		else if (framerate_cap > 120)
+		{
+			App->console->AddLogText("Framerate cap too high");
+		}
+		else
+		{
+			App->capped_ms = 1000 / std::stoi(command_parts[1].c_str());
 		}
 	}
 }

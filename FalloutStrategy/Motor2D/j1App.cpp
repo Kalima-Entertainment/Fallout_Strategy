@@ -457,4 +457,5 @@ void j1App::OnCommand(std::vector<std::string> command_parts) {
 	if (command_beginning == "quit") {
 		//quitGame = true;
 	}
+
 }
