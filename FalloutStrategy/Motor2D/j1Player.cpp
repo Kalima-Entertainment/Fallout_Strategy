@@ -36,6 +36,7 @@ bool j1Player::Start() {
 	App->console->CreateCommand("caps+", "increase the amount of caps", this);
 	App->console->CreateCommand("food+", "increase the amount of food", this);
 	App->console->CreateCommand("water+", "increase the amount of water", this);
+	App->console->CreateCommand("resources+", "increase all resources", this);
 	return true;
 }
 
@@ -88,7 +89,7 @@ bool j1Player::PreUpdate() {
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
 			selected_entity = SelectEntity();
 		}
-		
+
 		if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)&&(selected_entity != nullptr)) {
 			MoveEntity();
 		}
@@ -153,7 +154,6 @@ bool j1Player::Update(float dt) {
 	*/
 
 	//Move map
-
 	if ((App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)&&(App->render->camera.y < App->render->camera.h * 0.25f))
 		App->render->camera.y += floor(200.0f * dt);
 
@@ -165,9 +165,6 @@ bool j1Player::Update(float dt) {
 
 	if ((App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) && (App->render->camera.x > -MAP_LENGTH* HALF_TILE + App->render->camera.w * 0.75f))
 		App->render->camera.x -= floor(200.0f * dt);
-
-	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_REPEAT)
-		caps += 100;
 
 	return ret;
 }
@@ -242,7 +239,7 @@ void j1Player::UpdateResourceData(Resource resource_type, int quantity) {
 	else if (resource_type == Resource::WATER)
 		water += quantity;
 	else if (resource_type == Resource::FOOD)
-		food += quantity;	
+		food += quantity;
 
 	//update gui
 	App->gui->DeleteArrayElements(App->menu_manager->gui_ingame, 4);
@@ -251,22 +248,31 @@ void j1Player::UpdateResourceData(Resource resource_type, int quantity) {
 
 void j1Player::OnCommand(std::vector<std::string> command_parts) {
 	std::string command_beginning = command_parts[0];
-	
+
+	//Increase all resources
+	if (command_beginning == "resources+") {
+		int resources_increase = std::stoi(command_parts[1].c_str());
+
+		UpdateResourceData(Resource::CAPS, resources_increase);
+		UpdateResourceData(Resource::FOOD, resources_increase);
+		UpdateResourceData(Resource::WATER, resources_increase);
+	}
+
 	if (command_beginning == "caps+") {
 		int caps_increase = std::stoi(command_parts[1].c_str());
-		caps += caps_increase;
+
 		UpdateResourceData(Resource::CAPS, caps_increase);
 	}
 
 	if (command_beginning == "food+") {
 		int food_increase = std::stoi(command_parts[1].c_str());
-		food += food_increase;
+
 		UpdateResourceData(Resource::FOOD, food_increase);
 	}
 
 	if (command_beginning == "water+") {
 		int water_increase = std::stoi(command_parts[1].c_str());
-		water += water_increase;
+
 		UpdateResourceData(Resource::WATER, water_increase);
 	}
 }

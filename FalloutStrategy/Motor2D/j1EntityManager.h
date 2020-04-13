@@ -56,12 +56,8 @@ public:
 
 	void OnCommand(std::vector<std::string> command_parts);
 
-	//bool Load(pugi::xml_node& data);
-	//bool Save(pugi::xml_node& data) const;
-	//bool CheckpointSave();
-	//bool CheckpointLoad();
-
 	j1Entity* CreateEntity(Faction faction, EntityType type, int position_x, int position_y);
+	virtual void SpawnUnit(int buildingID, EntityType type);
 	j1Entity* FindEntityByTile(iPoint tile);
 	j1Entity* FindEntityByType(Faction faction, EntityType type);
 	ResourceBuilding* FindResourceBuildingByTile(iPoint tile);
