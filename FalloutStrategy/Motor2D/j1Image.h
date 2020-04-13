@@ -18,8 +18,8 @@ public:
 
 	bool Draw();
 
+	
 
-public:
 };
 
 #endif

@@ -21,13 +21,11 @@ class j1Fonts;
 class j1Gui;
 class j1EntityManager;
 class j1Collision;
-class j1Player;
+class Player;
 class j1Minimap;
 class MenuManager;
 class MainMenu;
-class j1Console;
-class j1MovementManager;
-class AI_Manager;
+class j1Transition;
 
 class j1App
 {
@@ -106,7 +104,7 @@ public:
 	j1Gui*				gui = NULL;
 	j1Collision	*		collision = NULL;
 	j1EntityManager*	entities = NULL;
-	j1Player*			player = NULL;
+	Player*				player = NULL;
 	j1Minimap*			minimap = NULL;
 	MenuManager*		menu_manager = NULL;
 	MainMenu*			main_menu = NULL;

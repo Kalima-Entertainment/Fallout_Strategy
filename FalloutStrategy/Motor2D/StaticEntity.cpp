@@ -2,11 +2,9 @@
 #include "j1App.h"
 #include "j1Render.h"
 #include "j1Map.h"
-#include "j1Audio.h"
 #include "j1Textures.h"
-#include "j1Player.h"
+#include "Player.h"
 #include "j1Input.h"
-#include "SDL_mixer/include/SDL_mixer.h"
 
 StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
 	type = g_type;
@@ -52,10 +50,8 @@ StaticEntity::~StaticEntity() {}
 bool StaticEntity::Update(float dt) {
 	switch (state) {
 	case WAIT:
-		if (Mix_Playing(6) == 0)
-			SpatialAudio(App->audio->factory, 6, position.x, position.y);
 		break;
-	case WORK:
+	case PRODUCE:
 		break;
 	case EXPLODE:
 		if (current_animation->Finished())
@@ -74,7 +70,7 @@ bool StaticEntity::Update(float dt) {
 			spawning = true;
 		}
 		if (spawning == true) {
-			if (std::chrono::steady_clock::now() > spawn_time) {				
+			if (std::chrono::steady_clock::now() > spawn_time) {
 				App->entities->CreateEntity(faction, spawn_stack[0].type, spawnPosition.x, spawnPosition.y);
 				LOG("Unit Spawned");
 				UpdateSpawnStack();
@@ -107,13 +103,6 @@ bool StaticEntity::Update(float dt) {
 			if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
 				Upgrade(faction, "units_speed");
 		}
-		else if (type == LABORATORY) {
-			//Upgrades
-			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-				Upgrade(faction, "units_health");
-			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-				Upgrade(faction, "units_creation_time");
-		}		
 	}
 
 	last_dt = dt;
@@ -129,8 +118,8 @@ bool StaticEntity::PostUpdate() {
 
 	App->render->Blit(reference_entity->texture, render_texture_pos.x, render_texture_pos.y, &current_animation->GetCurrentFrame(last_dt));
 
-	if (App->render->debug) 
-		App->render->DrawQuad({ (int)render_position.x, render_position.y, 4,4 }, 255, 0, 0, 255); 
+	if (App->render->debug)
+		App->render->DrawQuad({ (int)render_position.x, render_position.y, 4,4 }, 255, 0, 0, 255);
 
 	//Health bar stats
 	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 80, 4 };
@@ -154,15 +143,13 @@ bool StaticEntity::LoadReferenceData() {
 
 	//load property data
 	current_health = max_health = reference_entity->max_health;
-	sprite_size = reference_entity->sprite_size;
+
 	return ret;
 }
 
 bool StaticEntity::LoadAnimations() {
-	
 	bool ret = true;
 	char* faction_char = "NoFaction";
-	float speed_multiplier = 0.065f;
 
 	if (faction == VAULT)
 		faction_char = "VaultDwellers";
@@ -191,11 +178,10 @@ bool StaticEntity::LoadAnimations() {
 		ret = false;
 	}
 
-	int tile_width = animation_file.child("map").attribute("tilewidth").as_int();
-	int tile_height = animation_file.child("map").attribute("tileheight").as_int();
+	int tile_width = animation_file.child("map").child("tileset").attribute("tilewidth").as_int();
+	int tile_height = animation_file.child("map").child("tileset").attribute("tileheight").as_int();
 	int columns = animation_file.child("map").child("tileset").attribute("columns").as_int();
 	int firstgid = animation_file.child("map").child("tileset").attribute("firstgid").as_int();
-	sprite_size = tile_height;
 	int id, tile_id;
 	float speed;
 
@@ -212,7 +198,7 @@ bool StaticEntity::LoadAnimations() {
 		std::string building_type = std::string(animation.child("properties").child("property").attribute("name").as_string());
 		std::string animation_name = std::string(animation.child("properties").child("property").attribute("value").as_string());
 		StaticState state = NO_STATE;
-		EntityType entity_type = BASE;
+		EntityType entity_type;
 		bool loop = true;
 
 		//building type
@@ -227,8 +213,8 @@ bool StaticEntity::LoadAnimations() {
 		if (animation_name == "idle") {
 			state = WAIT;
 		}
-		else if (animation_name == "work") {
-			state = WORK;
+		else if (animation_name == "produce") {
+			state = PRODUCE;
 			loop = false;
 		}
 		else if (animation_name == "die") {
@@ -243,7 +229,7 @@ bool StaticEntity::LoadAnimations() {
 		{
 			while (frame != nullptr) {
 				tile_id = frame.attribute("tileid").as_int();
-				speed = frame.attribute("duration").as_int() * speed_multiplier;
+				speed = frame.attribute("duration").as_int() * 0.001f;
 				rect.x = rect.w * ((tile_id) % columns);
 				rect.y = rect.h * ((tile_id) / columns);
 				animations[state].PushBack(rect, speed);
@@ -260,7 +246,7 @@ bool StaticEntity::LoadAnimations() {
 }
 
 void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
-	
+
 	if (upgrade_name == "base_resource_limit") {
 		if (storage_capacity < max_capacity) {
 			int cost = base_resource_limit[faction].first_price + (base_resource_limit[faction].price_increment * base_resource_limit[faction].upgrade_num);
@@ -284,8 +270,8 @@ void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
 		if (App->player->caps >= cost) {
 			for (int i = 0; i < App->entities->entities.size(); i++) {
 				if(App->entities->entities[i]->faction = faction)
-					if (App->entities->entities[i]->type == GATHERER ) 
-						App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.5);	
+					if (App->entities->entities[i]->type == GATHERER )
+						App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.5);
 			}
 			//Pay the price
 			App->player->UpdateResourceData(Resource::CAPS, -cost);
@@ -296,7 +282,7 @@ void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
 	}
 	else if (upgrade_name == "units_damage") {
 		int cost = units_damage[faction].first_price + (units_damage[faction].price_increment * units_damage[faction].upgrade_num);
-		
+
 		if (App->player->caps >= cost) {
 			for (int i = 0; i < App->entities->entities.size(); i++) {
 				if (App->entities->entities[i]->faction = faction)
@@ -318,7 +304,7 @@ void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
 				if (App->entities->entities[i]->faction = faction) {
 					App->entities->entities[i]->speed.x += App->entities->entities[i]->speed.x * 0.15;
 					App->entities->entities[i]->speed.y += App->entities->entities[i]->speed.y * 0.15;
-				}				
+				}
 			}
 			//Pay the price
 			App->player->UpdateResourceData(Resource::CAPS, -cost);
@@ -336,7 +322,7 @@ void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
 					if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED) {
 						App->entities->entities[i]->max_health += (int)(App->entities->entities[i]->max_health * 0.15);
 						App->entities->entities[i]->current_health += (int)(App->entities->entities[i]->max_health * 0.15);
-					}						
+					}
 			}
 			units_health[faction].upgrade_num++;
 		}
@@ -345,8 +331,8 @@ void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
 		int cost = units_creation_time[faction].first_price + (units_creation_time[faction].price_increment * units_creation_time[faction].upgrade_num);
 
 		if (App->player->caps >= cost) {
-			for (int i = 0; i < 12; i++) 
-				App->entities->unit_data[i].spawn_seconds -= App->entities->unit_data[i].spawn_seconds * 0.05;			
+			for (int i = 0; i < 12; i++)
+				App->entities->unit_data[i].spawn_seconds -= App->entities->unit_data[i].spawn_seconds * 0.05;
 
 			units_creation_time[faction].upgrade_num++;
 		}
@@ -367,7 +353,7 @@ void StaticEntity::SpawnUnit(EntityType type) {
 				break;
 			}
 	}
-	
+
 	if (App->player->water >= cost_water && App->player->food > cost_meat) {
 		//Substract resources
 		App->player->UpdateResourceData(Resource::WATER, -cost_water);
@@ -383,7 +369,7 @@ void StaticEntity::SpawnUnit(EntityType type) {
 				break;
 			}
 		}
-	}		
+	}
 }
 
 void StaticEntity::UpdateSpawnStack() {

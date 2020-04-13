@@ -6,14 +6,12 @@
 #include "p2Point.h"
 #include "j1Module.h"
 #include <vector>
-#include <string>
 
 #define TILE_SIZE 64
 #define HALF_TILE 32
 #define MODULE_LENGTH 75
 #define MAP_LENGTH 150
-#define MAX_LAYERS 6
-#define MAX_TILESETS 4
+
 
 // ----------------------------------------------------
 struct Properties
@@ -49,17 +47,20 @@ struct MapLayer
 	std::string	name;
 	int			width;
 	int			height;
-	uint		data[MAP_LENGTH * MAP_LENGTH];
+	uint*		data;
 	Properties	properties;
 
-	MapLayer() {}
+	MapLayer() : data(NULL)
+	{}
 
-	~MapLayer() {}
+	~MapLayer()
+	{
+		RELEASE(data);
+	}
 
 	inline uint Get(int x, int y) const
 	{
-		int position = (y * width) + x;
-		return data[position];
+		return data[(y*width) + x];
 	}
 };
 
@@ -113,9 +114,9 @@ struct MapData
 	int					tile_height;
 	SDL_Color			background_color;
 	MapTypes			type;
-	TileSet				tilesets[MAX_TILESETS];
-	MapLayer			layers[MAX_LAYERS];
-	ObjectGroup			objectgroup;
+	p2List<TileSet*>	tilesets;
+	p2List<MapLayer*>	layers;
+	p2List<ObjectGroup*> objectgroups;
 };
 
 // ----------------------------------------------------
@@ -138,7 +139,7 @@ public:
 	bool CleanUp();
 
 	// Load new map
-	bool Load(std::string modules[4]);
+	bool Load(const char* path);
 
 	iPoint MapToWorld(int x, int y) const;
 	fPoint fMapToWorld(int x, int y) const;
@@ -147,7 +148,6 @@ public:
 	iPoint IsometricWorldToMap(int x, int y) const;
 	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
 	std::vector<iPoint> CalculateArea(iPoint first_tile_position, int width, int height);
-	void SetBuildingTilesUnwalkable(std::vector<iPoint> tiles);
 
 	TileSet* GetTilesetFromTileId(int id) const;
 
@@ -156,8 +156,8 @@ private:
 	bool LoadMap();
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
-	bool LoadLayer(pugi::xml_node& node, MapLayer* layer, int module_number);
-	bool LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int module_number);
+	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
+	bool LoadObjectGroup(pugi::xml_node& node, ObjectGroup* objectgroup);
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
 
 public:
@@ -169,7 +169,6 @@ private:
 	pugi::xml_document	map_file;
 	std::string			folder;
 	bool				map_loaded;
-	uchar*				walkability_map;
 };
 
 #endif // __j1MAP_H__

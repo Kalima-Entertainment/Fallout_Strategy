@@ -8,7 +8,7 @@
 
 enum StaticState {
 	WAIT,
-	WORK,
+	PRODUCE,
 	EXPLODE,
 	NO_STATE
 };
@@ -36,12 +36,12 @@ public:
 	bool PostUpdate();
 
 	bool LoadAnimations();
-	bool LoadReferenceData();	
+	bool LoadReferenceData();
 
 	void Upgrade(Faction faction, std::string upgrade_name);
 	void SpawnUnit(EntityType type);
 	void UpdateSpawnStack();
-	
+
 public:
 	std::vector<iPoint> tiles;
 	StaticState state;

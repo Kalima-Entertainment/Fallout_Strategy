@@ -4,8 +4,8 @@
 #include "j1Module.h"
 #include "p2List.h"
 #include "p2Point.h"
+#include "p2SString.h"
 #include <vector>
-#include <string>
 
 #define CURSOR_WIDTH 2
 
@@ -46,15 +46,16 @@ public:
 	void DeleteArrayElements(UI_element* array[], int size);
 	bool Delete_Element(UI_element* element);
 
+	// TODO 2: Create the factory methods
+
 	void DestroyVectorElements(std::vector<UI_element*> vector);
 
 	// Gui creation functions
 	UI_element* CreateButton(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, SDL_Rect click, UI_element* parent, j1Module* Observer);
 	UI_element* CreateImage(int x, int y, UI_Type type, SDL_Rect rect, UI_element* parent, j1Module* Observer);
 	UI_element* CreateSlider(int x, int y, UI_Type type, SDL_Rect scrollbar, SDL_Rect button, float width, UI_element* parent, j1Module* Observer);
-	UI_element* CreateLabel(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer, int* counter, std::string font = "StackedPixel");
-	UI_element* CreateInputBox(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer, std::string font = "StackedPixel");
-
+	UI_element* CreateLabel(int x, int y, UI_Type type, p2SString text_input, UI_element* parent, j1Module* Observer, int* counter);
+	UI_element* CreateInputBox(int x, int y, UI_Type type, p2SString text_input, UI_element* parent, j1Module* Observer);
 
 	int volume_up = 0;
 	int fx_up = 0;
@@ -71,9 +72,9 @@ public:
 
 private:
 	pugi::xml_node node;
-	std::string folder;
+	p2SString folder;
 	SDL_Texture* texture;
-	std::string UI_file_name;
+	p2SString UI_file_name;
 
 };
 
