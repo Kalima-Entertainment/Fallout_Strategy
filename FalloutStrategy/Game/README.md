@@ -2,35 +2,29 @@
 This is a real-time strategy game produced by 2nd year students from CITM/UPC University in Terrassa, Barcelona.
 
 ## Goal
-* Make your faction survive among the others in this exciting RTS!
+* Make your faction survive among the others in this exciting RTS! 
 
 ## Controls
 ### Movement
-Left click on the unit and left click on the position you want to make it go to.
-Hold middle mouse button and drag the mouse to move the camera in the world.
+Left click on the unit and left click on the position you want it to go.
+Hold middle mouse button and drag the mouse to move the camera in the world. 
 Right click to deselect a unit.
-
-º - Turn console ON/OFF
 Y - Block/Unblock border scroll
 F - Center camera on selected character
 F9 - Debug mode ON/OFF
 ESC - Close game
 
-Minimap is interactive.
+Minimap is interactive. 
 
 ### Debug
-In debug mode you will be able to see the path the selected character follows and how it does so.
-
-### Console commands
-help - list all commands
-destroy_all_entities - delete all characters from the map
+In debug mode you will be able to see the path the selected character follows and how it does so. 
 
 ## Team
 
 * Marc Pagès
 https://github.com/marcpages2020
 
-* Javier Belda
+* Javier Belda 
 https://github.com/JBGelsenorJ
 
 * Germán Insua
@@ -61,7 +55,7 @@ https://kalima-entertainment.github.io/Fallout_Strategy/
 https://github.com/Kalima-Entertainment/Fallout_Strategy
 
 ## Twitter
-Take a look at our Twitter to see the latest updates and the development process!
+Take a look at our Twitter to see the latest updates and the development process! 
 https://twitter.com/kalimaentmt
 
 # License

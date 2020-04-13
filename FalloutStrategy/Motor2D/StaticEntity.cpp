@@ -113,10 +113,12 @@ bool StaticEntity::Update(float dt) {
 				Upgrade(faction, "units_health");
 			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 				Upgrade(faction, "units_creation_time");
-		}		
+		}
 	}
 
 	last_dt = dt;
+
+	state = WAIT;
 
 	return true;
 }
@@ -129,6 +131,7 @@ bool StaticEntity::PostUpdate() {
 
 	App->render->Blit(reference_entity->texture, render_texture_pos.x, render_texture_pos.y, &current_animation->GetCurrentFrame(last_dt));
 
+
 	if (App->render->debug) 
 		App->render->DrawQuad({ (int)render_position.x, render_position.y, 4,4 }, 255, 0, 0, 255); 
 
@@ -138,6 +141,7 @@ bool StaticEntity::PostUpdate() {
 	if (foreground_bar.w < 0) foreground_bar.w = 0;
 	App->render->DrawQuad(background_bar, 255, 255, 255, 255);
 	App->render->DrawQuad(foreground_bar, 230, 165, 30, 255);
+
 
 	return true;
 }
@@ -159,7 +163,7 @@ bool StaticEntity::LoadReferenceData() {
 }
 
 bool StaticEntity::LoadAnimations() {
-	
+
 	bool ret = true;
 	char* faction_char = "NoFaction";
 	float speed_multiplier = 0.065f;
@@ -260,7 +264,7 @@ bool StaticEntity::LoadAnimations() {
 }
 
 void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
-	
+
 	if (upgrade_name == "base_resource_limit") {
 		if (storage_capacity < max_capacity) {
 			int cost = base_resource_limit[faction].first_price + (base_resource_limit[faction].price_increment * base_resource_limit[faction].upgrade_num);
@@ -284,8 +288,8 @@ void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
 		if (App->player->caps >= cost) {
 			for (int i = 0; i < App->entities->entities.size(); i++) {
 				if(App->entities->entities[i]->faction = faction)
-					if (App->entities->entities[i]->type == GATHERER ) 
-						App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.5);	
+					if (App->entities->entities[i]->type == GATHERER )
+						App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.5);
 			}
 			//Pay the price
 			App->player->UpdateResourceData(Resource::CAPS, -cost);
@@ -296,7 +300,7 @@ void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
 	}
 	else if (upgrade_name == "units_damage") {
 		int cost = units_damage[faction].first_price + (units_damage[faction].price_increment * units_damage[faction].upgrade_num);
-		
+
 		if (App->player->caps >= cost) {
 			for (int i = 0; i < App->entities->entities.size(); i++) {
 				if (App->entities->entities[i]->faction = faction)
@@ -318,7 +322,7 @@ void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
 				if (App->entities->entities[i]->faction = faction) {
 					App->entities->entities[i]->speed.x += App->entities->entities[i]->speed.x * 0.15;
 					App->entities->entities[i]->speed.y += App->entities->entities[i]->speed.y * 0.15;
-				}				
+				}
 			}
 			//Pay the price
 			App->player->UpdateResourceData(Resource::CAPS, -cost);
@@ -336,7 +340,7 @@ void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
 					if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED) {
 						App->entities->entities[i]->max_health += (int)(App->entities->entities[i]->max_health * 0.15);
 						App->entities->entities[i]->current_health += (int)(App->entities->entities[i]->max_health * 0.15);
-					}						
+					}
 			}
 			units_health[faction].upgrade_num++;
 		}
@@ -345,8 +349,8 @@ void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
 		int cost = units_creation_time[faction].first_price + (units_creation_time[faction].price_increment * units_creation_time[faction].upgrade_num);
 
 		if (App->player->caps >= cost) {
-			for (int i = 0; i < 12; i++) 
-				App->entities->unit_data[i].spawn_seconds -= App->entities->unit_data[i].spawn_seconds * 0.05;			
+			for (int i = 0; i < 12; i++)
+				App->entities->unit_data[i].spawn_seconds -= App->entities->unit_data[i].spawn_seconds * 0.05;
 
 			units_creation_time[faction].upgrade_num++;
 		}
@@ -367,7 +371,7 @@ void StaticEntity::SpawnUnit(EntityType type) {
 				break;
 			}
 	}
-	
+
 	if (App->player->water >= cost_water && App->player->food > cost_meat) {
 		//Substract resources
 		App->player->UpdateResourceData(Resource::WATER, -cost_water);
@@ -383,7 +387,7 @@ void StaticEntity::SpawnUnit(EntityType type) {
 				break;
 			}
 		}
-	}		
+	}
 }
 
 void StaticEntity::UpdateSpawnStack() {

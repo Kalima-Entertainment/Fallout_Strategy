@@ -1,0 +1,32 @@
+version: 0.{build}
+image: Visual Studio 2019
+branches:
+  only:
+  - master
+configuration: Release
+shallow_clone: true
+build:
+  verbosity: minimal
+after_build:
+- cmd: >-
+    copy C:\projects\fallout-strategy\FalloutStrategy\Release\Fallout_Strategy.exe C:\projects\fallout-strategy\FalloutStrategy\Game\
+
+
+    copy C:\projects\fallout-strategy\README.md C:\projects\fallout-strategy\FalloutStrategy\Game\
+artifacts:
+- path: FalloutStrategy/Game
+  name: Fallout_Strategy
+  type: WebDeployPackage
+deploy:
+- provider: GitHub
+  tag: v$(appveyor_build_version)
+  release: Fallout Strategy v$(appveyor_build_version)
+  description: Automatic Release
+  auth_token:
+    secure: M8iNekkgCAijnlmChSFFh34jRjsb1NkrcsN3vDOwgyfz7kn1mEzKyvzt0Tb1hZ+H
+notifications:
+- provider: GitHubPullRequest
+  template: Release Successful
+  on_build_success: true
+  on_build_failure: false
+  on_build_status_changed: false

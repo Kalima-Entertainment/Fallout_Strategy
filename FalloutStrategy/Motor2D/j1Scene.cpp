@@ -46,7 +46,7 @@ bool j1Scene::Start()
 {
 	srand(time(NULL));
 	menu_state = StatesMenu::NONE;
-	
+
 	//random map ----------------------------
 
 	std::string modules[4];
