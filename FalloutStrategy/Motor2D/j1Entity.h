@@ -74,6 +74,10 @@ public:
 	int max_capacity;
 	int volume;
 
+	int cost_caps;
+	int cost_water;
+	int cost_food;
+
 	EntityType type;
 	Faction faction;
 	j1Entity* reference_entity;

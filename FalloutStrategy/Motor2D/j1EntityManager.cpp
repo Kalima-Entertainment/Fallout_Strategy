@@ -179,10 +179,6 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	return entity;
 }
 
-void j1EntityManager::SpawnUnit(int buildingID, EntityType type)
-{
-}
-
 bool j1EntityManager::Awake(pugi::xml_node& config){
 	bool ret = true;
 

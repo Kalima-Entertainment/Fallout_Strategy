@@ -26,6 +26,10 @@ struct Spawn_Stack {
 	int spawn_seconds; //Seconds it requires to spawn
 };
 
+struct Upgrade_Stack {
+	Faction faction;
+};
+
 class StaticEntity : public j1Entity
 
 {
