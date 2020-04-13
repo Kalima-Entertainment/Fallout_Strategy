@@ -69,8 +69,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(Mmanager);
 
 	// scene last
-	//AddModule(menu_manager);
-	//AddModule(gui);
+	AddModule(menu_manager);
+	AddModule(gui);
 	AddModule(minimap);
 	AddModule(console);
 
@@ -122,7 +122,7 @@ bool j1App::Awake()
 		title = (app_config.child("title").child_value());
 		organization = (app_config.child("organization").child_value());
 
-		int cap = app_config.attribute("framerate_cap").as_int();
+		int cap = app_config.attribute("framerate_cap").as_int(-1);
 
 		if(cap > 0)
 		{

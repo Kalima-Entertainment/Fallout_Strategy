@@ -40,7 +40,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 	resource_building = nullptr;
 	action_time = 3.0f;
 	resource_collected = 0;
-	sprite_size = 128;
+	sprite_size = 128;	
 }
 
 DynamicEntity::~DynamicEntity() {}
@@ -353,11 +353,11 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 		iPoint destination_copy = App->pathfinding->FindWalkableAdjacentTile(destination);
 		if (destination_copy == iPoint(-1,-1)) {
 			ResourceBuilding* reference_resource_building = App->entities->FindResourceBuildingByTile(destination);
-			if (reference_resource_building != nullptr)
+			if (reference_resource_building != nullptr) 
 				destination  = App->entities->ClosestTile(current_tile, reference_resource_building->tiles);
 			else {
 				StaticEntity* reference_static_entity = (StaticEntity*)App->entities->FindEntityByTile(destination);
-				if (reference_static_entity != nullptr)
+				if (reference_static_entity != nullptr) 
 					destination = App->entities->ClosestTile(current_tile, reference_static_entity->tiles);
 			}
 			if (!App->pathfinding->IsWalkable(destination))

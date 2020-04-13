@@ -109,7 +109,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 			entity->position.x += 32;
 			entity->position.y += 32;
 
-			if (entity->reference_entity != NULL){
+			if (entity->reference_entity != nullptr){
 				entities.push_back(entity);
 				entity->LoadReferenceData();
 			}
@@ -120,7 +120,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		entity = new StaticEntity(faction, type);
 		entity->is_dynamic = false;
 		entity->reference_entity = reference_entities[faction][type];
-
+		
 		if (entity != NULL)
 		{
 			entity->faction = faction;
@@ -129,7 +129,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 
 			entity->position = App->map->fMapToWorld(entity->current_tile.x, entity->current_tile.y);
 
-			if (entity->reference_entity != NULL) {
+			if (entity->reference_entity != nullptr) {
 				entities.push_back(entity);
 				entity->LoadReferenceData();
 			}
@@ -208,7 +208,7 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 bool j1EntityManager::Start() {
 	BROFILER_CATEGORY("EntitiesStart", Profiler::Color::Linen)
 	bool ret = true;
-
+	
 	App->console->CreateCommand("destroy_all_entities", "remove all dynamic entities", (j1Module*)this);
 
 	//load all textures and animations
@@ -446,7 +446,7 @@ bool j1EntityManager::PostUpdate()
 						App->menu_manager->CreateSuperMutants_Base();
 
 					}
-
+				
 				}
 				else if (static_entity->type == BARRACK) {
 
@@ -676,7 +676,7 @@ void j1EntityManager::RandomFactions() {
 	//Initialize at { 0,1,2,3 }
 	for(int i = 0; i < 4; i++)
 		randomFaction[i] = i;
-
+	
 	//Randomize faction order
 	//std::random_shuffle(&randomFaction[0], &randomFaction[3]);
 
@@ -692,7 +692,7 @@ void j1EntityManager::RandomFactions() {
 		randomFaction[randomIndex] = temp;
 	}
 
-
+	
 	for (int i = 0; i < 4; i++)
 		LOG("faction %i", randomFaction[i]);
 }
