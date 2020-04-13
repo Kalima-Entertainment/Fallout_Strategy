@@ -53,8 +53,6 @@ bool DynamicEntity::Update(float dt) {
 
 	Mix_AllocateChannels(20);
 
-	current_tile = App->map->WorldToMap(position.x, position.y);
-
 	switch (state)
 	{
 	case IDLE:
@@ -115,7 +113,8 @@ bool DynamicEntity::Update(float dt) {
 								state = WALK;
 							}
 							//if there are no resource buildings left
-							else { state = IDLE; }
+							else 
+							{ state = IDLE; }
 						}
 					}
 					if (target_entity != nullptr) {
@@ -196,6 +195,9 @@ bool DynamicEntity::Update(float dt) {
 	//Group Movement Request
 	if (this->info.current_group != nullptr)
 	{
+		if (path_to_target.size() > 0)
+			path_to_target.clear();
+
 		if (info.current_group->IsGroupLead(this))
 		info.current_group->CheckForMovementRequest(dt);
 	}
@@ -212,6 +214,9 @@ bool DynamicEntity::PostUpdate() {
 	//Render character
 	render_position = { (int)(position.x - sprite_size * 0.5f), (int)(position.y - 1.82f * TILE_SIZE)};
 	App->render->Blit(reference_entity->texture,render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
+
+	if (App->render->debug)
+		App->render->DrawQuad({ (int)position.x -2, (int)position.y -2 , 4,4 }, 255, 0, 0, 255);
 
 	//Rendering Selected Units Quad
 	if (this->info.IsSelected) DrawQuad();
@@ -277,7 +282,7 @@ void DynamicEntity::Move(float dt) {
 	}
 	else
 	{
-		state = IDLE;
+		//state = IDLE;
 	}
 }
 
