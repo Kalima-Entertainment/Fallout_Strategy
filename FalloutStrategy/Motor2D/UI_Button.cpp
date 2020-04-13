@@ -11,6 +11,7 @@
 #include "j1Player.h"
 #include "j1Scene.h"
 #include "j1Map.h"
+#include "StaticEntity.h"
 
 #include "./brofiler/Brofiler/Brofiler.h"
 
@@ -323,6 +324,7 @@ bool UI_Button::Update(float dt)
 			//Spawn Gatherer from any faction
 			if (t == Ghouls_ghaterer_button || t == Vault_ghaterer_button || t == Supermutant_ghaterer_button || t == Brotherhood_ghaterer_button){
 				App->audio->PlayFx(1, character_fx, 0);
+				//Select building to spawn
 				App->entities->CreateEntity(App->player->selected_entity->faction, GATHERER, App->player->selected_entity->spawnPosition.x, App->player->selected_entity->spawnPosition.y);
 			}
 

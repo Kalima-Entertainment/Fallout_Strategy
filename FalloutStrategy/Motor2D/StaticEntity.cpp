@@ -75,7 +75,7 @@ bool StaticEntity::Update(float dt) {
 			LOG("Chrono started");
 		}
 		if (spawning == true) {
-			if (std::chrono::steady_clock::now() < spawn_time) {
+			if (std::chrono::steady_clock::now() > spawn_time) {
 				LOG("Entity Spawned");
 				App->entities->CreateEntity(faction, spawn_stack[0].type, spawnPosition.x, spawnPosition.y);
 				UpdateSpawnStack();
@@ -341,11 +341,6 @@ void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
 			}
 			units_health[faction].upgrade_num++;
 		}
-
-		//Hacking resources
-		App->player->UpdateResourceData(Resource::CAPS, 1000);
-		App->player->UpdateResourceData(Resource::WATER, 1000);
-		App->player->UpdateResourceData(Resource::FOOD, 1000);
 	}
 	else if (upgrade_name == "units_creation_time") {
 		int cost = units_creation_time[faction].first_price + (units_creation_time[faction].price_increment * units_creation_time[faction].upgrade_num);
