@@ -9,6 +9,7 @@
 #include "j1Gui.h"
 #include "UI_InputText.h"
 #include "brofiler/Brofiler/Brofiler.h"
+#include "j1Player.h"
 
 j1Console::j1Console() : j1Module() {
 	isVisible = false;
