@@ -14,7 +14,8 @@ public:
 
 	void OnCommand(std::vector<std::string> command_parts);
 
-	void InteractWithEntity();
+	j1Entity* SelectEntity();
+	void MoveEntity();
 	void UpdateResourceData(Resource resource_type, int quantity);
 
 public:
