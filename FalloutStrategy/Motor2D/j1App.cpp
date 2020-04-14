@@ -24,6 +24,8 @@
 #include "j1Console.h"
 #include "j1MovementManager.h"
 #include "AI_Manager.h"
+#include "LogoScene.h"
+#include "j1Transition.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -49,6 +51,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	console = new j1Console();
 	Mmanager = new j1MovementManager();
 	ai_manager = new AI_Manager();
+	transition = new j1Transition();
+	logo_scene = new LogoScene();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -66,6 +70,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(ai_manager);
 	AddModule(font);
 	AddModule(scene);
+	AddModule(transition);
 	AddModule(Mmanager);
 
 	// scene last
@@ -73,6 +78,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(gui);
 	AddModule(minimap);
 	AddModule(console);
+	AddModule(logo_scene);
 
 	// render last to swap buffer
 	AddModule(render);

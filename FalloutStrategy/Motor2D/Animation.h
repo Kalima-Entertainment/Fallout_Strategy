@@ -4,7 +4,7 @@
 #include "SDL/include/SDL_rect.h"
 #include "j1App.h"
 #include <math.h>
-#define MAX_FRAMES 50
+#define MAX_FRAMES 200
 
 struct Collider;
 
