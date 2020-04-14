@@ -40,8 +40,9 @@ bool j1Player::Start() {
 	App->console->CreateCommand("water+", "increase the amount of water", this);
 	App->console->CreateCommand("resources+", "increase all resources", this);
 	App->console->CreateCommand("god_mode", "turn god mode on and off", this);
-	App->console->CreateCommand("spawn_units", "spawn 1 gatherer, 1 melee and 1 ranged. Must have a building selected", this);
+	App->console->CreateCommand("spawn_units", "spawn 1 gatherer, 1 melee and 1 ranged. Must have a building selected", this);	
 	App->console->CreateCommand("spawn_army", "spawns 10 melees and 10 ranged. Must have a building selected", this);
+	App->console->CreateCommand("spawn", "<spawn gatherer><spawn melee><spawn ranged>. Spawn one unit. Must have a building selected", this);
 	return true;
 }
 
@@ -265,29 +266,39 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 		UpdateResourceData(Resource::CAPS, resources_increase);
 		UpdateResourceData(Resource::FOOD, resources_increase);
 		UpdateResourceData(Resource::WATER, resources_increase);
+		LOG("All resources increased");
 	}
 
 	if (command_beginning == "caps+") {
 		int caps_increase = std::stoi(command_parts[1].c_str());
 
 		UpdateResourceData(Resource::CAPS, caps_increase);
+		LOG("Caps increased");
 	}
 
 	if (command_beginning == "food+") {
 		int food_increase = std::stoi(command_parts[1].c_str());
 
 		UpdateResourceData(Resource::FOOD, food_increase);
+		LOG("Food increased");
 	}
 
 	if (command_beginning == "water+") {
 		int water_increase = std::stoi(command_parts[1].c_str());
 
 		UpdateResourceData(Resource::WATER, water_increase);
+		LOG("Water increased");
 	}
 
 	if (command_beginning == "god_mode") {
-		if (command_parts[1] == "on") god_mode = true;
-		if (command_parts[1] == "off") god_mode = false;
+		if (command_parts[1] == "on") { 
+			god_mode = true;
+			LOG("God mode turned on");
+		}
+		if (command_parts[1] == "off") { 
+			god_mode = false; 
+			LOG("God mode turned off");
+		}		
 	}
 
 	if (command_beginning == "spawn_units") {
@@ -301,6 +312,8 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 			App->entities->CreateEntity(static_entity->faction, GATHERER, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
 			App->entities->CreateEntity(static_entity->faction, MELEE, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
 			App->entities->CreateEntity(static_entity->faction, RANGED, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
+
+			LOG("1 unit from each type spawned successfully");
 		}		
 	}
 
@@ -316,5 +329,27 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 				App->entities->CreateEntity(static_entity->faction, MELEE, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
 				App->entities->CreateEntity(static_entity->faction, RANGED, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
 			}			
+	}
+	if (command_beginning == "spawn") {
+
+		StaticEntity* static_entity;
+		if (selected_entity == nullptr)
+			static_entity = (StaticEntity*)last_selected_entity;
+		else
+			static_entity = (StaticEntity*)selected_entity;
+
+		if (static_entity != nullptr)
+		{
+			if (command_parts[1] == "gatherer")
+				App->entities->CreateEntity(static_entity->faction, GATHERER, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
+			if (command_parts[1] == "melee")
+				App->entities->CreateEntity(static_entity->faction, MELEE, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
+			if (command_parts[1] == "ranged")
+				App->entities->CreateEntity(static_entity->faction, RANGED, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
+
+			LOG("Unit spawned");
+		}
+		else
+			LOG("You must select a building while executing this command");
 	}
 }
