@@ -38,6 +38,8 @@ bool j1Player::Start() {
 	App->console->CreateCommand("water+", "increase the amount of water", this);
 	App->console->CreateCommand("resources+", "increase all resources", this);
 	App->console->CreateCommand("god_mode", "turn god mode on and off", this);
+	App->console->CreateCommand("spawn_units", "spawn 1 gatherer, 1 melee and 1 ranged. Must have a building selected", this);
+	App->console->CreateCommand("spawn_army", "spawns 10 melees and 10 ranged. Must have a building selected", this);
 	return true;
 }
 
@@ -284,5 +286,33 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 	if (command_beginning == "god_mode") {
 		if (command_parts[1] == "on") god_mode = true;
 		if (command_parts[1] == "off") god_mode = false;
+	}
+
+	if (command_beginning == "spawn_units") {
+		StaticEntity* static_entity;
+		if (selected_entity == nullptr)
+			static_entity = (StaticEntity*)last_selected_entity;
+		else
+			static_entity = (StaticEntity*)selected_entity;
+		
+		if (static_entity != nullptr) {
+			App->entities->CreateEntity(static_entity->faction, GATHERER, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
+			App->entities->CreateEntity(static_entity->faction, MELEE, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
+			App->entities->CreateEntity(static_entity->faction, RANGED, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
+		}		
+	}
+
+	if (command_beginning == "spawn_army") {
+		StaticEntity* static_entity;
+		if (selected_entity == nullptr)
+			static_entity = (StaticEntity*)last_selected_entity;
+		else
+			static_entity = (StaticEntity*)selected_entity;
+
+		if(static_entity != nullptr)
+			for (int i = 0; i < 10; i++) {
+				App->entities->CreateEntity(static_entity->faction, MELEE, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
+				App->entities->CreateEntity(static_entity->faction, RANGED, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
+			}			
 	}
 }
