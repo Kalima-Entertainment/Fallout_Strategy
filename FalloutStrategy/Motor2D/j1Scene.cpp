@@ -11,7 +11,6 @@
 #include "j1Gui.h"
 #include "j1Scene.h"
 #include "j1EntityManager.h"
-#include "j1Transition.h"
 #include "j1Entity.h"
 #include "DynamicEntity.h"
 #include "StaticEntity.h"
@@ -22,6 +21,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string>
+#include "j1MovementManager.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -38,8 +38,6 @@ bool j1Scene::Awake()
 	LOG("Loading Scene");
 	bool ret = true;
 
-
-
 	return ret;
 }
 
@@ -48,14 +46,7 @@ bool j1Scene::Start()
 {
 	srand(time(NULL));
 	menu_state = StatesMenu::NONE;
-
-	DynamicEntity* vault[3], * brotherhood[3], * ghoul[3], *mutant[3];
-	DynamicEntity* test_melee, *test_enemy, *test_ranged, *test_gatherer;
-	StaticEntity* ghoul_base, *ghoul_barrack, *ghoul_laboratory;
-	StaticEntity* vault_base, *vault_barrack, *vault_laboratory;
-	StaticEntity* mutant_base, *mutant_barrack, *mutant_laboratory;
-	StaticEntity* brotherhood_base, *brotherhood_barrack, *brotherhood_laboratory;
-
+	
 	//random map ----------------------------
 
 	std::string modules[4];
@@ -78,7 +69,7 @@ bool j1Scene::Start()
 	modules[2] += ("_low_left.tmx");
 	modules[3] += ("_low_right.tmx");
 
-    // --------------------------------------
+	// --------------------------------------
 
 	if (App->map->Load(modules) == true)
 	{
@@ -90,45 +81,6 @@ bool j1Scene::Start()
 		RELEASE_ARRAY(data);
 	}
 
-	vault[0] = (DynamicEntity*)App->entities->CreateEntity(VAULT, MELEE, 14, 6);
-	vault[1] = (DynamicEntity*)App->entities->CreateEntity(VAULT, RANGED, 15, 6);
-	vault[2] = (DynamicEntity*)App->entities->CreateEntity(VAULT, GATHERER, 16, 6);
-
-	ghoul[0] = (DynamicEntity*)App->entities->CreateEntity(GHOUL, MELEE, 14, 3);
-	ghoul[0]->direction = BOTTOM_LEFT;
-	ghoul[1] = (DynamicEntity*)App->entities->CreateEntity(GHOUL, RANGED, 15, 3);
-	ghoul[1]->direction = BOTTOM_LEFT;
-	ghoul[2] = (DynamicEntity*)App->entities->CreateEntity(GHOUL, GATHERER, 16, 3);
-	ghoul[2]->direction = BOTTOM_LEFT;
-
-	mutant[0] = (DynamicEntity*)App->entities->CreateEntity(MUTANT, MELEE, 18, 3);
-	mutant[0]->direction = BOTTOM_LEFT;
-	mutant[1] = (DynamicEntity*)App->entities->CreateEntity(MUTANT, RANGED, 19, 3);
-	mutant[1]->direction = BOTTOM_LEFT;
-	mutant[2] = (DynamicEntity*)App->entities->CreateEntity(MUTANT, GATHERER, 20, 3);
-	mutant[2]->direction = BOTTOM_LEFT;
-
-	brotherhood[0] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, MELEE, 18, 6);
-	brotherhood[1] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, RANGED, 19, 6);
-	brotherhood[2] = (DynamicEntity*)App->entities->CreateEntity(BROTHERHOOD, GATHERER, 20, 6);
-
-	//ghoul_base = (StaticEntity*)App->entities->CreateBuilding(GHOUL, BASE, {0,0}, {3,3});
-	//ghoul_barrack = (StaticEntity*)App->entities->CreateBuilding(GHOUL, BARRACK, { 64,64 }, { 3,3 });
-	//ghoul_laboratory = (StaticEntity*)App->entities->CreateBuilding(GHOUL, LABORATORY, { 6,6 }, { 3,3 });
-
-	//vault_base = (StaticEntity*)App->entities->CreateBuilding(VAULT, BASE, { 0,0 }, { 3,3 });
-	//vault_barrack = (StaticEntity*)App->entities->CreateBuilding(VAULT, BARRACK, { 3,3 }, { 3,3 });
-	//vault_laboratory = (StaticEntity*)App->entities->CreateBuilding(VAULT, LABORATORY, { 6,6 }, { 3,3 });
-
-	//mutant_base = (StaticEntity*)App->entities->CreateBuilding(MUTANT, BASE, { 0,0 }, { 3,3 });
-	//mutant_barrack = (StaticEntity*)App->entities->CreateBuilding(MUTANT, BARRACK, { 3,3 }, { 3,3 });
-	//mutant_laboratory = (StaticEntity*)App->entities->CreateBuilding(MUTANT, LABORATORY, { 6,6 }, { 3,3 });
-
-	//brotherhood_base = (StaticEntity*)App->entities->CreateBuilding(BROTHERHOOD, BASE, { 0,0 }, { 3,3 });
-	//brotherhood_barrack = (StaticEntity*)App->entities->CreateBuilding(BROTHERHOOD, BARRACK, { 3,3 }, { 3,3 });
-	//brotherhood_laboratory = (StaticEntity*)App->entities->CreateBuilding(BROTHERHOOD, LABORATORY, { 6,6 }, { 3,3 });
-
-	//App->audio->PlayMusic("audio/music/elevator_music.ogg", 4.0F);
 	App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
 
 	App->entities->CreateEntity(VAULT, RANGED, 20, 20);
@@ -152,8 +104,6 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	bool ret = true;
-
 	App->map->Draw();
 
 	// Gui ---
@@ -162,24 +112,19 @@ bool j1Scene::Update(float dt)
 		if (create == true) {
 
 			App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
+			App->isPaused = false;
 			create = false;
-
 		}
 
 		else if (create == false) {
 
-
 			App->menu_manager->CreatePauseMenu();
+			App->isPaused = true;
 			create = true;
-
 		}
 
 	}
-	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
 
-		App->transition->Transition();
-
-	}
 	int x, y;
 	App->input->GetMousePosition(x, y);
 	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
@@ -218,22 +163,8 @@ bool j1Scene::Update(float dt)
 		Mix_SetPosition(4, 90, 200);
 		App->audio->PlayFx(4, App->audio->explosion, 0);
 	}
+	*/
 
-	/*
-	Mix_HaltChannel(-1);
-	int distance = (App->render->camera.x * App->render->camera.x + App->render->camera.y * App->render->camera.y); // cause remember, inverse square law
-	distance = distance / 500; //to scale a bit
-	int volume = (distance * 255) / App->render->camera.w;
-	if (volume < 0) { volume = 0; } if (volume > 255) { volume = 255; }
-
-	float angle = 90;
-	if (App->render->camera.y == 0) {
-		angle = atan(-App->render->camera.x);
-	}
-	else {
-		angle = atan((-App->render->camera.x) / (App->render->camera.y));
-	}
-	angle = angle * 57 + 360; //conversion from rad to degree +270. We add +90 extra cause sdl has 0 as its front for some fkn reason.
 
 	//Used to select units and groups
 	RectangleSelection();
@@ -246,8 +177,6 @@ bool j1Scene::PostUpdate()
 {
 	bool ret = true;
 
-	/*if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;*/
 
 	return ret;
 }

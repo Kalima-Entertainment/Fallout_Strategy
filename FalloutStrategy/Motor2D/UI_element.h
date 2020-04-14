@@ -98,6 +98,7 @@ public:
 
 	//UI elements position and dimensions
 	iPoint pos;
+	
 	SDL_Rect dimensions;
 	
 	SDL_Texture* texture;
@@ -106,13 +107,12 @@ public:
 
 	j1Module* observer = nullptr;
 
+	std::string font_text;
+
 	bool destroy;
-	bool drawable = true;
-	bool hover = false;
 
 	//pointer to an element
 	UI_element*	element_UI;
-
 
 };
 

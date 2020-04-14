@@ -11,9 +11,6 @@ bool j1Image::Draw() {
 	
 	texture = App->gui->GetAtlas();
 
-	if (!drawable)
-		return true;
-
 	if (texture != nullptr)
 	{
 		App->render->Blit_UI(texture, pos.x, pos.y, &dimensions, SDL_FLIP_NONE, 0.0f);

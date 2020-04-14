@@ -20,7 +20,7 @@ enum class Menu {
 	SELECT_FACTION,
 	PAUSE_MENU,
 	GUI,
-	BUI_BASES, 
+	BUI_BASES,
 	NO_MENU,
 };
 
@@ -43,6 +43,7 @@ enum class BUILDING_TYPE {
 	NONE,
 };
 
+
 class MenuManager :public j1Module {
 
 public:
@@ -52,7 +53,7 @@ public:
 
 
 public:
-	
+
 	void CreateMenu(Menu menu);
 	void DestroyMenu(Menu menu);
 	void DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type);
@@ -73,17 +74,17 @@ public:
 	void CreateSuperMutants_Base();
 	void CreateSuperMutants_Barrack();
 	void CreateSuperMutants_Lab();
-	
+
 
 	void CreateGhouls_Base();
 	void CreateGhouls_Barrack();
 	void CreateGhouls_Lab();
-	
+
 
 	void CreateVault_Base();
 	void CreateVault_Barrack();
 	void CreateVault_Lab();
-	
+
 
 
 public:
@@ -91,19 +92,19 @@ public:
 	UI_element* main_menu[14];
 	UI_element* settings_menu[18];
 	UI_element* credits_menu[13];
-	UI_element* collaborators[9]; 
+	UI_element* collaborators[9];
 	UI_element* select_faction_menu[12];
 	UI_element* select_faction_photos[4];
 	UI_element* pause_menu[7];
 	UI_element* gui_ingame[5];
-	
+
 
 
 
 	UI_element* brotherhood_base[3];
 	UI_element* brotherhood_barrack[5];
 	UI_element* brotherhood_lab[1];
-	
+
 	UI_element* ghoul_base[3];
 	UI_element* ghoul_barrack[5];
 	UI_element* ghoul_lab[1];

@@ -35,6 +35,7 @@ struct Unit_Data {
 	int cost_water;
 	int cost_meat;
 	int spawn_seconds;
+
 };
 
 class j1EntityManager : public j1Module
@@ -56,6 +57,7 @@ public:
 	void OnCommand(std::vector<std::string> command_parts);
 
 	j1Entity* CreateEntity(Faction faction, EntityType type, int position_x, int position_y);
+	virtual void SpawnUnit(int buildingID, EntityType type);
 	j1Entity* FindEntityByTile(iPoint tile);
 	j1Entity* FindEntityByType(Faction faction, EntityType type);
 	ResourceBuilding* FindResourceBuildingByTile(iPoint tile);
@@ -70,7 +72,6 @@ public:
 
 	void RandomFactions();
 	Faction FactionByIndex(int i) { return static_cast<Faction>(i); }
-
 public:
 
 	std::vector<j1Entity*> entities;

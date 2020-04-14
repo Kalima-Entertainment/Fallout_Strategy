@@ -20,7 +20,6 @@ j1Entity::j1Entity() {
 	spawnPosition = {NULL,NULL};
 
 	max_health = current_health = 100;
-	cost_caps = cost_food = cost_water = 10;
 
 	current_animation = nullptr;
 	faction = VAULT;

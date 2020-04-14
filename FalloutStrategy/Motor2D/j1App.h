@@ -28,7 +28,6 @@ class MainMenu;
 class j1Console;
 class j1MovementManager;
 class AI_Manager;
-class j1Transition;
 
 class j1App
 {
@@ -114,7 +113,6 @@ public:
 	j1Console*			console = NULL;
 	j1MovementManager*  Mmanager = NULL;
 	AI_Manager*			ai_manager = NULL;
-	j1Transition*		transition = NULL;
 
 	bool isPaused;
 	bool quitGame = false;

@@ -11,23 +11,21 @@
 #include "j1Input.h"
 #include "j1Console.h"
 
-ImputText::ImputText(int x, int y, UI_Type type, p2SString text_input, UI_element* parent, j1Module* Observer) : UI_element(x, y, type, parent, Observer) {
+InputText::InputText(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer, std::string font) : UI_element(x, y, type, parent, Observer) {
 
 	type = InputBox;
 	this->pos.x = x;
 	this->pos.y = y;
 
-	labelInputText = (UI_Label*)App->gui->CreateLabel(x, y, Label, text_input, this, NULL, nullptr);
+	labelInputText = (UI_Label*)App->gui->CreateLabel(x, y, Label, text_input, NULL, NULL, NULL, font);
 
-
+	font_text = font;
 }
 
-ImputText::~ImputText() {
-
-}
+InputText::~InputText() {}
 
 
-bool ImputText::Update(float dt) {
+bool InputText::Update(float dt) {
 
 	if (InputText_Actived) {
 
@@ -35,14 +33,17 @@ bool ImputText::Update(float dt) {
 		if (App->input->isPresed) {
 			text += App->input->newLetter;
 			App->font->CalcSize(text.data(), r.w, r.h);
-			texture = App->font->Print(text.data());
+			texture = App->font->Print(text.data(), {255,255,255,255}, font_text);
 			App->input->isPresed = false;
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN) {
-			text.pop_back();
-			App->font->CalcSize(text.data(), r.w, r.h);
-			texture = App->font->Print(text.data());
+			if (text.size() > 0)
+			{
+				text.pop_back();
+				App->font->CalcSize(text.data(), r.w, r.h);
+				texture = App->font->Print(text.data(), {255, 255, 255, 255}, font_text);
+			}
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
@@ -58,9 +59,8 @@ bool ImputText::Update(float dt) {
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN) {
 		InputText_Actived = !InputText_Actived;
 		if (InputText_Actived) {
-			labelInputText->SetLabelText("");
+			labelInputText->SetLabelText("", font_text);
 			SDL_StartTextInput();
-
 		}
 	}
 
