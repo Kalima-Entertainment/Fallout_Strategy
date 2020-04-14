@@ -15,6 +15,8 @@
 #include "brofiler/Brofiler/Brofiler.h"
 #include "MenuManager.h"
 #include "j1Console.h"
+#include "AI_Manager.h"
+#include "AI_Player.h"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -43,7 +45,7 @@ j1EntityManager::j1EntityManager(){
 
 j1EntityManager::~j1EntityManager(){}
 
-j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int position_x, int position_y){
+j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int position_x, int position_y, GenericPlayer* owner){
 	BROFILER_CATEGORY("EntityCreation", Profiler::Color::Linen)
 	//static_assert(EntityType::UNKNOWN == 4, "code needs update");
 
@@ -176,6 +178,11 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		}
 	}
 
+	if (App->ai_manager->ai_player[faction] == nullptr)
+		entity->owner = App->player;
+	else
+		entity->owner = App->ai_manager->ai_player[faction];
+
 	return entity;
 }
 
@@ -196,7 +203,7 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 		for (int type = MELEE; type < NO_TYPE; type++)
 		{
 			reference_entities[faction][type] = nullptr;
-			reference_entities[faction][type] = CreateEntity((Faction)faction, (EntityType)type, faction, type);
+			reference_entities[faction][type] = CreateEntity((Faction)faction, (EntityType)type, faction, type, nullptr);
 		}
 	}
 
