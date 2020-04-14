@@ -3,6 +3,7 @@
 #include "DynamicEntity.h"
 #include "StaticEntity.h"
 #include "AI_Manager.h"
+#include "j1EntityManager.h"
 
 AI_Player::AI_Player(Faction g_faction) : GenericPlayer() {
 	faction = g_faction;
@@ -10,6 +11,8 @@ AI_Player::AI_Player(Faction g_faction) : GenericPlayer() {
 	caps = 100;
 	water = 100;
 	food = 100;
+	melee_minimum = 6;
+	ranged_minimum = 3;
 }
 
 AI_Player::~AI_Player() {
@@ -18,6 +21,8 @@ AI_Player::~AI_Player() {
 
 bool AI_Player::Update(float dt) {
 	bool ret = true;
+
+	// Gather -----------------------------------------------------
 
 	for (int i = 0; i < gatherers.size(); i++)
 	{
@@ -37,19 +42,50 @@ bool AI_Player::Update(float dt) {
 		}
 	}
 
+	// ------------------------------------------------------------
+
+	//Spawn Units -------------------------------------------------
+
+	//melee-ranged proportion
+	float mr_proportion = melees.size() / rangeds.size();
+
+	//spawn melee
+	if ((water > App->entities->unit_data[faction][MELEE].cost_water)&&(caps > App->entities->unit_data[faction][MELEE].cost_meat) && (mr_proportion < 2)) {
+		barrack[0]->SpawnUnit(MELEE);
+		water -= App->entities->unit_data[faction][MELEE].cost_water;
+		food -= App->entities->unit_data[faction][MELEE].cost_meat;
+	}
+
+	//spawn ranged
+	if ((water > App->entities->unit_data[faction][RANGED].cost_water) && (caps > App->entities->unit_data[faction][RANGED].cost_meat)) {
+		barrack[1]->SpawnUnit(RANGED);
+		water -= App->entities->unit_data[faction][RANGED].cost_water;
+		food -= App->entities->unit_data[faction][RANGED].cost_meat;
+	}
+
 	//if the ai_player is ready choose a player to attack
-	if ((rangeds.size() > 3) && (melees.size() > 6) && (target_player == nullptr)) { 
+	if ((rangeds.size() > ranged_minimum) && (melees.size() > melee_minimum) && (target_player == nullptr)) { 
 		ChooseRandomPlayerEnemy();
 	}
+
+	// -------------------------------------------------------------
+
+	// Fight -------------------------------------------------------
+
+	//TODO
+
+	// -------------------------------------------------------------
 
 	return ret;
 }
 
 void AI_Player::ChooseRandomPlayerEnemy() {
 	srand(time(NULL));
-	int enemy_faction = rand() % 4;
+	int enemy_faction;
+
 	do
 	{
+		enemy_faction = rand() % 4;
 		target_player = App->ai_manager->ai_player[enemy_faction];
 	} while (enemy_faction == faction);
 

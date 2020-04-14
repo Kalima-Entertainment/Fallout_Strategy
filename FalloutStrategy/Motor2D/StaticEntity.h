@@ -46,6 +46,7 @@ public:
 	std::vector<iPoint> tiles;
 	StaticState state;
 	Spawn_Stack spawn_stack[10];
+
 private:
 	int gen_speed;
 	Animation animations[3];

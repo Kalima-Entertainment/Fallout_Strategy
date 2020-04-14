@@ -70,20 +70,19 @@ bool StaticEntity::Update(float dt) {
 	}
 
 	//Spawning Units with timer and stack
-	{				
+	{
 		if (spawning == false && spawn_stack[0].type != NO_TYPE) {
 			chrono.Start();
 			spawning = true;
 		}
 		if (spawning == true) {
 			if (chrono.ReadSec() > spawn_stack[0].spawn_seconds) {
-				App->entities->CreateEntity(faction, spawn_stack[0].type, spawnPosition.x, spawnPosition.y);
+				App->entities->CreateEntity(faction, spawn_stack[0].type, spawnPosition.x, spawnPosition.y, owner);
 				LOG("Unit Spawned");
 				UpdateSpawnStack();
 			}
 			time_left = spawn_stack[0].spawn_seconds - chrono.ReadSec();
 		}
-
 	}
 
 	//Interact with the building to spawn units or investigate upgrades
@@ -117,7 +116,7 @@ bool StaticEntity::Update(float dt) {
 				Upgrade(faction, "units_health");
 			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 				Upgrade(faction, "units_creation_time");
-		}		
+		}
 	}
 
 	last_dt = dt;
@@ -133,8 +132,8 @@ bool StaticEntity::PostUpdate() {
 
 	App->render->Blit(reference_entity->texture, render_texture_pos.x, render_texture_pos.y, &current_animation->GetCurrentFrame(last_dt));
 
-	if (App->render->debug) 
-		App->render->DrawQuad({ (int)render_position.x, render_position.y, 4,4 }, 255, 0, 0, 255); 
+	if (App->render->debug)
+		App->render->DrawQuad({ (int)render_position.x, render_position.y, 4,4 }, 255, 0, 0, 255);
 
 	//Health bar stats
 	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 80, 4 };
@@ -143,7 +142,7 @@ bool StaticEntity::PostUpdate() {
 	App->render->DrawQuad(background_bar, 255, 255, 255, 255);
 	App->render->DrawQuad(foreground_bar, 230, 165, 30, 255);
 
-	//Spawn bar 
+	//Spawn bar
 	if (spawning) {
 		SDL_Rect spawn_bar_background = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.25f, 80, 4 };
 		SDL_Rect spawn_bar_foreground = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.25f, (float)time_left / spawn_stack[0].spawn_seconds * spawn_bar_background.w, 4 };
@@ -171,7 +170,7 @@ bool StaticEntity::LoadReferenceData() {
 }
 
 bool StaticEntity::LoadAnimations() {
-	
+
 	bool ret = true;
 	char* faction_char = "NoFaction";
 	float speed_multiplier = 0.065f;
@@ -272,7 +271,7 @@ bool StaticEntity::LoadAnimations() {
 }
 
 void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
-	
+
 	if (upgrade_name == "base_resource_limit") {
 		if (storage_capacity < max_capacity) {
 			int cost = base_resource_limit[faction].first_price + (base_resource_limit[faction].price_increment * base_resource_limit[faction].upgrade_num);
@@ -296,8 +295,8 @@ void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
 		if (App->player->caps >= cost) {
 			for (int i = 0; i < App->entities->entities.size(); i++) {
 				if(App->entities->entities[i]->faction = faction)
-					if (App->entities->entities[i]->type == GATHERER ) 
-						App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.5);	
+					if (App->entities->entities[i]->type == GATHERER )
+						App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.5);
 			}
 			//Pay the price
 			App->player->UpdateResourceData(Resource::CAPS, -cost);
@@ -308,7 +307,7 @@ void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
 	}
 	else if (upgrade_name == "units_damage") {
 		int cost = units_damage[faction].first_price + (units_damage[faction].price_increment * units_damage[faction].upgrade_num);
-		
+
 		if (App->player->caps >= cost) {
 			for (int i = 0; i < App->entities->entities.size(); i++) {
 				if (App->entities->entities[i]->faction = faction)
@@ -330,7 +329,7 @@ void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
 				if (App->entities->entities[i]->faction = faction) {
 					App->entities->entities[i]->speed.x += App->entities->entities[i]->speed.x * 0.15;
 					App->entities->entities[i]->speed.y += App->entities->entities[i]->speed.y * 0.15;
-				}				
+				}
 			}
 			//Pay the price
 			App->player->UpdateResourceData(Resource::CAPS, -cost);
@@ -348,7 +347,7 @@ void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
 					if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED) {
 						App->entities->entities[i]->max_health += (int)(App->entities->entities[i]->max_health * 0.15);
 						App->entities->entities[i]->current_health += (int)(App->entities->entities[i]->max_health * 0.15);
-					}						
+					}
 			}
 			units_health[faction].upgrade_num++;
 		}
@@ -357,9 +356,12 @@ void StaticEntity::Upgrade(Faction faction, std::string upgrade_name) {
 		int cost = units_creation_time[faction].first_price + (units_creation_time[faction].price_increment * units_creation_time[faction].upgrade_num);
 
 		if (App->player->caps >= cost) {
-			for (int i = 0; i < 12; i++) 
-				App->entities->unit_data[i].spawn_seconds -= App->entities->unit_data[i].spawn_seconds * 0.05;			
-
+			for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < 3; j++)
+				{
+					App->entities->unit_data[i][j].spawn_seconds -= App->entities->unit_data[i][j].spawn_seconds * 0.05;
+				}
+			}
 			units_creation_time[faction].upgrade_num++;
 		}
 	}
@@ -371,38 +373,30 @@ void StaticEntity::SpawnUnit(EntityType type) {
 	int spawn_seconds;
 	//Look for that unit data (spawn_seconds and cost)
 
-	for (int j = 0; j < 12; j++) {
-		if (App->entities->unit_data[j].faction == faction)
-			if (App->entities->unit_data[j].type == type) {
-				cost_water = App->entities->unit_data[j].cost_water;
-				cost_meat = App->entities->unit_data[j].cost_meat;
-				spawn_seconds = App->entities->unit_data[j].spawn_seconds;				
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 3; j++) {
+			cost_water = App->entities->unit_data[i][j].cost_water;
+			cost_meat = App->entities->unit_data[i][j].cost_meat;
+			spawn_seconds = App->entities->unit_data[i][j].spawn_seconds;
 
-				if (App->player->god_mode == true) {
-					cost_meat = 0;
-					cost_water = 0;
-					spawn_seconds = 1;
-				}
-					
+			if (App->player->water >= cost_water && App->player->food > cost_meat) {
+				//Substract resources
+				App->player->UpdateResourceData(Resource::WATER, -cost_water);
+				App->player->UpdateResourceData(Resource::FOOD, -cost_meat);
 
-				if (App->player->water >= cost_water && App->player->food > cost_meat) {
-					//Substract resources
-					App->player->UpdateResourceData(Resource::WATER, -cost_water);
-					App->player->UpdateResourceData(Resource::FOOD, -cost_meat);
+				//Add to stack
+				for (int i = 0; i < 10; i++) {
+					if (spawn_stack[i].type == NO_TYPE) {
 
-					//Add to stack
-					for (int i = 0; i < 10; i++) {
-						if (spawn_stack[i].type == NO_TYPE) {
-
-							spawn_stack[i].type = type;
-							spawn_stack[i].spawn_seconds = spawn_seconds;
-							LOG("Added to stack. Waiting %i seconds to spawn", spawn_seconds);
-							break;
-						}
+						spawn_stack[i].type = type;
+						spawn_stack[i].spawn_seconds = spawn_seconds;
+						LOG("Added to stack. Waiting %i seconds to spawn", spawn_seconds);
+						break;
 					}
 				}
-				break;
 			}
+			break;
+		}
 	}
 }
 
