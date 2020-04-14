@@ -20,6 +20,7 @@ public:
 
 public:
 	j1Entity* selected_entity;
+	j1Entity* last_selected_entity;
 	bool god_mode;
 
 private:

@@ -17,7 +17,7 @@
 #include "j1Console.h"
 
 j1Player::j1Player() : GenericPlayer() {
-	selected_entity = nullptr;
+	selected_entity = last_selected_entity = nullptr;
 	border_scroll = false;
 	mouse_speed_multiplier = 1.5f;
 
@@ -92,7 +92,8 @@ bool j1Player::PreUpdate() {
 		}
 
 		if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)&&(selected_entity != nullptr)) {
-			MoveEntity();
+			if(selected_entity->is_dynamic)
+				MoveEntity();
 		}
 
 		//move camera
@@ -190,6 +191,9 @@ j1Entity* j1Player::SelectEntity() {
 			}
 		}
 	}
+
+	if (selected_entity != nullptr)
+		last_selected_entity = selected_entity;
 
 	return nullptr;
 }

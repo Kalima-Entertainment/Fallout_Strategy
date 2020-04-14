@@ -358,6 +358,7 @@ void StaticEntity::SpawnUnit(EntityType type) {
 	int cost_water, cost_meat;
 	int spawn_seconds;
 	//Look for that unit data (spawn_seconds and cost)
+
 	if (faction != NULL)
 		for (int j = 0; j < 12; j++) {
 			if (App->entities->unit_data[j].faction == faction)
