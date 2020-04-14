@@ -35,7 +35,7 @@ bool LogoScene::LoadAnimations()
 
 	if (result == NULL)
 	{
-		LOG("Could not load animation tmx file %s. pugi error: %s", "gui/loading.tmx", result.description());
+		LOG("Could not load animation tmx file %s. pugi error: %s", "gui/LogoIntro.tmx", result.description());
 		ret = false;
 	}
 
@@ -66,6 +66,7 @@ bool LogoScene::LoadAnimations()
 		frame = frame.next_sibling();
 	}
 	loader->loop = true;
+	
 	
 
 	animation = animation.next_sibling();

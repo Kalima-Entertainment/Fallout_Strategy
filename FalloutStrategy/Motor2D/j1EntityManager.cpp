@@ -11,20 +11,41 @@
 #include "j1Audio.h"
 #include "DynamicEntity.h"
 #include "StaticEntity.h"
-#include "Player.h"
+#include "j1Player.h"
 #include "brofiler/Brofiler/Brofiler.h"
 #include "MenuManager.h"
+#include "j1Console.h"
+#include "AI_Manager.h"
+#include "AI_Player.h"
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <string>
 
 j1EntityManager::j1EntityManager(){
 	name = ("entities");
 
 	selected_unit_tex = nullptr;
 	blocked_movement = false;
+
+	unit_data[0] = { GHOUL, GATHERER, 40, 0 , 15};
+	unit_data[1] = { GHOUL, MELEE,80, 60, 30 };
+	unit_data[2] = { GHOUL, RANGED, 80, 80, 40 };
+	unit_data[3] = { VAULT, GATHERER, 40, 0, 15 };
+	unit_data[4] = { VAULT, MELEE, 60, 60, 30 };
+	unit_data[5] = { VAULT, RANGED, 80, 80, 40 };
+	unit_data[6] = { MUTANT, GATHERER, 50, 0, 15 };
+	unit_data[7] = { MUTANT, MELEE, 80, 100, 30 };
+	unit_data[8] = { MUTANT, RANGED, 80, 120, 40 };
+	unit_data[9] = { BROTHERHOOD, GATHERER, 50, 0, 15 };
+	unit_data[10] = { BROTHERHOOD, MELEE,  100, 80, 30  };
+	unit_data[11] = { BROTHERHOOD, RANGED, 100, 100, 40 };
+
 }
 
 j1EntityManager::~j1EntityManager(){}
 
-j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int position_x, int position_y){
+j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int position_x, int position_y, GenericPlayer* owner){
 	BROFILER_CATEGORY("EntityCreation", Profiler::Color::Linen)
 	//static_assert(EntityType::UNKNOWN == 4, "code needs update");
 
@@ -83,9 +104,8 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 					entity->current_tile.y = position_y;
 
 					break;
-				}				
+				}
 			}
-			
 
 			entity->position = App->map->fMapToWorld(entity->current_tile.x, entity->current_tile.y);
 			entity->position.x += 32;
@@ -102,7 +122,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		entity = new StaticEntity(faction, type);
 		entity->is_dynamic = false;
 		entity->reference_entity = reference_entities[faction][type];
-
+		
 		if (entity != NULL)
 		{
 			entity->faction = faction;
@@ -116,16 +136,58 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 				entity->LoadReferenceData();
 			}
 
+			//Render building
+			entity->render_position = { (int)(entity->position.x - 0.5f * entity->sprite_size),(int)(entity->position.y - entity->sprite_size * 0.75) };
+
 			//Add spawn position for units
-			//TODO: It works for GHOULS, needs to be adapted for all the factions
-			if(type == BASE)
-				entity->spawnPosition = { entity->current_tile.x + 14, entity->current_tile.y + 9 };
-			else if(type == BARRACK)
-				entity->spawnPosition = { entity->current_tile.x + 14, entity->current_tile.y + 9 };
+			if (faction == GHOUL) {
+				if (type == BASE)
+					entity->render_position += App->map->MapToWorld(20, 12);
+				else if (type == BARRACK)
+					entity->render_position += App->map->MapToWorld(20, 13);
+				else if (type == LABORATORY)
+					entity->render_position += App->map->MapToWorld(20, 11);
+			}
+			else if(faction == VAULT){
+				if (type == BASE)
+					entity->render_position += App->map->MapToWorld(9, 5);
+				else if (type == BARRACK)
+					entity->render_position += App->map->MapToWorld(8, 5);
+				else if (type == LABORATORY)
+					entity->render_position += App->map->MapToWorld(7, 3);
+			}
+			else if (faction == MUTANT) {
+				if (type == BASE)
+					entity->render_position += App->map->MapToWorld(10, 6);
+				else if (type == BARRACK)
+					entity->render_position += App->map->MapToWorld(9, 7);
+				else if (type == LABORATORY)
+					entity->render_position += App->map->MapToWorld(9, 6);
+			}
+			else if (faction == BROTHERHOOD) {
+				if (type == BASE)
+					entity->render_position += App->map->MapToWorld(10, 6);
+				else if (type == BARRACK)
+					entity->render_position += App->map->MapToWorld(10, 7);
+				else if (type == LABORATORY)
+					entity->render_position += App->map->MapToWorld(10, 6);
+			}
+
+			//Spawn position is just below render position
+			entity->spawnPosition = { App->map->WorldToMap(entity->render_position.x, entity->render_position.y) };
 		}
 	}
 
+	if (App->ai_manager->ai_player[faction] == nullptr)
+		entity->owner = App->player;
+	else
+		entity->owner = App->ai_manager->ai_player[faction];
+
 	return entity;
+}
+
+void j1EntityManager::SpawnUnit(int buildingID, EntityType type)
+{
 }
 
 bool j1EntityManager::Awake(pugi::xml_node& config){
@@ -133,13 +195,15 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 
 	config_data = config;
 
+	RandomFactions();
+
 	//automatic entities loading
 	for (int faction = VAULT; faction < NO_FACTION; faction++)
 	{
 		for (int type = MELEE; type < NO_TYPE; type++)
 		{
 			reference_entities[faction][type] = nullptr;
-			reference_entities[faction][type] = CreateEntity((Faction)faction, (EntityType)type, faction, type);
+			reference_entities[faction][type] = CreateEntity((Faction)faction, (EntityType)type, faction, type, nullptr);
 		}
 	}
 
@@ -151,26 +215,22 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 bool j1EntityManager::Start() {
 	BROFILER_CATEGORY("EntitiesStart", Profiler::Color::Linen)
 	bool ret = true;
-	//create reference entities
+	
+	App->console->CreateCommand("destroy_all_entities", "remove all dynamic entities", (j1Module*)this);
 
-	//load all textures
-
+	//load all textures and animations
 	for (int faction = VAULT; faction < NO_FACTION; faction++)
 	{
-		for (int type = MELEE; type <= BASE; type++)
+		for (int type = MELEE; type < NO_TYPE; type++)
 		{
 			reference_entities[faction][type]->LoadAnimations();
+			//reference_entities[faction][type]->LoadFx();
 		}
 
 		reference_entities[faction][BARRACK]->texture = reference_entities[faction][BASE]->texture;
 		reference_entities[faction][LABORATORY]->texture = reference_entities[faction][BASE]->texture;
 	}
 
-	//Ghouls
-	//reference_entities[GHOUL][BASE]->LoadAnimations("Ghouls/Ghouls_Base");
-	reference_entities[GHOUL][BARRACK]->LoadAnimations();
-	reference_entities[GHOUL][BARRACK]->texture = reference_entities[GHOUL][BASE]->texture;
-	
 	return ret;
 }
 
@@ -204,9 +264,12 @@ bool j1EntityManager::Update(float dt)
 	BROFILER_CATEGORY("EntitiesUpdate", Profiler::Color::GreenYellow)
 	bool ret = true;
 
-	for (int i = 0; i < entities.size(); i++)
+	if (!App->isPaused)
 	{
-		entities[i]->Update(dt);
+		for (int i = 0; i < entities.size(); i++)
+		{
+			entities[i]->Update(dt);
+		}
 	}
 
 	return ret;
@@ -216,20 +279,41 @@ bool j1EntityManager::PostUpdate()
 {
 	BROFILER_CATEGORY("EntitiesPostUpdate", Profiler::Color::Orange)
 	bool ret = true;
-	SDL_Rect tex_rect = {64,0,64,64 };
+	SDL_Rect tex_rect = {128,0,64,64 };
 	iPoint tex_position;
 
+	//debug kind of entity and path
 	if (App->render->debug) {
 		for (int i = 0; i < entities.size(); i++)
 		{
 			if (entities[i]->is_dynamic)
 			{
-				SDL_Rect rect = { 0,0,64,64 };
+				//Render path
+				if (App->render->debug)
+				{
+					if (entities[i]->path_to_target.size() > 0)
+					{
+						for (uint j = 0; j < entities[i]->path_to_target.size(); ++j)
+						{
+							iPoint pos = App->map->MapToWorld(entities[i]->path_to_target[j].x, entities[i]->path_to_target[j].y);
+							SDL_Rect debug_rect = { 192, 0, 64,64 };
+							App->render->Blit(App->render->debug_tex, pos.x, pos.y, &debug_rect);
+						}
+					}
+				}
+
+				//dynamic entities debug
+				//change color depending on if it's an ally or an enemy
+				SDL_Rect rect;
+				if(App->player->faction == entities[i]->faction ) rect = { 0,0,64,64 };
+				else rect = { 64,0,64,64 };
+
 				tex_position = App->map->MapToWorld(entities[i]->current_tile.x, entities[i]->current_tile.y);
 				App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &rect);
 			}
 			else
 			{
+				//static entities debug
 				StaticEntity* static_entity = (StaticEntity*)entities[i];
 				for (int j = 0; j < static_entity->tiles.size(); j++)
 				{
@@ -239,6 +323,7 @@ bool j1EntityManager::PostUpdate()
 				}
 			}
 		}
+		//resource buildings debug
 		for (int i = 0; i < resource_buildings.size(); i++)
 		{
 			for (int j = 0; j < resource_buildings[i]->tiles.size(); j++)
@@ -258,7 +343,7 @@ bool j1EntityManager::PostUpdate()
 			App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tex_rect);
 		}
 		//Selected entity is a building
-		else { 
+		else {
 			StaticEntity* static_entity = (StaticEntity*)App->player->selected_entity;
 			for (int j = 0; j < static_entity->tiles.size(); j++)
 			{
@@ -270,9 +355,9 @@ bool j1EntityManager::PostUpdate()
 			switch (static_entity->faction) {
 			case GHOUL:
 				if (static_entity->type == BASE) {
-					
-					if(count==0){
-						
+
+					if (count == 0) {
+
 						App->menu_manager->CreateGhouls_Base();
 						count++;
 						LOG("%i", count);
@@ -282,14 +367,14 @@ bool j1EntityManager::PostUpdate()
 				else if (static_entity->type == BARRACK) {
 
 					if (count == 0) {
-						
+
 						App->menu_manager->CreateGhouls_Barrack();
 						count++;
 					}
 
 				}
 				else if (static_entity->type == LABORATORY) {
-					
+
 					if (count == 0) {
 						App->menu_manager->CreateGhouls_Lab();
 						count++;
@@ -298,19 +383,98 @@ bool j1EntityManager::PostUpdate()
 				}
 				break;
 			case BROTHERHOOD:
-				if (static_entity->type == BASE)App->menu_manager->CreateBrotherHood_Base();
-				else if (static_entity->type == BARRACK)App->menu_manager->CreateBrotherHood_Barrack();
-				else if (static_entity->type == LABORATORY)App->menu_manager->CreateBrotherHood_Lab();
+				if (static_entity->type == BASE) {
+
+					if (count == 0) {
+						count++;
+						App->menu_manager->CreateBrotherHood_Base();
+					}
+
+				}
+				else if (static_entity->type == BARRACK) {
+
+					if (count == 0) {
+
+						count++;
+						App->menu_manager->CreateBrotherHood_Barrack();
+
+					}
+
+				}
+				else if (static_entity->type == LABORATORY) {
+
+					if (count == 0) {
+
+						count++;
+						App->menu_manager->CreateBrotherHood_Lab();
+
+					}
+				}
 				break;
+
 			case VAULT:
-				if (static_entity->type == BASE)App->menu_manager->CreateVault_Base();
-				else if (static_entity->type == BARRACK)App->menu_manager->CreateVault_Barrack();
-				else if (static_entity->type == LABORATORY)App->menu_manager->CreateVault_Lab();
+
+				if (static_entity->type == BASE) {
+
+					if (count == 0) {
+
+						count++;
+						App->menu_manager->CreateVault_Base();
+
+					}
+				}
+				else if (static_entity->type == BARRACK){
+
+					if (count == 0) {
+
+						count++;
+						App->menu_manager->CreateVault_Barrack();
+
+					}
+
+				}
+				else if (static_entity->type == LABORATORY) {
+
+					if (count == 0) {
+
+						count++;
+						App->menu_manager->CreateVault_Lab();
+
+					}
+
+				}
 				break;
 			case MUTANT:
-				if (static_entity->type == BASE)App->menu_manager->CreateSuperMutants_Base();
-				else if (static_entity->type == BARRACK)App->menu_manager->CreateSuperMutants_Barrack();
-				else if (static_entity->type == LABORATORY)App->menu_manager->CreateSuperMutants_Lab();
+				if (static_entity->type == BASE) {
+
+					if (count == 0) {
+
+						count++;
+						App->menu_manager->CreateSuperMutants_Base();
+
+					}
+				
+				}
+				else if (static_entity->type == BARRACK) {
+
+					if (count == 0) {
+
+						count++;
+						App->menu_manager->CreateSuperMutants_Barrack();
+
+					}
+
+				}
+				else if (static_entity->type == LABORATORY) {
+
+					if (count == 0) {
+
+						count++;
+						App->menu_manager->CreateSuperMutants_Lab();
+
+					}
+
+				}
 				break;
 			}
 		}
@@ -324,8 +488,13 @@ bool j1EntityManager::PostUpdate()
 		}
 		else
 		{
-			SortEntities();
-			entities[i]->PostUpdate();
+			if ((entities[i]->position.x + entities[i]->sprite_size * 0.5f > -App->render->camera.x) && (entities[i]->position.x - entities[i]->sprite_size * 0.5f < -App->render->camera.x + App->render->camera.w)
+				&& (entities[i]->position.y + entities[i]->sprite_size * 0.25f > -App->render->camera.y) && (entities[i]->position.y - entities[i]->sprite_size * 0.25f < -App->render->camera.y + App->render->camera.h))
+			{
+				// && (entities[i]->position.y - TILE_SIZE > -(App->render->camera.y + App->render->camera.h))) {
+				SortEntities();
+				entities[i]->PostUpdate();
+			}
 		}
 	}
 	return ret;
@@ -411,7 +580,7 @@ void j1EntityManager::SortEntities() {
 
 	for (i = 0; i < n - 1; i++) {
 		for (j = 0; j < n - i - 1; j++) {
-			if (entities[j]->render_position.y > entities[j + 1]->render_position.y)
+			if (entities[j]->position.y > entities[j + 1]->position.y)
 				Swap(j, j + 1);
 		}
 	}
@@ -480,7 +649,7 @@ ResourceBuilding* j1EntityManager::FindResourceBuildingByTile(iPoint tile) {
 	return nullptr;
 }
 
-iPoint j1EntityManager::ClosestTile(iPoint position, std::vector<iPoint> entity_tiles) {
+iPoint j1EntityManager::ClosestTile(iPoint position, std::vector<iPoint> entity_tiles) const {
 	iPoint pivot = entity_tiles[0];
 	for (int i = 0; i < entity_tiles.size(); i++)
 	{
@@ -488,4 +657,59 @@ iPoint j1EntityManager::ClosestTile(iPoint position, std::vector<iPoint> entity_
 			pivot = entity_tiles[i];
 	}
 	return pivot;
+}
+
+ResourceBuilding* j1EntityManager::GetClosestResourceBuilding(iPoint current_position) {
+	ResourceBuilding* closest_building = nullptr;
+	int min_distance = 1000;
+	for (int i = 0; i < resource_buildings.size(); i++)
+	{
+		if (resource_buildings[i]->quantity > 0)
+		{
+			int building_distance = ClosestTile(current_position, resource_buildings[i]->tiles).DistanceManhattan(current_position);
+			if (building_distance < min_distance) {
+				closest_building = resource_buildings[i];
+				min_distance = building_distance;
+			}
+		}
+	}
+
+	return closest_building;
+}
+
+void j1EntityManager::RandomFactions() {
+	Faction faction = static_cast<Faction>(rand() % GHOUL);
+
+	//Initialize at { 0,1,2,3 }
+	for(int i = 0; i < 4; i++)
+		randomFaction[i] = i;
+	
+	//Randomize faction order
+	//std::random_shuffle(&randomFaction[0], &randomFaction[3]);
+
+	srand(time(NULL));
+
+	int temp = 0;
+	int randomIndex = 0;
+
+	for (int i = 0; i < 4; i++) {
+		randomIndex = rand() % 4;
+		temp = randomFaction[i];
+		randomFaction[i] = randomFaction[randomIndex];
+		randomFaction[randomIndex] = temp;
+	}
+
+	
+	for (int i = 0; i < 4; i++)
+		LOG("faction %i", randomFaction[i]);
+}
+
+void j1EntityManager::OnCommand(std::vector<std::string> command_parts) {
+	if (command_parts[0] == "destroy_all_entities") {
+		for (int i = 0; i < entities.size(); i++)
+		{
+			if (entities[i]->is_dynamic)
+				entities[i]->to_destroy = true;
+		}
+	}
 }

@@ -16,6 +16,7 @@ enum class BUTTON_STATE
 	NONE
 };
 
+
 class UI_Button : public UI_element, j1Module
 {
 public:
@@ -27,6 +28,7 @@ public:
 
 	// Called each loop iteration
 	bool Update(float dt);
+
 	// Called each loop iteration
 	bool Draw();
 
@@ -55,6 +57,7 @@ public:
 	int volume_fx;
 	int members_fx;
 	int counter;
+	int character_fx;
 
 	void AddElementToShow(UI_element*);
 
@@ -66,10 +69,6 @@ public:
 	std::list<UI_element*> elements_to_show;
 
 	BUTTON_STATE current_state = BUTTON_STATE::NONE;
-
-private:
-
-	
 
 
 };

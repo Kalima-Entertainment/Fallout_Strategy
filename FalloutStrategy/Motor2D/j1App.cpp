@@ -1,5 +1,5 @@
 #include <iostream> 
-#include <sstream> 
+#include <sstream>
 
 #include "p2Defs.h"
 #include "p2Log.h"
@@ -16,13 +16,16 @@
 #include "j1Gui.h"
 #include "j1App.h"
 #include "j1Collision.h"
-#include "j1Transition.h"
 #include "j1EntityManager.h"
-#include "Player.h"
+#include "j1Player.h"
 #include "j1Minimap.h"
 #include "MenuManager.h"
 #include "MainMenu.h"
+#include "j1Console.h"
+#include "j1MovementManager.h"
+#include "AI_Manager.h"
 #include "LogoScene.h"
+#include "j1Transition.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -41,31 +44,40 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	gui = new j1Gui();
 	collision = new j1Collision();
 	entities = new j1EntityManager();
-	player = new Player();
+	player = new j1Player();
 	minimap = new j1Minimap();
 	menu_manager = new MenuManager();
 	main_menu = new MainMenu();
+	console = new j1Console();
+	Mmanager = new j1MovementManager();
+	ai_manager = new AI_Manager();
 	transition = new j1Transition();
 	logo_scene = new LogoScene();
+
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 	AddModule(input);
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
+
 	AddModule(map);
 	AddModule(collision);
 	AddModule(pathfinding);
 	AddModule(main_menu);
 	AddModule(entities);
 	AddModule(player);
+	AddModule(ai_manager);
 	AddModule(font);
 	AddModule(scene);
 	AddModule(transition);
+	AddModule(Mmanager);
+
 	// scene last
 	AddModule(menu_manager);
 	AddModule(gui);
 	AddModule(minimap);
+	AddModule(console);
 	AddModule(logo_scene);
 
 	// render last to swap buffer
@@ -73,7 +85,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 
 	PERF_PEEK(ptimer);
 
-	pause = false;
+	isPaused = false;
 }
 
 // Destructor
@@ -105,7 +117,7 @@ bool j1App::Awake()
 	pugi::xml_node		app_config;
 
 	bool ret = false;
-		
+
 	config = LoadConfig(config_file);
 
 	if(config.empty() == false)
@@ -149,6 +161,8 @@ bool j1App::Start()
 	}
 
 	startup_time.Start();
+
+	//console->CreateCommand("quit", "Quit the game", (j1Module*)this);
 
 	PERF_PEEK(ptimer);
 
@@ -228,8 +242,8 @@ void j1App::FinishUpdate()
 	static char title[256];
 	//sprintf_s(title, 256, " Fallout Strategy 0.1 | Av.FPS: %.2f Last Frame Ms: %u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %lu %i Camera X: %i Camera Y: %i",
 		//	  avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count, App->render->camera.x, App->render->camera.y);
-	sprintf_s(title, 256, " Fallout Strategy 0.2 | Av.FPS: %.2f | Last dt: %.3f | Time since startup: %.3f | Camera X: %i Camera Y: %i",
-			  avg_fps, dt, seconds_since_startup, App->render->camera.x, App->render->camera.y);
+	sprintf_s(title, 256, " Fallout Strategy 0.4 - Kalima Entertainment | Av.FPS: %.2f | Last dt: %.3f | Camera X: %i Camera Y: %i",
+			  avg_fps, dt, App->render->camera.x, App->render->camera.y);
 	App->win->SetTitle(title);
 
 	if(capped_ms > 0 && last_frame_ms < capped_ms)
@@ -416,7 +430,7 @@ bool j1App::SavegameNow() const
 	// xml object were we will store all data
 	pugi::xml_document data;
 	pugi::xml_node root;
-	
+
 	root = data.append_child("game_state");
 	j1Module* pModule = modules[0];
 
@@ -441,4 +455,13 @@ bool j1App::SavegameNow() const
 	data.reset();
 	want_to_save = false;
 	return ret;
+}
+
+void j1App::OnCommand(std::vector<std::string> command_parts) {
+	std::string command_beginning = command_parts[0];
+
+	if (command_beginning == "quit") {
+		//quitGame = true;
+	}
+
 }

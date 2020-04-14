@@ -34,8 +34,6 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(int channel, unsigned int fx, int repeat = 0);
 
-	uint explosion;
-
 	void Change_Volume_Music(float value);
 	void Change_Volume_FX(float value);
 
@@ -43,10 +41,33 @@ public:
 	float Get_Music_Volume();
 	float Get_FX_Volume();
 
+	int Brotherhood_walk;
+	int Brotherhood_die;
+	int Brotherhood_hit;
+	int Brotherhood_attack;
+
+	int Mutant_die;
+	int Mutant_hit;
+	int Mutant_attack;
+
+	int Vault_die;
+	int Vault_hit;
+	int Vault_attack;
+
+	int Ghoul_die;
+	int Ghoul_hit;
+	int Ghoul_attack;
+
+	int pistol;
+	int minigun;
+	int explode;
+	int factory;
+
 private:
 
 	float				music_volume;
 	float				fx_volume;
+
 
 	_Mix_Music*			music = NULL;
 	std::vector<Mix_Chunk*> fx;

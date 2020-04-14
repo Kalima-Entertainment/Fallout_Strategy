@@ -140,8 +140,8 @@ void j1Transition::Transition()
 	SDL_Rect screen;
 	screen.x = -1 * App->render->camera.x;
 	screen.y = -1 * App->render->camera.y;
-	screen.w = App->win->width * App->win->GetScale();
-	screen.h = App->win->height * App->win->GetScale();
+	//screen.w = App->win->width * App->win->GetScale();
+	//screen.h = App->win->height * App->win->GetScale();
 	App->render->DrawQuad(screen, 0, 0, 0, alpha);
 	if (fadetimer.Read() > 1000) {
 		fade = false;
