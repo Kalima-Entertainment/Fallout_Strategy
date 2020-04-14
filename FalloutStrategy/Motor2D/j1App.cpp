@@ -22,6 +22,7 @@
 #include "j1Minimap.h"
 #include "MenuManager.h"
 #include "MainMenu.h"
+#include "LogoScene.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -45,6 +46,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	menu_manager = new MenuManager();
 	main_menu = new MainMenu();
 	transition = new j1Transition();
+	logo_scene = new LogoScene();
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 	AddModule(input);
@@ -64,6 +66,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(menu_manager);
 	AddModule(gui);
 	AddModule(minimap);
+	AddModule(logo_scene);
 
 	// render last to swap buffer
 	AddModule(render);

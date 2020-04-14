@@ -26,6 +26,7 @@ class j1Minimap;
 class MenuManager;
 class MainMenu;
 class j1Transition;
+class LogoScene;
 
 class j1App
 {
@@ -107,6 +108,7 @@ public:
 	MenuManager*		menu_manager = NULL;
 	MainMenu*			main_menu = NULL;
 	j1Transition*		transition = NULL;
+	LogoScene*			logo_scene = NULL;
 	bool pause;
 	bool				quitGame = false;
 
