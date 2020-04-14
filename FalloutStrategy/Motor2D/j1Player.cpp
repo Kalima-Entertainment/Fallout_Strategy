@@ -21,6 +21,8 @@ j1Player::j1Player() : GenericPlayer() {
 	border_scroll = false;
 	mouse_speed_multiplier = 1.5f;
 
+	base = barrack[0] = barrack[1] = laboratory = nullptr;
+
 	caps = 2000;
 	food = 2000;
 	water = 2000;

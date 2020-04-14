@@ -4,6 +4,7 @@
 #include <vector>
 
 class j1Entity;
+class DynamicEntity;
 enum Faction;
 
 class AI_Player : public GenericPlayer
@@ -13,6 +14,12 @@ public:
 	~AI_Player();
 
 	bool Update(float dt);
+	
+	GenericPlayer* target_player;
+
+	std::vector<DynamicEntity*> gatherers;
+	std::vector<DynamicEntity*> rangeds;
+	std::vector<DynamicEntity*> melees;
 
 private:
 };

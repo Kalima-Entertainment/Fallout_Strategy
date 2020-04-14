@@ -5,6 +5,7 @@
 
 class j1Entity;
 class DynamicEntity;
+class StaticEntity;
 enum class Resource;
 enum Faction;
 
@@ -23,6 +24,9 @@ public:
 	int food;
 	Faction faction;
 	std::vector<j1Entity*> entities;
+	StaticEntity* base;
+	StaticEntity* barrack[2];
+	StaticEntity* laboratory;
 };
 
 #endif // !_GENERIC_PLAYER_H_
