@@ -60,6 +60,7 @@ private:
 
 	j1Timer chrono;
 	bool spawning;
+	float time_left;
 };
 
 #endif // !_STATIC_ENTITY_H

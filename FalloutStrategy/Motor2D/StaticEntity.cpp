@@ -45,6 +45,8 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
 	for (int i = 0; i < 10; i++)
 		spawn_stack[i].type = NO_TYPE;
 	spawning = false;
+
+	time_left = 0;
 }
 
 StaticEntity::~StaticEntity() {}
@@ -79,7 +81,9 @@ bool StaticEntity::Update(float dt) {
 				LOG("Unit Spawned");
 				UpdateSpawnStack();
 			}
+			time_left = spawn_stack[0].spawn_seconds - chrono.ReadSec();
 		}
+
 	}
 
 	//Interact with the building to spawn units or investigate upgrades
@@ -138,6 +142,14 @@ bool StaticEntity::PostUpdate() {
 	if (foreground_bar.w < 0) foreground_bar.w = 0;
 	App->render->DrawQuad(background_bar, 255, 255, 255, 255);
 	App->render->DrawQuad(foreground_bar, 230, 165, 30, 255);
+
+	//Spawn bar 
+	if (spawning) {
+		SDL_Rect spawn_bar_background = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.25f, 80, 4 };
+		SDL_Rect spawn_bar_foreground = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.25f, (float)time_left / spawn_stack[0].spawn_seconds * spawn_bar_background.w, 4 };
+		App->render->DrawQuad(spawn_bar_background, 100, 100, 100, 255);
+		App->render->DrawQuad(spawn_bar_foreground, 130, 25, 170, 255);
+	}
 
 	return true;
 }
