@@ -14,6 +14,7 @@ enum class BuildingType;
 class DynamicEntity;
 class StaticEntity;
 enum EntityType;
+class GenericPlayer;
 
 #define REFERENCE_ENTITIES 24
 
@@ -56,7 +57,7 @@ public:
 
 	void OnCommand(std::vector<std::string> command_parts);
 
-	j1Entity* CreateEntity(Faction faction, EntityType type, int position_x, int position_y);
+	j1Entity* CreateEntity(Faction faction, EntityType type, int position_x, int position_y, GenericPlayer* owner = nullptr);
 	virtual void SpawnUnit(int buildingID, EntityType type);
 	j1Entity* FindEntityByTile(iPoint tile);
 	j1Entity* FindEntityByType(Faction faction, EntityType type);

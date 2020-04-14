@@ -22,6 +22,7 @@ public:
 	std::vector<DynamicEntity*> melees;
 
 private:
+	void ChooseRandomPlayerEnemy();
 };
 
 

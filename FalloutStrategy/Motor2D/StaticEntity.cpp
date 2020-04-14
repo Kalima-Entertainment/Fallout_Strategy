@@ -147,8 +147,8 @@ bool StaticEntity::PostUpdate() {
 	if (spawning) {
 		SDL_Rect spawn_bar_background = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.25f, 80, 4 };
 		SDL_Rect spawn_bar_foreground = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.25f, (float)time_left / spawn_stack[0].spawn_seconds * spawn_bar_background.w, 4 };
-		App->render->DrawQuad(spawn_bar_background, 100, 100, 100, 255);
-		App->render->DrawQuad(spawn_bar_foreground, 130, 25, 170, 255);
+		App->render->DrawQuad(spawn_bar_background, 150, 150, 150, 255);
+		App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255);
 	}
 
 	return true;
