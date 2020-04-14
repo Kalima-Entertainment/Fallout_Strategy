@@ -68,13 +68,13 @@ bool StaticEntity::Update(float dt) {
 	}
 
 	//Spawning Units with timer and stack
-	{
+	{				
 		if (spawning == false && spawn_stack[0].type != NO_TYPE) {
-			spawn_time = std::chrono::steady_clock::now() + std::chrono::seconds(spawn_stack[0].spawn_seconds);
+			chrono.Start();
 			spawning = true;
 		}
 		if (spawning == true) {
-			if (std::chrono::steady_clock::now() > spawn_time) {				
+			if (chrono.ReadSec() > spawn_stack[0].spawn_seconds) {
 				App->entities->CreateEntity(faction, spawn_stack[0].type, spawnPosition.x, spawnPosition.y);
 				LOG("Unit Spawned");
 				UpdateSpawnStack();

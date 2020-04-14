@@ -58,7 +58,7 @@ private:
 	Upgrades_Data units_health[4];
 	Upgrades_Data units_creation_time[4];
 
-	std::chrono::steady_clock::time_point spawn_time;
+	j1Timer chrono;
 	bool spawning;
 };
 
