@@ -378,6 +378,13 @@ void StaticEntity::SpawnUnit(EntityType type) {
 				cost_meat = App->entities->unit_data[j].cost_meat;
 				spawn_seconds = App->entities->unit_data[j].spawn_seconds;				
 
+				if (App->player->god_mode == true) {
+					cost_meat = 0;
+					cost_water = 0;
+					spawn_seconds = 1;
+				}
+					
+
 				if (App->player->water >= cost_water && App->player->food > cost_meat) {
 					//Substract resources
 					App->player->UpdateResourceData(Resource::WATER, -cost_water);
