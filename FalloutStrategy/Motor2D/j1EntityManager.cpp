@@ -28,19 +28,22 @@ j1EntityManager::j1EntityManager(){
 	selected_unit_tex = nullptr;
 	blocked_movement = false;
 
-	unit_data[0] = { GHOUL, GATHERER, 40, 0 , 15};
-	unit_data[1] = { GHOUL, MELEE,80, 60, 30 };
-	unit_data[2] = { GHOUL, RANGED, 80, 80, 40 };
-	unit_data[3] = { VAULT, GATHERER, 40, 0, 15 };
-	unit_data[4] = { VAULT, MELEE, 60, 60, 30 };
-	unit_data[5] = { VAULT, RANGED, 80, 80, 40 };
-	unit_data[6] = { MUTANT, GATHERER, 50, 0, 15 };
-	unit_data[7] = { MUTANT, MELEE, 80, 100, 30 };
-	unit_data[8] = { MUTANT, RANGED, 80, 120, 40 };
-	unit_data[9] = { BROTHERHOOD, GATHERER, 50, 0, 15 };
-	unit_data[10] = { BROTHERHOOD, MELEE,  100, 80, 30  };
-	unit_data[11] = { BROTHERHOOD, RANGED, 100, 100, 40 };
+	//water, food, time 
+	unit_data[VAULT][MELEE] = {  60, 60, 30  };
+	unit_data[VAULT][RANGED] = { 80, 80, 40 };
+	unit_data[VAULT][GATHERER] = { 40, 0, 15 };
 
+	unit_data[BROTHERHOOD][MELEE] = { 100, 80, 30 };
+	unit_data[BROTHERHOOD][RANGED] = { 100, 100, 40 };
+	unit_data[BROTHERHOOD][GATHERER] = { 50, 0, 15 };
+
+	unit_data[MUTANT][MELEE] = { 80, 100, 30 };
+	unit_data[MUTANT][RANGED] = { 80, 120, 40 };
+	unit_data[MUTANT][GATHERER] = { 50, 0, 15 };
+
+	unit_data[GHOUL][MELEE] = { 80, 60 , 30 };
+	unit_data[GHOUL][RANGED] = { 80, 80, 40 };
+	unit_data[GHOUL][GATHERER] = { 40, 0 , 15 };
 }
 
 j1EntityManager::~j1EntityManager(){}
@@ -180,8 +183,12 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 
 	if (App->ai_manager->ai_player[faction] == nullptr)
 		entity->owner = App->player;
-	else
+	else {
 		entity->owner = App->ai_manager->ai_player[faction];
+		if (type == MELEE)App->ai_manager->ai_player[faction]->melees.push_back((DynamicEntity*)entity);
+		else if (type == RANGED)App->ai_manager->ai_player[faction]->rangeds.push_back((DynamicEntity*)entity);
+		else if (type == GATHERER)App->ai_manager->ai_player[faction]->gatherers.push_back((DynamicEntity*)entity);
+	}
 
 	return entity;
 }

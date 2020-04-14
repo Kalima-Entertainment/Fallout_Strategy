@@ -23,6 +23,8 @@ public:
 
 private:
 	void ChooseRandomPlayerEnemy();
+	int ranged_minimum;
+	int melee_minimum;
 };
 
 

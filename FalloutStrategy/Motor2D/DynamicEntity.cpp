@@ -94,6 +94,14 @@ bool DynamicEntity::Update(float dt) {
 					//give gathered resources
 					else if ((resource_collected > 0) && (target_entity != nullptr) && (target_entity->volume < target_entity->storage_capacity)) {
 						target_entity->volume += resource_collected;
+
+						if (resource_type == Resource::CAPS)
+							owner->caps += resource_collected;
+						if (resource_type == Resource::WATER)
+							owner->water += resource_collected;
+						if (resource_type == Resource::FOOD)
+							owner->food += resource_collected;
+
 						if (owner == App->player) { App->player->UpdateResourceData(resource_type, resource_collected); }
 						resource_collected = 0;
 						target_entity = nullptr;

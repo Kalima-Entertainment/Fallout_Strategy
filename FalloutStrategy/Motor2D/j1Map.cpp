@@ -557,7 +557,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 				y /= HALF_TILE;
 
 				int faction_number = (object_node.child("properties").child("property").attribute("value").as_int());
-				Faction building_faction;				
+				Faction building_faction = NO_FACTION;				
 
 				building_faction = App->entities->FactionByIndex(App->entities->randomFaction[faction_number]);
 
@@ -631,10 +631,13 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 					j1Entity* entity = App->entities->CreateEntity(building_faction, dynamic_type, x + 1, y + 1);
 					App->ai_manager->ai_player[building_faction]->entities.push_back(entity);
 
-					if (dynamic_type == MELEE) App->ai_manager->ai_player[building_faction]->melees.push_back((DynamicEntity*)entity);
-					else if (dynamic_type == RANGED) App->ai_manager->ai_player[building_faction]->rangeds.push_back((DynamicEntity*)entity);
-					else if (dynamic_type == GATHERER) App->ai_manager->ai_player[building_faction]->gatherers.push_back((DynamicEntity*)entity);
-					player = App->player;
+					if (dynamic_type == MELEE) 
+						App->ai_manager->ai_player[building_faction]->melees.push_back((DynamicEntity*)entity);
+					else if (dynamic_type == RANGED) 
+						App->ai_manager->ai_player[building_faction]->rangeds.push_back((DynamicEntity*)entity);
+					else if (dynamic_type == GATHERER) 
+						App->ai_manager->ai_player[building_faction]->gatherers.push_back((DynamicEntity*)entity);
+					player = App->ai_manager->ai_player[building_faction];
 				}
 
 				if (static_entity->type == BASE) player->base = static_entity;

@@ -31,8 +31,6 @@ struct ResourceBuilding {
 };
 
 struct Unit_Data {
-	Faction faction;
-	EntityType type;
 	int cost_water;
 	int cost_meat;
 	int spawn_seconds;
@@ -81,7 +79,7 @@ public:
 
 	int count = 0;
 
-	Unit_Data unit_data[12];
+	Unit_Data unit_data[4][3];
 public:
 
 	j1Entity* reference_entities[4][6];
