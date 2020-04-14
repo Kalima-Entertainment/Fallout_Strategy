@@ -358,32 +358,33 @@ void StaticEntity::SpawnUnit(EntityType type) {
 	int cost_water, cost_meat;
 	int spawn_seconds;
 	//Look for that unit data (spawn_seconds and cost)
-	for (int j = 0; j < 12; j++) {
-		if (App->entities->unit_data[j].faction == faction)
-			if (App->entities->unit_data[j].type == type) {
-				cost_water = App->entities->unit_data[j].cost_water;
-				cost_meat = App->entities->unit_data[j].cost_meat;
-				spawn_seconds = App->entities->unit_data[j].spawn_seconds;
-				break;
-			}
-	}
-	
-	if (App->player->water >= cost_water && App->player->food > cost_meat) {
-		//Substract resources
-		App->player->UpdateResourceData(Resource::WATER, -cost_water);
-		App->player->UpdateResourceData(Resource::FOOD, -cost_meat);
+	if (faction != NULL)
+		for (int j = 0; j < 12; j++) {
+			if (App->entities->unit_data[j].faction == faction)
+				if (App->entities->unit_data[j].type == type) {
+					cost_water = App->entities->unit_data[j].cost_water;
+					cost_meat = App->entities->unit_data[j].cost_meat;
+					spawn_seconds = App->entities->unit_data[j].spawn_seconds;
+					break;
 
-		//Add to stack
-		for (int i = 0; i < 10; i++) {
-			if (spawn_stack[i].type == NO_TYPE) {
+					if (App->player->water >= cost_water && App->player->food > cost_meat) {
+						//Substract resources
+						App->player->UpdateResourceData(Resource::WATER, -cost_water);
+						App->player->UpdateResourceData(Resource::FOOD, -cost_meat);
 
-				spawn_stack[i].type = type;
-				spawn_stack[i].spawn_seconds = spawn_seconds;
-				LOG("Added to stack. Waiting %i seconds to spawn", spawn_seconds);
-				break;
-			}
+						//Add to stack
+						for (int i = 0; i < 10; i++) {
+							if (spawn_stack[i].type == NO_TYPE) {
+
+								spawn_stack[i].type = type;
+								spawn_stack[i].spawn_seconds = spawn_seconds;
+								LOG("Added to stack. Waiting %i seconds to spawn", spawn_seconds);
+								break;
+							}
+						}
+					}
+				}
 		}
-	}		
 }
 
 void StaticEntity::UpdateSpawnStack() {
