@@ -9,10 +9,8 @@ enum class Resource;
 enum Direction {
 	TOP_LEFT,
 	TOP_RIGHT,
-	RIGHT,
 	BOTTOM_RIGHT,
 	BOTTOM_LEFT,
-	LEFT,
 	NO_DIRECTION
 };
 
@@ -57,12 +55,11 @@ public:
 
 public:
 	int mov_speed;
-	int attack_speed;
 	float action_time;
-	iPoint current_speed;
+	fPoint speed;
 	iPoint next_tile;
 
-	Animation animations[MAX_ANIMATIONS][7];
+	Animation animations[MAX_ANIMATIONS][4];
 	Direction direction;
 	DynamicState state;
 	int range;

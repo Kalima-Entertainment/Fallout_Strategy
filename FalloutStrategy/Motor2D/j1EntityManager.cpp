@@ -250,19 +250,11 @@ bool j1EntityManager::CleanUp()
 		for (int type = MELEE; type <= BASE; type++)
 		{
 			App->tex->UnLoad(reference_entities[faction][type]->texture);
+			delete reference_entities[faction][type];
 		}
 	}
 
 	entities.clear();
-	return ret;
-}
-
-bool j1EntityManager::PreUpdate()
-{
-	//BROFILER_CATEGORY("EntitiesPreUpdate", Profiler::Color::Bisque)
-
-	bool ret = true;
-
 	return ret;
 }
 

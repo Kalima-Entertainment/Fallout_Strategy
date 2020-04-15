@@ -35,7 +35,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 	state = IDLE;
 	direction = BOTTOM_RIGHT;
 
-	current_speed = { 0, 0 };
+	speed = { 0, 0 };
 	target_entity = nullptr;
 	resource_building = nullptr;
 	action_time = 3.0f;
@@ -43,7 +43,10 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 	sprite_size = 128;	
 }
 
-DynamicEntity::~DynamicEntity() {}
+DynamicEntity::~DynamicEntity() {
+	target_entity = nullptr;
+	resource_building = nullptr;
+}
 
 bool DynamicEntity::PreUpdate(float dt) {
 	return true;
@@ -187,6 +190,7 @@ bool DynamicEntity::Update(float dt) {
 			attacking_entity->target_entity = nullptr;
 			to_destroy = true;
 		}
+
 		if (reference_entity->faction == MUTANT)
 			if (Mix_Playing(11) == 0) { SpatialAudio(App->audio->Mutant_die, 11, position.x, position.y); }
 		if (reference_entity->faction == VAULT)
@@ -210,6 +214,7 @@ bool DynamicEntity::Update(float dt) {
 		info.current_group->CheckForMovementRequest(dt);
 	}
 
+	//save dt for animations
 	last_dt = dt;
 
 	return true;
@@ -244,7 +249,7 @@ void DynamicEntity::Move(float dt) {
 	if (path_to_target.size() > 0) {
 		//get next tile center
 		next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
-		next_tile_rect_center = { next_tile_position.x + HALF_TILE - 2, next_tile_position.y + HALF_TILE,4,4 };
+		next_tile_rect_center = { next_tile_position.x + HALF_TILE - 2, next_tile_position.y + HALF_TILE, 4, 4 };
 
 		//move to next tile
 		if ((position.x > next_tile_rect_center.x + next_tile_rect_center.w) && (position.x > next_tile_rect_center.x) && (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h)) {
@@ -288,10 +293,6 @@ void DynamicEntity::Move(float dt) {
 			}
 		}
 	}
-	else
-	{
-		//state = IDLE;
-	}
 }
 
 void DynamicEntity::Attack() {
@@ -308,6 +309,8 @@ void DynamicEntity::Attack() {
 		}
 	}
 
+
+	//Change animation directions to fit
 	if (target_entity->is_dynamic) {
 		DynamicEntity* dynamic_target = (DynamicEntity*)target_entity;
 		if ((current_tile.x > target_entity->current_tile.x) && (current_tile.y == target_entity->current_tile.y)) {
@@ -327,6 +330,7 @@ void DynamicEntity::Attack() {
 			dynamic_target->direction = TOP_LEFT;
 		}
 
+		//Kill enemy
 		if (target_entity->current_health <= 0) {
 			dynamic_target->state = DIE;
 			dynamic_target->direction = TOP_LEFT;
@@ -336,6 +340,7 @@ void DynamicEntity::Attack() {
 	}
 	else
 	{
+		//Destroy building
 		StaticEntity* static_target = (StaticEntity*)target_entity;
 		if (target_entity->current_health <= 0) {
 			static_target->state = EXPLODE;
@@ -347,9 +352,11 @@ void DynamicEntity::Attack() {
 
 void DynamicEntity::Gather() {
 	uint resource = resource_building->quantity - (resource_building->quantity - damage);
+
 	resource_building->quantity -= resource;
 	resource_collected += resource;
 	resource_type = resource_building->resource_type;
+
 	StaticEntity* base = (StaticEntity*)App->entities->FindEntityByType(faction, BASE);
 	PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
 	target_entity = base;
@@ -376,30 +383,16 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 			destination = destination_copy;
 		}
 	}
+
 	current_tile = App->map->WorldToMap(position.x, position.y);
 	target_tile = destination;
 	App->pathfinding->CreatePath(current_tile, destination);
 
-	//pathfinding debug
-	int x, y;
-	SDL_Rect Debug_rect = { 0,0,32,32 };
-
 	path_to_target.clear();
 	path_to_target = App->pathfinding->GetLastPath();
 
-
 	if (path_to_target.size() > 0)
 		next_tile = path_to_target.front();
-
-	for (uint i = 0; i < path_to_target.size(); ++i)
-	{
-		iPoint pos = App->map->MapToWorld(path_to_target[i].x, path_to_target[i].y);
-		//LOG("CURRENT PATH IS: x: %i || y: %i ", path_to_target[i].x, path_to_target[i].y);
-
-		Debug_rect.x = pos.x;
-		Debug_rect.y = pos.y;
-		if (App->render->debug)App->render->DrawQuad(Debug_rect, 90, 850, 230, 40);
-	}
 }
 
 /*
@@ -534,10 +527,6 @@ bool DynamicEntity::LoadAnimations() {
 			direction = TOP_LEFT;
 		else if (animation_direction == "top_right")
 			direction = TOP_RIGHT;
-		else if (animation_direction == "left")
-			direction = LEFT;
-		else if (animation_direction == "right")
-			direction = RIGHT;
 		else if (animation_direction == "bottom_left")
 			direction = BOTTOM_LEFT;
 		else if (animation_direction == "bottom_right")
@@ -568,7 +557,7 @@ bool DynamicEntity::LoadReferenceData() {
 	//load animations
 	for (int i = 0; i < MAX_ANIMATIONS; i++)
 	{
-		for (int j = 0; j <= 6; j++)
+		for (int j = 0; j < 4; j++)
 		{
 			animations[i][j] = dynamic_reference->animations[i][j];
 		}
@@ -588,7 +577,9 @@ void DynamicEntity::DrawQuad()
 	App->render->DrawQuad(entityrect, unitinfo.color.r, unitinfo.color.g, unitinfo.color.b, unitinfo.color.a, false);
 }
 
+
 // --- UnitInfo Constructors and Destructor ---
+
 UnitInfo::UnitInfo() {}
 
 UnitInfo::~UnitInfo() {}

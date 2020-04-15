@@ -47,7 +47,6 @@ public:
 	bool Awake(pugi::xml_node&);
 	bool Start();
 
-	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
 
@@ -80,8 +79,8 @@ public:
 	int count = 0;
 
 	Unit_Data unit_data[4][3];
-public:
 
+public:
 	j1Entity* reference_entities[4][6];
 
 	bool blocked_movement;
