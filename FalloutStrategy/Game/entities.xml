@@ -25,7 +25,7 @@
  <dynamic>
   <vault>
    <melee health="100" damage="15" speed="100"/>
-   <ranged health="100" damage="30" speed="100"/>
+   <ranged health="100" damage="3000" speed="100"/>
    <gatherer health="100" damage="60" speed="100"/>
   </vault>
   <brotherhood>
