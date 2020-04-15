@@ -91,7 +91,7 @@ bool j1Minimap::Start() {
 
 bool j1Minimap::PostUpdate() {
 
-	if ((App->menu_manager->current_menu == Menu::NO_MENU)||(App->menu_manager->current_menu == Menu::PAUSE_MENU) || (App->menu_manager->current_menu == Menu::GUI)) {
+ 	if ((App->menu_manager->current_menu == Menu::NO_MENU)||(App->menu_manager->current_menu == Menu::PAUSE_MENU) || (App->menu_manager->current_menu == Menu::GUI) || (App->menu_manager->current_menu == Menu::BUI_BASES)) {
 
 		App->render->Blit(texture, position.x, position.y, NULL, 1.0, 0);
 

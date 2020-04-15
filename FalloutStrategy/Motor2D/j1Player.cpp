@@ -50,9 +50,6 @@ bool j1Player::PreUpdate() {
 
 	//debug keys
 
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-		LOG("Water %i Caps: %i Food: %i", water, caps, food);
-
 	//enable/disable debug mode
 	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 		App->render->debug = !App->render->debug;

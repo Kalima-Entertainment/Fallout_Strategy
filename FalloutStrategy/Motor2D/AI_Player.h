@@ -21,8 +21,11 @@ public:
 	std::vector<DynamicEntity*> rangeds;
 	std::vector<DynamicEntity*> melees;
 
+	bool is_attacking;
+
 private:
 	void ChooseRandomPlayerEnemy();
+	DynamicEntity* GetClosestDynamicEntity();
 	int ranged_minimum;
 	int melee_minimum;
 };

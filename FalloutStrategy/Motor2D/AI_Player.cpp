@@ -4,6 +4,7 @@
 #include "StaticEntity.h"
 #include "AI_Manager.h"
 #include "j1EntityManager.h"
+#include "j1Player.h"
 
 AI_Player::AI_Player(Faction g_faction) : GenericPlayer() {
 	faction = g_faction;
@@ -13,6 +14,7 @@ AI_Player::AI_Player(Faction g_faction) : GenericPlayer() {
 	food = 100;
 	melee_minimum = 6;
 	ranged_minimum = 3;
+	is_attacking = false;
 }
 
 AI_Player::~AI_Player() {
@@ -72,7 +74,22 @@ bool AI_Player::Update(float dt) {
 
 	// Fight -------------------------------------------------------
 
-	//TODO
+	//Assign all attacking units an entity to attack
+	if (target_player != nullptr) {
+
+		for (int i = 0; i < entities.size(); i++)
+		{
+			if ((entities[i]->is_dynamic) && (entities[i]->type != GATHERER) && (entities[i]->target_entity == nullptr)) {
+				DynamicEntity* target_entity = GetClosestDynamicEntity();
+				DynamicEntity* troop = nullptr;
+
+				entities[i]->target_entity = target_entity;
+				troop = (DynamicEntity*)entities[i];
+				troop->PathfindToPosition(target_entity->current_tile);
+				troop->state = WALK;
+			}
+		}	is_attacking = true;
+	}
 
 	// -------------------------------------------------------------
 
@@ -91,4 +108,18 @@ void AI_Player::ChooseRandomPlayerEnemy() {
 
 	if (target_player == nullptr)
 		target_player = (GenericPlayer*)App->player;
+}
+
+DynamicEntity* AI_Player::GetClosestDynamicEntity() {
+	DynamicEntity* target_entity = nullptr;
+	int distance = 1000000;
+
+	for (int i = 0; i < target_player->entities.size(); i++)
+	{
+		if ((target_player->entities[i]->current_tile.DistanceManhattan(base->current_tile) < distance)&&(target_player->entities[i]->is_dynamic)) {
+			target_entity = (DynamicEntity*)target_player->entities[i];
+			distance = target_player->entities[i]->current_tile.DistanceManhattan(base->current_tile);
+		}
+	}
+	return target_entity;
 }
