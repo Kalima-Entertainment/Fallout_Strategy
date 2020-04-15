@@ -23,9 +23,9 @@ j1Player::j1Player() : GenericPlayer() {
 
 	base = barrack[0] = barrack[1] = laboratory = nullptr;
 
-	caps = 2000;
-	food = 2000;
-	water = 2000;
+	caps = 20000;
+	food = 20000;
+	water = 20000;
 
 	god_mode = false;
 
