@@ -75,21 +75,20 @@ bool AI_Player::Update(float dt) {
 	// Fight -------------------------------------------------------
 
 	//Assign all attacking units an entity to attack
-	if ((target_player != nullptr)&&(!is_attacking)) {
-
-		DynamicEntity* target_entity = GetClosestDynamicEntity();
-		DynamicEntity* troop = nullptr;
+	if (target_player != nullptr) {
 
 		for (int i = 0; i < entities.size(); i++)
 		{
-			if ((entities[i]->is_dynamic) && (entities[i]->type != GATHERER)) {
+			if ((entities[i]->is_dynamic) && (entities[i]->type != GATHERER) && (entities[i]->target_entity == nullptr)) {
+				DynamicEntity* target_entity = GetClosestDynamicEntity();
+				DynamicEntity* troop = nullptr;
+
 				entities[i]->target_entity = target_entity;
 				troop = (DynamicEntity*)entities[i];
 				troop->PathfindToPosition(target_entity->current_tile);
 				troop->state = WALK;
 			}
-		}
-		is_attacking = true;
+		}	is_attacking = true;
 	}
 
 	// -------------------------------------------------------------

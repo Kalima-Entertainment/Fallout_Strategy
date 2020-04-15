@@ -390,7 +390,7 @@ void StaticEntity::SpawnUnit(EntityType type) {
 
 						spawn_stack[i].type = type;
 						spawn_stack[i].spawn_seconds = spawn_seconds;
-						LOG("Added to stack. Waiting %i seconds to spawn", spawn_seconds);
+						//LOG("Added to stack. Waiting %i seconds to spawn", spawn_seconds);
 						break;
 					}
 				}
