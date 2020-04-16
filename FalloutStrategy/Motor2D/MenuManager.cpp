@@ -261,11 +261,12 @@ void MenuManager::CreateBrotherHood_Base()
 {
 
 	//Buttons
-	brotherhood_base[0] = (UI_Button*)App->gui->CreateButton(1050, 600, Brotherhood_ghaterer_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	brotherhood_base[0] = (UI_Button*)App->gui->CreateButton(1050, 570, Brotherhood_ghaterer_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	brotherhood_base[1] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
-	brotherhood_base[1] = (j1Image*)App->gui->CreateImage(880, 575, Image, { 118, 1561, 122, 98 }, NULL, this);
-	brotherhood_base[2] = (j1Image*)App->gui->CreateImage(1055, 605, Image, { 138, 1868, 33, 33 }, NULL, this);
+	brotherhood_base[2] = (j1Image*)App->gui->CreateImage(880, 575, Image, { 118, 1561, 122, 98 }, NULL, this);
+	brotherhood_base[3] = (j1Image*)App->gui->CreateImage(1055, 575, Image, { 138, 1868, 33, 33 }, NULL, this);
 
 	//Labels
 	//p2SString hh("%i", App->entities->); VIDA EDIFICIO
@@ -280,13 +281,14 @@ void MenuManager::CreateBrotherHood_Base()
 void MenuManager::CreateBrotherHood_Barrack() {
 
 	//Buttons
-	brotherhood_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 600, Brotherhood_melee_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
-	brotherhood_barrack[1] = (UI_Button*)App->gui->CreateButton(1105, 600, Brotherhood_ranged_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	brotherhood_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 570, Brotherhood_melee_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	brotherhood_barrack[1] = (UI_Button*)App->gui->CreateButton(1105, 570, Brotherhood_ranged_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	brotherhood_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
-	brotherhood_barrack[2] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 17, 1560, 69, 115 }, NULL, this);
-	brotherhood_barrack[3] = (j1Image*)App->gui->CreateImage(1055, 605, Image, { 28, 1869, 35, 33 }, NULL, this);
-	brotherhood_barrack[4] = (j1Image*)App->gui->CreateImage(1110, 605, Image, { 83, 1866, 35, 36 }, NULL, this);
+	brotherhood_barrack[3] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 17, 1560, 69, 115 }, NULL, this);
+	brotherhood_barrack[4] = (j1Image*)App->gui->CreateImage(1055, 575, Image, { 28, 1869, 35, 33 }, NULL, this);
+	brotherhood_barrack[5] = (j1Image*)App->gui->CreateImage(1110, 574, Image, { 83, 1866, 35, 36 }, NULL, this);
 
 	last_menu = current_menu;
 	current_menu = Menu::BUI_BASES;
@@ -297,9 +299,10 @@ void MenuManager::CreateBrotherHood_Lab() {
 	//Buttons
 	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1050, 600, Brotherhood_melee, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1105, 600, Brotherhood_ranged, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	brotherhood_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
-	brotherhood_lab[0] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 663, 1567, 108, 104 }, NULL, this);
+	brotherhood_lab[1] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 663, 1567, 108, 104 }, NULL, this);
 	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
 	//bases_hud.brotherhood_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Brotherhood_ranged, { 83, 1866, 35, 36 }, NULL, this);
 	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
@@ -315,11 +318,12 @@ void MenuManager::CreateBrotherHood_Lab() {
 void MenuManager::CreateSuperMutants_Base() {
 
 	//Buttons
-	supermutant_base[0] = (UI_Button*)App->gui->CreateButton(1050, 600, Supermutant_ghaterer_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	supermutant_base[0] = (UI_Button*)App->gui->CreateButton(1050, 570, Supermutant_ghaterer_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	supermutant_base[1] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
-	supermutant_base[1] = (j1Image*)App->gui->CreateImage(880, 575, Image, { 934, 1577, 129, 91 }, NULL, this);
-	supermutant_base[2] = (j1Image*)App->gui->CreateImage(1055, 605, Image, { 191, 1868, 34, 32 }, NULL, this);
+	supermutant_base[2] = (j1Image*)App->gui->CreateImage(880, 575, Image, { 934, 1577, 129, 91 }, NULL, this);
+	supermutant_base[3] = (j1Image*)App->gui->CreateImage(1055, 575, Image, { 191, 1868, 34, 32 }, NULL, this);
 
 	last_menu = current_menu;
 	current_menu = Menu::BUI_BASES;
@@ -328,13 +332,14 @@ void MenuManager::CreateSuperMutants_Base() {
 void MenuManager::CreateSuperMutants_Barrack() {
 
 	//Buttons
-	supermutant_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 600, Supermutant_melee_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
-	supermutant_barrack[1] = (UI_Button*)App->gui->CreateButton(1105, 600, Supermutant_ranged_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	supermutant_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 570, Supermutant_melee_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	supermutant_barrack[1] = (UI_Button*)App->gui->CreateButton(1105, 570, Supermutant_ranged_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	supermutant_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
-	supermutant_barrack[2] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 801, 1549, 102, 119 }, NULL, this);
-	supermutant_barrack[3] = (j1Image*)App->gui->CreateImage(1055, 605, Image, { 246, 1869, 34, 33 }, NULL, this);
-	supermutant_barrack[4] = (j1Image*)App->gui->CreateImage(1110, 605, Image, { 301, 1865, 34, 35 }, NULL, this);
+	supermutant_barrack[3] = (j1Image*)App->gui->CreateImage(890, 560, Image, { 801, 1549, 102, 119 }, NULL, this);
+	supermutant_barrack[4] = (j1Image*)App->gui->CreateImage(1055, 575, Image, { 246, 1869, 34, 33 }, NULL, this);
+	supermutant_barrack[5] = (j1Image*)App->gui->CreateImage(1110, 573, Image, { 301, 1865, 34, 35 }, NULL, this);
 
 	last_menu = current_menu;
 	current_menu = Menu::BUI_BASES;
@@ -345,9 +350,10 @@ void MenuManager::CreateSuperMutants_Lab() {
 	//Buttons
 	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1050, 600, Brotherhood_melee, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1105, 600, Brotherhood_ranged, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	supermutant_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
-	supermutant_lab[0] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 663, 1567, 108, 104 }, NULL, this);
+	supermutant_lab[1] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 663, 1567, 108, 104 }, NULL, this);
 	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
 	//bases_hud.brotherhood_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Brotherhood_ranged, { 83, 1866, 35, 36 }, NULL, this);
 	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
@@ -364,11 +370,12 @@ void MenuManager::CreateSuperMutants_Lab() {
 void MenuManager::CreateGhouls_Base() {
 
 	//Buttons
-	ghoul_base[0] = (UI_Button*)App->gui->CreateButton(1050, 600, Ghouls_ghaterer_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	ghoul_base[0] = (UI_Button*)App->gui->CreateButton(1050, 570, Ghouls_ghaterer_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	ghoul_base[1] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
-	ghoul_base[1] = (j1Image*)App->gui->CreateImage(880, 575, Image, { 398, 1564, 99, 108 }, NULL, this);
-	ghoul_base[2] = (j1Image*)App->gui->CreateImage(1060, 605, Image, { 624, 1866, 24, 34 }, NULL, this);
+	ghoul_base[2] = (j1Image*)App->gui->CreateImage(880, 575, Image, { 398, 1564, 99, 108 }, NULL, this);
+	ghoul_base[3] = (j1Image*)App->gui->CreateImage(1060, 575, Image, { 624, 1866, 24, 34 }, NULL, this);
 
 	last_menu = current_menu;
 	current_menu = Menu::BUI_BASES;
@@ -377,13 +384,14 @@ void MenuManager::CreateGhouls_Base() {
 void MenuManager::CreateGhouls_Barrack() {
 
 	//Buttons
-	ghoul_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 600, Ghouls_melee_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
-	ghoul_barrack[1] = (UI_Button*)App->gui->CreateButton(1105, 600, Ghouls_ranged_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	ghoul_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 570, Ghouls_melee_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	ghoul_barrack[1] = (UI_Button*)App->gui->CreateButton(1105, 570, Ghouls_ranged_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	vault_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
-	ghoul_barrack[2] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 527, 1563, 105, 105 }, NULL, this);
-	ghoul_barrack[3] = (j1Image*)App->gui->CreateImage(1055, 605, Image, { 513, 1865, 33, 34 }, NULL, this);
-	ghoul_barrack[4] = (j1Image*)App->gui->CreateImage(1110, 605, Image, { 571, 1866, 28, 33 }, NULL, this);
+	ghoul_barrack[3] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 527, 1563, 105, 105 }, NULL, this);
+	ghoul_barrack[4] = (j1Image*)App->gui->CreateImage(1055, 575, Image, { 513, 1865, 33, 34 }, NULL, this);
+	ghoul_barrack[5] = (j1Image*)App->gui->CreateImage(1110, 575, Image, { 571, 1866, 28, 33 }, NULL, this);
 
 	last_menu = current_menu;
 	current_menu = Menu::BUI_BASES;
@@ -394,9 +402,10 @@ void MenuManager::CreateGhouls_Lab() {
 	//Buttons
 	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1050, 600, Brotherhood_melee, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1105, 600, Brotherhood_ranged, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	ghoul_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
-	ghoul_lab[0] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 270, 1568, 97, 99 }, NULL, this);
+	ghoul_lab[1] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 270, 1568, 97, 99 }, NULL, this);
 	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
 	//bases_hud.brotherhood_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Brotherhood_ranged, { 83, 1866, 35, 36 }, NULL, this);
 	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
@@ -448,7 +457,7 @@ void MenuManager::CreateVault_Lab() {
 	vault_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
-	vault_lab[1] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 426, 1726, 72, 96 }, NULL, this);
+	vault_lab[1] = (j1Image*)App->gui->CreateImage(920, 570, Image, { 426, 1726, 72, 96 }, NULL, this);
 	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
 	//bases_hud.brotherhood_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Brotherhood_ranged, { 83, 1866, 35, 36 }, NULL, this);
 	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
@@ -509,15 +518,15 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 			{
 
 			case BUILDING_TYPE::ALL:
-				App->gui->DeleteArrayElements(brotherhood_base, 3);
-				App->gui->DeleteArrayElements(brotherhood_barrack, 5);
-				App->gui->DeleteArrayElements(brotherhood_lab, 1);
-				App->gui->DeleteArrayElements(supermutant_base, 3);
-				App->gui->DeleteArrayElements(supermutant_barrack, 5);
-				App->gui->DeleteArrayElements(supermutant_lab, 1);
-				App->gui->DeleteArrayElements(ghoul_base, 3);
-				App->gui->DeleteArrayElements(ghoul_barrack, 5);
-				App->gui->DeleteArrayElements(ghoul_lab, 1);
+				App->gui->DeleteArrayElements(brotherhood_base, 4);
+				App->gui->DeleteArrayElements(brotherhood_barrack, 6);
+				App->gui->DeleteArrayElements(brotherhood_lab, 2);
+				App->gui->DeleteArrayElements(supermutant_base, 4);
+				App->gui->DeleteArrayElements(supermutant_barrack, 6);
+				App->gui->DeleteArrayElements(supermutant_lab, 2);
+				App->gui->DeleteArrayElements(ghoul_base, 4);
+				App->gui->DeleteArrayElements(ghoul_barrack, 6);
+				App->gui->DeleteArrayElements(ghoul_lab, 2);
 				App->gui->DeleteArrayElements(vault_base, 4);
 				App->gui->DeleteArrayElements(vault_barrack, 6);
 				App->gui->DeleteArrayElements(vault_lab, 2);
@@ -533,13 +542,13 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 			switch (type)
 			{
 			case BUILDING_TYPE::BASE:
-				App->gui->DeleteArrayElements(brotherhood_base, 3);
+				App->gui->DeleteArrayElements(brotherhood_base, 4);
 				break;
 			case BUILDING_TYPE::BARRACK:
-				App->gui->DeleteArrayElements(brotherhood_barrack, 5);
+				App->gui->DeleteArrayElements(brotherhood_barrack, 6);
 				break;
 			case BUILDING_TYPE::LAB:
-				App->gui->DeleteArrayElements(brotherhood_lab, 1);
+				App->gui->DeleteArrayElements(brotherhood_lab, 2);
 				break;
 			case BUILDING_TYPE::ALL:
 				break;
@@ -558,13 +567,13 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 			{
 
 			case BUILDING_TYPE::BASE:
-				App->gui->DeleteArrayElements(supermutant_base, 3);
+				App->gui->DeleteArrayElements(supermutant_base, 4);
 				break;
 			case BUILDING_TYPE::BARRACK:
-				App->gui->DeleteArrayElements(supermutant_barrack, 5);
+				App->gui->DeleteArrayElements(supermutant_barrack, 6);
 				break;
 			case BUILDING_TYPE::LAB:
-				App->gui->DeleteArrayElements(supermutant_lab, 1);
+				App->gui->DeleteArrayElements(supermutant_lab, 2);
 				break;
 			case BUILDING_TYPE::NONE:
 				App->gui->Delete_Element(select_faction_photos[0]);
@@ -581,13 +590,13 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 			{
 
 			case BUILDING_TYPE::BASE:
-				App->gui->DeleteArrayElements(ghoul_base, 3);
+				App->gui->DeleteArrayElements(ghoul_base, 4);
 				break;
 			case BUILDING_TYPE::BARRACK:
-				App->gui->DeleteArrayElements(ghoul_barrack, 5);
+				App->gui->DeleteArrayElements(ghoul_barrack, 6);
 				break;
 			case BUILDING_TYPE::LAB:
-				App->gui->DeleteArrayElements(ghoul_lab, 1);
+				App->gui->DeleteArrayElements(ghoul_lab, 2);
 				break;
 			case BUILDING_TYPE::NONE:
 				App->gui->Delete_Element(select_faction_photos[1]);
