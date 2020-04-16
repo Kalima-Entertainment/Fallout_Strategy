@@ -177,6 +177,9 @@ j1Entity* j1Player::SelectEntity() {
 	iPoint selected_spot;
 
 	App->input->GetMousePosition(tx, ty);
+	if (TouchingUI(tx, ty))
+		return selected_entity;
+
 	selected_spot = App->render->ScreenToWorld(tx, ty);
 	selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
 
@@ -204,6 +207,10 @@ void j1Player::MoveEntity(){
 	iPoint selected_spot;
 
 	App->input->GetMousePosition(tx, ty);
+
+	if (TouchingUI(tx,ty))
+		return;
+
 	selected_spot = App->render->ScreenToWorld(tx, ty);
 	selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
 
@@ -340,4 +347,10 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 		else
 			LOG("You must select a building while executing this command");
 	}
+}
+
+bool j1Player::TouchingUI(int x, int y) {
+	bool ret = false;
+	if (y > App->minimap->position.y - 8) { ret = true; }
+	return ret;
 }

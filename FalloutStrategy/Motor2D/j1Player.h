@@ -17,7 +17,7 @@ public:
 	j1Entity* SelectEntity();
 	void MoveEntity();
 	void UpdateResourceData(Resource resource_type, int quantity);
-
+	bool TouchingUI(int x, int y);
 public:
 	j1Entity* selected_entity;
 	j1Entity* last_selected_entity;

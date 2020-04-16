@@ -167,7 +167,9 @@ bool j1Scene::Update(float dt)
 
 
 	//Used to select units and groups
-	RectangleSelection();
+	if (!App->player->TouchingUI(x,y)) {
+		RectangleSelection();
+	}
 
 	return true;
 }
