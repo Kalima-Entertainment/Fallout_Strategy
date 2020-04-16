@@ -18,11 +18,18 @@ public:
 	virtual bool Start() { return true; };
 	virtual bool Update(float dt) { return true; };
 
+	//virtual int GetMelees() const;
+	//virtual int GetRangeds() const;
+	int GetTroopsAmount() const;
+
 public:
 	int caps;
 	int water;
 	int food;
+
 	Faction faction;
+	bool defeated;
+
 	std::vector<j1Entity*> entities;
 	StaticEntity* base;
 	StaticEntity* barrack[2];

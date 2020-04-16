@@ -15,6 +15,7 @@ AI_Player::AI_Player(Faction g_faction) : GenericPlayer() {
 	melee_minimum = 6;
 	ranged_minimum = 3;
 	is_attacking = false;
+	defeated = false;
 }
 
 AI_Player::~AI_Player() {
@@ -68,6 +69,7 @@ bool AI_Player::Update(float dt) {
 	//if the ai_player is ready choose a player to attack
 	if ((rangeds.size() > ranged_minimum) && (melees.size() > melee_minimum) && (target_player == nullptr)) { 
 		ChooseRandomPlayerEnemy();
+		is_attacking = true;
 	}
 
 	// -------------------------------------------------------------
@@ -75,8 +77,7 @@ bool AI_Player::Update(float dt) {
 	// Fight -------------------------------------------------------
 
 	//Assign all attacking units an entity to attack
-	if (target_player != nullptr) {
-
+	if (is_attacking) {
 		for (int i = 0; i < entities.size(); i++)
 		{
 			if ((entities[i]->is_dynamic) && (entities[i]->type != GATHERER) && (entities[i]->target_entity == nullptr)) {
@@ -88,7 +89,14 @@ bool AI_Player::Update(float dt) {
 				troop->PathfindToPosition(target_entity->current_tile);
 				troop->state = WALK;
 			}
-		}	is_attacking = true;
+		}	
+		if (target_player->entities.size() == 4) {
+			if (target_player->GetTroopsAmount() == 0) {
+				target_player->defeated = true;
+				is_attacking = false;
+				target_player = nullptr;
+			}
+		}
 	}
 
 	// -------------------------------------------------------------

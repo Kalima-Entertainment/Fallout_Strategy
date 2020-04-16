@@ -100,12 +100,14 @@ bool DynamicEntity::Update(float dt) {
 
 						if (resource_type == Resource::CAPS)
 							owner->caps += resource_collected;
-						if (resource_type == Resource::WATER)
+						else if (resource_type == Resource::WATER)
 							owner->water += resource_collected;
-						if (resource_type == Resource::FOOD)
+						else if (resource_type == Resource::FOOD)
 							owner->food += resource_collected;
 
-						if (owner == App->player) { App->player->UpdateResourceData(resource_type, resource_collected); }
+						if (owner == App->player)
+							App->player->UpdateResourceData(resource_type, resource_collected); 
+
 						resource_collected = 0;
 						target_entity = nullptr;
 

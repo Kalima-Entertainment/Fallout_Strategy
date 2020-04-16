@@ -14,7 +14,7 @@ public:
 	~AI_Player();
 
 	bool Update(float dt);
-	
+
 	GenericPlayer* target_player;
 
 	std::vector<DynamicEntity*> gatherers;
