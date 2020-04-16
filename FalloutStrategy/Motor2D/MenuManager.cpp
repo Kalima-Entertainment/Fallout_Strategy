@@ -413,11 +413,12 @@ void MenuManager::CreateGhouls_Lab() {
 void MenuManager::CreateVault_Base() {
 
 	//Buttons
-	vault_base[0] = (UI_Button*)App->gui->CreateButton(1050, 600, Vault_ghaterer_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
-
+	vault_base[0] = (UI_Button*)App->gui->CreateButton(1050, 570, Vault_ghaterer_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	vault_base[1] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+	
 	//Images
-	vault_base[1] = (j1Image*)App->gui->CreateImage(890, 569, Image, { 319, 1710, 49, 113 }, NULL, this);
-	vault_base[2] = (j1Image*)App->gui->CreateImage(1058, 609, Image, { 463, 1871, 25, 29 }, NULL, this);
+	vault_base[2] = (j1Image*)App->gui->CreateImage(930, 569, Image, { 319, 1710, 49, 113 }, NULL, this);
+	vault_base[3] = (j1Image*)App->gui->CreateImage(1058, 579, Image, { 463, 1871, 25, 29 }, NULL, this);
 
 	last_menu = current_menu;
 	current_menu = Menu::BUI_BASES;
@@ -426,13 +427,14 @@ void MenuManager::CreateVault_Base() {
 void MenuManager::CreateVault_Barrack() {
 
 	//Buttons
-	vault_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 600, Vault_melee_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
-	vault_barrack[1] = (UI_Button*)App->gui->CreateButton(1105, 600, Vault_ranged_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	vault_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 570, Vault_melee_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	vault_barrack[1] = (UI_Button*)App->gui->CreateButton(1105, 570, Vault_ranged_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	vault_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
-	vault_barrack[2] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 148, 1731, 122, 91 }, NULL, this);
-	vault_barrack[3] = (j1Image*)App->gui->CreateImage(1055, 605, Image, { 406, 1866, 32, 34 }, NULL, this);
-	vault_barrack[4] = (j1Image*)App->gui->CreateImage(1110, 605, Image, { 355, 1866, 30, 34 }, NULL, this);
+	vault_barrack[3] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 148, 1731, 122, 91 }, NULL, this);
+	vault_barrack[4] = (j1Image*)App->gui->CreateImage(1055, 575, Image, { 406, 1866, 32, 34 }, NULL, this);
+	vault_barrack[5] = (j1Image*)App->gui->CreateImage(1110, 575, Image, { 355, 1866, 30, 34 }, NULL, this);
 
 	last_menu = current_menu;
 	current_menu = Menu::BUI_BASES;
@@ -443,9 +445,10 @@ void MenuManager::CreateVault_Lab() {
 	//Buttons
 	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1050, 600, Brotherhood_melee, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1105, 600, Brotherhood_ranged, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
+	vault_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
-	vault_lab[0] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 426, 1726, 72, 96 }, NULL, this);
+	vault_lab[1] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 426, 1726, 72, 96 }, NULL, this);
 	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
 	//bases_hud.brotherhood_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Brotherhood_ranged, { 83, 1866, 35, 36 }, NULL, this);
 	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
@@ -515,9 +518,9 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 				App->gui->DeleteArrayElements(ghoul_base, 3);
 				App->gui->DeleteArrayElements(ghoul_barrack, 5);
 				App->gui->DeleteArrayElements(ghoul_lab, 1);
-				App->gui->DeleteArrayElements(vault_base, 3);
-				App->gui->DeleteArrayElements(vault_barrack, 5);
-				App->gui->DeleteArrayElements(vault_lab, 1);
+				App->gui->DeleteArrayElements(vault_base, 4);
+				App->gui->DeleteArrayElements(vault_barrack, 6);
+				App->gui->DeleteArrayElements(vault_lab, 2);
 				break;
 			case BUILDING_TYPE::NONE:
 				break;
@@ -600,13 +603,13 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 			switch (type)
 			{
 			case BUILDING_TYPE::BASE:
-				App->gui->DeleteArrayElements(vault_base, 3);
+				App->gui->DeleteArrayElements(vault_base, 4);
 				break;
 			case BUILDING_TYPE::BARRACK:
-				App->gui->DeleteArrayElements(vault_barrack, 5);
+				App->gui->DeleteArrayElements(vault_barrack, 6);
 				break;
 			case BUILDING_TYPE::LAB:
-				App->gui->DeleteArrayElements(vault_lab, 1);
+				App->gui->DeleteArrayElements(vault_lab, 2);
 				break;
 			case BUILDING_TYPE::NONE:
 				App->gui->Delete_Element(select_faction_photos[0]);

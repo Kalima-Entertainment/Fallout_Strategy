@@ -109,9 +109,9 @@ public:
 	UI_element* ghoul_barrack[5];
 	UI_element* ghoul_lab[1];
 
-	UI_element* vault_base[3];
-	UI_element* vault_barrack[5];
-	UI_element* vault_lab[1];
+	UI_element* vault_base[4];
+	UI_element* vault_barrack[6];
+	UI_element* vault_lab[2];
 
 	UI_element* supermutant_base[3];
 	UI_element* supermutant_barrack[5];
