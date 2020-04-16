@@ -114,7 +114,9 @@ bool j1Minimap::PostUpdate() {
 	}
 
 	//Debug line
-	App->render->DrawLine(0, 540, 1280, 540, 255, 255, 255, 255, false);
+	if (App->render->debug) {
+		App->render->DrawLine(0, 540, 1280, 540, 255, 255, 255, 255, false);
+	}
 
 	return true;
 }
