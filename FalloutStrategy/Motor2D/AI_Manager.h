@@ -13,11 +13,12 @@ public:
 
 	bool Start();
 	bool Update(float dt);
+	bool CleanUp();
 
 public:
 	AI_Player* ai_player[4];
 private:
-
+	bool players_created;
 };
 
 #endif // !_AI_MANAGER_H_

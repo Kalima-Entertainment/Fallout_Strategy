@@ -5,6 +5,7 @@
 
 struct SDL_Texture;
 class DynamicEntity;
+class GenericPlayer;
 
 #define RECT_MIN_AREA 5
 
@@ -44,6 +45,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	void AssignEntities();
+
 	StatesMenu GetMenuState();
 	void SetMenuState(const StatesMenu& menu);
 
@@ -58,6 +61,7 @@ public:
 	int bottomright;
 	bool create = false;
 	StatesMenu menu_state = StatesMenu::NONE;
+	GenericPlayer* players[4];
 
 	//Rectangle Selection needed
 	iPoint mouse_pos = { 0,0 };
@@ -66,8 +70,8 @@ public:
 	int rectangle_height = 0;
 	SDL_Texture* debug_tex2;
 
-private:
 
+private:
 	int SongPlaying = 0;
 
 };

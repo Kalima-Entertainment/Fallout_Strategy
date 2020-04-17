@@ -118,7 +118,7 @@ iPoint j1Map::MapToWorld(int x, int y) const
 	}
 	else
 	{
-		LOG("Unknown map type");
+//		LOG("Unknown map type");
 		ret.x = x; ret.y = y;
 	}
 
@@ -154,7 +154,7 @@ iPoint j1Map::WorldToMap(int x, int y) const
 	}
 	else
 	{
-		LOG("Unknown map type");
+		//LOG("Unknown map type");
 		ret.x = x; ret.y = y;
 	}
 
@@ -619,35 +619,8 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 				//create building
 				static_entity = (StaticEntity*)App->entities->CreateEntity(building_faction, type, x,y);
 				static_entity->tiles = CalculateArea(first_tile_position, width, height);
-				GenericPlayer* player;
 
-				//spawn entity
-				if (building_faction == App->player->faction) {
-					App->player->entities.push_back(App->entities->CreateEntity(building_faction, dynamic_type, x + 1, y + 1));
-					player = App->player;
-				}
-				else
-				{
-					j1Entity* entity = App->entities->CreateEntity(building_faction, dynamic_type, x + 1, y + 1);
-					App->ai_manager->ai_player[building_faction]->entities.push_back(entity);
-
-					if (dynamic_type == MELEE) 
-						App->ai_manager->ai_player[building_faction]->melees.push_back((DynamicEntity*)entity);
-					else if (dynamic_type == RANGED) 
-						App->ai_manager->ai_player[building_faction]->rangeds.push_back((DynamicEntity*)entity);
-					else if (dynamic_type == GATHERER) 
-						App->ai_manager->ai_player[building_faction]->gatherers.push_back((DynamicEntity*)entity);
-					player = App->ai_manager->ai_player[building_faction];
-				}
-
-				if (static_entity->type == BASE) player->base = static_entity;
-				if (static_entity->type == LABORATORY) player->base = static_entity;
-				if (static_entity->type == BARRACK) {
-					if (player->barrack[0] == nullptr)
-						player->barrack[0] = static_entity;
-					else
-						player->barrack[1] = static_entity;
-				}
+				App->entities->CreateEntity(building_faction, dynamic_type, x + 1, y + 1);
 
 			}
 

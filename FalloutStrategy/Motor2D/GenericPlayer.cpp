@@ -14,3 +14,4 @@ int GenericPlayer::GetTroopsAmount() const {
 	}
 	return troops;
 }
+

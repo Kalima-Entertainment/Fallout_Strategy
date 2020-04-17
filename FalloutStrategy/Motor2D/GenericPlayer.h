@@ -20,6 +20,7 @@ public:
 
 	//virtual int GetMelees() const;
 	//virtual int GetRangeds() const;
+	virtual void RecountEntities() { return; };
 	int GetTroopsAmount() const;
 
 public:
@@ -34,6 +35,10 @@ public:
 	StaticEntity* base;
 	StaticEntity* barrack[2];
 	StaticEntity* laboratory;
+	int gatherers;
+	int rangeds;
+	int melees;
+
 };
 
 #endif // !_GENERIC_PLAYER_H_

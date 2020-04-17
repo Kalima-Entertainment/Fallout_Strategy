@@ -32,8 +32,6 @@ UI_Button::UI_Button(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, 
 	volume_fx = App->audio->LoadFx("audio/fx/UISounds/Butn_Text.wav");
 	members_fx = App->audio->LoadFx("audio/fx/UISounds/Butn_Skill.wav");
 	character_fx = App->audio->LoadFx("audio/fx/UISounds/Butn_Character.wav");
-	
-
 }
 
 bool UI_Button::CleanUp()
@@ -286,6 +284,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->CreateMainMenu();
 				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
 				App->audio->PlayFx(1, back_fx, 0);
+				App->isPaused = false;
 			}
 	
 			if (t == button_start_game)
@@ -294,6 +293,8 @@ bool UI_Button::Update(float dt)
 				App->audio->PlayFx(1, back_fx, 0);
 				App->gui->count = 0;
 				App->player->Enable();
+				App->entities->Enable();
+				App->scene->Enable();
 				App->menu_manager->CreateGUI();
 			}
 
@@ -302,6 +303,8 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
 				App->menu_manager->CreateMainMenu();
 				App->audio->PlayFx(1, back_fx, 0);
+				App->entities->Disable();
+				App->scene->Disable();
 			}
 			
 			//Spawn Gatherer from any faction

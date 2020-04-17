@@ -22,6 +22,9 @@
 #include <time.h>
 #include <string>
 #include "j1MovementManager.h"
+#include "GenericPlayer.h"
+#include "AI_Manager.h"
+#include "j1Minimap.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -81,9 +84,13 @@ bool j1Scene::Start()
 		RELEASE_ARRAY(data);
 	}
 
+	App->minimap->Enable();
+	App->player->faction = VAULT;
+	App->ai_manager->Enable(); 
+	AssignEntities();
 	//App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
 
-	App->entities->CreateEntity(VAULT, RANGED, 20, 20);
+	//App->entities->CreateEntity(VAULT, RANGED, 20, 20);
 
 	return true;
 }
@@ -187,8 +194,29 @@ bool j1Scene::PostUpdate()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
-
+	App->ai_manager->Disable();
 	return true;
+}
+
+void j1Scene::AssignEntities() {
+
+	for (int i = 0; i < 4; i++)	{
+		players[i] = (GenericPlayer*)App->ai_manager->ai_player[i];
+		if (players[i] == NULL) players[i] = App->player;
+
+		if(players[i]->entities.size() > 0)
+			players[i]->entities.clear();
+	}
+
+	for (int i = 0; i < App->entities->entities.size(); i++) {
+		App->entities->entities[i]->owner = players[App->entities->entities[i]->faction];
+		players[App->entities->entities[i]->faction]->entities.push_back(App->entities->entities[i]);
+	}
+	
+	for (int i = 0; i < 4; i++)
+	{
+		players[i]->RecountEntities();
+	}
 }
 
 StatesMenu j1Scene::GetMenuState()

@@ -14,12 +14,9 @@ public:
 	~AI_Player();
 
 	bool Update(float dt);
+	void RecountEntities();
 
 	GenericPlayer* target_player;
-
-	std::vector<DynamicEntity*> gatherers;
-	std::vector<DynamicEntity*> rangeds;
-	std::vector<DynamicEntity*> melees;
 
 	bool is_attacking;
 
@@ -28,8 +25,8 @@ private:
 	DynamicEntity* GetClosestDynamicEntity();
 	int ranged_minimum;
 	int melee_minimum;
+	std::vector<DynamicEntity*> gatherers_vector;
 };
-
 
 #endif // !_AI_PLAYER_H_
 

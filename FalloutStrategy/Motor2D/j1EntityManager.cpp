@@ -181,16 +181,6 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		}
 	}
 
-	if (App->ai_manager->ai_player[faction] == nullptr)
-		entity->owner = App->player;
-	/*
-	else {
-		entity->owner = App->ai_manager->ai_player[faction];
-		if (type == MELEE)App->ai_manager->ai_player[faction]->melees.push_back((DynamicEntity*)entity);
-		else if (type == RANGED)App->ai_manager->ai_player[faction]->rangeds.push_back((DynamicEntity*)entity);
-		else if (type == GATHERER)App->ai_manager->ai_player[faction]->gatherers.push_back((DynamicEntity*)entity);
-	}
-	*/
 	return entity;
 }
 
@@ -205,6 +195,15 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 
 	RandomFactions();
 
+	return ret;
+}
+
+bool j1EntityManager::Start() {
+	BROFILER_CATEGORY("EntitiesStart", Profiler::Color::Linen)
+	bool ret = true;
+	
+	App->console->CreateCommand("destroy_all_entities", "remove all dynamic entities", (j1Module*)this);
+
 	//automatic entities loading
 	for (int faction = VAULT; faction < NO_FACTION; faction++)
 	{
@@ -216,15 +215,6 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 	}
 
 	ret = LoadReferenceEntityData();
-
-	return ret;
-}
-
-bool j1EntityManager::Start() {
-	BROFILER_CATEGORY("EntitiesStart", Profiler::Color::Linen)
-	bool ret = true;
-	
-	App->console->CreateCommand("destroy_all_entities", "remove all dynamic entities", (j1Module*)this);
 
 	//load all textures and animations
 	for (int faction = VAULT; faction < NO_FACTION; faction++)
@@ -250,8 +240,10 @@ bool j1EntityManager::CleanUp()
 	{
 		for (int type = MELEE; type <= BASE; type++)
 		{
-			App->tex->UnLoad(reference_entities[faction][type]->texture);
-			delete reference_entities[faction][type];
+			if (reference_entities[faction][type] != NULL) {
+				App->tex->UnLoad(reference_entities[faction][type]->texture);
+				delete reference_entities[faction][type];
+			}
 		}
 	}
 
@@ -574,26 +566,6 @@ bool j1EntityManager::LoadReferenceEntityData() {
 	return ret;
 }
 
-void j1EntityManager::SortEntities() {
-	int i, j;
-	int n = entities.size();
-
-	for (i = 0; i < n - 1; i++) {
-		for (j = 0; j < n - i - 1; j++) {
-			if (entities[j]->position.y > entities[j + 1]->position.y)
-				Swap(j, j + 1);
-		}
-	}
-}
-
-void j1EntityManager::Swap(int i, int j)
-{
-	int temp = i;
-	j1Entity* aux = entities[i];
-	entities[i] = entities[j];
-	entities[j] = aux;
-}
-
 void j1EntityManager::DestroyEntity(j1Entity* entity) {
 	delete entity;
 }
@@ -677,6 +649,26 @@ ResourceBuilding* j1EntityManager::GetClosestResourceBuilding(iPoint current_pos
 	return closest_building;
 }
 
+void j1EntityManager::SortEntities() {
+	int i, j;
+	int n = entities.size();
+
+	for (i = 0; i < n - 1; i++) {
+		for (j = 0; j < n - i - 1; j++) {
+			if (entities[j]->position.y > entities[j + 1]->position.y)
+				Swap(j, j + 1);
+		}
+	}
+}
+
+void j1EntityManager::Swap(int i, int j)
+{
+	int temp = i;
+	j1Entity* aux = entities[i];
+	entities[i] = entities[j];
+	entities[j] = aux;
+}
+
 void j1EntityManager::RandomFactions() {
 	Faction faction = static_cast<Faction>(rand() % GHOUL);
 
@@ -713,3 +705,4 @@ void j1EntityManager::OnCommand(std::vector<std::string> command_parts) {
 		}
 	}
 }
+

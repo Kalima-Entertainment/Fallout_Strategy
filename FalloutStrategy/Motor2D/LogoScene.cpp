@@ -12,9 +12,7 @@
 
 LogoScene::LogoScene() : j1Module()
 {
-	
 	name = ("logo_scene");
-
 }
 
 // Destructor
@@ -99,6 +97,8 @@ bool LogoScene::Update(float dt)
 		
 		App->audio->PlayFx(2, App->audio->F_press, 0);
 		renderLogo = false;
+		App->tex->UnLoad(logo_tex);
+		App->tex->UnLoad(start_game_tex);
 	}
 
 
@@ -135,17 +135,7 @@ bool LogoScene::PostUpdate()
 		}
 	}
 	
-	
-
 	return true;
 }
 
-// Called before quitting
-bool LogoScene::CleanUp()
-{
-	SDL_DestroyTexture(logo_tex);
-	SDL_DestroyTexture(start_game_tex);
-
-	return true;
-}
 
