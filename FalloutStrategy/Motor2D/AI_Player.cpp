@@ -26,21 +26,21 @@ bool AI_Player::Update(float dt) {
 	bool ret = true;
 
 	// Gather -----------------------------------------------------
-	/*
-	for (int i = 0; i < gatherers.size(); i++)
+	
+	for (int i = 0; i < gatherers_vector.size(); i++)
 	{
 		//authomatic gathering
-		if (gatherers[i]->resource_building == nullptr) {
-			gatherers[i]->resource_building = App->entities->GetClosestResourceBuilding(gatherers[i]->current_tile);
+		if (gatherers_vector[i]->resource_building == nullptr) {
+			gatherers_vector[i]->resource_building = App->entities->GetClosestResourceBuilding(gatherers_vector[i]->current_tile);
 			//if there is at least a resource building left, go there
-			if (gatherers[i]->resource_building != nullptr) {
-				gatherers[i]->PathfindToPosition(App->entities->ClosestTile(gatherers[i]->current_tile, gatherers[i]->resource_building->tiles));
-				gatherers[i]->state = WALK;
+			if (gatherers_vector[i]->resource_building != nullptr) {
+				gatherers_vector[i]->PathfindToPosition(App->entities->ClosestTile(gatherers_vector[i]->current_tile, gatherers_vector[i]->resource_building->tiles));
+				gatherers_vector[i]->state = WALK;
 			}
 			//if there are no resource buildings left
 			else
 			{
-				gatherers[i]->state = IDLE;
+				gatherers_vector[i]->state = IDLE;
 			}
 		}
 	}
@@ -50,7 +50,7 @@ bool AI_Player::Update(float dt) {
 	//Spawn Units -------------------------------------------------
 
 	//melee-ranged proportion
-	float mr_proportion = melees.size() / rangeds.size();
+	float mr_proportion = melees / rangeds;
 
 	//spawn melee
 	if ((water > App->entities->unit_data[faction][MELEE].cost_water)&&(caps > App->entities->unit_data[faction][MELEE].cost_meat) && (mr_proportion < 2)) {
@@ -67,11 +67,11 @@ bool AI_Player::Update(float dt) {
 	}
 
 	//if the ai_player is ready choose a player to attack
-	if ((rangeds.size() > ranged_minimum) && (melees.size() > melee_minimum) && (target_player == nullptr)) { 
+	if ((rangeds > ranged_minimum) && (melees > melee_minimum) && (target_player == nullptr)) { 
 		ChooseRandomPlayerEnemy();
 		is_attacking = true;
 	}
-	*/
+
 	// -------------------------------------------------------------
 
 	// Fight -------------------------------------------------------
@@ -130,4 +130,29 @@ DynamicEntity* AI_Player::GetClosestDynamicEntity() {
 		}
 	}
 	return target_entity;
+}
+
+void AI_Player::RecountEntities() {
+	melees = rangeds = gatherers = 0;
+	for (int i = 0; i < entities.size(); i++)
+	{
+		if (entities[i]->type == MELEE)
+			melees++;
+		else if (entities[i]->type == RANGED)
+			rangeds++;
+		else if (entities[i]->type == GATHERER) {
+			gatherers++;
+			gatherers_vector.push_back((DynamicEntity*)entities[i]);
+		}
+		else if (entities[i]->type == BASE)
+			base = (StaticEntity*)entities[i];
+		else if (entities[i]->type == LABORATORY)
+			laboratory = (StaticEntity*)entities[i];
+		else if (entities[i]->type == BARRACK) {
+			if(barrack[0] == nullptr)
+				barrack[0] = (StaticEntity*)entities[i];
+			else if (barrack[1] == nullptr)
+				barrack[1] = (StaticEntity*)entities[i];
+		}
+	}
 }

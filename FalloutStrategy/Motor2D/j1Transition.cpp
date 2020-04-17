@@ -103,9 +103,12 @@ bool j1Transition::Awake(pugi::xml_node& config)
 
 bool j1Transition::Start()
 {
+	j1PerfTimer	ptimer;
+	PERF_START(ptimer);
 	LoadAnimations();
 	fade = false;
 	alpha = 0;
+	PERF_PEEK(ptimer);
 	return true;
 }
 

@@ -477,8 +477,6 @@ void MenuManager::DestroyMenu(Menu menu) {
 		break;
 	case Menu::SELECT_FACTION:
 		App->gui->DeleteArrayElements(select_faction_menu, 12);
-		App->entities->Enable();
-		App->scene->Enable();
 		break;
 	case Menu::PAUSE_MENU:
 		App->gui->DeleteArrayElements(pause_menu, 7);

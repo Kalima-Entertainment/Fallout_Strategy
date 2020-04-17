@@ -62,7 +62,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 
 	AddModule(map);
-	AddModule(collision);
+	//AddModule(collision);
 	AddModule(pathfinding);
 	AddModule(main_menu);
 	AddModule(entities);
@@ -157,6 +157,8 @@ bool j1App::Start()
 
 	scene->Disable();
 	entities->Disable();
+	minimap->Disable();
+	ai_manager->Disable();
 
 	for (int i = 0; i < modules.size() && ret == true; i++)
 	{

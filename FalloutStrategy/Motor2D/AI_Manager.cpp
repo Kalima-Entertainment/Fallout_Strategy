@@ -6,12 +6,13 @@
 AI_Manager::AI_Manager() : j1Module() {
 	name = ("AI");
 	players_created = false;
+	ai_player[0] = ai_player[1] = ai_player[2] = ai_player[3] = nullptr;
 }
 
 AI_Manager::~AI_Manager() {}
 
-void AI_Manager::CreateAI_PLayers() {
-
+bool AI_Manager::Start() {
+	bool ret = true;
 	for (int i = 0; i < 4; i++)
 	{
 		if (App->player->faction != (Faction) i) {
@@ -23,6 +24,7 @@ void AI_Manager::CreateAI_PLayers() {
 		}
 	}
 	players_created = true;
+	return ret;
 }
 
 bool AI_Manager::Update(float dt) {
@@ -35,5 +37,19 @@ bool AI_Manager::Update(float dt) {
 			}
 		}
 	}
+	return ret;
+}
+
+bool AI_Manager::CleanUp() {
+	bool ret = true;
+
+	for (int i = 0; i < 4; i++)
+	{
+		if (ai_player[i] != nullptr) {
+			delete ai_player[i];
+		}
+	}
+	players_created = false;
+
 	return ret;
 }

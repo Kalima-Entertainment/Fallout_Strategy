@@ -20,7 +20,7 @@ public:
 
 	//virtual int GetMelees() const;
 	//virtual int GetRangeds() const;
-	void RecountEntities();
+	virtual void RecountEntities() { return; };
 	int GetTroopsAmount() const;
 
 public:

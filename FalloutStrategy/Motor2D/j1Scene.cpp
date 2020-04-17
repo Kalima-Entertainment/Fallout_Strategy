@@ -85,7 +85,9 @@ bool j1Scene::Start()
 	}
 
 	App->minimap->Enable();
-
+	App->player->faction = VAULT;
+	App->ai_manager->Enable(); 
+	AssignEntities();
 	//App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
 
 	//App->entities->CreateEntity(VAULT, RANGED, 20, 20);
@@ -192,13 +194,18 @@ bool j1Scene::PostUpdate()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
-
+	App->ai_manager->Disable();
 	return true;
 }
 
 void j1Scene::AssignEntities() {
+
 	for (int i = 0; i < 4; i++)	{
-		players[i]->entities.clear();
+		players[i] = (GenericPlayer*)App->ai_manager->ai_player[i];
+		if (players[i] == NULL) players[i] = App->player;
+
+		if(players[i]->entities.size() > 0)
+			players[i]->entities.clear();
 	}
 
 	for (int i = 0; i < App->entities->entities.size(); i++) {

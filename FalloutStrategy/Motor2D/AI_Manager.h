@@ -11,8 +11,9 @@ public:
 	AI_Manager();
 	~AI_Manager();
 
-	void CreateAI_PLayers();
+	bool Start();
 	bool Update(float dt);
+	bool CleanUp();
 
 public:
 	AI_Player* ai_player[4];
