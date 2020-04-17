@@ -300,6 +300,8 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
 				App->menu_manager->CreateMainMenu();
 				App->audio->PlayFx(1, back_fx, 0);
+				App->entities->Disable();
+				App->scene->Disable();
 			}
 			
 			//Spawn Gatherer from any faction

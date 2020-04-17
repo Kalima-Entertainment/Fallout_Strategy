@@ -12,8 +12,6 @@
 #include "j1Textures.h"
 #include "j1EntityManager.h"
 
-
-
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "j1App.h"
@@ -38,7 +36,7 @@ bool j1Transition::LoadAnimations() {
 	pugi::xml_parse_result result = animation_file.load_file("gui/loading.tmx");
 
 	std::string image = std::string(animation_file.child("tileset").child("image").attribute("source").as_string());
-	gif = App->tex->Load("gui/gif_loadscreen.png");
+	//gif = App->tex->Load("gui/gif_loadscreen.png");
 	logo = App->tex->Load("gui/logo_spritesheet.png");
 	if (result == NULL)
 	{

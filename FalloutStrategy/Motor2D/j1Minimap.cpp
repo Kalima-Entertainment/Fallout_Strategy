@@ -60,11 +60,7 @@ bool j1Minimap::Start() {
 	scale = ((width) / ((float)map_width));
 	height = (map_height) * scale;
 
-	texture = SDL_CreateTexture(App->render->renderer, SDL_GetWindowPixelFormat(App->win->window), SDL_TEXTUREACCESS_TARGET, width, height);
-
-	SDL_SetRenderTarget(App->render->renderer, texture);
 	CreateMinimap();
-	SDL_SetRenderTarget(App->render->renderer, NULL);
 
 	switch (corner)
 	{
@@ -85,6 +81,14 @@ bool j1Minimap::Start() {
 		position.y = window_height - height - margin;
 		break;
 	}
+
+	return ret;
+}
+
+bool j1Minimap::CleanUp() {
+	bool ret = true;
+
+	App->tex->UnLoad(texture);
 
 	return ret;
 }
@@ -127,6 +131,9 @@ bool j1Minimap::CreateMinimap() {
 	int tile_margin = 3;
 	int half_width = map_width * 0.5f;
 
+	texture = SDL_CreateTexture(App->render->renderer, SDL_GetWindowPixelFormat(App->win->window), SDL_TEXTUREACCESS_TARGET, width, height);
+	SDL_SetRenderTarget(App->render->renderer, texture);
+
 	for (int l = 0; l < MAX_LAYERS; l++)
 	{
 		MapLayer* layer = &App->map->data.layers[l];
@@ -154,6 +161,9 @@ bool j1Minimap::CreateMinimap() {
 			}
 		}
 	}
+
+	SDL_SetRenderTarget(App->render->renderer, NULL);
+
 	PERF_PEEK(ptimer);
 
 	return true;

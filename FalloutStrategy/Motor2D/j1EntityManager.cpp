@@ -195,6 +195,15 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 
 	RandomFactions();
 
+	return ret;
+}
+
+bool j1EntityManager::Start() {
+	BROFILER_CATEGORY("EntitiesStart", Profiler::Color::Linen)
+	bool ret = true;
+	
+	App->console->CreateCommand("destroy_all_entities", "remove all dynamic entities", (j1Module*)this);
+
 	//automatic entities loading
 	for (int faction = VAULT; faction < NO_FACTION; faction++)
 	{
@@ -206,15 +215,6 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 	}
 
 	ret = LoadReferenceEntityData();
-
-	return ret;
-}
-
-bool j1EntityManager::Start() {
-	BROFILER_CATEGORY("EntitiesStart", Profiler::Color::Linen)
-	bool ret = true;
-	
-	App->console->CreateCommand("destroy_all_entities", "remove all dynamic entities", (j1Module*)this);
 
 	//load all textures and animations
 	for (int faction = VAULT; faction < NO_FACTION; faction++)
@@ -240,8 +240,10 @@ bool j1EntityManager::CleanUp()
 	{
 		for (int type = MELEE; type <= BASE; type++)
 		{
-			App->tex->UnLoad(reference_entities[faction][type]->texture);
-			delete reference_entities[faction][type];
+			if (reference_entities[faction][type] != NULL) {
+				App->tex->UnLoad(reference_entities[faction][type]->texture);
+				delete reference_entities[faction][type];
+			}
 		}
 	}
 

@@ -24,6 +24,7 @@
 #include "j1MovementManager.h"
 #include "GenericPlayer.h"
 #include "AI_Manager.h"
+#include "j1Minimap.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -83,9 +84,11 @@ bool j1Scene::Start()
 		RELEASE_ARRAY(data);
 	}
 
+	App->minimap->Enable();
+
 	//App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
 
-	App->entities->CreateEntity(VAULT, RANGED, 20, 20);
+	//App->entities->CreateEntity(VAULT, RANGED, 20, 20);
 
 	return true;
 }

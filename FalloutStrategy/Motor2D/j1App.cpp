@@ -155,9 +155,13 @@ bool j1App::Start()
 	PERF_START(ptimer);
 	bool ret = true;
 
+	scene->Disable();
+	entities->Disable();
+
 	for (int i = 0; i < modules.size() && ret == true; i++)
 	{
-		ret = modules[i]->Start();
+		if(modules[i]->active)
+			ret = modules[i]->Start();
 	}
 
 	startup_time.Start();
