@@ -22,6 +22,8 @@
 #include <time.h>
 #include <string>
 #include "j1MovementManager.h"
+#include "GenericPlayer.h"
+#include "AI_Manager.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -189,6 +191,22 @@ bool j1Scene::CleanUp()
 	LOG("Freeing scene");
 
 	return true;
+}
+
+void j1Scene::AssignEntities() {
+	for (int i = 0; i < 4; i++)	{
+		players[i]->entities.clear();
+	}
+
+	for (int i = 0; i < App->entities->entities.size(); i++) {
+		App->entities->entities[i]->owner = players[App->entities->entities[i]->faction];
+		players[App->entities->entities[i]->faction]->entities.push_back(App->entities->entities[i]);
+	}
+	
+	for (int i = 0; i < 4; i++)
+	{
+		players[i]->RecountEntities();
+	}
 }
 
 StatesMenu j1Scene::GetMenuState()

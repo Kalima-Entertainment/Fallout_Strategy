@@ -11,13 +11,13 @@ public:
 	AI_Manager();
 	~AI_Manager();
 
-	bool Start();
+	void CreateAI_PLayers();
 	bool Update(float dt);
 
 public:
 	AI_Player* ai_player[4];
 private:
-
+	bool players_created;
 };
 
 #endif // !_AI_MANAGER_H_

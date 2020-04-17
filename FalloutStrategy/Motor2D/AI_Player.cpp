@@ -26,7 +26,7 @@ bool AI_Player::Update(float dt) {
 	bool ret = true;
 
 	// Gather -----------------------------------------------------
-
+	/*
 	for (int i = 0; i < gatherers.size(); i++)
 	{
 		//authomatic gathering
@@ -71,7 +71,7 @@ bool AI_Player::Update(float dt) {
 		ChooseRandomPlayerEnemy();
 		is_attacking = true;
 	}
-
+	*/
 	// -------------------------------------------------------------
 
 	// Fight -------------------------------------------------------

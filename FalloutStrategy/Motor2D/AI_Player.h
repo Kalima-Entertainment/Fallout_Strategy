@@ -17,10 +17,6 @@ public:
 
 	GenericPlayer* target_player;
 
-	std::vector<DynamicEntity*> gatherers;
-	std::vector<DynamicEntity*> rangeds;
-	std::vector<DynamicEntity*> melees;
-
 	bool is_attacking;
 
 private:

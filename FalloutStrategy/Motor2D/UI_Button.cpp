@@ -32,8 +32,6 @@ UI_Button::UI_Button(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, 
 	volume_fx = App->audio->LoadFx("audio/fx/UISounds/Butn_Text.wav");
 	members_fx = App->audio->LoadFx("audio/fx/UISounds/Butn_Skill.wav");
 	character_fx = App->audio->LoadFx("audio/fx/UISounds/Butn_Character.wav");
-	
-
 }
 
 bool UI_Button::CleanUp()

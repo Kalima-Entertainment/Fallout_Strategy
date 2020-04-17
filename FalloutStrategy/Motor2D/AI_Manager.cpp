@@ -5,33 +5,34 @@
 
 AI_Manager::AI_Manager() : j1Module() {
 	name = ("AI");
+	players_created = false;
 }
 
 AI_Manager::~AI_Manager() {}
 
-bool AI_Manager::Start() {
-	bool ret = true;
+void AI_Manager::CreateAI_PLayers() {
 
 	for (int i = 0; i < 4; i++)
 	{
-		if (App->player->faction != (Faction)i) {
-			ai_player[i] = new AI_Player((Faction)i);
+		if (App->player->faction != (Faction) i) {
+			ai_player[i] = new AI_Player((Faction) i);
 		}
 		else
 		{
 			ai_player[i] = NULL;
 		}
 	}
-
-	return ret;
+	players_created = true;
 }
 
 bool AI_Manager::Update(float dt) {
 	bool ret = true;
-	for (int i = 0; i < 4; i++)
-	{
-		if (ai_player[i] != nullptr) {
-			ai_player[i]->Update(dt);
+	if (players_created) {
+		for (int i = 0; i < 4; i++)
+		{
+			if (ai_player[i] != nullptr) {
+				ai_player[i]->Update(dt);
+			}
 		}
 	}
 	return ret;
