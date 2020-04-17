@@ -4,6 +4,7 @@
 #include "j1Module.h"
 #include "j1Timer.h"
 #include "Animation.h"
+#include "j1App.h"
 
 struct SDL_Texture;
 
@@ -30,7 +31,6 @@ public:
 	
 	bool LogoScene::LoadAnimations();
 
-
 private:
 	Animation	animationLogo;
 	Animation	animationStartGameText;
@@ -42,6 +42,7 @@ private:
 	bool renderLogo = true;
 	j1Timer Timer;
 	bool drawable = true;
+	
 };
 
 #endif // __j1LOGOSCENE_H__

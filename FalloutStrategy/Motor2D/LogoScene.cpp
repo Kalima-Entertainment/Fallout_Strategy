@@ -9,13 +9,11 @@
 #include "j1Audio.h"
 
 
-
-
 LogoScene::LogoScene() : j1Module()
 {
 	
 	name = ("logo_scene");
-	
+
 }
 
 // Destructor
@@ -78,6 +76,8 @@ bool LogoScene::LoadAnimations()
 // Called before the first frame
 bool LogoScene::Start()
 {
+
+	App->audio->PlayFx(1, App->audio->intro_fx, 0);
 	start_game_rect = { 0, 0,561,30 };
 	LoadAnimations();
 	renderLogo = true;
@@ -89,7 +89,7 @@ bool LogoScene::Start()
 // Called each loop iteration
 bool LogoScene::Update(float dt)
 {
-	
+
 	last_dt = dt;
 
 	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)

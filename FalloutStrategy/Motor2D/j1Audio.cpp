@@ -72,6 +72,9 @@ bool j1Audio::Awake(pugi::xml_node& config)
 	explode = LoadFx("audio/fx/Others/Weapons/bigexplode1.wav");
 	factory = LoadFx("audio/fx/Others/Weapons/factory_working.wav");
 
+	intro_fx = App->audio->LoadFx("audio/fx/Intro/Intro_fx.wav");
+	intro_fx1 = App->audio->LoadFx("audio/fx/Intro/Intro_fx1.wav");
+
 	return ret;
 }
 

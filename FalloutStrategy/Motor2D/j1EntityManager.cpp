@@ -183,13 +183,14 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 
 	if (App->ai_manager->ai_player[faction] == nullptr)
 		entity->owner = App->player;
+	/*
 	else {
 		entity->owner = App->ai_manager->ai_player[faction];
 		if (type == MELEE)App->ai_manager->ai_player[faction]->melees.push_back((DynamicEntity*)entity);
 		else if (type == RANGED)App->ai_manager->ai_player[faction]->rangeds.push_back((DynamicEntity*)entity);
 		else if (type == GATHERER)App->ai_manager->ai_player[faction]->gatherers.push_back((DynamicEntity*)entity);
 	}
-
+	*/
 	return entity;
 }
 

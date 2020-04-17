@@ -17,6 +17,7 @@ struct Frame {
 class Animation
 {
 public:
+	bool sounded = true;
 	bool loop = true;
 	Frame frames[MAX_FRAMES];
 	float current_frame = 0;
@@ -60,6 +61,7 @@ public:
 
 	void Reset()
 	{
+		sounded = false;
 		current_frame = 0;
 		loops = 0;
 	}

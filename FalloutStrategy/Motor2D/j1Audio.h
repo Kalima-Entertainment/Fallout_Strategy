@@ -63,6 +63,9 @@ public:
 	int explode;
 	int factory;
 
+	int intro_fx;
+	int intro_fx1;
+
 private:
 
 	float				music_volume;
