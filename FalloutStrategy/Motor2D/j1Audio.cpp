@@ -74,7 +74,9 @@ bool j1Audio::Awake(pugi::xml_node& config)
 
 	intro_fx = App->audio->LoadFx("audio/fx/Intro/Intro_fx.wav");
 	intro_fx1 = App->audio->LoadFx("audio/fx/Intro/Intro_fx1.wav");
-
+	F_press = App->audio->LoadFx("audio/fx/UISounds/Butn_CheckBox.wav");
+	Press_F_to_start = App->audio->LoadFx("audio/fx/UISounds/Butn_Text.wav");
+	
 	return ret;
 }
 

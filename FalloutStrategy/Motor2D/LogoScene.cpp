@@ -7,6 +7,7 @@
 #include "j1Render.h"
 #include "LogoScene.h"
 #include "j1Audio.h"
+#include "SDL_mixer/include/SDL_mixer.h"
 
 
 LogoScene::LogoScene() : j1Module()
@@ -78,6 +79,7 @@ bool LogoScene::Start()
 {
 
 	App->audio->PlayFx(1, App->audio->intro_fx, 0);
+	
 	start_game_rect = { 0, 0,561,30 };
 	LoadAnimations();
 	renderLogo = true;
@@ -94,6 +96,8 @@ bool LogoScene::Update(float dt)
 
 	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
+		
+		App->audio->PlayFx(2, App->audio->F_press, 0);
 		renderLogo = false;
 	}
 
@@ -113,6 +117,9 @@ bool LogoScene::PostUpdate()
 		if(drawable)
 		{
 			App->render->Blit(start_game_tex, 325, 510, &start_game_rect);
+			if (Mix_Playing(3) == 0) {
+				App->audio->PlayFx(3, App->audio->Press_F_to_start, 0);
+			}
 		}
 		
 		if (Timer.Read() > 1000 && Timer.Read() < 2000)
