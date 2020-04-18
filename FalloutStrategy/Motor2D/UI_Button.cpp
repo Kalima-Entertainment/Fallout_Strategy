@@ -294,6 +294,7 @@ bool UI_Button::Update(float dt)
 				App->gui->count = 0;
 				App->player->Enable();
 				App->entities->Enable();
+				App->Mmanager->Enable();
 				App->scene->Enable();
 				App->menu_manager->CreateGUI();
 			}
