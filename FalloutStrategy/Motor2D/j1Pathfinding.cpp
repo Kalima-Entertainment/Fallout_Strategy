@@ -201,7 +201,9 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	//BROFILER_CATEGORY("CreatePath", Profiler::Color::Azure)
 
 	last_path.clear();
-	if (!IsWalkable(origin) || !IsWalkable(destination)) return -1;
+
+	if ((!CheckBoundaries(origin)) || (!CheckBoundaries(destination))) return -1;
+
 	PathList open;
 	PathList close;
 
@@ -217,12 +219,15 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 		if (current_node->pos == destination)
 		{
 			const PathNode* path_item = nullptr;
+
 			for (path_item = &(*current_node); path_item->pos != origin; path_item = path_item->parent) {
 				last_path.push_back(path_item->pos);
 			}
+
 			last_path.push_back(path_item->pos);
 			std::reverse(last_path.begin(), last_path.end());
-			break;
+			
+			return last_path.size();
 		}
 
 		std::list<PathNode>::iterator it = open.list.begin();

@@ -510,6 +510,11 @@ bool j1EntityManager::PostUpdate()
 	{
 		if (entities[i]->to_destroy)
 		{
+			if (entities[i]->owner->DeleteEntity(entities[i]) == true) {
+				App->scene->CheckWinner();
+			};
+			delete entities[i];
+			entities[i] = nullptr;
 			entities.erase(entities.begin() + i);
 		}
 		else
@@ -519,7 +524,7 @@ bool j1EntityManager::PostUpdate()
 				&& (entities[i]->position.y + entities[i]->sprite_size * 0.25f > -App->render->camera.y) 
 				&& (entities[i]->position.y - entities[i]->sprite_size * 0.25f < -App->render->camera.y + App->render->camera.h)) {
 			
-				if (sort_timer.ReadSec() > 1) {
+				if (sort_timer.Read() > 500) {
 					BubbleSortEntities();
 					sort_timer.Start();
 				}

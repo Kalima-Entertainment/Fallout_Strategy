@@ -21,6 +21,7 @@ public:
 	//virtual int GetMelees() const;
 	//virtual int GetRangeds() const;
 	int GetTroopsAmount() const;
+	bool DeleteEntity(j1Entity* entity);
 
 public:
 	int caps;

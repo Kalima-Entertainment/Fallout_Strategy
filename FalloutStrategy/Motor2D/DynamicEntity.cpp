@@ -376,9 +376,11 @@ void DynamicEntity::Gather() {
 	resource_collected += resource;
 	resource_type = resource_building->resource_type;
 
-	StaticEntity* base = (StaticEntity*)App->entities->FindEntityByType(faction, BASE);
-	PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
-	target_entity = base;
+	StaticEntity* base = owner->base;
+	if (base != nullptr) {
+		PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
+		target_entity = base;
+	}
 	//resource_building = nullptr;
 }
 
