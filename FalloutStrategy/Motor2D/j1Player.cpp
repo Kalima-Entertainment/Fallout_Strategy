@@ -61,8 +61,11 @@ bool j1Player::PreUpdate() {
 	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 		App->render->debug = !App->render->debug;
 
-	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
 		god_mode = !god_mode;
+		if (god_mode) LOG("God Mode: ON");
+		else LOG("God Mode: OFF");
+	}
 
 	//block border scroll
 	if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
@@ -361,4 +364,3 @@ bool j1Player::TouchingUI(int x, int y) {
 	if (y > App->minimap->position.y - 8) { ret = true; }
 	return ret;
 }
-

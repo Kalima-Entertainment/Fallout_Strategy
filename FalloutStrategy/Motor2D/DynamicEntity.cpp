@@ -238,7 +238,7 @@ bool DynamicEntity::PostUpdate() {
 
 	//Render character
 	render_position = { (int)(position.x - sprite_size * 0.5f), (int)(position.y - 1.82f * TILE_SIZE)};
-	App->render->Blit(reference_entity->texture,render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
+	App->render->Blit(reference_entity->texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
 	if (App->render->debug)
 		App->render->DrawQuad({ (int)position.x -2, (int)position.y -2 , 4,4 }, 255, 0, 0, 255);

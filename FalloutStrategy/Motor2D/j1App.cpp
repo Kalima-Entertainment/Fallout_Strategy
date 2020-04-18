@@ -233,7 +233,6 @@ void j1App::FinishUpdate()
 		LoadGameNow();
 
 	// Framerate calculations --
-
 	if(last_sec_frame_time.Read() > 1000)
 	{
 		last_sec_frame_time.Start();
@@ -245,12 +244,11 @@ void j1App::FinishUpdate()
 	float seconds_since_startup = startup_time.ReadSec();
 	uint32 last_frame_ms = frame_time.Read();
 	uint32 frames_on_last_update = prev_last_sec_frame_count;
-
 	static char title[256];
 	//sprintf_s(title, 256, " Fallout Strategy 0.1 | Av.FPS: %.2f Last Frame Ms: %u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %lu %i Camera X: %i Camera Y: %i",
 		//	  avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count, App->render->camera.x, App->render->camera.y);
-	sprintf_s(title, 256, " Fallout Strategy 0.4 - Kalima Entertainment | Av.FPS: %.2f | Last dt: %.3f | Camera X: %i Camera Y: %i",
-			  avg_fps, dt, App->render->camera.x, App->render->camera.y);
+	sprintf_s(title, 256, " Fallout Strategy 0.4 - Kalima Entertainment | FPS: %i | Last dt: %.3f | Camera X: %i Camera Y: %i",
+		prev_last_sec_frame_count, dt, App->render->camera.x, App->render->camera.y);
 	App->win->SetTitle(title);
 
 	if(capped_ms > 0 && last_frame_ms < capped_ms)
