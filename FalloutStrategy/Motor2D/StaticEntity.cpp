@@ -486,10 +486,16 @@ void StaticEntity::SpawnUnit(EntityType type) {
 			cost_meat = App->entities->unit_data[i][j].cost_meat;
 			spawn_seconds = App->entities->unit_data[i][j].spawn_seconds;
 
-			if (App->player->water >= cost_water && App->player->food > cost_meat) {
+			if (owner->water >= cost_water && owner->food > cost_meat) {
 				//Substract resources
-				App->player->UpdateResourceData(Resource::WATER, -cost_water);
-				App->player->UpdateResourceData(Resource::FOOD, -cost_meat);
+				if (owner->faction == App->player->faction) {
+					App->player->UpdateResourceData(Resource::WATER, -cost_water);
+					App->player->UpdateResourceData(Resource::FOOD, -cost_meat);
+				}
+				else {
+					owner->water -= cost_water;
+					owner->food -= cost_meat;
+				}
 
 				//Add to stack
 				for (int i = 0; i < 10; i++) {

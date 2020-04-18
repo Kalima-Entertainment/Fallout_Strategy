@@ -56,7 +56,6 @@ public:
 public:
 	int mov_speed;
 	float action_time;
-	fPoint speed;
 	iPoint next_tile;
 
 	Animation animations[MAX_ANIMATIONS][4];
