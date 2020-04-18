@@ -24,28 +24,6 @@
     <frame tileid="14" duration="100"/>
    </animation>
   </tile>
-  <tile id="16">
-   <properties>
-    <property name="idle" value="right"/>
-   </properties>
-   <animation>
-    <frame tileid="16" duration="100"/>
-    <frame tileid="17" duration="100"/>
-    <frame tileid="18" duration="100"/>
-    <frame tileid="19" duration="100"/>
-    <frame tileid="20" duration="100"/>
-    <frame tileid="21" duration="100"/>
-    <frame tileid="22" duration="100"/>
-    <frame tileid="23" duration="100"/>
-    <frame tileid="24" duration="100"/>
-    <frame tileid="25" duration="100"/>
-    <frame tileid="26" duration="100"/>
-    <frame tileid="27" duration="100"/>
-    <frame tileid="28" duration="100"/>
-    <frame tileid="29" duration="100"/>
-    <frame tileid="30" duration="100"/>
-   </animation>
-  </tile>
   <tile id="32">
    <properties>
     <property name="idle" value="bottom_right"/>
@@ -88,28 +66,6 @@
     <frame tileid="60" duration="100"/>
     <frame tileid="61" duration="100"/>
     <frame tileid="62" duration="100"/>
-   </animation>
-  </tile>
-  <tile id="64">
-   <properties>
-    <property name="idle" value="left"/>
-   </properties>
-   <animation>
-    <frame tileid="64" duration="100"/>
-    <frame tileid="65" duration="100"/>
-    <frame tileid="66" duration="100"/>
-    <frame tileid="67" duration="100"/>
-    <frame tileid="68" duration="100"/>
-    <frame tileid="69" duration="100"/>
-    <frame tileid="70" duration="100"/>
-    <frame tileid="71" duration="100"/>
-    <frame tileid="72" duration="100"/>
-    <frame tileid="73" duration="100"/>
-    <frame tileid="74" duration="100"/>
-    <frame tileid="75" duration="100"/>
-    <frame tileid="76" duration="100"/>
-    <frame tileid="77" duration="100"/>
-    <frame tileid="78" duration="100"/>
    </animation>
   </tile>
   <tile id="80">
@@ -184,37 +140,6 @@
     <frame tileid="191" duration="100"/>
    </animation>
   </tile>
-  <tile id="112">
-   <properties>
-    <property name="walk" value="right"/>
-   </properties>
-   <animation>
-    <frame tileid="121" duration="100"/>
-    <frame tileid="112" duration="100"/>
-    <frame tileid="113" duration="100"/>
-    <frame tileid="114" duration="100"/>
-    <frame tileid="115" duration="100"/>
-    <frame tileid="116" duration="100"/>
-    <frame tileid="117" duration="100"/>
-    <frame tileid="118" duration="100"/>
-    <frame tileid="119" duration="100"/>
-    <frame tileid="120" duration="100"/>
-    <frame tileid="121" duration="100"/>
-   </animation>
-  </tile>
-  <tile id="122">
-   <properties>
-    <property name="attack" value="right"/>
-   </properties>
-   <animation>
-    <frame tileid="122" duration="100"/>
-    <frame tileid="123" duration="100"/>
-    <frame tileid="124" duration="100"/>
-    <frame tileid="125" duration="100"/>
-    <frame tileid="215" duration="100"/>
-    <frame tileid="216" duration="100"/>
-   </animation>
-  </tile>
   <tile id="128">
    <properties>
     <property name="walk" value="bottom_right"/>
@@ -275,36 +200,6 @@
     <frame tileid="248" duration="100"/>
    </animation>
   </tile>
-  <tile id="160">
-   <properties>
-    <property name="walk" value="left"/>
-   </properties>
-   <animation>
-    <frame tileid="160" duration="100"/>
-    <frame tileid="161" duration="100"/>
-    <frame tileid="162" duration="100"/>
-    <frame tileid="163" duration="100"/>
-    <frame tileid="164" duration="100"/>
-    <frame tileid="165" duration="100"/>
-    <frame tileid="166" duration="100"/>
-    <frame tileid="167" duration="100"/>
-    <frame tileid="168" duration="100"/>
-    <frame tileid="169" duration="100"/>
-   </animation>
-  </tile>
-  <tile id="170">
-   <properties>
-    <property name="attack" value="left"/>
-   </properties>
-   <animation>
-    <frame tileid="170" duration="100"/>
-    <frame tileid="171" duration="100"/>
-    <frame tileid="172" duration="100"/>
-    <frame tileid="173" duration="100"/>
-    <frame tileid="238" duration="100"/>
-    <frame tileid="239" duration="100"/>
-   </animation>
-  </tile>
   <tile id="176">
    <properties>
     <property name="walk" value="top_left"/>
@@ -348,34 +243,6 @@
     <frame tileid="196" duration="100"/>
     <frame tileid="197" duration="100"/>
     <frame tileid="198" duration="100"/>
-   </animation>
-  </tile>
-  <tile id="201">
-   <properties>
-    <property name="hit" value="left"/>
-   </properties>
-   <animation>
-    <frame tileid="201" duration="100"/>
-    <frame tileid="202" duration="100"/>
-    <frame tileid="203" duration="100"/>
-    <frame tileid="204" duration="100"/>
-    <frame tileid="205" duration="100"/>
-    <frame tileid="206" duration="100"/>
-    <frame tileid="207" duration="100"/>
-   </animation>
-  </tile>
-  <tile id="208">
-   <properties>
-    <property name="hit" value="right"/>
-   </properties>
-   <animation>
-    <frame tileid="208" duration="100"/>
-    <frame tileid="209" duration="100"/>
-    <frame tileid="210" duration="100"/>
-    <frame tileid="211" duration="100"/>
-    <frame tileid="212" duration="100"/>
-    <frame tileid="213" duration="100"/>
-    <frame tileid="214" duration="100"/>
    </animation>
   </tile>
   <tile id="217">
@@ -423,7 +290,7 @@
  </tileset>
  <layer name="Capa de Patrones 1" width="6" height="6">
   <data encoding="base64">
-   AQAAABEAAAAhAAAAMQAAAEEAAABRAAAAYQAAAHEAAACBAAAAkQAAAKEAAACxAAAAwQAAANEAAADhAAAA8QAAAMoAAADaAAAAawAAAHsAAACLAAAAmwAAAKsAAAC7AAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+   AQAAAAAAAAAhAAAAMQAAAAAAAABRAAAAYQAAAAAAAACBAAAAkQAAAAAAAACxAAAAwQAAAAAAAADhAAAA8QAAAAAAAADaAAAAawAAAAAAAACLAAAAmwAAAAAAAAC7AAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   </data>
  </layer>
 </map>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="6" height="5" tilewidth="128" tileheight="128" nextobjectid="1">
- <tileset firstgid="1" name="Vault_Dweller_Gatherer" tilewidth="128" tileheight="128" tilecount="1024" columns="32">
-  <image source="Ghouls_Gatherer.png" width="4096" height="4096"/>
+ <tileset firstgid="1" name="Vault_Dweller_Gatherer" tilewidth="128" tileheight="128" tilecount="512" columns="32">
+  <image source="Ghouls_Gatherer.png" width="4096" height="2048"/>
   <tile id="0">
    <properties>
     <property name="idle" value="top_right"/>
@@ -49,55 +49,6 @@
     <frame tileid="27" duration="100"/>
     <frame tileid="28" duration="100"/>
     <frame tileid="29" duration="100"/>
-   </animation>
-  </tile>
-  <tile id="32">
-   <properties>
-    <property name="idle" value="right"/>
-   </properties>
-   <animation>
-    <frame tileid="32" duration="100"/>
-    <frame tileid="33" duration="100"/>
-    <frame tileid="34" duration="100"/>
-    <frame tileid="35" duration="100"/>
-    <frame tileid="36" duration="100"/>
-    <frame tileid="37" duration="100"/>
-    <frame tileid="38" duration="100"/>
-    <frame tileid="39" duration="100"/>
-    <frame tileid="40" duration="100"/>
-    <frame tileid="41" duration="100"/>
-    <frame tileid="42" duration="100"/>
-    <frame tileid="43" duration="100"/>
-   </animation>
-  </tile>
-  <tile id="45">
-   <properties>
-    <property name="walk" value="right"/>
-   </properties>
-   <animation>
-    <frame tileid="45" duration="100"/>
-    <frame tileid="46" duration="100"/>
-    <frame tileid="47" duration="100"/>
-    <frame tileid="48" duration="100"/>
-    <frame tileid="49" duration="100"/>
-    <frame tileid="50" duration="100"/>
-    <frame tileid="51" duration="100"/>
-    <frame tileid="52" duration="100"/>
-    <frame tileid="53" duration="100"/>
-    <frame tileid="54" duration="100"/>
-    <frame tileid="55" duration="100"/>
-   </animation>
-  </tile>
-  <tile id="57">
-   <properties>
-    <property name="die" value="right"/>
-   </properties>
-   <animation>
-    <frame tileid="57" duration="100"/>
-    <frame tileid="58" duration="100"/>
-    <frame tileid="59" duration="100"/>
-    <frame tileid="60" duration="100"/>
-    <frame tileid="61" duration="100"/>
    </animation>
   </tile>
   <tile id="64">
@@ -198,55 +149,6 @@
     <frame tileid="125" duration="100"/>
    </animation>
   </tile>
-  <tile id="128">
-   <properties>
-    <property name="idle" value="left"/>
-   </properties>
-   <animation>
-    <frame tileid="128" duration="100"/>
-    <frame tileid="129" duration="100"/>
-    <frame tileid="130" duration="100"/>
-    <frame tileid="131" duration="100"/>
-    <frame tileid="132" duration="100"/>
-    <frame tileid="133" duration="100"/>
-    <frame tileid="134" duration="100"/>
-    <frame tileid="135" duration="100"/>
-    <frame tileid="136" duration="100"/>
-    <frame tileid="137" duration="100"/>
-    <frame tileid="138" duration="100"/>
-    <frame tileid="139" duration="100"/>
-   </animation>
-  </tile>
-  <tile id="141">
-   <properties>
-    <property name="walk" value="left"/>
-   </properties>
-   <animation>
-    <frame tileid="141" duration="100"/>
-    <frame tileid="142" duration="100"/>
-    <frame tileid="143" duration="100"/>
-    <frame tileid="144" duration="100"/>
-    <frame tileid="145" duration="100"/>
-    <frame tileid="146" duration="100"/>
-    <frame tileid="147" duration="100"/>
-    <frame tileid="148" duration="100"/>
-    <frame tileid="149" duration="100"/>
-    <frame tileid="150" duration="100"/>
-    <frame tileid="151" duration="100"/>
-   </animation>
-  </tile>
-  <tile id="153">
-   <properties>
-    <property name="die" value="left"/>
-   </properties>
-   <animation>
-    <frame tileid="153" duration="100"/>
-    <frame tileid="154" duration="100"/>
-    <frame tileid="155" duration="100"/>
-    <frame tileid="156" duration="100"/>
-    <frame tileid="157" duration="100"/>
-   </animation>
-  </tile>
   <tile id="160">
    <properties>
     <property name="idle" value="top_left"/>
@@ -330,40 +232,6 @@
     <frame tileid="244" duration="100"/>
    </animation>
   </tile>
-  <tile id="256">
-   <properties>
-    <property name="hit" value="right"/>
-   </properties>
-   <animation>
-    <frame tileid="256" duration="100"/>
-    <frame tileid="257" duration="100"/>
-    <frame tileid="258" duration="100"/>
-    <frame tileid="259" duration="100"/>
-    <frame tileid="260" duration="100"/>
-    <frame tileid="261" duration="100"/>
-    <frame tileid="262" duration="100"/>
-    <frame tileid="263" duration="100"/>
-   </animation>
-  </tile>
-  <tile id="265">
-   <properties>
-    <property name="gather" value="right"/>
-   </properties>
-   <animation>
-    <frame tileid="265" duration="100"/>
-    <frame tileid="266" duration="100"/>
-    <frame tileid="267" duration="100"/>
-    <frame tileid="268" duration="100"/>
-    <frame tileid="269" duration="100"/>
-    <frame tileid="270" duration="100"/>
-    <frame tileid="271" duration="100"/>
-    <frame tileid="272" duration="100"/>
-    <frame tileid="273" duration="100"/>
-    <frame tileid="274" duration="100"/>
-    <frame tileid="275" duration="100"/>
-    <frame tileid="276" duration="100"/>
-   </animation>
-  </tile>
   <tile id="288">
    <properties>
     <property name="hit" value="bottom_right"/>
@@ -432,40 +300,6 @@
     <frame tileid="340" duration="100"/>
    </animation>
   </tile>
-  <tile id="352">
-   <properties>
-    <property name="hit" value="left"/>
-   </properties>
-   <animation>
-    <frame tileid="352" duration="100"/>
-    <frame tileid="353" duration="100"/>
-    <frame tileid="354" duration="100"/>
-    <frame tileid="355" duration="100"/>
-    <frame tileid="356" duration="100"/>
-    <frame tileid="357" duration="100"/>
-    <frame tileid="358" duration="100"/>
-    <frame tileid="359" duration="100"/>
-   </animation>
-  </tile>
-  <tile id="361">
-   <properties>
-    <property name="gather" value="left"/>
-   </properties>
-   <animation>
-    <frame tileid="361" duration="100"/>
-    <frame tileid="362" duration="100"/>
-    <frame tileid="363" duration="100"/>
-    <frame tileid="364" duration="100"/>
-    <frame tileid="365" duration="100"/>
-    <frame tileid="366" duration="100"/>
-    <frame tileid="367" duration="100"/>
-    <frame tileid="368" duration="100"/>
-    <frame tileid="369" duration="100"/>
-    <frame tileid="370" duration="100"/>
-    <frame tileid="371" duration="100"/>
-    <frame tileid="372" duration="100"/>
-   </animation>
-  </tile>
   <tile id="384">
    <properties>
     <property name="hit" value="top_left"/>
@@ -503,7 +337,7 @@
  </tileset>
  <layer name="Capa de Patrones 1" width="6" height="5">
   <data encoding="base64">
-   AQAAACEAAABBAAAAYQAAAIEAAAChAAAADgAAAC4AAABOAAAAbgAAAI4AAACuAAAA6gAAAAoBAAAqAQAASgEAAGoBAACKAQAA4QAAAAEBAAAhAQAAQQEAAGEBAACBAQAAGgAAADoAAABaAAAAegAAAJoAAAC6AAAA
+   AQAAAAAAAABBAAAAYQAAAAAAAAChAAAADgAAAAAAAABOAAAAbgAAAAAAAACuAAAA6gAAAAAAAAAqAQAASgEAAAAAAACKAQAA4QAAAAAAAAAhAQAAQQEAAAAAAACBAQAAGgAAAAAAAABaAAAAegAAAAAAAAC6AAAA
   </data>
  </layer>
 </map>
