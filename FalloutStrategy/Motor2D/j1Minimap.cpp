@@ -89,6 +89,7 @@ bool j1Minimap::CleanUp() {
 	bool ret = true;
 
 	App->tex->UnLoad(texture);
+	texture = nullptr;
 
 	return ret;
 }
