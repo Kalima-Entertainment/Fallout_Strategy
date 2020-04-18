@@ -30,7 +30,7 @@ bool InputText::Update(float dt) {
 
 	if (InputText_Actived) {
 	
-		App->render->DrawQuad({ pos.x + r.w,pos.y,3,30 }, 255, 255, 255, 255);
+		App->render->DrawQuad({ pos.x + r.w,pos.y,3,30 }, 255, 255, 255, 255, true, false);
 		
 		if (App->input->isPresed) {
 			text += App->input->newLetter;
@@ -58,12 +58,13 @@ bool InputText::Update(float dt) {
 		}
 
 		if(!text.empty()){
-			App->render->Blit(texture, pos.x, pos.y, &r);
+			App->render->Blit_UI(texture, pos.x, pos.y, &r, SDL_FLIP_NONE, 0.0f);
 		}
 
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN || App->console->isVisible) {
+		
 		InputText_Actived = !InputText_Actived;
 		if (InputText_Actived) {
 			labelInputText->SetLabelText("", font_text);

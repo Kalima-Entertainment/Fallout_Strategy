@@ -159,7 +159,7 @@ void j1Console::DestroyInterface() {
 	{
 		App->gui->Delete_Element(on_screen_log[i]);
 	}
-	App->gui->Delete_Element(input_box);
+	if (input_box != nullptr) App->gui->Delete_Element(input_box);
 	input_box = nullptr;
 	on_screen_log.clear();
 }
