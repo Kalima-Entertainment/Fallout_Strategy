@@ -17,6 +17,7 @@ enum class Menu {
 	SETTINGS,
 	CREDITS,
 	COLLABORATORS_CREDITS,
+	RESOURCES,
 	SELECT_FACTION,
 	PAUSE_MENU,
 	GUI,
@@ -66,6 +67,7 @@ public:
 	void CreatePauseMenu();
 	void CreatePauseSettings();
 	void CreateGUI();
+	void CreateResources();
 
 	void CreateBrotherHood_Base();
 	void CreateBrotherHood_Barrack();
@@ -96,8 +98,8 @@ public:
 	UI_element* select_faction_menu[12];
 	UI_element* select_faction_photos[4];
 	UI_element* pause_menu[7];
-	UI_element* gui_ingame[5];
-
+	UI_element* gui_ingame[1];
+	UI_element* resources[3];
 
 
 

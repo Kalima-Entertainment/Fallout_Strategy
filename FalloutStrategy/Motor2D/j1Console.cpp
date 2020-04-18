@@ -159,7 +159,7 @@ void j1Console::DestroyInterface() {
 	{
 		App->gui->Delete_Element(on_screen_log[i]);
 	}
-	App->gui->Delete_Element(input_box);
+	if (input_box != nullptr) App->gui->Delete_Element(input_box);
 	input_box = nullptr;
 	on_screen_log.clear();
 }
@@ -176,6 +176,7 @@ void j1Console::CreateCommand(std::string name, std::string description, j1Modul
 
 void j1Console::ProcessCommand(std::string command_text) {
 	AddLogText(command_text);
+	command_text = ToLower(command_text);
 
 	//break the command in parts
 	std::vector<std::string> command_parts;
@@ -238,116 +239,10 @@ void j1Console::OnCommand(std::vector<std::string> command_parts) {
 	}
 }
 
-/*
-void j1Console::CreateCommand(const char* g_command, j1Module* g_callback, const char* explanation) {
-	j1Command* command = new j1Command(g_command, g_callback, explanation);
-	commands.add(command);
+std::string ToLower(std::string string) {
+	for (int i = 0; i < string.size(); i++)
+	{
+		string[i] = tolower(string[i]);
+	}
+	return string;
 }
-*/
-
-/*
-
-void j1Console::CheckCommand(p2SString command) {
-	char given_initial_three[5] = "0000";
-	char listed_initial_three[5] = "0000";
-	char* given_command = (char*)command.GetString();
-
-
-	for (p2List_item<j1Command*>* item = commands.start; item != nullptr; item = item->next)
-	{
-		if (item->data->text == command)
-		{
-			item->data->callback->OnCommand(command);
-			return;
-		}
-
-		for (int i = 0; i < 4; i++)
-		{
-			given_initial_three[i] = command.GetString()[i];
-			listed_initial_three[i] = item->data->text.GetString()[i];
-		}
-
-		if (strcmp(given_initial_three, listed_initial_three) == 0)
-		{
-			item->data->callback->OnCommand(command);
-			return;
-		}
-	}
-
-	LOG("Invalid command");
-}
-
-void j1Console::OnCommand(p2SString command) {
-	char fps_string[8] = "fps_120";
-	char initial_three[5] = "0000";
-
-	if (command == "list")
-	{
-		for (p2List_item<j1Command*>* item = commands.start; item != nullptr; item = item->next)
-		{
-			//LOG(("%s : %s \n", item->data->text.GetString(), item->data->explanation);
-			char string[200];
-			strcpy_s(string, item->data->text.GetString());
-			strcat_s(string, " : ");
-			strcat_s(string, item->data->explanation);
-			AddLogText(string);
-		}
-		return;
-	}
-
-	if (command == "quit") {
-		App->quit = true;
-		return;
-	}
-
-	for (int i = 0; i < 3; i++)
-	{
-		initial_three[i] = command.lowercased().GetString()[i];
-	}
-
-	if (strcmp(initial_three, "fps") == 0);
-	{
-		int fps = 0;
-		if (command.Length() == 7)
-		{
-			char fps_char[3];
-			fps_char[0] = command.GetString()[4];
-			fps_char[1] = command.GetString()[5];
-			fps_char[2] = command.GetString()[6];
-
-			int units = (int)fps_char[2] - 48;
-			int dozens = (int)fps_char[1] - 48;
-			int hundreds = (int)fps_char[0] - 48;
-			fps = units + dozens * 10 + hundreds * 100;
-		}
-		else if (command.Length() == 6)
-		{
-			char fps_char[2];
-			fps_char[0] = command.GetString()[4];
-			fps_char[1] = command.GetString()[5];
-			int units = (int)fps_char[1] - 48;
-			int dozens = (int)fps_char[0] - 48;
-			fps = units + dozens * 10;
-		}
-		else
-		{
-			LOG("Invalid framerate cap number");
-			return;
-		}
-
-		if (fps < 30) {
-			LOG("Too low framerate cap");
-		}
-		else if (fps > 120)
-		{
-			LOG("Too high framerate cap");
-		}
-		else
-		{
-			App->framerate_cap = fps;
-			LOG("Framerate cap changed to %i", fps);
-		}
-	}
-}
-
-*/

@@ -51,12 +51,14 @@ void j1MovementManager::SelectEntities_inRect(SDL_Rect SRect)
 	{
 		//If entity list find some dynamic entity and its inside the Selection Rect we make this dynamic entity info isSelected True
 		if ((*entity)->is_dynamic) {
-			entityrect = { (int)(*entity)->position.x, (int)(*entity)->position.y, 5 , 5 };
+			// Checks if Dynamic entitie selected owns our selected faction
+			if ((*entity)->faction == App->player->faction) {
+				entityrect = { (int)(*entity)->position.x, (int)(*entity)->position.y, 5 , 5 };
 
-			//Comparing if intersection between Selection Rect and Entity Rect
-			if (SDL_HasIntersection(&entityrect, &SRect))(*entity)->info.IsSelected = true;
-			else (*entity)->info.IsSelected = false;
-
+				//Comparing if intersection between Selection Rect and Entity Rect
+				if (SDL_HasIntersection(&entityrect, &SRect))(*entity)->info.IsSelected = true;
+				else (*entity)->info.IsSelected = false;
+			}
 		}
 		entity++;
 	}
@@ -149,9 +151,10 @@ void j1MovementManager::Move(j1Group* group, float dt)
 					group->ClearOccupiedlist();
 					(*unit)->info.goal_tile = Map_mouseposition;
 					group->Occupied_tiles.push_back(&(*unit)->info.goal_tile);
+					LOG("CREATE PATH RETURNS: %i", App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile));
 				}
 
-				if (App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile) != -1)
+				if (App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile) == -1)
 				{
 					(*unit)->info.Current_path = App->pathfinding->GetLastPath();
 					(*unit)->info.Current_path.erase((*unit)->info.Current_path.begin());

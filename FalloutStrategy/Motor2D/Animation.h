@@ -71,6 +71,10 @@ public:
 	SDL_Rect GetCurrentRect(){
 		return frames[(int)current_frame].rect;
 	}
+	bool GetSounded() 
+	{
+		return sounded;
+	}
 };
 
 #endif

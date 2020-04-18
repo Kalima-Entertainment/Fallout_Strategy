@@ -247,6 +247,8 @@ bool j1EntityManager::Start() {
 		reference_entities[faction][LABORATORY]->texture = reference_entities[faction][BASE]->texture;
 	}
 
+	sort_timer.Start();
+
 	return ret;
 }
 
@@ -512,11 +514,15 @@ bool j1EntityManager::PostUpdate()
 		}
 		else
 		{
-			if ((entities[i]->position.x + entities[i]->sprite_size * 0.5f > -App->render->camera.x) && (entities[i]->position.x - entities[i]->sprite_size * 0.5f < -App->render->camera.x + App->render->camera.w)
-				&& (entities[i]->position.y + entities[i]->sprite_size * 0.25f > -App->render->camera.y) && (entities[i]->position.y - entities[i]->sprite_size * 0.25f < -App->render->camera.y + App->render->camera.h))
-			{
-				// && (entities[i]->position.y - TILE_SIZE > -(App->render->camera.y + App->render->camera.h))) {
-				SortEntities();
+			if ((entities[i]->position.x + entities[i]->sprite_size * 0.5f > -App->render->camera.x)
+				&& (entities[i]->position.x - entities[i]->sprite_size * 0.5f < -App->render->camera.x + App->render->camera.w)
+				&& (entities[i]->position.y + entities[i]->sprite_size * 0.25f > -App->render->camera.y) 
+				&& (entities[i]->position.y - entities[i]->sprite_size * 0.25f < -App->render->camera.y + App->render->camera.h)) {
+			
+				if (sort_timer.ReadSec() > 1) {
+					BubbleSortEntities();
+					sort_timer.Start();
+				}
 				entities[i]->PostUpdate();
 			}
 		}
@@ -681,26 +687,43 @@ ResourceBuilding* j1EntityManager::GetClosestResourceBuilding(iPoint current_pos
 	return closest_building;
 }
 
-void j1EntityManager::SortEntities() {
+void j1EntityManager::BubbleSortEntities() {
 	int i, j;
 	int n = entities.size();
-
 	for (i = 0; i < n - 1; i++) {
 		for (j = 0; j < n - i - 1; j++) {
-			if (entities[j]->position.y > entities[j + 1]->position.y)
-				//Swap(j, j + 1);
-				std::swap(entities[j], entities[j + 1]);
+		  if (entities[j]->position.y > entities[j + 1]->position.y)
+			std::swap(entities[j], entities[j + 1]);
 		}
 	}
 }
 
-void j1EntityManager::Swap(int i, int j)
-{
-	int temp = i;
-	j1Entity* aux = entities[i];
-	entities[i] = entities[j];
-	entities[j] = aux;
+/*
+void j1EntityManager::QuickSortEntities(std::vector<j1Entity*> qck_entities, int low, int high) {
+	if (low < high) {
+		int pi = Partition(qck_entities, low, high);
+
+		QuickSortEntities(qck_entities, low, pi - 1);
+		QuickSortEntities(qck_entities, pi + 1, high);
+	}
+	LOG("Yes");
 }
+
+int j1EntityManager::Partition(std::vector<j1Entity*> qck_entities, int low, int high)
+{
+	float pivot = qck_entities[high]->position.y;
+	int i = (low - 1);
+	for (int j = low; j <= high -1; j++)
+	{
+		if (qck_entities[j]->position.y < pivot) {
+			i++;
+			std::swap(qck_entities[i], qck_entities[j]);
+		}
+	}
+	std::swap(qck_entities[i + 1], qck_entities[high]);
+	return (i + 1);
+}
+*/
 
 void j1EntityManager::RandomFactions() {
 	Faction faction = static_cast<Faction>(rand() % GHOUL);
