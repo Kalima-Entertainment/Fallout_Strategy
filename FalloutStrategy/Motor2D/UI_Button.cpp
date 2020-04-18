@@ -345,7 +345,29 @@ bool UI_Button::Update(float dt)
 
 				static_entity->SpawnUnit(RANGED);
 			}
-			
+
+			if (t == button_select_ghoul)
+			{
+
+				App->player->faction = GHOUL;
+			}
+
+			if (t == button_select_vault)
+			{
+
+				App->player->faction = VAULT;
+			}
+
+			if (t == button_select_brotherhood)
+			{
+
+				App->player->faction = BROTHERHOOD;
+			}
+
+			if (t == button_select_supermutant)
+			{
+				App->player->faction = MUTANT;
+			}
 		}
 		else {
 			
