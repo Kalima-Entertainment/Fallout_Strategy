@@ -16,7 +16,7 @@ public:
 	bool Update(float dt);
 	bool CleanUp();
 
-	bool SetLabelText(std::string text_input, std::string font = "StackedPixel");
+	bool SetLabelText(std::string text_input, std::string font = "StackedPixel", int size = 38);
 	void SetTextTimer(const char* text);
 
 	bool Draw();

@@ -88,10 +88,12 @@ TTF_Font* const j1Fonts::Load(const char* path, int size)
 }
 
 // Print text using font
-SDL_Texture* j1Fonts::Print(const char* text, SDL_Color color, std::string font_name)
+SDL_Texture* j1Fonts::Print(const char* text, SDL_Color color, std::string font_name, int size)
 {
 	SDL_Texture* ret = NULL;
 	_TTF_Font* font = NULL;
+
+	font = Load(DEFAULT_FONT, size);
 
 	for (int i = 0; i < fonts.size(); i++)
 	{

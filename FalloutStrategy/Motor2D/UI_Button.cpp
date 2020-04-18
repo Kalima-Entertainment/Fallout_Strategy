@@ -297,6 +297,7 @@ bool UI_Button::Update(float dt)
 				App->Mmanager->Enable();
 				App->scene->Enable();
 				App->menu_manager->CreateGUI();
+				App->menu_manager->CreateResources();
 			}
 
 			if (t == button_pause_to_main)

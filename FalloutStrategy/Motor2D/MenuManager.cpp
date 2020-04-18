@@ -255,9 +255,9 @@ void MenuManager::CreateResources() {
 	std::string food = std::to_string(App->player->food);
 	std::string caps = std::to_string(App->player->caps);
 
-	resources[0] = (UI_Label*)App->gui->CreateLabel(95, 10, Label, food, NULL, this, NULL);
-	resources[1] = (UI_Label*)App->gui->CreateLabel(240, 10, Label, water, NULL, this, NULL);
-	resources[2] = (UI_Label*)App->gui->CreateLabel(385, 10, Label, caps, NULL, this, NULL);
+	resources[0] = (UI_Label*)App->gui->CreateLabel(75, 15, Label, food, NULL, this, NULL, 22);
+	resources[1] = (UI_Label*)App->gui->CreateLabel(220, 15, Label, water, NULL, this, NULL, 22);
+	resources[2] = (UI_Label*)App->gui->CreateLabel(365, 15, Label, caps, NULL, this, NULL, 22);
 
 }
 
