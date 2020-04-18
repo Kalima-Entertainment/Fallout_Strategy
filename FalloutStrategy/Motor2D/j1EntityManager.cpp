@@ -370,13 +370,16 @@ bool j1EntityManager::PostUpdate()
 		}
 		//Selected entity is a building
 		else {
+
+			if (count2 == 0)App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::ALL, BUILDING_TYPE::ALL); count2++;
+
 			StaticEntity* static_entity = (StaticEntity*)App->player->selected_entity;
 			for (int j = 0; j < static_entity->tiles.size(); j++)
 			{
 				tex_position = App->map->MapToWorld(static_entity->tiles[j].x, static_entity->tiles[j].y);
 				App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tex_rect);
 			}
-
+			
 			//Create HUD for the building
 			switch (static_entity->faction) {
 			case GHOUL:
@@ -386,7 +389,6 @@ bool j1EntityManager::PostUpdate()
 
 						App->menu_manager->CreateGhouls_Base();
 						count++;
-						LOG("%i", count);
 					}
 
 				}

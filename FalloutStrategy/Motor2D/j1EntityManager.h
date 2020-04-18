@@ -81,6 +81,7 @@ public:
 	pugi::xml_node config_data;
 
 	int count = 0;
+	int count2 = 0;
 	bool blocked_movement;
 
 	int randomFaction[4];
