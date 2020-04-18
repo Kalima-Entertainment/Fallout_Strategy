@@ -60,7 +60,7 @@ bool DynamicEntity::PreUpdate(float dt) {
 
 bool DynamicEntity::Update(float dt) {
 
-	Mix_AllocateChannels(20);
+	Mix_AllocateChannels(25);
 
 	switch (state)
 	{
@@ -145,8 +145,14 @@ bool DynamicEntity::Update(float dt) {
 
 		Move(dt);
 
-		if (Mix_Playing(2) == 0) { SpatialAudio(App->audio->Brotherhood_walk, 2, position.x, position.y); }
-				
+		if (reference_entity->faction == MUTANT)
+			if (Mix_Playing(2) == 0) { SpatialAudio(App->audio->Brotherhood_walk, 2, position.x, position.y); }
+		if (reference_entity->faction == VAULT)
+			if (Mix_Playing(17) == 0) { SpatialAudio(App->audio->Brotherhood_walk, 17, position.x, position.y); }
+		if (reference_entity->faction == BROTHERHOOD)
+			if (Mix_Playing(18) == 0) { SpatialAudio(App->audio->Brotherhood_walk, 18, position.x, position.y); }
+		if (reference_entity->faction == GHOUL)
+			if (Mix_Playing(19) == 0) { SpatialAudio(App->audio->Brotherhood_walk, 19, position.x, position.y); }
 		break;
 
 	case ATTACK:
