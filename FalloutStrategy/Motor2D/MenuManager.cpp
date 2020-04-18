@@ -504,6 +504,7 @@ void MenuManager::DestroyMenu(Menu menu) {
 		break;
 	case Menu::PAUSE_MENU:
 		App->gui->DeleteArrayElements(pause_menu, 7);
+		App->isPaused = false;
 		break;
 	case Menu::GUI:
 		App->gui->DeleteArrayElements(gui_ingame, 4);

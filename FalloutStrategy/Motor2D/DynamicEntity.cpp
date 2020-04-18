@@ -145,7 +145,7 @@ bool DynamicEntity::Update(float dt) {
 
 		Move(dt);
 		
-			if (Mix_Playing(2) == 0) { SpatialAudio(App->audio->Brotherhood_walk, 2, position.x, position.y); }
+		if (Mix_Playing(2) == 0) { SpatialAudio(App->audio->Brotherhood_walk, 2, position.x, position.y); }
 		
 		break;
 
