@@ -50,7 +50,9 @@ j1EntityManager::~j1EntityManager(){}
 
 j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int position_x, int position_y, GenericPlayer* owner){
 	BROFILER_CATEGORY("EntityCreation", Profiler::Color::Linen)
-	//static_assert(EntityType::UNKNOWN == 4, "code needs update");
+
+	if (!owner)
+		owner = App->scene->players[faction];
 
 	j1Entity* entity = nullptr;
 
@@ -115,8 +117,16 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 			entity->position.y += 32;
 
 			if (entity->reference_entity != nullptr){
+				entity->owner = owner;
 				entities.push_back(entity);
+				owner->entities.push_back(entity);
 				entity->LoadReferenceData();
+				if (type == MELEE) owner->melees++;
+				else if (type == RANGED) owner->rangeds++;
+				else if (type == GATHERER) {
+					owner->gatherers++;
+					owner->gatherers_vector.push_back((DynamicEntity*)entity);
+				}
 			}
 		}
 	}
@@ -135,8 +145,16 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 			entity->position = App->map->fMapToWorld(entity->current_tile.x, entity->current_tile.y);
 
 			if (entity->reference_entity != nullptr) {
+				entity->owner = owner;
 				entities.push_back(entity);
 				entity->LoadReferenceData();
+
+				if (type == BASE) owner->base = (StaticEntity*)entity;
+				if (type == LABORATORY) owner->laboratory = (StaticEntity*)entity;
+				else if (type == BARRACK) {
+					if (owner->barrack[0] == nullptr) owner->barrack[0] = (StaticEntity*)entity;
+					else owner->barrack[1] = (StaticEntity*)entity;
+				}
 			}
 
 			//Render building
@@ -656,7 +674,8 @@ void j1EntityManager::SortEntities() {
 	for (i = 0; i < n - 1; i++) {
 		for (j = 0; j < n - i - 1; j++) {
 			if (entities[j]->position.y > entities[j + 1]->position.y)
-				Swap(j, j + 1);
+				//Swap(j, j + 1);
+				std::swap(entities[j], entities[j + 1]);
 		}
 	}
 }

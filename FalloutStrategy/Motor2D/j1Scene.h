@@ -45,8 +45,6 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	void AssignEntities();
-
 	StatesMenu GetMenuState();
 	void SetMenuState(const StatesMenu& menu);
 

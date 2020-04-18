@@ -19,7 +19,8 @@ AI_Player::AI_Player(Faction g_faction) : GenericPlayer() {
 }
 
 AI_Player::~AI_Player() {
-	
+	entities.clear();
+	gatherers_vector.clear();
 }
 
 bool AI_Player::Update(float dt) {
@@ -130,29 +131,4 @@ DynamicEntity* AI_Player::GetClosestDynamicEntity() {
 		}
 	}
 	return target_entity;
-}
-
-void AI_Player::RecountEntities() {
-	melees = rangeds = gatherers = 0;
-	for (int i = 0; i < entities.size(); i++)
-	{
-		if (entities[i]->type == MELEE)
-			melees++;
-		else if (entities[i]->type == RANGED)
-			rangeds++;
-		else if (entities[i]->type == GATHERER) {
-			gatherers++;
-			gatherers_vector.push_back((DynamicEntity*)entities[i]);
-		}
-		else if (entities[i]->type == BASE)
-			base = (StaticEntity*)entities[i];
-		else if (entities[i]->type == LABORATORY)
-			laboratory = (StaticEntity*)entities[i];
-		else if (entities[i]->type == BARRACK) {
-			if(barrack[0] == nullptr)
-				barrack[0] = (StaticEntity*)entities[i];
-			else if (barrack[1] == nullptr)
-				barrack[1] = (StaticEntity*)entities[i];
-		}
-	}
 }

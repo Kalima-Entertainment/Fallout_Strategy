@@ -356,26 +356,3 @@ bool j1Player::TouchingUI(int x, int y) {
 	return ret;
 }
 
-void j1Player::RecountEntities() {
-	melees = rangeds = gatherers = 0;
-	for (int i = 0; i < entities.size(); i++)
-	{
-		if (entities[i]->type == MELEE)
-			melees++;
-		else if (entities[i]->type == RANGED)
-			rangeds++;
-		else if (entities[i]->type == GATHERER) {
-			gatherers++;
-		}
-		else if (entities[i]->type == BASE)
-			base = (StaticEntity*)entities[i];
-		else if (entities[i]->type == LABORATORY)
-			laboratory = (StaticEntity*)entities[i];
-		else if (entities[i]->type == BARRACK) {
-			if (barrack[0] == nullptr)
-				barrack[0] = (StaticEntity*)entities[i];
-			else if (barrack[1] == nullptr)
-				barrack[1] = (StaticEntity*)entities[i];
-		}
-	}
-}

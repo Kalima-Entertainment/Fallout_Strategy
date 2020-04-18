@@ -19,6 +19,7 @@ public:
 	AI_Player* ai_player[4];
 private:
 	bool players_created;
+	int beaten_ai_players;
 };
 
 #endif // !_AI_MANAGER_H_

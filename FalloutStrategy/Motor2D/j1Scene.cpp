@@ -50,6 +50,9 @@ bool j1Scene::Start()
 	srand(time(NULL));
 	menu_state = StatesMenu::NONE;
 	
+	App->player->faction = VAULT;
+	App->ai_manager->Enable();
+
 	//random map ----------------------------
 
 	std::string modules[4];
@@ -85,9 +88,6 @@ bool j1Scene::Start()
 	}
 
 	App->minimap->Enable();
-	App->player->faction = VAULT;
-	App->ai_manager->Enable(); 
-	AssignEntities();
 	//App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
 
 	//App->entities->CreateEntity(VAULT, RANGED, 20, 20);
@@ -172,7 +172,6 @@ bool j1Scene::Update(float dt)
 	}
 	*/
 
-
 	//Used to select units and groups
 	if (!App->player->TouchingUI(x,y)) {
 		RectangleSelection();
@@ -186,7 +185,6 @@ bool j1Scene::PostUpdate()
 {
 	bool ret = true;
 
-
 	return ret;
 }
 
@@ -196,27 +194,6 @@ bool j1Scene::CleanUp()
 	LOG("Freeing scene");
 	App->ai_manager->Disable();
 	return true;
-}
-
-void j1Scene::AssignEntities() {
-
-	for (int i = 0; i < 4; i++)	{
-		players[i] = (GenericPlayer*)App->ai_manager->ai_player[i];
-		if (players[i] == NULL) players[i] = App->player;
-
-		if(players[i]->entities.size() > 0)
-			players[i]->entities.clear();
-	}
-
-	for (int i = 0; i < App->entities->entities.size(); i++) {
-		App->entities->entities[i]->owner = players[App->entities->entities[i]->faction];
-		players[App->entities->entities[i]->faction]->entities.push_back(App->entities->entities[i]);
-	}
-	
-	for (int i = 0; i < 4; i++)
-	{
-		players[i]->RecountEntities();
-	}
 }
 
 StatesMenu j1Scene::GetMenuState()
