@@ -49,9 +49,8 @@ bool j1Scene::Start()
 {
 	srand(time(NULL));
 	menu_state = StatesMenu::NONE;
-	
-	App->player->faction = VAULT;
-	//App->map->Enable();
+
+	//App->player->faction = VAULT;
 	App->ai_manager->Enable();
 
 	//random map ----------------------------
