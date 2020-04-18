@@ -59,7 +59,6 @@ bool j1Group::IsGroupLead(j1Entity* entity)
 void j1Group::SetUnitGoalTile(j1Entity* entity)
 {
 	std::list <j1Entity*>::const_iterator it = Units.begin();
-
 	bool Goal_found = false;
 
 	while (it != Units.end())

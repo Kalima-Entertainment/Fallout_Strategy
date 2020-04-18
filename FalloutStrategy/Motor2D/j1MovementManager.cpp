@@ -151,9 +151,10 @@ void j1MovementManager::Move(j1Group* group, float dt)
 					group->ClearOccupiedlist();
 					(*unit)->info.goal_tile = Map_mouseposition;
 					group->Occupied_tiles.push_back(&(*unit)->info.goal_tile);
+					LOG("CREATE PATH RETURNS: %i", App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile));
 				}
 
-				if (App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile) != -1)
+				if (App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile) == -1)
 				{
 					(*unit)->info.Current_path = App->pathfinding->GetLastPath();
 					(*unit)->info.Current_path.erase((*unit)->info.Current_path.begin());

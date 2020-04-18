@@ -221,9 +221,8 @@ bool DynamicEntity::Update(float dt) {
 	//Group Movement Request
 	if (this->info.current_group != nullptr)
 	{
-		LOG("CURRENT GROUP ENABLED");
-		if (path_to_target.size() > 0) path_to_target.clear();
-		if (info.current_group->IsGroupLead(this)) info.current_group->CheckForMovementRequest(dt);
+		if (info.current_group->IsGroupLead(this)) 
+			info.current_group->CheckForMovementRequest(dt);
 	}
 
 	//save dt for animations
