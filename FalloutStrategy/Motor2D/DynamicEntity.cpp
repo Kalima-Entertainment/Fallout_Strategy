@@ -46,6 +46,12 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 DynamicEntity::~DynamicEntity() {
 	target_entity = nullptr;
 	resource_building = nullptr;
+	reference_entity = nullptr;
+	owner = nullptr;
+	attacking_entity = nullptr;
+	current_animation = nullptr;
+	texture = nullptr;
+	path_to_target.clear();
 }
 
 bool DynamicEntity::PreUpdate(float dt) {

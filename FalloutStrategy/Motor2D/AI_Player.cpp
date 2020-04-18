@@ -19,8 +19,10 @@ AI_Player::AI_Player(Faction g_faction) : GenericPlayer() {
 }
 
 AI_Player::~AI_Player() {
+	target_player = nullptr;
 	entities.clear();
 	gatherers_vector.clear();
+	base = barrack[0] = barrack[1] = laboratory = nullptr;
 }
 
 bool AI_Player::Update(float dt) {

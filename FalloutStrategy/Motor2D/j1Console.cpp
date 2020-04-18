@@ -113,6 +113,9 @@ bool j1Console::CleanUp() {
 	bool ret = true;
 
 	log_record.clear();
+	command_vector.clear();
+	on_screen_log.clear();
+	input_box = nullptr;
 
 	return ret;
 }

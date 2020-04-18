@@ -49,7 +49,15 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
 	time_left = 0;
 }
 
-StaticEntity::~StaticEntity() {}
+StaticEntity::~StaticEntity() {
+	target_entity = nullptr;
+	reference_entity = nullptr;
+	owner = nullptr;
+	attacking_entity = nullptr;
+	current_animation = nullptr;
+	texture = nullptr;
+	path_to_target.clear();
+}
 
 bool StaticEntity::Update(float dt) {
 	switch (state) {

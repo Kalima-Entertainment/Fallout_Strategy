@@ -11,7 +11,6 @@ public:
 	bool Start();
 	bool PreUpdate();
 	bool Update(float dt);
-	void RecountEntities();
 
 	void OnCommand(std::vector<std::string> command_parts);
 
