@@ -25,6 +25,7 @@
 #include "GenericPlayer.h"
 #include "AI_Manager.h"
 #include "j1Minimap.h"
+#include "AI_Player.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -90,7 +91,7 @@ bool j1Scene::Start()
 	App->minimap->Enable();
 	//App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
 
-	//App->entities->CreateEntity(VAULT, RANGED, 20, 20);
+	App->entities->CreateEntity(VAULT, RANGED, 20, 20);
 
 	return true;
 }
@@ -240,4 +241,21 @@ void j1Scene::RectangleSelection()
 
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 		App->Mmanager->CreateGroup();
+}
+
+void j1Scene::CheckWinner() {
+	Faction player_faction = App->player->faction;
+	int beaten_enemies = 0;
+	for (int i = 0; i < 4; i++)
+	{
+		if (players[player_faction]->defeated) {
+			//LOSE
+		}
+		else if (players[i]->defeated){
+			beaten_enemies++;
+		}
+	}
+	//WIN
+	if (beaten_enemies == 3)
+		LOG("Congratulations, you won!");
 }

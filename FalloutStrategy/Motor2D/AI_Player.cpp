@@ -56,14 +56,14 @@ bool AI_Player::Update(float dt) {
 	float mr_proportion = melees / rangeds;
 
 	//spawn melee
-	if ((water > App->entities->unit_data[faction][MELEE].cost_water)&&(caps > App->entities->unit_data[faction][MELEE].cost_meat) && (mr_proportion < 2)) {
+	if ((water > App->entities->unit_data[faction][MELEE].cost_water)&&(caps > App->entities->unit_data[faction][MELEE].cost_meat) && (mr_proportion < 2) && (barrack[0] != nullptr)) {
 		barrack[0]->SpawnUnit(MELEE);
 		water -= App->entities->unit_data[faction][MELEE].cost_water;
 		food -= App->entities->unit_data[faction][MELEE].cost_meat;
 	}
 
 	//spawn ranged
-	if ((water > App->entities->unit_data[faction][RANGED].cost_water) && (caps > App->entities->unit_data[faction][RANGED].cost_meat)) {
+	if ((water > App->entities->unit_data[faction][RANGED].cost_water) && (caps > App->entities->unit_data[faction][RANGED].cost_meat)&&(barrack[1] != nullptr)) {
 		barrack[1]->SpawnUnit(RANGED);
 		water -= App->entities->unit_data[faction][RANGED].cost_water;
 		food -= App->entities->unit_data[faction][RANGED].cost_meat;

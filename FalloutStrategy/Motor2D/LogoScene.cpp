@@ -16,8 +16,8 @@ LogoScene::LogoScene() : j1Module()
 }
 
 // Destructor
-LogoScene::~LogoScene()
-{}
+LogoScene::~LogoScene() {
+}
 
 bool LogoScene::LoadAnimations() 
 {
@@ -94,7 +94,6 @@ bool LogoScene::Update(float dt)
 
 	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
-		
 		App->audio->PlayFx(2, App->audio->F_press, 0);
 		renderLogo = false;
 		App->tex->UnLoad(logo_tex);

@@ -48,6 +48,8 @@ public:
 	StatesMenu GetMenuState();
 	void SetMenuState(const StatesMenu& menu);
 
+	void CheckWinner();
+
 	//Creates rectangle and check wich entities are inside the are to create groups
 	void RectangleSelection();
 
@@ -66,7 +68,6 @@ public:
 	iPoint rectangle_origin = { 0,0 };
 	int rectangle_width = 0;
 	int rectangle_height = 0;
-	SDL_Texture* debug_tex2;
 
 
 private:
