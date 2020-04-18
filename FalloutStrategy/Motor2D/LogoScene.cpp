@@ -117,8 +117,8 @@ bool LogoScene::PostUpdate()
 		if(drawable)
 		{
 			App->render->Blit(start_game_tex, 325, 510, &start_game_rect);
-			if (Mix_Playing(3) == 0) {
-				App->audio->PlayFx(3, App->audio->Press_F_to_start, 0);
+			if (Mix_Playing(1) == 0) {
+				App->audio->PlayFx(1, App->audio->Press_F_to_start, 0);
 			}
 		}
 		
