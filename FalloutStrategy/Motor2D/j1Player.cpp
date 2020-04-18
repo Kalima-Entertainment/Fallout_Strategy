@@ -262,8 +262,8 @@ void j1Player::UpdateResourceData(Resource resource_type, int quantity) {
 		food += quantity;
 
 	//update gui
-	App->gui->DeleteArrayElements(App->menu_manager->gui_ingame, 4);
-	App->menu_manager->CreateGUI();
+	App->menu_manager->DestroyMenu(Menu::RESOURCES);
+	App->menu_manager->CreateResources();
 }
 
 void j1Player::OnCommand(std::vector<std::string> command_parts) {
