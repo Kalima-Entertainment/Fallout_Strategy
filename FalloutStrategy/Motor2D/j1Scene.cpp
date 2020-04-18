@@ -51,6 +51,7 @@ bool j1Scene::Start()
 	menu_state = StatesMenu::NONE;
 	
 	App->player->faction = VAULT;
+	//App->map->Enable();
 	App->ai_manager->Enable();
 
 	//random map ----------------------------
@@ -192,6 +193,7 @@ bool j1Scene::PostUpdate()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
+	App->map->Disable();
 	App->ai_manager->Disable();
 	return true;
 }

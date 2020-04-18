@@ -258,14 +258,28 @@ bool j1EntityManager::CleanUp()
 	{
 		for (int type = MELEE; type <= BASE; type++)
 		{
-			if (reference_entities[faction][type] != NULL) {
+			if (reference_entities[faction][type] != nullptr) {
 				App->tex->UnLoad(reference_entities[faction][type]->texture);
 				delete reference_entities[faction][type];
+				reference_entities[faction][type] = nullptr;
 			}
 		}
 	}
 
+	for (int i = 0; i < entities.size(); i++)
+	{
+		delete entities[i];
+	}
+
 	entities.clear();
+
+	for (int j = 0; j < resource_buildings.size(); j++)
+	{
+		delete resource_buildings[j];
+		resource_buildings[j] = nullptr;
+	}
+	resource_buildings.clear();
+
 	return ret;
 }
 

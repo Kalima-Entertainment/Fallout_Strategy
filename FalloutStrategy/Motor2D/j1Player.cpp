@@ -33,7 +33,13 @@ j1Player::j1Player() : GenericPlayer() {
 	defeated = false;
 }
 
-j1Player::~j1Player() {}
+j1Player::~j1Player() {
+	selected_entity = nullptr;
+	last_selected_entity = nullptr;
+	entities.clear();
+	gatherers_vector.clear();
+	base = barrack[0] = barrack[1] = laboratory = nullptr;
+}
 
 bool j1Player::Start() {
 	App->console->CreateCommand("caps+", "increase the amount of caps", this);
