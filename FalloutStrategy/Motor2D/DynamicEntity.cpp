@@ -235,21 +235,29 @@ bool DynamicEntity::Update(float dt) {
 		if (info.current_group->IsGroupLead(this)) 
 			if(this->faction == App->player->faction) 
 				info.current_group->CheckForMovementRequest(App->player->Map_mouseposition, dt);
+
 			else {
 				// -- Group leader owns any other faction, then store path nodes into a vector to reach enemy base.
-				((AI_Player*)this->owner)->CreateNodePath(this->current_tile, ((AI_Player*)this->owner)->target_player->base->current_tile, path_node);
+				if (((AI_Player*)this->owner)->path_to_enemy_base.size() == 0) {
+					((AI_Player*)this->owner)->CreateNodePath(this->current_tile, ((AI_Player*)this->owner)->target_player->base->current_tile, path_node);
+				}
 
 				// -- Make a movement request each node, when reached we proceed to reach next one until we finish all node list.
-				for (int i = 0; i < path_node.size(); i++) { 
-					this->info.current_group->CheckForMovementRequest(path_node[i], dt);
-				}
+				this->info.current_group->CheckForMovementRequest(path_node.front(), dt);
 				
 				// -- When node list finished we make last request move to reach enemy base.
 				this->info.current_group->CheckForMovementRequest(((AI_Player*)this->owner)->target_player->base->current_tile, dt);
 				this->owner->goal_tile_set = true;
+
+
+				if (((AI_Player*)this->owner)->path_to_enemy_base.size() > 0)
+				{
+					if (this->current_tile == ((AI_Player*)this->owner)->path_to_enemy_base.front()) {
+						((AI_Player*)this->owner)->path_to_enemy_base.erase(((AI_Player*)this->owner)->path_to_enemy_base.begin());
+					}
+				}
 			}
 	}
-
 
 	//save dt for animations
 	last_dt = dt;
