@@ -29,7 +29,6 @@ private:
 	Animation	animationLogo;
 	Animation	animationGif;
 	Animation* loader;
-	Animation* loader2;
 	float lastdt;
 public:
 	bool transition;
