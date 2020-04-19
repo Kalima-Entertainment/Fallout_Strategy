@@ -94,6 +94,7 @@ bool LogoScene::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
 		App->audio->PlayFx(2, App->audio->F_press, 0);
+		App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
 		renderLogo = false;
 		App->tex->UnLoad(logo_tex);
 		App->tex->UnLoad(start_game_tex);

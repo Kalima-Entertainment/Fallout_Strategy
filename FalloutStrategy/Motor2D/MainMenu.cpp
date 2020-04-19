@@ -36,7 +36,6 @@ bool MainMenu::Awake(pugi::xml_node& config)
 
 bool MainMenu::Start()
 {
-	//App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
 	App->menu_manager->CreateMainMenu();
 	//App->menu_manager->CreateGUI();
 	return true;
