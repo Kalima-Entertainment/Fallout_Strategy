@@ -129,9 +129,9 @@ void j1Transition::Transition()
 		if (Mix_Playing(1) == 0) {
 			App->audio->PlayFx(1, App->audio->loading, 0);
 		}
-		App->render->Blit(background, 0, 0);
-		App->render->Blit(gif_tex, 536, 191, &animationGif.GetCurrentFrame(lastdt));
-		App->render->Blit(logo_tex, 470, 400, &animationLogo.GetCurrentFrame(lastdt));
+		App->render->Blit(background, 0, 0,0,1.0F,0);
+		App->render->Blit(gif_tex, 536, 191, &animationGif.GetCurrentFrame(lastdt),1.0F,0);
+		App->render->Blit(logo_tex, 470, 400, &animationLogo.GetCurrentFrame(lastdt), 1.0F, 0);
 		App->gui->active = false;
 		App->minimap->active = false;
 		App->entities->active = false;
