@@ -15,7 +15,6 @@ public:
 	bool Update(float dt);
 	bool CleanUp();
 
-
 public:
 
 };

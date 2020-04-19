@@ -29,6 +29,7 @@ struct ResourceBuilding {
 	Resource resource_type;
 	int quantity;
 	std::vector<iPoint> tiles;
+	~ResourceBuilding() {tiles.clear();}
 };
 
 struct Unit_Data {

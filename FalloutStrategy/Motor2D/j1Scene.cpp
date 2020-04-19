@@ -146,6 +146,7 @@ bool j1Scene::Update(float dt)
 
 	//App->win->SetTitle(title.GetString());
 	*/
+
 	//Used to select units and groups
 	if (!App->player->TouchingUI(x,y)) {
 		RectangleSelection();
@@ -154,20 +155,13 @@ bool j1Scene::Update(float dt)
 	return true;
 }
 
-// Called each loop iteration
-bool j1Scene::PostUpdate()
-{
-	bool ret = true;
-
-	return ret;
-}
-
 // Called before quitting
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
 	App->map->Disable();
 	App->ai_manager->Disable();
+	players[0] = players[1] = players[2] = players[3];
 	return true;
 }
 
@@ -223,12 +217,18 @@ void j1Scene::CheckWinner() {
 	{
 		if (players[player_faction]->defeated) {
 			//LOSE
+			App->menu_manager->CreateMainMenu();
+			App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+			App->isPaused = false;
 		}
 		else if (players[i]->defeated){
 			beaten_enemies++;
 		}
 	}
 	//WIN
-	if (beaten_enemies == 3)
-		LOG("Congratulations, you won!");
+	if (beaten_enemies == 3) {
+		App->menu_manager->CreateMainMenu();
+		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+		App->isPaused = false;
+	}
 }

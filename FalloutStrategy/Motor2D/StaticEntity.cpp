@@ -57,6 +57,7 @@ StaticEntity::~StaticEntity() {
 	current_animation = nullptr;
 	texture = nullptr;
 	path_to_target.clear();
+	tiles.clear();
 }
 
 bool StaticEntity::Update(float dt) {

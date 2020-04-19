@@ -44,6 +44,14 @@ j1EntityManager::j1EntityManager(){
 	unit_data[GHOUL][MELEE] = { 80, 60 , 30 };
 	unit_data[GHOUL][RANGED] = { 80, 80, 40 };
 	unit_data[GHOUL][GATHERER] = { 40, 0 , 15 };
+
+	for (int faction = VAULT; faction < NO_FACTION; faction++)
+	{
+		for (int type = MELEE; type <= BASE; type++)
+		{
+			reference_entities[faction][type] = nullptr;
+		}
+	}
 }
 
 j1EntityManager::~j1EntityManager(){}

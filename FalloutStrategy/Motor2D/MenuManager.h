@@ -101,8 +101,6 @@ public:
 	UI_element* gui_ingame[1];
 	UI_element* resources[3];
 
-
-
 	UI_element* brotherhood_base[5];
 	UI_element* brotherhood_barrack[7];
 	UI_element* brotherhood_lab[3];

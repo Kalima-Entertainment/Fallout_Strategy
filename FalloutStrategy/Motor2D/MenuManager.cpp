@@ -58,6 +58,9 @@ void MenuManager::CreateMainMenu()
 	main_menu[12] = (UI_Button*)App->gui->CreateButton(887, 527, button_credits, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
 	main_menu[13] = (UI_Button*)App->gui->CreateButton(887, 604, button_exit, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
 
+	App->render->camera.x = 0;
+	App->render->camera.y = 0;
+
 	current_menu = Menu::MAIN_MENU;
 }
 

@@ -102,8 +102,11 @@ bool j1Transition::Start()
 bool j1Transition::CleanUp()
 {
 	App->tex->UnLoad(logo_tex);
+	logo_tex = nullptr;
 	App->tex->UnLoad(gif_tex);
+	gif_tex = nullptr;
 	App->tex->UnLoad(background);
+	background = nullptr;
 	loader = nullptr;
 	return true;
 }

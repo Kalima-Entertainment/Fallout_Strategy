@@ -39,9 +39,6 @@ public:
 	// Called each loop iteration
 	bool Update(float dt);
 
-	// Called before all Updates
-	bool PostUpdate();
-
 	// Called before quitting
 	bool CleanUp();
 
@@ -68,8 +65,6 @@ public:
 	iPoint rectangle_origin = { 0,0 };
 	int rectangle_width = 0;
 	int rectangle_height = 0;
-
-
 private:
 	int SongPlaying = 0;
 

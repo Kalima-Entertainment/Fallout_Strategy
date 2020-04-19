@@ -57,7 +57,7 @@ bool AI_Manager::CleanUp() {
 		}
 	}
 	players_created = false;
-
+	node_map.clear();
 	return ret;
 }
 
