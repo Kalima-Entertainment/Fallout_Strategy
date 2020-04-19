@@ -130,7 +130,7 @@ void j1Transition::Transition()
 		}
 		App->render->Blit(background, 0, 0);
 		App->render->Blit(gif_tex, 536, 191, &animationGif.GetCurrentFrame(lastdt));
-		App->render->Blit(logo_tex, 536, 515, &animationLogo.GetCurrentFrame(lastdt));
+		App->render->Blit(logo_tex, 470, 400, &animationLogo.GetCurrentFrame(lastdt));
 		App->gui->active = false;
 		App->minimap->active = false;
 		App->entities->active = false;
