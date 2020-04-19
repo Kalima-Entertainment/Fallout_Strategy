@@ -148,6 +148,10 @@ bool j1Player::Update(float dt) {
 		if (y > height - 40) App->render->camera.y -= floor(600.0f * dt);
 	}
 
+	// --- We get the map coords of the mouse ---
+	Map_mouseposition = App->map->WorldToMap((int)App->scene->mouse_pos.x, (int)App->scene->mouse_pos.y);
+
+
 	/*
 	//Zoom in, zoom out
 	uint zoom;

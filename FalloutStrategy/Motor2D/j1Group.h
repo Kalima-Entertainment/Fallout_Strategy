@@ -28,7 +28,7 @@ public:
 	int GetSize();
 
 	// --- Check Movement Request ---
-	void CheckForMovementRequest(float dt);
+	void CheckForMovementRequest(iPoint destiny ,float dt);
 	
 	// --- Enquiries ---
 	bool IsGroupLead(j1Entity* entity);

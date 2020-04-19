@@ -52,6 +52,7 @@ bool AI_Player::Update(float dt) {
 		}
 	}
 
+
 	// ------------------------------------------------------------
 
 	//Spawn Units -------------------------------------------------
@@ -99,8 +100,6 @@ bool AI_Player::Update(float dt) {
 		*/
 	}
 
-	// -------------------------------------------------------------
-
 	return ret;
 }
 
@@ -120,7 +119,6 @@ void AI_Player::ChooseRandomPlayerEnemy() {
 	iPoint origin = { (int)troops[0]->current_tile.x, (int)troops[0]->current_tile.y };
 	iPoint enemy_base_position = App->entities->ClosestTile(origin, target_player->base->tiles);
 	CreateNodePath(origin, enemy_base_position, path_to_enemy_base);
-	//
 }
 
 DynamicEntity* AI_Player::GetClosestDynamicEntity() {

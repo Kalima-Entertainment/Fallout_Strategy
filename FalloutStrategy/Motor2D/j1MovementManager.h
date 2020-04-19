@@ -36,7 +36,7 @@ public:
 	void CreateGroup();
 
 	// --- Move Unit ---
-	void Move(j1Group* unit, float dt);
+	void Move(j1Group* unit, iPoint goal_path, float dt);
 
 	void AddGroup(j1Group* group){ Groups.push_back(group);}
 

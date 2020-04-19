@@ -73,6 +73,7 @@ public:
 	uint fx[6];
 
 	UnitInfo unitinfo;	
+	std::vector<iPoint> path_node;
 };
 
 

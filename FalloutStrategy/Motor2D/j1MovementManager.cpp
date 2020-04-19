@@ -105,7 +105,7 @@ void j1MovementManager::CreateGroup()
 
 }
 
-void j1MovementManager::Move(j1Group* group, float dt)
+void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 {
 	std::list <j1Entity*>::const_iterator unit = group->Units.begin();
 
@@ -114,11 +114,6 @@ void j1MovementManager::Move(j1Group* group, float dt)
 	iPoint next_tile_world;
 	float DirectDistance;
 	fPoint to_fPoint;
-	iPoint goal_world;
-
-	// --- We get the map coords of the mouse ---
-	iPoint Map_mouseposition;
-	Map_mouseposition = App->map->WorldToMap((int)App->scene->mouse_pos.x, (int)App->scene->mouse_pos.y);
 
 	while (unit != group->Units.end())
 	{
@@ -149,7 +144,7 @@ void j1MovementManager::Move(j1Group* group, float dt)
 				{
 					// --- Clear previous path request occupied goal tiles ---
 					group->ClearOccupiedlist();
-					(*unit)->info.goal_tile = Map_mouseposition;
+					(*unit)->info.goal_tile = goal_path;
 					group->Occupied_tiles.push_back(&(*unit)->info.goal_tile);
 					LOG("CREATE PATH RETURNS: %i", App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile));
 				}
