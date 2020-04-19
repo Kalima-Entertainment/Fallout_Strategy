@@ -166,8 +166,10 @@ bool DynamicEntity::Update(float dt) {
 
 		if (reference_entity->faction == MUTANT && reference_entity->type == RANGED || reference_entity->faction == BROTHERHOOD && reference_entity->type == RANGED)
 			if (Mix_Playing(15) == 0) { SpatialAudio(App->audio->minigun, 15, position.x, position.y); }
-		if (reference_entity->faction == VAULT && reference_entity->type == RANGED || reference_entity->faction == GHOUL && reference_entity->type == RANGED)
+		if (reference_entity->faction == VAULT && reference_entity->type == RANGED)
 			if (Mix_Playing(16) == 0) { SpatialAudio(App->audio->pistol, 16, position.x, position.y); }
+		if (reference_entity->faction == GHOUL && reference_entity->type == RANGED)
+			if (Mix_Playing(20) == 0) { SpatialAudio(App->audio->pistol2, 20, position.x, position.y); }
 
 		if (reference_entity->faction == MUTANT && reference_entity->type != RANGED)
 			if (Mix_Playing(3) == 0) { SpatialAudio(App->audio->Mutant_attack, 3, position.x, position.y); }

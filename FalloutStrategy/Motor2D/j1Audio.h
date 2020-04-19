@@ -59,6 +59,7 @@ public:
 	int Ghoul_attack;
 
 	int pistol;
+	int pistol2;
 	int minigun;
 	int explode;
 	int factory;
