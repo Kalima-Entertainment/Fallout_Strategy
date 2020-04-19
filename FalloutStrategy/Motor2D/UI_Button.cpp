@@ -12,6 +12,7 @@
 #include "j1Scene.h"
 #include "j1Map.h"
 #include "StaticEntity.h"
+#include "j1Transition.h"
 
 #include "./brofiler/Brofiler/Brofiler.h"
 
@@ -298,6 +299,9 @@ bool UI_Button::Update(float dt)
 				App->scene->Enable();
 				App->menu_manager->CreateGUI();
 				App->menu_manager->CreateResources();
+				App->transition->fadetimer.Start();
+				/*App->transition->transition = true;*/
+				App->transition->Transition();
 			}
 
 			if (t == button_pause_to_main)
@@ -307,6 +311,9 @@ bool UI_Button::Update(float dt)
 				App->audio->PlayFx(1, back_fx, 0);
 				App->entities->Disable();
 				App->scene->Disable();
+				/*App->transition->transition = true;*/
+				App->transition->fadetimer.Start();
+				App->transition->Transition();
 			}
 			
 			//Spawn Gatherer from any faction

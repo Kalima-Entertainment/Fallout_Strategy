@@ -147,13 +147,6 @@ bool j1Scene::Update(float dt)
 
 	//App->win->SetTitle(title.GetString());
 	*/
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_UP)
-	{
-		App->transition->transition = true;
-		App->transition->Transition();
-	}
-
-
 	//Used to select units and groups
 	if (!App->player->TouchingUI(x,y)) {
 		RectangleSelection();

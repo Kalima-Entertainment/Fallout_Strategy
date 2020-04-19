@@ -4,21 +4,11 @@
 #include "j1App.h"
 #include "j1Transition.h"
 #include "j1Render.h"
-#include "SDL/include/SDL_render.h"
 #include "j1Window.h"
-#include "SDL/include/SDL_timer.h"
 #include "j1Map.h"
 #include "j1Scene.h"
 #include "j1Textures.h"
 #include "j1EntityManager.h"
-
-#include "p2Defs.h"
-#include "p2Log.h"
-#include "j1App.h"
-#include "j1Render.h"
-#include "j1Scene.h"
-#include "j1Transition.h"
-#include "j1Window.h"
 
 j1Transition::j1Transition() : j1Module()
 {
@@ -91,16 +81,15 @@ bool j1Transition::LoadAnimations() {
 }
 bool j1Transition::CleanUp()
 {
-	SDL_DestroyTexture(logo);
-	SDL_DestroyTexture(gif);
+	App->tex->UnLoad(logo);
+	App->tex->UnLoad(gif);
 	return true;
 }
 
 bool j1Transition::Start()
 {
 	LoadAnimations();
-	fadetimer.Start();
-	transition = false;
+	transition = true;
 	return true;
 }
 
@@ -116,7 +105,7 @@ bool j1Transition::PostUpdate(float dt)
 
 	if (fadetimer.Read() > 6000)
 	{
-		transition = false;
+		transition = true;
 
 	}
 	return true;
