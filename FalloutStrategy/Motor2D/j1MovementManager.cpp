@@ -123,7 +123,7 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 		Map_Entityposition.y = (*unit)->position.y;
 		Map_Entityposition = App->map->WorldToMap(Map_Entityposition.x, Map_Entityposition.y);
 
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && (*unit)->info.IsSelected) (*unit)->info.UnitMovementState = MovementState::MovementState_NoState;
+		//if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && (*unit)->info.IsSelected) (*unit)->info.UnitMovementState = MovementState::MovementState_NoState;
 
 		switch ((*unit)->info.UnitMovementState)
 		{
@@ -132,7 +132,7 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 
 			// --- On call to Move, Units will request a path to the destination ---
 
-			if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && (*unit)->info.IsSelected)||(!(*unit)->owner->goal_tile_set))
+			if (((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && (*unit)->info.IsSelected))|| !(*unit)->owner->goal_tile_set)
 			{
 				if (group->IsGroupLead((*unit)) == false)
 				{

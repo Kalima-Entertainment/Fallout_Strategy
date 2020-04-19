@@ -208,13 +208,13 @@ void j1Scene::RectangleSelection()
 
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
 		std::vector<DynamicEntity*> selected_entities;
-		//App->Mmanager->CreateGroup();
 		for (int i = 0; i < App->entities->entities.size(); i++)
 		{
-			if (App->entities->entities[i]->info.IsSelected) {
+			if (App->entities->entities[i]->info.IsSelected && App->entities->entities[i]->is_dynamic) {
 				selected_entities.push_back((DynamicEntity*)App->entities->entities[i]);
 			}
 		}
+		App->Mmanager->CreateGroup(selected_entities);
 	}
 }
 
