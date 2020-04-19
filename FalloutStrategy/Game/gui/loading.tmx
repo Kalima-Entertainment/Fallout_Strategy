@@ -63,7 +63,7 @@
    </animation>
   </tile>
  </tileset>
- <tileset firstgid="65" name="logo_spritesheet" tilewidth="256" tileheight="256" tilecount="1024" columns="16">
+ <tileset firstgid="65" name="logo_spritesheet" tilewidth="256" tileheight="256" tilecount="256" columns="16">
   <image source="logo_spritesheet.png" width="4096" height="4096"/>
   <tile id="1">
    <animation>
