@@ -11,6 +11,7 @@
 #include "j1Player.h"
 #include "j1Scene.h"
 #include "j1Map.h"
+#include "j1Window.h"
 #include "StaticEntity.h"
 #include "j1Transition.h"
 
@@ -312,6 +313,42 @@ bool UI_Button::Update(float dt)
 				App->scene->Disable();
 				App->transition->transition = true;
 				App->transition->fadetimer.Start();
+			}
+
+			if (t == button_cap) {
+				
+				cap = !cap;
+				App->gui->Delete_Element(App->menu_manager->settings_menu[21]);
+
+				if (cap == false) {
+					App->capped_ms = 1000 / 60;
+					App->gui->Delete_Element(cap_label);
+					cap_label = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "60", NULL, this, NULL, 32);
+				}
+				else if (cap == true) {
+					App->capped_ms = 1000 / 30;
+					App->gui->Delete_Element(cap_label);
+					cap_label = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "30", NULL, this, NULL, 32);
+				}
+
+			}
+
+			if (t == button_fullscreen) {
+				
+				fullscreen = !fullscreen;
+
+				App->gui->Delete_Element(App->menu_manager->settings_menu[22]);
+				if (fullscreen == true) {
+					App->win->ChangeFullScreen(true);
+					App->gui->Delete_Element(fullscreen_label);
+					fullscreen_label = (UI_Label*)App->gui->CreateLabel(756, 613, Label, "YES", NULL, this, NULL, 32);
+				}
+				else if (fullscreen == false) {
+					App->win->ChangeFullScreen(false);
+					App->gui->Delete_Element(fullscreen_label);
+					fullscreen_label = (UI_Label*)App->gui->CreateLabel(763, 613, Label, "NO", NULL, this, NULL, 32);
+				}
+
 			}
 			
 			//Spawn Gatherer from any faction
