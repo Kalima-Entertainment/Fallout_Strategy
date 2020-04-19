@@ -31,13 +31,13 @@ public:
 	Faction faction;
 	bool defeated;
 
-	std::vector<j1Entity*> entities;
 	StaticEntity* base;
 	StaticEntity* barrack[2];
 	StaticEntity* laboratory;
 	int melees;
 	int rangeds;
 	int gatherers;
+	std::vector<DynamicEntity*> troops;
 	std::vector<DynamicEntity*> gatherers_vector;
 
 };

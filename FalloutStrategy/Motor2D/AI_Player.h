@@ -7,6 +7,7 @@
 class j1Entity;
 class DynamicEntity;
 enum Faction;
+class j1Group;
 
 class AI_Player : public GenericPlayer
 {
@@ -17,6 +18,7 @@ public:
 	bool Update(float dt);
 
 	std::vector<iPoint> CreateNodePath(iPoint origin, iPoint destination);
+	void CreateAttackingGroup();
 
 public:
 	GenericPlayer* target_player;
@@ -28,6 +30,7 @@ private:
 	std::vector<iPoint> node_path;
 	int ranged_minimum;
 	int melee_minimum;
+	j1Group group;
 };
 
 #endif // !_AI_PLAYER_H_

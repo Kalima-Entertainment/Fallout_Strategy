@@ -119,13 +119,33 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 			if (entity->reference_entity != nullptr){
 				entity->owner = owner;
 				entities.push_back(entity);
-				owner->entities.push_back(entity);
 				entity->LoadReferenceData();
-				if (type == MELEE) owner->melees++;
-				else if (type == RANGED) owner->rangeds++;
-				else if (type == GATHERER) {
-					owner->gatherers++;
+				switch (entity->type)
+				{
+				case MELEE:
+					owner->troops.push_back((DynamicEntity*)entity);
+					owner->melees++;
+					break;
+				case RANGED:
+					owner->troops.push_back((DynamicEntity*)entity);
+					owner->rangeds++;
+					break;
+				case GATHERER:
 					owner->gatherers_vector.push_back((DynamicEntity*)entity);
+					owner->gatherers++;
+					break;
+				case BASE:
+					owner->base = (StaticEntity*)entity;
+					break;
+				case BARRACK:
+					if (owner->barrack[0] == nullptr) owner->barrack[0] = (StaticEntity*)entity;
+					else if (owner->barrack[1] == nullptr) owner->barrack[1] = (StaticEntity*)entity;
+					break;
+				case LABORATORY:
+					if (owner->laboratory == nullptr) owner->laboratory = (StaticEntity*)entity;
+					break;
+				default:
+					break;
 				}
 			}
 		}
@@ -247,6 +267,7 @@ bool j1EntityManager::Start() {
 		reference_entities[faction][LABORATORY]->texture = reference_entities[faction][BASE]->texture;
 	}
 
+	showing_building_menu = false;
 	sort_timer.Start();
 
 	return ret;
@@ -371,8 +392,6 @@ bool j1EntityManager::PostUpdate()
 		//Selected entity is a building
 		else {
 
-			if (count2 == 0)App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::ALL, BUILDING_TYPE::ALL); count2++;
-
 			StaticEntity* static_entity = (StaticEntity*)App->player->selected_entity;
 			for (int j = 0; j < static_entity->tiles.size(); j++)
 			{
@@ -385,10 +404,10 @@ bool j1EntityManager::PostUpdate()
 			case GHOUL:
 				if (static_entity->type == BASE) {
 
-					if (count == 0) {
+					if (!showing_building_menu) {
 
 						App->menu_manager->CreateGhouls_Base();
-						count++;
+						showing_building_menu = true;
 					}
 
 				}
@@ -397,15 +416,15 @@ bool j1EntityManager::PostUpdate()
 					if (count == 0) {
 
 						App->menu_manager->CreateGhouls_Barrack();
-						count++;
+						showing_building_menu = true;
 					}
 
 				}
 				else if (static_entity->type == LABORATORY) {
 
-					if (count == 0) {
+					if (!showing_building_menu) {
 						App->menu_manager->CreateGhouls_Lab();
-						count++;
+						showing_building_menu = true;
 					}
 
 				}
@@ -413,29 +432,26 @@ bool j1EntityManager::PostUpdate()
 			case BROTHERHOOD:
 				if (static_entity->type == BASE) {
 
-					if (count == 0) {
-						count++;
+					if (!showing_building_menu) {
 						App->menu_manager->CreateBrotherHood_Base();
+						showing_building_menu = true;
 					}
 
 				}
 				else if (static_entity->type == BARRACK) {
 
-					if (count == 0) {
-
-						count++;
+					if (!showing_building_menu) {
 						App->menu_manager->CreateBrotherHood_Barrack();
+						showing_building_menu = true;
 
 					}
 
 				}
 				else if (static_entity->type == LABORATORY) {
 
-					if (count == 0) {
-
-						count++;
+					if (!showing_building_menu) {
 						App->menu_manager->CreateBrotherHood_Lab();
-
+						showing_building_menu = true;
 					}
 				}
 				break;
@@ -444,30 +460,24 @@ bool j1EntityManager::PostUpdate()
 
 				if (static_entity->type == BASE) {
 
-					if (count == 0) {
-
-						count++;
+					if (!showing_building_menu) {
 						App->menu_manager->CreateVault_Base();
-
+						showing_building_menu = true;
 					}
 				}
 				else if (static_entity->type == BARRACK){
 
-					if (count == 0) {
-
-						count++;
+					if (!showing_building_menu) {
 						App->menu_manager->CreateVault_Barrack();
-
+						showing_building_menu = true;
 					}
 
 				}
 				else if (static_entity->type == LABORATORY) {
 
-					if (count == 0) {
-
-						count++;
+					if (!showing_building_menu) {
 						App->menu_manager->CreateVault_Lab();
-
+						showing_building_menu = true;
 					}
 
 				}
@@ -475,33 +485,25 @@ bool j1EntityManager::PostUpdate()
 			case MUTANT:
 				if (static_entity->type == BASE) {
 
-					if (count == 0) {
-
-						count++;
+					if (!showing_building_menu) {
 						App->menu_manager->CreateSuperMutants_Base();
-
+						showing_building_menu = true;
 					}
 				
 				}
 				else if (static_entity->type == BARRACK) {
 
-					if (count == 0) {
-
-						count++;
+					if (!showing_building_menu) {
 						App->menu_manager->CreateSuperMutants_Barrack();
-
+						showing_building_menu = true;
 					}
 
 				}
 				else if (static_entity->type == LABORATORY) {
-
-					if (count == 0) {
-
-						count++;
+					if (!showing_building_menu) {
 						App->menu_manager->CreateSuperMutants_Lab();
-
+						showing_building_menu = true;
 					}
-
 				}
 				break;
 			}

@@ -38,9 +38,10 @@ public:
 	// --- Move Unit ---
 	void Move(j1Group* unit, float dt);
 
-private:
+	void AddGroup(j1Group* group){ Groups.push_back(group);}
 
-	std::list <j1Group*>	Groups;
+private:
+	std::list <j1Group*> Groups;
 	bool stop_iteration = false;
 };
 

@@ -7,37 +7,49 @@ GenericPlayer::GenericPlayer() : j1Module() {}
 GenericPlayer::~GenericPlayer() {}
 
 int GenericPlayer::GetTroopsAmount() const {
-	int troops = 0;
-	for (int i = 0; i < entities.size(); i++) {
-		if (entities[i]->is_dynamic) {
-			troops++;
-		}
-	}
-	return troops;
+	return troops.size();
 }
 
 bool GenericPlayer::DeleteEntity(j1Entity* entity) {
-	for (int i = 0; i < entities.size(); i++)
-	{
-		if (entity->type == MELEE) melees--;
-		else if (entity->type == RANGED) rangeds--;
-		else if (entity->type == GATHERER) {
-			for (int g = 0; g < gatherers; g++) {
-				gatherers_vector.erase(gatherers_vector.begin() + g);
-			}
-			gatherers--;
-		}
-		else if (entity->type == BASE) base = nullptr;
-		else if (entity->type == LABORATORY) laboratory = nullptr;
-		else if (entity->type == BARRACK) {
-			if (barrack[0] == (StaticEntity*)entity) barrack[0] = nullptr;
-			else if (barrack[1] == (StaticEntity*)entity) barrack[1] = nullptr;
-		}
 
-		if (entities[i] == entity) {
-			entities[i] = nullptr;
-			entities.erase(entities.begin() + i);
+	switch (entity->type)
+	{
+	case MELEE:
+		for (int m = 0; m < troops.size(); m++)
+		{
+			if (troops[m] == (DynamicEntity*)entity) {
+				troops.erase(troops.begin() + m);
+			}
 		}
+		melees--;
+		break;
+	case RANGED:
+		for (int r = 0; r < troops.size(); r++)
+		{
+			if (troops[r] == (DynamicEntity*)entity) {
+				troops.erase(troops.begin() + r);
+			}
+		}
+		rangeds--;
+		break;
+	case GATHERER:
+		for (int g = 0; g < gatherers; g++) {
+			gatherers_vector.erase(gatherers_vector.begin() + g);
+		}
+		gatherers--;
+		break;
+	case BASE:
+		base = nullptr;
+		break;
+	case BARRACK:
+		if (barrack[0] == (StaticEntity*)entity) barrack[0] = nullptr;
+		else if (barrack[1] == (StaticEntity*)entity) barrack[1] = nullptr;
+		break;
+	case LABORATORY:
+		laboratory = nullptr;
+		break;
+	default:
+		break;
 	}
 
 	return ((base == nullptr) && (laboratory == nullptr) && (barrack[0] == nullptr) && (barrack[1] == nullptr));
