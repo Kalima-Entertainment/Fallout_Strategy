@@ -41,33 +41,35 @@ bool j1Transition::LoadAnimations() {
 		ret = false;
 	}
 
-	int tile_width = animation_file.child("map").child("tileset").attribute("tilewidth").as_int();
-	int tile_height = animation_file.child("map").child("tileset").attribute("tileheight").as_int();
-	int columns = animation_file.child("map").child("tileset").attribute("columns").as_int();
-	int firstgid = animation_file.child("map").child("tileset").attribute("firstgid").as_int();
-	int id, tile_id;
-	float speed;
+	pugi::xml_node tileset = animation_file.child("map").child("tileset");
 
-	pugi::xml_node animation = animation_file.child("map").child("tileset").child("tile");
-	pugi::xml_node frame = animation.child("animation").child("frame");
-
-	SDL_Rect rect;
-	rect.w = tile_width;
-	rect.h = tile_height;
-
-	id = animation.attribute("id").as_int();
-	loader = 0;
-	for (int i = 0; i < 65; i++)
+	while (tileset != nullptr)
 	{
-		if (i == 0)
+		int tile_width = tileset.attribute("tilewidth").as_int();
+		int tile_height = tileset.attribute("tileheight").as_int();
+		int columns = tileset.attribute("columns").as_int();
+		int firstgid = tileset.attribute("firstgid").as_int();
+		int id, tile_id;
+		float speed;
+
+		pugi::xml_node animation = tileset.child("tile");
+		pugi::xml_node frame = animation.child("animation").child("frame");
+
+		SDL_Rect rect;
+		rect.w = tile_width;
+		rect.h = tile_height;
+
+		id = animation.attribute("id").as_int();
+		loader = 0;
+
+		if (tileset.attribute("firstgid").as_int() == 1)
 		{
 			loader = &animationGif;
 		}
-		if (i == 1)
+		if (tileset.attribute("firstgid").as_int() == 65)
 		{
 			loader = &animationLogo;
 		}
-}
 
 		while (frame != nullptr) {
 			tile_id = frame.attribute("tileid").as_int();
@@ -79,9 +81,11 @@ bool j1Transition::LoadAnimations() {
 		}
 		loader->loop = true;
 
-	animation = animation.next_sibling();
-	frame = animation.child("animation").child("frame");
+		animation = animation.next_sibling();
+		frame = animation.child("animation").child("frame");
 
+		tileset = tileset.next_sibling("tileset");
+	}
 	return ret;
 }
 bool j1Transition::CleanUp()
@@ -93,7 +97,10 @@ bool j1Transition::CleanUp()
 
 bool j1Transition::Start()
 {
-	LoadAnimations();
+	if (loader == nullptr) 
+	{
+		LoadAnimations();
+	}
 	transition = false;
 	return true;
 }
@@ -122,8 +129,8 @@ void j1Transition::Transition()
 			App->audio->PlayFx(1, App->audio->loading, 0);
 		}
 		App->render->Blit(background, 0, 0);
-		App->render->Blit(gif_tex, 536, 191, &loader->GetCurrentFrame(lastdt));
-		App->render->Blit(logo_tex, 536, 515, &loader->GetCurrentFrame(lastdt));
+		App->render->Blit(gif_tex, 536, 191, &animationGif.GetCurrentFrame(lastdt));
+		App->render->Blit(logo_tex, 536, 515, &animationLogo.GetCurrentFrame(lastdt));
 		App->gui->active = false;
 		App->minimap->active = false;
 		App->entities->active = false;
