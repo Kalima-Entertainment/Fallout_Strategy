@@ -28,7 +28,7 @@ j1EntityManager::j1EntityManager(){
 	selected_unit_tex = nullptr;
 	blocked_movement = false;
 
-	//water, food, time 
+	//water, food, spawn time (seconds)
 	unit_data[VAULT][MELEE] = {  60, 60, 30  };
 	unit_data[VAULT][RANGED] = { 80, 80, 40 };
 	unit_data[VAULT][GATHERER] = { 40, 0, 15 };

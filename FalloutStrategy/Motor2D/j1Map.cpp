@@ -570,7 +570,8 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 					type = BASE;
 					dynamic_type = GATHERER;
 					if (building_faction == GHOUL) {
-						x += 1;
+						x += 3;
+						y += 2;
 					}else if (building_faction == VAULT) {
 						x += 4;
 						y += 3;
@@ -586,8 +587,8 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 					type = BARRACK;
 					dynamic_type = MELEE;
 					if (building_faction == GHOUL) {
-						x -= 1;
-						y -= 1;
+						x += 2;
+						y += 1;
 					}else if (building_faction == VAULT) {
 						x += 3;
 						y += 3;
@@ -603,7 +604,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 					type = LABORATORY;
 					dynamic_type = RANGED;
 					if (building_faction == GHOUL) {
-
+						x += 2;
 					}else if (building_faction == VAULT) {
 						x += 5;
 						y += 4;
