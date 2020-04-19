@@ -5,12 +5,12 @@ This is a real-time strategy game produced by 2nd year students from CITM/UPC Un
 * Make your faction survive among the others in this exciting RTS! 
 
 ## Controls
-### Movement
 Left click on the unit and left click on the position you want to make it go to.
 º - Turn console ON/OFF
 Y - Block/Unblock border scroll
 F - Center camera 
 F9 - Debug mode ON/OFF
+F10 - Godmode
 ESC - Close game
 ### Debug
 In debug mode you will be able to see the path the player follows and how it does so. 
@@ -18,7 +18,14 @@ In debug mode you will be able to see the path the player follows and how it doe
 ### Console commands
 help - list all commands
 destroy_all_entities - delete all characters from the map
-
+fps n - changes the fps cap to n
+caps+ n - add n caps
+food+ n - add n food
+water+ n - add n water
+resources+ n - add n amount of water, caps and food
+god_mode - turs godmode on/off
+spawn_units: spawn 1 gathere, 1 melee and 1 ranged. Must have a building selected
+spawn gatherer/melee/ranged/army -  spawns 1 unit of the selected type or an army of 10 melee and 10 ranged
 ## Team
 
 * Marc Pagès
