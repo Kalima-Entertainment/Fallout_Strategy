@@ -240,11 +240,13 @@ bool DynamicEntity::Update(float dt) {
 				((AI_Player*)this->owner)->CreateNodePath(this->current_tile, ((AI_Player*)this->owner)->target_player->base->current_tile, path_node);
 
 				// -- Make a movement request each node, when reached we proceed to reach next one until we finish all node list.
-				for (int i = 0; i < path_node.size(); i++) 
+				for (int i = 0; i < path_node.size(); i++) { 
 					this->info.current_group->CheckForMovementRequest(path_node[i], dt);
+				}
 				
 				// -- When node list finished we make last request move to reach enemy base.
 				this->info.current_group->CheckForMovementRequest(((AI_Player*)this->owner)->target_player->base->current_tile, dt);
+				this->owner->goal_tile_set = true;
 			}
 	}
 
