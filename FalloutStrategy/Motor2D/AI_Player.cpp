@@ -6,6 +6,8 @@
 #include "j1EntityManager.h"
 #include "j1Player.h"
 #include "p2Point.h"
+#include "j1Group.h"
+#include "j1MovementManager.h"
 #include <vector>
 
 AI_Player::AI_Player(Faction g_faction) : GenericPlayer() {
@@ -23,7 +25,7 @@ AI_Player::AI_Player(Faction g_faction) : GenericPlayer() {
 
 AI_Player::~AI_Player() {
 	target_player = nullptr;
-	entities.clear();
+	troops.clear();
 	gatherers_vector.clear();
 	base = barrack[0] = barrack[1] = laboratory = nullptr;
 }
@@ -133,11 +135,11 @@ DynamicEntity* AI_Player::GetClosestDynamicEntity() {
 	DynamicEntity* target_entity = nullptr;
 	int distance = 1000000;
 
-	for (int i = 0; i < target_player->entities.size(); i++)
+	for (int i = 0; i < target_player->troops.size(); i++)
 	{
-		if ((target_player->entities[i]->current_tile.DistanceManhattan(base->current_tile) < distance)&&(target_player->entities[i]->is_dynamic)) {
-			target_entity = (DynamicEntity*)target_player->entities[i];
-			distance = target_player->entities[i]->current_tile.DistanceManhattan(base->current_tile);
+		if ((target_player->troops[i]->current_tile.DistanceManhattan(base->current_tile) < distance)&&(target_player->troops[i])) {
+			target_entity = target_player->troops[i];
+			distance = target_player->troops[i]->current_tile.DistanceManhattan(base->current_tile);
 		}
 	}
 	return target_entity;
@@ -146,19 +148,26 @@ DynamicEntity* AI_Player::GetClosestDynamicEntity() {
 std::vector<iPoint> AI_Player::CreateNodePath(iPoint origin, iPoint destination) {
 	std::vector<iPoint> path;
 	iPoint current_node;
+	iPoint destination_node;
 	std::vector<iPoint> node_map = App->ai_manager->node_map;
 	//App->ai_manager->GetNodeMap(node_map);
 	current_node = node_map.back();
 
 	for (int i = 0; i < node_map.size(); i++)
 	{
-		if (node_map[i].DistanceNoSqrt(origin) < current_node.DistanceNoSqrt(origin))
+		if (node_map[i].DistanceTo(origin) < current_node.DistanceTo(origin))
 			current_node = node_map[i];
+	}
+
+	for (int i = 0; i < node_map.size(); i++)
+	{
+		if (node_map[i].DistanceTo(destination) < destination_node.DistanceTo(destination))
+			destination_node = node_map[i];
 	}
 
 	path.push_back(current_node);
 
-	while (current_node.DistanceTo(destination) > 40)
+	while (current_node != destination_node)
 	{
 		iPoint possible_node;
 		iPoint best_node;
@@ -180,4 +189,16 @@ std::vector<iPoint> AI_Player::CreateNodePath(iPoint origin, iPoint destination)
 	}
 
 	return path;
+}
+
+void AI_Player::CreateAttackingGroup() {
+	for (int i = 0; i < troops.size(); i++)
+	{
+		if (troops[i]->info.current_group == nullptr)
+		{
+			group.addUnit(troops[i]);
+			troops[i]->info.current_group = &group;
+		}
+	}
+	App->Mmanager->AddGroup(&group);
 }

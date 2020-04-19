@@ -36,7 +36,7 @@ j1Player::j1Player() : GenericPlayer() {
 j1Player::~j1Player() {
 	selected_entity = nullptr;
 	last_selected_entity = nullptr;
-	entities.clear();
+	troops.clear();
 	gatherers_vector.clear();
 	base = barrack[0] = barrack[1] = laboratory = nullptr;
 }
@@ -86,19 +86,16 @@ bool j1Player::PreUpdate() {
 		}
 	}
 
-
-	//Deselect entity
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
-		//selected_entity = nullptr;
-		//Remove HUD data from the UI
-		
-	}
-
 	if (!App->isPaused)
 	{
 		//entity selection and interaction
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
 			selected_entity = SelectEntity();
+
+			if ((App->entities->showing_building_menu) && (selected_entity == nullptr)) {
+				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::ALL, BUILDING_TYPE::ALL);
+				App->entities->showing_building_menu = false;
+			}
 		}
 
 		if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)&&(selected_entity != nullptr)) {
@@ -184,8 +181,6 @@ bool j1Player::Update(float dt) {
 j1Entity* j1Player::SelectEntity() {
 	int tx, ty;
 	iPoint selected_spot;
-	App->entities->count = 0;
-	App->entities->count2 = 0;
 	App->input->GetMousePosition(tx, ty);
 	if (TouchingUI(tx, ty))
 		return selected_entity;
@@ -196,18 +191,15 @@ j1Entity* j1Player::SelectEntity() {
 	//check if there's an entity in the selected spot
 	j1Entity* target = App->entities->FindEntityByTile(selected_spot);
 
-	//if we hadn't any entity selected
-	if (selected_entity == nullptr)
-	{
-		if (target != nullptr) {
-			if ((god_mode) || (target->faction == faction)) {
-				return target;
-			}
+	if (target != nullptr) {
+		if ((god_mode) || (target->faction == faction)) {
+			return target;
 		}
 	}
 
-	if (selected_entity != nullptr)
+	if (selected_entity != nullptr) {
 		last_selected_entity = selected_entity;
+	}
 
 	return nullptr;
 }
