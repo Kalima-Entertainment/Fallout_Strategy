@@ -300,8 +300,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->CreateGUI();
 				App->menu_manager->CreateResources();
 				App->transition->fadetimer.Start();
-				/*App->transition->transition = true;*/
-				App->transition->Transition();
+				App->transition->transition = true;
 			}
 
 			if (t == button_pause_to_main)
@@ -311,9 +310,8 @@ bool UI_Button::Update(float dt)
 				App->audio->PlayFx(1, back_fx, 0);
 				App->entities->Disable();
 				App->scene->Disable();
-				/*App->transition->transition = true;*/
+				App->transition->transition = true;
 				App->transition->fadetimer.Start();
-				App->transition->Transition();
 			}
 			
 			//Spawn Gatherer from any faction

@@ -68,6 +68,7 @@ public:
 	int F_press;
 	int Press_F_to_start;
 
+	int loading;
 private:
 
 	float				music_volume;

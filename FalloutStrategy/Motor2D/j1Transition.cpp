@@ -9,6 +9,11 @@
 #include "j1Scene.h"
 #include "j1Textures.h"
 #include "j1EntityManager.h"
+#include "j1Gui.h"
+#include "j1Minimap.h"
+#include "j1Audio.h"
+
+#include "SDL_mixer\include\SDL_mixer.h"
 
 j1Transition::j1Transition() : j1Module()
 {
@@ -26,14 +31,16 @@ bool j1Transition::LoadAnimations() {
 	pugi::xml_parse_result result = animation_file.load_file("gui/loading.tmx");
 
 	std::string image = std::string(animation_file.child("tileset").child("image").attribute("source").as_string());
-	gif = App->tex->Load("gui/gifwheel.png");
-	logo = App->tex->Load("gui/logo_spritesheet.png");
+
+	logo_tex = App->tex->Load("gui/logo_spritesheet.png");
+	gif_tex = App->tex->Load("gui/gifwheel.png");
+	background = App->tex->Load("gui/background.png");
 	if (result == NULL)
 	{
-		LOG("Could not load animation tmx file %s. pugi error: %s", "gui/loading.tmx", result.description());
+		LOG("Could not load animation tmx file %s. pugi error: %s", "gui/LogoIntro.tmx", result.description());
 		ret = false;
 	}
-	else {LOG("loaded succesfully");}
+
 	int tile_width = animation_file.child("map").child("tileset").attribute("tilewidth").as_int();
 	int tile_height = animation_file.child("map").child("tileset").attribute("tileheight").as_int();
 	int columns = animation_file.child("map").child("tileset").attribute("columns").as_int();
@@ -49,10 +56,9 @@ bool j1Transition::LoadAnimations() {
 	rect.h = tile_height;
 
 	id = animation.attribute("id").as_int();
-
-	for (int i = 0; i < 2; i++)
+	loader = 0;
+	for (int i = 0; i < 65; i++)
 	{
-		loader = 0;
 		if (i == 0)
 		{
 			loader = &animationGif;
@@ -61,7 +67,7 @@ bool j1Transition::LoadAnimations() {
 		{
 			loader = &animationLogo;
 		}
-
+}
 
 		while (frame != nullptr) {
 			tile_id = frame.attribute("tileid").as_int();
@@ -71,8 +77,7 @@ bool j1Transition::LoadAnimations() {
 			loader->PushBack(rect, speed);
 			frame = frame.next_sibling();
 		}
-	loader->loop = true;
-	}
+		loader->loop = true;
 
 	animation = animation.next_sibling();
 	frame = animation.child("animation").child("frame");
@@ -81,33 +86,29 @@ bool j1Transition::LoadAnimations() {
 }
 bool j1Transition::CleanUp()
 {
-	App->tex->UnLoad(logo);
-	App->tex->UnLoad(gif);
+	App->tex->UnLoad(logo_tex);
+	App->tex->UnLoad(gif_tex);
 	return true;
 }
 
 bool j1Transition::Start()
 {
 	LoadAnimations();
-	transition = true;
+	transition = false;
 	return true;
 }
 
 bool j1Transition::Update(float dt)
 {
-	lastdt = dt;
-
+	lastdt = dt*0.01;
+	Transition();
 	return true;
 }
 bool j1Transition::PostUpdate(float dt)
 {
 	deltatime = dt;
 
-	if (fadetimer.Read() > 6000)
-	{
-		transition = true;
 
-	}
 	return true;
 }
 
@@ -116,10 +117,22 @@ void j1Transition::Transition()
 {
 	if (transition == true)
 	{
-		SDL_Rect background = { 0, 0, 1280, 720 };
-		App->render->DrawQuad(background, 0, 0, 0, 255);
-		App->render->Blit(logo, 400, 50, &loader->GetCurrentFrame(lastdt));
+		if (Mix_Playing(1) == 0) {
+			App->audio->PlayFx(1, App->audio->loading, 0);
+		}
+		App->render->Blit(background, 0, 0);
+		App->render->Blit(gif_tex, 536, 191, &loader->GetCurrentFrame(lastdt));
+		App->render->Blit(logo_tex, 536, 515, &loader->GetCurrentFrame(lastdt));
+		App->gui->active = false;
+		App->minimap->active = false;
+		App->entities->active = false;
 	}
 	
-
+	if (fadetimer.Read() > 6000)
+	{
+		transition = false;
+		App->gui->active = true;
+		App->minimap->active = true;
+		App->entities->active = true;
+	}
 }

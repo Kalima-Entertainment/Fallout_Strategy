@@ -53,7 +53,6 @@ bool LogoScene::LoadAnimations()
 	id = animation.attribute("id").as_int();
 
 	loader = &animationLogo;
-
 	while (frame != nullptr) {
 		tile_id = frame.attribute("tileid").as_int();
 		speed = frame.attribute("duration").as_int();

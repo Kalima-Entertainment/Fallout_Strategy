@@ -23,13 +23,14 @@ public:
 	void Transition();
 private:
 	float deltatime;
-	SDL_Texture* gif;
-	SDL_Texture* logo;
+	SDL_Texture* gif_tex;
+	SDL_Texture* logo_tex;
+	SDL_Texture* background;
 	Animation	animationLogo;
 	Animation	animationGif;
 	Animation* loader;
+	Animation* loader2;
 	float lastdt;
-
 public:
 	bool transition;
 	j1Timer fadetimer;
