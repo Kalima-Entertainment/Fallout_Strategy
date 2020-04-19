@@ -22,6 +22,11 @@
 #include <time.h>
 #include <string>
 #include "j1MovementManager.h"
+#include "GenericPlayer.h"
+#include "AI_Manager.h"
+#include "j1Minimap.h"
+#include "AI_Player.h"
+#include "j1Transition.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -47,6 +52,9 @@ bool j1Scene::Start()
 	srand(time(NULL));
 	menu_state = StatesMenu::NONE;
 
+	//App->player->faction = VAULT;
+	App->ai_manager->Enable();
+	App->transition->Enable();
 	//random map ----------------------------
 
 	std::string modules[4];
@@ -81,8 +89,8 @@ bool j1Scene::Start()
 		RELEASE_ARRAY(data);
 	}
 
-	App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
-
+	App->minimap->Enable();
+		
 	App->entities->CreateEntity(VAULT, RANGED, 20, 20);
 
 	return true;
@@ -129,6 +137,11 @@ bool j1Scene::Update(float dt)
 	App->input->GetMousePosition(x, y);
 	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
 
+	//Used to select units and groups
+	if (!App->player->TouchingUI(x, y)) {
+		RectangleSelection();
+	}
+
 	/*
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
 					App->map->data.width, App->map->data.height,
@@ -138,54 +151,17 @@ bool j1Scene::Update(float dt)
 
 	//App->win->SetTitle(title.GetString());
 	*/
-	/*
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-	{
-		Mix_HaltChannel(-1);
-		Mix_SetPosition(1, 270, 1);
-		App->audio->PlayFx(1, App->audio->explosion, 0);
-	}
-	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
-	{
-		Mix_HaltChannel(-1);
-		Mix_SetPosition(2, 270, 200);
-		App->audio->PlayFx(2, App->audio->explosion, 0);
-	}
-	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
-	{
-		Mix_HaltChannel(-1);
-		Mix_SetPosition(3, 90, 1);
-		App->audio->PlayFx(3, App->audio->explosion, 0);
-	}
-	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
-	{
-		Mix_HaltChannel(-1);
-		Mix_SetPosition(4, 90, 200);
-		App->audio->PlayFx(4, App->audio->explosion, 0);
-	}
-	*/
-
-
-	//Used to select units and groups
-	RectangleSelection();
 
 	return true;
-}
-
-// Called each loop iteration
-bool j1Scene::PostUpdate()
-{
-	bool ret = true;
-
-
-	return ret;
 }
 
 // Called before quitting
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
-
+	App->map->Disable();
+	App->ai_manager->Disable();
+	players[0] = players[1] = players[2] = players[3];
 	return true;
 }
 
@@ -230,6 +206,37 @@ void j1Scene::RectangleSelection()
 		App->Mmanager->SelectEntities_inRect(SRect);
 	}
 
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
-		App->Mmanager->CreateGroup();
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
+		std::vector<DynamicEntity*> selected_entities;
+		for (int i = 0; i < App->entities->entities.size(); i++)
+		{
+			if (App->entities->entities[i]->info.IsSelected && App->entities->entities[i]->is_dynamic) {
+				selected_entities.push_back((DynamicEntity*)App->entities->entities[i]);
+			}
+		}
+		App->Mmanager->CreateGroup(selected_entities);
+	}
+}
+
+void j1Scene::CheckWinner() {
+	Faction player_faction = App->player->faction;
+	int beaten_enemies = 0;
+	for (int i = 0; i < 4; i++)
+	{
+		if (players[player_faction]->defeated) {
+			//LOSE
+			App->menu_manager->CreateMainMenu();
+			App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+			App->isPaused = false;
+		}
+		else if (players[i]->defeated){
+			beaten_enemies++;
+		}
+	}
+	//WIN
+	if (beaten_enemies == 3) {
+		App->menu_manager->CreateMainMenu();
+		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+		App->isPaused = false;
+	}
 }

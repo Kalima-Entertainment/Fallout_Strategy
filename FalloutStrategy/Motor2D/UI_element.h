@@ -42,6 +42,7 @@ enum UI_Type {
 	button_back_pause,
 	button_cap,
 	button_mute,
+	button_fullscreen,
 
 	Slider_music,
 	Slider_fx,
@@ -70,6 +71,7 @@ enum UI_Type {
 	Ghouls_ranged_button,
 
 	InputBox,
+	Boost_button,
 
 };
 
@@ -110,6 +112,10 @@ public:
 	std::string font_text;
 
 	bool destroy;
+
+	bool drawable = true;
+
+	bool hover = false;
 
 	//pointer to an element
 	UI_element*	element_UI;

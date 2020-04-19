@@ -4,7 +4,7 @@
 #include "SDL/include/SDL_rect.h"
 #include "j1App.h"
 #include <math.h>
-#define MAX_FRAMES 50
+#define MAX_FRAMES 200
 
 struct Collider;
 
@@ -17,6 +17,7 @@ struct Frame {
 class Animation
 {
 public:
+	bool sounded = true;
 	bool loop = true;
 	Frame frames[MAX_FRAMES];
 	float current_frame = 0;
@@ -60,6 +61,7 @@ public:
 
 	void Reset()
 	{
+		sounded = false;
 		current_frame = 0;
 		loops = 0;
 	}
@@ -68,6 +70,10 @@ public:
 	}
 	SDL_Rect GetCurrentRect(){
 		return frames[(int)current_frame].rect;
+	}
+	bool GetSounded() 
+	{
+		return sounded;
 	}
 };
 

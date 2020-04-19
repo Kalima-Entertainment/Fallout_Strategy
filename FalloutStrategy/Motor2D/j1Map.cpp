@@ -118,7 +118,7 @@ iPoint j1Map::MapToWorld(int x, int y) const
 	}
 	else
 	{
-		LOG("Unknown map type");
+//		LOG("Unknown map type");
 		ret.x = x; ret.y = y;
 	}
 
@@ -154,7 +154,7 @@ iPoint j1Map::WorldToMap(int x, int y) const
 	}
 	else
 	{
-		LOG("Unknown map type");
+		//LOG("Unknown map type");
 		ret.x = x; ret.y = y;
 	}
 
@@ -557,7 +557,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 				y /= HALF_TILE;
 
 				int faction_number = (object_node.child("properties").child("property").attribute("value").as_int());
-				Faction building_faction;				
+				Faction building_faction = NO_FACTION;				
 
 				building_faction = App->entities->FactionByIndex(App->entities->randomFaction[faction_number]);
 
@@ -570,7 +570,8 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 					type = BASE;
 					dynamic_type = GATHERER;
 					if (building_faction == GHOUL) {
-						x += 1;
+						x += 3;
+						y += 2;
 					}else if (building_faction == VAULT) {
 						x += 4;
 						y += 3;
@@ -586,8 +587,8 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 					type = BARRACK;
 					dynamic_type = MELEE;
 					if (building_faction == GHOUL) {
-						x -= 1;
-						y -= 1;
+						x += 2;
+						y += 1;
 					}else if (building_faction == VAULT) {
 						x += 3;
 						y += 3;
@@ -603,7 +604,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 					type = LABORATORY;
 					dynamic_type = RANGED;
 					if (building_faction == GHOUL) {
-
+						x += 2;
 					}else if (building_faction == VAULT) {
 						x += 5;
 						y += 4;
@@ -620,14 +621,8 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 				static_entity = (StaticEntity*)App->entities->CreateEntity(building_faction, type, x,y);
 				static_entity->tiles = CalculateArea(first_tile_position, width, height);
 
-				//spawn entity
-				if (building_faction == App->player->faction) {
-					App->player->entities.push_back(App->entities->CreateEntity(building_faction, dynamic_type, x + 1, y + 1));
-				}
-				else
-				{
-					App->ai_manager->ai_player[building_faction]->entities.push_back(App->entities->CreateEntity(building_faction, dynamic_type, x + 1, y + 1));
-				}
+				App->entities->CreateEntity(building_faction, dynamic_type, x + 1, y + 1);
+
 			}
 
 			object_node = object_node.next_sibling();
@@ -694,44 +689,6 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 		height = data.height;
 		ret = true;
 
-	/*
-	for(int i = 0; i < MAX_LAYERS; i++)
-	{
-		MapLayer* layer = (MapLayer*)&data.layers[i];
-
-		if(layer->properties.Get("Navigation", 0) == 0)
-			continue;
-
-		uchar* map = new uchar[layer->width*layer->height];
-		memset(map, 1, layer->width*layer->height);
-
-		for(int y = 0; y < data.height; ++y)
-		{
-			for(int x = 0; x < data.width; ++x)
-			{
-				int i = (y*layer->width) + x;
-
-				int tile_id = layer->Get(x, y);
-
-				TileSet* tileset = (tile_id > 0) ? GetTilesetFromTileId(tile_id) : NULL;
-
-				if(tileset != NULL)
-				{
-					map[i] = (tile_id - tileset->firstgid) > 0 ? 0 : 1;
-				}
-
-			}
-		}
-
-		*buffer = map;
-		width = data.width;
-		height = data.height;
-		ret = true;
-
-		break;
-	}
-	*/
-
 	return ret;
 }
 
@@ -745,8 +702,11 @@ std::vector<iPoint> j1Map::CalculateArea(iPoint first_tile_position, int width, 
 	{
 		for (int j = 0; j < height; j++)
 		{
+			//get tile position
 			iPoint tile_position = { first_tile_position.x + i,first_tile_position.y + j };
 			area.push_back(tile_position);
+			
+			//set tile as unwalkable
 			uint position = ((tile_position.y) * MAP_LENGTH) + (tile_position.x);
 			data.layers[5].data[position] = 1;
 		}

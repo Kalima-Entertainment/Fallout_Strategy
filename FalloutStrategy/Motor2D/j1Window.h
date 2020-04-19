@@ -33,12 +33,16 @@ public:
 	//Set scale to zoom in/out
 	void SetScale(uint& zoom);
 
+	void ChangeFullScreen(bool big=false);
+
 public:
 	//The window we'll be rendering to
 	SDL_Window* window;
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface;
+
+	bool fullscreen = false;
 
 private:
 	std::string	title;

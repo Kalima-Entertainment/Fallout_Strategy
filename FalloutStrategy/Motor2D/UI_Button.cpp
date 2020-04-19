@@ -11,7 +11,9 @@
 #include "j1Player.h"
 #include "j1Scene.h"
 #include "j1Map.h"
+#include "j1Window.h"
 #include "StaticEntity.h"
+#include "j1Transition.h"
 
 #include "./brofiler/Brofiler/Brofiler.h"
 
@@ -32,8 +34,6 @@ UI_Button::UI_Button(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, 
 	volume_fx = App->audio->LoadFx("audio/fx/UISounds/Butn_Text.wav");
 	members_fx = App->audio->LoadFx("audio/fx/UISounds/Butn_Skill.wav");
 	character_fx = App->audio->LoadFx("audio/fx/UISounds/Butn_Character.wav");
-	
-
 }
 
 bool UI_Button::CleanUp()
@@ -76,60 +76,37 @@ bool UI_Button::Update(float dt)
 			App->audio->PlayFx(1, hover_fx, 0);
 		}
 
-		if (observer) {
-			observer->Callback(this);
+		if (t == button_select_ghoul)
+		{
+			ghoul_image = (j1Image*)App->gui->CreateImage(510, 300, Image, { 2600, 835, 591, 180 }, NULL, this);
+			ghoul_image->hover = true;
+			elements_to_show.push_back(ghoul_image);
+			current_state = BUTTON_STATE::HOVER;
 		}
 
-		if (t == button_select_ghoul) {
-
-			if (counter == 10) {
-				
-				App->menu_manager->select_faction_menu[0] = (j1Image*)App->gui->CreateImage(100, 300, Image, { 2492, 837, 168, 166 }, NULL, this);
-				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::GHOUL, BUILDING_TYPE::NONE);
-				App->audio->PlayFx(1, click_fx, 0);
-
-			}
-		
+		if (t == button_select_vault)
+		{
+			vault_image = (j1Image*)App->gui->CreateImage(510, 300, Image, { 2600, 2886, 656, 180 }, NULL, this);
+			vault_image->hover = true;
+			elements_to_show.push_back(vault_image);
+			current_state = BUTTON_STATE::HOVER;
 		}
 
-		if (t == button_select_vault) {
-
-
-			if (counter == 10) {
-				
-				App->menu_manager->select_faction_photos[1] = (j1Image*)App->gui->CreateImage(310, 300, Image, { 2492, 1013, 309, 134 }, NULL, this);
-				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::VAULT, BUILDING_TYPE::NONE);
-				App->audio->PlayFx(1, click_fx, 0);
-
-			}
-
+		if (t == button_select_brotherhood)
+		{
+			brotherhood_image = (j1Image*)App->gui->CreateImage(510, 300, Image, { 2600, 2351, 580, 185 }, NULL, this);
+			brotherhood_image->hover = true;
+			elements_to_show.push_back(brotherhood_image);
+			current_state = BUTTON_STATE::HOVER;
 		}
 
-		if (t == button_select_brotherhood) {
-
-
-			if (counter == 10) {
-				
-				App->menu_manager->select_faction_menu[2] = (j1Image*)App->gui->CreateImage(550, 300, Image, { 2492, 1161, 155, 180 }, NULL, this);
-				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::BROTHERHOOD, BUILDING_TYPE::NONE);
-				App->audio->PlayFx(1, click_fx, 0);
-
-			}
-
+		if (t == button_select_supermutant)
+		{
+			supermutant_image = (j1Image*)App->gui->CreateImage(510, 300, Image, { 2600, 2649, 602, 181 }, NULL, this);
+			supermutant_image->hover = true;
+			elements_to_show.push_back(supermutant_image);
+			current_state = BUTTON_STATE::HOVER;
 		}
-
-		if (t == button_select_supermutant) {
-
-			if (counter == 10) {
-				
-				App->menu_manager->select_faction_menu[3] = (j1Image*)App->gui->CreateImage(750, 300, Image, { 2492, 1354, 158, 158 }, NULL, this);
-				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::SUPERMUTANT, BUILDING_TYPE::NONE);
-				App->audio->PlayFx(1, click_fx, 0);
-
-			}
-
-		}
-
 		
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT)==KEY_DOWN) {
 
@@ -266,6 +243,12 @@ bool UI_Button::Update(float dt)
 				App->audio->PlayFx(1, click_fx, 0);
 			}
 
+			if (t == button_web_credits)
+			{
+				ShellExecuteA(NULL, "open", "https://kalima-entertainment.github.io/Fallout_Strategy/", NULL, NULL, SW_SHOWNORMAL);
+				App->audio->PlayFx(click_fx, 0);
+			}
+
 			if (t == button_settings) {
 
 				App->menu_manager->DestroyMenu(Menu::MAIN_MENU);
@@ -294,7 +277,7 @@ bool UI_Button::Update(float dt)
 
 			if (t == resume_button) {
 				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
-				App->scene->create = false;
+				App->scene->create = !App->scene->create;
 				App->audio->PlayFx(1, back_fx, 0);
 			}
 
@@ -303,15 +286,22 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->CreateMainMenu();
 				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
 				App->audio->PlayFx(1, back_fx, 0);
+				App->isPaused = false;
 			}
 	
 			if (t == button_start_game)
 			{
-				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
+				/*App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
 				App->audio->PlayFx(1, back_fx, 0);
 				App->gui->count = 0;
 				App->player->Enable();
+				App->entities->Enable();
+				App->Mmanager->Enable();
+				App->scene->Enable();
 				App->menu_manager->CreateGUI();
+				App->menu_manager->CreateResources();
+				App->transition->fadetimer.Start();
+				App->transition->transition = true;*/
 			}
 
 			if (t == button_pause_to_main)
@@ -319,13 +309,57 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
 				App->menu_manager->CreateMainMenu();
 				App->audio->PlayFx(1, back_fx, 0);
+				App->entities->Disable();
+				App->scene->Disable();
+				App->transition->transition = true;
+				App->transition->fadetimer.Start();
+			}
+
+			if (t == button_cap) {
+				
+				cap = !cap;
+				App->gui->Delete_Element(App->menu_manager->settings_menu[21]);
+
+				if (cap == false) {
+					App->capped_ms = 1000 / 60;
+					App->gui->Delete_Element(cap_label);
+					cap_label = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "60", NULL, this, NULL, "StackedPixelMedium");
+				}
+				else if (cap == true) {
+					App->capped_ms = 1000 / 30;
+					App->gui->Delete_Element(cap_label);
+					cap_label = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "30", NULL, this, NULL, "StackedPixelMedium");
+				}
+
+			}
+
+			if (t == button_fullscreen) {
+				
+				fullscreen = !fullscreen;
+
+				App->gui->Delete_Element(App->menu_manager->settings_menu[22]);
+				if (fullscreen == true) {
+					App->win->ChangeFullScreen(true);
+					App->gui->Delete_Element(fullscreen_label);
+					fullscreen_label = (UI_Label*)App->gui->CreateLabel(756, 613, Label, "YES", NULL, this, NULL, "StackedPixelMedium");
+				}
+				else if (fullscreen == false) {
+					App->win->ChangeFullScreen(false);
+					App->gui->Delete_Element(fullscreen_label);
+					fullscreen_label = (UI_Label*)App->gui->CreateLabel(763, 613, Label, "NO", NULL, this, NULL, "StackedPixelMedium");
+				}
+
 			}
 			
 			//Spawn Gatherer from any faction
 			if (t == Ghouls_ghaterer_button || t == Vault_ghaterer_button || t == Supermutant_ghaterer_button || t == Brotherhood_ghaterer_button){
 				App->audio->PlayFx(1, character_fx, 0);
+				
 				//Select building to spawn
 				StaticEntity* static_entity;
+				if (App->player->selected_entity == nullptr)
+					static_entity = (StaticEntity*)App->player->last_selected_entity;
+				else
 				static_entity = (StaticEntity*)App->player->selected_entity;
 				static_entity->SpawnUnit(GATHERER);
 			}
@@ -333,19 +367,100 @@ bool UI_Button::Update(float dt)
 			//Spawn Melee from any faction
 			if (t == Ghouls_melee_button || t == Vault_melee_button || t == Supermutant_melee_button || t == Brotherhood_melee_button){
 				App->audio->PlayFx(1, character_fx, 0);
+
 				StaticEntity* static_entity;
+				if (App->player->selected_entity == nullptr)
+					static_entity = (StaticEntity*)App->player->last_selected_entity;
+				else
 				static_entity = (StaticEntity*)App->player->selected_entity;
+
 				static_entity->SpawnUnit(MELEE);
 			}
 			
 			//Spawn Ranged from any faction
 			if (t == Ghouls_ranged_button || t == Vault_ranged_button || t == Supermutant_ranged_button || t == Brotherhood_ranged_button){
 				App->audio->PlayFx(1, character_fx, 0);
+
 				StaticEntity* static_entity;
+				if (App->player->selected_entity == nullptr)
+					static_entity = (StaticEntity*)App->player->last_selected_entity;
+				else
 				static_entity = (StaticEntity*)App->player->selected_entity;
+
 				static_entity->SpawnUnit(RANGED);
 			}
-			
+
+			if (t == button_select_ghoul)
+			{
+				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
+				current_state = BUTTON_STATE::HOVER_EXIT;
+				App->player->faction = GHOUL;
+				App->audio->PlayFx(1, character_fx, 0);
+				App->gui->count = 0;
+				App->player->Enable();
+				App->entities->Enable();
+				App->Mmanager->Enable();
+				App->scene->Enable();
+				App->menu_manager->CreateGUI();
+				App->menu_manager->CreateResources();
+				App->transition->fadetimer.Start();
+				App->transition->transition = true;
+							
+			}
+
+			if (t == button_select_vault)
+			{
+				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
+				current_state = BUTTON_STATE::HOVER_EXIT;
+				App->player->faction = VAULT;
+				App->audio->PlayFx(1, character_fx, 0);
+				App->gui->count = 0;
+				App->player->Enable();
+				App->entities->Enable();
+				App->Mmanager->Enable();
+				App->scene->Enable();
+				App->menu_manager->CreateGUI();
+				App->menu_manager->CreateResources();
+				App->transition->fadetimer.Start();
+				App->transition->transition = true;
+
+			}
+
+			if (t == button_select_brotherhood)
+			{
+
+				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
+				current_state = BUTTON_STATE::HOVER_EXIT;
+				App->player->faction = BROTHERHOOD;
+				App->audio->PlayFx(1, character_fx, 0);
+				App->gui->count = 0;
+				App->player->Enable();
+				App->entities->Enable();
+				App->Mmanager->Enable();
+				App->scene->Enable();
+				App->menu_manager->CreateGUI();
+				App->menu_manager->CreateResources();
+				App->transition->fadetimer.Start();
+				App->transition->transition = true;
+			}
+
+			if (t == button_select_supermutant)
+			{
+
+				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
+				current_state = BUTTON_STATE::HOVER_EXIT;
+				App->player->faction = MUTANT;
+				App->audio->PlayFx(1, character_fx, 0);
+				App->gui->count = 0;
+				App->player->Enable();
+				App->entities->Enable();
+				App->Mmanager->Enable();
+				App->scene->Enable();
+				App->menu_manager->CreateGUI();
+				App->menu_manager->CreateResources();
+				App->transition->fadetimer.Start();
+				App->transition->transition = true;
+			}
 		}
 		else {
 			
@@ -358,8 +473,25 @@ bool UI_Button::Update(float dt)
 	else {
 		dimensions = Button_idle;
 		counter = 0;
+		current_state = BUTTON_STATE::HOVER_EXIT;
+	}
+
+	if (current_state == BUTTON_STATE::HOVER_EXIT)
+	{
+		for (std::list<UI_element*>::iterator item = elements_to_show.begin(); item != elements_to_show.end(); ++item) {
+
+			if ((*item)->hover == true)
+			{
+				AddElementToShow((*item));
+			}
+		}
 	}
 
 	return true;
 
+}
+
+void UI_Button::AddElementToShow(UI_element* element)
+{
+	element->drawable = false;
 }

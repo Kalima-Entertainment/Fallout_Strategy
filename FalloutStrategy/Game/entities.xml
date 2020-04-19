@@ -2,30 +2,30 @@
 <entities>
  <static>
    <vault>
-    <base health="32000"/>
-    <barrack health="28000"/>
-    <laboratory health="24000"/>
+    <base health="8000"/>
+    <barrack health="6000"/>
+    <laboratory health="7000"/>
    </vault>
    <brotherhood>
-    <base health="32000"/>
-    <barrack health="24000"/>
-    <laboratory health="28000"/>
+    <base health="8000"/>
+    <barrack health="6000"/>
+    <laboratory health="7000"/>
    </brotherhood>
    <mutants>
-    <base health="32000"/>
-    <barrack health="24000"/>
-    <laboratory health="28000"/>
+    <base health="8000"/>
+    <barrack health="6000"/>
+    <laboratory health="7000"/>
    </mutants>
    <ghouls>
-    <base health="32000"/>
-    <barrack health="24000"/>
-    <laboratory health="28000"/>
+    <base health="8000"/>
+    <barrack health="6000"/>
+    <laboratory health="7000"/>
   </ghouls>
  </static>
  <dynamic>
   <vault>
    <melee health="100" damage="15" speed="100"/>
-   <ranged health="100" damage="30" speed="100"/>
+   <ranged health="100" damage="3000" speed="100"/>
    <gatherer health="100" damage="60" speed="100"/>
   </vault>
   <brotherhood>

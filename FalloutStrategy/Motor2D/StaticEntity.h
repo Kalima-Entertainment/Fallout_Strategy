@@ -13,17 +13,34 @@ enum StaticState {
 	NO_STATE
 };
 
+enum Upgrades {
+	RESOURCES_LIMIT,
+	GATHERER_CAPACITY,
+	UNITS_DAMAGE,
+	UNITS_SPEED,
+	UNITS_HEALTH,
+	CREATION_TIME,
+	NO_UPGRADE
+};
+
 struct Upgrades_Data{
 	Faction faction;
-	std::string name;
+	Upgrades upgrade;
 	int upgrade_num;
 	int first_price;
 	int price_increment;
+	int seconds;
 };
 
 struct Spawn_Stack {
 	EntityType type;
 	int spawn_seconds; //Seconds it requires to spawn
+};
+
+struct Upgrade_Stack {
+	Faction faction;
+	Upgrades upgrade;
+	int upgrade_seconds;
 };
 
 class StaticEntity : public j1Entity
@@ -38,14 +55,15 @@ public:
 	bool LoadAnimations();
 	bool LoadReferenceData();	
 
-	void Upgrade(Faction faction, std::string upgrade_name);
+	void Upgrade(Upgrades_Data upgrades_data);
+	void ExecuteUpgrade(Faction faction, Upgrades upgrade_name);
 	void SpawnUnit(EntityType type);
 	void UpdateSpawnStack();
 	
 public:
 	std::vector<iPoint> tiles;
-	StaticState state;
-	Spawn_Stack spawn_stack[10];
+	StaticState state;	
+
 private:
 	int gen_speed;
 	Animation animations[3];
@@ -58,8 +76,13 @@ private:
 	Upgrades_Data units_health[4];
 	Upgrades_Data units_creation_time[4];
 
-	std::chrono::steady_clock::time_point spawn_time;
+	Spawn_Stack spawn_stack[10];
+	Upgrade_Stack upgrade_stack;
+
+	j1Timer chrono_spawn;
+	j1Timer chrono_upgrade;
 	bool spawning;
+	float time_left;
 };
 
 #endif // !_STATIC_ENTITY_H

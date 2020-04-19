@@ -45,55 +45,55 @@ void j1MovementManager::SelectEntities_inRect(SDL_Rect SRect)
 {
 	//This method needs to check only dynamic entities adapt
 	std::vector<j1Entity*>::iterator entity = App->entities->entities.begin();
+
 	SDL_Rect entityrect = { 0,0,0,0 };
 
 	while (entity != App->entities->entities.end())
 	{
 		//If entity list find some dynamic entity and its inside the Selection Rect we make this dynamic entity info isSelected True
 		if ((*entity)->is_dynamic) {
-			entityrect = { (int)(*entity)->position.x, (int)(*entity)->position.y, 5 , 5 };
+			// Checks if Dynamic entitie selected owns our selected faction
+			if (((*entity)->faction == App->player->faction)||(App->player->god_mode)) {
+				entityrect = { (int)(*entity)->position.x, (int)(*entity)->position.y, 5 , 5 };
 
-			//Comparing if intersection between Selection Rect and Entity Rect
-			if (SDL_HasIntersection(&entityrect, &SRect))(*entity)->info.IsSelected = true;
-			else (*entity)->info.IsSelected = false;
-
+				//Comparing if intersection between Selection Rect and Entity Rect
+				if (SDL_HasIntersection(&entityrect, &SRect))
+					(*entity)->info.IsSelected = true;
+				else 
+					(*entity)->info.IsSelected = false;
+			}
 		}
 		entity++;
 	}
 }
 
-void j1MovementManager::CreateGroup()
+void j1MovementManager::CreateGroup(std::vector<DynamicEntity*> entities_vector)
 {
 	//LOG("Group Creation Called");
 	bool Validgroup = false;
 
 	j1Group* group = new j1Group;
 
-	std::vector<j1Entity*>::iterator entity = App->entities->entities.begin();
+	std::vector<DynamicEntity*>::iterator entity = entities_vector.begin();
 
-	while (entity != App->entities->entities.end())
+	while (entity != entities_vector.end())
 	{
 		// --- Check if just Dynamic entities are enabled to be in group
-		if ((*entity)->is_dynamic) {
-			if ((*entity)->info.IsSelected)
-			{
-				// --- If we find an entity then the group is valid and can be created ---
-				Validgroup = true;
+		// --- If we find an entity then the group is valid and can be created ---
+		Validgroup = true;
 
-				// --- Remove the entity from a previous group if any is found ---
-				if ((*entity)->info.current_group != nullptr)
-				{
-					(*entity)->info.current_group->removeUnit(*entity);
+		// --- Remove the entity from a previous group if any is found ---
+		if ((*entity)->info.current_group != nullptr)
+		{
+			(*entity)->info.current_group->removeUnit(*entity);
 
-					if ((*entity)->info.current_group->GetSize() == 0)
-						Groups.remove((*entity)->info.current_group);
-				}
-
-				// --- Add the entity to the new group, update its current group pointer ---
-				group->addUnit(*entity);
-				(*entity)->info.current_group = group;
-			}
+			if ((*entity)->info.current_group->GetSize() == 0)
+				Groups.remove((*entity)->info.current_group);
 		}
+
+		// --- Add the entity to the new group, update its current group pointer ---
+		group->addUnit(*entity);
+		(*entity)->info.current_group = group;
 		entity++;
 	}
 
@@ -101,9 +101,10 @@ void j1MovementManager::CreateGroup()
 	if (Validgroup) Groups.push_back(group);
 	else delete group;
 
+	LOG("Group Created");
 }
 
-void j1MovementManager::Move(j1Group* group, float dt)
+void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 {
 	std::list <j1Entity*>::const_iterator unit = group->Units.begin();
 
@@ -112,11 +113,6 @@ void j1MovementManager::Move(j1Group* group, float dt)
 	iPoint next_tile_world;
 	float DirectDistance;
 	fPoint to_fPoint;
-	iPoint goal_world;
-
-	// --- We get the map coords of the mouse ---
-	iPoint Map_mouseposition;
-	Map_mouseposition = App->map->WorldToMap((int)App->scene->mouse_pos.x, (int)App->scene->mouse_pos.y);
 
 	while (unit != group->Units.end())
 	{
@@ -136,7 +132,7 @@ void j1MovementManager::Move(j1Group* group, float dt)
 
 			// --- On call to Move, Units will request a path to the destination ---
 
-			if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && (*unit)->info.IsSelected)
+			if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && (*unit)->info.IsSelected)|| !(*unit)->owner->goal_tile_set)
 			{
 				if (group->IsGroupLead((*unit)) == false)
 				{
@@ -147,8 +143,9 @@ void j1MovementManager::Move(j1Group* group, float dt)
 				{
 					// --- Clear previous path request occupied goal tiles ---
 					group->ClearOccupiedlist();
-					(*unit)->info.goal_tile = Map_mouseposition;
+					(*unit)->info.goal_tile = goal_path;
 					group->Occupied_tiles.push_back(&(*unit)->info.goal_tile);
+					LOG("CREATE PATH RETURNS: %i", App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile));
 				}
 
 				if (App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile) != -1)

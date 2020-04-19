@@ -3,14 +3,11 @@
 
 #include "j1Module.h"
 #include "p2Point.h"
-#include "p2DynArray.h"
-#include "p2List.h"
+#include <list>
 
 #define DEFAULT_PATH_LENGTH 100
 #define INVALID_WALK_CODE 255
-#define NORMAL_MOVEMENT_COST 1
-#define DIAGONAL_MOVEMENT_COST 2
-#define MAX_PATH_ITERATIONS 500
+#define MAX_PATH_ITERATIONS 1000
 
 class j1PathFinding : public j1Module
 {
@@ -51,7 +48,6 @@ private:
 	uint height = 0u;
 	// all map walkability values [0..255]
 	uchar* map = nullptr;
-	// we store the created path here
 	std::vector<iPoint> last_path;
 };
 
@@ -88,14 +84,14 @@ struct PathNode
 struct PathList
 {
 	// Looks for a node in this list and returns it's list node or NULL
-	p2List_item<PathNode>* Find(const iPoint& point) const;
+	const PathNode* Find(const iPoint& point) const;
 
 	// Returns the Pathnode with lowest score in this list or NULL if empty
-	p2List_item<PathNode>* GetNodeLowestScore() const;
+	const PathNode* GetNodeLowestScore() const;
 
 	// -----------
 	// The list itself, note they are not pointers!
-	p2List<PathNode> list;
+	std::list<PathNode> list;
 };
 
 

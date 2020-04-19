@@ -20,6 +20,7 @@ public:
 	bool Start();
 	bool Awake(pugi::xml_node& config);
 	bool PostUpdate();
+	bool CleanUp();
 
 	bool CreateMinimap();
 	iPoint WorldToMinimap(int x, int y);

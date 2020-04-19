@@ -9,6 +9,7 @@
 #define DEFAULT_FONT "fonts/stacked/StackedPixel.ttf"
 #define DEFAULT_FONT_SIZE 38
 
+
 struct SDL_Texture;
 struct _TTF_Font;
 

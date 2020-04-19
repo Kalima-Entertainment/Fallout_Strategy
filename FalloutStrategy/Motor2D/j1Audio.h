@@ -59,10 +59,17 @@ public:
 	int Ghoul_attack;
 
 	int pistol;
+	int pistol2;
 	int minigun;
 	int explode;
 	int factory;
 
+	int intro_fx;
+	int intro_fx1;
+	int F_press;
+	int Press_F_to_start;
+
+	int loading;
 private:
 
 	float				music_volume;

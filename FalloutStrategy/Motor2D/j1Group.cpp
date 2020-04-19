@@ -46,9 +46,9 @@ int j1Group::GetSize()
 	return Units.size();
 }
 
-void j1Group::CheckForMovementRequest(float dt)
+void j1Group::CheckForMovementRequest(iPoint destiny, float dt)
 {
-	App->Mmanager->Move(this, dt);
+	App->Mmanager->Move(this, destiny, dt);
 }
 
 bool j1Group::IsGroupLead(j1Entity* entity)
@@ -59,7 +59,6 @@ bool j1Group::IsGroupLead(j1Entity* entity)
 void j1Group::SetUnitGoalTile(j1Entity* entity)
 {
 	std::list <j1Entity*>::const_iterator it = Units.begin();
-
 	bool Goal_found = false;
 
 	while (it != Units.end())

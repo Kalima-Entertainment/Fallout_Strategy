@@ -17,6 +17,7 @@ enum class Menu {
 	SETTINGS,
 	CREDITS,
 	COLLABORATORS_CREDITS,
+	RESOURCES,
 	SELECT_FACTION,
 	PAUSE_MENU,
 	GUI,
@@ -66,6 +67,7 @@ public:
 	void CreatePauseMenu();
 	void CreatePauseSettings();
 	void CreateGUI();
+	void CreateResources();
 
 	void CreateBrotherHood_Base();
 	void CreateBrotherHood_Barrack();
@@ -90,32 +92,30 @@ public:
 public:
 
 	UI_element* main_menu[14];
-	UI_element* settings_menu[18];
+	UI_element* settings_menu[23];
 	UI_element* credits_menu[13];
 	UI_element* collaborators[9];
-	UI_element* select_faction_menu[12];
+	UI_element* select_faction_menu[10];
 	UI_element* select_faction_photos[4];
 	UI_element* pause_menu[7];
-	UI_element* gui_ingame[5];
+	UI_element* gui_ingame[1];
+	UI_element* resources[3];
 
+	UI_element* brotherhood_base[5];
+	UI_element* brotherhood_barrack[7];
+	UI_element* brotherhood_lab[3];
 
+	UI_element* ghoul_base[5];
+	UI_element* ghoul_barrack[7];
+	UI_element* ghoul_lab[3];
 
+	UI_element* vault_base[5];
+	UI_element* vault_barrack[7];
+	UI_element* vault_lab[3];
 
-	UI_element* brotherhood_base[3];
-	UI_element* brotherhood_barrack[5];
-	UI_element* brotherhood_lab[1];
-
-	UI_element* ghoul_base[3];
-	UI_element* ghoul_barrack[5];
-	UI_element* ghoul_lab[1];
-
-	UI_element* vault_base[3];
-	UI_element* vault_barrack[5];
-	UI_element* vault_lab[1];
-
-	UI_element* supermutant_base[3];
-	UI_element* supermutant_barrack[5];
-	UI_element* supermutant_lab[1];
+	UI_element* supermutant_base[5];
+	UI_element* supermutant_barrack[7];
+	UI_element* supermutant_lab[3];
 
 	Menu current_menu;
 	Menu last_menu;

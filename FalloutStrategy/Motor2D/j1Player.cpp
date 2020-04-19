@@ -17,26 +17,38 @@
 #include "j1Console.h"
 
 j1Player::j1Player() : GenericPlayer() {
-	selected_entity = nullptr;
+	selected_entity = last_selected_entity = nullptr;
 	border_scroll = false;
 	mouse_speed_multiplier = 1.5f;
 
-	caps = 2000;
-	food = 2000;
-	water = 2000;
+	base = barrack[0] = barrack[1] = laboratory = nullptr;
+
+	caps = 20000;
+	food = 20000;
+	water = 20000;
 
 	god_mode = false;
 
-	faction = VAULT;
+	//faction = VAULT;
+	defeated = false;
 }
 
-j1Player::~j1Player() {}
+j1Player::~j1Player() {
+	selected_entity = nullptr;
+	last_selected_entity = nullptr;
+	troops.clear();
+	gatherers_vector.clear();
+	base = barrack[0] = barrack[1] = laboratory = nullptr;
+}
 
 bool j1Player::Start() {
 	App->console->CreateCommand("caps+", "increase the amount of caps", this);
 	App->console->CreateCommand("food+", "increase the amount of food", this);
 	App->console->CreateCommand("water+", "increase the amount of water", this);
 	App->console->CreateCommand("resources+", "increase all resources", this);
+	App->console->CreateCommand("god_mode", "turn god mode on and off", this);
+	App->console->CreateCommand("spawn_units", "spawn 1 gatherer, 1 melee and 1 ranged. Must have a building selected", this);	
+	App->console->CreateCommand("spawn", "<spawn gatherer><spawn melee><spawn ranged><spawn army>. Spawn one unit or an army. Must have a building selected", this);
 	return true;
 }
 
@@ -45,15 +57,15 @@ bool j1Player::PreUpdate() {
 
 	//debug keys
 
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-		LOG("Water %i Caps: %i Food: %i", water, caps, food);
-
 	//enable/disable debug mode
 	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 		App->render->debug = !App->render->debug;
 
-	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
 		god_mode = !god_mode;
+		if (god_mode) LOG("God Mode: ON");
+		else LOG("God Mode: OFF");
+	}
 
 	//block border scroll
 	if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
@@ -74,24 +86,21 @@ bool j1Player::PreUpdate() {
 		}
 	}
 
-
-	//Deselect entity
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
-		//selected_entity = nullptr;
-		//Remove HUD data from the UI
-		App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::ALL, BUILDING_TYPE::ALL);
-		App->entities->count = 0;
-	}
-
 	if (!App->isPaused)
 	{
 		//entity selection and interaction
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
 			selected_entity = SelectEntity();
+
+			if ((App->entities->showing_building_menu) && (selected_entity == nullptr)) {
+				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::ALL, BUILDING_TYPE::ALL);
+				App->entities->showing_building_menu = false;
+			}
 		}
 
 		if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)&&(selected_entity != nullptr)) {
-			MoveEntity();
+			if(selected_entity->is_dynamic)
+				MoveEntity();
 		}
 
 		//move camera
@@ -139,6 +148,10 @@ bool j1Player::Update(float dt) {
 		if (y > height - 40) App->render->camera.y -= floor(600.0f * dt);
 	}
 
+	// --- We get the map coords of the mouse ---
+	Map_mouseposition = App->map->WorldToMap((int)App->scene->mouse_pos.x, (int)App->scene->mouse_pos.y);
+
+
 	/*
 	//Zoom in, zoom out
 	uint zoom;
@@ -172,22 +185,24 @@ bool j1Player::Update(float dt) {
 j1Entity* j1Player::SelectEntity() {
 	int tx, ty;
 	iPoint selected_spot;
-
 	App->input->GetMousePosition(tx, ty);
+	if (TouchingUI(tx, ty))
+		return selected_entity;
+
 	selected_spot = App->render->ScreenToWorld(tx, ty);
 	selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
 
 	//check if there's an entity in the selected spot
 	j1Entity* target = App->entities->FindEntityByTile(selected_spot);
 
-	//if we hadn't any entity selected
-	if (selected_entity == nullptr)
-	{
-		if (target != nullptr) {
-			if ((god_mode) || (target->faction == faction)) {
-				return target;
-			}
+	if (target != nullptr) {
+		if ((god_mode) || (target->faction == faction)) {
+			return target;
 		}
+	}
+
+	if (selected_entity != nullptr) {
+		last_selected_entity = selected_entity;
 	}
 
 	return nullptr;
@@ -198,6 +213,10 @@ void j1Player::MoveEntity(){
 	iPoint selected_spot;
 
 	App->input->GetMousePosition(tx, ty);
+
+	if (TouchingUI(tx,ty))
+		return;
+
 	selected_spot = App->render->ScreenToWorld(tx, ty);
 	selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
 
@@ -242,8 +261,8 @@ void j1Player::UpdateResourceData(Resource resource_type, int quantity) {
 		food += quantity;
 
 	//update gui
-	App->gui->DeleteArrayElements(App->menu_manager->gui_ingame, 4);
-	App->menu_manager->CreateGUI();
+	App->menu_manager->DestroyMenu(Menu::RESOURCES);
+	App->menu_manager->CreateResources();
 }
 
 void j1Player::OnCommand(std::vector<std::string> command_parts) {
@@ -256,23 +275,88 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 		UpdateResourceData(Resource::CAPS, resources_increase);
 		UpdateResourceData(Resource::FOOD, resources_increase);
 		UpdateResourceData(Resource::WATER, resources_increase);
+		LOG("All resources increased");
 	}
 
 	if (command_beginning == "caps+") {
 		int caps_increase = std::stoi(command_parts[1].c_str());
 
 		UpdateResourceData(Resource::CAPS, caps_increase);
+		LOG("Caps increased");
 	}
 
 	if (command_beginning == "food+") {
 		int food_increase = std::stoi(command_parts[1].c_str());
 
 		UpdateResourceData(Resource::FOOD, food_increase);
+		LOG("Food increased");
 	}
 
 	if (command_beginning == "water+") {
 		int water_increase = std::stoi(command_parts[1].c_str());
 
 		UpdateResourceData(Resource::WATER, water_increase);
+		LOG("Water increased");
 	}
+
+	if (command_beginning == "god_mode") {
+		if (command_parts[1] == "on") { 
+			god_mode = true;
+			LOG("God mode turned on");
+		}
+		if (command_parts[1] == "off") { 
+			god_mode = false; 
+			LOG("God mode turned off");
+		}		
+	}
+
+	if (command_beginning == "spawn_units") {
+		StaticEntity* static_entity;
+		if (selected_entity == nullptr)
+			static_entity = (StaticEntity*)last_selected_entity;
+		else
+			static_entity = (StaticEntity*)selected_entity;
+		
+		if (static_entity != nullptr) {
+			App->entities->CreateEntity(static_entity->faction, GATHERER, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
+			App->entities->CreateEntity(static_entity->faction, MELEE, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
+			App->entities->CreateEntity(static_entity->faction, RANGED, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
+
+			LOG("1 unit from each type spawned successfully");
+		}		
+	}
+
+	if (command_beginning == "spawn") {
+
+		StaticEntity* static_entity;
+		if (selected_entity == nullptr)
+			static_entity = (StaticEntity*)last_selected_entity;
+		else
+			static_entity = (StaticEntity*)selected_entity;
+
+		if (static_entity != nullptr)
+		{
+			if (command_parts[1] == "gatherer")
+				App->entities->CreateEntity(static_entity->faction, GATHERER, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
+			if (command_parts[1] == "melee")
+				App->entities->CreateEntity(static_entity->faction, MELEE, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
+			if (command_parts[1] == "ranged")
+				App->entities->CreateEntity(static_entity->faction, RANGED, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
+			if (command_parts[1] == "army")
+				for (int i = 0; i < 10; i++) {
+					App->entities->CreateEntity(static_entity->faction, MELEE, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
+					App->entities->CreateEntity(static_entity->faction, RANGED, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
+				}
+
+			LOG("Unit spawned");
+		}
+		else
+			LOG("You must select a building while executing this command");
+	}
+}
+
+bool j1Player::TouchingUI(int x, int y) {
+	bool ret = false;
+	if (y > App->minimap->position.y - 8) { ret = true; }
+	return ret;
 }

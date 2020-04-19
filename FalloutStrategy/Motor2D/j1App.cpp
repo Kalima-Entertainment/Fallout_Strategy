@@ -24,6 +24,8 @@
 #include "j1Console.h"
 #include "j1MovementManager.h"
 #include "AI_Manager.h"
+#include "LogoScene.h"
+#include "j1Transition.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -49,6 +51,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	console = new j1Console();
 	Mmanager = new j1MovementManager();
 	ai_manager = new AI_Manager();
+	transition = new j1Transition();
+	logo_scene = new LogoScene();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -58,7 +62,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 
 	AddModule(map);
-	AddModule(collision);
+	//AddModule(collision);
 	AddModule(pathfinding);
 	AddModule(main_menu);
 	AddModule(entities);
@@ -69,11 +73,12 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(Mmanager);
 
 	// scene last
-	//AddModule(menu_manager);
-	//AddModule(gui);
+	AddModule(menu_manager);
+	AddModule(gui);
 	AddModule(minimap);
 	AddModule(console);
-
+	AddModule(logo_scene);
+	AddModule(transition);
 	// render last to swap buffer
 	AddModule(render);
 
@@ -122,7 +127,7 @@ bool j1App::Awake()
 		title = (app_config.child("title").child_value());
 		organization = (app_config.child("organization").child_value());
 
-		int cap = app_config.attribute("framerate_cap").as_int();
+		int cap = app_config.attribute("framerate_cap").as_int(-1);
 
 		if(cap > 0)
 		{
@@ -149,9 +154,16 @@ bool j1App::Start()
 	PERF_START(ptimer);
 	bool ret = true;
 
+	map->Disable();
+	entities->Disable();
+	ai_manager->Disable();
+	scene->Disable();
+	minimap->Disable();
+
 	for (int i = 0; i < modules.size() && ret == true; i++)
 	{
-		ret = modules[i]->Start();
+		if(modules[i]->active)
+			ret = modules[i]->Start();
 	}
 
 	startup_time.Start();
@@ -220,7 +232,6 @@ void j1App::FinishUpdate()
 		LoadGameNow();
 
 	// Framerate calculations --
-
 	if(last_sec_frame_time.Read() > 1000)
 	{
 		last_sec_frame_time.Start();
@@ -232,12 +243,11 @@ void j1App::FinishUpdate()
 	float seconds_since_startup = startup_time.ReadSec();
 	uint32 last_frame_ms = frame_time.Read();
 	uint32 frames_on_last_update = prev_last_sec_frame_count;
-
 	static char title[256];
 	//sprintf_s(title, 256, " Fallout Strategy 0.1 | Av.FPS: %.2f Last Frame Ms: %u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %lu %i Camera X: %i Camera Y: %i",
 		//	  avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count, App->render->camera.x, App->render->camera.y);
-	sprintf_s(title, 256, " Fallout Strategy 0.4 - Kalima Entertainment | Av.FPS: %.2f | Last dt: %.3f | Camera X: %i Camera Y: %i",
-			  avg_fps, dt, App->render->camera.x, App->render->camera.y);
+	sprintf_s(title, 256, " Fallout Strategy 0.4 - Kalima Entertainment | FPS: %i | Last dt: %.3f | Camera X: %i Camera Y: %i",
+		prev_last_sec_frame_count, dt, App->render->camera.x, App->render->camera.y);
 	App->win->SetTitle(title);
 
 	if(capped_ms > 0 && last_frame_ms < capped_ms)
@@ -457,4 +467,5 @@ void j1App::OnCommand(std::vector<std::string> command_parts) {
 	if (command_beginning == "quit") {
 		//quitGame = true;
 	}
+
 }

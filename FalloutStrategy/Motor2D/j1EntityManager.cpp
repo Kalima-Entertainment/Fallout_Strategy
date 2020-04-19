@@ -15,6 +15,8 @@
 #include "brofiler/Brofiler/Brofiler.h"
 #include "MenuManager.h"
 #include "j1Console.h"
+#include "AI_Manager.h"
+#include "AI_Player.h"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -26,26 +28,39 @@ j1EntityManager::j1EntityManager(){
 	selected_unit_tex = nullptr;
 	blocked_movement = false;
 
-	unit_data[0] = { GHOUL, GATHERER, 40, 0 , 15};
-	unit_data[1] = { GHOUL, MELEE,80, 60, 30 };
-	unit_data[2] = { GHOUL, RANGED, 80, 80, 40 };
-	unit_data[3] = { VAULT, GATHERER, 40, 0, 15 };
-	unit_data[4] = { VAULT, MELEE, 60, 60, 30 };
-	unit_data[5] = { VAULT, RANGED, 80, 80, 40 };
-	unit_data[6] = { MUTANT, GATHERER, 50, 0, 15 };
-	unit_data[7] = { MUTANT, MELEE, 80, 100, 30 };
-	unit_data[8] = { MUTANT, RANGED, 80, 120, 40 };
-	unit_data[9] = { BROTHERHOOD, GATHERER, 50, 0, 15 };
-	unit_data[10] = { BROTHERHOOD, MELEE,  100, 80, 30  };
-	unit_data[11] = { BROTHERHOOD, RANGED, 100, 100, 40 };
+	//water, food, spawn time (seconds)
+	unit_data[VAULT][MELEE] = {  60, 60, 30  };
+	unit_data[VAULT][RANGED] = { 80, 80, 40 };
+	unit_data[VAULT][GATHERER] = { 40, 0, 15 };
 
+	unit_data[BROTHERHOOD][MELEE] = { 100, 80, 30 };
+	unit_data[BROTHERHOOD][RANGED] = { 100, 100, 40 };
+	unit_data[BROTHERHOOD][GATHERER] = { 50, 0, 15 };
+
+	unit_data[MUTANT][MELEE] = { 80, 100, 30 };
+	unit_data[MUTANT][RANGED] = { 80, 120, 40 };
+	unit_data[MUTANT][GATHERER] = { 50, 0, 15 };
+
+	unit_data[GHOUL][MELEE] = { 80, 60 , 30 };
+	unit_data[GHOUL][RANGED] = { 80, 80, 40 };
+	unit_data[GHOUL][GATHERER] = { 40, 0 , 15 };
+
+	for (int faction = VAULT; faction < NO_FACTION; faction++)
+	{
+		for (int type = MELEE; type <= BASE; type++)
+		{
+			reference_entities[faction][type] = nullptr;
+		}
+	}
 }
 
 j1EntityManager::~j1EntityManager(){}
 
-j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int position_x, int position_y){
+j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int position_x, int position_y, GenericPlayer* owner){
 	BROFILER_CATEGORY("EntityCreation", Profiler::Color::Linen)
-	//static_assert(EntityType::UNKNOWN == 4, "code needs update");
+
+	if (!owner)
+		owner = App->scene->players[faction];
 
 	j1Entity* entity = nullptr;
 
@@ -109,9 +124,37 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 			entity->position.x += 32;
 			entity->position.y += 32;
 
-			if (entity->reference_entity != NULL){
+			if (entity->reference_entity != nullptr){
+				entity->owner = owner;
 				entities.push_back(entity);
 				entity->LoadReferenceData();
+				switch (entity->type)
+				{
+				case MELEE:
+					owner->troops.push_back((DynamicEntity*)entity);
+					owner->melees++;
+					break;
+				case RANGED:
+					owner->troops.push_back((DynamicEntity*)entity);
+					owner->rangeds++;
+					break;
+				case GATHERER:
+					owner->gatherers_vector.push_back((DynamicEntity*)entity);
+					owner->gatherers++;
+					break;
+				case BASE:
+					owner->base = (StaticEntity*)entity;
+					break;
+				case BARRACK:
+					if (owner->barrack[0] == nullptr) owner->barrack[0] = (StaticEntity*)entity;
+					else if (owner->barrack[1] == nullptr) owner->barrack[1] = (StaticEntity*)entity;
+					break;
+				case LABORATORY:
+					if (owner->laboratory == nullptr) owner->laboratory = (StaticEntity*)entity;
+					break;
+				default:
+					break;
+				}
 			}
 		}
 	}
@@ -120,7 +163,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		entity = new StaticEntity(faction, type);
 		entity->is_dynamic = false;
 		entity->reference_entity = reference_entities[faction][type];
-
+		
 		if (entity != NULL)
 		{
 			entity->faction = faction;
@@ -129,9 +172,17 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 
 			entity->position = App->map->fMapToWorld(entity->current_tile.x, entity->current_tile.y);
 
-			if (entity->reference_entity != NULL) {
+			if (entity->reference_entity != nullptr) {
+				entity->owner = owner;
 				entities.push_back(entity);
 				entity->LoadReferenceData();
+
+				if (type == BASE) owner->base = (StaticEntity*)entity;
+				if (type == LABORATORY) owner->laboratory = (StaticEntity*)entity;
+				else if (type == BARRACK) {
+					if (owner->barrack[0] == nullptr) owner->barrack[0] = (StaticEntity*)entity;
+					else owner->barrack[1] = (StaticEntity*)entity;
+				}
 			}
 
 			//Render building
@@ -190,26 +241,26 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 
 	RandomFactions();
 
-	//automatic entities loading
-	for (int faction = VAULT; faction < NO_FACTION; faction++)
-	{
-		for (int type = MELEE; type < NO_TYPE; type++)
-		{
-			reference_entities[faction][type] = nullptr;
-			reference_entities[faction][type] = CreateEntity((Faction)faction, (EntityType)type, faction, type);
-		}
-	}
-
-	ret = LoadReferenceEntityData();
-
 	return ret;
 }
 
 bool j1EntityManager::Start() {
 	BROFILER_CATEGORY("EntitiesStart", Profiler::Color::Linen)
 	bool ret = true;
-
+	
 	App->console->CreateCommand("destroy_all_entities", "remove all dynamic entities", (j1Module*)this);
+
+	//automatic entities loading
+	for (int faction = VAULT; faction < NO_FACTION; faction++)
+	{
+		for (int type = MELEE; type < NO_TYPE; type++)
+		{
+			reference_entities[faction][type] = nullptr;
+			reference_entities[faction][type] = CreateEntity((Faction)faction, (EntityType)type, faction, type, nullptr);
+		}
+	}
+
+	ret = LoadReferenceEntityData();
 
 	//load all textures and animations
 	for (int faction = VAULT; faction < NO_FACTION; faction++)
@@ -224,6 +275,9 @@ bool j1EntityManager::Start() {
 		reference_entities[faction][LABORATORY]->texture = reference_entities[faction][BASE]->texture;
 	}
 
+	showing_building_menu = false;
+	sort_timer.Start();
+
 	return ret;
 }
 
@@ -235,19 +289,27 @@ bool j1EntityManager::CleanUp()
 	{
 		for (int type = MELEE; type <= BASE; type++)
 		{
-			App->tex->UnLoad(reference_entities[faction][type]->texture);
+			if (reference_entities[faction][type] != nullptr) {
+				App->tex->UnLoad(reference_entities[faction][type]->texture);
+				delete reference_entities[faction][type];
+				reference_entities[faction][type] = nullptr;
+			}
 		}
 	}
 
+	for (int i = 0; i < entities.size(); i++)
+	{
+		delete entities[i];
+	}
+
 	entities.clear();
-	return ret;
-}
 
-bool j1EntityManager::PreUpdate()
-{
-	//BROFILER_CATEGORY("EntitiesPreUpdate", Profiler::Color::Bisque)
-
-	bool ret = true;
+	for (int j = 0; j < resource_buildings.size(); j++)
+	{
+		delete resource_buildings[j];
+		resource_buildings[j] = nullptr;
+	}
+	resource_buildings.clear();
 
 	return ret;
 }
@@ -337,23 +399,23 @@ bool j1EntityManager::PostUpdate()
 		}
 		//Selected entity is a building
 		else {
+
 			StaticEntity* static_entity = (StaticEntity*)App->player->selected_entity;
 			for (int j = 0; j < static_entity->tiles.size(); j++)
 			{
 				tex_position = App->map->MapToWorld(static_entity->tiles[j].x, static_entity->tiles[j].y);
 				App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tex_rect);
 			}
-
+			
 			//Create HUD for the building
 			switch (static_entity->faction) {
 			case GHOUL:
 				if (static_entity->type == BASE) {
 
-					if (count == 0) {
+					if (!showing_building_menu) {
 
 						App->menu_manager->CreateGhouls_Base();
-						count++;
-						LOG("%i", count);
+						showing_building_menu = true;
 					}
 
 				}
@@ -362,15 +424,15 @@ bool j1EntityManager::PostUpdate()
 					if (count == 0) {
 
 						App->menu_manager->CreateGhouls_Barrack();
-						count++;
+						showing_building_menu = true;
 					}
 
 				}
 				else if (static_entity->type == LABORATORY) {
 
-					if (count == 0) {
+					if (!showing_building_menu) {
 						App->menu_manager->CreateGhouls_Lab();
-						count++;
+						showing_building_menu = true;
 					}
 
 				}
@@ -378,29 +440,26 @@ bool j1EntityManager::PostUpdate()
 			case BROTHERHOOD:
 				if (static_entity->type == BASE) {
 
-					if (count == 0) {
-						count++;
+					if (!showing_building_menu) {
 						App->menu_manager->CreateBrotherHood_Base();
+						showing_building_menu = true;
 					}
 
 				}
 				else if (static_entity->type == BARRACK) {
 
-					if (count == 0) {
-
-						count++;
+					if (!showing_building_menu) {
 						App->menu_manager->CreateBrotherHood_Barrack();
+						showing_building_menu = true;
 
 					}
 
 				}
 				else if (static_entity->type == LABORATORY) {
 
-					if (count == 0) {
-
-						count++;
+					if (!showing_building_menu) {
 						App->menu_manager->CreateBrotherHood_Lab();
-
+						showing_building_menu = true;
 					}
 				}
 				break;
@@ -409,30 +468,24 @@ bool j1EntityManager::PostUpdate()
 
 				if (static_entity->type == BASE) {
 
-					if (count == 0) {
-
-						count++;
+					if (!showing_building_menu) {
 						App->menu_manager->CreateVault_Base();
-
+						showing_building_menu = true;
 					}
 				}
 				else if (static_entity->type == BARRACK){
 
-					if (count == 0) {
-
-						count++;
+					if (!showing_building_menu) {
 						App->menu_manager->CreateVault_Barrack();
-
+						showing_building_menu = true;
 					}
 
 				}
 				else if (static_entity->type == LABORATORY) {
 
-					if (count == 0) {
-
-						count++;
+					if (!showing_building_menu) {
 						App->menu_manager->CreateVault_Lab();
-
+						showing_building_menu = true;
 					}
 
 				}
@@ -440,33 +493,25 @@ bool j1EntityManager::PostUpdate()
 			case MUTANT:
 				if (static_entity->type == BASE) {
 
-					if (count == 0) {
-
-						count++;
+					if (!showing_building_menu) {
 						App->menu_manager->CreateSuperMutants_Base();
-
+						showing_building_menu = true;
 					}
-
+				
 				}
 				else if (static_entity->type == BARRACK) {
 
-					if (count == 0) {
-
-						count++;
+					if (!showing_building_menu) {
 						App->menu_manager->CreateSuperMutants_Barrack();
-
+						showing_building_menu = true;
 					}
 
 				}
 				else if (static_entity->type == LABORATORY) {
-
-					if (count == 0) {
-
-						count++;
+					if (!showing_building_menu) {
 						App->menu_manager->CreateSuperMutants_Lab();
-
+						showing_building_menu = true;
 					}
-
 				}
 				break;
 			}
@@ -477,15 +522,24 @@ bool j1EntityManager::PostUpdate()
 	{
 		if (entities[i]->to_destroy)
 		{
+			if (entities[i]->owner->DeleteEntity(entities[i]) == true) {
+				App->scene->CheckWinner();
+			};
+			delete entities[i];
+			entities[i] = nullptr;
 			entities.erase(entities.begin() + i);
 		}
 		else
 		{
-			if ((entities[i]->position.x + entities[i]->sprite_size * 0.5f > -App->render->camera.x) && (entities[i]->position.x - entities[i]->sprite_size * 0.5f < -App->render->camera.x + App->render->camera.w)
-				&& (entities[i]->position.y + entities[i]->sprite_size * 0.25f > -App->render->camera.y) && (entities[i]->position.y - entities[i]->sprite_size * 0.25f < -App->render->camera.y + App->render->camera.h))
-			{
-				// && (entities[i]->position.y - TILE_SIZE > -(App->render->camera.y + App->render->camera.h))) {
-				SortEntities();
+			if ((entities[i]->position.x + entities[i]->sprite_size * 0.5f > -App->render->camera.x)
+				&& (entities[i]->position.x - entities[i]->sprite_size * 0.5f < -App->render->camera.x + App->render->camera.w)
+				&& (entities[i]->position.y + entities[i]->sprite_size * 0.25f > -App->render->camera.y) 
+				&& (entities[i]->position.y - entities[i]->sprite_size * 0.25f < -App->render->camera.y + App->render->camera.h)) {
+			
+				if (sort_timer.Read() > 500) {
+					BubbleSortEntities();
+					sort_timer.Start();
+				}
 				entities[i]->PostUpdate();
 			}
 		}
@@ -565,26 +619,6 @@ bool j1EntityManager::LoadReferenceEntityData() {
 	}
 
 	return ret;
-}
-
-void j1EntityManager::SortEntities() {
-	int i, j;
-	int n = entities.size();
-
-	for (i = 0; i < n - 1; i++) {
-		for (j = 0; j < n - i - 1; j++) {
-			if (entities[j]->position.y > entities[j + 1]->position.y)
-				Swap(j, j + 1);
-		}
-	}
-}
-
-void j1EntityManager::Swap(int i, int j)
-{
-	int temp = i;
-	j1Entity* aux = entities[i];
-	entities[i] = entities[j];
-	entities[j] = aux;
 }
 
 void j1EntityManager::DestroyEntity(j1Entity* entity) {
@@ -670,13 +704,51 @@ ResourceBuilding* j1EntityManager::GetClosestResourceBuilding(iPoint current_pos
 	return closest_building;
 }
 
+void j1EntityManager::BubbleSortEntities() {
+	int i, j;
+	int n = entities.size();
+	for (i = 0; i < n - 1; i++) {
+		for (j = 0; j < n - i - 1; j++) {
+		  if (entities[j]->position.y > entities[j + 1]->position.y)
+			std::swap(entities[j], entities[j + 1]);
+		}
+	}
+}
+
+/*
+void j1EntityManager::QuickSortEntities(std::vector<j1Entity*> qck_entities, int low, int high) {
+	if (low < high) {
+		int pi = Partition(qck_entities, low, high);
+
+		QuickSortEntities(qck_entities, low, pi - 1);
+		QuickSortEntities(qck_entities, pi + 1, high);
+	}
+	LOG("Yes");
+}
+
+int j1EntityManager::Partition(std::vector<j1Entity*> qck_entities, int low, int high)
+{
+	float pivot = qck_entities[high]->position.y;
+	int i = (low - 1);
+	for (int j = low; j <= high -1; j++)
+	{
+		if (qck_entities[j]->position.y < pivot) {
+			i++;
+			std::swap(qck_entities[i], qck_entities[j]);
+		}
+	}
+	std::swap(qck_entities[i + 1], qck_entities[high]);
+	return (i + 1);
+}
+*/
+
 void j1EntityManager::RandomFactions() {
 	Faction faction = static_cast<Faction>(rand() % GHOUL);
 
 	//Initialize at { 0,1,2,3 }
 	for(int i = 0; i < 4; i++)
 		randomFaction[i] = i;
-
+	
 	//Randomize faction order
 	//std::random_shuffle(&randomFaction[0], &randomFaction[3]);
 
@@ -692,7 +764,7 @@ void j1EntityManager::RandomFactions() {
 		randomFaction[randomIndex] = temp;
 	}
 
-
+	
 	for (int i = 0; i < 4; i++)
 		LOG("faction %i", randomFaction[i]);
 }
@@ -706,3 +778,4 @@ void j1EntityManager::OnCommand(std::vector<std::string> command_parts) {
 		}
 	}
 }
+
