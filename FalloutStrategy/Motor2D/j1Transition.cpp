@@ -92,6 +92,7 @@ bool j1Transition::CleanUp()
 {
 	App->tex->UnLoad(logo_tex);
 	App->tex->UnLoad(gif_tex);
+	App->tex->UnLoad(background);
 	return true;
 }
 
