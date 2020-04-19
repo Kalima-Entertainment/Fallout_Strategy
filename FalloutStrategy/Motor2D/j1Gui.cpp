@@ -148,11 +148,11 @@ UI_element* j1Gui::CreateSlider(int x, int y, UI_Type type, SDL_Rect scrollbar, 
 	return slider;
 }
 
-UI_element* j1Gui::CreateLabel(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer, int* counter, int size, std::string font)
+UI_element* j1Gui::CreateLabel(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer, int* counter, std::string font)
 {
 	UI_Label* label = new UI_Label(x, y, type, text_input, parent, Observer, counter);
 
-	label->SetLabelText(text_input, font, size);
+	label->SetLabelText(text_input, font);
 	ui_element.push_back(label);
 
 	return label;

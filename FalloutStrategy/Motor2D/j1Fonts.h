@@ -9,6 +9,7 @@
 #define DEFAULT_FONT "fonts/stacked/StackedPixel.ttf"
 #define DEFAULT_FONT_SIZE 38
 
+
 struct SDL_Texture;
 struct _TTF_Font;
 
@@ -36,7 +37,7 @@ public:
 	_TTF_Font* const Load(const char* path, int size = 12);
 
 	// Create a surface from text
-	SDL_Texture* Print(const char* text, SDL_Color color = { 255, 255, 255, 255 }, std::string font_name = ("No_font"), int size = 38);
+	SDL_Texture* Print(const char* text, SDL_Color color = { 255, 255, 255, 255 }, std::string font_name = ("No_font"));
 
 	bool CalcSize(const char* text, int& width, int& height, _TTF_Font* font = NULL) const;
 

@@ -95,13 +95,13 @@ void MenuManager::CreateSettings()
 	settings_menu[4] = (j1Image*)App->gui->CreateImage(505, 600, Image, { 1599, 1054, 77, 52 }, NULL, this);
 	settings_menu[19] = (j1Image*)App->gui->CreateImage(740, 600, Image, { 1599, 1054, 77, 52 }, NULL, this);
 	//Labels
-	settings_menu[5] = (UI_Label*)App->gui->CreateLabel(450, 535, Label, "REFRESH RATE", NULL, this, NULL, 32);
+	settings_menu[5] = (UI_Label*)App->gui->CreateLabel(450, 535, Label, "REFRESH RATE", NULL, this, NULL, "StackedPixelMedium");
 	settings_menu[6] = (UI_Label*)App->gui->CreateLabel(360, 335, Label, "SOUND EFFECTS VOLUME", NULL, this, NULL);
 	settings_menu[7] = (UI_Label*)App->gui->CreateLabel(360, 150, Label, "MUSIC VOLUME", NULL, this, NULL);
 	settings_menu[8] = (UI_Label*)App->gui->CreateLabel(555, 50, Label, "SETTINGS", NULL, this, NULL);
-	settings_menu[18] = (UI_Label*)App->gui->CreateLabel(685, 535, Label, "FULLSCREEN", NULL, this, NULL, 32);
-	settings_menu[21] = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "60", NULL, this, NULL, 32);
-	settings_menu[22] = (UI_Label*)App->gui->CreateLabel(763, 613, Label, "NO", NULL, this, NULL, 32);
+	settings_menu[18] = (UI_Label*)App->gui->CreateLabel(685, 535, Label, "FULLSCREEN", NULL, this, NULL, "StackedPixelMedium");
+	settings_menu[21] = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "60", NULL, this, NULL, "StackedPixelMedium");
+	settings_menu[22] = (UI_Label*)App->gui->CreateLabel(763, 613, Label, "NO", NULL, this, NULL, "StackedPixelMedium");
 
 	//Music Slider
 	settings_menu[9] = (UI_Slider*)App->gui->CreateSlider(465, 220, Slider_music, { 1834,842,329,27 }, { 1792,926,33,16 }, 400, NULL, this);
@@ -214,13 +214,13 @@ void MenuManager::CreatePauseSettings()
 	settings_menu[4] = (j1Image*)App->gui->CreateImage(505, 600, Image, { 1599, 1054, 77, 52 }, NULL, this);
 	settings_menu[19] = (j1Image*)App->gui->CreateImage(740, 600, Image, { 1599, 1054, 77, 52 }, NULL, this);
 	//Labels
-	settings_menu[5] = (UI_Label*)App->gui->CreateLabel(450, 535, Label, "REFRESH RATE", NULL, this, NULL, 32);
+	settings_menu[5] = (UI_Label*)App->gui->CreateLabel(450, 535, Label, "REFRESH RATE", NULL, this, NULL, "StackedPixelMedium");
 	settings_menu[6] = (UI_Label*)App->gui->CreateLabel(360, 335, Label, "SOUND EFFECTS VOLUME", NULL, this, NULL);
 	settings_menu[7] = (UI_Label*)App->gui->CreateLabel(360, 150, Label, "MUSIC VOLUME", NULL, this, NULL);
 	settings_menu[8] = (UI_Label*)App->gui->CreateLabel(555, 50, Label, "SETTINGS", NULL, this, NULL);
-	settings_menu[18] = (UI_Label*)App->gui->CreateLabel(685, 535, Label, "FULLSCREEN", NULL, this, NULL, 32);
-	settings_menu[21] = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "60", NULL, this, NULL, 32);
-	settings_menu[22] = (UI_Label*)App->gui->CreateLabel(763, 613, Label, "NO", NULL, this, NULL, 32);
+	settings_menu[18] = (UI_Label*)App->gui->CreateLabel(685, 535, Label, "FULLSCREEN", NULL, this, NULL, "StackedPixelMedium");
+	settings_menu[21] = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "60", NULL, this, NULL, "StackedPixelMedium");
+	settings_menu[22] = (UI_Label*)App->gui->CreateLabel(763, 613, Label, "NO", NULL, this, NULL, "StackedPixelMedium");
 
 	//Music Slider
 	settings_menu[9] = (UI_Slider*)App->gui->CreateSlider(465, 220, Slider_music, { 1834,842,329,27 }, { 1792,926,33,16 }, 400, NULL, this);
@@ -262,9 +262,9 @@ void MenuManager::CreateResources() {
 	std::string food = std::to_string(App->player->food);
 	std::string caps = std::to_string(App->player->caps);
 
-	resources[0] = (UI_Label*)App->gui->CreateLabel(75, 15, Label, food, NULL, this, NULL, 22);
-	resources[1] = (UI_Label*)App->gui->CreateLabel(220, 15, Label, water, NULL, this, NULL, 22);
-	resources[2] = (UI_Label*)App->gui->CreateLabel(365, 15, Label, caps, NULL, this, NULL, 22);
+	resources[0] = (UI_Label*)App->gui->CreateLabel(75, 15, Label, food, NULL, this, NULL, "StackedPixelSmall");
+	resources[1] = (UI_Label*)App->gui->CreateLabel(220, 15, Label, water, NULL, this, NULL, "StackedPixelSmall");
+	resources[2] = (UI_Label*)App->gui->CreateLabel(365, 15, Label, caps, NULL, this, NULL, "StackedPixelSmall");
 
 }
 

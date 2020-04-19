@@ -18,7 +18,7 @@ InputText::InputText(int x, int y, UI_Type type, std::string text_input, UI_elem
 	this->pos.x = x;
 	this->pos.y = y;
 
-	labelInputText = (UI_Label*)App->gui->CreateLabel(x, y, Label, text_input, NULL, NULL, NULL, NULL, font);
+	labelInputText = (UI_Label*)App->gui->CreateLabel(x, y, Label, text_input, NULL, NULL, NULL, font);
 
 	font_text = font;
 }

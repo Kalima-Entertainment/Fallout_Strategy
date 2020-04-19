@@ -48,14 +48,14 @@ bool UI_Label::CleanUp()
 	return true;
 }
 
-bool UI_Label::SetLabelText(std::string text_input, std::string font, int size)
+bool UI_Label::SetLabelText(std::string text_input, std::string font)
 {
 	bool ret = false;
 	text = text_input;
 
 	if (text.size() > 0){
 
-		text_texture = App->font->Print(text.c_str(), { 244,244,244,255 }, font, size);
+		text_texture = App->font->Print(text.c_str(), { 244,244,244,255 }, font);
 	}
 
 	if (text_texture != nullptr)
