@@ -211,7 +211,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 	open.list.push_back(node);
 
-	while (open.list.size() != 0)
+	while ((open.list.size() != 0)&&(close.list.size() < MAX_PATH_ITERATIONS))
 	{
 		const PathNode* current_node = open.GetNodeLowestScore();
 		close.list.push_back(*current_node);

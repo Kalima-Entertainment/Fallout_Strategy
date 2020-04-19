@@ -14,7 +14,9 @@ AI_Manager::AI_Manager() : j1Module() {
 AI_Manager::~AI_Manager() {}
 
 bool AI_Manager::Start() {
-	bool ret = true;
+	bool ret = true;	
+	node_map = CreateNodeMap();
+
 	for (int i = 0; i < 4; i++)
 	{
 		if (App->player->faction != (Faction) i) {
@@ -57,4 +59,23 @@ bool AI_Manager::CleanUp() {
 	players_created = false;
 
 	return ret;
+}
+
+std::vector<iPoint> AI_Manager::CreateNodeMap(){
+	std::vector<iPoint> map;
+	for (int y = 25; y < 150; y += 25)
+	{
+		for (int x = 25; x < 150; x+=25)
+		{
+			map.push_back(iPoint(x,y));
+		}
+	}
+	return map;
+}
+
+void AI_Manager::GetNodeMap(std::vector<iPoint>& vector_to_fill) {
+	for (int i = 0; i < node_map.size(); i++)
+	{
+		vector_to_fill[i] = node_map[i];
+	}
 }

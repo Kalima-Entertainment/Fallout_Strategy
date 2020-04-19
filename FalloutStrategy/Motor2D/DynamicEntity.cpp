@@ -416,6 +416,8 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 
 	if (path_to_target.size() > 0)
 		next_tile = path_to_target.front();
+	else
+		state = IDLE;
 }
 
 /*

@@ -2,6 +2,7 @@
 #define _AI_PLAYER_H_
 #include "GenericPlayer.h"
 #include <vector>
+#include "p2Point.h"
 
 class j1Entity;
 class DynamicEntity;
@@ -15,13 +16,16 @@ public:
 
 	bool Update(float dt);
 
-	GenericPlayer* target_player;
+	std::vector<iPoint> CreateNodePath(iPoint origin, iPoint destination);
 
+public:
+	GenericPlayer* target_player;
 	bool is_attacking;
 
 private:
 	void ChooseRandomPlayerEnemy();
 	DynamicEntity* GetClosestDynamicEntity();
+	std::vector<iPoint> node_path;
 	int ranged_minimum;
 	int melee_minimum;
 };

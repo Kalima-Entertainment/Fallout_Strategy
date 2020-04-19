@@ -63,15 +63,12 @@ bool LogoScene::LoadAnimations()
 	}
 	loader->loop = true;
 	
-	
-
 	animation = animation.next_sibling();
 	frame = animation.child("animation").child("frame");
 
 	return ret;
 }
 
-// Called before the first frame
 bool LogoScene::Start()
 {
 
@@ -85,25 +82,28 @@ bool LogoScene::Start()
 	return true;
 }
 
-// Called each loop iteration
-bool LogoScene::Update(float dt)
-{
+bool LogoScene::CleanUp() {
+	bool ret = true;
+	ret = App->tex->UnLoad(logo_tex);
+	logo_tex = nullptr;
+	ret = App->tex->UnLoad(start_game_tex);
+	start_game_tex = nullptr;
+	loader = nullptr;
+	return ret;
+}
 
+bool LogoScene::Update(float dt) {
 	last_dt = dt;
 
 	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
 		App->audio->PlayFx(2, App->audio->F_press, 0);
 		App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
-		renderLogo = false;
-		App->tex->UnLoad(logo_tex);
-		App->tex->UnLoad(start_game_tex);
+		App->logo_scene->Disable();
 	}
-
 
 	return true;
 }
-
 
 bool LogoScene::PostUpdate()
 {

@@ -17,14 +17,11 @@ public:
 	// Destructor
 	virtual ~LogoScene();
 
-	// Called before the first frame
 	bool Start();
-
-	// Called each loop iteration
-	bool PostUpdate();
-
 	bool Update(float dt);
-	
+	bool PostUpdate();
+	bool CleanUp();
+
 	bool LogoScene::LoadAnimations();
 
 private:

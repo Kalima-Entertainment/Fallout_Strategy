@@ -5,6 +5,8 @@
 #include "AI_Manager.h"
 #include "j1EntityManager.h"
 #include "j1Player.h"
+#include "p2Point.h"
+#include <vector>
 
 AI_Player::AI_Player(Faction g_faction) : GenericPlayer() {
 	faction = g_faction;
@@ -12,10 +14,11 @@ AI_Player::AI_Player(Faction g_faction) : GenericPlayer() {
 	caps = 100;
 	water = 100;
 	food = 100;
-	melee_minimum = 6;
-	ranged_minimum = 3;
+	melee_minimum = 0;
+	ranged_minimum = 0;
 	is_attacking = false;
 	defeated = false;
+	CreateNodePath({ 30,40 }, {130,80});
 }
 
 AI_Player::~AI_Player() {
@@ -81,18 +84,10 @@ bool AI_Player::Update(float dt) {
 
 	//Assign all attacking units an entity to attack
 	if (is_attacking) {
-		for (int i = 0; i < entities.size(); i++)
-		{
-			if ((entities[i]->is_dynamic) && (entities[i]->type != GATHERER) && (entities[i]->target_entity == nullptr)) {
-				DynamicEntity* target_entity = GetClosestDynamicEntity();
-				DynamicEntity* troop = nullptr;
-
-				entities[i]->target_entity = target_entity;
-				troop = (DynamicEntity*)entities[i];
-				troop->PathfindToPosition(target_entity->current_tile);
-				troop->state = WALK;
-			}
-		}	
+		/*
+	
+		*/
+		/*
 		if (target_player->entities.size() == 4) {
 			if (target_player->GetTroopsAmount() == 0) {
 				target_player->defeated = true;
@@ -100,6 +95,7 @@ bool AI_Player::Update(float dt) {
 				target_player = nullptr;
 			}
 		}
+		*/
 	}
 
 	// -------------------------------------------------------------
@@ -119,6 +115,18 @@ void AI_Player::ChooseRandomPlayerEnemy() {
 
 	if (target_player == nullptr)
 		target_player = (GenericPlayer*)App->player;
+
+	/*
+	for (int i = 0; i < entities.size(); i++)
+	{
+		if ((entities[i]->is_dynamic) && (entities[i]->type != GATHERER) && (entities[i]->target_entity == nullptr)) {
+			DynamicEntity* troop = (DynamicEntity*)entities[i];
+			troop->target_entity = target_player->base;
+			troop->PathfindToPosition({ 20,20 });
+			troop->state = WALK;
+		}
+	}
+	*/
 }
 
 DynamicEntity* AI_Player::GetClosestDynamicEntity() {
@@ -133,4 +141,43 @@ DynamicEntity* AI_Player::GetClosestDynamicEntity() {
 		}
 	}
 	return target_entity;
+}
+
+std::vector<iPoint> AI_Player::CreateNodePath(iPoint origin, iPoint destination) {
+	std::vector<iPoint> path;
+	iPoint current_node;
+	std::vector<iPoint> node_map = App->ai_manager->node_map;
+	//App->ai_manager->GetNodeMap(node_map);
+	current_node = node_map.back();
+
+	for (int i = 0; i < node_map.size(); i++)
+	{
+		if (node_map[i].DistanceNoSqrt(origin) < current_node.DistanceNoSqrt(origin))
+			current_node = node_map[i];
+	}
+
+	path.push_back(current_node);
+
+	while (current_node.DistanceTo(destination) > 40)
+	{
+		iPoint possible_node;
+		iPoint best_node;
+		//find neighbour nodes
+		for (int y = -25; y <= 25; y +=25)
+		{
+			for (int x = -25; x <= 25; x += 25)
+			{
+				possible_node.x = current_node.x + x;
+				possible_node.y = current_node.y + y;
+				if (possible_node.DistanceTo(destination) < current_node.DistanceTo(destination)) {
+					if (possible_node.DistanceTo(destination) < best_node.DistanceTo(destination))
+						best_node = possible_node;
+				}
+			}
+		}
+		current_node = best_node;
+		path.push_back(best_node);
+	}
+
+	return path;
 }

@@ -17,7 +17,6 @@
 
 j1Transition::j1Transition() : j1Module()
 {
-
 	name = ("transition");
 }
 
@@ -60,7 +59,7 @@ bool j1Transition::LoadAnimations() {
 		rect.h = tile_height;
 
 		id = animation.attribute("id").as_int();
-		loader = 0;
+		loader = nullptr;
 
 		if (tileset.attribute("firstgid").as_int() == 1)
 		{
@@ -73,7 +72,7 @@ bool j1Transition::LoadAnimations() {
 
 		while (frame != nullptr) {
 			tile_id = frame.attribute("tileid").as_int();
-			speed = frame.attribute("duration").as_int();
+			speed = frame.attribute("duration").as_int() * speed_reducer;
 			rect.x = rect.w * ((tile_id) % columns);
 			rect.y = rect.h * ((tile_id) / columns);
 			loader->PushBack(rect, speed);
@@ -88,17 +87,11 @@ bool j1Transition::LoadAnimations() {
 	}
 	return ret;
 }
-bool j1Transition::CleanUp()
-{
-	App->tex->UnLoad(logo_tex);
-	App->tex->UnLoad(gif_tex);
-	App->tex->UnLoad(background);
-	return true;
-}
 
 bool j1Transition::Start()
 {
-	if (loader == nullptr) 
+	speed_reducer = 0.01f;
+	if (loader == nullptr)
 	{
 		LoadAnimations();
 	}
@@ -106,17 +99,23 @@ bool j1Transition::Start()
 	return true;
 }
 
+bool j1Transition::CleanUp()
+{
+	App->tex->UnLoad(logo_tex);
+	App->tex->UnLoad(gif_tex);
+	App->tex->UnLoad(background);
+	loader = nullptr;
+	return true;
+}
+
 bool j1Transition::Update(float dt)
 {
-	lastdt = dt*0.01;
+	lastdt = dt;
 	Transition();
 	return true;
 }
 bool j1Transition::PostUpdate(float dt)
 {
-	deltatime = dt;
-
-
 	return true;
 }
 

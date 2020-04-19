@@ -22,7 +22,7 @@ public:
 	bool CleanUp();
 	void Transition();
 private:
-	float deltatime;
+	float speed_reducer;
 	SDL_Texture* gif_tex;
 	SDL_Texture* logo_tex;
 	SDL_Texture* background;
