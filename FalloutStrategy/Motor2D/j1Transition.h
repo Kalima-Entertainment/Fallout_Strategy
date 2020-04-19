@@ -15,7 +15,6 @@ class j1Transition : public j1Module
 public:
 	j1Transition();
 	bool j1Transition::LoadAnimations();
-	bool Awake(pugi::xml_node& config);
 	bool Start();
 	bool Update(float dt);
 	bool PostUpdate(float dt);
@@ -23,15 +22,16 @@ public:
 	bool CleanUp();
 	void Transition();
 private:
-	int alpha;
 	float deltatime;
 	SDL_Texture* gif;
 	SDL_Texture* logo;
 	Animation	animationLogo;
 	Animation	animationGif;
+	Animation* loader;
+	float lastdt;
 
 public:
-	bool fade;
+	bool transition;
 	j1Timer fadetimer;
 
 };

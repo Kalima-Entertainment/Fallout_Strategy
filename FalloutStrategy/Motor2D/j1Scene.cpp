@@ -26,6 +26,7 @@
 #include "AI_Manager.h"
 #include "j1Minimap.h"
 #include "AI_Player.h"
+#include "j1Transition.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -53,7 +54,7 @@ bool j1Scene::Start()
 
 	//App->player->faction = VAULT;
 	App->ai_manager->Enable();
-
+	App->transition->Enable();
 	//random map ----------------------------
 
 	std::string modules[4];
@@ -146,32 +147,12 @@ bool j1Scene::Update(float dt)
 
 	//App->win->SetTitle(title.GetString());
 	*/
-	/*
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_UP)
 	{
-		Mix_HaltChannel(-1);
-		Mix_SetPosition(1, 270, 1);
-		App->audio->PlayFx(1, App->audio->explosion, 0);
+		App->transition->transition = true;
+		App->transition->Transition();
 	}
-	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
-	{
-		Mix_HaltChannel(-1);
-		Mix_SetPosition(2, 270, 200);
-		App->audio->PlayFx(2, App->audio->explosion, 0);
-	}
-	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
-	{
-		Mix_HaltChannel(-1);
-		Mix_SetPosition(3, 90, 1);
-		App->audio->PlayFx(3, App->audio->explosion, 0);
-	}
-	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
-	{
-		Mix_HaltChannel(-1);
-		Mix_SetPosition(4, 90, 200);
-		App->audio->PlayFx(4, App->audio->explosion, 0);
-	}
-	*/
+
 
 	//Used to select units and groups
 	if (!App->player->TouchingUI(x,y)) {

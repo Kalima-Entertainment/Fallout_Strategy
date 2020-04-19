@@ -70,7 +70,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(ai_manager);
 	AddModule(font);
 	AddModule(scene);
-	AddModule(transition);
 	AddModule(Mmanager);
 
 	// scene last
@@ -79,7 +78,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(minimap);
 	AddModule(console);
 	AddModule(logo_scene);
-
+	AddModule(transition);
 	// render last to swap buffer
 	AddModule(render);
 

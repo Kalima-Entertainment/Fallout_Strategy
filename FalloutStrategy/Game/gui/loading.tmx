@@ -65,7 +65,7 @@
  </tileset>
  <tileset firstgid="65" name="logo_spritesheet" tilewidth="256" tileheight="256" tilecount="256" columns="16">
   <image source="logo_spritesheet.png" width="4096" height="4096"/>
-  <tile id="0">
+  <tile id="1">
    <animation>
     <frame tileid="0" duration="60"/>
     <frame tileid="1" duration="60"/>
@@ -190,7 +190,7 @@
    </animation>
   </tile>
  </tileset>
- <layer name="background" width="2" height="2">
+ <layer name="wheel" width="2" height="2">
   <data>
    <tile gid="1"/>
    <tile gid="0"/>

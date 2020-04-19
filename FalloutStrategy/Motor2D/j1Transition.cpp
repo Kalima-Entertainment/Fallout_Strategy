@@ -23,7 +23,7 @@
 j1Transition::j1Transition() : j1Module()
 {
 
-	name = ("Transition");
+	name = ("transition");
 }
 
 j1Transition::~j1Transition()
@@ -36,14 +36,14 @@ bool j1Transition::LoadAnimations() {
 	pugi::xml_parse_result result = animation_file.load_file("gui/loading.tmx");
 
 	std::string image = std::string(animation_file.child("tileset").child("image").attribute("source").as_string());
-	//gif = App->tex->Load("gui/gif_loadscreen.png");
-	//logo = App->tex->Load("gui/logo_spritesheet.png");
+	gif = App->tex->Load("gui/gifwheel.png");
+	logo = App->tex->Load("gui/logo_spritesheet.png");
 	if (result == NULL)
 	{
 		LOG("Could not load animation tmx file %s. pugi error: %s", "gui/loading.tmx", result.description());
 		ret = false;
 	}
-
+	else {LOG("loaded succesfully");}
 	int tile_width = animation_file.child("map").child("tileset").attribute("tilewidth").as_int();
 	int tile_height = animation_file.child("map").child("tileset").attribute("tileheight").as_int();
 	int columns = animation_file.child("map").child("tileset").attribute("columns").as_int();
@@ -62,7 +62,7 @@ bool j1Transition::LoadAnimations() {
 
 	for (int i = 0; i < 2; i++)
 	{
-		Animation* loader = 0;
+		loader = 0;
 		if (i == 0)
 		{
 			loader = &animationGif;
@@ -96,57 +96,41 @@ bool j1Transition::CleanUp()
 	return true;
 }
 
-bool j1Transition::Awake(pugi::xml_node& config)
-{
-	return true;
-}
-
 bool j1Transition::Start()
 {
-	j1PerfTimer	ptimer;
-	PERF_START(ptimer);
 	LoadAnimations();
-	fade = false;
-	alpha = 0;
-	PERF_PEEK(ptimer);
+	fadetimer.Start();
+	transition = false;
 	return true;
 }
 
 bool j1Transition::Update(float dt)
 {
+	lastdt = dt;
 
-	deltatime = dt;
-	//if fade is active, then call fadetoblack function
-	if (fade) {
-		Transition();
-	}
 	return true;
 }
 bool j1Transition::PostUpdate(float dt)
 {
+	deltatime = dt;
+
+	if (fadetimer.Read() > 6000)
+	{
+		transition = false;
+
+	}
 	return true;
 }
 
 
 void j1Transition::Transition()
 {
-	if (!fade)fadetimer.Start();
-	fade = true;
-	if (alpha < 255) {
-		alpha = alpha + 240 * deltatime;
+	if (transition == true)
+	{
+		SDL_Rect background = { 0, 0, 1280, 720 };
+		App->render->DrawQuad(background, 0, 0, 0, 255);
+		App->render->Blit(logo, 400, 50, &loader->GetCurrentFrame(lastdt));
 	}
-	if (alpha > 255) {
-		alpha = 255;
-	}
-	SDL_Rect screen;
-	screen.x = -1 * App->render->camera.x;
-	screen.y = -1 * App->render->camera.y;
-	//screen.w = App->win->width * App->win->GetScale();
-	//screen.h = App->win->height * App->win->GetScale();
-	App->render->DrawQuad(screen, 0, 0, 0, alpha);
-	if (fadetimer.Read() > 1000) {
-		fade = false;
-		alpha = 0;
-	}
+	
 
 }
