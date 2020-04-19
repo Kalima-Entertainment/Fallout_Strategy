@@ -5,6 +5,7 @@
 #include "j1Module.h"
 #include "p2Point.h"
 #include "Animation.h"
+#include "j1Timer.h"
 #include "SDL_image/include/SDL_image.h"
 
 class j1Entity;
@@ -64,12 +65,12 @@ public:
 	iPoint ClosestTile(iPoint position, std::vector<iPoint> entity_tiles) const;
 
 	bool LoadReferenceEntityData();
-	void AssignEntities();
 	void DestroyEntity(j1Entity* delete_entity);
 	void DestroyAllEntities();
 
-	void SortEntities();
-	void Swap(int i, int j);
+	void BubbleSortEntities();
+	//void QuickSortEntities(std::vector<j1Entity*> entities, int low, int high);
+	//int Partition(std::vector<j1Entity*> entities, int low, int high);
 
 	void RandomFactions();
 	Faction FactionByIndex(int i) { return static_cast<Faction>(i); }
@@ -80,11 +81,13 @@ public:
 	pugi::xml_node config_data;
 
 	int count = 0;
+	int count2 = 0;
 	bool blocked_movement;
 
 	int randomFaction[4];
 	Unit_Data unit_data[4][3];
 	j1Entity* reference_entities[4][6];
+	j1Timer sort_timer;
 	SDL_Texture* selected_unit_tex;
 
 };

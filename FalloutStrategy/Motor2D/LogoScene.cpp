@@ -16,8 +16,8 @@ LogoScene::LogoScene() : j1Module()
 }
 
 // Destructor
-LogoScene::~LogoScene()
-{}
+LogoScene::~LogoScene() {
+}
 
 bool LogoScene::LoadAnimations() 
 {
@@ -94,7 +94,6 @@ bool LogoScene::Update(float dt)
 
 	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
-		
 		App->audio->PlayFx(2, App->audio->F_press, 0);
 		renderLogo = false;
 		App->tex->UnLoad(logo_tex);
@@ -117,8 +116,8 @@ bool LogoScene::PostUpdate()
 		if(drawable)
 		{
 			App->render->Blit(start_game_tex, 325, 510, &start_game_rect);
-			if (Mix_Playing(3) == 0) {
-				App->audio->PlayFx(3, App->audio->Press_F_to_start, 0);
+			if (Mix_Playing(1) == 0) {
+				App->audio->PlayFx(1, App->audio->Press_F_to_start, 0);
 			}
 		}
 		

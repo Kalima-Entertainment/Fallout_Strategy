@@ -294,8 +294,10 @@ bool UI_Button::Update(float dt)
 				App->gui->count = 0;
 				App->player->Enable();
 				App->entities->Enable();
+				App->Mmanager->Enable();
 				App->scene->Enable();
 				App->menu_manager->CreateGUI();
+				App->menu_manager->CreateResources();
 			}
 
 			if (t == button_pause_to_main)
@@ -348,24 +350,25 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_select_ghoul)
 			{
-
+				App->audio->PlayFx(1, character_fx, 0);
 				App->player->faction = GHOUL;
 			}
 
 			if (t == button_select_vault)
 			{
-
+				App->audio->PlayFx(1, character_fx, 0);
 				App->player->faction = VAULT;
 			}
 
 			if (t == button_select_brotherhood)
 			{
-
+				App->audio->PlayFx(1, character_fx, 0);
 				App->player->faction = BROTHERHOOD;
 			}
 
 			if (t == button_select_supermutant)
 			{
+				App->audio->PlayFx(1, character_fx, 0);
 				App->player->faction = MUTANT;
 			}
 		}

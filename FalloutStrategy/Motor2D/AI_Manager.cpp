@@ -51,6 +51,7 @@ bool AI_Manager::CleanUp() {
 	{
 		if (ai_player[i] != nullptr) {
 			delete ai_player[i];
+			ai_player[i] = nullptr;
 		}
 	}
 	players_created = false;

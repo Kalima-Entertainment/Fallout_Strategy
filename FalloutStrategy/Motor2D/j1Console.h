@@ -61,5 +61,7 @@ public:
 	//p2List_item<p2SString>* current_consulting_command;
 };
 
+std::string ToLower(std::string string);
+
 #endif // !_j1CONSOLE_H_
 

@@ -49,7 +49,15 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
 	time_left = 0;
 }
 
-StaticEntity::~StaticEntity() {}
+StaticEntity::~StaticEntity() {
+	target_entity = nullptr;
+	reference_entity = nullptr;
+	owner = nullptr;
+	attacking_entity = nullptr;
+	current_animation = nullptr;
+	texture = nullptr;
+	path_to_target.clear();
+}
 
 bool StaticEntity::Update(float dt) {
 	switch (state) {
@@ -480,35 +488,38 @@ void StaticEntity::SpawnUnit(EntityType type) {
 	int spawn_seconds;
 	//Look for that unit data (spawn_seconds and cost)
 
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 3; j++) {
-			cost_water = App->entities->unit_data[i][j].cost_water;
-			cost_meat = App->entities->unit_data[i][j].cost_meat;
-			spawn_seconds = App->entities->unit_data[i][j].spawn_seconds;
 
-			if (owner->water >= cost_water && owner->food > cost_meat) {
-				//Substract resources
-				if (owner->faction == App->player->faction) {
-					App->player->UpdateResourceData(Resource::WATER, -cost_water);
-					App->player->UpdateResourceData(Resource::FOOD, -cost_meat);
-				}
-				else {
-					owner->water -= cost_water;
-					owner->food -= cost_meat;
-				}
+	if ((faction == App->player->faction) && (App->player->god_mode)) {
+		cost_water = 0;
+		cost_meat = 0;
+		spawn_seconds = 0;
+	}
+	else {
+		cost_water = App->entities->unit_data[faction][type].cost_water;
+		cost_meat = App->entities->unit_data[faction][type].cost_meat;
+		spawn_seconds = App->entities->unit_data[faction][type].spawn_seconds;
+	}
 
-				//Add to stack
-				for (int i = 0; i < 10; i++) {
-					if (spawn_stack[i].type == NO_TYPE) {
+	if (owner->water >= cost_water && owner->food > cost_meat) {
+		//Substract resources
+		if (owner->faction == App->player->faction) {
+			App->player->UpdateResourceData(Resource::WATER, -cost_water);
+			App->player->UpdateResourceData(Resource::FOOD, -cost_meat);
+		}
+		else {
+			owner->water -= cost_water;
+			owner->food -= cost_meat;
+		}
 
-						spawn_stack[i].type = type;
-						spawn_stack[i].spawn_seconds = spawn_seconds;
-						//LOG("Added to stack. Waiting %i seconds to spawn", spawn_seconds);
-						break;
-					}
-				}
+		//Add to stack
+		for (int i = 0; i < 10; i++) {
+			if (spawn_stack[i].type == NO_TYPE) {
+
+				spawn_stack[i].type = type;
+				spawn_stack[i].spawn_seconds = spawn_seconds;
+				//LOG("Added to stack. Waiting %i seconds to spawn", spawn_seconds);
+				break;
 			}
-			break;
 		}
 	}
 }

@@ -33,7 +33,13 @@ j1Player::j1Player() : GenericPlayer() {
 	defeated = false;
 }
 
-j1Player::~j1Player() {}
+j1Player::~j1Player() {
+	selected_entity = nullptr;
+	last_selected_entity = nullptr;
+	entities.clear();
+	gatherers_vector.clear();
+	base = barrack[0] = barrack[1] = laboratory = nullptr;
+}
 
 bool j1Player::Start() {
 	App->console->CreateCommand("caps+", "increase the amount of caps", this);
@@ -55,8 +61,11 @@ bool j1Player::PreUpdate() {
 	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 		App->render->debug = !App->render->debug;
 
-	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
 		god_mode = !god_mode;
+		if (god_mode) LOG("God Mode: ON");
+		else LOG("God Mode: OFF");
+	}
 
 	//block border scroll
 	if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
@@ -82,8 +91,7 @@ bool j1Player::PreUpdate() {
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
 		//selected_entity = nullptr;
 		//Remove HUD data from the UI
-		App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::ALL, BUILDING_TYPE::ALL);
-		App->entities->count = 0;
+		
 	}
 
 	if (!App->isPaused)
@@ -176,7 +184,8 @@ bool j1Player::Update(float dt) {
 j1Entity* j1Player::SelectEntity() {
 	int tx, ty;
 	iPoint selected_spot;
-
+	App->entities->count = 0;
+	App->entities->count2 = 0;
 	App->input->GetMousePosition(tx, ty);
 	if (TouchingUI(tx, ty))
 		return selected_entity;
@@ -256,8 +265,8 @@ void j1Player::UpdateResourceData(Resource resource_type, int quantity) {
 		food += quantity;
 
 	//update gui
-	App->gui->DeleteArrayElements(App->menu_manager->gui_ingame, 4);
-	App->menu_manager->CreateGUI();
+	App->menu_manager->DestroyMenu(Menu::RESOURCES);
+	App->menu_manager->CreateResources();
 }
 
 void j1Player::OnCommand(std::vector<std::string> command_parts) {
@@ -355,4 +364,3 @@ bool j1Player::TouchingUI(int x, int y) {
 	if (y > App->minimap->position.y - 8) { ret = true; }
 	return ret;
 }
-
