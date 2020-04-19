@@ -154,7 +154,7 @@ void j1MovementManager::Move(j1Group* group, float dt)
 					LOG("CREATE PATH RETURNS: %i", App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile));
 				}
 
-				if (App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile) == -1)
+				if (App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile) != -1)
 				{
 					(*unit)->info.Current_path = App->pathfinding->GetLastPath();
 					(*unit)->info.Current_path.erase((*unit)->info.Current_path.begin());

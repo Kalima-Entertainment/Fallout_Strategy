@@ -37,7 +37,7 @@ bool j1Transition::LoadAnimations() {
 
 	std::string image = std::string(animation_file.child("tileset").child("image").attribute("source").as_string());
 	//gif = App->tex->Load("gui/gif_loadscreen.png");
-	logo = App->tex->Load("gui/logo_spritesheet.png");
+	//logo = App->tex->Load("gui/logo_spritesheet.png");
 	if (result == NULL)
 	{
 		LOG("Could not load animation tmx file %s. pugi error: %s", "gui/loading.tmx", result.description());

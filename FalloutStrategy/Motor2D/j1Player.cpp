@@ -91,8 +91,7 @@ bool j1Player::PreUpdate() {
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
 		//selected_entity = nullptr;
 		//Remove HUD data from the UI
-		App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::ALL, BUILDING_TYPE::ALL);
-		App->entities->count = 0;
+		
 	}
 
 	if (!App->isPaused)
@@ -185,7 +184,8 @@ bool j1Player::Update(float dt) {
 j1Entity* j1Player::SelectEntity() {
 	int tx, ty;
 	iPoint selected_spot;
-
+	App->entities->count = 0;
+	App->entities->count2 = 0;
 	App->input->GetMousePosition(tx, ty);
 	if (TouchingUI(tx, ty))
 		return selected_entity;
