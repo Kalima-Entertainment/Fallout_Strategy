@@ -137,6 +137,11 @@ bool j1Scene::Update(float dt)
 	App->input->GetMousePosition(x, y);
 	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
 
+	//Used to select units and groups
+	if (!App->player->TouchingUI(x, y)) {
+		RectangleSelection();
+	}
+
 	/*
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
 					App->map->data.width, App->map->data.height,
@@ -146,11 +151,6 @@ bool j1Scene::Update(float dt)
 
 	//App->win->SetTitle(title.GetString());
 	*/
-
-	//Used to select units and groups
-	if (!App->player->TouchingUI(x,y)) {
-		RectangleSelection();
-	}
 
 	return true;
 }
@@ -206,8 +206,16 @@ void j1Scene::RectangleSelection()
 		App->Mmanager->SelectEntities_inRect(SRect);
 	}
 
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
-		App->Mmanager->CreateGroup();
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
+		std::vector<DynamicEntity*> selected_entities;
+		//App->Mmanager->CreateGroup();
+		for (int i = 0; i < App->entities->entities.size(); i++)
+		{
+			if (App->entities->entities[i]->info.IsSelected) {
+				selected_entities.push_back((DynamicEntity*)App->entities->entities[i]);
+			}
+		}
+	}
 }
 
 void j1Scene::CheckWinner() {

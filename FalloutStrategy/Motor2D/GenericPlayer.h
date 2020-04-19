@@ -40,6 +40,8 @@ public:
 	std::vector<DynamicEntity*> troops;
 	std::vector<DynamicEntity*> gatherers_vector;
 
+	bool goal_tile_set;
+
 };
 
 #endif // !_GENERIC_PLAYER_H_

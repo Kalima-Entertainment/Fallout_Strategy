@@ -16,10 +16,11 @@ AI_Player::AI_Player(Faction g_faction) : GenericPlayer() {
 	caps = 500;
 	water = 500;
 	food = 500;
-	melee_minimum = 2;
+	melee_minimum = 1;
 	ranged_minimum = 1;
 	is_attacking = false;
 	defeated = false;
+	goal_tile_set = false;
 }
 
 AI_Player::~AI_Player() {
@@ -74,8 +75,10 @@ bool AI_Player::Update(float dt) {
 		food -= App->entities->unit_data[faction][RANGED].cost_meat;
 	}
 
+	//Choose enemy player -----------------------------------------
+
 	//if the ai_player is ready choose a player to attack
-	if ((rangeds > ranged_minimum) && (melees >= melee_minimum) && (target_player == nullptr)) { 
+	if ((rangeds >= ranged_minimum) && (melees >= melee_minimum) && (target_player == nullptr)) { 
 		ChooseRandomPlayerEnemy();
 		is_attacking = true;
 	}
@@ -118,7 +121,7 @@ void AI_Player::ChooseRandomPlayerEnemy() {
 
 	iPoint origin = { (int)troops[0]->current_tile.x, (int)troops[0]->current_tile.y };
 	iPoint enemy_base_position = App->entities->ClosestTile(origin, target_player->base->tiles);
-	CreateNodePath(origin, enemy_base_position, path_to_enemy_base);
+	App->Mmanager->CreateGroup(troops);
 }
 
 DynamicEntity* AI_Player::GetClosestDynamicEntity() {
@@ -184,18 +187,4 @@ std::vector<iPoint> AI_Player::CreateNodePath(iPoint origin, iPoint destination,
 	}
 
 	return path;
-}
-
-void AI_Player::CreateAttackingGroup() {
-	/*
-	for (int i = 0; i < troops.size(); i++)
-	{
-		if (troops[i]->info.current_group == nullptr)
-		{
-			group.addUnit(troops[i]);
-			troops[i]->info.current_group = &group;
-		}
-	}
-	App->Mmanager->AddGroup(&group);
-	*/
 }
