@@ -391,7 +391,7 @@ void MenuManager::CreateGhouls_Base() {
 	ghoul_base[1] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
-	ghoul_base[2] = (j1Image*)App->gui->CreateImage(880, 575, Image, { 398, 1564, 99, 108 }, NULL, this);
+	ghoul_base[2] = (j1Image*)App->gui->CreateImage(900, 575, Image, { 398, 1564, 99, 108 }, NULL, this);
 	ghoul_base[3] = (j1Image*)App->gui->CreateImage(1060, 575, Image, { 624, 1866, 24, 34 }, NULL, this);
 	ghoul_base[4] = (j1Image*)App->gui->CreateImage(1060, 628, Image, { 926, 1872, 37, 24 }, NULL, this);
 
@@ -407,7 +407,7 @@ void MenuManager::CreateGhouls_Barrack() {
 	ghoul_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
-	ghoul_barrack[3] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 527, 1563, 105, 105 }, NULL, this);
+	ghoul_barrack[3] = (j1Image*)App->gui->CreateImage(900, 570, Image, { 527, 1563, 105, 105 }, NULL, this);
 	ghoul_barrack[4] = (j1Image*)App->gui->CreateImage(1055, 575, Image, { 513, 1865, 33, 34 }, NULL, this);
 	ghoul_barrack[5] = (j1Image*)App->gui->CreateImage(1110, 575, Image, { 571, 1866, 28, 33 }, NULL, this);
 	ghoul_barrack[6] = (j1Image*)App->gui->CreateImage(1060, 630, Image, { 823, 1872, 32, 22 }, NULL, this);
@@ -424,7 +424,7 @@ void MenuManager::CreateGhouls_Lab() {
 	ghoul_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
-	ghoul_lab[1] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 270, 1568, 97, 99 }, NULL, this);
+	ghoul_lab[1] = (j1Image*)App->gui->CreateImage(900, 590, Image, { 536, 1741, 101, 73 }, NULL, this);
 	ghoul_lab[2] = (j1Image*)App->gui->CreateImage(1060, 630, Image, { 877, 1874, 33, 20 }, NULL, this);
 	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
 	//bases_hud.brotherhood_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Brotherhood_ranged, { 83, 1866, 35, 36 }, NULL, this);
