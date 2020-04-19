@@ -277,7 +277,7 @@ bool UI_Button::Update(float dt)
 
 			if (t == resume_button) {
 				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
-				App->scene->create = false;
+				App->scene->create = !App->scene->create;
 				App->audio->PlayFx(1, back_fx, 0);
 			}
 
@@ -291,7 +291,7 @@ bool UI_Button::Update(float dt)
 	
 			if (t == button_start_game)
 			{
-				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
+				/*App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
 				App->audio->PlayFx(1, back_fx, 0);
 				App->gui->count = 0;
 				App->player->Enable();
@@ -301,7 +301,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->CreateGUI();
 				App->menu_manager->CreateResources();
 				App->transition->fadetimer.Start();
-				App->transition->transition = true;
+				App->transition->transition = true;*/
 			}
 
 			if (t == button_pause_to_main)
@@ -392,26 +392,74 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_select_ghoul)
 			{
-				App->audio->PlayFx(1, character_fx, 0);
+				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
+				current_state = BUTTON_STATE::HOVER_EXIT;
 				App->player->faction = GHOUL;
+				App->audio->PlayFx(1, character_fx, 0);
+				App->gui->count = 0;
+				App->player->Enable();
+				App->entities->Enable();
+				App->Mmanager->Enable();
+				App->scene->Enable();
+				App->menu_manager->CreateGUI();
+				App->menu_manager->CreateResources();
+				App->transition->fadetimer.Start();
+				App->transition->transition = true;
+							
 			}
 
 			if (t == button_select_vault)
 			{
-				App->audio->PlayFx(1, character_fx, 0);
+				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
+				current_state = BUTTON_STATE::HOVER_EXIT;
 				App->player->faction = VAULT;
+				App->audio->PlayFx(1, character_fx, 0);
+				App->gui->count = 0;
+				App->player->Enable();
+				App->entities->Enable();
+				App->Mmanager->Enable();
+				App->scene->Enable();
+				App->menu_manager->CreateGUI();
+				App->menu_manager->CreateResources();
+				App->transition->fadetimer.Start();
+				App->transition->transition = true;
+
 			}
 
 			if (t == button_select_brotherhood)
 			{
-				App->audio->PlayFx(1, character_fx, 0);
+
+				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
+				current_state = BUTTON_STATE::HOVER_EXIT;
 				App->player->faction = BROTHERHOOD;
+				App->audio->PlayFx(1, character_fx, 0);
+				App->gui->count = 0;
+				App->player->Enable();
+				App->entities->Enable();
+				App->Mmanager->Enable();
+				App->scene->Enable();
+				App->menu_manager->CreateGUI();
+				App->menu_manager->CreateResources();
+				App->transition->fadetimer.Start();
+				App->transition->transition = true;
 			}
 
 			if (t == button_select_supermutant)
 			{
-				App->audio->PlayFx(1, character_fx, 0);
+
+				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
+				current_state = BUTTON_STATE::HOVER_EXIT;
 				App->player->faction = MUTANT;
+				App->audio->PlayFx(1, character_fx, 0);
+				App->gui->count = 0;
+				App->player->Enable();
+				App->entities->Enable();
+				App->Mmanager->Enable();
+				App->scene->Enable();
+				App->menu_manager->CreateGUI();
+				App->menu_manager->CreateResources();
+				App->transition->fadetimer.Start();
+				App->transition->transition = true;
 			}
 		}
 		else {

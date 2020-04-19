@@ -173,14 +173,14 @@ void MenuManager::CreateSelectFaction()
 	select_faction_menu[3] = (UI_Button*)App->gui->CreateButton(200, 400, button_select_brotherhood, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
 	select_faction_menu[4] = (UI_Button*)App->gui->CreateButton(200, 500, button_select_supermutant, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
 	select_faction_menu[5] = (UI_Button*)App->gui->CreateButton(120, 605, button_back_to_menu, { 1243,2014,73,78 }, { 1243,2102,73,79 }, { 1243,2188,73,71 }, NULL, this);
-	select_faction_menu[6] = (UI_Button*)App->gui->CreateButton(900, 605, button_start_game, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+	//select_faction_menu[6] = (UI_Button*)App->gui->CreateButton(900, 605, button_start_game, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
 
 	//Labels
-	select_faction_menu[7] = (UI_Label*)App->gui->CreateLabel(280, 215, Label, "GHOUL", NULL, this, NULL);
-	select_faction_menu[8] = (UI_Label*)App->gui->CreateLabel(278, 315, Label, "VAULT", NULL, this, NULL);
-	select_faction_menu[9] = (UI_Label*)App->gui->CreateLabel(220, 415, Label, "BROTHERHOOD", NULL, this, NULL);
-	select_faction_menu[10] = (UI_Label*)App->gui->CreateLabel(214, 515, Label, "SUPERMUTANT", NULL, this, NULL);
-	select_faction_menu[11] = (UI_Label*)App->gui->CreateLabel(925, 620, Label, "START GAME", NULL, this, NULL);
+	select_faction_menu[6] = (UI_Label*)App->gui->CreateLabel(280, 215, Label, "GHOUL", NULL, this, NULL);
+	select_faction_menu[7] = (UI_Label*)App->gui->CreateLabel(278, 315, Label, "VAULT", NULL, this, NULL);
+	select_faction_menu[8] = (UI_Label*)App->gui->CreateLabel(220, 415, Label, "BROTHERHOOD", NULL, this, NULL);
+	select_faction_menu[9] = (UI_Label*)App->gui->CreateLabel(214, 515, Label, "SUPERMUTANT", NULL, this, NULL);
+	//select_faction_menu[10] = (UI_Label*)App->gui->CreateLabel(925, 620, Label, "START GAME", NULL, this, NULL);
 
 	last_menu = current_menu;
 	current_menu = Menu::SELECT_FACTION;
@@ -514,7 +514,7 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->gui->DeleteArrayElements(collaborators, 9);
 		break;
 	case Menu::SELECT_FACTION:
-		App->gui->DeleteArrayElements(select_faction_menu, 12);
+		App->gui->DeleteArrayElements(select_faction_menu, 10);
 		break;
 	case Menu::PAUSE_MENU:
 		App->gui->DeleteArrayElements(pause_menu, 7);
