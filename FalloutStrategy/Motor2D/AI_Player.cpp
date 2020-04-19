@@ -13,11 +13,11 @@
 AI_Player::AI_Player(Faction g_faction) : GenericPlayer() {
 	faction = g_faction;
 	base = barrack[0] = barrack[1] = laboratory = nullptr;
-	caps = 500;
-	water = 500;
-	food = 500;
-	melee_minimum = 1;
-	ranged_minimum = 1;
+	caps = 100;
+	water = 100;
+	food = 100;
+	melee_minimum = 20;
+	ranged_minimum = 20;
 	is_attacking = false;
 	defeated = false;
 	goal_tile_set = false;
@@ -184,6 +184,7 @@ std::vector<iPoint> AI_Player::CreateNodePath(iPoint origin, iPoint destination,
 	for (int i = 0; i < path.size(); i++)
 	{
 		node_path.push_back(path[i]);
+		path_to_enemy_base.push_back(path[i]);
 	}
 
 	return path;

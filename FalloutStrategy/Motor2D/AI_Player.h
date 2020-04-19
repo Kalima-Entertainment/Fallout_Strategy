@@ -22,10 +22,11 @@ public:
 public:
 	GenericPlayer* target_player;
 	bool is_attacking;
+	std::vector<iPoint> path_to_enemy_base;
+
 private:
 	void ChooseRandomPlayerEnemy();
 	DynamicEntity* GetClosestDynamicEntity();
-	std::vector<iPoint> path_to_enemy_base;
 	int ranged_minimum;
 	int melee_minimum;
 	j1Group* group;
