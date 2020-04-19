@@ -42,6 +42,7 @@ enum UI_Type {
 	button_back_pause,
 	button_cap,
 	button_mute,
+	button_fullscreen,
 
 	Slider_music,
 	Slider_fx,

@@ -92,7 +92,7 @@ public:
 public:
 
 	UI_element* main_menu[14];
-	UI_element* settings_menu[18];
+	UI_element* settings_menu[23];
 	UI_element* credits_menu[13];
 	UI_element* collaborators[9];
 	UI_element* select_faction_menu[12];
