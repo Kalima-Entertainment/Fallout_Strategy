@@ -8,6 +8,7 @@
 #include "j1Textures.h"
 #include "j1EntityManager.h"
 #include "j1Player.h"
+#include "AI_Player.h"
 #include "StaticEntity.h"
 #include <iostream>
 #include <string>
@@ -232,8 +233,19 @@ bool DynamicEntity::Update(float dt) {
 	if (this->info.current_group != nullptr)
 	{
 		if (info.current_group->IsGroupLead(this)) 
-			info.current_group->CheckForMovementRequest(dt);
+			if(this->faction == App->player->faction) info.current_group->CheckForMovementRequest(App->player->Map_mouseposition, dt);
+			else {
+				// -- Group leader owns any other faction, then store path nodes into a vector to reach enemy base.
+				((AI_Player*)this->owner)->CreateNodePath(this->current_tile, ((AI_Player*)this->owner)->target_player->base->current_tile, path_node);
+
+				// -- Make a movement request each node, when reached we proceed to reach next one until we finish all node list.
+				for (int i = 0; i < path_node.size(); i++) this->info.current_group->CheckForMovementRequest(path_node[i], dt);
+				
+				// -- When node list finished we make last request move to reach enemy base.
+				this->info.current_group->CheckForMovementRequest(((AI_Player*)this->owner)->target_player->base->current_tile, dt);
+			}
 	}
+
 
 	//save dt for animations
 	last_dt = dt;

@@ -46,9 +46,9 @@ int j1Group::GetSize()
 	return Units.size();
 }
 
-void j1Group::CheckForMovementRequest(float dt)
+void j1Group::CheckForMovementRequest(iPoint destiny, float dt)
 {
-	App->Mmanager->Move(this, dt);
+	App->Mmanager->Move(this, destiny, dt);
 }
 
 bool j1Group::IsGroupLead(j1Entity* entity)
