@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="left-up" width="5" height="1" tilewidth="500" tileheight="500" nextobjectid="1">
- <tileset firstgid="1" name="Buildings" tilewidth="500" tileheight="500" tilecount="128" columns="16">
-  <image source="Ghouls_Buildings.png" width="8192" height="4096"/>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="6" height="1" tilewidth="256" tileheight="256" nextobjectid="1">
+ <tileset firstgid="1" name="buildings" tilewidth="256" tileheight="256" tilecount="128" columns="16">
+  <image source="Ghouls_Buildings.png" width="4096" height="2048"/>
   <tile id="0">
    <properties>
     <property name="base" value="idle"/>
@@ -107,18 +107,39 @@
     <frame tileid="105" duration="100"/>
     <frame tileid="106" duration="100"/>
     <frame tileid="107" duration="100"/>
-    <frame tileid="108" duration="100"/>
-    <frame tileid="109" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="112">
+   <properties>
+    <property name="laboratory" value="die"/>
+   </properties>
+   <animation>
+    <frame tileid="112" duration="100"/>
+    <frame tileid="113" duration="100"/>
+    <frame tileid="114" duration="100"/>
+    <frame tileid="115" duration="100"/>
+    <frame tileid="116" duration="100"/>
+    <frame tileid="117" duration="100"/>
+    <frame tileid="118" duration="100"/>
+    <frame tileid="119" duration="100"/>
+    <frame tileid="120" duration="100"/>
+    <frame tileid="121" duration="100"/>
+    <frame tileid="122" duration="100"/>
+    <frame tileid="123" duration="100"/>
+    <frame tileid="124" duration="100"/>
+    <frame tileid="125" duration="100"/>
+    <frame tileid="126" duration="100"/>
    </animation>
   </tile>
  </tileset>
- <layer name="Capa de Patrones 1" width="5" height="1">
+ <layer name="Tile Layer 1" width="6" height="1">
   <data>
    <tile gid="1"/>
    <tile gid="33"/>
    <tile gid="65"/>
    <tile gid="76"/>
    <tile gid="97"/>
+   <tile gid="113"/>
   </data>
  </layer>
 </map>
