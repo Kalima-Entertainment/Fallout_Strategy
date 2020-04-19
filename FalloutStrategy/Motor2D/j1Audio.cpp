@@ -68,6 +68,7 @@ bool j1Audio::Awake(pugi::xml_node& config)
 	Ghoul_attack = LoadFx("audio/fx/CharactersSounds/Ghouls/Ghouls_Attack.wav");
 
 	pistol = LoadFx("audio/fx/Others/Weapons/pistolheavySingle1.wav");
+	pistol2 = LoadFx("audio/fx/Others/Weapons/pistolheavySingle2.wav");
 	minigun = LoadFx("audio/fx/Others/Weapons/minigunBurst1.wav");
 	explode = LoadFx("audio/fx/Others/Weapons/bigexplode1.wav");
 	factory = LoadFx("audio/fx/Others/Weapons/factory_working.wav");
