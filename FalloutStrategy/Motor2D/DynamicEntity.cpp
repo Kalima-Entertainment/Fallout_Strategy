@@ -242,12 +242,28 @@ bool DynamicEntity::Update(float dt) {
 				// -- Group leader owns any other faction, then store path nodes into a vector to reach enemy base.
 				if (target_tile == iPoint(-1,-1)) {
 					target_tile = ai_owner->path_to_enemy_base.back();
+					if (!App->pathfinding->IsWalkable(target_tile)) {
+						LOG("Invalid node");
+						target_tile = App->pathfinding->FindWalkableAdjacentTile(target_tile);
+					}
 				}
 				else if (TargetTileReached(target_tile) == true)
 				{
 					ai_owner->path_to_enemy_base.pop_back();
-					ai_owner->goal_tile_set = false;
 					target_tile = ai_owner->path_to_enemy_base.back();
+
+					if (!App->pathfinding->IsWalkable(target_tile))
+					{
+						LOG("Invalid node");
+						target_tile = App->pathfinding->FindWalkableAdjacentTile(target_tile);
+					}
+
+
+					LOG("New node position x: %i y: %i", target_tile.x, target_tile.y);
+					ai_owner->goal_tile_set = false;
+
+					if (ai_owner->path_to_enemy_base.size() <= 0)
+						target_tile = ai_owner->target_player->base->current_tile;
 				}
 				// -- Make a movement request each node, when reached we proceed to reach next one until we finish all node list.
 				this->info.current_group->CheckForMovementRequest(target_tile, dt);

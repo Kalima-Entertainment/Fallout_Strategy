@@ -147,6 +147,8 @@ std::vector<iPoint> AI_Player::CreateNodePath(iPoint origin, iPoint destination,
 	std::vector<iPoint> node_map = App->ai_manager->node_map;
 	//App->ai_manager->GetNodeMap(node_map);
 	current_node = node_map.back();
+	origin_node = node_map[0];
+	destination_node = node_map[0];
 
 	for (int i = 0; i < node_map.size(); i++)
 	{
@@ -160,6 +162,7 @@ std::vector<iPoint> AI_Player::CreateNodePath(iPoint origin, iPoint destination,
 			destination_node = node_map[i];
 	}
 
+	current_node = origin_node;
 	path.push_back(current_node);
 
 	while (current_node != destination_node)
