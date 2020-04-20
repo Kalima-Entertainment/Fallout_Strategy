@@ -43,6 +43,7 @@ enum UI_Type {
 	button_cap,
 	button_mute,
 	button_fullscreen,
+	button_win_lose_to_main,
 
 	Slider_music,
 	Slider_fx,
@@ -114,8 +115,6 @@ public:
 	bool destroy;
 
 	bool drawable = true;
-
-	bool hover = false;
 
 	//pointer to an element
 	UI_element*	element_UI;

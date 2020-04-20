@@ -474,6 +474,7 @@ void MenuManager::CreateVault_Barrack() {
 	current_menu = Menu::BUI_BASES;
 
 }
+
 void MenuManager::CreateVault_Lab() {
 
 	//Buttons
@@ -495,6 +496,30 @@ void MenuManager::CreateVault_Lab() {
 
 }
 
+void MenuManager::CreateWinLoseScene() {
+
+	//Images+
+	if(App->scene->win)
+	{
+		win_scene[0] = (j1Image*)App->gui->CreateImage(0, 0, Image, { 0, 3190, 1280, 720 }, NULL, this);
+	}
+	else
+	{
+		win_scene[0] = (j1Image*)App->gui->CreateImage(0, 0, Image, { 1281, 3190, 1280, 720 }, NULL, this);
+	}
+
+	//Buttons
+	win_scene[1] = (UI_Button*)App->gui->CreateButton(108, 260, button_exit, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+	win_scene[2] = (UI_Button*)App->gui->CreateButton(108, 350, button_win_lose_to_main, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+
+	//Labels
+	win_scene[3] = (UI_Label*)App->gui->CreateLabel(195, 278, Label, "EXIT", NULL, this, NULL);
+	win_scene[4] = (UI_Label*)App->gui->CreateLabel(140, 368, Label, "MAIN MENU", NULL, this, NULL);
+	
+	last_menu = current_menu;
+	current_menu = Menu::WIN_LOSE_SCENE;
+
+}
 
 void MenuManager::DestroyMenu(Menu menu) {
 
@@ -523,10 +548,12 @@ void MenuManager::DestroyMenu(Menu menu) {
 	case Menu::GUI:
 		App->gui->DeleteArrayElements(gui_ingame, 1);
 		break;
-
 	case Menu::RESOURCES:
 		App->gui->DeleteArrayElements(resources, 3);
 		break;
+	case Menu::WIN_LOSE_SCENE:
+		App->gui->DeleteArrayElements(win_scene, 5);
+		
 
 	default:
 		break;

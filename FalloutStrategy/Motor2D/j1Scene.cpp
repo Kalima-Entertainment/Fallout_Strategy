@@ -152,6 +152,17 @@ bool j1Scene::Update(float dt)
 	//App->win->SetTitle(title.GetString());
 	*/
 
+	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+	{
+		
+		win = false;
+		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+		App->menu_manager->CreateWinLoseScene();
+		App->entities->Disable();
+		App->scene->Disable();
+		App->isPaused = false;
+	}
+
 	return true;
 }
 
@@ -225,8 +236,11 @@ void j1Scene::CheckWinner() {
 	{
 		if (players[player_faction]->defeated) {
 			//LOSE
-			App->menu_manager->CreateMainMenu();
+			win = false;
 			App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+			App->menu_manager->CreateWinLoseScene();
+			App->entities->Disable();
+			App->scene->Disable();
 			App->isPaused = false;
 		}
 		else if (players[i]->defeated){
@@ -235,8 +249,12 @@ void j1Scene::CheckWinner() {
 	}
 	//WIN
 	if (beaten_enemies == 3) {
-		App->menu_manager->CreateMainMenu();
+		win = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+		App->menu_manager->CreateWinLoseScene();
+		App->entities->Disable();
+		App->scene->Disable();
 		App->isPaused = false;
+		
 	}
 }

@@ -22,6 +22,7 @@ enum class Menu {
 	PAUSE_MENU,
 	GUI,
 	BUI_BASES,
+	WIN_LOSE_SCENE,
 	NO_MENU,
 };
 
@@ -87,6 +88,8 @@ public:
 	void CreateVault_Barrack();
 	void CreateVault_Lab();
 
+	void CreateWinLoseScene();
+	
 
 
 public:
@@ -116,6 +119,8 @@ public:
 	UI_element* supermutant_base[5];
 	UI_element* supermutant_barrack[7];
 	UI_element* supermutant_lab[3];
+
+	UI_element* win_scene[5];
 
 	Menu current_menu;
 	Menu last_menu;

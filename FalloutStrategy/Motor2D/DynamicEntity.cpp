@@ -249,9 +249,8 @@ bool DynamicEntity::Update(float dt) {
 						target_tile = App->pathfinding->ExpandTile(target_tile);
 						LOG("New node position x: %i y: %i", target_tile.x, target_tile.y);
 					}
-
-					LOG("Starting position x: %i y: %i", target_tile.x, target_tile.y);
 					ai_owner->goal_tile_set = false;
+					LOG("Starting position x: %i y: %i", target_tile.x, target_tile.y);
 				}
 				else if (TargetTileReached(target_tile) == true)
 				{
@@ -281,9 +280,10 @@ bool DynamicEntity::Update(float dt) {
 
 		//if about to reach the base pathfind to attack it
 		if (this->faction != App->player->faction) {
-			if (target_tile == ((AI_Player*)owner)->target_player->base->current_tile) {
+			if (((AI_Player*)owner)->path_to_enemy_base.size() == 0) {
 				info.current_group->removeUnit(this);
 				info.current_group = nullptr;
+				target_tile = ((AI_Player*)owner)->target_player->base->current_tile;
 				PathfindToPosition(target_tile);
 				state = WALK;
 				target_entity = ((AI_Player*)owner)->target_player->base;

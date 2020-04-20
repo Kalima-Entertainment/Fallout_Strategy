@@ -63,7 +63,7 @@ public:
 	bool cap = false;
 	bool fullscreen = false;
 
-	void AddElementToShow(UI_element*);
+	void DoNotShowElement(UI_element*);
 
 	j1Image* vault_image = nullptr;
 	j1Image* ghoul_image = nullptr;
