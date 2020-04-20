@@ -340,9 +340,19 @@ bool UI_Button::Update(float dt)
 			
 			if (t == button_win_lose_to_main)
 			{
+				/*App->menu_manager->DestroyMenu(Menu::WIN_LOSE_SCENE);
+				App->menu_manager->CreateMainMenu();
+				App->audio->PlayFx(1, back_fx, 0);
+				App->transition->transition = true;
+				App->transition->fadetimer.Start();*/
+
+
 				App->menu_manager->DestroyMenu(Menu::WIN_LOSE_SCENE);
 				App->menu_manager->CreateMainMenu();
 				App->audio->PlayFx(1, back_fx, 0);
+				App->entities->Disable();
+				App->scene->Disable();
+				App->Mmanager->Disable();
 				App->transition->transition = true;
 				App->transition->fadetimer.Start();
 			}
