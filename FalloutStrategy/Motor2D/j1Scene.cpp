@@ -152,7 +152,7 @@ bool j1Scene::Update(float dt)
 	//App->win->SetTitle(title.GetString());
 	*/
 
-	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+	if(App->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
 	{
 		
 		win = false;
