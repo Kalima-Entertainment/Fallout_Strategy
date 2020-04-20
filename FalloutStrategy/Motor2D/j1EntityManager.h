@@ -56,7 +56,6 @@ public:
 	// -----------------------------------------------------------------------------------------------------------------------------
 
 	j1Entity*		CreateEntity(Faction faction, EntityType type, int position_x, int position_y, GenericPlayer* owner = nullptr);
-	virtual void	SpawnUnit(int buildingID, EntityType type);
 
 	//Find entities
 	j1Entity*		FindEntityByTile(iPoint tile);
@@ -91,6 +90,11 @@ public:
 	j1Timer sort_timer;
 	SDL_Texture* selected_unit_tex;
 
+	bool loading_reference_entities;
+
+private:
+	int loading_faction;
+	int loading_entity;
 };
 
 #endif // !_ENTITY_MANAGER_H_

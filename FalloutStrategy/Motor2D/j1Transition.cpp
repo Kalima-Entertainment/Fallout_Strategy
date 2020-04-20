@@ -114,11 +114,11 @@ bool j1Transition::CleanUp()
 bool j1Transition::Update(float dt)
 {
 	lastdt = dt;
-	Transition();
 	return true;
 }
-bool j1Transition::PostUpdate(float dt)
+bool j1Transition::PostUpdate()
 {
+	Transition();
 	return true;
 }
 
@@ -134,16 +134,14 @@ void j1Transition::Transition()
 		App->render->Blit(background, 0, 0,0,1.0F,0);
 		App->render->Blit(gif_tex, 536, 191, &animationGif.GetCurrentFrame(lastdt),1.0F,0);
 		App->render->Blit(logo_tex, 470, 400, &animationLogo.GetCurrentFrame(lastdt), 1.0F, 0);
-		App->gui->active = false;
-		App->minimap->active = false;
-		App->entities->active = false;
-	}
-	
-	if (fadetimer.Read() > 6000)
-	{
-		transition = false;
-		App->gui->active = true;
-		App->minimap->active = true;
-		App->entities->active = true;
+
+		if (!App->entities->loading_reference_entities)
+		{
+			transition = false;
+			App->gui->active;
+			App->minimap->active;
+			App->scene->Enable();
+		}
+
 	}
 }

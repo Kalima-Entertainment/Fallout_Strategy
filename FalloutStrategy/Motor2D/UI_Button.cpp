@@ -400,7 +400,6 @@ bool UI_Button::Update(float dt)
 				App->player->Enable();
 				App->entities->Enable();
 				App->Mmanager->Enable();
-				App->scene->Enable();
 				App->menu_manager->CreateGUI();
 				App->menu_manager->CreateResources();
 				App->transition->fadetimer.Start();
@@ -418,12 +417,10 @@ bool UI_Button::Update(float dt)
 				App->player->Enable();
 				App->entities->Enable();
 				App->Mmanager->Enable();
-				App->scene->Enable();
 				App->menu_manager->CreateGUI();
 				App->menu_manager->CreateResources();
 				App->transition->fadetimer.Start();
 				App->transition->transition = true;
-
 			}
 
 			if (t == button_select_brotherhood)
@@ -437,7 +434,6 @@ bool UI_Button::Update(float dt)
 				App->player->Enable();
 				App->entities->Enable();
 				App->Mmanager->Enable();
-				App->scene->Enable();
 				App->menu_manager->CreateGUI();
 				App->menu_manager->CreateResources();
 				App->transition->fadetimer.Start();
@@ -455,7 +451,6 @@ bool UI_Button::Update(float dt)
 				App->player->Enable();
 				App->entities->Enable();
 				App->Mmanager->Enable();
-				App->scene->Enable();
 				App->menu_manager->CreateGUI();
 				App->menu_manager->CreateResources();
 				App->transition->fadetimer.Start();
