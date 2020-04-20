@@ -430,8 +430,7 @@ bool j1EntityManager::PostUpdate()
 					}
 					else if (static_entity->type == BARRACK) {
 
-						if (count == 0) {
-
+						if (!showing_building_menu) {
 							App->menu_manager->CreateGhouls_Barrack();
 							showing_building_menu = true;
 						}
