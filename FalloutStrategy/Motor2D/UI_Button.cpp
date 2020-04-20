@@ -313,15 +313,15 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_cap) {
 				
-				cap = !cap;
+				App->gui->cap = !App->gui->cap;
 				App->gui->Delete_Element(App->menu_manager->settings_menu[21]);
 
-				if (cap == false) {
+				if (App->gui->cap == false) {
 					App->capped_ms = 1000 / 60;
 					App->gui->Delete_Element(cap_label);
 					cap_label = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "60", NULL, this, NULL, "StackedPixelMedium");
 				}
-				else if (cap == true) {
+				else if (App->gui->cap == true) {
 					App->capped_ms = 1000 / 30;
 					App->gui->Delete_Element(cap_label);
 					cap_label = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "30", NULL, this, NULL, "StackedPixelMedium");
@@ -331,15 +331,16 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_fullscreen) {
 				
-				fullscreen = !fullscreen;
+				App->gui->fullscreen = !App->gui->fullscreen;
 
 				App->gui->Delete_Element(App->menu_manager->settings_menu[22]);
-				if (fullscreen == true) {
+
+				if (App->gui->fullscreen == true) {
 					App->win->ChangeFullScreen(true);
 					App->gui->Delete_Element(fullscreen_label);
 					fullscreen_label = (UI_Label*)App->gui->CreateLabel(756, 613, Label, "YES", NULL, this, NULL, "StackedPixelMedium");
 				}
-				else if (fullscreen == false) {
+				else if (App->gui->fullscreen == false) {
 					App->win->ChangeFullScreen(false);
 					App->gui->Delete_Element(fullscreen_label);
 					fullscreen_label = (UI_Label*)App->gui->CreateLabel(763, 613, Label, "NO", NULL, this, NULL, "StackedPixelMedium");

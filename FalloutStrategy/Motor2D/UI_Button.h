@@ -60,8 +60,6 @@ public:
 	int counter;
 	int character_fx;
 
-	bool cap = false;
-	bool fullscreen = false;
 
 	void DoNotShowElement(UI_element*);
 

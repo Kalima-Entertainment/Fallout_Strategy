@@ -116,6 +116,7 @@ public:
 
 	bool drawable = true;
 
+
 	//pointer to an element
 	UI_element*	element_UI;
 
