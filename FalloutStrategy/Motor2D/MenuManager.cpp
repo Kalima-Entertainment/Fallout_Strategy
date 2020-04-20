@@ -533,12 +533,12 @@ void MenuManager::CreateWinLoseScene() {
 	}
 
 	//Buttons
-	win_scene[1] = (UI_Button*)App->gui->CreateButton(108, 260, button_exit, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-	win_scene[2] = (UI_Button*)App->gui->CreateButton(108, 350, button_win_lose_to_main, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+	win_scene[1] = (UI_Button*)App->gui->CreateButton(108, 260, button_win_lose_to_main, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+	win_scene[2] = (UI_Button*)App->gui->CreateButton(108, 350, button_exit, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
 
 	//Labels
-	win_scene[3] = (UI_Label*)App->gui->CreateLabel(195, 278, Label, "EXIT", NULL, this, NULL);
-	win_scene[4] = (UI_Label*)App->gui->CreateLabel(140, 368, Label, "MAIN MENU", NULL, this, NULL);
+	win_scene[3] = (UI_Label*)App->gui->CreateLabel(140, 278, Label, "MAIN MENU", NULL, this, NULL);
+	win_scene[4] = (UI_Label*)App->gui->CreateLabel(195, 368, Label, "EXIT", NULL, this, NULL);
 	
 	last_menu = current_menu;
 	current_menu = Menu::WIN_LOSE_SCENE;

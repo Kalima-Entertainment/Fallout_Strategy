@@ -155,6 +155,16 @@ bool j1Scene::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
 	{
 		
+		win = true;
+		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+		App->menu_manager->CreateWinLoseScene();
+		App->entities->Disable();
+		App->scene->Disable();
+		App->isPaused = false;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_KP_2) == KEY_DOWN)
+	{
+
 		win = false;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 		App->menu_manager->CreateWinLoseScene();
