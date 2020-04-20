@@ -42,6 +42,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 	action_time = 3.0f;
 	resource_collected = 0;
 	sprite_size = 128;	
+	target_tile = { -1,-1 };
 }
 
 DynamicEntity::~DynamicEntity() {
@@ -232,31 +233,26 @@ bool DynamicEntity::Update(float dt) {
 	//Group Movement Request
 	if (this->info.current_group != nullptr)
 	{
-		if (info.current_group->IsGroupLead(this)) 
-			if(this->faction == App->player->faction) 
+		if (info.current_group->IsGroupLead(this)) {
+			if (this->faction == App->player->faction)
 				info.current_group->CheckForMovementRequest(App->player->Map_mouseposition, dt);
 
 			else {
+				AI_Player* ai_owner = ((AI_Player*)this->owner);
 				// -- Group leader owns any other faction, then store path nodes into a vector to reach enemy base.
-				if (((AI_Player*)this->owner)->path_to_enemy_base.size() == 0) {
-					((AI_Player*)this->owner)->CreateNodePath(this->current_tile, ((AI_Player*)this->owner)->target_player->base->current_tile, path_node);
+				if (target_tile == iPoint(-1,-1)) {
+					target_tile = ai_owner->path_to_enemy_base.back();
 				}
-
-				// -- Make a movement request each node, when reached we proceed to reach next one until we finish all node list.
-				this->info.current_group->CheckForMovementRequest(path_node.front(), dt);
-				
-				// -- When node list finished we make last request move to reach enemy base.
-				this->info.current_group->CheckForMovementRequest(((AI_Player*)this->owner)->target_player->base->current_tile, dt);
-				this->owner->goal_tile_set = true;
-
-
-				if (((AI_Player*)this->owner)->path_to_enemy_base.size() > 0)
+				else if (TargetTileReached(target_tile) == true)
 				{
-					if (this->current_tile == ((AI_Player*)this->owner)->path_to_enemy_base.front()) {
-						((AI_Player*)this->owner)->path_to_enemy_base.erase(((AI_Player*)this->owner)->path_to_enemy_base.begin());
-					}
+					ai_owner->path_to_enemy_base.pop_back();
+					ai_owner->goal_tile_set = false;
+					target_tile = ai_owner->path_to_enemy_base.back();
 				}
+				// -- Make a movement request each node, when reached we proceed to reach next one until we finish all node list.
+				this->info.current_group->CheckForMovementRequest(target_tile, dt);
 			}
+		}
 	}
 
 	//save dt for animations
@@ -626,6 +622,36 @@ void DynamicEntity::DrawQuad()
 	App->render->DrawQuad(entityrect, unitinfo.color.r, unitinfo.color.g, unitinfo.color.b, unitinfo.color.a, false);
 }
 
+bool DynamicEntity::TargetTileReached(iPoint target_tile) {
+	bool ret = false;
+	
+	//north-west
+	if ((current_tile.x - 1 == target_tile.x) && (current_tile.y - 1 == target_tile.y))
+		return true;
+	//north
+	if ((current_tile.x == target_tile.x) && (current_tile.y - 1 == target_tile.y))
+		return true;
+	//north-east
+	if ((current_tile.x + 1 == target_tile.x) && (current_tile.y - 1 == target_tile.y))
+		return true;
+	//east
+	if ((current_tile.x + 1 == target_tile.x) && (current_tile.y == target_tile.y))
+		return true;
+	//south-east
+	if ((current_tile.x + 1 == target_tile.x) && (current_tile.y + 1 == target_tile.y))
+		return true;
+	//south
+	if ((current_tile.x  == target_tile.x) && (current_tile.y + 1 == target_tile.y))
+		return true;
+	//south-west
+	if ((current_tile.x - 1 == target_tile.x) && (current_tile.y + 1 == target_tile.y))
+		return true;
+	//west
+	if ((current_tile.x - 1 == target_tile.x) && (current_tile.y == target_tile.y))
+		return true;
+
+	return ret;
+}
 
 // --- UnitInfo Constructors and Destructor ---
 

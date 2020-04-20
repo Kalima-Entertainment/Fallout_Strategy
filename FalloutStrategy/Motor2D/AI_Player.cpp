@@ -13,11 +13,11 @@
 AI_Player::AI_Player(Faction g_faction) : GenericPlayer() {
 	faction = g_faction;
 	base = barrack[0] = barrack[1] = laboratory = nullptr;
-	caps = 100;
-	water = 100;
-	food = 100;
-	melee_minimum = 20;
-	ranged_minimum = 20;
+	caps = 500;
+	water = 500;
+	food = 500;
+	melee_minimum = 1;
+	ranged_minimum = 1;
 	is_attacking = false;
 	defeated = false;
 	goal_tile_set = false;
@@ -121,6 +121,7 @@ void AI_Player::ChooseRandomPlayerEnemy() {
 
 	iPoint origin = { (int)troops[0]->current_tile.x, (int)troops[0]->current_tile.y };
 	iPoint enemy_base_position = App->entities->ClosestTile(origin, target_player->base->tiles);
+	CreateNodePath(troops[0]->current_tile, enemy_base_position, path_to_enemy_base);
 	App->Mmanager->CreateGroup(troops);
 }
 
@@ -141,6 +142,7 @@ DynamicEntity* AI_Player::GetClosestDynamicEntity() {
 std::vector<iPoint> AI_Player::CreateNodePath(iPoint origin, iPoint destination, std::vector<iPoint> &node_path) {
 	std::vector<iPoint> path;
 	iPoint current_node;
+	iPoint origin_node;
 	iPoint destination_node;
 	std::vector<iPoint> node_map = App->ai_manager->node_map;
 	//App->ai_manager->GetNodeMap(node_map);
@@ -148,8 +150,8 @@ std::vector<iPoint> AI_Player::CreateNodePath(iPoint origin, iPoint destination,
 
 	for (int i = 0; i < node_map.size(); i++)
 	{
-		if (node_map[i].DistanceTo(origin) < current_node.DistanceTo(origin))
-			current_node = node_map[i];
+		if (node_map[i].DistanceTo(origin) < origin_node.DistanceTo(origin))
+			origin_node = node_map[i];
 	}
 
 	for (int i = 0; i < node_map.size(); i++)
@@ -181,10 +183,11 @@ std::vector<iPoint> AI_Player::CreateNodePath(iPoint origin, iPoint destination,
 		path.push_back(best_node);
 	}
 
+	std::reverse(path.begin(), path.end());
+
 	for (int i = 0; i < path.size(); i++)
 	{
 		node_path.push_back(path[i]);
-		path_to_enemy_base.push_back(path[i]);
 	}
 
 	return path;

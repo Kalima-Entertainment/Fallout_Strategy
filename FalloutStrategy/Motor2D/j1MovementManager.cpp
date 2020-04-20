@@ -138,6 +138,7 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 				{
 					// --- If any other unit of the group has the same goal, change the goal tile ---
 					group->SetUnitGoalTile((*unit));
+					(*unit)->owner->goal_tile_set = true;
 				}
 				else
 				{
