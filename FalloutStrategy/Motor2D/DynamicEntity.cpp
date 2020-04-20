@@ -244,7 +244,9 @@ bool DynamicEntity::Update(float dt) {
 					target_tile = ai_owner->path_to_enemy_base.back();
 					if (!App->pathfinding->IsWalkable(target_tile)) {
 						LOG("Invalid node");
-						target_tile = App->pathfinding->FindWalkableAdjacentTile(target_tile);
+						target_tile = App->pathfinding->ExpandTile(target_tile);
+						LOG("New node position x: %i y: %i", target_tile.x, target_tile.y);
+						ai_owner->goal_tile_set = false;
 					}
 				}
 				else if (TargetTileReached(target_tile) == true)
@@ -255,9 +257,8 @@ bool DynamicEntity::Update(float dt) {
 					if (!App->pathfinding->IsWalkable(target_tile))
 					{
 						LOG("Invalid node");
-						target_tile = App->pathfinding->FindWalkableAdjacentTile(target_tile);
+						target_tile = App->pathfinding->ExpandTile(target_tile);
 					}
-
 
 					LOG("New node position x: %i y: %i", target_tile.x, target_tile.y);
 					ai_owner->goal_tile_set = false;

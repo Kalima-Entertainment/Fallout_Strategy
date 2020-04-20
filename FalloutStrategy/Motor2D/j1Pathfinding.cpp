@@ -264,3 +264,26 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 	return -1;
 }
+
+iPoint j1PathFinding::ExpandTile(iPoint target_tile) const {
+
+	iPoint pivot = target_tile;
+	int max = 1;
+	
+	while (!IsWalkable(pivot) && (max < 50))
+	{
+		for (int y = -max; y < max; y++)
+		{
+			for (int x = -max; x < max; x++)
+			{
+				pivot.x = target_tile.x + x;
+				pivot.y = target_tile.y + y;
+
+				if (IsWalkable(pivot)) 
+					return pivot;
+			}
+		}
+		max++;
+	}
+	return pivot;
+}
