@@ -36,10 +36,11 @@ public:
 	bool FindFreeAdjacents(iPoint* base_tile);
 	bool IsTileFree(iPoint* adjacent);
 
+public:
+	std::list <j1Entity*> Units;
 private:
 	iPoint last_goal = { 0,0 };
 
-	std::list <j1Entity*> Units;
 	std::list <iPoint*> Occupied_tiles;
 };
 

@@ -241,13 +241,17 @@ bool DynamicEntity::Update(float dt) {
 				AI_Player* ai_owner = ((AI_Player*)this->owner);
 				// -- Group leader owns any other faction, then store path nodes into a vector to reach enemy base.
 				if (target_tile == iPoint(-1,-1)) {
+
 					target_tile = ai_owner->path_to_enemy_base.back();
+
 					if (!App->pathfinding->IsWalkable(target_tile)) {
 						LOG("Invalid node");
 						target_tile = App->pathfinding->ExpandTile(target_tile);
 						LOG("New node position x: %i y: %i", target_tile.x, target_tile.y);
-						ai_owner->goal_tile_set = false;
 					}
+
+					LOG("Starting position x: %i y: %i", target_tile.x, target_tile.y);
+					ai_owner->goal_tile_set = false;
 				}
 				else if (TargetTileReached(target_tile) == true)
 				{
@@ -261,13 +265,28 @@ bool DynamicEntity::Update(float dt) {
 					}
 
 					LOG("New node position x: %i y: %i", target_tile.x, target_tile.y);
-					ai_owner->goal_tile_set = false;
 
-					if (ai_owner->path_to_enemy_base.size() <= 0)
-						target_tile = ai_owner->target_player->base->current_tile;
+					//if last node is reached go for the base
+					if (ai_owner->path_to_enemy_base.size() <= 0) { 
+						target_tile = ai_owner->target_player->base->current_tile; 
+					}
+
+					ai_owner->goal_tile_set = false;
 				}
+
 				// -- Make a movement request each node, when reached we proceed to reach next one until we finish all node list.
 				this->info.current_group->CheckForMovementRequest(target_tile, dt);
+			}
+		}
+
+		//if about to reach the base pathfind to attack it
+		if (this->faction != App->player->faction) {
+			if (target_tile == ((AI_Player*)owner)->target_player->base->current_tile) {
+				info.current_group->removeUnit(this);
+				info.current_group = nullptr;
+				PathfindToPosition(target_tile);
+				state = WALK;
+				target_entity = ((AI_Player*)owner)->target_player->base;
 			}
 		}
 	}
