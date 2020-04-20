@@ -285,6 +285,7 @@ bool j1EntityManager::CleanUp()
 	for (int i = 0; i < entities.size(); i++)
 	{
 		delete entities[i];
+		entities[i] = nullptr;
 	}
 
 	entities.clear();
@@ -304,7 +305,7 @@ bool j1EntityManager::Update(float dt)
 	BROFILER_CATEGORY("EntitiesUpdate", Profiler::Color::GreenYellow)
 	bool ret = true;
 
-	//load all textures and animations
+	//load all textures and animations on the go
 	if (loading_reference_entities) {
 		reference_entities[loading_faction][loading_entity]->LoadAnimations();
 		
@@ -528,6 +529,7 @@ bool j1EntityManager::PostUpdate()
 
 		for (int i = 0; i < entities.size(); i++)
 		{
+			//delete destroyed entities
 			if (entities[i]->to_destroy)
 			{
 				if (entities[i]->owner->DeleteEntity(entities[i]) == true) {
@@ -539,11 +541,13 @@ bool j1EntityManager::PostUpdate()
 			}
 			else
 			{
+				//camera culling
 				if ((entities[i]->position.x + entities[i]->sprite_size * 0.5f > -App->render->camera.x)
 					&& (entities[i]->position.x - entities[i]->sprite_size * 0.5f < -App->render->camera.x + App->render->camera.w)
 					&& (entities[i]->position.y + entities[i]->sprite_size * 0.25f > -App->render->camera.y)
 					&& (entities[i]->position.y - entities[i]->sprite_size * 0.25f < -App->render->camera.y + App->render->camera.h)) {
 
+					//sort and blit entities
 					if (sort_timer.Read() > 500) {
 						BubbleSortEntities();
 						sort_timer.Start();

@@ -18,6 +18,7 @@ j1MovementManager::j1MovementManager()
 
 j1MovementManager::~j1MovementManager()
 {
+
 }
 
 bool j1MovementManager::Update(float dt)

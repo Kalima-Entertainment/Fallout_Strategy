@@ -59,7 +59,12 @@ bool AI_Player::Update(float dt) {
 	//Spawn Units -------------------------------------------------
 
 	//melee-ranged proportion
-	float mr_proportion = melees / rangeds;
+	
+	float mr_proportion = 0;
+
+	if (rangeds > 0)
+		mr_proportion = melees / rangeds;
+
 
 	//spawn melee
 	if ((water > App->entities->unit_data[faction][MELEE].cost_water)&&(caps > App->entities->unit_data[faction][MELEE].cost_meat) && (mr_proportion < 2) && (barrack[0] != nullptr)) {

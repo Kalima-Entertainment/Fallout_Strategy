@@ -483,14 +483,13 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 	}
 }
 
-void StaticEntity::SpawnUnit(EntityType type) {
+void StaticEntity::SpawnUnit(EntityType type, bool no_cost) {
 
 	int cost_water, cost_meat;
 	int spawn_seconds;
 	//Look for that unit data (spawn_seconds and cost)
 
-
-	if ((faction == App->player->faction) && (App->player->god_mode)) {
+	if (((faction == App->player->faction) && (App->player->god_mode))||(no_cost == true)) {
 		cost_water = 0;
 		cost_meat = 0;
 		spawn_seconds = 0;

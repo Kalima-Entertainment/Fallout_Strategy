@@ -287,17 +287,6 @@ bool UI_Button::Update(float dt)
 	
 			if (t == button_start_game)
 			{
-				/*App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
-				App->audio->PlayFx(1, back_fx, 0);
-				App->gui->count = 0;
-				App->player->Enable();
-				App->entities->Enable();
-				App->Mmanager->Enable();
-				App->scene->Enable();
-				App->menu_manager->CreateGUI();
-				App->menu_manager->CreateResources();
-				App->transition->fadetimer.Start();
-				App->transition->transition = true;*/
 			}
 
 			if (t == button_pause_to_main)
@@ -307,6 +296,7 @@ bool UI_Button::Update(float dt)
 				App->audio->PlayFx(1, back_fx, 0);
 				App->entities->Disable();
 				App->scene->Disable();
+				App->Mmanager->Disable();
 				App->transition->transition = true;
 				App->transition->fadetimer.Start();
 			}

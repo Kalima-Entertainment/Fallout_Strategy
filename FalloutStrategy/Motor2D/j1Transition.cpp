@@ -12,6 +12,7 @@
 #include "j1Gui.h"
 #include "j1Minimap.h"
 #include "j1Audio.h"
+#include "j1MovementManager.h"
 
 #include "SDL_mixer\include\SDL_mixer.h"
 
@@ -118,30 +119,30 @@ bool j1Transition::Update(float dt)
 }
 bool j1Transition::PostUpdate()
 {
-	Transition();
+	if (transition)
+	{
+		Transition();
+	}
 	return true;
 }
 
 
 void j1Transition::Transition()
 {
-	if (transition == true)
+	Mix_PauseMusic();
+	if (Mix_Playing(1) == 0) {
+		App->audio->PlayFx(1, App->audio->loading, 0);
+	}
+	App->render->Blit(background, 0, 0,0,1.0F,0);
+	App->render->Blit(gif_tex, 536, 191, &animationGif.GetCurrentFrame(lastdt),1.0F,0);
+	App->render->Blit(logo_tex, 470, 400, &animationLogo.GetCurrentFrame(lastdt), 1.0F, 0);
+
+	if (!App->entities->loading_reference_entities)
 	{
-		Mix_PauseMusic();
-		if (Mix_Playing(1) == 0) {
-			App->audio->PlayFx(1, App->audio->loading, 0);
-		}
-		App->render->Blit(background, 0, 0,0,1.0F,0);
-		App->render->Blit(gif_tex, 536, 191, &animationGif.GetCurrentFrame(lastdt),1.0F,0);
-		App->render->Blit(logo_tex, 470, 400, &animationLogo.GetCurrentFrame(lastdt), 1.0F, 0);
-
-		if (!App->entities->loading_reference_entities)
-		{
-			transition = false;
-			App->gui->active;
-			App->minimap->active;
-			App->scene->Enable();
-		}
-
+		transition = false;
+		App->gui->active;
+		App->minimap->active;
+		App->Mmanager->Enable();
+		App->scene->Enable();
 	}
 }
