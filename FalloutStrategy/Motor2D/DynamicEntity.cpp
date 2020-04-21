@@ -59,6 +59,7 @@ DynamicEntity::~DynamicEntity() {
 bool DynamicEntity::Update(float dt) {
 
 	Mix_AllocateChannels(25);
+	//current_tile = App->map->WorldToMap(current_tile.x, current_tile.y);
 
 	switch (state)
 	{
@@ -324,7 +325,7 @@ bool DynamicEntity::Update(float dt) {
 }
 
 bool DynamicEntity::PostUpdate() {
-	
+
 	//tile debug
 	SDL_Rect tile_rect;
 	iPoint tex_position = App->map->MapToWorld(current_tile.x, current_tile.y);
@@ -359,8 +360,11 @@ bool DynamicEntity::PostUpdate() {
 	render_position = { (int)(position.x - sprite_size * 0.5f), (int)(position.y - 1.82f * TILE_SIZE)};
 	App->render->Blit(reference_entity->texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
-	if (App->render->debug)
-		App->render->DrawQuad({ (int)position.x -2, (int)position.y -2 , 4,4 }, 255, 0, 0, 255);
+	if (App->render->debug) 
+	{
+		App->render->DrawQuad({ (int)position.x - 2, (int)position.y - 2 , 4,4 }, 255, 0, 0, 255);
+		App->render->DrawQuad({ (int)(next_tile_rect_center.x - next_tile_rect_center.w * 0.5f), (int)(next_tile_rect_center.y - next_tile_rect_center.h * 0.5f ), 4,4 }, 0, 255, 0, 255);
+	}
 
 	//Rendering Selected Units Quad
 	if (this->info.IsSelected) DrawQuad();
@@ -380,7 +384,7 @@ void DynamicEntity::Move(float dt) {
 	if (path_to_target.size() > 0) {
 		//get next tile center
 		next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
-		next_tile_rect_center = { next_tile_position.x + HALF_TILE - 2, next_tile_position.y + HALF_TILE, 4, 4 };
+		next_tile_rect_center = { next_tile_position.x + HALF_TILE - 2, next_tile_position.y + HALF_TILE, 6, 6 };
 
 		//move to next tile
 		if ((position.x > next_tile_rect_center.x + next_tile_rect_center.w) && (position.x > next_tile_rect_center.x) && (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h)) {

@@ -34,7 +34,9 @@ bool GenericPlayer::DeleteEntity(j1Entity* entity) {
 		break;
 	case GATHERER:
 		for (int g = 0; g < gatherers_vector.size(); g++) {
-			gatherers_vector.erase(gatherers_vector.begin() + g);
+			if (gatherers_vector[g] == (DynamicEntity*)entity) {
+				gatherers_vector.erase(gatherers_vector.begin() + g);
+			}
 		}
 		gatherers--;
 		break;
@@ -50,10 +52,6 @@ bool GenericPlayer::DeleteEntity(j1Entity* entity) {
 		break;
 	default:
 		break;
-	}
-
-	if (base == nullptr) {
-		entity->owner->target_player = nullptr;
 	}
 
 	return ((base == nullptr) && (laboratory == nullptr) && (barrack[0] == nullptr) && (barrack[1] == nullptr));

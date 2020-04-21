@@ -96,7 +96,7 @@ iPoint j1PathFinding::FindNearestWalkableTile(iPoint origin, iPoint destination)
 	{
 		destination = App->entities->ClosestTile(origin, reference_resource_building->tiles);
 		destination = FindWalkableAdjacentTile(destination);
-		LOG("Building");
+		//LOG("Building");
 	}
 	else
 	{
