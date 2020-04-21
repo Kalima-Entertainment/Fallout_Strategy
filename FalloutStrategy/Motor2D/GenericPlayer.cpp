@@ -33,7 +33,7 @@ bool GenericPlayer::DeleteEntity(j1Entity* entity) {
 		rangeds--;
 		break;
 	case GATHERER:
-		for (int g = 0; g < gatherers; g++) {
+		for (int g = 0; g < gatherers_vector.size(); g++) {
 			gatherers_vector.erase(gatherers_vector.begin() + g);
 		}
 		gatherers--;

@@ -584,13 +584,10 @@ bool j1EntityManager::LoadReferenceEntityData() {
 	return ret;
 }
 
-void j1EntityManager::DestroyEntity(j1Entity* entity) {
-	delete entity;
-	entity = nullptr;
-}
+void j1EntityManager::DestroyEntity(j1Entity* entity) { entity->to_destroy = true;}
 
 void j1EntityManager::DestroyAllEntities() {
-	for (int i = REFERENCE_ENTITIES; i < entities.size(); i++)
+	for (int i = 0; i < entities.size(); i++)
 	{
 		entities[i]->to_destroy = true;
 	}
