@@ -105,6 +105,9 @@ bool AI_Player::Update(float dt) {
 	//Assign all attacking units an entity to attack
 	if (is_attacking) 
 	{
+		if ((target_building!=nullptr) && (target_building->state == EXPLODE))
+			target_building = nullptr;
+
 		if (target_building == nullptr) {
 			target_building = ChooseTargetBuilding();
 			target_building_position = target_building->current_tile;
@@ -212,7 +215,11 @@ std::vector<iPoint> AI_Player::CreateNodePath(iPoint origin, iPoint destination)
 			}
 		}
 		current_node = best_node;
-		path.push_back(best_node);
+
+		if (best_node.DistanceManhattan(destination) > 20)
+			path.push_back(best_node);
+		else
+			break;
 	}
 
 	//flip final path 

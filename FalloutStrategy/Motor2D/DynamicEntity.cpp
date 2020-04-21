@@ -79,7 +79,7 @@ bool DynamicEntity::Update(float dt) {
 				if (target_entity != nullptr)
 				{
 					//enemy target
-					if (faction != target_entity->faction) {
+					if ((faction != target_entity->faction)&&(node_path.size() == 0)) {
 						state = ATTACK;
 						target_entity->attacking_entity = this;
 						Attack();
