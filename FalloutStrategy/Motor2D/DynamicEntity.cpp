@@ -363,7 +363,7 @@ bool DynamicEntity::PostUpdate() {
 	if (App->render->debug) 
 	{
 		App->render->DrawQuad({ (int)position.x - 2, (int)position.y - 2 , 4,4 }, 255, 0, 0, 255);
-		App->render->DrawQuad({ (int)(next_tile_rect_center.x - next_tile_rect_center.w * 0.5f), (int)(next_tile_rect_center.y - next_tile_rect_center.h * 0.5f ), 4,4 }, 0, 255, 0, 255);
+		App->render->DrawQuad({ (int)(next_tile_rect_center.x - next_tile_rect_center.w), (int)(next_tile_rect_center.y - next_tile_rect_center.h ), 4,4 }, 0, 255, 0, 255);
 	}
 
 	//Rendering Selected Units Quad
@@ -387,22 +387,26 @@ void DynamicEntity::Move(float dt) {
 		next_tile_rect_center = { next_tile_position.x + HALF_TILE - 2, next_tile_position.y + HALF_TILE, 6, 6 };
 
 		//move to next tile
-		if ((position.x > next_tile_rect_center.x + next_tile_rect_center.w) && (position.x > next_tile_rect_center.x) && (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h)) {
+		if ((position.x > next_tile_rect_center.x + next_tile_rect_center.w) && (position.x > next_tile_rect_center.x) 
+			&& (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h)) {
 			direction = TOP_LEFT;
 			position.x -= speed.x * dt;
 			position.y -= speed.y * dt;
 		}
-		else if ((position.x < next_tile_rect_center.x) && (position.x < next_tile_rect_center.x + next_tile_rect_center.w) && (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h)) {
+		else if ((position.x < next_tile_rect_center.x) && (position.x < next_tile_rect_center.x + next_tile_rect_center.w) 
+			&& (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h)) {
 			direction = TOP_RIGHT;
 			position.x += speed.x * dt;
 			position.y -= speed.y * dt;
 		}
-		else if ((position.x > next_tile_rect_center.x) && (position.x > next_tile_rect_center.x + next_tile_rect_center.w) && (position.y < next_tile_rect_center.y) && (position.y < next_tile_rect_center.y + next_tile_rect_center.h)) {
+		else if ((position.x > next_tile_rect_center.x) && (position.x > next_tile_rect_center.x + next_tile_rect_center.w) 
+			&& (position.y < next_tile_rect_center.y) && (position.y < next_tile_rect_center.y + next_tile_rect_center.h)) {
 			direction = BOTTOM_LEFT;
 			position.x -= speed.x * dt;
 			position.y += speed.y * dt;
 		}
-		else if ((position.x < next_tile_rect_center.x) && (position.x < next_tile_rect_center.x + next_tile_rect_center.w) && (position.y < next_tile_rect_center.y) && (position.y < next_tile_rect_center.y + next_tile_rect_center.h)) {
+		else if ((position.x < next_tile_rect_center.x) && (position.x < next_tile_rect_center.x + next_tile_rect_center.w) 
+			&& (position.y < next_tile_rect_center.y) && (position.y < next_tile_rect_center.y + next_tile_rect_center.h)) {
 			direction = BOTTOM_RIGHT;
 			position.x += speed.x * dt;
 			position.y += speed.y * dt;
