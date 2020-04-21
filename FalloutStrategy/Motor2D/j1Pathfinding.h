@@ -39,6 +39,7 @@ public:
 	// Utility: return the walkability value of a tile
 	uchar GetTileAt(const iPoint& pos) const;
 
+	iPoint ExpandTile(iPoint target_tile) const;
 	iPoint FindWalkableAdjacentTile(iPoint point) const; 
 
 private:

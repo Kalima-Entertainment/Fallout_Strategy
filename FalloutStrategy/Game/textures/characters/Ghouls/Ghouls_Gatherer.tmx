@@ -167,7 +167,7 @@
   </tile>
   <tile id="108">
    <properties>
-    <property name="gatherer" value="top_right"/>
+    <property name="gather" value="top_right"/>
    </properties>
    <animation>
     <frame tileid="108" duration="100"/>
@@ -213,7 +213,7 @@
   </tile>
   <tile id="133">
    <properties>
-    <property name="gatherer" value="bottom_right"/>
+    <property name="gather" value="bottom_right"/>
    </properties>
    <animation>
     <frame tileid="133" duration="100"/>
@@ -259,7 +259,7 @@
   </tile>
   <tile id="158">
    <properties>
-    <property name="gatherer" value="bottom_left"/>
+    <property name="gather" value="bottom_left"/>
    </properties>
    <animation>
     <frame tileid="158" duration="100"/>
@@ -305,7 +305,7 @@
   </tile>
   <tile id="183">
    <properties>
-    <property name="gatherer" value="top_left"/>
+    <property name="gather" value="top_left"/>
    </properties>
    <animation>
     <frame tileid="183" duration="100"/>

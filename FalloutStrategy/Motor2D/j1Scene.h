@@ -65,6 +65,7 @@ public:
 	iPoint rectangle_origin = { 0,0 };
 	int rectangle_width = 0;
 	int rectangle_height = 0;
+	bool win = false;
 private:
 	int SongPlaying = 0;
 

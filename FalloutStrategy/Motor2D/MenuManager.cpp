@@ -103,8 +103,20 @@ void MenuManager::CreateSettings()
 	settings_menu[7] = (UI_Label*)App->gui->CreateLabel(360, 150, Label, "MUSIC VOLUME", NULL, this, NULL);
 	settings_menu[8] = (UI_Label*)App->gui->CreateLabel(555, 50, Label, "SETTINGS", NULL, this, NULL);
 	settings_menu[18] = (UI_Label*)App->gui->CreateLabel(685, 535, Label, "FULLSCREEN", NULL, this, NULL, "StackedPixelMedium");
-	settings_menu[21] = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "60", NULL, this, NULL, "StackedPixelMedium");
-	settings_menu[22] = (UI_Label*)App->gui->CreateLabel(763, 613, Label, "NO", NULL, this, NULL, "StackedPixelMedium");
+	
+	if (App->gui->fullscreen == true) {
+		settings_menu[22] = (UI_Label*)App->gui->CreateLabel(756, 613, Label, "YES", NULL, this, NULL, "StackedPixelMedium");
+	}
+	else {
+		settings_menu[22] = (UI_Label*)App->gui->CreateLabel(763, 613, Label, "NO", NULL, this, NULL, "StackedPixelMedium");
+	}
+
+	if (App->gui->cap == true) {
+		settings_menu[21] = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "30", NULL, this, NULL, "StackedPixelMedium");
+	}
+	else {
+		settings_menu[21] = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "60", NULL, this, NULL, "StackedPixelMedium");
+	}
 
 	//Music Slider
 	settings_menu[9] = (UI_Slider*)App->gui->CreateSlider(465, 220, Slider_music, { 1834,842,329,27 }, { 1792,926,33,16 }, 400, NULL, this);
@@ -222,9 +234,21 @@ void MenuManager::CreatePauseSettings()
 	settings_menu[7] = (UI_Label*)App->gui->CreateLabel(360, 150, Label, "MUSIC VOLUME", NULL, this, NULL);
 	settings_menu[8] = (UI_Label*)App->gui->CreateLabel(555, 50, Label, "SETTINGS", NULL, this, NULL);
 	settings_menu[18] = (UI_Label*)App->gui->CreateLabel(685, 535, Label, "FULLSCREEN", NULL, this, NULL, "StackedPixelMedium");
-	settings_menu[21] = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "60", NULL, this, NULL, "StackedPixelMedium");
-	settings_menu[22] = (UI_Label*)App->gui->CreateLabel(763, 613, Label, "NO", NULL, this, NULL, "StackedPixelMedium");
+	
+	if (App->gui->fullscreen == true) {
+		settings_menu[22] = (UI_Label*)App->gui->CreateLabel(763, 613, Label, "YES", NULL, this, NULL, "StackedPixelMedium");
+	}
+	else{
+		settings_menu[22] = (UI_Label*)App->gui->CreateLabel(763, 613, Label, "NO", NULL, this, NULL, "StackedPixelMedium");
+	}
 
+	if (App->gui->cap == true) {
+		settings_menu[21] = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "30", NULL, this, NULL, "StackedPixelMedium");
+	}
+	else{
+		settings_menu[21] = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "60", NULL, this, NULL, "StackedPixelMedium");
+	}
+	
 	//Music Slider
 	settings_menu[9] = (UI_Slider*)App->gui->CreateSlider(465, 220, Slider_music, { 1834,842,329,27 }, { 1792,926,33,16 }, 400, NULL, this);
 	settings_menu[10] = (UI_Button*)App->gui->CreateButton(435, 220, Button_slider_music_left, { 1671,880,26,25 }, { 1738,880,26,25 }, { 1738,880,26,25 }, NULL, this);
@@ -474,6 +498,7 @@ void MenuManager::CreateVault_Barrack() {
 	current_menu = Menu::BUI_BASES;
 
 }
+
 void MenuManager::CreateVault_Lab() {
 
 	//Buttons
@@ -495,6 +520,30 @@ void MenuManager::CreateVault_Lab() {
 
 }
 
+void MenuManager::CreateWinLoseScene() {
+
+	//Images+
+	if(App->scene->win)
+	{
+		win_scene[0] = (j1Image*)App->gui->CreateImage(0, 0, Image, { 0, 3190, 1280, 720 }, NULL, this);
+	}
+	else
+	{
+		win_scene[0] = (j1Image*)App->gui->CreateImage(0, 0, Image, { 1281, 3190, 1280, 720 }, NULL, this);
+	}
+
+	//Buttons
+	win_scene[1] = (UI_Button*)App->gui->CreateButton(108, 260, button_win_lose_to_main, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+	win_scene[2] = (UI_Button*)App->gui->CreateButton(108, 350, button_exit, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+
+	//Labels
+	win_scene[3] = (UI_Label*)App->gui->CreateLabel(140, 278, Label, "MAIN MENU", NULL, this, NULL);
+	win_scene[4] = (UI_Label*)App->gui->CreateLabel(195, 368, Label, "EXIT", NULL, this, NULL);
+	
+	last_menu = current_menu;
+	current_menu = Menu::WIN_LOSE_SCENE;
+
+}
 
 void MenuManager::DestroyMenu(Menu menu) {
 
@@ -523,10 +572,12 @@ void MenuManager::DestroyMenu(Menu menu) {
 	case Menu::GUI:
 		App->gui->DeleteArrayElements(gui_ingame, 1);
 		break;
-
 	case Menu::RESOURCES:
 		App->gui->DeleteArrayElements(resources, 3);
 		break;
+	case Menu::WIN_LOSE_SCENE:
+		App->gui->DeleteArrayElements(win_scene, 5);
+		
 
 	default:
 		break;

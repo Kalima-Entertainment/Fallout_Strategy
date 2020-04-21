@@ -12,6 +12,7 @@
 #include "j1Gui.h"
 #include "j1Minimap.h"
 #include "j1Audio.h"
+#include "j1MovementManager.h"
 
 #include "SDL_mixer\include\SDL_mixer.h"
 
@@ -114,35 +115,36 @@ bool j1Transition::CleanUp()
 bool j1Transition::Update(float dt)
 {
 	lastdt = dt;
-	Transition();
 	return true;
 }
-bool j1Transition::PostUpdate(float dt)
+bool j1Transition::PostUpdate()
 {
+	if (transition)
+	{
+		Transition();
+	}
 	return true;
 }
 
 
 void j1Transition::Transition()
 {
-	if (transition == true)
-	{
-		if (Mix_Playing(1) == 0) {
-			App->audio->PlayFx(1, App->audio->loading, 0);
-		}
-		App->render->Blit(background, 0, 0,0,1.0F,0);
-		App->render->Blit(gif_tex, 536, 191, &animationGif.GetCurrentFrame(lastdt),1.0F,0);
-		App->render->Blit(logo_tex, 470, 400, &animationLogo.GetCurrentFrame(lastdt), 1.0F, 0);
-		App->gui->active = false;
-		App->minimap->active = false;
-		App->entities->active = false;
+
+ 	Mix_PauseMusic();
+	if (Mix_Playing(1) == 0) {
+		App->audio->PlayFx(1, App->audio->loading, 0);
+
 	}
-	
-	if (fadetimer.Read() > 6000)
+	App->render->Blit(background, 0, 0,0,1.0F,0);
+	App->render->Blit(gif_tex, 536, 191, &animationGif.GetCurrentFrame(lastdt),1.0F,0);
+	App->render->Blit(logo_tex, 470, 400, &animationLogo.GetCurrentFrame(lastdt), 1.0F, 0);
+
+	if (!App->entities->loading_reference_entities)
 	{
 		transition = false;
-		App->gui->active = true;
-		App->minimap->active = true;
-		App->entities->active = true;
+		App->gui->active;
+		App->minimap->active;
+		App->Mmanager->Enable();
+		App->scene->Enable();
 	}
 }

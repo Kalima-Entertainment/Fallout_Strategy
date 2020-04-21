@@ -52,6 +52,7 @@ public:
 	void Attack();
 	void Gather();
 	void DrawQuad();
+	bool TargetTileReached(iPoint target_tile);
 
 public:
 	int mov_speed;

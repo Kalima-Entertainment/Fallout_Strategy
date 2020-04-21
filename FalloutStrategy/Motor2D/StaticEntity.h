@@ -57,7 +57,7 @@ public:
 
 	void Upgrade(Upgrades_Data upgrades_data);
 	void ExecuteUpgrade(Faction faction, Upgrades upgrade_name);
-	void SpawnUnit(EntityType type);
+	void SpawnUnit(EntityType type, bool no_cost = false);
 	void UpdateSpawnStack();
 	
 public:

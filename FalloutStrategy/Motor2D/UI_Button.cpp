@@ -80,7 +80,6 @@ bool UI_Button::Update(float dt)
 		if (t == button_select_ghoul)
 		{
 			ghoul_image = (j1Image*)App->gui->CreateImage(510, 300, Image, { 2600, 835, 591, 180 }, NULL, this);
-			ghoul_image->hover = true;
 			elements_to_show.push_back(ghoul_image);
 			current_state = BUTTON_STATE::HOVER;
 		}
@@ -88,7 +87,6 @@ bool UI_Button::Update(float dt)
 		if (t == button_select_vault)
 		{
 			vault_image = (j1Image*)App->gui->CreateImage(510, 300, Image, { 2600, 2886, 656, 180 }, NULL, this);
-			vault_image->hover = true;
 			elements_to_show.push_back(vault_image);
 			current_state = BUTTON_STATE::HOVER;
 		}
@@ -96,7 +94,6 @@ bool UI_Button::Update(float dt)
 		if (t == button_select_brotherhood)
 		{
 			brotherhood_image = (j1Image*)App->gui->CreateImage(510, 300, Image, { 2600, 2351, 580, 185 }, NULL, this);
-			brotherhood_image->hover = true;
 			elements_to_show.push_back(brotherhood_image);
 			current_state = BUTTON_STATE::HOVER;
 		}
@@ -104,7 +101,6 @@ bool UI_Button::Update(float dt)
 		if (t == button_select_supermutant)
 		{
 			supermutant_image = (j1Image*)App->gui->CreateImage(510, 300, Image, { 2600, 2649, 602, 181 }, NULL, this);
-			supermutant_image->hover = true;
 			elements_to_show.push_back(supermutant_image);
 			current_state = BUTTON_STATE::HOVER;
 		}
@@ -292,17 +288,6 @@ bool UI_Button::Update(float dt)
 	
 			if (t == button_start_game)
 			{
-				/*App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
-				App->audio->PlayFx(1, back_fx, 0);
-				App->gui->count = 0;
-				App->player->Enable();
-				App->entities->Enable();
-				App->Mmanager->Enable();
-				App->scene->Enable();
-				App->menu_manager->CreateGUI();
-				App->menu_manager->CreateResources();
-				App->transition->fadetimer.Start();
-				App->transition->transition = true;*/
 			}
 
 			if (t == button_pause_to_main)
@@ -312,21 +297,22 @@ bool UI_Button::Update(float dt)
 				App->audio->PlayFx(1, back_fx, 0);
 				App->entities->Disable();
 				App->scene->Disable();
+				App->Mmanager->Disable();
 				App->transition->transition = true;
 				App->transition->fadetimer.Start();
 			}
 
 			if (t == button_cap) {
 				
-				cap = !cap;
+				App->gui->cap = !App->gui->cap;
 				App->gui->Delete_Element(App->menu_manager->settings_menu[21]);
 
-				if (cap == false) {
+				if (App->gui->cap == false) {
 					App->capped_ms = 1000 / 60;
 					App->gui->Delete_Element(cap_label);
 					cap_label = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "60", NULL, this, NULL, "StackedPixelMedium");
 				}
-				else if (cap == true) {
+				else if (App->gui->cap == true) {
 					App->capped_ms = 1000 / 30;
 					App->gui->Delete_Element(cap_label);
 					cap_label = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "30", NULL, this, NULL, "StackedPixelMedium");
@@ -336,15 +322,16 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_fullscreen) {
 				
-				fullscreen = !fullscreen;
+				App->gui->fullscreen = !App->gui->fullscreen;
 
 				App->gui->Delete_Element(App->menu_manager->settings_menu[22]);
-				if (fullscreen == true) {
+
+				if (App->gui->fullscreen == true) {
 					App->win->ChangeFullScreen(true);
 					App->gui->Delete_Element(fullscreen_label);
 					fullscreen_label = (UI_Label*)App->gui->CreateLabel(756, 613, Label, "YES", NULL, this, NULL, "StackedPixelMedium");
 				}
-				else if (fullscreen == false) {
+				else if (App->gui->fullscreen == false) {
 					App->win->ChangeFullScreen(false);
 					App->gui->Delete_Element(fullscreen_label);
 					fullscreen_label = (UI_Label*)App->gui->CreateLabel(763, 613, Label, "NO", NULL, this, NULL, "StackedPixelMedium");
@@ -352,6 +339,25 @@ bool UI_Button::Update(float dt)
 
 			}
 			
+			if (t == button_win_lose_to_main)
+			{
+				/*App->menu_manager->DestroyMenu(Menu::WIN_LOSE_SCENE);
+				App->menu_manager->CreateMainMenu();
+				App->audio->PlayFx(1, back_fx, 0);
+				App->transition->transition = true;
+				App->transition->fadetimer.Start();*/
+
+
+				App->menu_manager->DestroyMenu(Menu::WIN_LOSE_SCENE);
+				App->menu_manager->CreateMainMenu();
+				App->audio->PlayFx(1, back_fx, 0);
+				App->entities->Disable();
+				App->scene->Disable();
+				App->Mmanager->Disable();
+				App->transition->transition = true;
+				App->transition->fadetimer.Start();
+			}
+
 			//Spawn Gatherer from any faction
 			if (t == Ghouls_ghaterer_button || t == Vault_ghaterer_button || t == Supermutant_ghaterer_button || t == Brotherhood_ghaterer_button){
 				App->audio->PlayFx(1, character_fx, 0);
@@ -402,7 +408,6 @@ bool UI_Button::Update(float dt)
 				App->player->Enable();
 				App->entities->Enable();
 				App->Mmanager->Enable();
-				App->scene->Enable();
 				App->menu_manager->CreateGUI();
 				App->menu_manager->CreateResources();
 				App->transition->fadetimer.Start();
@@ -421,12 +426,10 @@ bool UI_Button::Update(float dt)
 				App->player->Enable();
 				App->entities->Enable();
 				App->Mmanager->Enable();
-				App->scene->Enable();
 				App->menu_manager->CreateGUI();
 				App->menu_manager->CreateResources();
 				App->transition->fadetimer.Start();
 				App->transition->transition = true;
-
 			}
 
 			if (t == button_select_brotherhood)
@@ -440,7 +443,6 @@ bool UI_Button::Update(float dt)
 				App->player->Enable();
 				App->entities->Enable();
 				App->Mmanager->Enable();
-				App->scene->Enable();
 				App->menu_manager->CreateGUI();
 				App->menu_manager->CreateResources();
 				App->transition->fadetimer.Start();
@@ -458,7 +460,6 @@ bool UI_Button::Update(float dt)
 				App->player->Enable();
 				App->entities->Enable();
 				App->Mmanager->Enable();
-				App->scene->Enable();
 				App->menu_manager->CreateGUI();
 				App->menu_manager->CreateResources();
 				App->transition->fadetimer.Start();
@@ -483,10 +484,9 @@ bool UI_Button::Update(float dt)
 	{
 		for (std::list<UI_element*>::iterator item = elements_to_show.begin(); item != elements_to_show.end(); ++item) {
 
-			if ((*item)->hover == true)
-			{
-				AddElementToShow((*item));
-			}
+			
+			DoNotShowElement((*item));
+			
 		}
 	}
 
@@ -494,7 +494,7 @@ bool UI_Button::Update(float dt)
 
 }
 
-void UI_Button::AddElementToShow(UI_element* element)
+void UI_Button::DoNotShowElement(UI_element* element)
 {
 	element->drawable = false;
 }

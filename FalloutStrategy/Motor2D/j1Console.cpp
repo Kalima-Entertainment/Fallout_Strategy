@@ -68,19 +68,8 @@ bool j1Console::Update(float dt) {
 		}
 	}
 
-	if (isVisible) {
-		if ((App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)) {
-			//DestroyInterface();
-		}
+	last_dt = dt;
 
-		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN) {
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN) {
-		}
-
-		last_dt = dt;
-	}
 	return ret;
 }
 
@@ -90,8 +79,6 @@ bool j1Console::PostUpdate() {
 
 	if (isVisible)
 	{
-		//Draw console
-
 		//background 
 		log_box.x = command_background.x = -App->render->camera.x;
 		log_box.y = -App->render->camera.y;
@@ -105,6 +92,7 @@ bool j1Console::PostUpdate() {
 			on_screen_log[i]->Draw();
 		}
 		input_box->Update(last_dt);
+		input_box->Draw();
 	}
 	return ret;
 }
@@ -234,6 +222,7 @@ void j1Console::OnCommand(std::vector<std::string> command_parts) {
 		}
 		else
 		{
+			LOG("Framerate cap changed to: %i", std::stoi(command_parts[1].c_str()));
 			App->capped_ms = 1000 / std::stoi(command_parts[1].c_str());
 		}
 	}

@@ -230,10 +230,6 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	return entity;
 }
 
-void j1EntityManager::SpawnUnit(int buildingID, EntityType type)
-{
-}
-
 bool j1EntityManager::Awake(pugi::xml_node& config){
 	bool ret = true;
 
@@ -250,6 +246,10 @@ bool j1EntityManager::Start() {
 	
 	App->console->CreateCommand("destroy_all_entities", "remove all dynamic entities", (j1Module*)this);
 
+	loading_reference_entities = true;
+	loading_faction = VAULT;
+	loading_entity = MELEE;
+
 	//automatic entities loading
 	for (int faction = VAULT; faction < NO_FACTION; faction++)
 	{
@@ -258,21 +258,6 @@ bool j1EntityManager::Start() {
 			reference_entities[faction][type] = nullptr;
 			reference_entities[faction][type] = CreateEntity((Faction)faction, (EntityType)type, faction, type, nullptr);
 		}
-	}
-
-	ret = LoadReferenceEntityData();
-
-	//load all textures and animations
-	for (int faction = VAULT; faction < NO_FACTION; faction++)
-	{
-		for (int type = MELEE; type < NO_TYPE; type++)
-		{
-			reference_entities[faction][type]->LoadAnimations();
-			//reference_entities[faction][type]->LoadFx();
-		}
-
-		reference_entities[faction][BARRACK]->texture = reference_entities[faction][BASE]->texture;
-		reference_entities[faction][LABORATORY]->texture = reference_entities[faction][BASE]->texture;
 	}
 
 	showing_building_menu = false;
@@ -300,6 +285,7 @@ bool j1EntityManager::CleanUp()
 	for (int i = 0; i < entities.size(); i++)
 	{
 		delete entities[i];
+		entities[i] = nullptr;
 	}
 
 	entities.clear();
@@ -319,6 +305,28 @@ bool j1EntityManager::Update(float dt)
 	BROFILER_CATEGORY("EntitiesUpdate", Profiler::Color::GreenYellow)
 	bool ret = true;
 
+	//load all textures and animations on the go
+	if (loading_reference_entities) {
+		reference_entities[loading_faction][loading_entity]->LoadAnimations();
+		
+		loading_entity = loading_entity++;
+		if (loading_entity == NO_TYPE) {
+			loading_entity = MELEE;
+			loading_faction++;
+		}
+		if (loading_faction == NO_FACTION) {
+			loading_reference_entities = false;
+
+			for (int faction = VAULT; faction < NO_FACTION; faction++)
+			{
+				reference_entities[faction][BARRACK]->texture = reference_entities[faction][BASE]->texture;
+				reference_entities[faction][LABORATORY]->texture = reference_entities[faction][BASE]->texture;
+			}
+			ret = LoadReferenceEntityData();
+		}
+		
+	}
+
 	if (!App->isPaused)
 	{
 		for (int i = 0; i < entities.size(); i++)
@@ -337,213 +345,219 @@ bool j1EntityManager::PostUpdate()
 	SDL_Rect tex_rect = {128,0,64,64 };
 	iPoint tex_position;
 
-	//debug kind of entity and path
-	if (App->render->debug) {
-		for (int i = 0; i < entities.size(); i++)
-		{
-			if (entities[i]->is_dynamic)
+	if (!loading_reference_entities)
+	{
+		//debug kind of entity and path
+		if (App->render->debug) {
+			for (int i = 0; i < entities.size(); i++)
 			{
-				//Render path
-				if (App->render->debug)
+				if (entities[i]->is_dynamic)
 				{
-					if (entities[i]->path_to_target.size() > 0)
+					//Render path
+					if (App->render->debug)
 					{
-						for (uint j = 0; j < entities[i]->path_to_target.size(); ++j)
+						if (entities[i]->path_to_target.size() > 0)
 						{
-							iPoint pos = App->map->MapToWorld(entities[i]->path_to_target[j].x, entities[i]->path_to_target[j].y);
-							SDL_Rect debug_rect = { 192, 0, 64,64 };
-							App->render->Blit(App->render->debug_tex, pos.x, pos.y, &debug_rect);
+							for (uint j = 0; j < entities[i]->path_to_target.size(); ++j)
+							{
+								iPoint pos = App->map->MapToWorld(entities[i]->path_to_target[j].x, entities[i]->path_to_target[j].y);
+								SDL_Rect debug_rect = { 192, 0, 64,64 };
+								App->render->Blit(App->render->debug_tex, pos.x, pos.y, &debug_rect);
+							}
 						}
 					}
+
+					//dynamic entities debug
+					//change color depending on if it's an ally or an enemy
+					SDL_Rect rect;
+					if (App->player->faction == entities[i]->faction) rect = { 0,0,64,64 };
+					else rect = { 64,0,64,64 };
+
+					tex_position = App->map->MapToWorld(entities[i]->current_tile.x, entities[i]->current_tile.y);
+					App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &rect);
 				}
-
-				//dynamic entities debug
-				//change color depending on if it's an ally or an enemy
-				SDL_Rect rect;
-				if(App->player->faction == entities[i]->faction ) rect = { 0,0,64,64 };
-				else rect = { 64,0,64,64 };
-
-				tex_position = App->map->MapToWorld(entities[i]->current_tile.x, entities[i]->current_tile.y);
-				App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &rect);
-			}
-			else
-			{
-				//static entities debug
-				StaticEntity* static_entity = (StaticEntity*)entities[i];
-				for (int j = 0; j < static_entity->tiles.size(); j++)
+				else
 				{
-					SDL_Rect rect = { 256,0,64,64 };
-					tex_position = App->map->MapToWorld(static_entity->tiles[j].x, static_entity->tiles[j].y);
+					//static entities debug
+					StaticEntity* static_entity = (StaticEntity*)entities[i];
+					for (int j = 0; j < static_entity->tiles.size(); j++)
+					{
+						SDL_Rect rect = { 256,0,64,64 };
+						tex_position = App->map->MapToWorld(static_entity->tiles[j].x, static_entity->tiles[j].y);
+						App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &rect);
+					}
+				}
+			}
+			//resource buildings debug
+			for (int i = 0; i < resource_buildings.size(); i++)
+			{
+				for (int j = 0; j < resource_buildings[i]->tiles.size(); j++)
+				{
+					SDL_Rect rect = { 128,0,64,64 };
+					tex_position = App->map->MapToWorld(resource_buildings[i]->tiles[j].x, resource_buildings[i]->tiles[j].y);
 					App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &rect);
 				}
 			}
 		}
-		//resource buildings debug
-		for (int i = 0; i < resource_buildings.size(); i++)
+
+		if (App->player->selected_entity != nullptr)
 		{
-			for (int j = 0; j < resource_buildings[i]->tiles.size(); j++)
-			{
-				SDL_Rect rect = { 128,0,64,64 };
-				tex_position = App->map->MapToWorld(resource_buildings[i]->tiles[j].x, resource_buildings[i]->tiles[j].y);
-				App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &rect);
-			}
-		}
-	}
-
-	if (App->player->selected_entity != nullptr)
-	{
-		//Selected entity is a unit
-		if (App->player->selected_entity->is_dynamic == true) {
-			tex_position = App->map->MapToWorld(App->player->selected_entity->current_tile.x, App->player->selected_entity->current_tile.y);
-			App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tex_rect);
-		}
-		//Selected entity is a building
-		else {
-
-			StaticEntity* static_entity = (StaticEntity*)App->player->selected_entity;
-			for (int j = 0; j < static_entity->tiles.size(); j++)
-			{
-				tex_position = App->map->MapToWorld(static_entity->tiles[j].x, static_entity->tiles[j].y);
+			//Selected entity is a unit
+			if (App->player->selected_entity->is_dynamic == true) {
+				tex_position = App->map->MapToWorld(App->player->selected_entity->current_tile.x, App->player->selected_entity->current_tile.y);
 				App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tex_rect);
 			}
-			
-			//Create HUD for the building
-			switch (static_entity->faction) {
-			case GHOUL:
-				if (static_entity->type == BASE) {
+			//Selected entity is a building
+			else {
 
-					if (!showing_building_menu) {
-
-						App->menu_manager->CreateGhouls_Base();
-						showing_building_menu = true;
-					}
-
+				StaticEntity* static_entity = (StaticEntity*)App->player->selected_entity;
+				for (int j = 0; j < static_entity->tiles.size(); j++)
+				{
+					tex_position = App->map->MapToWorld(static_entity->tiles[j].x, static_entity->tiles[j].y);
+					App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tex_rect);
 				}
-				else if (static_entity->type == BARRACK) {
 
-					if (count == 0) {
+				//Create HUD for the building
+				switch (static_entity->faction) {
+				case GHOUL:
+					if (static_entity->type == BASE) {
 
-						App->menu_manager->CreateGhouls_Barrack();
-						showing_building_menu = true;
-					}
+						if (!showing_building_menu) {
 
-				}
-				else if (static_entity->type == LABORATORY) {
-
-					if (!showing_building_menu) {
-						App->menu_manager->CreateGhouls_Lab();
-						showing_building_menu = true;
-					}
-
-				}
-				break;
-			case BROTHERHOOD:
-				if (static_entity->type == BASE) {
-
-					if (!showing_building_menu) {
-						App->menu_manager->CreateBrotherHood_Base();
-						showing_building_menu = true;
-					}
-
-				}
-				else if (static_entity->type == BARRACK) {
-
-					if (!showing_building_menu) {
-						App->menu_manager->CreateBrotherHood_Barrack();
-						showing_building_menu = true;
+							App->menu_manager->CreateGhouls_Base();
+							showing_building_menu = true;
+						}
 
 					}
+					else if (static_entity->type == BARRACK) {
 
-				}
-				else if (static_entity->type == LABORATORY) {
+						if (!showing_building_menu) {
+							App->menu_manager->CreateGhouls_Barrack();
+							showing_building_menu = true;
+						}
 
-					if (!showing_building_menu) {
-						App->menu_manager->CreateBrotherHood_Lab();
-						showing_building_menu = true;
 					}
-				}
-				break;
+					else if (static_entity->type == LABORATORY) {
 
-			case VAULT:
+						if (!showing_building_menu) {
+							App->menu_manager->CreateGhouls_Lab();
+							showing_building_menu = true;
+						}
 
-				if (static_entity->type == BASE) {
-
-					if (!showing_building_menu) {
-						App->menu_manager->CreateVault_Base();
-						showing_building_menu = true;
 					}
-				}
-				else if (static_entity->type == BARRACK){
+					break;
+				case BROTHERHOOD:
+					if (static_entity->type == BASE) {
 
-					if (!showing_building_menu) {
-						App->menu_manager->CreateVault_Barrack();
-						showing_building_menu = true;
+						if (!showing_building_menu) {
+							App->menu_manager->CreateBrotherHood_Base();
+							showing_building_menu = true;
+						}
+
 					}
+					else if (static_entity->type == BARRACK) {
 
-				}
-				else if (static_entity->type == LABORATORY) {
+						if (!showing_building_menu) {
+							App->menu_manager->CreateBrotherHood_Barrack();
+							showing_building_menu = true;
 
-					if (!showing_building_menu) {
-						App->menu_manager->CreateVault_Lab();
-						showing_building_menu = true;
+						}
+
 					}
+					else if (static_entity->type == LABORATORY) {
 
-				}
-				break;
-			case MUTANT:
-				if (static_entity->type == BASE) {
-
-					if (!showing_building_menu) {
-						App->menu_manager->CreateSuperMutants_Base();
-						showing_building_menu = true;
+						if (!showing_building_menu) {
+							App->menu_manager->CreateBrotherHood_Lab();
+							showing_building_menu = true;
+						}
 					}
-				
-				}
-				else if (static_entity->type == BARRACK) {
+					break;
 
-					if (!showing_building_menu) {
-						App->menu_manager->CreateSuperMutants_Barrack();
-						showing_building_menu = true;
-					}
+				case VAULT:
 
-				}
-				else if (static_entity->type == LABORATORY) {
-					if (!showing_building_menu) {
-						App->menu_manager->CreateSuperMutants_Lab();
-						showing_building_menu = true;
+					if (static_entity->type == BASE) {
+
+						if (!showing_building_menu) {
+							App->menu_manager->CreateVault_Base();
+							showing_building_menu = true;
+						}
 					}
+					else if (static_entity->type == BARRACK) {
+
+						if (!showing_building_menu) {
+							App->menu_manager->CreateVault_Barrack();
+							showing_building_menu = true;
+						}
+
+					}
+					else if (static_entity->type == LABORATORY) {
+
+						if (!showing_building_menu) {
+							App->menu_manager->CreateVault_Lab();
+							showing_building_menu = true;
+						}
+
+					}
+					break;
+				case MUTANT:
+					if (static_entity->type == BASE) {
+
+						if (!showing_building_menu) {
+							App->menu_manager->CreateSuperMutants_Base();
+							showing_building_menu = true;
+						}
+
+					}
+					else if (static_entity->type == BARRACK) {
+
+						if (!showing_building_menu) {
+							App->menu_manager->CreateSuperMutants_Barrack();
+							showing_building_menu = true;
+						}
+
+					}
+					else if (static_entity->type == LABORATORY) {
+						if (!showing_building_menu) {
+							App->menu_manager->CreateSuperMutants_Lab();
+							showing_building_menu = true;
+						}
+					}
+					break;
 				}
-				break;
+			}
+		}
+
+		for (int i = 0; i < entities.size(); i++)
+		{
+			//delete destroyed entities
+			if (entities[i]->to_destroy)
+			{
+				if (entities[i]->owner->DeleteEntity(entities[i]) == true) {
+					App->scene->CheckWinner();
+				};
+				delete entities[i];
+				entities[i] = nullptr;
+				entities.erase(entities.begin() + i);
+			}
+			else
+			{
+				//camera culling
+				if ((entities[i]->position.x + entities[i]->sprite_size * 0.5f > -App->render->camera.x)
+					&& (entities[i]->position.x - entities[i]->sprite_size * 0.5f < -App->render->camera.x + App->render->camera.w)
+					&& (entities[i]->position.y + entities[i]->sprite_size * 0.25f > -App->render->camera.y)
+					&& (entities[i]->position.y - entities[i]->sprite_size * 0.25f < -App->render->camera.y + App->render->camera.h)) {
+
+					//sort and blit entities
+					if (sort_timer.Read() > 500) {
+						BubbleSortEntities();
+						sort_timer.Start();
+					}
+					entities[i]->PostUpdate();
+				}
 			}
 		}
 	}
 
-	for (int i = 0; i < entities.size(); i++)
-	{
-		if (entities[i]->to_destroy)
-		{
-			if (entities[i]->owner->DeleteEntity(entities[i]) == true) {
-				App->scene->CheckWinner();
-			};
-			delete entities[i];
-			entities[i] = nullptr;
-			entities.erase(entities.begin() + i);
-		}
-		else
-		{
-			if ((entities[i]->position.x + entities[i]->sprite_size * 0.5f > -App->render->camera.x)
-				&& (entities[i]->position.x - entities[i]->sprite_size * 0.5f < -App->render->camera.x + App->render->camera.w)
-				&& (entities[i]->position.y + entities[i]->sprite_size * 0.25f > -App->render->camera.y) 
-				&& (entities[i]->position.y - entities[i]->sprite_size * 0.25f < -App->render->camera.y + App->render->camera.h)) {
-			
-				if (sort_timer.Read() > 500) {
-					BubbleSortEntities();
-					sort_timer.Start();
-				}
-				entities[i]->PostUpdate();
-			}
-		}
-	}
 	return ret;
 }
 
