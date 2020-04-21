@@ -8,6 +8,7 @@
 #include "p2Point.h"
 #include "j1Group.h"
 #include "j1MovementManager.h"
+#include "brofiler/Brofiler/Brofiler.h"
 #include <vector>
 
 AI_Player::AI_Player(Faction g_faction) : GenericPlayer() {
@@ -155,13 +156,14 @@ DynamicEntity* AI_Player::GetClosestDynamicEntity() {
 }
 
 std::vector<iPoint> AI_Player::CreateNodePath(iPoint origin, iPoint destination) {
+	BROFILER_CATEGORY("CreateNodePath", Profiler::Color::Azure)
 	std::vector<iPoint> path;
 	iPoint current_node;
 	iPoint origin_node;
 	iPoint destination_node;
 	std::vector<iPoint> node_map = App->ai_manager->node_map;
-	//App->ai_manager->GetNodeMap(node_map);
-	current_node = node_map.back();
+	int node_distance = App->ai_manager->GetDistanceBetweenNodes();
+	
 	origin_node = node_map[0];
 	destination_node = node_map[0];
 
@@ -188,12 +190,13 @@ std::vector<iPoint> AI_Player::CreateNodePath(iPoint origin, iPoint destination)
 		iPoint possible_node;
 		iPoint best_node;
 		//find neighbour nodes
-		for (int y = -25; y <= 25; y +=25)
+		for (int y = -node_distance; y <= node_distance; y += node_distance)
 		{
-			for (int x = -25; x <= 25; x += 25)
+			for (int x = -node_distance; x <= node_distance; x += node_distance)
 			{
 				possible_node.x = current_node.x + x;
 				possible_node.y = current_node.y + y;
+
 				if (possible_node.DistanceTo(destination_node) < current_node.DistanceTo(destination_node)) {
 					if (possible_node.DistanceTo(destination_node) < best_node.DistanceTo(destination_node))
 						best_node = possible_node;
@@ -206,12 +209,7 @@ std::vector<iPoint> AI_Player::CreateNodePath(iPoint origin, iPoint destination)
 
 	//flip final path 
 	std::reverse(path.begin(), path.end());
-	/*
-	for (int i = 0; i < path.size(); i++)
-	{
-		node_path.push_back(path[i]);
-	}
-	*/
+
 	return path;
 }
 

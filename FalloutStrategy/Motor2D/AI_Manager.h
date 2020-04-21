@@ -17,6 +17,7 @@ public:
 
 	std::vector<iPoint> CreateNodeMap();
 	void GetNodeMap(std::vector<iPoint>& vector_to_fill);
+	int GetDistanceBetweenNodes() const { return 150 / node_map_divisions; }
 
 public:
 	AI_Player* ai_player[4];
@@ -25,6 +26,7 @@ public:
 private:
 	bool players_created;
 	int beaten_ai_players;
+	int node_map_divisions;
 };
 
 #endif // !_AI_MANAGER_H_

@@ -56,10 +56,6 @@ DynamicEntity::~DynamicEntity() {
 	path_to_target.clear();
 }
 
-bool DynamicEntity::PreUpdate(float dt) {
-	return true;
-}
-
 bool DynamicEntity::Update(float dt) {
 
 	Mix_AllocateChannels(25);
@@ -68,8 +64,10 @@ bool DynamicEntity::Update(float dt) {
 	{
 	case IDLE:
 		if (node_path.size() > 0) {
-			PathfindToPosition(node_path.back());
+			target_tile = node_path.back();
 			node_path.pop_back();
+			PathfindToPosition(target_tile);
+			state = WALK;
 		}
 		break;
 	case WALK:
@@ -162,8 +160,8 @@ bool DynamicEntity::Update(float dt) {
 		if (reference_entity->faction == GHOUL)
 			if (Mix_Playing(19) == 0) { SpatialAudio(App->audio->Brotherhood_walk, 19, position.x, position.y); }
 
-		if (node_path.size() > 0) {
-			if (TargetTileReached(target_tile)) {
+		if ((node_path.size() > 0)){// && (App->pathfinding->GetLastPathRequestTime() > 500)) {
+			if (next_tile == target_tile) {
 				node_path.pop_back();
 
 				//if we have reached the final node pathfind to target building
@@ -324,6 +322,34 @@ bool DynamicEntity::Update(float dt) {
 }
 
 bool DynamicEntity::PostUpdate() {
+	
+	//tile debug
+	SDL_Rect tile_rect;
+	iPoint tex_position = App->map->MapToWorld(current_tile.x, current_tile.y);
+
+	//selected entity
+	if (App->player->selected_entity == this)
+	{
+		tile_rect = { 128,0,64,64 };
+		//blit tile
+		App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
+	}
+	//debug
+	else if (App->render->debug) 
+	{
+		//pathfinding debug
+		for (uint j = 0; j < path_to_target.size(); ++j) {
+			iPoint pos = App->map->MapToWorld(path_to_target[j].x, path_to_target[j].y);
+			tile_rect = { 192, 0, 64,64 };
+			App->render->Blit(App->render->debug_tex, pos.x, pos.y, &tile_rect);
+		}
+
+		//ally 
+		if (faction == App->player->faction) tile_rect = { 0,0,64,64 };
+		//enemy
+		else tile_rect = { 64,0,64,64 };
+		App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
+	}
 
 	current_animation = &animations[state][direction];
 
@@ -385,7 +411,6 @@ void DynamicEntity::Move(float dt) {
 					next_tile = path_to_target[1];
 				}
 				path_to_target.erase(path_to_target.begin());
-
 			}
 			else
 			{
@@ -469,29 +494,21 @@ void DynamicEntity::Gather() {
 }
 
 void DynamicEntity::PathfindToPosition(iPoint destination) {
-	if ((!App->pathfinding->IsWalkable(destination)) && (App->pathfinding->CheckBoundaries(destination))) {
-		iPoint destination_copy = App->pathfinding->FindWalkableAdjacentTile(destination);
-		if (destination_copy == iPoint(-1,-1)) {
-			ResourceBuilding* reference_resource_building = App->entities->FindResourceBuildingByTile(destination);
-			if (reference_resource_building != nullptr) 
-				destination  = App->entities->ClosestTile(current_tile, reference_resource_building->tiles);
-			else {
-				StaticEntity* reference_static_entity = (StaticEntity*)App->entities->FindEntityByTile(destination);
-				if (reference_static_entity != nullptr) 
-					destination = App->entities->ClosestTile(current_tile, reference_static_entity->tiles);
-			}
-			if (!App->pathfinding->IsWalkable(destination))
-				destination = App->pathfinding->FindWalkableAdjacentTile(destination);
-		}
-		else
-		{
-			destination = destination_copy;
-		}
-	}
 
 	current_tile = App->map->WorldToMap(position.x, position.y);
+
+	//if the tile is in the map but it's not walkable
+	if ((!App->pathfinding->IsWalkable(destination)) && (App->pathfinding->CheckBoundaries(destination))) 
+	{
+		destination = App->pathfinding->FindNearestWalkableTile(current_tile, destination);
+	}
+
 	target_tile = destination;
-	App->pathfinding->CreatePath(current_tile, destination);
+
+	if (App->pathfinding->CreatePath(current_tile, destination) == -1) {
+		LOG("Invalid path");
+		state = IDLE;
+	}
 
 	path_to_target.clear();
 	path_to_target = App->pathfinding->GetLastPath();
@@ -500,8 +517,6 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 
 	if (path_to_target.size() > 0)
 		next_tile = path_to_target.front();
-	else
-		state = IDLE;
 }
 
 /*

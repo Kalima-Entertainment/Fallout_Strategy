@@ -349,50 +349,11 @@ bool j1EntityManager::PostUpdate()
 
 	if (!loading_reference_entities)
 	{
-		//debug kind of entity and path
 		if (App->render->debug) {
-			for (int i = 0; i < entities.size(); i++)
-			{
-				if (entities[i]->is_dynamic)
-				{
-					//Render path
-					if (App->render->debug)
-					{
-						if (entities[i]->path_to_target.size() > 0)
-						{
-							for (uint j = 0; j < entities[i]->path_to_target.size(); ++j)
-							{
-								iPoint pos = App->map->MapToWorld(entities[i]->path_to_target[j].x, entities[i]->path_to_target[j].y);
-								SDL_Rect debug_rect = { 192, 0, 64,64 };
-								App->render->Blit(App->render->debug_tex, pos.x, pos.y, &debug_rect);
-							}
-						}
-					}
-
-					//dynamic entities debug
-					//change color depending on if it's an ally or an enemy
-					SDL_Rect rect;
-					if (App->player->faction == entities[i]->faction) rect = { 0,0,64,64 };
-					else rect = { 64,0,64,64 };
-
-					tex_position = App->map->MapToWorld(entities[i]->current_tile.x, entities[i]->current_tile.y);
-					App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &rect);
-				}
-				else
-				{
-					//static entities debug
-					StaticEntity* static_entity = (StaticEntity*)entities[i];
-					for (int j = 0; j < static_entity->tiles.size(); j++)
-					{
-						SDL_Rect rect = { 256,0,64,64 };
-						tex_position = App->map->MapToWorld(static_entity->tiles[j].x, static_entity->tiles[j].y);
-						App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &rect);
-					}
-				}
-			}
 			//resource buildings debug
 			for (int i = 0; i < resource_buildings.size(); i++)
 			{
+				//TODO resource buildings camera culling
 				for (int j = 0; j < resource_buildings[i]->tiles.size(); j++)
 				{
 					SDL_Rect rect = { 128,0,64,64 };
@@ -404,130 +365,116 @@ bool j1EntityManager::PostUpdate()
 
 		if (App->player->selected_entity != nullptr)
 		{
-			//Selected entity is a unit
-			if (App->player->selected_entity->is_dynamic == true) {
-				tex_position = App->map->MapToWorld(App->player->selected_entity->current_tile.x, App->player->selected_entity->current_tile.y);
-				App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tex_rect);
-			}
-			//Selected entity is a building
-			else {
+			StaticEntity* static_entity = (StaticEntity*)App->player->selected_entity;
+			//Create HUD for the building
+			switch (static_entity->faction) {
+			case GHOUL:
+				if (static_entity->type == BASE) {
 
-				StaticEntity* static_entity = (StaticEntity*)App->player->selected_entity;
-				for (int j = 0; j < static_entity->tiles.size(); j++)
-				{
-					tex_position = App->map->MapToWorld(static_entity->tiles[j].x, static_entity->tiles[j].y);
-					App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tex_rect);
+					if (!showing_building_menu) {
+
+						App->menu_manager->CreateGhouls_Base();
+						showing_building_menu = true;
+					}
+
 				}
+				else if (static_entity->type == BARRACK) {
 
-				//Create HUD for the building
-				switch (static_entity->faction) {
-				case GHOUL:
-					if (static_entity->type == BASE) {
-
-						if (!showing_building_menu) {
-
-							App->menu_manager->CreateGhouls_Base();
-							showing_building_menu = true;
-						}
-
+					if (!showing_building_menu) {
+						App->menu_manager->CreateGhouls_Barrack();
+						showing_building_menu = true;
 					}
-					else if (static_entity->type == BARRACK) {
 
-						if (!showing_building_menu) {
-							App->menu_manager->CreateGhouls_Barrack();
-							showing_building_menu = true;
-						}
-
-					}
-					else if (static_entity->type == LABORATORY) {
-
-						if (!showing_building_menu) {
-							App->menu_manager->CreateGhouls_Lab();
-							showing_building_menu = true;
-						}
-
-					}
-					break;
-				case BROTHERHOOD:
-					if (static_entity->type == BASE) {
-
-						if (!showing_building_menu) {
-							App->menu_manager->CreateBrotherHood_Base();
-							showing_building_menu = true;
-						}
-
-					}
-					else if (static_entity->type == BARRACK) {
-
-						if (!showing_building_menu) {
-							App->menu_manager->CreateBrotherHood_Barrack();
-							showing_building_menu = true;
-
-						}
-
-					}
-					else if (static_entity->type == LABORATORY) {
-
-						if (!showing_building_menu) {
-							App->menu_manager->CreateBrotherHood_Lab();
-							showing_building_menu = true;
-						}
-					}
-					break;
-
-				case VAULT:
-
-					if (static_entity->type == BASE) {
-
-						if (!showing_building_menu) {
-							App->menu_manager->CreateVault_Base();
-							showing_building_menu = true;
-						}
-					}
-					else if (static_entity->type == BARRACK) {
-
-						if (!showing_building_menu) {
-							App->menu_manager->CreateVault_Barrack();
-							showing_building_menu = true;
-						}
-
-					}
-					else if (static_entity->type == LABORATORY) {
-
-						if (!showing_building_menu) {
-							App->menu_manager->CreateVault_Lab();
-							showing_building_menu = true;
-						}
-
-					}
-					break;
-				case MUTANT:
-					if (static_entity->type == BASE) {
-
-						if (!showing_building_menu) {
-							App->menu_manager->CreateSuperMutants_Base();
-							showing_building_menu = true;
-						}
-
-					}
-					else if (static_entity->type == BARRACK) {
-
-						if (!showing_building_menu) {
-							App->menu_manager->CreateSuperMutants_Barrack();
-							showing_building_menu = true;
-						}
-
-					}
-					else if (static_entity->type == LABORATORY) {
-						if (!showing_building_menu) {
-							App->menu_manager->CreateSuperMutants_Lab();
-							showing_building_menu = true;
-						}
-					}
-					break;
 				}
+				else if (static_entity->type == LABORATORY) {
+
+					if (!showing_building_menu) {
+						App->menu_manager->CreateGhouls_Lab();
+						showing_building_menu = true;
+					}
+
+				}
+				break;
+			case BROTHERHOOD:
+				if (static_entity->type == BASE) {
+
+					if (!showing_building_menu) {
+						App->menu_manager->CreateBrotherHood_Base();
+						showing_building_menu = true;
+					}
+
+				}
+				else if (static_entity->type == BARRACK) {
+
+					if (!showing_building_menu) {
+						App->menu_manager->CreateBrotherHood_Barrack();
+						showing_building_menu = true;
+
+					}
+
+				}
+				else if (static_entity->type == LABORATORY) {
+
+					if (!showing_building_menu) {
+						App->menu_manager->CreateBrotherHood_Lab();
+						showing_building_menu = true;
+					}
+				}
+				break;
+
+			case VAULT:
+
+				if (static_entity->type == BASE) {
+
+					if (!showing_building_menu) {
+						App->menu_manager->CreateVault_Base();
+						showing_building_menu = true;
+					}
+				}
+				else if (static_entity->type == BARRACK) {
+
+					if (!showing_building_menu) {
+						App->menu_manager->CreateVault_Barrack();
+						showing_building_menu = true;
+					}
+
+				}
+				else if (static_entity->type == LABORATORY) {
+
+					if (!showing_building_menu) {
+						App->menu_manager->CreateVault_Lab();
+						showing_building_menu = true;
+					}
+
+				}
+				break;
+			case MUTANT:
+				if (static_entity->type == BASE) {
+
+					if (!showing_building_menu) {
+						App->menu_manager->CreateSuperMutants_Base();
+						showing_building_menu = true;
+					}
+
+				}
+				else if (static_entity->type == BARRACK) {
+
+					if (!showing_building_menu) {
+						App->menu_manager->CreateSuperMutants_Barrack();
+						showing_building_menu = true;
+					}
+
+				}
+				else if (static_entity->type == LABORATORY) {
+					if (!showing_building_menu) {
+						App->menu_manager->CreateSuperMutants_Lab();
+						showing_building_menu = true;
+					}
+				}
+				break;
 			}
-		}
+			}
+		
 
 		for (int i = 0; i < entities.size(); i++)
 		{
@@ -639,6 +586,7 @@ bool j1EntityManager::LoadReferenceEntityData() {
 
 void j1EntityManager::DestroyEntity(j1Entity* entity) {
 	delete entity;
+	entity = nullptr;
 }
 
 void j1EntityManager::DestroyAllEntities() {
@@ -721,6 +669,7 @@ ResourceBuilding* j1EntityManager::GetClosestResourceBuilding(iPoint current_pos
 }
 
 void j1EntityManager::BubbleSortEntities() {
+	BROFILER_CATEGORY("BubbleSortEntities", Profiler::Color::Blue)
 	int i, j;
 	int n = entities.size();
 	for (i = 0; i < n - 1; i++) {

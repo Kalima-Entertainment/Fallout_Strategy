@@ -40,7 +40,6 @@ public:
 	~DynamicEntity();
 
 	//Core
-	bool PreUpdate(float dt);
 	bool Update(float dt);
 	bool PostUpdate();
 

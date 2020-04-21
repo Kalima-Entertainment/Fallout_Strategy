@@ -138,6 +138,30 @@ bool StaticEntity::Update(float dt) {
 bool StaticEntity::PostUpdate() {
 	current_animation = &animations[state];
 
+	SDL_Rect tile_rect = { 256,0,64,64 };
+	iPoint tex_position;
+
+	//selected entity debug
+	if (App->player->selected_entity == this)
+	{
+		tile_rect = { 128,0,64,64 };
+		for (int i = 0; i < tiles.size(); i++)
+		{
+			tex_position = App->map->MapToWorld(tiles[i].x, tiles[i].y);
+			App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
+		}
+
+	}
+	//debug tiles
+	else if (App->render->debug) 
+	{
+		for (int i = 0; i < tiles.size(); i++)
+		{
+			tex_position = App->map->MapToWorld(tiles[i].x, tiles[i].y);
+			App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
+		}
+	}
+
 	//Render building
 	render_texture_pos = {(int)(position.x - 0.5f * sprite_size),(int)(position.y - sprite_size * 0.75)};
 

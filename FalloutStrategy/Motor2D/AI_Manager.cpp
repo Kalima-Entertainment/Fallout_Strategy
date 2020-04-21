@@ -3,12 +3,14 @@
 #include "AI_Player.h"
 #include "j1Entity.h"
 #include "j1Scene.h"
+#include "brofiler/Brofiler/Brofiler.h"
 
 AI_Manager::AI_Manager() : j1Module() {
 	name = ("AI");
 	players_created = false;
 	ai_player[0] = ai_player[1] = ai_player[2] = ai_player[3] = nullptr;
 	beaten_ai_players = 0;
+	node_map_divisions = 6;
 }
 
 AI_Manager::~AI_Manager() {}
@@ -34,6 +36,7 @@ bool AI_Manager::Start() {
 }
 
 bool AI_Manager::Update(float dt) {
+	BROFILER_CATEGORY("AI_Update", Profiler::Color::Azure)
 	bool ret = true;
 	if (players_created) {
 		for (int i = 0; i < 4; i++)
@@ -63,9 +66,11 @@ bool AI_Manager::CleanUp() {
 
 std::vector<iPoint> AI_Manager::CreateNodeMap(){
 	std::vector<iPoint> map;
-	for (int y = 25; y < 150; y += 25)
+	int distance = 150 / node_map_divisions;
+
+	for (int y = distance; y < 150; y += distance)
 	{
-		for (int x = 25; x < 150; x+=25)
+		for (int x = distance; x < 150; x += distance)
 		{
 			map.push_back(iPoint(x,y));
 		}
