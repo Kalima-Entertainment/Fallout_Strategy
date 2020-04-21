@@ -16,6 +16,7 @@
 #include "j1Transition.h"
 
 #include "./brofiler/Brofiler/Brofiler.h"
+#include "SDL_mixer\include\SDL_mixer.h"
 
 UI_Button::UI_Button(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, SDL_Rect click, UI_element* parent, j1Module* Observer) : UI_element(x, y, type, parent, Observer)
 {
@@ -392,6 +393,7 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_select_ghoul)
 			{
+				Mix_PauseMusic();
 				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
 				current_state = BUTTON_STATE::HOVER_EXIT;
 				App->player->faction = GHOUL;
@@ -410,6 +412,7 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_select_vault)
 			{
+				Mix_PauseMusic();
 				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
 				current_state = BUTTON_STATE::HOVER_EXIT;
 				App->player->faction = VAULT;
@@ -428,7 +431,7 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_select_brotherhood)
 			{
-
+				Mix_PauseMusic();
 				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
 				current_state = BUTTON_STATE::HOVER_EXIT;
 				App->player->faction = BROTHERHOOD;
@@ -446,7 +449,7 @@ bool UI_Button::Update(float dt)
 
 			if (t == button_select_supermutant)
 			{
-
+				Mix_PauseMusic();
 				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
 				current_state = BUTTON_STATE::HOVER_EXIT;
 				App->player->faction = MUTANT;

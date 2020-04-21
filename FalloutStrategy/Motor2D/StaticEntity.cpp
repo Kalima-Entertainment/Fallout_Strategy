@@ -63,16 +63,14 @@ StaticEntity::~StaticEntity() {
 bool StaticEntity::Update(float dt) {
 	switch (state) {
 	case WAIT:
-		if (Mix_Playing(6) == 0)
-			SpatialAudio(App->audio->factory, 6, position.x, position.y);
 		break;
 	case WORK:
 		break;
 	case EXPLODE:
 		if (current_animation->Finished())
 			to_destroy = true;
-		if (Mix_Playing(7) == 0)
-			SpatialAudio(App->audio->explode, 7, position.x, position.y);
+		if (Mix_Playing(21) == 0)
+			SpatialAudio(App->audio->explode, 21, position.x, position.y);
 		break;
 	default:
 		break;

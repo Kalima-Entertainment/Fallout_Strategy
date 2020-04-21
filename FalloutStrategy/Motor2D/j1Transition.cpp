@@ -127,7 +127,6 @@ void j1Transition::Transition()
 {
 	if (transition == true)
 	{
-		Mix_PauseMusic();
 		if (Mix_Playing(1) == 0) {
 			App->audio->PlayFx(1, App->audio->loading, 0);
 		}

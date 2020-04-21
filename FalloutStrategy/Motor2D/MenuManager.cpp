@@ -35,7 +35,7 @@ MenuManager::~MenuManager()
 
 void MenuManager::CreateMainMenu()
 {
-	
+
 	App->player->Disable();
 
 	//Images															

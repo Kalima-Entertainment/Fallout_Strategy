@@ -77,7 +77,6 @@ public:
 
 	BUTTON_STATE current_state = BUTTON_STATE::NONE;
 
-
 };
 
 
