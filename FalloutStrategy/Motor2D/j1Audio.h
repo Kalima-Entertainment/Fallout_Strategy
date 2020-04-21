@@ -70,6 +70,9 @@ public:
 	int Press_F_to_start;
 
 	int loading;
+	int win;
+	int lose;
+
 private:
 
 	float				music_volume;
