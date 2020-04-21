@@ -67,6 +67,10 @@ bool DynamicEntity::Update(float dt) {
 	switch (state)
 	{
 	case IDLE:
+		if (node_path.size() > 0) {
+			PathfindToPosition(node_path.back());
+			node_path.pop_back();
+		}
 		break;
 	case WALK:
 		//if the entitiy is about to reach it's target tile
@@ -157,6 +161,26 @@ bool DynamicEntity::Update(float dt) {
 			if (Mix_Playing(18) == 0) { SpatialAudio(App->audio->Brotherhood_walk, 18, position.x, position.y); }
 		if (reference_entity->faction == GHOUL)
 			if (Mix_Playing(19) == 0) { SpatialAudio(App->audio->Brotherhood_walk, 19, position.x, position.y); }
+
+		if (node_path.size() > 0) {
+			if (TargetTileReached(target_tile)) {
+				node_path.pop_back();
+
+				//if we have reached the final node pathfind to target building
+				if (node_path.size() == 0) 
+				{
+					target_tile = App->entities->ClosestTile(current_tile, ((StaticEntity*)target_entity)->tiles);
+				}
+				//if not we keep following the path 
+				else 
+				{
+					target_tile = node_path.back();
+				}
+
+				PathfindToPosition(target_tile);
+			}
+		}
+
 		break;
 
 	case ATTACK:
@@ -236,7 +260,7 @@ bool DynamicEntity::Update(float dt) {
 		if (info.current_group->IsGroupLead(this)) {
 			if (this->faction == App->player->faction)
 				info.current_group->CheckForMovementRequest(App->player->Map_mouseposition, dt);
-
+			/*
 			else {
 				AI_Player* ai_owner = ((AI_Player*)this->owner);
 				// -- Group leader owns any other faction, then store path nodes into a vector to reach enemy base.
@@ -276,8 +300,9 @@ bool DynamicEntity::Update(float dt) {
 				// -- Make a movement request each node, when reached we proceed to reach next one until we finish all node list.
 				this->info.current_group->CheckForMovementRequest(target_tile, dt);
 			}
+			*/
 		}
-
+		/*
 		//if about to reach the base pathfind to attack it
 		if (this->faction != App->player->faction) {
 			if (((AI_Player*)owner)->path_to_enemy_base.size() == 0) {
@@ -289,6 +314,7 @@ bool DynamicEntity::Update(float dt) {
 				target_entity = ((AI_Player*)owner)->target_player->base;
 			}
 		}
+		*/
 	}
 
 	//save dt for animations
@@ -469,6 +495,8 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 
 	path_to_target.clear();
 	path_to_target = App->pathfinding->GetLastPath();
+
+	state = WALK;
 
 	if (path_to_target.size() > 0)
 		next_tile = path_to_target.front();

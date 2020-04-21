@@ -158,7 +158,8 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 
 					(*unit)->info.UnitMovementState = MovementState::MovementState_NextStep;
 				}
-				else {
+				else 
+				{
 					stop_iteration = true;
 				}
 			}

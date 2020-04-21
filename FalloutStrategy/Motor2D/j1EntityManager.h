@@ -95,6 +95,7 @@ public:
 private:
 	int loading_faction;
 	int loading_entity;
+	j1Timer load_timer;
 };
 
 #endif // !_ENTITY_MANAGER_H_

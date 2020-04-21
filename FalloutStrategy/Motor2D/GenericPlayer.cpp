@@ -52,5 +52,9 @@ bool GenericPlayer::DeleteEntity(j1Entity* entity) {
 		break;
 	}
 
+	if (base == nullptr) {
+		entity->owner->target_player = nullptr;
+	}
+
 	return ((base == nullptr) && (laboratory == nullptr) && (barrack[0] == nullptr) && (barrack[1] == nullptr));
 }

@@ -12,7 +12,6 @@
 
 AI_Player::AI_Player(Faction g_faction) : GenericPlayer() {
 	faction = g_faction;
-	base = barrack[0] = barrack[1] = laboratory = nullptr;
 	caps = 500;
 	water = 500;
 	food = 500;
@@ -21,12 +20,21 @@ AI_Player::AI_Player(Faction g_faction) : GenericPlayer() {
 	is_attacking = false;
 	defeated = false;
 	goal_tile_set = false;
+	target_player = nullptr;
+	target_building = nullptr;
+	base = barrack[0] = barrack[1] = laboratory = nullptr;
 }
 
-AI_Player::~AI_Player() {
-	target_player = nullptr;
+AI_Player::~AI_Player() 
+{
+	for (int t = 0; t < troops.size(); t++) { troops[t] = nullptr;}
 	troops.clear();
+
+	for (int g = 0; g < gatherers_vector.size(); g++) { gatherers_vector[g] = nullptr; }
 	gatherers_vector.clear();
+
+	target_player = nullptr;
+	target_building = nullptr;
 	base = barrack[0] = barrack[1] = laboratory = nullptr;
 }
 
@@ -93,19 +101,20 @@ bool AI_Player::Update(float dt) {
 	// Fight -------------------------------------------------------
 
 	//Assign all attacking units an entity to attack
-	if (is_attacking) {
-		/*
-	
-		*/
-		/*
-		if (target_player->entities.size() == 4) {
-			if (target_player->GetTroopsAmount() == 0) {
-				target_player->defeated = true;
-				is_attacking = false;
-				target_player = nullptr;
+	if (is_attacking) 
+	{
+		if (target_building == nullptr) {
+			target_building = ChooseTargetBuilding();
+			target_building_position = target_building->current_tile;
+		}
+
+		for (int i = 0; i < troops.size(); i++)
+		{
+			if ((troops[i]->node_path.size() == 0) && (troops[i]->target_entity == nullptr)) {
+				troops[i]->target_entity = target_building;
+				troops[i]->node_path = CreateNodePath(troops[i]->current_tile, target_building_position);
 			}
 		}
-		*/
 	}
 
 	return ret;
@@ -126,8 +135,9 @@ void AI_Player::ChooseRandomPlayerEnemy() {
 
 	iPoint origin = { (int)troops[0]->current_tile.x, (int)troops[0]->current_tile.y };
 	iPoint enemy_base_position = App->entities->ClosestTile(origin, target_player->base->tiles);
-	CreateNodePath(troops[0]->current_tile, enemy_base_position, path_to_enemy_base);
-	App->Mmanager->CreateGroup(troops);
+
+	//CreateNodePath(troops[0]->current_tile, enemy_base_position, path_to_enemy_base);
+	//App->Mmanager->CreateGroup(troops);
 }
 
 DynamicEntity* AI_Player::GetClosestDynamicEntity() {
@@ -144,7 +154,7 @@ DynamicEntity* AI_Player::GetClosestDynamicEntity() {
 	return target_entity;
 }
 
-std::vector<iPoint> AI_Player::CreateNodePath(iPoint origin, iPoint destination, std::vector<iPoint> &node_path) {
+std::vector<iPoint> AI_Player::CreateNodePath(iPoint origin, iPoint destination) {
 	std::vector<iPoint> path;
 	iPoint current_node;
 	iPoint origin_node;
@@ -155,12 +165,14 @@ std::vector<iPoint> AI_Player::CreateNodePath(iPoint origin, iPoint destination,
 	origin_node = node_map[0];
 	destination_node = node_map[0];
 
+	//closest origin node
 	for (int i = 0; i < node_map.size(); i++)
 	{
 		if (node_map[i].DistanceTo(origin) < origin_node.DistanceTo(origin))
 			origin_node = node_map[i];
 	}
-
+	
+	//closest destination node
 	for (int i = 0; i < node_map.size(); i++)
 	{
 		if (node_map[i].DistanceTo(destination) < destination_node.DistanceTo(destination))
@@ -170,6 +182,7 @@ std::vector<iPoint> AI_Player::CreateNodePath(iPoint origin, iPoint destination,
 	current_node = origin_node;
 	path.push_back(current_node);
 
+	//iterate nodes to create the path
 	while (current_node != destination_node)
 	{
 		iPoint possible_node;
@@ -191,12 +204,29 @@ std::vector<iPoint> AI_Player::CreateNodePath(iPoint origin, iPoint destination,
 		path.push_back(best_node);
 	}
 
+	//flip final path 
 	std::reverse(path.begin(), path.end());
-
+	/*
 	for (int i = 0; i < path.size(); i++)
 	{
 		node_path.push_back(path[i]);
 	}
-
+	*/
 	return path;
+}
+
+StaticEntity* AI_Player::ChooseTargetBuilding() {
+
+	//choose a building to attack in preference order
+
+	if (target_player->barrack[0] != nullptr)
+		target_building = target_player->barrack[0];
+	else if (target_player->barrack[1] != nullptr)
+		target_building = target_player->barrack[1];
+	else if (target_player->laboratory != nullptr)
+		target_building = target_player->laboratory;
+	else if (target_player->base != nullptr)
+		target_building = target_player->base;
+
+	return target_building;
 }

@@ -261,7 +261,9 @@ bool j1EntityManager::Start() {
 	}
 
 	showing_building_menu = false;
+
 	sort_timer.Start();
+	load_timer.Start();
 
 	return ret;
 }
@@ -306,7 +308,7 @@ bool j1EntityManager::Update(float dt)
 	bool ret = true;
 
 	//load all textures and animations on the go
-	if (loading_reference_entities) {
+	if ((loading_reference_entities) && (load_timer.Read() > 100)) {
 		reference_entities[loading_faction][loading_entity]->LoadAnimations();
 		
 		loading_entity = loading_entity++;
@@ -324,7 +326,7 @@ bool j1EntityManager::Update(float dt)
 			}
 			ret = LoadReferenceEntityData();
 		}
-		
+		load_timer.Start();
 	}
 
 	if (!App->isPaused)
