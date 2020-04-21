@@ -3,6 +3,8 @@
 #include "AI_Player.h"
 #include "j1Entity.h"
 #include "j1Scene.h"
+#include "j1Render.h"
+#include "j1Map.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
 AI_Manager::AI_Manager() : j1Module() {
@@ -46,6 +48,18 @@ bool AI_Manager::Update(float dt) {
 			}
 		}
 	}
+	return ret;
+}
+
+bool AI_Manager::PostUpdate() {
+	bool ret = true;
+
+	for (int i = 0; i < node_map.size(); i++)
+	{
+		iPoint node_world_position = App->map->MapToWorld(node_map[i].x, node_map[i].y);
+		App->render->DrawQuad({ node_world_position.x, node_world_position.y, 6, 6 }, 0, 0, 255, 255);
+	}
+
 	return ret;
 }
 

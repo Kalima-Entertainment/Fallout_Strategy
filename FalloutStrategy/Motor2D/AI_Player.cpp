@@ -115,10 +115,15 @@ bool AI_Player::Update(float dt) {
 
 		for (int i = 0; i < troops.size(); i++)
 		{
-			if (troops[i]->target_entity == nullptr) 
+			if (target_building != nullptr)
 			{
-				troops[i]->target_entity = target_building;
+				if ((troops[i]->target_entity == nullptr)||(troops[i]->target_entity != target_building))
+				{
+						troops[i]->target_entity = target_building;
+				}
 			}
+			else { troops[i]->target_entity = nullptr; }
+
 			if (troops[i]->node_path.size() == 0) 
 			{
 				if (troops[i]->current_tile.DistanceManhattan(target_building_position) > 30)

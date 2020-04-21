@@ -85,7 +85,7 @@ bool StaticEntity::Update(float dt) {
 		if (spawning == true) {
 			if (chrono_spawn.ReadSec() > spawn_stack[0].spawn_seconds) {
 				App->entities->CreateEntity(faction, spawn_stack[0].type, spawnPosition.x, spawnPosition.y, owner);
-				LOG("Unit Spawned");
+				//LOG("Unit Spawned");
 				UpdateSpawnStack();
 			}
 			time_left = spawn_stack[0].spawn_seconds - chrono_spawn.ReadSec();
