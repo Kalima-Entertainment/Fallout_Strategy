@@ -10,6 +10,7 @@
 #include "j1MovementManager.h"
 #include "brofiler/Brofiler/Brofiler.h"
 #include <vector>
+#include <math.h>
 
 AI_Player::AI_Player(Faction g_faction) : GenericPlayer() {
 	faction = g_faction;
@@ -111,9 +112,16 @@ bool AI_Player::Update(float dt) {
 
 		for (int i = 0; i < troops.size(); i++)
 		{
-			if ((troops[i]->node_path.size() == 0) && (troops[i]->target_entity == nullptr)) {
+			if (troops[i]->target_entity == nullptr) 
+			{
 				troops[i]->target_entity = target_building;
-				troops[i]->node_path = CreateNodePath(troops[i]->current_tile, target_building_position);
+			}
+			if (troops[i]->node_path.size() == 0) 
+			{
+				if (troops[i]->current_tile.DistanceManhattan(target_building_position) > 30)
+					troops[i]->node_path = CreateNodePath(troops[i]->current_tile, target_building_position);
+				else
+					troops[i]->PathfindToPosition(target_building_position);
 			}
 		}
 	}
@@ -163,7 +171,7 @@ std::vector<iPoint> AI_Player::CreateNodePath(iPoint origin, iPoint destination)
 	iPoint destination_node;
 	std::vector<iPoint> node_map = App->ai_manager->node_map;
 	int node_distance = App->ai_manager->GetDistanceBetweenNodes();
-	
+
 	origin_node = node_map[0];
 	destination_node = node_map[0];
 

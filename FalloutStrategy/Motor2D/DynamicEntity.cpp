@@ -167,7 +167,9 @@ bool DynamicEntity::Update(float dt) {
 				//if we have reached the final node pathfind to target building
 				if (node_path.size() == 0) 
 				{
-					target_tile = App->entities->ClosestTile(current_tile, ((StaticEntity*)target_entity)->tiles);
+					if (target_entity != nullptr) {
+						target_tile = App->entities->ClosestTile(current_tile, ((StaticEntity*)target_entity)->tiles);
+					}
 				}
 				//if not we keep following the path 
 				else 

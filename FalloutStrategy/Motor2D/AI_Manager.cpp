@@ -10,7 +10,7 @@ AI_Manager::AI_Manager() : j1Module() {
 	players_created = false;
 	ai_player[0] = ai_player[1] = ai_player[2] = ai_player[3] = nullptr;
 	beaten_ai_players = 0;
-	node_map_divisions = 6;
+	node_map_divisions = 15;
 }
 
 AI_Manager::~AI_Manager() {}
