@@ -33858,22 +33858,22 @@
     <property name="Water" type="int" value="150"/>
    </properties>
   </object>
-  <object id="43" name="Static" type="Laboratory" x="2150.66" y="484.583" width="70.8333" height="75.8333">
+  <object id="43" name="Static" type="Laboratory" x="2024.66" y="602.583" width="70.8333" height="75.8333">
    <properties>
     <property name="faction" type="int" value="0"/>
    </properties>
   </object>
-  <object id="44" name="Static" type="Base" x="2145.33" y="107.078" width="113.833" height="118.309">
+  <object id="44" name="Static" type="Base" x="2019.33" y="225.078" width="113.833" height="118.309">
    <properties>
     <property name="faction" type="int" value="0"/>
    </properties>
   </object>
-  <object id="45" name="Static" type="Barrack" x="1847.83" y="96.5832" width="50.6667" height="103.333">
+  <object id="45" name="Static" type="Barrack" x="1721.83" y="214.583" width="50.6667" height="103.333">
    <properties>
     <property name="faction" type="int" value="0"/>
    </properties>
   </object>
-  <object id="46" name="Static" type="Barrack" x="1935.16" y="101.413" width="50.6667" height="105.333">
+  <object id="46" name="Static" type="Barrack" x="1809.16" y="219.413" width="50.6667" height="105.333">
    <properties>
     <property name="faction" type="int" value="0"/>
    </properties>

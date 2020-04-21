@@ -33834,22 +33834,22 @@
     <property name="Nuka-Cola" type="int" value="220"/>
    </properties>
   </object>
-  <object id="11" name="Static" type="Barrack" x="1563.35" y="2066.93" width="54.5908" height="109.323">
+  <object id="11" name="Static" type="Barrack" x="1437.35" y="1900.93" width="54.5908" height="109.323">
    <properties>
     <property name="faction" type="int" value="2"/>
    </properties>
   </object>
-  <object id="12" name="Static" type="Base" x="2036.81" y="2034.38" width="113.833" height="118.309">
+  <object id="12" name="Static" type="Base" x="1910.81" y="1868.38" width="113.833" height="118.309">
    <properties>
     <property name="faction" type="int" value="2"/>
    </properties>
   </object>
-  <object id="13" name="Static" type="Barrack" x="1682.14" y="2083.14" width="54.5908" height="96.9776">
+  <object id="13" name="Static" type="Barrack" x="1556.14" y="1917.14" width="54.5908" height="96.9776">
    <properties>
     <property name="faction" type="int" value="2"/>
    </properties>
   </object>
-  <object id="14" name="Static" type="Laboratory" x="2070.14" y="1649.88" width="67.3333" height="69.3333">
+  <object id="14" name="Static" type="Laboratory" x="1944.14" y="1483.88" width="67.3333" height="69.3333">
    <properties>
     <property name="faction" type="int" value="2"/>
    </properties>

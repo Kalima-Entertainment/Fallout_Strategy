@@ -33832,17 +33832,17 @@
     <property name="Water" type="int" value="220"/>
    </properties>
   </object>
-  <object id="16" name="Static" type="Barrack" x="647.667" y="2163.17" width="50.6667" height="106.833">
+  <object id="16" name="Static" type="Barrack" x="702.667" y="2002.17" width="50.6667" height="106.833">
    <properties>
     <property name="faction" type="int" value="1"/>
    </properties>
   </object>
-  <object id="17" name="Static" type="Base" x="138.334" y="2081.84" width="113.833" height="118.309">
+  <object id="17" name="Static" type="Base" x="214.834" y="1923.34" width="113.833" height="118.309">
    <properties>
     <property name="faction" type="int" value="1"/>
    </properties>
   </object>
-  <object id="18" name="Static" type="Barrack" x="537.834" y="2161.34" width="50.6667" height="108.333">
+  <object id="18" name="Static" type="Barrack" x="582.334" y="2002.84" width="50.6667" height="108.333">
    <properties>
     <property name="faction" type="int" value="1"/>
    </properties>
