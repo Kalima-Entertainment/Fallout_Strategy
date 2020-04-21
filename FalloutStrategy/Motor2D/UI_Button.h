@@ -68,9 +68,6 @@ public:
 	j1Image* brotherhood_image = nullptr;
 	j1Image* supermutant_image = nullptr;
 
-	UI_Label* cap_label = nullptr;
-	UI_Label* fullscreen_label = nullptr;
-
 	std::list<UI_element*> elements_to_show;
 
 	BUTTON_STATE current_state = BUTTON_STATE::NONE;

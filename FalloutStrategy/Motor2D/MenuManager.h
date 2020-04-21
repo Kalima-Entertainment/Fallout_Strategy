@@ -122,6 +122,9 @@ public:
 
 	UI_element* win_scene[5];
 
+	UI_Label* cap_label = nullptr;
+	UI_Label* fullscreen_label = nullptr;
+
 	Menu current_menu;
 	Menu last_menu;
 

@@ -555,6 +555,8 @@ void MenuManager::DestroyMenu(Menu menu) {
 		break;
 	case Menu::SETTINGS:
 		App->gui->DeleteArrayElements(settings_menu, 23);
+		App->gui->Delete_Element(cap_label);
+		App->gui->Delete_Element(fullscreen_label);
 		break;
 	case Menu::CREDITS:
 		App->gui->DeleteArrayElements(credits_menu, 13);
