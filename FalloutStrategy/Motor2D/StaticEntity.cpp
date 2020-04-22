@@ -450,7 +450,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 			if (storage_capacity > max_capacity)
 				storage_capacity = max_capacity;
 			
-			LOG("Resource Limit Upgraded. New limit is: %i", storage_capacity);		
+			LOG("Resource Limit Upgraded. New limit is: %i", storage_capacity);
 		}
 	}
 	else if (upgrade_name == GATHERER_CAPACITY) {
@@ -469,7 +469,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 
 		//Upgrade melees and ranged that are currently alive
 		for (int i = 0; i < App->entities->entities.size(); i++) {
-			if (App->entities->entities[i]->faction = faction)
+			if (App->entities->entities[i]->faction == faction)
 				if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED)
 					App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.15);
 		}
@@ -480,7 +480,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 
 		//Upgrade units that are currently alive
 		for (int i = 0; i < App->entities->entities.size(); i++) {
-			if (App->entities->entities[i]->faction = faction) {
+			if (App->entities->entities[i]->faction == faction) {
 				App->entities->entities[i]->speed.x += App->entities->entities[i]->speed.x * 0.15;
 				App->entities->entities[i]->speed.y += App->entities->entities[i]->speed.y * 0.15;
 			}
@@ -492,7 +492,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 
 		//Upgrade melees and ranged that are currently alive
 		for (int i = 0; i < App->entities->entities.size(); i++) {
-			if (App->entities->entities[i]->faction = faction)
+			if (App->entities->entities[i]->faction == faction)
 				if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED) {
 					App->entities->entities[i]->max_health += (int)(App->entities->entities[i]->max_health * 0.15);
 					App->entities->entities[i]->current_health += (int)(App->entities->entities[i]->max_health * 0.15);
