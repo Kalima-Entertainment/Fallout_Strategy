@@ -66,7 +66,7 @@ public:
 
 	bool LoadReferenceEntityData();
 	void DestroyEntity(j1Entity* delete_entity);
-	void DestroyAllEntities();
+	void DestroyAllEntities();	
 
 	void BubbleSortEntities();
 	//void QuickSortEntities(std::vector<j1Entity*> entities, int low, int high);

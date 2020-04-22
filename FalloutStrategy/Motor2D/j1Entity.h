@@ -49,6 +49,8 @@ public:
 	virtual bool LoadFx() { return true; };
 	virtual bool LoadReferenceData() { return true; };
 
+	//virtual void LoadCosts();
+
 	int GetPositionScore() const;
 
 	iPoint MapPosition();

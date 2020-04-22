@@ -362,7 +362,7 @@ bool UI_Button::Update(float dt)
 				if (App->player->selected_entity == nullptr)
 					static_entity = (StaticEntity*)App->player->last_selected_entity;
 				else
-				static_entity = (StaticEntity*)App->player->selected_entity;
+					static_entity = (StaticEntity*)App->player->selected_entity;
 				static_entity->SpawnUnit(GATHERER);
 			}
 
@@ -456,6 +456,52 @@ bool UI_Button::Update(float dt)
 				App->transition->transition = true;
 				App->entities->Enable();
 			}
+
+			if (t == Boost_base_button)
+			{
+				StaticEntity* static_entity;
+				if (App->player->selected_entity == nullptr) {
+					static_entity = (StaticEntity*)App->player->last_selected_entity;
+				}
+				else{
+					static_entity = (StaticEntity*)App->player->selected_entity;
+				}
+				static_entity->Upgrade(static_entity->base_resource_limit[static_entity->faction]);
+				static_entity->Upgrade(static_entity->gatherer_resource_limit[static_entity->faction]);
+			}
+			if (t == Boost_barrack_button)
+			{
+				StaticEntity* static_entity;
+				if (App->player->selected_entity == nullptr) {
+					static_entity = (StaticEntity*)App->player->last_selected_entity;
+				}
+				else {
+					static_entity = (StaticEntity*)App->player->selected_entity;
+				}
+				static_entity->Upgrade(static_entity->units_damage[static_entity->faction]);
+				static_entity->Upgrade(static_entity->units_speed[static_entity->faction]);
+			}
+			/*if (t == Boost_lab_button)
+			{
+				StaticEntity* static_entity;
+				if (App->player->selected_entity == nullptr) {
+					static_entity = (StaticEntity*)App->player->last_selected_entity;
+				}
+				else {
+					static_entity = (StaticEntity*)App->player->selected_entity;
+				}
+				static_entity->Upgrade(static_entity->units_health[static_entity->faction]);
+				static_entity->Upgrade(static_entity->units_creation_time[static_entity->faction]);
+			}*/
+
+
+
+
+
+
+
+
+
 		}
 		else {
 			
