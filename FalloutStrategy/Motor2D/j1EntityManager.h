@@ -7,6 +7,7 @@
 #include "Animation.h"
 #include "j1Timer.h"
 #include "SDL_image/include/SDL_image.h"
+#include <string>
 
 class j1Entity;
 struct SDL_Texture;
