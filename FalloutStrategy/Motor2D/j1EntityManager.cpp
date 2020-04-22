@@ -769,6 +769,9 @@ void j1EntityManager::OnCommand(std::vector<std::string> command_parts) {
 
 void j1EntityManager::LoadCosts() {
 	//Loads the cost of spawning units and creating upgrades from XML file
+	
+
+	
 	//water, food, spawn time (seconds)
 	unit_data[VAULT][MELEE] = { 60, 60, 30 };
 	unit_data[VAULT][RANGED] = { 80, 80, 40 };

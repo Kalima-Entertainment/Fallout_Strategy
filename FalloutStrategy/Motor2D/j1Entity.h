@@ -47,9 +47,7 @@ public:
 
 	virtual bool LoadAnimations() { return true; };
 	virtual bool LoadFx() { return true; };
-	virtual bool LoadReferenceData() { return true; };
-
-	//virtual void LoadCosts();
+	virtual bool LoadReferenceData() { return true; };	
 
 	int GetPositionScore() const;
 
