@@ -29,12 +29,12 @@ UI_Button::UI_Button(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, 
 	t = type;
 
 	dimensions = idle;
-	click_fx = App->audio->LoadFx("audio/fx/UISounds/Butn_Arrow.wav");
-	hover_fx = App->audio->LoadFx("audio/fx/UISounds/Butn_Slider.wav");
-	back_fx = App->audio->LoadFx("audio/fx/UISounds/Butn_ReadyOff.wav");
-	volume_fx = App->audio->LoadFx("audio/fx/UISounds/Butn_Text.wav");
-	members_fx = App->audio->LoadFx("audio/fx/UISounds/Butn_Skill.wav");
-	character_fx = App->audio->LoadFx("audio/fx/UISounds/Butn_Character.wav");
+	click_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Arrow.wav");
+	hover_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Slider.wav");
+	back_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_ReadyOff.wav");
+	volume_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Text.wav");
+	members_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Skill.wav");
+	character_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Character.wav");
 }
 
 bool UI_Button::CleanUp()

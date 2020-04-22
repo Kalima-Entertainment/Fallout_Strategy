@@ -177,12 +177,6 @@ bool j1Scene::Update(float dt)
 		App->scene->Disable();
 		App->isPaused = false;
 	}
-	if (win == true) {
-		App->audio->PlayFx(1, App->audio->win, 0);
-	}
-	else if (win == false) {
-		App->audio->PlayFx(1, App->audio->lose, 0);
-	}
 
 	return true;
 }

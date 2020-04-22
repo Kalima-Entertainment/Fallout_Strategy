@@ -565,10 +565,12 @@ void MenuManager::CreateWinLoseScene() {
 	if(App->scene->win)
 	{
 		win_scene[0] = (j1Image*)App->gui->CreateImage(0, 0, Image, { 0, 3190, 1280, 720 }, NULL, this);
+		App->audio->PlayFx(1, App->audio->win, 0);
 	}
 	else
 	{
 		win_scene[0] = (j1Image*)App->gui->CreateImage(0, 0, Image, { 1281, 3190, 1280, 720 }, NULL, this);
+		App->audio->PlayFx(1, App->audio->lose, 0);
 	}
 
 	//Buttons

@@ -142,6 +142,7 @@ void j1Transition::Transition()
 
 	if ((!App->entities->loading_reference_entities) && (App->gui->ingame == true))
 	{
+		Mix_HaltChannel(1);
 		transition = false;
 		App->gui->active;
 		App->minimap->active;
@@ -150,6 +151,7 @@ void j1Transition::Transition()
 		App->player->Enable();
 	}
 	else if ((fadetimer.Read() > 1500)&&(!App->gui->ingame)) {
+		Mix_HaltChannel(1);
 		App->entities->Disable();
 		App->scene->Disable();
 		App->Mmanager->Disable();
