@@ -315,7 +315,7 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 	//We substract resources from player and add upgrade to the stack
 
 	if (upgrading == false) {
-		if (upgrades_data.upgrade == RESOURCES_LIMIT) {
+		if (upgrades_data.upgrade == RESOURCES_LIMIT && App->entities->base_resource_limit[faction].upgrade_num < 4) {
 			if (storage_capacity < max_capacity) {
 				int cost = App->entities->base_resource_limit[faction].first_price + (App->entities->base_resource_limit[faction].price_increment * App->entities->base_resource_limit[faction].upgrade_num);
 
@@ -336,7 +336,7 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 				}
 			}
 		}
-		else if (upgrades_data.upgrade == GATHERER_CAPACITY) {
+		else if (upgrades_data.upgrade == GATHERER_CAPACITY && App->entities->gatherer_resource_limit[faction].upgrade_num < 4) {
 			int cost = App->entities->gatherer_resource_limit[faction].first_price + (App->entities->gatherer_resource_limit[faction].price_increment * App->entities->gatherer_resource_limit[faction].upgrade_num);
 
 			if (owner->caps >= cost) {
@@ -356,7 +356,7 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 				App->entities->gatherer_resource_limit[faction].upgrade_num++;
 			}
 		}
-		else if (upgrades_data.upgrade == UNITS_DAMAGE) {
+		else if (upgrades_data.upgrade == UNITS_DAMAGE && App->entities->units_damage[faction].upgrade_num < 4) {
 			int cost = App->entities->units_damage[faction].first_price + (App->entities->units_damage[faction].price_increment * App->entities->units_damage[faction].upgrade_num);
 
 			if (owner->caps >= cost) {
@@ -376,7 +376,7 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 				App->entities->units_damage[faction].upgrade_num++;
 			}
 		}
-		else if (upgrades_data.upgrade == UNITS_SPEED) {
+		else if (upgrades_data.upgrade == UNITS_SPEED && App->entities->units_speed[faction].upgrade_num < 4) {
 			int cost = App->entities->units_speed[faction].first_price + (App->entities->units_speed[faction].price_increment * App->entities->units_speed[faction].upgrade_num);
 
 			if (owner->caps >= cost) {
@@ -396,7 +396,7 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 				App->entities->units_speed[faction].upgrade_num++;
 			}
 		}
-		else if (upgrades_data.upgrade == UNITS_HEALTH) {
+		else if (upgrades_data.upgrade == UNITS_HEALTH && App->entities->units_health[faction].upgrade_num < 4) {
 			int cost = App->entities->units_health[faction].first_price + (App->entities->units_health[faction].price_increment * App->entities->units_health[faction].upgrade_num);
 
 			if (owner->caps >= cost) {
@@ -416,7 +416,7 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 				App->entities->units_health[faction].upgrade_num++;
 			}
 		}
-		else if (upgrades_data.upgrade == CREATION_TIME) {
+		else if (upgrades_data.upgrade == CREATION_TIME && App->entities->units_creation_time[faction].upgrade_num < 4) {
 			int cost = App->entities->units_creation_time[faction].first_price + (App->entities->units_creation_time[faction].price_increment * App->entities->units_creation_time[faction].upgrade_num);
 
 			if (owner->caps >= cost) {
