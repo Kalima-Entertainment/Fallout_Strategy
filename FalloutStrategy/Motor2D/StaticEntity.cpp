@@ -308,9 +308,31 @@ bool StaticEntity::LoadAnimations() {
 
 void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 	//We substract resources from player and add upgrade to the stack
-	if (upgrades_data.upgrade == RESOURCES_LIMIT) {
-		if (storage_capacity < max_capacity) {
-			int cost = App->entities->base_resource_limit[faction].first_price + (App->entities->base_resource_limit[faction].price_increment * App->entities->base_resource_limit[faction].upgrade_num);
+
+	if (upgrading == false) {
+		if (upgrades_data.upgrade == RESOURCES_LIMIT) {
+			if (storage_capacity < max_capacity) {
+				int cost = App->entities->base_resource_limit[faction].first_price + (App->entities->base_resource_limit[faction].price_increment * App->entities->base_resource_limit[faction].upgrade_num);
+
+				if (owner->caps >= cost) {
+					//Pay the price
+					if (owner == App->player)
+						App->player->UpdateResourceData(Resource::CAPS, -cost);
+					else
+						owner->caps -= cost;
+
+					upgrade_stack.building = BASE;
+					upgrade_stack.faction = faction;
+					upgrade_stack.upgrade_seconds = upgrades_data.seconds;
+					want_to_upgrade = true;
+					LOG("Resource Limit Upgrade started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
+
+					App->entities->base_resource_limit[faction].upgrade_num++;
+				}
+			}
+		}
+		else if (upgrades_data.upgrade == GATHERER_CAPACITY) {
+			int cost = App->entities->gatherer_resource_limit[faction].first_price + (App->entities->gatherer_resource_limit[faction].price_increment * App->entities->gatherer_resource_limit[faction].upgrade_num);
 
 			if (owner->caps >= cost) {
 				//Pay the price
@@ -319,116 +341,97 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 				else
 					owner->caps -= cost;
 
+				//Upgrade data
 				upgrade_stack.building = BASE;
 				upgrade_stack.faction = faction;
 				upgrade_stack.upgrade_seconds = upgrades_data.seconds;
 				want_to_upgrade = true;
-				LOG("Resource Limit Upgrade started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
+				LOG("Gatherer Resource Limit Upgrade started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
 
-				App->entities->base_resource_limit[faction].upgrade_num++;
+				App->entities->gatherer_resource_limit[faction].upgrade_num++;
 			}
 		}
-	}
-	else if (upgrades_data.upgrade == GATHERER_CAPACITY) {
-		int cost = App->entities->gatherer_resource_limit[faction].first_price + (App->entities->gatherer_resource_limit[faction].price_increment * App->entities->gatherer_resource_limit[faction].upgrade_num);
+		else if (upgrades_data.upgrade == UNITS_DAMAGE) {
+			int cost = App->entities->units_damage[faction].first_price + (App->entities->units_damage[faction].price_increment * App->entities->units_damage[faction].upgrade_num);
 
-		if (owner->caps >= cost) {
-			//Pay the price
-			if (owner == App->player)
-				App->player->UpdateResourceData(Resource::CAPS, -cost);
-			else
-				owner->caps -= cost;
+			if (owner->caps >= cost) {
+				//Pay the price
+				if (owner == App->player)
+					App->player->UpdateResourceData(Resource::CAPS, -cost);
+				else
+					owner->caps -= cost;
 
-			//Upgrade data
-			upgrade_stack.building = BASE;
-			upgrade_stack.faction = faction;
-			upgrade_stack.upgrade_seconds = upgrades_data.seconds;
-			want_to_upgrade = true;
-			LOG("Gatherer Resource Limit Upgrade started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
+				//Upgrade data
+				upgrade_stack.building = BARRACK;
+				upgrade_stack.faction = faction;
+				upgrade_stack.upgrade_seconds = upgrades_data.seconds;
+				want_to_upgrade = true;
+				LOG("Units Damage Upgrade started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
 
-			App->entities->gatherer_resource_limit[faction].upgrade_num++;
+				App->entities->units_damage[faction].upgrade_num++;
+			}
 		}
-	}
-	else if (upgrades_data.upgrade == UNITS_DAMAGE) {
-		int cost = App->entities->units_damage[faction].first_price + (App->entities->units_damage[faction].price_increment * App->entities->units_damage[faction].upgrade_num);
+		else if (upgrades_data.upgrade == UNITS_SPEED) {
+			int cost = App->entities->units_speed[faction].first_price + (App->entities->units_speed[faction].price_increment * App->entities->units_speed[faction].upgrade_num);
 
-		if (owner->caps >= cost) {
-			//Pay the price
-			if (owner == App->player)
-				App->player->UpdateResourceData(Resource::CAPS, -cost);
-			else
-				owner->caps -= cost;
+			if (owner->caps >= cost) {
+				//Pay the price
+				if (owner == App->player)
+					App->player->UpdateResourceData(Resource::CAPS, -cost);
+				else
+					owner->caps -= cost;
 
-			//Upgrade data
-			upgrade_stack.building = BARRACK;
-			upgrade_stack.faction = faction;
-			upgrade_stack.upgrade_seconds = upgrades_data.seconds;
-			want_to_upgrade = true;
-			LOG("Units Damage Upgrade started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
+				//Upgrade data
+				upgrade_stack.building = BARRACK;
+				upgrade_stack.faction = faction;
+				upgrade_stack.upgrade_seconds = upgrades_data.seconds;
+				want_to_upgrade = true;
+				LOG("Units Speed Upgrade started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
 
-			App->entities->units_damage[faction].upgrade_num++;
+				App->entities->units_speed[faction].upgrade_num++;
+			}
 		}
-	}
-	else if (upgrades_data.upgrade == UNITS_SPEED) {
-		int cost = App->entities->units_speed[faction].first_price + (App->entities->units_speed[faction].price_increment * App->entities->units_speed[faction].upgrade_num);
+		else if (upgrades_data.upgrade == UNITS_HEALTH) {
+			int cost = App->entities->units_health[faction].first_price + (App->entities->units_health[faction].price_increment * App->entities->units_health[faction].upgrade_num);
 
-		if (owner->caps >= cost) {
-			//Pay the price
-			if (owner == App->player)
-				App->player->UpdateResourceData(Resource::CAPS, -cost);
-			else
-				owner->caps -= cost;
-						
-			//Upgrade data
-			upgrade_stack.building = BARRACK;
-			upgrade_stack.faction = faction;
-			upgrade_stack.upgrade_seconds = upgrades_data.seconds;
-			want_to_upgrade = true;
-			LOG("Units Speed Upgrade started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
+			if (owner->caps >= cost) {
+				//Pay the price
+				if (owner == App->player)
+					App->player->UpdateResourceData(Resource::CAPS, -cost);
+				else
+					owner->caps -= cost;
 
-			App->entities->units_speed[faction].upgrade_num++;
+				//Upgrade data
+				upgrade_stack.building = LABORATORY;
+				upgrade_stack.faction = faction;
+				upgrade_stack.upgrade_seconds = upgrades_data.seconds;
+				want_to_upgrade = true;
+				LOG("Units Health Upgrade started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
+
+				App->entities->units_health[faction].upgrade_num++;
+			}
 		}
-	}
-	else if (upgrades_data.upgrade == UNITS_HEALTH) {
-		int cost = App->entities->units_health[faction].first_price + (App->entities->units_health[faction].price_increment * App->entities->units_health[faction].upgrade_num);
+		else if (upgrades_data.upgrade == CREATION_TIME) {
+			int cost = App->entities->units_creation_time[faction].first_price + (App->entities->units_creation_time[faction].price_increment * App->entities->units_creation_time[faction].upgrade_num);
 
-		if (owner->caps >= cost) {
-			//Pay the price
-			if (owner == App->player)
-				App->player->UpdateResourceData(Resource::CAPS, -cost);
-			else
-				owner->caps -= cost;
-			
-			//Upgrade data
-			upgrade_stack.building = LABORATORY;
-			upgrade_stack.faction = faction;
-			upgrade_stack.upgrade_seconds = upgrades_data.seconds;
-			want_to_upgrade = true;
-			LOG("Units Health Upgrade started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
+			if (owner->caps >= cost) {
+				//Pay the price
+				if (owner == App->player)
+					App->player->UpdateResourceData(Resource::CAPS, -cost);
+				else
+					owner->caps -= cost;
 
-			App->entities->units_health[faction].upgrade_num++;
+				//Upgrade data
+				upgrade_stack.building = LABORATORY;
+				upgrade_stack.faction = faction;
+				upgrade_stack.upgrade_seconds = upgrades_data.seconds;
+				want_to_upgrade = true;
+				LOG("Units Creation Time Upgrade started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
+
+				App->entities->units_creation_time[faction].upgrade_num++;
+			}
 		}
-	}
-	else if (upgrades_data.upgrade == CREATION_TIME) {
-		int cost = App->entities->units_creation_time[faction].first_price + (App->entities->units_creation_time[faction].price_increment * App->entities->units_creation_time[faction].upgrade_num);
-
-		if (owner->caps >= cost) {
-			//Pay the price
-			if (owner == App->player)
-				App->player->UpdateResourceData(Resource::CAPS, -cost);
-			else
-				owner->caps -= cost;
-						
-			//Upgrade data
-			upgrade_stack.building = LABORATORY;
-			upgrade_stack.faction = faction;
-			upgrade_stack.upgrade_seconds = upgrades_data.seconds;
-			want_to_upgrade = true;
-			LOG("Units Creation Time Upgrade started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
-
-			App->entities->units_creation_time[faction].upgrade_num++;
-		}
-	}
+	}	
 }
 
 void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
@@ -470,6 +473,8 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 					App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.15);
 		}
 		LOG("Units Damage Upgraded");
+
+		
 
 		App->entities->units_damage[faction].upgrade_num++;
 		

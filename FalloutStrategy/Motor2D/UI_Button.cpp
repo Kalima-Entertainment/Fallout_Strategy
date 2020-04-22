@@ -403,7 +403,7 @@ bool UI_Button::Update(float dt)
 				static_entity->Upgrade(App->entities->units_damage[static_entity->faction]);
 				static_entity->Upgrade(App->entities->units_speed[static_entity->faction]);
 			}
-			/*if (t == Boost_lab_button)
+			if (t == Boost_lab_button)
 			{
 				StaticEntity* static_entity;
 				if (App->player->selected_entity == nullptr) {
@@ -412,18 +412,9 @@ bool UI_Button::Update(float dt)
 				else {
 					static_entity = (StaticEntity*)App->player->selected_entity;
 				}
-				static_entity->Upgrade(static_entity->units_health[static_entity->faction]);
-				static_entity->Upgrade(static_entity->units_creation_time[static_entity->faction]);
-			}*/
-
-
-
-
-
-
-
-
-
+				static_entity->Upgrade(App->entities->units_health[static_entity->faction]);
+				static_entity->Upgrade(App->entities->units_creation_time[static_entity->faction]);
+			}
 		}
 		else {
 			
