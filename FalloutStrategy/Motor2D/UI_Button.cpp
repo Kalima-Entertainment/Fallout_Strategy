@@ -297,6 +297,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->CreateMainMenu();
 				App->audio->PlayFx(1, back_fx, 0);
 				App->gui->ingame = false;
+				App->transition->StartTimer();
 				App->transition->transition = true;
 				App->transition->fadetimer.Start();
 			}
@@ -344,6 +345,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->CreateMainMenu();
 				App->audio->PlayFx(1, back_fx, 0);
 				App->gui->ingame = false;
+				App->transition->StartTimer();
 				App->transition->transition = true;
 				App->transition->fadetimer.Start();
 

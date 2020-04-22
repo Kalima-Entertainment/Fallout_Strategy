@@ -149,12 +149,14 @@ void j1Transition::Transition()
 		App->scene->Enable();
 		App->player->Enable();
 	}
-	else if (App->gui->ingame == false)
-	{
+	else if ((fadetimer.Read() > 1500)&&(!App->gui->ingame)) {
 		App->entities->Disable();
 		App->scene->Disable();
 		App->Mmanager->Disable();
 		App->player->Disable();
 		App->entities->Disable();
+		transition = false;
 	}
 }
+
+void j1Transition::StartTimer() {fadetimer.Start();}

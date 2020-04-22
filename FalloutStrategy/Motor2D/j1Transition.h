@@ -21,6 +21,8 @@ public:
 	~j1Transition();
 	bool CleanUp();
 	void Transition();
+	void StartTimer();
+
 private:
 	float speed_reducer;
 	SDL_Texture* gif_tex;
