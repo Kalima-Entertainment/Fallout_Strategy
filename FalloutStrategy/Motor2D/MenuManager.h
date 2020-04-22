@@ -104,21 +104,21 @@ public:
 	UI_element* gui_ingame[1];
 	UI_element* resources[3];
 
-	UI_element* brotherhood_base[5];
-	UI_element* brotherhood_barrack[7];
-	UI_element* brotherhood_lab[3];
+	UI_element* brotherhood_base[6];
+	UI_element* brotherhood_barrack[8];
+	UI_element* brotherhood_lab[4];
 
-	UI_element* ghoul_base[5];
-	UI_element* ghoul_barrack[7];
-	UI_element* ghoul_lab[3];
+	UI_element* ghoul_base[6];
+	UI_element* ghoul_barrack[8];
+	UI_element* ghoul_lab[4];
 
-	UI_element* vault_base[5];
-	UI_element* vault_barrack[7];
-	UI_element* vault_lab[3];
+	UI_element* vault_base[6];
+	UI_element* vault_barrack[8];
+	UI_element* vault_lab[4];
 
-	UI_element* supermutant_base[5];
-	UI_element* supermutant_barrack[7];
-	UI_element* supermutant_lab[3];
+	UI_element* supermutant_base[6];
+	UI_element* supermutant_barrack[8];
+	UI_element* supermutant_lab[4];
 
 	UI_element* win_scene[5];
 
