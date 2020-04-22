@@ -377,7 +377,7 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 	else if (upgrades_data.upgrade == UNITS_HEALTH) {
 		int cost = App->entities->units_health[faction].first_price + (App->entities->units_health[faction].price_increment * App->entities->units_health[faction].upgrade_num);
 
-		if (App->player->caps >= cost) {
+		if (owner->caps >= cost) {
 			for (int i = 0; i < App->entities->entities.size(); i++) {
 				if (App->entities->entities[i]->faction = faction)
 					if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED) {
@@ -391,7 +391,7 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 	else if (upgrades_data.upgrade == CREATION_TIME) {
 		int cost = App->entities->units_creation_time[faction].first_price + (App->entities->units_creation_time[faction].price_increment * App->entities->units_creation_time[faction].upgrade_num);
 
-		if (App->player->caps >= cost) {
+		if (owner->caps >= cost) {
 			for (int i = 0; i < 4; i++) {
 				for (int j = 0; j < 3; j++)
 				{
@@ -409,94 +409,83 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 		if (storage_capacity < max_capacity) {
 			int cost = App->entities->base_resource_limit[faction].first_price + (App->entities->base_resource_limit[faction].price_increment * App->entities->base_resource_limit[faction].upgrade_num);
 
-			if (App->player->caps >= cost) {
-				storage_capacity += (int)storage_capacity * 0.3;
+			storage_capacity += (int)storage_capacity * 0.3;
 
-				if (storage_capacity > max_capacity)
-					storage_capacity = max_capacity;
+			if (storage_capacity > max_capacity)
+				storage_capacity = max_capacity;
 
-				App->player->UpdateResourceData(Resource::CAPS, -cost);
-				LOG("Resource Limit Upgraded. New limit is: %i", storage_capacity);
+			App->player->UpdateResourceData(Resource::CAPS, -cost);
+			LOG("Resource Limit Upgraded. New limit is: %i", storage_capacity);
 
-				App->entities->base_resource_limit[faction].upgrade_num++;
-			}
+			App->entities->base_resource_limit[faction].upgrade_num++;			
 		}
 	}
 	else if (upgrade_name == GATHERER_CAPACITY) {
 		int cost = App->entities->gatherer_resource_limit[faction].first_price + (App->entities->gatherer_resource_limit[faction].price_increment * App->entities->gatherer_resource_limit[faction].upgrade_num);
 
-		if (App->player->caps >= cost) {
-			for (int i = 0; i < App->entities->entities.size(); i++) {
-				if(App->entities->entities[i]->faction = faction)
-					if (App->entities->entities[i]->type == GATHERER )
-						App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.5);
-			}
-			//Pay the price
-			App->player->UpdateResourceData(Resource::CAPS, -cost);
-			LOG("Gatherer Resource Limit Upgraded");
-
-			App->entities->gatherer_resource_limit[faction].upgrade_num++;
+		for (int i = 0; i < App->entities->entities.size(); i++) {
+			if(App->entities->entities[i]->faction = faction)
+				if (App->entities->entities[i]->type == GATHERER )
+					App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.5);
 		}
+		//Pay the price
+		App->player->UpdateResourceData(Resource::CAPS, -cost);
+		LOG("Gatherer Resource Limit Upgraded");
+
+		App->entities->gatherer_resource_limit[faction].upgrade_num++;		
 	}
 	else if (upgrade_name == UNITS_DAMAGE) {
 		int cost = App->entities->units_damage[faction].first_price + (App->entities->units_damage[faction].price_increment * App->entities->units_damage[faction].upgrade_num);
 
-		if (App->player->caps >= cost) {
-			for (int i = 0; i < App->entities->entities.size(); i++) {
-				if (App->entities->entities[i]->faction = faction)
-					if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED)
-						App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.15);
-			}
-			//Pay the price
-			App->player->UpdateResourceData(Resource::CAPS, -cost);
-			LOG("Units Damage Upgraded");
-
-			App->entities->units_damage[faction].upgrade_num++;
+		for (int i = 0; i < App->entities->entities.size(); i++) {
+			if (App->entities->entities[i]->faction = faction)
+				if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED)
+					App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.15);
 		}
+		//Pay the price
+		App->player->UpdateResourceData(Resource::CAPS, -cost);
+		LOG("Units Damage Upgraded");
+
+		App->entities->units_damage[faction].upgrade_num++;
+		
 	}
 	else if (upgrade_name == UNITS_SPEED) {
 		int cost = App->entities->units_speed[faction].first_price + (App->entities->units_speed[faction].price_increment * App->entities->units_speed[faction].upgrade_num);
 
-		if (App->player->caps >= cost) {
-			for (int i = 0; i < App->entities->entities.size(); i++) {
-				if (App->entities->entities[i]->faction = faction) {
-					App->entities->entities[i]->speed.x += App->entities->entities[i]->speed.x * 0.15;
-					App->entities->entities[i]->speed.y += App->entities->entities[i]->speed.y * 0.15;
-				}
+		for (int i = 0; i < App->entities->entities.size(); i++) {
+			if (App->entities->entities[i]->faction = faction) {
+				App->entities->entities[i]->speed.x += App->entities->entities[i]->speed.x * 0.15;
+				App->entities->entities[i]->speed.y += App->entities->entities[i]->speed.y * 0.15;
 			}
-			//Pay the price
-			App->player->UpdateResourceData(Resource::CAPS, -cost);
-			LOG("Units Speed Upgraded");
-
-			App->entities->units_speed[faction].upgrade_num++;
 		}
+		//Pay the price
+		App->player->UpdateResourceData(Resource::CAPS, -cost);
+		LOG("Units Speed Upgraded");
+
+		App->entities->units_speed[faction].upgrade_num++;		
 	}
 	else if (upgrade_name == UNITS_HEALTH) {
 		int cost = App->entities->units_health[faction].first_price + (App->entities->units_health[faction].price_increment * App->entities->units_health[faction].upgrade_num);
 
-		if (App->player->caps >= cost) {
-			for (int i = 0; i < App->entities->entities.size(); i++) {
-				if (App->entities->entities[i]->faction = faction)
-					if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED) {
-						App->entities->entities[i]->max_health += (int)(App->entities->entities[i]->max_health * 0.15);
-						App->entities->entities[i]->current_health += (int)(App->entities->entities[i]->max_health * 0.15);
-					}
-			}
-			App->entities->units_health[faction].upgrade_num++;
+		for (int i = 0; i < App->entities->entities.size(); i++) {
+			if (App->entities->entities[i]->faction = faction)
+				if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED) {
+					App->entities->entities[i]->max_health += (int)(App->entities->entities[i]->max_health * 0.15);
+					App->entities->entities[i]->current_health += (int)(App->entities->entities[i]->max_health * 0.15);
+				}
 		}
+		App->entities->units_health[faction].upgrade_num++;		
 	}
 	else if (upgrade_name == CREATION_TIME) {
 		int cost = App->entities->units_creation_time[faction].first_price + (App->entities->units_creation_time[faction].price_increment * App->entities->units_creation_time[faction].upgrade_num);
 
-		if (App->player->caps >= cost) {
-			for (int i = 0; i < 4; i++) {
-				for (int j = 0; j < 3; j++)
-				{
-					App->entities->unit_data[i][j].spawn_seconds -= App->entities->unit_data[i][j].spawn_seconds * 0.05;
-				}
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 3; j++)
+			{
+				App->entities->unit_data[i][j].spawn_seconds -= App->entities->unit_data[i][j].spawn_seconds * 0.05;
 			}
-			App->entities->units_creation_time[faction].upgrade_num++;
 		}
+		App->entities->units_creation_time[faction].upgrade_num++;		
 	}
 }
 

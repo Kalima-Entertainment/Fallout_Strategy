@@ -94,6 +94,7 @@ public:
 	void RandomFactions();
 	Faction FactionByIndex(int i) { return static_cast<Faction>(i); }
 
+	void LoadCosts();
 public:
 	std::vector<j1Entity*> entities;
 	std::vector<ResourceBuilding*> resource_buildings;
