@@ -127,8 +127,6 @@ public:
 
 	Menu current_menu;
 	Menu last_menu;
-
-	char collaborator = 'M';
 };
 
 

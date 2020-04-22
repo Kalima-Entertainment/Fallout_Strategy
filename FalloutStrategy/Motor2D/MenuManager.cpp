@@ -71,17 +71,9 @@ void MenuManager::CreateCredits()
 
 	//Buttons
 	credits_menu[1] = (UI_Button*)App->gui->CreateButton(65, 65, button_back_credits, { 1243,2014,73,78 }, { 1243,2102,73,79 }, { 1243,2188,73,71 }, NULL, this);
-	credits_menu[2] = (UI_Button*)App->gui->CreateButton(750, 600, button_github_credits, { 2181,841,73,78 }, { 2181,919,73,78 }, { 2181,1005,73,78 }, NULL, this);
-	credits_menu[3] = (UI_Button*)App->gui->CreateButton(850, 600, button_web_credits, { 2268,841,73,78 }, { 2268,919,73,78 }, { 2268,1005,73,78 }, NULL, this);
-	credits_menu[4] = (UI_Button*)App->gui->CreateButton(950, 600, button_twitter_credits, { 2355,841,73,78 }, { 2355,919,73,78 }, { 2355,1005,73,78 }, NULL, this);
-	credits_menu[5] = (UI_Button*)App->gui->CreateButton(450, 130, button_marc, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
-	credits_menu[6] = (UI_Button*)App->gui->CreateButton(450, 175, button_javi, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
-	credits_menu[7] = (UI_Button*)App->gui->CreateButton(450, 220, button_pablo, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
-	credits_menu[8] = (UI_Button*)App->gui->CreateButton(450, 265, button_german, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
-	credits_menu[9] = (UI_Button*)App->gui->CreateButton(450, 310, button_macia, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
-	credits_menu[10] = (UI_Button*)App->gui->CreateButton(450, 355, button_pol, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
-	credits_menu[11] = (UI_Button*)App->gui->CreateButton(450, 400, button_silvino, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
-	credits_menu[12] = (UI_Button*)App->gui->CreateButton(450, 445, button_christian, { 0,455,166,17 }, { 0,455,166,17 }, { 0,455,166,17 }, NULL, this);
+	credits_menu[2] = (UI_Button*)App->gui->CreateButton(65, 200, button_github_credits, { 2181,841,73,78 }, { 2181,919,73,78 }, { 2181,1005,73,78 }, NULL, this);
+	credits_menu[3] = (UI_Button*)App->gui->CreateButton(65, 300, button_web_credits, { 2268,841,73,78 }, { 2268,919,73,78 }, { 2268,1005,73,78 }, NULL, this);
+	credits_menu[4] = (UI_Button*)App->gui->CreateButton(65, 400, button_twitter_credits, { 2355,841,73,78 }, { 2355,919,73,78 }, { 2355,1005,73,78 }, NULL, this);
 
 	current_menu = Menu::CREDITS;
 
@@ -133,45 +125,9 @@ void MenuManager::CreateSettings()
 	settings_menu[16] = (UI_Button*)App->gui->CreateButton(360, 280, button_mute, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this);
 	settings_menu[17] = (UI_Button*)App->gui->CreateButton(40, 40, button_back, { 1704,1054,48,46 }, { 1765,1054,48,46 }, { 1765,1054,48,46 }, NULL, this);
 	settings_menu[20] = (UI_Button*)App->gui->CreateButton(705, 615, button_fullscreen, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this);
+
 	last_menu = current_menu;
 	current_menu = Menu::SETTINGS;
-}
-
-void MenuManager::CreateCollaboratorPicture()
-{
-	switch (collaborator)
-	{
-	case 'M':
-		collaborators[0] = (j1Image*)App->gui->CreateImage(815, 130, Image, { 1230, 1545, 138, 138 }, NULL, this);
-		break;
-	case 'J':
-		collaborators[1] = (j1Image*)App->gui->CreateImage(815, 130, Image, { 1392, 1545, 138, 138 }, NULL, this);
-		break;
-	case 'P':
-		collaborators[2] = (j1Image*)App->gui->CreateImage(815, 130, Image, { 1563, 1545, 138, 138 }, NULL, this);
-		break;
-	case 'G':
-		collaborators[3] = (j1Image*)App->gui->CreateImage(815, 130, Image, { 1719, 1539, 138, 138 }, NULL, this);
-		break;
-	case 'D':
-		collaborators[4] = (j1Image*)App->gui->CreateImage(815, 130, Image, { 1230, 1690, 138, 138 }, NULL, this);
-		break;
-	case 'K':
-		collaborators[5] = (j1Image*)App->gui->CreateImage(815, 130, Image, { 1392, 1690, 138, 138 }, NULL, this);
-		break;
-	case 'S':
-		collaborators[6] = (j1Image*)App->gui->CreateImage(815, 130, Image, { 1563, 1690, 138, 138 }, NULL, this);
-		break;
-	case 'C':
-		collaborators[7] = (j1Image*)App->gui->CreateImage(815, 130, Image, { 1719, 1690, 138, 138 }, NULL, this);
-		break;
-	default:
-		collaborators[8] = (j1Image*)App->gui->CreateImage(815, 130, Image, { 1230, 1545, 138, 138 }, NULL, this);
-	}
-
-	last_menu = current_menu;
-	current_menu = Menu::COLLABORATORS_CREDITS;
-
 }
 
 void MenuManager::CreateSelectFaction()
@@ -603,7 +559,7 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->gui->DeleteArrayElements(credits_menu, 13);
 		break;
 	case Menu::COLLABORATORS_CREDITS:
-		App->gui->DeleteArrayElements(collaborators, 9);
+		App->gui->DeleteArrayElements(collaborators, 10);
 		break;
 	case Menu::SELECT_FACTION:
 		App->gui->DeleteArrayElements(select_faction_menu, 10);
