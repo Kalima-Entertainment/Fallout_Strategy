@@ -46,6 +46,7 @@ public:
 	bool LoadAnimations();
 	//bool LoadFx();
 	bool LoadReferenceData();
+	void PathfindToGather(iPoint target);
 	void PathfindToPosition(iPoint target);
 	void Move(float dt);
 	void Attack();

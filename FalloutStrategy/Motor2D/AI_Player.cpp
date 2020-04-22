@@ -110,6 +110,10 @@ bool AI_Player::Update(float dt) {
 
 		if (target_building == nullptr) {
 			target_building = ChooseTargetBuilding();
+			if (target_building == nullptr) {
+				ChooseRandomPlayerEnemy();
+				target_building = ChooseTargetBuilding();
+			}
 			target_building_position = target_building->current_tile;
 		}
 
@@ -124,12 +128,15 @@ bool AI_Player::Update(float dt) {
 			}
 			else { troops[i]->target_entity = nullptr; }
 
-			if (troops[i]->node_path.size() == 0) 
+			if (troops[i]->path_to_target.size() == 0) 
 			{
-				if (troops[i]->current_tile.DistanceManhattan(target_building_position) > 30)
-					troops[i]->node_path = CreateNodePath(troops[i]->current_tile, target_building_position);
-				else
-					troops[i]->PathfindToPosition(target_building_position);
+				if (troops[i]->node_path.size() == 0)
+				{
+					if (troops[i]->current_tile.DistanceManhattan(target_building_position) > 40)
+						troops[i]->node_path = CreateNodePath(troops[i]->current_tile, target_building_position);
+					else
+						troops[i]->PathfindToPosition(target_building_position);
+				}
 			}
 		}
 	}

@@ -53,13 +53,14 @@ bool AI_Manager::Update(float dt) {
 
 bool AI_Manager::PostUpdate() {
 	bool ret = true;
-
-	for (int i = 0; i < node_map.size(); i++)
+	if (App->render->debug) 
 	{
-		iPoint node_world_position = App->map->MapToWorld(node_map[i].x, node_map[i].y);
-		App->render->DrawQuad({ node_world_position.x, node_world_position.y, 6, 6 }, 0, 0, 255, 255);
+		for (int i = 0; i < node_map.size(); i++)
+		{
+			iPoint node_world_position = App->map->MapToWorld(node_map[i].x, node_map[i].y);
+			App->render->DrawQuad({ node_world_position.x, node_world_position.y, 6, 6 }, 0, 0, 255, 255);
+		}
 	}
-
 	return ret;
 }
 

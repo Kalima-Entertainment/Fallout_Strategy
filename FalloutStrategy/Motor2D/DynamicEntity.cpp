@@ -59,7 +59,7 @@ DynamicEntity::~DynamicEntity() {
 bool DynamicEntity::Update(float dt) {
 
 	Mix_AllocateChannels(25);
-	//current_tile = App->map->WorldToMap(current_tile.x, current_tile.y);
+	current_tile = App->map->WorldToMap(position.x, position.y);
 
 	switch (state)
 	{
@@ -68,7 +68,6 @@ bool DynamicEntity::Update(float dt) {
 			target_tile = node_path.back();
 			node_path.pop_back();
 			PathfindToPosition(target_tile);
-			state = WALK;
 		}
 		break;
 	case WALK:
@@ -124,7 +123,7 @@ bool DynamicEntity::Update(float dt) {
 
 						//go back to resource building to get more resources
 						if (resource_building->quantity > 0) {
-							PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
+							PathfindToGather(App->entities->ClosestTile(current_tile, resource_building->tiles));
 							state = WALK;
 						}
 						//find another building
@@ -133,7 +132,7 @@ bool DynamicEntity::Update(float dt) {
 							resource_building = App->entities->GetClosestResourceBuilding(current_tile);
 							//if there is at least a resource building left, go there
 							if (resource_building != nullptr) {
-								PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
+								PathfindToGather(App->entities->ClosestTile(current_tile, resource_building->tiles));
 								state = WALK;
 							}
 							//if there are no resource buildings left
@@ -150,6 +149,27 @@ bool DynamicEntity::Update(float dt) {
 			}
 		}
 
+		//node movement 
+		if ((node_path.size() > 0)) {
+			if (next_tile == target_tile) {
+				node_path.pop_back();
+
+				//if we have reached the final node pathfind to target building
+				if (node_path.size() == 0)
+				{
+					if (target_entity != nullptr) {
+						target_tile = App->entities->ClosestTile(current_tile, ((StaticEntity*)target_entity)->tiles);
+					}
+				}
+				//if not we keep following the path 
+				else
+				{
+					target_tile = node_path.back();
+				}
+				PathfindToPosition(target_tile);
+			}
+		}
+
 		Move(dt);
 
 		if (reference_entity->faction == MUTANT)
@@ -160,27 +180,6 @@ bool DynamicEntity::Update(float dt) {
 			if (Mix_Playing(18) == 0) { SpatialAudio(App->audio->Brotherhood_walk, 18, position.x, position.y); }
 		if (reference_entity->faction == GHOUL)
 			if (Mix_Playing(19) == 0) { SpatialAudio(App->audio->Brotherhood_walk, 19, position.x, position.y); }
-
-		if ((node_path.size() > 0)){// && (App->pathfinding->GetLastPathRequestTime() > 500)) {
-			if (next_tile == target_tile) {
-				node_path.pop_back();
-
-				//if we have reached the final node pathfind to target building
-				if (node_path.size() == 0) 
-				{
-					if (target_entity != nullptr) {
-						target_tile = App->entities->ClosestTile(current_tile, ((StaticEntity*)target_entity)->tiles);
-					}
-				}
-				//if not we keep following the path 
-				else 
-				{
-					target_tile = node_path.back();
-				}
-
-				PathfindToPosition(target_tile);
-			}
-		}
 
 		break;
 
@@ -363,7 +362,7 @@ bool DynamicEntity::PostUpdate() {
 	if (App->render->debug) 
 	{
 		App->render->DrawQuad({ (int)position.x - 2, (int)position.y - 2 , 4,4 }, 255, 0, 0, 255);
-		App->render->DrawQuad({ (int)(next_tile_rect_center.x - next_tile_rect_center.w), (int)(next_tile_rect_center.y - next_tile_rect_center.h ), 4,4 }, 0, 255, 0, 255);
+		App->render->DrawQuad({ (int)(next_tile_rect_center.x), (int)(next_tile_rect_center.y), next_tile_rect_center.w, next_tile_rect_center.h }, 0, 255, 0, 255);
 	}
 
 	//Rendering Selected Units Quad
@@ -384,38 +383,38 @@ void DynamicEntity::Move(float dt) {
 	if (path_to_target.size() > 0) {
 		//get next tile center
 		next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
-		next_tile_rect_center = { next_tile_position.x + HALF_TILE - 2, next_tile_position.y + HALF_TILE, 6, 6 };
+		next_tile_rect_center = { next_tile_position.x + HALF_TILE - 5, next_tile_position.y + HALF_TILE -5, 10, 10 };
 
 		//move to next tile
-		if ((position.x > next_tile_rect_center.x + next_tile_rect_center.w) && (position.x > next_tile_rect_center.x) 
-			&& (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h)) {
+		if ((position.x > next_tile_rect_center.x + next_tile_rect_center.w * 0.5f) && (position.x > next_tile_rect_center.x) 
+			&& (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h * 0.5f)) {
 			direction = TOP_LEFT;
 			position.x -= speed.x * dt;
 			position.y -= speed.y * dt;
 		}
-		else if ((position.x < next_tile_rect_center.x) && (position.x < next_tile_rect_center.x + next_tile_rect_center.w) 
-			&& (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h)) {
+		else if ((position.x < next_tile_rect_center.x) && (position.x < next_tile_rect_center.x + next_tile_rect_center.w * 0.5f)
+			&& (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h * 0.5f)) {
 			direction = TOP_RIGHT;
 			position.x += speed.x * dt;
 			position.y -= speed.y * dt;
 		}
-		else if ((position.x > next_tile_rect_center.x) && (position.x > next_tile_rect_center.x + next_tile_rect_center.w) 
-			&& (position.y < next_tile_rect_center.y) && (position.y < next_tile_rect_center.y + next_tile_rect_center.h)) {
+		else if ((position.x > next_tile_rect_center.x) && (position.x > next_tile_rect_center.x + next_tile_rect_center.w * 0.5f)
+			&& (position.y < next_tile_rect_center.y) && (position.y < next_tile_rect_center.y + next_tile_rect_center.h * 0.5f)) {
 			direction = BOTTOM_LEFT;
 			position.x -= speed.x * dt;
 			position.y += speed.y * dt;
 		}
-		else if ((position.x < next_tile_rect_center.x) && (position.x < next_tile_rect_center.x + next_tile_rect_center.w) 
-			&& (position.y < next_tile_rect_center.y) && (position.y < next_tile_rect_center.y + next_tile_rect_center.h)) {
+		else if ((position.x < next_tile_rect_center.x) && (position.x < next_tile_rect_center.x + next_tile_rect_center.w * 0.5f)
+			&& (position.y < next_tile_rect_center.y) && (position.y < next_tile_rect_center.y + next_tile_rect_center.h * 0.5f)) {
 			direction = BOTTOM_RIGHT;
 			position.x += speed.x * dt;
 			position.y += speed.y * dt;
 		}
 		else
 		{
-			if (path_to_target.front() != target_tile)
+			if (next_tile != target_tile)
 			{
-				current_tile = path_to_target.front();
+				//current_tile = path_to_target.front();
 				if (path_to_target.size() > 1)
 				{
 					next_tile = path_to_target[1];
@@ -427,7 +426,7 @@ void DynamicEntity::Move(float dt) {
 				position.x = next_tile_rect_center.x + 2;
 				position.y = next_tile_rect_center.y + 2;
 				current_tile = target_tile;
-				state = IDLE;
+				//state = IDLE;
 			}
 		}
 	}
@@ -438,7 +437,7 @@ void DynamicEntity::Attack() {
 	timer.Start();
 
 	//damage unit if god_mode isn't activated 
-	if ((target_entity->faction != App->player->faction) || (!App->player->god_mode)) {
+	if ((target_entity != nullptr) && ((target_entity->faction != App->player->faction) || (!App->player->god_mode))) {
 		target_entity->current_health -= damage;
 
 		if (target_entity->is_dynamic) {
@@ -505,10 +504,10 @@ void DynamicEntity::Gather() {
 
 void DynamicEntity::PathfindToPosition(iPoint destination) {
 
-	current_tile = App->map->WorldToMap(position.x, position.y);
+	//current_tile = App->map->WorldToMap(position.x, position.y);
 
 	//if the tile is in the map but it's not walkable
-	if ((!App->pathfinding->IsWalkable(destination)) && (App->pathfinding->CheckBoundaries(destination))) 
+	if (!App->pathfinding->IsWalkable(destination)) 
 	{
 		destination = App->pathfinding->FindNearestWalkableTile(current_tile, destination);
 	}
@@ -517,7 +516,6 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 
 	if (App->pathfinding->CreatePath(current_tile, destination) == -1) {
 		LOG("Invalid path");
-		state = IDLE;
 	}
 
 	path_to_target.clear();
@@ -527,6 +525,40 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 
 	if (path_to_target.size() > 0)
 		next_tile = path_to_target.front();
+}
+
+void DynamicEntity::PathfindToGather(iPoint destination) {
+	if ((!App->pathfinding->IsWalkable(destination)) && (App->pathfinding->CheckBoundaries(destination))) {
+		iPoint destination_copy = App->pathfinding->FindWalkableAdjacentTile(destination);
+		if (destination_copy == iPoint(-1, -1)) {
+			ResourceBuilding* reference_resource_building = App->entities->FindResourceBuildingByTile(destination);
+			if (reference_resource_building != nullptr)
+				destination = App->entities->ClosestTile(current_tile, reference_resource_building->tiles);
+			else {
+				StaticEntity* reference_static_entity = (StaticEntity*)App->entities->FindEntityByTile(destination);
+				if (reference_static_entity != nullptr)
+					destination = App->entities->ClosestTile(current_tile, reference_static_entity->tiles);
+			}
+			if (!App->pathfinding->IsWalkable(destination))
+				destination = App->pathfinding->FindWalkableAdjacentTile(destination);
+		}
+		else
+		{
+			destination = destination_copy;
+		}
+	}
+
+	current_tile = App->map->WorldToMap(position.x, position.y);
+	target_tile = destination;
+	App->pathfinding->CreatePath(current_tile, destination);
+
+	path_to_target.clear();
+	path_to_target = App->pathfinding->GetLastPath();
+
+	if (path_to_target.size() > 0)
+		next_tile = path_to_target.front();
+	else
+		state = IDLE;
 }
 
 /*
