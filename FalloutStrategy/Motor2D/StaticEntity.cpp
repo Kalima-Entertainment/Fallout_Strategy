@@ -87,9 +87,11 @@ bool StaticEntity::Update(float dt) {
 				else if (upgrade_stack.building == BARRACK) {
 					ExecuteUpgrade(upgrade_stack.faction, UNITS_DAMAGE);
 					ExecuteUpgrade(upgrade_stack.faction, UNITS_SPEED);
-				}else if(upgrade_stack.building == LABORATORY)
+				}
+				else if (upgrade_stack.building == LABORATORY) {
 					ExecuteUpgrade(upgrade_stack.faction, UNITS_HEALTH);
 					ExecuteUpgrade(upgrade_stack.faction, CREATION_TIME);
+				}					
 				UpdateUpgradeStack();
 			}
 		}
@@ -441,7 +443,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 				storage_capacity = max_capacity;
 
 			LOG("Resource Limit Upgraded. New limit is: %i", storage_capacity);
-
+			//reference_entity->faction = GHOUL;
 			App->entities->base_resource_limit[faction].upgrade_num++;			
 		}
 	}
@@ -450,7 +452,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 
 		//Upgrade gatherers that are currently alive
 		for (int i = 0; i < App->entities->entities.size(); i++) {
-			if(App->entities->entities[i]->faction = faction)
+			if(App->entities->entities[i]->faction == faction)
 				if (App->entities->entities[i]->type == GATHERER )
 					App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.5);
 		}
