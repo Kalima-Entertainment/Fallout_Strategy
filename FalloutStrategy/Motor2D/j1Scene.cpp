@@ -255,8 +255,7 @@ void j1Scene::CheckWinner() {
 			win = false;
 			App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 			App->menu_manager->CreateWinLoseScene();
-			App->entities->Disable();
-			App->scene->Disable();
+			App->gui->ingame = false;
 			App->isPaused = false;
 		}
 		else if (players[i]->defeated){
@@ -268,8 +267,7 @@ void j1Scene::CheckWinner() {
 		win = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 		App->menu_manager->CreateWinLoseScene();
-		App->entities->Disable();
-		App->scene->Disable();
+		App->gui->ingame = false;
 		App->isPaused = false;
 		
 	}

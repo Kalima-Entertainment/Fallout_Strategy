@@ -296,9 +296,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
 				App->menu_manager->CreateMainMenu();
 				App->audio->PlayFx(1, back_fx, 0);
-				App->entities->Disable();
-				App->scene->Disable();
-				App->Mmanager->Disable();
+				App->gui->ingame = false;
 				App->transition->transition = true;
 				App->transition->fadetimer.Start();
 			}
@@ -345,6 +343,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->DestroyMenu(Menu::WIN_LOSE_SCENE);
 				App->menu_manager->CreateMainMenu();
 				App->audio->PlayFx(1, back_fx, 0);
+				App->gui->ingame = false;
 				App->transition->transition = true;
 				App->transition->fadetimer.Start();
 
@@ -399,9 +398,7 @@ bool UI_Button::Update(float dt)
 				App->player->faction = GHOUL;
 				App->audio->PlayFx(1, character_fx, 0);
 				App->gui->count = 0;
-				App->player->Enable();
-				App->entities->Enable();
-				App->Mmanager->Enable();
+				App->gui->ingame = true;
 				App->menu_manager->CreateGUI();
 				App->menu_manager->CreateResources();
 				App->transition->fadetimer.Start();
@@ -417,9 +414,7 @@ bool UI_Button::Update(float dt)
 				App->player->faction = VAULT;
 				App->audio->PlayFx(1, character_fx, 0);
 				App->gui->count = 0;
-				App->player->Enable();
-				App->entities->Enable();
-				App->Mmanager->Enable();
+				App->gui->ingame = true;
 				App->menu_manager->CreateGUI();
 				App->menu_manager->CreateResources();
 				App->transition->fadetimer.Start();
@@ -434,9 +429,7 @@ bool UI_Button::Update(float dt)
 				App->player->faction = BROTHERHOOD;
 				App->audio->PlayFx(1, character_fx, 0);
 				App->gui->count = 0;
-				App->player->Enable();
-				App->entities->Enable();
-				App->Mmanager->Enable();
+				App->gui->ingame = true;
 				App->menu_manager->CreateGUI();
 				App->menu_manager->CreateResources();
 				App->transition->fadetimer.Start();
@@ -451,9 +444,7 @@ bool UI_Button::Update(float dt)
 				App->player->faction = MUTANT;
 				App->audio->PlayFx(1, character_fx, 0);
 				App->gui->count = 0;
-				App->player->Enable();
-				App->entities->Enable();
-				App->Mmanager->Enable();
+				App->gui->ingame = true;
 				App->menu_manager->CreateGUI();
 				App->menu_manager->CreateResources();
 				App->transition->fadetimer.Start();

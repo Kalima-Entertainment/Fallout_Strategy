@@ -70,6 +70,7 @@ public:
 	bool debug_UI = false;
 	bool fullscreen = false;
 	bool cap = false;
+	bool ingame = false;
 
 private:
 	pugi::xml_node node;
