@@ -266,7 +266,7 @@ void MenuManager::CreateBrotherHood_Base()
 
 	//Labels
 	int cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
-	brotherhood_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost), NULL, this, NULL, "StackedPixelSmall");
+	brotherhood_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost*2), NULL, this, NULL, "StackedPixelSmall");
 
 	//Labels
 	//p2SString hh("%i", App->entities->); VIDA EDIFICIO
@@ -293,7 +293,7 @@ void MenuManager::CreateBrotherHood_Barrack() {
 
 	//Labels
 	int cost = App->entities->units_damage[App->player->faction].first_price + App->entities->units_damage[App->player->faction].price_increment * App->entities->units_damage[App->player->faction].upgrade_num;
-	brotherhood_barrack[7] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost), NULL, this, NULL, "StackedPixelSmall");
+	brotherhood_barrack[7] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost*2), NULL, this, NULL, "StackedPixelSmall");
 
 	last_menu = current_menu;
 	current_menu = Menu::BUI_BASES;
@@ -312,7 +312,7 @@ void MenuManager::CreateBrotherHood_Lab() {
 
 	//Labels
 	int cost = App->entities->units_creation_time[App->player->faction].first_price + App->entities->units_creation_time[App->player->faction].price_increment * App->entities->units_creation_time[App->player->faction].upgrade_num;
-	brotherhood_lab[3] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost), NULL, this, NULL, "StackedPixelSmall");
+	brotherhood_lab[3] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost*2), NULL, this, NULL, "StackedPixelSmall");
 
 	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
 	//bases_hud.brotherhood_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Brotherhood_ranged, { 83, 1866, 35, 36 }, NULL, this);
@@ -339,7 +339,7 @@ void MenuManager::CreateSuperMutants_Base() {
 
 	//Labels
 	int cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
-	supermutant_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost), NULL, this, NULL, "StackedPixelSmall");
+	supermutant_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost*2), NULL, this, NULL, "StackedPixelSmall");
 
 	last_menu = current_menu;
 	current_menu = Menu::BUI_BASES;
@@ -360,7 +360,7 @@ void MenuManager::CreateSuperMutants_Barrack() {
 
 	//Labels
 	int cost = App->entities->units_damage[App->player->faction].first_price + App->entities->units_damage[App->player->faction].price_increment * App->entities->units_damage[App->player->faction].upgrade_num;
-	supermutant_barrack[7] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost), NULL, this, NULL, "StackedPixelSmall");
+	supermutant_barrack[7] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost*2), NULL, this, NULL, "StackedPixelSmall");
 
 	last_menu = current_menu;
 	current_menu = Menu::BUI_BASES;
@@ -380,7 +380,7 @@ void MenuManager::CreateSuperMutants_Lab() {
 	//Labels
 	int cost = App->entities->units_creation_time[App->player-> faction].first_price + App->entities->units_creation_time[App->player-> faction].price_increment * App->entities->units_creation_time[App->player-> faction].upgrade_num;
 	
-	supermutant_lab[3] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost), NULL, this, NULL, "StackedPixelSmall");
+	supermutant_lab[3] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost*2), NULL, this, NULL, "StackedPixelSmall");
 
 	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
 	//bases_hud.brotherhood_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Brotherhood_ranged, { 83, 1866, 35, 36 }, NULL, this);
@@ -408,7 +408,7 @@ void MenuManager::CreateGhouls_Base() {
 
 	//Labels
 	int cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
-	ghoul_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost), NULL, this, NULL, "StackedPixelSmall");
+	ghoul_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost*2), NULL, this, NULL, "StackedPixelSmall");
 
 	last_menu = current_menu;
 	current_menu = Menu::BUI_BASES;
@@ -429,7 +429,7 @@ void MenuManager::CreateGhouls_Barrack() {
 
 	//Labels
 	int cost = App->entities->units_damage[App->player->faction].first_price + App->entities->units_damage[App->player->faction].price_increment * App->entities->units_damage[App->player->faction].upgrade_num;
-	ghoul_barrack[7] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost), NULL, this, NULL, "StackedPixelSmall");
+	ghoul_barrack[7] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost*2), NULL, this, NULL, "StackedPixelSmall");
 
 	last_menu = current_menu;
 	current_menu = Menu::BUI_BASES;
@@ -448,7 +448,7 @@ void MenuManager::CreateGhouls_Lab() {
 
 	//Labels
 	int cost = App->entities->units_creation_time[App->player->faction].first_price + App->entities->units_creation_time[App->player->faction].price_increment * App->entities->units_creation_time[App->player->faction].upgrade_num;
-	ghoul_lab[3] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost), NULL, this, NULL, "StackedPixelSmall");
+	ghoul_lab[3] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost*2), NULL, this, NULL, "StackedPixelSmall");
 	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
 	//bases_hud.brotherhood_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Brotherhood_ranged, { 83, 1866, 35, 36 }, NULL, this);
 	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
@@ -475,7 +475,7 @@ void MenuManager::CreateVault_Base() {
 
 	//Labels
 	int cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
-	vault_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost), NULL, this, NULL, "StackedPixelSmall");
+	vault_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost*2), NULL, this, NULL, "StackedPixelSmall");
 
 	last_menu = current_menu;
 	current_menu = Menu::BUI_BASES;
@@ -497,7 +497,7 @@ void MenuManager::CreateVault_Barrack() {
 
 	//Labels
 	int cost = App->entities->units_damage[App->player->faction].first_price + App->entities->units_damage[App->player->faction].price_increment * App->entities->units_damage[App->player->faction].upgrade_num;
-	vault_barrack[7] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost), NULL, this, NULL, "StackedPixelSmall");
+	vault_barrack[7] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost*2), NULL, this, NULL, "StackedPixelSmall");
 
 	last_menu = current_menu;
 	current_menu = Menu::BUI_BASES;
@@ -517,7 +517,7 @@ void MenuManager::CreateVault_Lab() {
 
 	//Labels
 	int cost = App->entities->units_creation_time[App->player->faction].first_price + App->entities->units_creation_time[App->player->faction].price_increment * App->entities->units_creation_time[App->player->faction].upgrade_num;
-	vault_lab[3] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost), NULL, this, NULL, "StackedPixelSmall");
+	vault_lab[3] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost*2), NULL, this, NULL, "StackedPixelSmall");
 	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
 	//bases_hud.brotherhood_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Brotherhood_ranged, { 83, 1866, 35, 36 }, NULL, this);
 	//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
