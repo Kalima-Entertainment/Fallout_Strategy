@@ -136,117 +136,96 @@ bool UI_Button::Update(float dt)
 				observer->Callback(this);
 			}
 
-			if (t == Button_slider_music_left) {
-				App->gui->volume_up = 1;
-				App->audio->PlayFx(1, volume_fx, 0);
-			}
-
-			else if (t == Button_slider_music_right) {
-				App->gui->volume_up = 2;
-				App->audio->PlayFx(1, volume_fx, 0);
-			}
-
-			if (t == Button_slider_fx_left) {
-				App->gui->fx_up = 1;
-				App->audio->PlayFx(1, volume_fx, 0);
-			}
-
-			else if (t == Button_slider_fx_right) {
-				App->gui->fx_up = 2;
-				App->audio->PlayFx(1, volume_fx, 0);
-			}
-
-			if (t == button_new_game) 
+			if (t == button_new_game)
 			{
 				App->menu_manager->DestroyMenu(Menu::MAIN_MENU);
 				App->menu_manager->CreateSelectFaction();
 				App->audio->PlayFx(1, click_fx, 0);
 			}
-			
-			if (t == button_credits)
+			else if (t == Button_slider_music_left) {
+				App->gui->volume_up = 1;
+				App->audio->PlayFx(1, volume_fx, 0);
+			}
+			else if (t == Button_slider_music_right) {
+				App->gui->volume_up = 2;
+				App->audio->PlayFx(1, volume_fx, 0);
+			}
+			else if (t == Button_slider_fx_left) {
+				App->gui->fx_up = 1;
+				App->audio->PlayFx(1, volume_fx, 0);
+			}
+			else if (t == Button_slider_fx_right) {
+				App->gui->fx_up = 2;
+				App->audio->PlayFx(1, volume_fx, 0);
+			}
+			else if (t == button_github_credits)
+			{
+				ShellExecuteA(NULL, "open", "https://github.com/Kalima-Entertainment/Fallout_Strategy", NULL, NULL, SW_SHOWNORMAL);
+				App->audio->PlayFx(1, click_fx, 0);
+			}
+			else if (t == button_twitter_credits)
+			{
+				ShellExecuteA(NULL, "open", "https://twitter.com/KalimaEntmt", NULL, NULL, SW_SHOWNORMAL);
+				App->audio->PlayFx(1, click_fx, 0);
+			}
+			else if (t == button_web_credits)
+			{
+				ShellExecuteA(NULL, "open", "https://kalima-entertainment.github.io/Fallout_Strategy/", NULL, NULL, SW_SHOWNORMAL);
+				App->audio->PlayFx(click_fx, 0);
+			}
+			else if (t == button_credits)
 			{
 				App->menu_manager->DestroyMenu(Menu::MAIN_MENU);
 				App->menu_manager->CreateCredits();
 				App->audio->PlayFx(1, click_fx, 0);
 			}
-
-			if (t == button_back_credits)
+			else if (t == button_back_credits)
 			{
 				App->menu_manager->CreateMainMenu();
 				App->menu_manager->DestroyMenu(Menu::CREDITS);
 				App->audio->PlayFx(1, back_fx, 0);
 			}
-
-			if(t == button_exit)
+			else if (t == button_exit)
 			{
 				App->quitGame = true;
 				App->audio->PlayFx(1, click_fx, 0);
 			}
-
-			if (t == button_github_credits) 
-			{
-				ShellExecuteA(NULL, "open", "https://github.com/Kalima-Entertainment/Fallout_Strategy", NULL, NULL, SW_SHOWNORMAL);
-				App->audio->PlayFx(1, click_fx, 0);
-			}
-
-			if (t == button_twitter_credits)
-			{
-				ShellExecuteA(NULL, "open", "https://twitter.com/KalimaEntmt", NULL, NULL, SW_SHOWNORMAL);
-				App->audio->PlayFx(1, click_fx, 0);
-			}
-
-			if (t == button_web_credits)
-			{
-				ShellExecuteA(NULL, "open", "https://kalima-entertainment.github.io/Fallout_Strategy/", NULL, NULL, SW_SHOWNORMAL);
-				App->audio->PlayFx(click_fx, 0);
-			}
-
-			if (t == button_settings) {
+			else if (t == button_settings) {
 
 				App->menu_manager->DestroyMenu(Menu::MAIN_MENU);
 				App->menu_manager->CreateSettings();
 				App->audio->PlayFx(1, click_fx, 0);
 			}
-
-			if (t == button_settings_pause) {
+			else if (t == button_settings_pause) {
 
 				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
 				App->menu_manager->CreatePauseSettings();
 				App->audio->PlayFx(1, click_fx, 0);
 			}
-
-			if (t == button_back) {
+			else if (t == button_back) {
 				App->menu_manager->DestroyMenu(Menu::SETTINGS);
 				App->menu_manager->CreateMainMenu();
 				
 				App->audio->PlayFx(1, back_fx, 0);
 			}
-
-			if (t == button_back_pause) {
+			else if (t == button_back_pause) {
 				App->menu_manager->DestroyMenu(Menu::SETTINGS);
 				App->menu_manager->CreatePauseMenu();
 				App->audio->PlayFx(1, back_fx, 0);
 			}
-
-			if (t == resume_button) {
+			else if (t == resume_button) {
 				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
 				App->scene->create = !App->scene->create;
 				App->audio->PlayFx(1, back_fx, 0);
 			}
-
-			if(t == button_back_to_menu)
+			else if (t == button_back_to_menu)
 			{
 				App->menu_manager->CreateMainMenu();
 				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
 				App->audio->PlayFx(1, back_fx, 0);
 				App->isPaused = false;
 			}
-	
-			if (t == button_start_game)
-			{
-			}
-
-			if (t == button_pause_to_main)
+			else if (t == button_pause_to_main)
 			{
 				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
 				App->menu_manager->CreateMainMenu();
@@ -256,8 +235,7 @@ bool UI_Button::Update(float dt)
 				App->transition->transition = true;
 				App->transition->fadetimer.Start();
 			}
-
-			if (t == button_cap) {
+			else if (t == button_cap) {
 				
 				App->gui->cap = !App->gui->cap;
 				App->gui->Delete_Element(App->menu_manager->settings_menu[21]);
@@ -274,8 +252,7 @@ bool UI_Button::Update(float dt)
 				}
 
 			}
-
-			if (t == button_fullscreen) {
+			else if (t == button_fullscreen) {
 				
 				App->gui->fullscreen = !App->gui->fullscreen;
 
@@ -293,8 +270,7 @@ bool UI_Button::Update(float dt)
 				}
 
 			}
-			
-			if (t == button_win_lose_to_main)
+			else if (t == button_win_lose_to_main)
 			{
 				App->menu_manager->DestroyMenu(Menu::WIN_LOSE_SCENE);
 				App->menu_manager->CreateMainMenu();
@@ -303,13 +279,10 @@ bool UI_Button::Update(float dt)
 				App->transition->StartTimer();
 				App->transition->transition = true;
 				App->transition->fadetimer.Start();
-
-
 				
 			}
-
 			//Spawn Gatherer from any faction
-			if (t == Ghouls_ghaterer_button || t == Vault_ghaterer_button || t == Supermutant_ghaterer_button || t == Brotherhood_ghaterer_button){
+			else if (t == Ghouls_ghaterer_button || t == Vault_ghaterer_button || t == Supermutant_ghaterer_button || t == Brotherhood_ghaterer_button){
 				App->audio->PlayFx(1, character_fx, 0);
 				
 				//Select building to spawn
@@ -320,9 +293,8 @@ bool UI_Button::Update(float dt)
 					static_entity = (StaticEntity*)App->player->selected_entity;
 				static_entity->SpawnUnit(GATHERER);
 			}
-
 			//Spawn Melee from any faction
-			if (t == Ghouls_melee_button || t == Vault_melee_button || t == Supermutant_melee_button || t == Brotherhood_melee_button){
+			else if (t == Ghouls_melee_button || t == Vault_melee_button || t == Supermutant_melee_button || t == Brotherhood_melee_button){
 				App->audio->PlayFx(1, character_fx, 0);
 
 				StaticEntity* static_entity;
@@ -333,9 +305,8 @@ bool UI_Button::Update(float dt)
 
 				static_entity->SpawnUnit(MELEE);
 			}
-			
 			//Spawn Ranged from any faction
-			if (t == Ghouls_ranged_button || t == Vault_ranged_button || t == Supermutant_ranged_button || t == Brotherhood_ranged_button){
+			else if (t == Ghouls_ranged_button || t == Vault_ranged_button || t == Supermutant_ranged_button || t == Brotherhood_ranged_button){
 				App->audio->PlayFx(1, character_fx, 0);
 
 				StaticEntity* static_entity;
@@ -346,9 +317,9 @@ bool UI_Button::Update(float dt)
 
 				static_entity->SpawnUnit(RANGED);
 			}
-
-			if (t == button_select_ghoul)
+			else if (t == button_select_ghoul)
 			{
+				App->gui->Delete_Element(faction_image);
 				Mix_PauseMusic();
 				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
 				current_state = BUTTON_STATE::HOVER_EXIT;
@@ -363,12 +334,11 @@ bool UI_Button::Update(float dt)
 				App->entities->Enable();
 							
 			}
-
-			if (t == button_select_vault)
+			else if (t == button_select_vault)
 			{
+				App->gui->Delete_Element(faction_image);
 				Mix_PauseMusic();
 				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
-				current_state = BUTTON_STATE::HOVER_EXIT;
 				App->player->faction = VAULT;
 				App->audio->PlayFx(1, character_fx, 0);
 				App->gui->count = 0;
@@ -379,12 +349,11 @@ bool UI_Button::Update(float dt)
 				App->transition->transition = true;
 				App->entities->Enable();
 			}
-
-			if (t == button_select_brotherhood)
+			else if (t == button_select_brotherhood)
 			{
+				App->gui->Delete_Element(faction_image);
 				Mix_PauseMusic();
 				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
-				current_state = BUTTON_STATE::HOVER_EXIT;
 				App->player->faction = BROTHERHOOD;
 				App->audio->PlayFx(1, character_fx, 0);
 				App->gui->count = 0;
@@ -395,12 +364,11 @@ bool UI_Button::Update(float dt)
 				App->transition->transition = true;				
 				App->entities->Enable();
 			}
-
-			if (t == button_select_supermutant)
+			else if (t == button_select_supermutant)
 			{
+				App->gui->Delete_Element(faction_image);
 				Mix_PauseMusic();
 				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
-				current_state = BUTTON_STATE::HOVER_EXIT;
 				App->player->faction = MUTANT;
 				App->audio->PlayFx(1, character_fx, 0);
 				App->gui->count = 0;
@@ -411,8 +379,7 @@ bool UI_Button::Update(float dt)
 				App->transition->transition = true;
 				App->entities->Enable();
 			}
-
-			if (t == Boost_base_button)
+			else if (t == Boost_base_button)
 			{
 				StaticEntity* static_entity;
 				if (App->player->selected_entity == nullptr) {
@@ -424,7 +391,7 @@ bool UI_Button::Update(float dt)
 				static_entity->Upgrade(App->entities->base_resource_limit[static_entity->faction]);
 				static_entity->Upgrade(App->entities->gatherer_resource_limit[static_entity->faction]);
 			}
-			if (t == Boost_barrack_button)
+			else if (t == Boost_barrack_button)
 			{
 				StaticEntity* static_entity;
 				if (App->player->selected_entity == nullptr) {
