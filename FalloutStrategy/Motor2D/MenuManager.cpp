@@ -37,8 +37,6 @@ MenuManager::~MenuManager()
 void MenuManager::CreateMainMenu()
 {
 
-	App->player->Disable();
-
 	//Images															
 	main_menu[0] = (j1Image*)App->gui->CreateImage(-5, 0, Image, { 1529, 0, 1502, 775 }, NULL, this);
 	main_menu[1] = (j1Image*)App->gui->CreateImage(0, 350, Image, { 0, 1016, 871, 516 }, NULL, this);
@@ -62,6 +60,7 @@ void MenuManager::CreateMainMenu()
 	App->render->camera.x = 0;
 	App->render->camera.y = 0;
 
+	last_menu = current_menu;
 	current_menu = Menu::MAIN_MENU;
 }
 
@@ -76,8 +75,8 @@ void MenuManager::CreateCredits()
 	credits_menu[3] = (UI_Button*)App->gui->CreateButton(65, 300, button_web_credits, { 2268,841,73,78 }, { 2268,919,73,78 }, { 2268,1005,73,78 }, NULL, this);
 	credits_menu[4] = (UI_Button*)App->gui->CreateButton(65, 400, button_twitter_credits, { 2355,841,73,78 }, { 2355,919,73,78 }, { 2355,1005,73,78 }, NULL, this);
 
+	last_menu = current_menu;
 	current_menu = Menu::CREDITS;
-
 }
 
 void MenuManager::CreateSettings()
@@ -172,6 +171,7 @@ void MenuManager::CreatePauseMenu()
 	pause_menu[5] = (UI_Label*)App->gui->CreateLabel(530, 318, Label, "SETTINGS", NULL, this, NULL);
 	pause_menu[6] = (UI_Label*)App->gui->CreateLabel(515, 408, Label, "MAIN MENU", NULL, this, NULL);
 
+	last_menu = current_menu;
 	current_menu = Menu::PAUSE_MENU;
 }
 
@@ -570,10 +570,7 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->gui->Delete_Element(fullscreen_label);
 		break;
 	case Menu::CREDITS:
-		App->gui->DeleteArrayElements(credits_menu, 13);
-		break;
-	case Menu::COLLABORATORS_CREDITS:
-		App->gui->DeleteArrayElements(collaborators, 10);
+		App->gui->DeleteArrayElements(credits_menu, 5);
 		break;
 	case Menu::SELECT_FACTION:
 		App->gui->DeleteArrayElements(select_faction_menu, 10);
