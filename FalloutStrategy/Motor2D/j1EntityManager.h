@@ -39,6 +39,25 @@ struct Unit_Data {
 
 };
 
+enum Upgrades {
+	RESOURCES_LIMIT,
+	GATHERER_CAPACITY,
+	UNITS_DAMAGE,
+	UNITS_SPEED,
+	UNITS_HEALTH,
+	CREATION_TIME,
+	NO_UPGRADE
+};
+
+struct Upgrades_Data{
+	Faction faction;
+	Upgrades upgrade;
+	int upgrade_num;
+	int first_price;
+	int price_increment;
+	int seconds;
+};
+
 class j1EntityManager : public j1Module
 {
 public:
@@ -92,6 +111,12 @@ public:
 
 	bool loading_reference_entities;
 
+	Upgrades_Data base_resource_limit[4];
+	Upgrades_Data gatherer_resource_limit[4];
+	Upgrades_Data units_damage[4];
+	Upgrades_Data units_speed[4];
+	Upgrades_Data units_health[4];
+	Upgrades_Data units_creation_time[4];
 private:
 	int loading_faction;
 	int loading_entity;

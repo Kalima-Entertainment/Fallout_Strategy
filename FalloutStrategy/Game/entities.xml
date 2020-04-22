@@ -68,9 +68,9 @@
     </gatherer>
   </ghouls>
  </dynamic>
-  <boost>
-   <base cost="250" time="45" increment="250"/>
-   <laboratory cost="150" time="45" increment="250"/>
-   <barrack cost="350" time="45" increment="250"/>
-   </boost>
+ <boost>
+   <base cost="250" upgrade_time="45" cost_increment="250"/>
+   <laboratory cost="150" upgrade_time="45" cost_increment="250"/>
+   <barrack cost="350" upgrade_time="45" cost_increment="250"/>
+ </boost>
 </entities>

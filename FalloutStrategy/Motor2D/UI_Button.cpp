@@ -466,8 +466,8 @@ bool UI_Button::Update(float dt)
 				else{
 					static_entity = (StaticEntity*)App->player->selected_entity;
 				}
-				static_entity->Upgrade(static_entity->base_resource_limit[static_entity->faction]);
-				static_entity->Upgrade(static_entity->gatherer_resource_limit[static_entity->faction]);
+				static_entity->Upgrade(App->entities->base_resource_limit[static_entity->faction]);
+				static_entity->Upgrade(App->entities->gatherer_resource_limit[static_entity->faction]);
 			}
 			if (t == Boost_barrack_button)
 			{
@@ -478,8 +478,8 @@ bool UI_Button::Update(float dt)
 				else {
 					static_entity = (StaticEntity*)App->player->selected_entity;
 				}
-				static_entity->Upgrade(static_entity->units_damage[static_entity->faction]);
-				static_entity->Upgrade(static_entity->units_speed[static_entity->faction]);
+				static_entity->Upgrade(App->entities->units_damage[static_entity->faction]);
+				static_entity->Upgrade(App->entities->units_speed[static_entity->faction]);
 			}
 			/*if (t == Boost_lab_button)
 			{
