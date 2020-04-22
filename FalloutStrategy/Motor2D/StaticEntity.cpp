@@ -236,12 +236,12 @@ bool StaticEntity::LoadAnimations() {
 	else if (faction == MUTANT)
 		faction_char = "SuperMutant";
 
-	std::string file = std::string("textures/characters/").append(faction_char).append("/").append(faction_char).append("_Buildings.tmx");
+	std::string file = std::string("Assets/textures/characters/").append(faction_char).append("/").append(faction_char).append("_Buildings.tmx");
 
 	pugi::xml_document animation_file;
 	pugi::xml_parse_result result = animation_file.load_file(file.c_str());
 	std::string image = std::string(animation_file.child("tileset").child("image").attribute("source").as_string());
-	std::string texture_path = std::string("textures/characters/").append(faction_char).append("/").append(faction_char).append("_Buildings.png");
+	std::string texture_path = std::string("Assets/textures/characters/").append(faction_char).append("/").append(faction_char).append("_Buildings.png");
 
 	if (type == BASE)
 	{

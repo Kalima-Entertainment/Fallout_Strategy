@@ -637,7 +637,7 @@ bool DynamicEntity::LoadAnimations() {
 	if (type == GATHERER)
 		type_char = "Gatherer";
 
-	std::string file = std::string("textures/characters/").append(faction_char).append("/").append(faction_char).append("_").append(type_char);
+	std::string file = std::string("Assets/textures/characters/").append(faction_char).append("/").append(faction_char).append("_").append(type_char);
 	std::string animation_path = file;
 	animation_path.append(".tmx");
 	std::string texture_path = file;

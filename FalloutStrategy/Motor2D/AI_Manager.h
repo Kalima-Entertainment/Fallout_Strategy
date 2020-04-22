@@ -17,7 +17,7 @@ public:
 	bool CleanUp();
 
 	std::vector<iPoint> CreateNodeMap();
-	void GetNodeMap(std::vector<iPoint>& vector_to_fill);
+	std::vector<iPoint> GetNodeMap();
 	int GetDistanceBetweenNodes() const { return 150 / node_map_divisions; }
 
 public:

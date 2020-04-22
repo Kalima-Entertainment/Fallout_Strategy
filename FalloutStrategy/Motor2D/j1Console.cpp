@@ -16,15 +16,12 @@ j1Console::j1Console() : j1Module() {
 	input_box = nullptr;
 	CleanUpStarted = false;
 	l = 0;
-	//command_input = nullptr;
-	//current_consulting_command = nullptr;
 }
 
 j1Console::~j1Console() {}
 
 bool j1Console::Awake(pugi::xml_node& config) {
 	bool ret = true;
-
 	return ret;
 }
 
@@ -38,9 +35,6 @@ bool j1Console::Start() {
 
 	CreateCommand("help", "list all console commands", this);
 	CreateCommand("fps", "Change FPS cap", this);
-	//CreateCommand("list", (j1Module*)this, "List all console commands");
-	//App->console->CreateCommand("quit", (j1Module*)this, "Quit the game");
-	//App->console->CreateCommand("fps_", (j1Module*)this, "Change FPS cap");
 
 	return ret;
 }

@@ -30,16 +30,16 @@ j1Transition::~j1Transition()
 bool j1Transition::LoadAnimations() {
 	bool ret = true;
 	pugi::xml_document animation_file;
-	pugi::xml_parse_result result = animation_file.load_file("gui/loading.tmx");
+	pugi::xml_parse_result result = animation_file.load_file("Assets/gui/loading.tmx");
 
 	std::string image = std::string(animation_file.child("tileset").child("image").attribute("source").as_string());
 
-	logo_tex = App->tex->Load("gui/logo_spritesheet.png");
-	gif_tex = App->tex->Load("gui/gifwheel.png");
-	background = App->tex->Load("gui/background.png");
+	logo_tex = App->tex->Load("Assets/gui/logo_spritesheet.png");
+	gif_tex = App->tex->Load("Assets/gui/gifwheel.png");
+	background = App->tex->Load("Assets/gui/background.png");
 	if (result == NULL)
 	{
-		LOG("Could not load animation tmx file %s. pugi error: %s", "gui/LogoIntro.tmx", result.description());
+		LOG("Could not load animation tmx file %s. pugi error: %s", "Assets/gui/LogoIntro.tmx", result.description());
 		ret = false;
 	}
 

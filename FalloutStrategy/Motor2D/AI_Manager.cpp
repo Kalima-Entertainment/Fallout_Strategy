@@ -15,7 +15,9 @@ AI_Manager::AI_Manager() : j1Module() {
 	node_map_divisions = 15;
 }
 
-AI_Manager::~AI_Manager() {}
+AI_Manager::~AI_Manager() {
+
+}
 
 bool AI_Manager::Start() {
 	bool ret = true;	
@@ -78,6 +80,7 @@ bool AI_Manager::CleanUp() {
 		}
 	}
 	players_created = false;
+
 	node_map.clear();
 	return ret;
 }
@@ -96,9 +99,4 @@ std::vector<iPoint> AI_Manager::CreateNodeMap(){
 	return map;
 }
 
-void AI_Manager::GetNodeMap(std::vector<iPoint>& vector_to_fill) {
-	for (int i = 0; i < node_map.size(); i++)
-	{
-		vector_to_fill[i] = node_map[i];
-	}
-}
+std::vector<iPoint> AI_Manager::GetNodeMap() { return node_map;}
