@@ -52,15 +52,6 @@ public:
 
 	UI_Type t;
 
-	int click_fx;
-	int hover_fx;
-	int back_fx;
-	int volume_fx;
-	int members_fx;
-	int counter;
-	int character_fx;
-
-
 	void DoNotShowElement(UI_element*);
 
 	j1Image* faction_image;
@@ -73,7 +64,7 @@ public:
 	BUTTON_STATE current_state;
 
 	bool inHover;
-
+	int counter;
 
 };
 

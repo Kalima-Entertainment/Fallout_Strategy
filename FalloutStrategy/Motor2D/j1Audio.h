@@ -73,6 +73,13 @@ public:
 	int win;
 	int lose;
 
+	int click_fx;
+	int hover_fx;
+	int back_fx;
+	int volume_fx;
+	int members_fx;
+	int character_fx;
+
 private:
 
 	float				music_volume;

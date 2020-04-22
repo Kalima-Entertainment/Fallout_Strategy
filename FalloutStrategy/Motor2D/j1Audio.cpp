@@ -81,6 +81,13 @@ bool j1Audio::Awake(pugi::xml_node& config)
 	win = App->audio->LoadFx("Assets/audio/fx/WinLose/WinSound.wav");
 	lose = App->audio->LoadFx("Assets/audio/fx/WinLose/LoseSound.wav");
 
+	click_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Arrow.wav");
+	hover_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Slider.wav");
+	back_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_ReadyOff.wav");
+	volume_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Text.wav");
+	members_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Skill.wav");
+	character_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Character.wav");
+
 	return ret;
 }
 
