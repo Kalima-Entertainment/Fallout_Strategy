@@ -118,7 +118,6 @@ SDL_Texture* j1Fonts::Print(const char* text, SDL_Color color, std::string font_
 bool j1Fonts::CalcSize(const char* text, int& width, int& height, _TTF_Font* font) const
 {
 	bool ret = false;
-
 	if (TTF_SizeText((font) ? font : default, text, & width, & height) != 0)
 		LOG("Unable to calc size of text surface! SDL_ttf Error: %s\n", TTF_GetError());
 	else
