@@ -35,7 +35,6 @@ StaticEntity::~StaticEntity() {
 	texture = nullptr;
 	path_to_target.clear();
 	tiles.clear();
-	App->scene->CheckWinner();
 }
 
 bool StaticEntity::Update(float dt) {

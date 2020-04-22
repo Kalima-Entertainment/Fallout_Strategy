@@ -35,6 +35,17 @@ UI_Button::UI_Button(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, 
 	volume_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Text.wav");
 	members_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Skill.wav");
 	character_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Character.wav");
+
+	faction_image = nullptr;
+
+	brotherhood_rect = { 2600, 2351, 580, 185 };
+	vault_rect = { 2600, 2886, 656, 180 };
+	ghoul_rect = { 2600, 835, 591, 180 };
+	supermutant_rect = { 2600, 2649, 602, 181 };
+
+	current_state = BUTTON_STATE::NONE;
+
+	inHover = true;
 }
 
 bool UI_Button::CleanUp()
@@ -77,32 +88,41 @@ bool UI_Button::Update(float dt)
 			App->audio->PlayFx(1, hover_fx, 0);
 		}
 
+
 		if (t == button_select_ghoul)
 		{
-			ghoul_image = (j1Image*)App->gui->CreateImage(510, 300, Image, { 2600, 835, 591, 180 }, NULL, this);
-			elements_to_show.push_back(ghoul_image);
-			current_state = BUTTON_STATE::HOVER;
+			if (inHover) {
+				faction_image = (j1Image*)App->gui->CreateImage(510, 300, Image, ghoul_rect, NULL, this);
+				current_state = BUTTON_STATE::HOVER;
+				inHover = !inHover;
+			}
 		}
-
+	
 		if (t == button_select_vault)
 		{
-			vault_image = (j1Image*)App->gui->CreateImage(510, 300, Image, { 2600, 2886, 656, 180 }, NULL, this);
-			elements_to_show.push_back(vault_image);
-			current_state = BUTTON_STATE::HOVER;
+			if (inHover) {
+				faction_image = (j1Image*)App->gui->CreateImage(510, 300, Image, vault_rect, NULL, this);
+				current_state = BUTTON_STATE::HOVER;
+				inHover = !inHover;
+			}
 		}
-
+	
 		if (t == button_select_brotherhood)
 		{
-			brotherhood_image = (j1Image*)App->gui->CreateImage(510, 300, Image, { 2600, 2351, 580, 185 }, NULL, this);
-			elements_to_show.push_back(brotherhood_image);
-			current_state = BUTTON_STATE::HOVER;
+			if (inHover) {
+				faction_image = (j1Image*)App->gui->CreateImage(510, 300, Image, brotherhood_rect, NULL, this);
+				current_state = BUTTON_STATE::HOVER;
+				inHover = !inHover;
+			}
 		}
-
+		
 		if (t == button_select_supermutant)
 		{
-			supermutant_image = (j1Image*)App->gui->CreateImage(510, 300, Image, { 2600, 2649, 602, 181 }, NULL, this);
-			elements_to_show.push_back(supermutant_image);
-			current_state = BUTTON_STATE::HOVER;
+			if (inHover) {
+				faction_image = (j1Image*)App->gui->CreateImage(510, 300, Image, supermutant_rect, NULL, this);
+				current_state = BUTTON_STATE::HOVER;
+				inHover = !inHover;
+			}
 		}
 		
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT)==KEY_DOWN) {
@@ -517,15 +537,12 @@ bool UI_Button::Update(float dt)
 		current_state = BUTTON_STATE::HOVER_EXIT;
 	}
 
-	if (current_state == BUTTON_STATE::HOVER_EXIT)
-	{
-		for (std::list<UI_element*>::iterator item = elements_to_show.begin(); item != elements_to_show.end(); ++item) {
-
-			
-			DoNotShowElement((*item));
-			
-		}
+	if (current_state == BUTTON_STATE::HOVER_EXIT) {
+		App->gui->Delete_Element(faction_image);
+		inHover = !inHover;
 	}
+
+
 
 	return true;
 

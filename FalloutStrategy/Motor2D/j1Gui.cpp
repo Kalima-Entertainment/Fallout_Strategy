@@ -109,8 +109,8 @@ bool j1Gui::Delete_Element(UI_element* element) {
 	for (int i = 0; i < ui_element.size(); i++)
 	{
 		if (element == ui_element[i]) {
-			//delete element;
-			//element = nullptr;
+			delete ui_element[i];
+			ui_element[i] = nullptr;
 			ui_element.erase(ui_element.begin() + i);
 		}
 	}

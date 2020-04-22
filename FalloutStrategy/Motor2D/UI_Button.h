@@ -63,14 +63,17 @@ public:
 
 	void DoNotShowElement(UI_element*);
 
-	j1Image* vault_image = nullptr;
-	j1Image* ghoul_image = nullptr;
-	j1Image* brotherhood_image = nullptr;
-	j1Image* supermutant_image = nullptr;
+	j1Image* faction_image;
 
-	std::list<UI_element*> elements_to_show;
+	SDL_Rect supermutant_rect;
+	SDL_Rect brotherhood_rect;
+	SDL_Rect vault_rect;
+	SDL_Rect ghoul_rect;
 
-	BUTTON_STATE current_state = BUTTON_STATE::NONE;
+	BUTTON_STATE current_state;
+
+	bool inHover;
+
 
 };
 

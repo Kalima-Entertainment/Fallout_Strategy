@@ -509,7 +509,7 @@ bool j1EntityManager::PostUpdate()
 			if (entities[i]->to_destroy)
 			{
 				entities[i]->owner->DeleteEntity(entities[i]);
-				if (entities[i]->is_dynamic)App->scene->CheckWinner();
+				if (!entities[i]->is_dynamic)App->scene->CheckWinner();
 				delete entities[i];
 				entities[i] = nullptr;
 				entities.erase(entities.begin() + i);
