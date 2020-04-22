@@ -318,6 +318,7 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 				else
 					owner->caps -= cost;
 
+				upgrade_stack.building = BASE;
 				upgrade_stack.faction = faction;
 				upgrade_stack.upgrade_seconds = upgrades_data.seconds;
 				want_to_upgrade = true;
@@ -337,12 +338,10 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 			else
 				owner->caps -= cost;
 
-			for (int i = 0; i < App->entities->entities.size(); i++) {
-				if (App->entities->entities[i]->faction = faction)
-					if (App->entities->entities[i]->type == GATHERER)
-						App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.5);
-			}
-
+			//Upgrade data
+			upgrade_stack.building = BASE;
+			upgrade_stack.faction = faction;
+			upgrade_stack.upgrade_seconds = upgrades_data.seconds;
 			want_to_upgrade = true;
 			LOG("Gatherer Resource Limit Upgrade started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
 
@@ -359,12 +358,10 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 			else
 				owner->caps -= cost;
 
-			for (int i = 0; i < App->entities->entities.size(); i++) {
-				if (App->entities->entities[i]->faction = faction)
-					if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED)
-						App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.15);
-			}
-
+			//Upgrade data
+			upgrade_stack.building = BARRACK;
+			upgrade_stack.faction = faction;
+			upgrade_stack.upgrade_seconds = upgrades_data.seconds;
 			want_to_upgrade = true;
 			LOG("Units Damage Upgrade started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
 
@@ -380,14 +377,11 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 				App->player->UpdateResourceData(Resource::CAPS, -cost);
 			else
 				owner->caps -= cost;
-
-			for (int i = 0; i < App->entities->entities.size(); i++) {
-				if (App->entities->entities[i]->faction = faction) {
-					App->entities->entities[i]->speed.x += App->entities->entities[i]->speed.x * 0.15;
-					App->entities->entities[i]->speed.y += App->entities->entities[i]->speed.y * 0.15;
-				}
-			}
-
+						
+			//Upgrade data
+			upgrade_stack.building = BARRACK;
+			upgrade_stack.faction = faction;
+			upgrade_stack.upgrade_seconds = upgrades_data.seconds;
 			want_to_upgrade = true;
 			LOG("Units Speed Upgrade started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
 
@@ -403,15 +397,11 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 				App->player->UpdateResourceData(Resource::CAPS, -cost);
 			else
 				owner->caps -= cost;
-
-			for (int i = 0; i < App->entities->entities.size(); i++) {
-				if (App->entities->entities[i]->faction = faction)
-					if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED) {
-						App->entities->entities[i]->max_health += (int)(App->entities->entities[i]->max_health * 0.15);
-						App->entities->entities[i]->current_health += (int)(App->entities->entities[i]->max_health * 0.15);
-					}
-			}
-
+			
+			//Upgrade data
+			upgrade_stack.building = LABORATORY;
+			upgrade_stack.faction = faction;
+			upgrade_stack.upgrade_seconds = upgrades_data.seconds;
 			want_to_upgrade = true;
 			LOG("Units Health Upgrade started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
 
@@ -427,13 +417,11 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 				App->player->UpdateResourceData(Resource::CAPS, -cost);
 			else
 				owner->caps -= cost;
-
-			for (int i = 0; i < 4; i++) {
-				for (int j = 0; j < 3; j++)
-				{
-					App->entities->unit_data[i][j].spawn_seconds -= App->entities->unit_data[i][j].spawn_seconds * 0.05;
-				}
-			}
+						
+			//Upgrade data
+			upgrade_stack.building = LABORATORY;
+			upgrade_stack.faction = faction;
+			upgrade_stack.upgrade_seconds = upgrades_data.seconds;
 			want_to_upgrade = true;
 			LOG("Units Creation Time Upgrade started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
 
@@ -461,6 +449,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 	else if (upgrade_name == GATHERER_CAPACITY) {
 		int cost = App->entities->gatherer_resource_limit[faction].first_price + (App->entities->gatherer_resource_limit[faction].price_increment * App->entities->gatherer_resource_limit[faction].upgrade_num);
 
+		//Upgrade gatherers that are currently alive
 		for (int i = 0; i < App->entities->entities.size(); i++) {
 			if(App->entities->entities[i]->faction = faction)
 				if (App->entities->entities[i]->type == GATHERER )
@@ -473,6 +462,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 	else if (upgrade_name == UNITS_DAMAGE) {
 		int cost = App->entities->units_damage[faction].first_price + (App->entities->units_damage[faction].price_increment * App->entities->units_damage[faction].upgrade_num);
 
+		//Upgrade melees and ranged that are currently alive
 		for (int i = 0; i < App->entities->entities.size(); i++) {
 			if (App->entities->entities[i]->faction = faction)
 				if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED)
@@ -486,6 +476,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 	else if (upgrade_name == UNITS_SPEED) {
 		int cost = App->entities->units_speed[faction].first_price + (App->entities->units_speed[faction].price_increment * App->entities->units_speed[faction].upgrade_num);
 
+		//Upgrade units that are currently alive
 		for (int i = 0; i < App->entities->entities.size(); i++) {
 			if (App->entities->entities[i]->faction = faction) {
 				App->entities->entities[i]->speed.x += App->entities->entities[i]->speed.x * 0.15;
@@ -499,6 +490,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 	else if (upgrade_name == UNITS_HEALTH) {
 		int cost = App->entities->units_health[faction].first_price + (App->entities->units_health[faction].price_increment * App->entities->units_health[faction].upgrade_num);
 
+		//Upgrade melees and ranged that are currently alive
 		for (int i = 0; i < App->entities->entities.size(); i++) {
 			if (App->entities->entities[i]->faction = faction)
 				if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED) {
