@@ -9,8 +9,10 @@
 #include "j1Scene.h"
 #include "j1Textures.h"
 #include "j1EntityManager.h"
+#include "AI_Manager.h"
 #include "j1Gui.h"
 #include "j1Minimap.h"
+#include "j1Player.h"
 #include "j1Audio.h"
 #include "j1MovementManager.h"
 
@@ -130,21 +132,31 @@ bool j1Transition::PostUpdate()
 void j1Transition::Transition()
 {
 
- 	Mix_PauseMusic();
+	Mix_PauseMusic();
 	if (Mix_Playing(1) == 0) {
 		App->audio->PlayFx(1, App->audio->loading, 0);
 
 	}
-	App->render->Blit(background, 0, 0,0,1.0F,0);
-	App->render->Blit(gif_tex, 536, 191, &animationGif.GetCurrentFrame(lastdt),1.0F,0);
+	App->render->Blit(background, 0, 0, 0, 1.0F, 0);
+	App->render->Blit(gif_tex, 536, 191, &animationGif.GetCurrentFrame(lastdt), 1.0F, 0);
 	App->render->Blit(logo_tex, 470, 400, &animationLogo.GetCurrentFrame(lastdt), 1.0F, 0);
 
-	if (!App->entities->loading_reference_entities)
+	if (!App->entities->loading_reference_entities && App->gui->ingame == true)
 	{
 		transition = false;
 		App->gui->active;
 		App->minimap->active;
 		App->Mmanager->Enable();
 		App->scene->Enable();
+		App->player->Enable();
+		App->entities->Enable();
+	}
+	else if (App->entities->loading_reference_entities && App->gui->ingame == false)
+	{
+		App->entities->Disable();
+		App->scene->Disable();
+		App->Mmanager->Disable();
+		App->player->Disable();
+		App->entities->Disable();
 	}
 }
