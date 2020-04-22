@@ -59,6 +59,7 @@ public:
 	void ExecuteUpgrade(Faction faction, Upgrades upgrade_name);
 	void SpawnUnit(EntityType type, bool no_cost = false);
 	void UpdateSpawnStack();
+	void UpdateUpgradeStack();
 	
 public:
 	std::vector<iPoint> tiles;
@@ -82,6 +83,8 @@ private:
 	j1Timer chrono_spawn;
 	j1Timer chrono_upgrade;
 	bool spawning;
+	bool upgrading;
+	bool want_to_upgrade;
 	float time_left;
 };
 

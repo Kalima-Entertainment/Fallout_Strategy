@@ -362,7 +362,7 @@ bool UI_Button::Update(float dt)
 				if (App->player->selected_entity == nullptr)
 					static_entity = (StaticEntity*)App->player->last_selected_entity;
 				else
-				static_entity = (StaticEntity*)App->player->selected_entity;
+					static_entity = (StaticEntity*)App->player->selected_entity;
 				static_entity->SpawnUnit(GATHERER);
 			}
 

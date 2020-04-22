@@ -45,6 +45,8 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
 	for (int i = 0; i < 10; i++)
 		spawn_stack[i].type = NO_TYPE;
 	spawning = false;
+	upgrading = false;
+	want_to_upgrade = false;
 
 	time_left = 0;
 }
@@ -93,7 +95,16 @@ bool StaticEntity::Update(float dt) {
 	}
 	//Chrono for upgrades
 	{
-
+		if (upgrading == false && want_to_upgrade == true) {
+			chrono_upgrade.Start();
+			upgrading = true;
+		}
+		if (upgrading == true) {
+			if (chrono_upgrade.ReadSec() > upgrade_stack.upgrade_seconds) {
+				ExecuteUpgrade(upgrade_stack.faction, upgrade_stack.upgrade);
+				UpdateUpgradeStack();
+			}
+		}
 	}
 
 	//Interact with the building to spawn units or investigate upgrades
@@ -324,6 +335,7 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 				upgrade_stack.faction = faction;
 				upgrade_stack.upgrade = upgrades_data.upgrade;
 				upgrade_stack.upgrade_seconds = upgrades_data.seconds;
+				want_to_upgrade = true;
 				LOG("Resource Limit Upgrade started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
 
 				base_resource_limit[faction].upgrade_num++;
@@ -341,6 +353,7 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 			}
 			//Pay the price
 			App->player->UpdateResourceData(Resource::CAPS, -cost);
+			want_to_upgrade = true;
 			LOG("Gatherer Resource Limit started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
 
 			gatherer_resource_limit[faction].upgrade_num++;
@@ -357,6 +370,7 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 			}
 			//Pay the price
 			App->player->UpdateResourceData(Resource::CAPS, -cost);
+			want_to_upgrade = true;
 			LOG("Units Damage started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
 
 			units_damage[faction].upgrade_num++;
@@ -374,6 +388,7 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 			}
 			//Pay the price
 			App->player->UpdateResourceData(Resource::CAPS, -cost);
+			want_to_upgrade = true;
 			LOG("Units Speed started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
 
 			units_speed[faction].upgrade_num++;
@@ -554,4 +569,9 @@ void StaticEntity::UpdateSpawnStack() {
 	}
 	spawn_stack[9] = { NO_TYPE, 0 };
 	spawning = false;
+}
+
+void StaticEntity::UpdateUpgradeStack() {
+	want_to_upgrade = false;
+	upgrading = false;
 }
