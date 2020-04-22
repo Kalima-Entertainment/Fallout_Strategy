@@ -214,7 +214,7 @@ bool j1Audio::PlayFx(int channel, unsigned int id, int repeat)
 
 void j1Audio::Change_Volume_Music(float value)
 {
-	value = value / 100;
+	value = value / 50;
 	Music_Volume = value;
 
 	if (Music_Volume < 0.0f) {
@@ -237,7 +237,7 @@ void j1Audio::Change_Volume_Music(float value)
 }
 void j1Audio::Change_Volume_FX(float value)
 {
-	value = value / 100;
+	value = value / 50;
 	fx_volume = value;
 
 	if (fx_volume < 0) {

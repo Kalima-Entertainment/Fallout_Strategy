@@ -37,7 +37,7 @@ public:
 	void Change_Volume_Music(float value);
 	void Change_Volume_FX(float value);
 
-	float Music_Volume;
+	float Music_Volume = 0;
 	float Get_Music_Volume();
 	float Get_FX_Volume();
 

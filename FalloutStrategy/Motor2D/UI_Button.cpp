@@ -311,7 +311,6 @@ bool UI_Button::Update(float dt)
 			else if (t == button_select_ghoul)
 			{
 				App->gui->Delete_Element(faction_image);
-				Mix_PauseMusic();
 				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
 				current_state = BUTTON_STATE::HOVER_EXIT;
 				App->player->faction = GHOUL;
@@ -328,7 +327,6 @@ bool UI_Button::Update(float dt)
 			else if (t == button_select_vault)
 			{
 				App->gui->Delete_Element(faction_image);
-				Mix_PauseMusic();
 				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
 				App->player->faction = VAULT;
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
@@ -343,7 +341,6 @@ bool UI_Button::Update(float dt)
 			else if (t == button_select_brotherhood)
 			{
 				App->gui->Delete_Element(faction_image);
-				Mix_PauseMusic();
 				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
 				App->player->faction = BROTHERHOOD;
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
@@ -358,7 +355,6 @@ bool UI_Button::Update(float dt)
 			else if (t == button_select_supermutant)
 			{
 				App->gui->Delete_Element(faction_image);
-				Mix_PauseMusic();
 				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
 				App->player->faction = MUTANT;
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
@@ -406,18 +402,9 @@ bool UI_Button::Update(float dt)
 				static_entity->Upgrade(App->entities->units_health[static_entity->faction]);
 				static_entity->Upgrade(App->entities->units_creation_time[static_entity->faction]);
 			}
-
-
-
-
-
-
-
-
-
-
-
+			 			 		  		  		 	   		
 		}
+
 		else {
 			
 			App->gui->volume_up = 0;
