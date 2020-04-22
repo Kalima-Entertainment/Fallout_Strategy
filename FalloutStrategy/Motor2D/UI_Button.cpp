@@ -403,6 +403,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->CreateResources();
 				App->transition->fadetimer.Start();
 				App->transition->transition = true;
+				App->entities->Enable();
 							
 			}
 
@@ -419,6 +420,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->CreateResources();
 				App->transition->fadetimer.Start();
 				App->transition->transition = true;
+				App->entities->Enable();
 			}
 
 			if (t == button_select_brotherhood)
@@ -433,7 +435,8 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->CreateGUI();
 				App->menu_manager->CreateResources();
 				App->transition->fadetimer.Start();
-				App->transition->transition = true;
+				App->transition->transition = true;				
+				App->entities->Enable();
 			}
 
 			if (t == button_select_supermutant)
@@ -449,6 +452,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->CreateResources();
 				App->transition->fadetimer.Start();
 				App->transition->transition = true;
+				App->entities->Enable();
 			}
 		}
 		else {

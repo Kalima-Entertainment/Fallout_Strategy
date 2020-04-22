@@ -131,7 +131,6 @@ bool j1Transition::PostUpdate()
 
 void j1Transition::Transition()
 {
-
 	Mix_PauseMusic();
 	if (Mix_Playing(1) == 0) {
 		App->audio->PlayFx(1, App->audio->loading, 0);
@@ -141,7 +140,7 @@ void j1Transition::Transition()
 	App->render->Blit(gif_tex, 536, 191, &animationGif.GetCurrentFrame(lastdt), 1.0F, 0);
 	App->render->Blit(logo_tex, 470, 400, &animationLogo.GetCurrentFrame(lastdt), 1.0F, 0);
 
-	if (!App->entities->loading_reference_entities && App->gui->ingame == true)
+	if ((!App->entities->loading_reference_entities) && (App->gui->ingame == true))
 	{
 		transition = false;
 		App->gui->active;
@@ -149,9 +148,8 @@ void j1Transition::Transition()
 		App->Mmanager->Enable();
 		App->scene->Enable();
 		App->player->Enable();
-		App->entities->Enable();
 	}
-	else if (App->entities->loading_reference_entities && App->gui->ingame == false)
+	else if (App->gui->ingame == false)
 	{
 		App->entities->Disable();
 		App->scene->Disable();
