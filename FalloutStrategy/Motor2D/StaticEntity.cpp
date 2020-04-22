@@ -6,6 +6,7 @@
 #include "j1Textures.h"
 #include "j1Player.h"
 #include "j1Input.h"
+#include "j1Scene.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
 StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
@@ -58,9 +59,13 @@ StaticEntity::~StaticEntity() {
 	texture = nullptr;
 	path_to_target.clear();
 	tiles.clear();
+	App->scene->CheckWinner();
 }
 
 bool StaticEntity::Update(float dt) {
+
+	current_animation = &animations[state];
+
 	switch (state) {
 	case WAIT:
 		break;
@@ -69,6 +74,7 @@ bool StaticEntity::Update(float dt) {
 	case EXPLODE:
 		if (current_animation->Finished())
 			to_destroy = true;
+
 		if (Mix_Playing(21) == 0)
 			SpatialAudio(App->audio->explode, 21, position.x, position.y);
 		break;

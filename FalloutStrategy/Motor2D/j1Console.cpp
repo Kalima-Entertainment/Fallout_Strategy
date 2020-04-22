@@ -159,6 +159,14 @@ void j1Console::CreateCommand(std::string name, std::string description, j1Modul
 	command.description = description;
 	command.callback = callback;
 
+	//check the command doesn't already exist 
+	for (int i = 0; i < command_vector.size(); i++)
+	{
+		if (command_vector[i].name == name)
+			return;
+	}
+
+	//if it doesn't exist add it to the command list
 	command_vector.push_back(command);
 }
 
