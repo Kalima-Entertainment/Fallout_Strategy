@@ -27,6 +27,7 @@
 #include "j1Minimap.h"
 #include "AI_Player.h"
 #include "j1Transition.h"
+#include "j1Console.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -51,10 +52,14 @@ bool j1Scene::Start()
 {
 	srand(time(NULL));
 	menu_state = StatesMenu::NONE;
+	beaten_enemies = 0;
 
-	//App->player->faction = VAULT;
 	App->ai_manager->Enable();
 	App->transition->Enable();
+
+	App->console->CreateCommand("win", "Automatically win the game", this);
+	App->console->CreateCommand("lose", "Automatically lose the game", this);
+
 	//random map ----------------------------
 
 	std::string modules[4];
@@ -246,29 +251,74 @@ void j1Scene::RectangleSelection()
 }
 
 void j1Scene::CheckWinner() {
-	Faction player_faction = App->player->faction;
-	int beaten_enemies = 0;
+
 	for (int i = 0; i < 4; i++)
 	{
-		if (players[player_faction]->defeated) {
-			//LOSE
-			win = false;
-			App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
-			App->menu_manager->CreateWinLoseScene();
-			App->gui->ingame = false;
-			App->isPaused = false;
-		}
-		else if (players[i]->defeated){
-			beaten_enemies++;
+		if (!players[i]->defeated) {
+			if ((players[i]->base == nullptr) && (players[i]->laboratory == nullptr) && (players[i]->barrack[0] == nullptr) && (players[i]->barrack[1] == nullptr)) {
+				players[i]->defeated = true;
+				if (players[i]->faction == App->player->faction) {
+					//LOSE
+					win = false;
+					App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+					App->menu_manager->CreateWinLoseScene();
+					App->gui->ingame = false;
+					App->isPaused = false;
+				}
+				else { 
+					beaten_enemies++;
+					if (players[i]->faction == VAULT)
+						LOG("Vault Dwellers faction defeated!");
+					else if (players[i]->faction == BROTHERHOOD)
+						LOG("Brotherhood of Steel defeated!");
+					else if (players[i]->faction == MUTANT)
+						LOG("Mutants defeated!");
+					else if (players[i]->faction == GHOUL)
+						LOG("Ghouls defeated!");
+				}
+			}
 		}
 	}
+
 	//WIN
 	if (beaten_enemies == 3) {
+		LOG("You won!");
 		win = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 		App->menu_manager->CreateWinLoseScene();
 		App->gui->ingame = false;
 		App->isPaused = false;
-		
+	}
+}
+
+void j1Scene::OnCommand(std::vector<std::string> command_parts) {
+	std::string command_beginning = command_parts[0];
+
+	//Instantly win the game
+	if (command_beginning == "win") {
+		for (int i = 0; i < 4; i++)
+		{
+			if (players[i]->faction != App->player->faction) {
+				if (players[i]->base != nullptr)
+					players[i]->base->state = EXPLODE;
+				if (players[i]->laboratory != nullptr)
+					players[i]->laboratory->state = EXPLODE;
+				if (players[i]->barrack[0] != nullptr)
+					players[i]->barrack[0]->state = EXPLODE;
+				if (players[i]->barrack[1] != nullptr)
+					players[i]->barrack[1]->state = EXPLODE;
+			}
+		}
+	}
+	//Instantly lose the game
+	else if (command_beginning == "lose") {
+		if (App->player->base != nullptr)
+			App->player->base->state = EXPLODE;
+		if (App->player->laboratory != nullptr)
+			App->player->laboratory->state = EXPLODE;
+		if (App->player->barrack[0] != nullptr)
+			App->player->barrack[0]->state = EXPLODE;
+		if (App->player->barrack[1] != nullptr)
+			App->player->barrack[1]->state = EXPLODE;
 	}
 }

@@ -333,7 +333,8 @@ bool j1EntityManager::Update(float dt)
 	{
 		for (int i = 0; i < entities.size(); i++)
 		{
-			entities[i]->Update(dt);
+			if(!entities[i]->to_destroy)
+				entities[i]->Update(dt);
 		}
 	}
 
@@ -478,12 +479,11 @@ bool j1EntityManager::PostUpdate()
 
 		for (int i = 0; i < entities.size(); i++)
 		{
-			//delete destroyed entities
+			//delete entities to destroy
 			if (entities[i]->to_destroy)
 			{
-				if (entities[i]->owner->DeleteEntity(entities[i]) == true) {
-					App->scene->CheckWinner();
-				};
+				entities[i]->owner->DeleteEntity(entities[i]);
+				if (entities[i]->is_dynamic)App->scene->CheckWinner();
 				delete entities[i];
 				entities[i] = nullptr;
 				entities.erase(entities.begin() + i);

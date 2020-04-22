@@ -26,12 +26,12 @@
   </fonts>
 
   <gui>
-    <folder>gui/</folder>
+    <folder>Assets/gui/</folder>
     <ui file1="atlas.png"/>
   </gui>
 
   <map>
-    <folder>maps/</folder>
+    <folder>Assets/maps/</folder>
   </map>
   <minimap width="300" corner="bottom_left" margin="22"/>
 </config>

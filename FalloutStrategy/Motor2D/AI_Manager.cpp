@@ -15,7 +15,9 @@ AI_Manager::AI_Manager() : j1Module() {
 	node_map_divisions = 15;
 }
 
-AI_Manager::~AI_Manager() {}
+AI_Manager::~AI_Manager() {
+
+}
 
 bool AI_Manager::Start() {
 	bool ret = true;	
@@ -53,12 +55,15 @@ bool AI_Manager::Update(float dt) {
 
 bool AI_Manager::PostUpdate() {
 	bool ret = true;
+	iPoint node_world_position;
+	SDL_Rect node;
 	if (App->render->debug) 
 	{
 		for (int i = 0; i < node_map.size(); i++)
 		{
-			iPoint node_world_position = App->map->MapToWorld(node_map[i].x, node_map[i].y);
-			App->render->DrawQuad({ node_world_position.x, node_world_position.y, 6, 6 }, 0, 0, 255, 255);
+			node_world_position = App->map->MapToWorld(node_map[i].x, node_map[i].y);
+			node = { node_world_position.x, node_world_position.y, 6, 6 };
+			App->render->DrawQuad(node, 0, 0, 255, 255);
 		}
 	}
 	return ret;
@@ -75,6 +80,7 @@ bool AI_Manager::CleanUp() {
 		}
 	}
 	players_created = false;
+
 	node_map.clear();
 	return ret;
 }
@@ -93,9 +99,4 @@ std::vector<iPoint> AI_Manager::CreateNodeMap(){
 	return map;
 }
 
-void AI_Manager::GetNodeMap(std::vector<iPoint>& vector_to_fill) {
-	for (int i = 0; i < node_map.size(); i++)
-	{
-		vector_to_fill[i] = node_map[i];
-	}
-}
+std::vector<iPoint> AI_Manager::GetNodeMap() { return node_map;}

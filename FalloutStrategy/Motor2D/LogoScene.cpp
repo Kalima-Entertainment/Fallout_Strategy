@@ -23,12 +23,12 @@ bool LogoScene::LoadAnimations()
 {
 	bool ret = true;
 	pugi::xml_document animation_file;
-	pugi::xml_parse_result result = animation_file.load_file("gui/textures/LogoIntro.tmx");
+	pugi::xml_parse_result result = animation_file.load_file("Assets/gui/textures/LogoIntro.tmx");
 
 	std::string image = std::string(animation_file.child("tileset").child("image").attribute("source").as_string());
 	
-	logo_tex = App->tex->Load("gui/textures/LogoFallout.png");
-	start_game_tex = App->tex->Load("gui/textures/StartGameTex.png");
+	logo_tex = App->tex->Load("Assets/gui/textures/LogoFallout.png");
+	start_game_tex = App->tex->Load("Assets/gui/textures/StartGameTex.png");
 
 	if (result == NULL)
 	{
@@ -98,7 +98,7 @@ bool LogoScene::Update(float dt) {
 	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
 		App->audio->PlayFx(2, App->audio->F_press, 0);
-		App->audio->PlayMusic("audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
+		App->audio->PlayMusic("Assets/audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
 		App->logo_scene->Disable();
 	}
 
