@@ -6,6 +6,7 @@
 #include "j1Textures.h"
 #include "j1Player.h"
 #include "j1Input.h"
+#include "j1Scene.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
 StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
@@ -60,9 +61,13 @@ StaticEntity::~StaticEntity() {
 	texture = nullptr;
 	path_to_target.clear();
 	tiles.clear();
+	App->scene->CheckWinner();
 }
 
 bool StaticEntity::Update(float dt) {
+
+	current_animation = &animations[state];
+
 	switch (state) {
 	case WAIT:
 		break;
@@ -71,6 +76,7 @@ bool StaticEntity::Update(float dt) {
 	case EXPLODE:
 		if (current_animation->Finished())
 			to_destroy = true;
+
 		if (Mix_Playing(21) == 0)
 			SpatialAudio(App->audio->explode, 21, position.x, position.y);
 		break;
@@ -231,12 +237,12 @@ bool StaticEntity::LoadAnimations() {
 	else if (faction == MUTANT)
 		faction_char = "SuperMutant";
 
-	std::string file = std::string("textures/characters/").append(faction_char).append("/").append(faction_char).append("_Buildings.tmx");
+	std::string file = std::string("Assets/textures/characters/").append(faction_char).append("/").append(faction_char).append("_Buildings.tmx");
 
 	pugi::xml_document animation_file;
 	pugi::xml_parse_result result = animation_file.load_file(file.c_str());
 	std::string image = std::string(animation_file.child("tileset").child("image").attribute("source").as_string());
-	std::string texture_path = std::string("textures/characters/").append(faction_char).append("/").append(faction_char).append("_Buildings.png");
+	std::string texture_path = std::string("Assets/textures/characters/").append(faction_char).append("/").append(faction_char).append("_Buildings.png");
 
 	if (type == BASE)
 	{
