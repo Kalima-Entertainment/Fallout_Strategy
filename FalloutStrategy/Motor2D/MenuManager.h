@@ -96,7 +96,7 @@ public:
 
 	UI_element* main_menu[14];
 	UI_element* settings_menu[23];
-	UI_element* credits_menu[13];
+	UI_element* credits_menu[5];
 	UI_element* collaborators[9];
 	UI_element* select_faction_menu[10];
 	UI_element* select_faction_photos[4];
