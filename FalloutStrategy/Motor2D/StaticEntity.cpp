@@ -302,15 +302,12 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 		if (storage_capacity < max_capacity) {
 			int cost = App->entities->base_resource_limit[faction].first_price + (App->entities->base_resource_limit[faction].price_increment * App->entities->base_resource_limit[faction].upgrade_num);
 
-			if (App->player->caps >= cost) {
-				//Upgrade type
-
-
-				//Upgrade only for selected faction
-				for (int i = 0; i < 4; i++) {
-					if(upgrades_data.faction == faction)
-						App->player->UpdateResourceData(Resource::CAPS, -cost);
-				}				
+			if (owner->caps >= cost) {
+				//Pay the price
+				if (owner == App->player)
+					App->player->UpdateResourceData(Resource::CAPS, -cost);
+				else
+					owner->caps -= cost;
 
 				upgrade_stack.faction = faction;
 				upgrade_stack.upgrade = upgrades_data.upgrade;
@@ -325,14 +322,19 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 	else if (upgrades_data.upgrade == GATHERER_CAPACITY) {
 		int cost = App->entities->gatherer_resource_limit[faction].first_price + (App->entities->gatherer_resource_limit[faction].price_increment * App->entities->gatherer_resource_limit[faction].upgrade_num);
 
-		if (App->player->caps >= cost) {
+		if (owner->caps >= cost) {
+			//Pay the price
+			if (owner == App->player)
+				App->player->UpdateResourceData(Resource::CAPS, -cost);
+			else
+				owner->caps -= cost;
+
 			for (int i = 0; i < App->entities->entities.size(); i++) {
 				if (App->entities->entities[i]->faction = faction)
 					if (App->entities->entities[i]->type == GATHERER)
 						App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.5);
 			}
-			//Pay the price
-			App->player->UpdateResourceData(Resource::CAPS, -cost);
+
 			want_to_upgrade = true;
 			LOG("Gatherer Resource Limit started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
 
@@ -342,14 +344,19 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 	else if (upgrades_data.upgrade == UNITS_DAMAGE) {
 		int cost = App->entities->units_damage[faction].first_price + (App->entities->units_damage[faction].price_increment * App->entities->units_damage[faction].upgrade_num);
 
-		if (App->player->caps >= cost) {
+		if (owner->caps >= cost) {
+			//Pay the price
+			if (owner == App->player)
+				App->player->UpdateResourceData(Resource::CAPS, -cost);
+			else
+				owner->caps -= cost;
+
 			for (int i = 0; i < App->entities->entities.size(); i++) {
 				if (App->entities->entities[i]->faction = faction)
 					if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED)
 						App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.15);
 			}
-			//Pay the price
-			App->player->UpdateResourceData(Resource::CAPS, -cost);
+
 			want_to_upgrade = true;
 			LOG("Units Damage started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
 
@@ -359,15 +366,20 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 	else if (upgrades_data.upgrade == UNITS_SPEED) {
 		int cost = App->entities->units_speed[faction].first_price + (App->entities->units_speed[faction].price_increment * App->entities->units_speed[faction].upgrade_num);
 
-		if (App->player->caps >= cost) {
+		if (owner->caps >= cost) {
+			//Pay the price
+			if (owner == App->player)
+				App->player->UpdateResourceData(Resource::CAPS, -cost);
+			else
+				owner->caps -= cost;
+
 			for (int i = 0; i < App->entities->entities.size(); i++) {
 				if (App->entities->entities[i]->faction = faction) {
 					App->entities->entities[i]->speed.x += App->entities->entities[i]->speed.x * 0.15;
 					App->entities->entities[i]->speed.y += App->entities->entities[i]->speed.y * 0.15;
 				}
 			}
-			//Pay the price
-			App->player->UpdateResourceData(Resource::CAPS, -cost);
+
 			want_to_upgrade = true;
 			LOG("Units Speed started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
 
@@ -378,6 +390,12 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 		int cost = App->entities->units_health[faction].first_price + (App->entities->units_health[faction].price_increment * App->entities->units_health[faction].upgrade_num);
 
 		if (owner->caps >= cost) {
+			//Pay the price
+			if (owner == App->player)
+				App->player->UpdateResourceData(Resource::CAPS, -cost);
+			else
+				owner->caps -= cost;
+
 			for (int i = 0; i < App->entities->entities.size(); i++) {
 				if (App->entities->entities[i]->faction = faction)
 					if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED) {
@@ -392,6 +410,12 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 		int cost = App->entities->units_creation_time[faction].first_price + (App->entities->units_creation_time[faction].price_increment * App->entities->units_creation_time[faction].upgrade_num);
 
 		if (owner->caps >= cost) {
+			//Pay the price
+			if (owner == App->player)
+				App->player->UpdateResourceData(Resource::CAPS, -cost);
+			else
+				owner->caps -= cost;
+
 			for (int i = 0; i < 4; i++) {
 				for (int j = 0; j < 3; j++)
 				{
@@ -414,7 +438,6 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 			if (storage_capacity > max_capacity)
 				storage_capacity = max_capacity;
 
-			App->player->UpdateResourceData(Resource::CAPS, -cost);
 			LOG("Resource Limit Upgraded. New limit is: %i", storage_capacity);
 
 			App->entities->base_resource_limit[faction].upgrade_num++;			
@@ -428,8 +451,6 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 				if (App->entities->entities[i]->type == GATHERER )
 					App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.5);
 		}
-		//Pay the price
-		App->player->UpdateResourceData(Resource::CAPS, -cost);
 		LOG("Gatherer Resource Limit Upgraded");
 
 		App->entities->gatherer_resource_limit[faction].upgrade_num++;		
@@ -442,8 +463,6 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 				if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED)
 					App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.15);
 		}
-		//Pay the price
-		App->player->UpdateResourceData(Resource::CAPS, -cost);
 		LOG("Units Damage Upgraded");
 
 		App->entities->units_damage[faction].upgrade_num++;
@@ -458,8 +477,6 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 				App->entities->entities[i]->speed.y += App->entities->entities[i]->speed.y * 0.15;
 			}
 		}
-		//Pay the price
-		App->player->UpdateResourceData(Resource::CAPS, -cost);
 		LOG("Units Speed Upgraded");
 
 		App->entities->units_speed[faction].upgrade_num++;		
