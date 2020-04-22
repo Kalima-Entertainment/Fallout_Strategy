@@ -303,7 +303,6 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 					players[i]->barrack[1]->state = EXPLODE;
 			}
 		}
-		/*CheckWinner();*/
 	}
 	//Instantly lose the game
 	else if (command_beginning == "lose") {
@@ -316,5 +315,4 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 		if (App->player->barrack[1] != nullptr)
 			App->player->barrack[1]->state = EXPLODE;
 	}
-	/*CheckWinner();*/
 }
