@@ -6,7 +6,7 @@
 #include <string>
 #include "SDL\include\SDL_pixels.h"
 
-#define DEFAULT_FONT "fonts/stacked/StackedPixel.ttf"
+#define DEFAULT_FONT "Assets/fonts/stacked/StackedPixel.ttf"
 #define DEFAULT_FONT_SIZE 38
 
 
