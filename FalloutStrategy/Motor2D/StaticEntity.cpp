@@ -79,6 +79,7 @@ bool StaticEntity::Update(float dt) {
 			upgrading = true;
 		}
 		if (upgrading == true) {
+			LOG("time remaining %f ", chrono_upgrade.ReadSec());
 			if (chrono_upgrade.ReadSec() > upgrade_stack.upgrade_seconds) {
 				if (upgrade_stack.building == BASE) {
 					ExecuteUpgrade(upgrade_stack.faction, RESOURCES_LIMIT);
@@ -87,9 +88,11 @@ bool StaticEntity::Update(float dt) {
 				else if (upgrade_stack.building == BARRACK) {
 					ExecuteUpgrade(upgrade_stack.faction, UNITS_DAMAGE);
 					ExecuteUpgrade(upgrade_stack.faction, UNITS_SPEED);
-				}else if(upgrade_stack.building == LABORATORY)
+				}
+				else if (upgrade_stack.building == LABORATORY) {
 					ExecuteUpgrade(upgrade_stack.faction, UNITS_HEALTH);
 					ExecuteUpgrade(upgrade_stack.faction, CREATION_TIME);
+				}
 				UpdateUpgradeStack();
 			}
 		}
@@ -450,7 +453,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 
 		//Upgrade gatherers that are currently alive
 		for (int i = 0; i < App->entities->entities.size(); i++) {
-			if(App->entities->entities[i]->faction = faction)
+			if(App->entities->entities[i]->faction == faction)
 				if (App->entities->entities[i]->type == GATHERER )
 					App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.5);
 		}
