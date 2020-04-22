@@ -76,7 +76,6 @@ void MenuManager::CreateCredits()
 	credits_menu[4] = (UI_Button*)App->gui->CreateButton(65, 400, button_twitter_credits, { 2355,841,73,78 }, { 2355,919,73,78 }, { 2355,1005,73,78 }, NULL, this);
 
 	current_menu = Menu::CREDITS;
-
 }
 
 void MenuManager::CreateSettings()
@@ -556,10 +555,7 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->gui->Delete_Element(fullscreen_label);
 		break;
 	case Menu::CREDITS:
-		App->gui->DeleteArrayElements(credits_menu, 13);
-		break;
-	case Menu::COLLABORATORS_CREDITS:
-		App->gui->DeleteArrayElements(collaborators, 10);
+		App->gui->DeleteArrayElements(credits_menu, 5);
 		break;
 	case Menu::SELECT_FACTION:
 		App->gui->DeleteArrayElements(select_faction_menu, 10);
