@@ -63,19 +63,20 @@ public:
 	
 public:
 	std::vector<iPoint> tiles;
-	StaticState state;	
-
-private:
-	int gen_speed;
-	Animation animations[3];
-	iPoint render_texture_pos;
-
+	StaticState state;
 	Upgrades_Data base_resource_limit[4];
 	Upgrades_Data gatherer_resource_limit[4];
 	Upgrades_Data units_damage[4];
 	Upgrades_Data units_speed[4];
 	Upgrades_Data units_health[4];
 	Upgrades_Data units_creation_time[4];
+
+private:
+	int gen_speed;
+	Animation animations[3];
+	iPoint render_texture_pos;
+
+	
 
 	Spawn_Stack spawn_stack[10];
 	Upgrade_Stack upgrade_stack;

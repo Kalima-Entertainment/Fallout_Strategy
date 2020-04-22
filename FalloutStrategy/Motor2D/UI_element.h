@@ -72,7 +72,9 @@ enum UI_Type {
 	Ghouls_ranged_button,
 
 	InputBox,
-	Boost_button,
+	Boost_base_button,
+	Boost_barrack_button,
+	Boost_lab_button,
 
 };
 

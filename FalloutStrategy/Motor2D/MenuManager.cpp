@@ -300,7 +300,7 @@ void MenuManager::CreateBrotherHood_Base()
 
 	//Buttons
 	brotherhood_base[0] = (UI_Button*)App->gui->CreateButton(1050, 570, Brotherhood_ghaterer_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
-	brotherhood_base[1] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+	brotherhood_base[1] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_base_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
 	brotherhood_base[2] = (j1Image*)App->gui->CreateImage(880, 575, Image, { 118, 1561, 122, 98 }, NULL, this);
@@ -322,7 +322,7 @@ void MenuManager::CreateBrotherHood_Barrack() {
 	//Buttons
 	brotherhood_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 570, Brotherhood_melee_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 	brotherhood_barrack[1] = (UI_Button*)App->gui->CreateButton(1105, 570, Brotherhood_ranged_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
-	brotherhood_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+	brotherhood_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_barrack_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
 	brotherhood_barrack[3] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 17, 1560, 69, 115 }, NULL, this);
@@ -339,7 +339,7 @@ void MenuManager::CreateBrotherHood_Lab() {
 	//Buttons
 	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1050, 600, Brotherhood_melee, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1105, 600, Brotherhood_ranged, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
-	brotherhood_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+	brotherhood_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_lab_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
 	brotherhood_lab[1] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 663, 1567, 108, 104 }, NULL, this);
@@ -360,7 +360,7 @@ void MenuManager::CreateSuperMutants_Base() {
 
 	//Buttons
 	supermutant_base[0] = (UI_Button*)App->gui->CreateButton(1050, 570, Supermutant_ghaterer_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
-	supermutant_base[1] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+	supermutant_base[1] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_base_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
 	supermutant_base[2] = (j1Image*)App->gui->CreateImage(880, 575, Image, { 934, 1577, 129, 91 }, NULL, this);
@@ -376,7 +376,7 @@ void MenuManager::CreateSuperMutants_Barrack() {
 	//Buttons
 	supermutant_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 570, Supermutant_melee_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 	supermutant_barrack[1] = (UI_Button*)App->gui->CreateButton(1105, 570, Supermutant_ranged_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
-	supermutant_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+	supermutant_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_barrack_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
 	supermutant_barrack[3] = (j1Image*)App->gui->CreateImage(890, 560, Image, { 801, 1549, 102, 119 }, NULL, this);
@@ -393,7 +393,7 @@ void MenuManager::CreateSuperMutants_Lab() {
 	//Buttons
 	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1050, 600, Brotherhood_melee, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1105, 600, Brotherhood_ranged, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
-	supermutant_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+	supermutant_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_lab_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
 	supermutant_lab[1] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 663, 1567, 108, 104 }, NULL, this);
@@ -415,7 +415,7 @@ void MenuManager::CreateGhouls_Base() {
 
 	//Buttons
 	ghoul_base[0] = (UI_Button*)App->gui->CreateButton(1050, 570, Ghouls_ghaterer_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
-	ghoul_base[1] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+	ghoul_base[1] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_base_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
 	ghoul_base[2] = (j1Image*)App->gui->CreateImage(900, 575, Image, { 398, 1564, 99, 108 }, NULL, this);
@@ -431,7 +431,7 @@ void MenuManager::CreateGhouls_Barrack() {
 	//Buttons
 	ghoul_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 570, Ghouls_melee_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 	ghoul_barrack[1] = (UI_Button*)App->gui->CreateButton(1105, 570, Ghouls_ranged_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
-	ghoul_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+	ghoul_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_barrack_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
 	ghoul_barrack[3] = (j1Image*)App->gui->CreateImage(900, 570, Image, { 527, 1563, 105, 105 }, NULL, this);
@@ -448,7 +448,7 @@ void MenuManager::CreateGhouls_Lab() {
 	//Buttons
 	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1050, 600, Brotherhood_melee, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1105, 600, Brotherhood_ranged, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
-	ghoul_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+	ghoul_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_lab_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
 	ghoul_lab[1] = (j1Image*)App->gui->CreateImage(900, 590, Image, { 536, 1741, 101, 73 }, NULL, this);
@@ -470,7 +470,7 @@ void MenuManager::CreateVault_Base() {
 
 	//Buttons
 	vault_base[0] = (UI_Button*)App->gui->CreateButton(1050, 570, Vault_ghaterer_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
-	vault_base[1] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+	vault_base[1] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_base_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 	
 	//Images
 	vault_base[2] = (j1Image*)App->gui->CreateImage(930, 569, Image, { 319, 1710, 49, 113 }, NULL, this);
@@ -486,7 +486,7 @@ void MenuManager::CreateVault_Barrack() {
 	//Buttons
 	vault_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 570, Vault_melee_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 	vault_barrack[1] = (UI_Button*)App->gui->CreateButton(1105, 570, Vault_ranged_button, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
-	vault_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+	vault_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_barrack_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
 	vault_barrack[3] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 148, 1731, 122, 91 }, NULL, this);
@@ -504,7 +504,7 @@ void MenuManager::CreateVault_Lab() {
 	//Buttons
 	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1050, 600, Brotherhood_melee, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 	//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1105, 600, Brotherhood_ranged, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
-	vault_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+	vault_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_lab_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 
 	//Images
 	vault_lab[1] = (j1Image*)App->gui->CreateImage(920, 570, Image, { 426, 1726, 72, 96 }, NULL, this);
