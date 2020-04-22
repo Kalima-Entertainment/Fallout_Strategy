@@ -45,6 +45,32 @@ j1EntityManager::j1EntityManager(){
 	unit_data[GHOUL][RANGED] = { 80, 80, 40 };
 	unit_data[GHOUL][GATHERER] = { 40, 0 , 15 };
 
+	//Initialize upgrades
+	base_resource_limit[0] = { VAULT, RESOURCES_LIMIT, 0, 250, 250, 45 };
+	base_resource_limit[1] = { BROTHERHOOD, RESOURCES_LIMIT, 0, 250, 250, 45 };
+	base_resource_limit[2] = { MUTANT, RESOURCES_LIMIT, 0, 250, 250, 45 };
+	base_resource_limit[3] = { GHOUL, RESOURCES_LIMIT, 0, 250, 250, 45 };
+	gatherer_resource_limit[0] = { VAULT, GATHERER_CAPACITY, 0, 250, 250, 45 };
+	gatherer_resource_limit[1] = { BROTHERHOOD, GATHERER_CAPACITY, 0, 250, 250, 45 };
+	gatherer_resource_limit[2] = { MUTANT, GATHERER_CAPACITY, 0, 250, 250, 45 };
+	gatherer_resource_limit[3] = { GHOUL, GATHERER_CAPACITY, 0, 250, 250, 45 };
+	units_damage[0] = { VAULT, UNITS_DAMAGE, 0, 350, 250, 45 };
+	units_damage[1] = { BROTHERHOOD, UNITS_DAMAGE, 0, 350, 250, 45 };
+	units_damage[2] = { MUTANT, UNITS_DAMAGE, 0, 350, 250, 45 };
+	units_damage[3] = { GHOUL, UNITS_DAMAGE, 0, 350, 250, 45 };
+	units_speed[0] = { VAULT, UNITS_SPEED, 0, 350, 250, 45 };
+	units_speed[1] = { BROTHERHOOD, UNITS_SPEED, 0, 350, 250, 45 };
+	units_speed[2] = { MUTANT, UNITS_SPEED, 0, 350, 250, 45 };
+	units_speed[3] = { GHOUL, UNITS_SPEED, 0, 350, 250, 45 };
+	units_health[0] = { VAULT, UNITS_HEALTH, 0, 150, 250, 45 };
+	units_health[1] = { BROTHERHOOD, UNITS_HEALTH, 0, 150, 250, 45 };
+	units_health[2] = { MUTANT, UNITS_HEALTH, 0, 150, 250, 45 };
+	units_health[3] = { GHOUL, UNITS_HEALTH, 0, 150, 250, 45 };
+	units_creation_time[0] = { VAULT, CREATION_TIME, 0, 150, 250, 45 };
+	units_creation_time[1] = { BROTHERHOOD, CREATION_TIME, 0, 150, 250, 45 };
+	units_creation_time[2] = { MUTANT, CREATION_TIME, 0, 150, 250, 45 };
+	units_creation_time[3] = { GHOUL, CREATION_TIME, 0, 150, 250, 45 };
+
 	for (int faction = VAULT; faction < NO_FACTION; faction++)
 	{
 		for (int type = MELEE; type <= BASE; type++)
