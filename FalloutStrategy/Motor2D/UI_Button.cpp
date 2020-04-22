@@ -91,8 +91,7 @@ bool UI_Button::Update(float dt)
 				inHover = !inHover;
 			}
 		}
-	
-		if (t == button_select_vault)
+		else if (t == button_select_vault)
 		{
 			if (inHover) {
 				faction_image = (j1Image*)App->gui->CreateImage(510, 300, Image, vault_rect, NULL, this);
@@ -100,8 +99,7 @@ bool UI_Button::Update(float dt)
 				inHover = !inHover;
 			}
 		}
-	
-		if (t == button_select_brotherhood)
+		else if (t == button_select_brotherhood)
 		{
 			if (inHover) {
 				faction_image = (j1Image*)App->gui->CreateImage(510, 300, Image, brotherhood_rect, NULL, this);
@@ -109,8 +107,7 @@ bool UI_Button::Update(float dt)
 				inHover = !inHover;
 			}
 		}
-		
-		if (t == button_select_supermutant)
+		else if (t == button_select_supermutant)
 		{
 			if (inHover) {
 				faction_image = (j1Image*)App->gui->CreateImage(510, 300, Image, supermutant_rect, NULL, this);
@@ -118,7 +115,7 @@ bool UI_Button::Update(float dt)
 				inHover = !inHover;
 			}
 		}
-		
+
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT)==KEY_DOWN) {
 
 			//rect is button pressed
@@ -409,6 +406,17 @@ bool UI_Button::Update(float dt)
 				static_entity->Upgrade(App->entities->units_health[static_entity->faction]);
 				static_entity->Upgrade(App->entities->units_creation_time[static_entity->faction]);
 			}
+
+
+
+
+
+
+
+
+
+
+
 		}
 		else {
 			
