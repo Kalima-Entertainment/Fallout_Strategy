@@ -329,8 +329,15 @@ bool DynamicEntity::PostUpdate() {
 	SDL_Rect tile_rect;
 	iPoint tex_position = App->map->MapToWorld(current_tile.x, current_tile.y);
 
+	//selected entity
+	if (App->player->selected_entity == this)
+	{
+		tile_rect = { 128,0,64,64 };
+		//blit tile
+		App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
+	}
 	//debug
-	if (App->render->debug) 
+	else if (App->render->debug) 
 	{
 		//pathfinding debug
 		for (uint j = 0; j < path_to_target.size(); ++j) {
@@ -343,14 +350,6 @@ bool DynamicEntity::PostUpdate() {
 		if (faction == App->player->faction) tile_rect = { 0,0,64,64 };
 		//enemy
 		else tile_rect = { 64,0,64,64 };
-		App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
-	}
-
-	//selected entity
-	if (App->player->selected_entity == this)
-	{
-		tile_rect = { 128,0,64,64 };
-		//blit tile
 		App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
 	}
 
@@ -427,7 +426,7 @@ void DynamicEntity::Move(float dt) {
 				position.x = next_tile_rect_center.x + 2;
 				position.y = next_tile_rect_center.y + 2;
 				current_tile = target_tile;
-				state = IDLE;
+				//state = IDLE;
 			}
 		}
 	}
@@ -514,12 +513,6 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 	}
 
 	target_tile = destination;
-
-	if (!App->pathfinding->IsWalkable(current_tile)) {
-		next_tile = App->pathfinding->FindWalkableAdjacentTile(current_tile);
-		return;
-	}
-
 
 	if (App->pathfinding->CreatePath(current_tile, destination) == -1) {
 		LOG("Invalid path");
@@ -637,7 +630,7 @@ bool DynamicEntity::LoadAnimations() {
 	if (type == GATHERER)
 		type_char = "Gatherer";
 
-	std::string file = std::string("Assets/textures/characters/").append(faction_char).append("/").append(faction_char).append("_").append(type_char);
+	std::string file = std::string("textures/characters/").append(faction_char).append("/").append(faction_char).append("_").append(type_char);
 	std::string animation_path = file;
 	animation_path.append(".tmx");
 	std::string texture_path = file;

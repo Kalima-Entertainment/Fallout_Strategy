@@ -40,7 +40,7 @@ bool j1Fonts::Awake(pugi::xml_node& conf)
 
 	while (font_node) {
 		Font font;
-		std::string path = ("Assets/fonts/");
+		std::string path = ("fonts/");
 		std::string font_name = std::string(font_node.attribute("name").as_string());
 		std::string folder = std::string(font_node.attribute("folder").as_string());
 		font.name = font_name;

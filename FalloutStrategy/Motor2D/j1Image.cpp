@@ -5,8 +5,7 @@ j1Image::j1Image(int x, int y, UI_Type type, SDL_Rect image_rect, UI_element* pa
 	dimensions = image_rect;
 }
 
-j1Image::~j1Image() {
-}
+j1Image::~j1Image() {}
 
 bool j1Image::Draw() {
 	

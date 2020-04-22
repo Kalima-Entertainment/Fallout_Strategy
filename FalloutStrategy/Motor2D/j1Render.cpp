@@ -58,7 +58,7 @@ bool j1Render::Awake(pugi::xml_node& config)
 bool j1Render::Start()
 {
 	LOG("render start");
-	debug_tex = App->tex->Load("Assets/maps/debug_textures.png");
+	debug_tex = App->tex->Load("maps/debug_textures.png");
 	// back background
 	SDL_RenderGetViewport(renderer, &viewport);
 	return true;

@@ -114,8 +114,7 @@ bool AI_Player::Update(float dt) {
 				ChooseRandomPlayerEnemy();
 				target_building = ChooseTargetBuilding();
 			}
-			if(target_building != nullptr)
-				target_building_position = target_building->current_tile;
+			target_building_position = target_building->current_tile;
 		}
 
 		for (int i = 0; i < troops.size(); i++)
@@ -159,9 +158,7 @@ void AI_Player::ChooseRandomPlayerEnemy() {
 		target_player = (GenericPlayer*)App->player;
 
 	iPoint origin = { (int)troops[0]->current_tile.x, (int)troops[0]->current_tile.y };
-	if (target_player->base != nullptr) {
-		iPoint enemy_base_position = App->entities->ClosestTile(origin, target_player->base->tiles);
-	}
+	iPoint enemy_base_position = App->entities->ClosestTile(origin, target_player->base->tiles);
 
 	//CreateNodePath(troops[0]->current_tile, enemy_base_position, path_to_enemy_base);
 	//App->Mmanager->CreateGroup(troops);
