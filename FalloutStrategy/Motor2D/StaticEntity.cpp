@@ -369,7 +369,7 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 				//Upgrade data
 				upgrade_stack.building = BARRACK;
 				upgrade_stack.faction = faction;
-				upgrade_stack.upgrade_seconds = 10;
+				upgrade_stack.upgrade_seconds = upgrades_data.seconds;
 				want_to_upgrade = true;
 				LOG("Units Damage Upgrade started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
 
@@ -389,7 +389,7 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 				//Upgrade data
 				upgrade_stack.building = BARRACK;
 				upgrade_stack.faction = faction;
-				upgrade_stack.upgrade_seconds = 10;
+				upgrade_stack.upgrade_seconds = upgrades_data.seconds;
 				want_to_upgrade = true;
 				LOG("Units Speed Upgrade started. Waiting %i seconds", upgrade_stack.upgrade_seconds);
 
