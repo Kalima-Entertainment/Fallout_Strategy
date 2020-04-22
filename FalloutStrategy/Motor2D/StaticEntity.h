@@ -20,7 +20,7 @@ struct Spawn_Stack {
 
 struct Upgrade_Stack {
 	Faction faction;
-	Upgrades upgrade;
+	EntityType building;
 	int upgrade_seconds;
 };
 
