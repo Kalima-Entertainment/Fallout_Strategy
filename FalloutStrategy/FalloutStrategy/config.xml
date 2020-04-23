@@ -8,12 +8,14 @@
   <renderer>
     <vsync value="true"/>
   </renderer>
+  
   <AI>
    <vault minimum_melees="4" minimum_rangeds="2" caps="100" water="100" food="100"/>
    <brotherhood minimum_melees="3" minimum_rangeds="2" caps="100" water="100" food="100"/>
    <mutant minimum_melees="3" minimum_rangeds="3" caps="100" water="100" food="100"/>
    <ghoul minimum_melees="4" minimum_rangeds="2" caps="100" water="100" food="100"/>
   </AI>
+  
   <window>
     <resolution width="1280" height="720" scale="1"/>
     <fullscreen value="false"/>
@@ -30,6 +32,13 @@
     <font name="StackedPixelSmall" folder="stacked" size="22"/>
   </fonts>
 
+  <entities>
+    <boost>
+      <base cost="250" upgrade_time="45" cost_increment="250"/>
+      <laboratory cost="150" upgrade_time="45" cost_increment="250"/>
+      <barrack cost="350" upgrade_time="45" cost_increment="250"/>
+    </boost>
+  </entities>
   <gui>
     <folder>Assets/gui/</folder>
     <ui file1="atlas.png"/>
