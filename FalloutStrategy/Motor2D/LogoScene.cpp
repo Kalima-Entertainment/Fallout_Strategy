@@ -110,12 +110,12 @@ bool LogoScene::PostUpdate()
 	if(renderLogo)
 	{
 		SDL_Rect background = { 0, 0, 1280, 720 };
-		App->render->DrawQuad(background, 0, 0, 0, 255);
-		App->render->Blit(logo_tex, 400, 50, &loader->GetCurrentFrame(last_dt));
+		App->render->DrawQuad(background, 0, 0, 0, 255, true, false);
+		App->render->Blit(logo_tex, 400, 50, &loader->GetCurrentFrame(last_dt), 1.0f, 0.0f);
 		
 		if(drawable)
 		{
-			App->render->Blit(start_game_tex, 325, 510, &start_game_rect);
+			App->render->Blit(start_game_tex, 325, 510, &start_game_rect, 1.0f, 0.0f);
 			if (Mix_Playing(1) == 0) {
 				App->audio->PlayFx(1, App->audio->Press_F_to_start, 0);
 			}
