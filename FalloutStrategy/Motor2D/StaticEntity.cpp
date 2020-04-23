@@ -400,6 +400,8 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 
 				App->player->UpdateResourceData(Resource::CAPS, -cost);
 				LOG("Resource Limit Upgraded. New limit is: %i", storage_capacity);
+
+				base_resource_limit[faction].upgrade_num++;
 			}
 		}
 	}
@@ -415,6 +417,8 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 			//Pay the price
 			App->player->UpdateResourceData(Resource::CAPS, -cost);
 			LOG("Gatherer Resource Limit Upgraded");
+
+			gatherer_resource_limit[faction].upgrade_num++;
 		}
 	}
 	else if (upgrade_name == UNITS_DAMAGE) {
@@ -429,6 +433,8 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 			//Pay the price
 			App->player->UpdateResourceData(Resource::CAPS, -cost);
 			LOG("Units Damage Upgraded");
+
+			units_damage[faction].upgrade_num++;
 		}
 	}
 	else if (upgrade_name == UNITS_SPEED) {
@@ -444,6 +450,8 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 			//Pay the price
 			App->player->UpdateResourceData(Resource::CAPS, -cost);
 			LOG("Units Speed Upgraded");
+
+			units_speed[faction].upgrade_num++;
 		}
 	}
 	else if (upgrade_name == UNITS_HEALTH) {
@@ -457,6 +465,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 						App->entities->entities[i]->current_health += (int)(App->entities->entities[i]->max_health * 0.15);
 					}
 			}
+			units_health[faction].upgrade_num++;
 		}
 	}
 	else if (upgrade_name == CREATION_TIME) {
@@ -469,6 +478,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 					App->entities->unit_data[i][j].spawn_seconds -= App->entities->unit_data[i][j].spawn_seconds * 0.05;
 				}
 			}
+			units_creation_time[faction].upgrade_num++;
 		}
 	}
 }
