@@ -65,7 +65,6 @@ public:
 	int factory;
 
 	int intro_fx;
-	int intro_fx1;
 	int F_press;
 	int Press_F_to_start;
 
