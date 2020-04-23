@@ -107,15 +107,18 @@ bool AI_Player::Update(float dt) {
 	//Assign all attacking units an entity to attack
 	if (is_attacking) 
 	{
+		//if the target building is destroyed forget about it
 		if ((target_building!=nullptr) && (target_building->state == EXPLODE))
 			target_building = nullptr;
 
+		//if there is no target building find one
 		if (target_building == nullptr) {
 			target_building = ChooseTargetBuilding();
 			if (target_building == nullptr) {
 				ChooseRandomPlayerEnemy();
 				target_building = ChooseTargetBuilding();
 			}
+			//and find its position
 			if(target_building != nullptr)
 				target_building_position = target_building->current_tile;
 		}
@@ -124,19 +127,26 @@ bool AI_Player::Update(float dt) {
 		{
 			if (target_building != nullptr)
 			{
+				//if the troop has no target assign one
 				if ((troops[i]->target_entity == nullptr)||(troops[i]->target_entity != target_building))
 				{
 						troops[i]->target_entity = target_building;
 				}
 			}
+			//forget about the target if it is null because it means it has been destroyed 
 			else { troops[i]->target_entity = nullptr; }
 
+			//if the unit has no path 
 			if (troops[i]->path_to_target.size() == 0) 
 			{
+				//and has no node path
 				if (troops[i]->node_path.size() == 0)
 				{
+					//check if it is too far to get to  position
+					//if it is create a node path for it
 					if (troops[i]->current_tile.DistanceManhattan(target_building_position) > 40)
 						troops[i]->node_path = CreateNodePath(troops[i]->current_tile, target_building_position);
+					//if it is close enough pathfind to the target
 					else
 						troops[i]->PathfindToPosition(target_building_position);
 				}
