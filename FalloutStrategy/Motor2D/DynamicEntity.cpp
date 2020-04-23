@@ -356,6 +356,9 @@ bool DynamicEntity::PostUpdate() {
 		App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
 	}
 
+	if (direction >= NO_DIRECTION) {
+		direction = TOP_LEFT;
+	}
 	current_animation = &animations[state][direction];
 
 	//Render character
@@ -435,6 +438,7 @@ void DynamicEntity::Move(float dt) {
 	}
 	else
 	{
+		direction = last_direction;
 		state = IDLE;
 	}
 }
