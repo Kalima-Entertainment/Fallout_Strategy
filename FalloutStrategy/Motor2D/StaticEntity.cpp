@@ -83,7 +83,7 @@ bool StaticEntity::Update(float dt) {
 			upgrading = true;
 		}
 		if (upgrading == true) {
-			LOG("time remaining %f ", chrono_upgrade.ReadSec());
+			//LOG("time remaining %f ", 45 - chrono_upgrade.ReadSec());
 			if (chrono_upgrade.ReadSec() > upgrade_stack.upgrade_seconds) {
 				if (upgrade_stack.building == BASE) {
 					ExecuteUpgrade(upgrade_stack.faction, RESOURCES_LIMIT);

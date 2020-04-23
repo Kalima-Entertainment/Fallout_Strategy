@@ -24,7 +24,7 @@ enum EntityType {
 	NO_TYPE
 };
 
-enum Faction {
+enum Faction { //Don't change faction order. Just don't do it
 	VAULT,	
 	BROTHERHOOD,
 	MUTANT,

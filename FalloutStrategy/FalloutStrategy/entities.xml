@@ -67,10 +67,5 @@
       <cost food="0" caps="0" water="40" time="15"/>
     </gatherer>
   </ghouls>
- </dynamic>
- <boost>
-   <base cost="250" upgrade_time="45" cost_increment="250"/>
-   <laboratory cost="150" upgrade_time="45" cost_increment="250"/>
-   <barrack cost="350" upgrade_time="45" cost_increment="250"/>
- </boost>
+ </dynamic> 
 </entities>
