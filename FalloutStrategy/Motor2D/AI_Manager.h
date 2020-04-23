@@ -23,11 +23,11 @@ public:
 public:
 	AI_Player* ai_player[4];
 	std::vector<iPoint> node_map;
-
-public:
 	bool players_created;
 	int beaten_ai_players;
 	int node_map_divisions;
+	bool show_nodes;
+private:
 };
 
 #endif // !_AI_MANAGER_H_

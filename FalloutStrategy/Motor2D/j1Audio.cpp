@@ -52,8 +52,8 @@ bool j1Audio::Awake(pugi::xml_node& config)
 
 	Brotherhood_walk = LoadFx("Assets/audio/fx/CharactersSounds/Brotherhood/Brotherhood_Walk.wav");
 	Brotherhood_die = LoadFx("Assets/audio/fx/CharactersSounds/Brotherhood/Brotherhood_Die.wav");
-	Brotherhood_hit = LoadFx("audio/fx/CharactersSounds/Brotherhood/Brotherhood_Hit.wav");
-	Brotherhood_attack = LoadFx("audio/fx/CharactersSounds/Brotherhood/Brotherhood_Attack.wav");
+	Brotherhood_hit = LoadFx("Assets/audio/fx/CharactersSounds/Brotherhood/Brotherhood_Hit.wav");
+	Brotherhood_attack = LoadFx("Assets/audio/fx/CharactersSounds/Brotherhood/Brotherhood_Attack.wav");
 
 	Mutant_die = LoadFx("Assets/audio/fx/CharactersSounds/Mutants/SuperMutant_Die.wav");
 	Mutant_hit = LoadFx("Assets/audio/fx/CharactersSounds/Mutants/SuperMutant_Hit.wav");

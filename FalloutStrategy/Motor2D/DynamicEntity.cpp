@@ -41,8 +41,8 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 	resource_building = nullptr;
 	action_time = 3.0f;
 	resource_collected = 0;
-	sprite_size = 128;	
 	target_tile = { -1,-1 };
+	sprite_size = 128;
 }
 
 DynamicEntity::~DynamicEntity() {
@@ -233,10 +233,12 @@ bool DynamicEntity::Update(float dt) {
 		
 		break;
 	case DIE:
-		if (current_animation->Finished())
-		{
-			attacking_entity->target_entity = nullptr;
+		if (!delete_timer.Started())
+			delete_timer.Start();
+
+		if ((delete_timer.ReadSec() > 5) || (current_animation->Finished())) {
 			to_delete = true;
+			attacking_entity->target_entity = nullptr;
 		}
 		
 		if (reference_entity->faction == MUTANT)
@@ -386,6 +388,7 @@ void DynamicEntity::Move(float dt) {
 		next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
 		next_tile_rect = { next_tile_position.x + HALF_TILE - 5, next_tile_position.y + HALF_TILE -5, 10, 10 };
 
+		last_direction = direction;
 		direction = GetDirectionToGo(next_tile_rect);
 
 		switch (direction)
@@ -405,7 +408,9 @@ void DynamicEntity::Move(float dt) {
 				position.x = next_tile_rect.x + 2;
 				position.y = next_tile_rect.y + 2;
 				current_tile = target_tile;
+				path_to_target.clear();
 				state = IDLE;
+				direction = last_direction;
 			}
 			break;
 		case TOP_LEFT:
@@ -428,6 +433,10 @@ void DynamicEntity::Move(float dt) {
 			break;
 		}
 	}
+	else
+	{
+		state = IDLE;
+	}
 }
 
 void DynamicEntity::Attack() {
@@ -447,6 +456,7 @@ void DynamicEntity::Attack() {
 	//Change animation directions to fit
 	if (target_entity->is_dynamic) {
 		DynamicEntity* dynamic_target = (DynamicEntity*)target_entity;
+
 		if ((current_tile.x > target_entity->current_tile.x) && (current_tile.y == target_entity->current_tile.y)) {
 			direction = TOP_LEFT;
 			dynamic_target->direction = BOTTOM_RIGHT;
@@ -469,6 +479,7 @@ void DynamicEntity::Attack() {
 			dynamic_target->state = DIE;
 			dynamic_target->direction = TOP_LEFT;
 			target_entity = nullptr;
+			path_to_target.clear();
 			state = IDLE;
 		}
 	}
@@ -479,6 +490,7 @@ void DynamicEntity::Attack() {
 		if (target_entity->current_health <= 0) {
 			static_target->state = EXPLODE;
 			target_entity = nullptr;
+			path_to_target.clear();
 			state = IDLE;
 		}
 	}
@@ -496,7 +508,6 @@ void DynamicEntity::Gather() {
 		PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
 		target_entity = base;
 	}
-	//resource_building = nullptr;
 }
 
 void DynamicEntity::PathfindToPosition(iPoint destination) {
@@ -641,8 +652,6 @@ bool DynamicEntity::LoadAnimations() {
 
 	pugi::xml_document animation_file;
 	pugi::xml_parse_result result = animation_file.load_file(animation_path.c_str());
-
-	std::string image = std::string(animation_file.child("tileset").child("image").attribute("source").as_string());
 	texture = App->tex->Load(texture_path.c_str());
 
 	if (result == NULL)
@@ -655,6 +664,7 @@ bool DynamicEntity::LoadAnimations() {
 	int tile_height = animation_file.child("map").child("tileset").attribute("tileheight").as_int();
 	int columns = animation_file.child("map").child("tileset").attribute("columns").as_int();
 	int firstgid = animation_file.child("map").child("tileset").attribute("firstgid").as_int();
+	sprite_size = tile_width;
 	int id, tile_id;
 	float speed;
 
@@ -664,7 +674,7 @@ bool DynamicEntity::LoadAnimations() {
 	SDL_Rect rect;
 	rect.w = tile_width;
 	rect.h = tile_height;
-	int i = 0;
+
 	while (animation != nullptr)
 	{
 		std::string animation_direction = std::string(animation.child("properties").child("property").attribute("value").as_string());
@@ -723,6 +733,7 @@ bool DynamicEntity::LoadAnimations() {
 bool DynamicEntity::LoadReferenceData() {
 	bool ret = true;
 	DynamicEntity* dynamic_reference = (DynamicEntity*)reference_entity;
+
 	//load animations
 	for (int i = 0; i < MAX_ANIMATIONS; i++)
 	{
@@ -736,6 +747,7 @@ bool DynamicEntity::LoadReferenceData() {
 	current_health = max_health = reference_entity->max_health;
 	storage_capacity= damage = reference_entity->damage;
 	speed = reference_entity->speed;
+	sprite_size = reference_entity->sprite_size;
 
 	return ret;
 }
@@ -779,69 +791,22 @@ bool DynamicEntity::TargetTileReached(iPoint target_tile) {
 
 Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
 
-	if ((position.x > next_tile_rect.x)&&(position.x < next_tile_rect.x + next_tile_rect.w)
-		&&(position.y > next_tile_rect.y) && (position.y < next_tile_rect.y + next_tile_rect.h)) {
+	if ((floor(position.x) > ceil(next_tile_rect.x)) && (floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w))
+		&& (ceil(position.y) > floor(next_tile_rect.y)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h))) {
 		return Direction::NO_DIRECTION;
 	}
-	else if ((position.x > next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y > next_tile_rect.y + next_tile_rect.h * 0.5f)) {
+	if ((ceil(position.x) > floor(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (ceil(position.y) > floor(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
 		return Direction::TOP_LEFT;
 	}
-	else if ((position.x < next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y > next_tile_rect.y + next_tile_rect.h * 0.5f)) {
-		return Direction::TOP_RIGHT;
-	}
-	else if ((position.x > next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y < next_tile_rect.y + next_tile_rect.h * 0.5f)) {
+	else if ((ceil(position.x) > floor(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
 		return Direction::BOTTOM_LEFT;
 	}
-	else if ((position.x < next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y < next_tile_rect.y + next_tile_rect.h * 0.5f)) {
+	else if ((floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (ceil(position.y) > floor(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+		return Direction::TOP_RIGHT;
+	}
+	else if ((floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
 		return Direction::BOTTOM_RIGHT;
 	}
-
-	//move to next tile
-	/*
-	if ((position.x > next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.x > next_tile_rect.x)
-		&& (position.y > next_tile_rect.y) && (position.y > next_tile_rect.y + next_tile_rect.h * 0.5f)) {
-		direction = TOP_LEFT;
-		position.x -= speed.x * dt;
-		position.y -= speed.y * dt;
-	}
-	else if ((position.x < next_tile_rect.x) && (position.x < next_tile_rect.x + next_tile_rect.w * 0.5f)
-		&& (position.y > next_tile_rect.y) && (position.y > next_tile_rect.y + next_tile_rect.h * 0.5f)) {
-		direction = TOP_RIGHT;
-		position.x += speed.x * dt;
-		position.y -= speed.y * dt;
-	}
-	else if ((position.x > next_tile_rect.x) && (position.x > next_tile_rect.x + next_tile_rect.w * 0.5f)
-		&& (position.y < next_tile_rect.y) && (position.y < next_tile_rect.y + next_tile_rect.h * 0.5f)) {
-		direction = BOTTOM_LEFT;
-		position.x -= speed.x * dt;
-		position.y += speed.y * dt;
-	}
-	else if ((position.x < next_tile_rect.x) && (position.x < next_tile_rect.x + next_tile_rect.w * 0.5f)
-		&& (position.y < next_tile_rect.y) && (position.y < next_tile_rect.y + next_tile_rect.h * 0.5f)) {
-		direction = BOTTOM_RIGHT;
-		position.x += speed.x * dt;
-		position.y += speed.y * dt;
-	}
-	else
-	{
-		if (next_tile != target_tile)
-		{
-			//current_tile = path_to_target.front();
-			if (path_to_target.size() > 1)
-			{
-				next_tile = path_to_target[1];
-			}
-			path_to_target.erase(path_to_target.begin());
-		}
-		else
-		{
-			position.x = next_tile_rect.x + 2;
-			position.y = next_tile_rect.y + 2;
-			current_tile = target_tile;
-			state = IDLE;
-		}
-	}
-	*/
 }
 
 // --- UnitInfo Constructors and Destructor ---

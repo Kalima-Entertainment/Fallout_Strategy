@@ -113,7 +113,7 @@ bool j1Minimap::PostUpdate() {
 			else { App->render->DrawQuad(entity_rect, 255, 0, 0, 255, true, false);}
 		}
 
-		if (App->render->debug) 
+		if (App->render->debug && App->ai_manager->show_nodes)
 		{
 			iPoint node_world_position;
 			for (int i = 0; i < App->ai_manager->node_map.size(); i++)

@@ -92,7 +92,7 @@ bool j1Player::PreUpdate() {
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
 			selected_entity = SelectEntity();
 
-			if (App->entities->showing_building_menu && selected_entity == nullptr) {
+			if (App->entities->showing_building_menu && selected_entity == last_selected_entity) {
 				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::ALL, BUILDING_TYPE::ALL);
 				App->entities->showing_building_menu = false;
 			}

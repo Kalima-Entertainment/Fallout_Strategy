@@ -96,7 +96,14 @@ bool j1Scene::Start()
 
 	App->minimap->Enable();
 		
-	App->entities->CreateEntity(VAULT, RANGED, 20, 20);
+	//top_left
+	//App->entities->CreateEntity(VAULT, RANGED, 20, 20);
+	//top_right
+	//App->entities->CreateEntity(VAULT, RANGED, 130, 20);
+	//bottom_left
+	//App->entities->CreateEntity(VAULT, RANGED, 20, 130);
+	//botto_right
+	//App->entities->CreateEntity(VAULT, RANGED, 130,110);
 
 	return true;
 }

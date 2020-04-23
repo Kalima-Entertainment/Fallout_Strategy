@@ -231,10 +231,10 @@ std::vector<iPoint> AI_Player::CreateNodePath(iPoint origin, iPoint destination)
 		}
 		current_node = best_node;
 
-		if (best_node.DistanceManhattan(destination) > 20)
+		//if (best_node.DistanceManhattan(destination) > 20)
 			path.push_back(best_node);
-		else
-			break;
+		//else
+			//break;
 	}
 
 	//flip final path 
@@ -249,10 +249,10 @@ StaticEntity* AI_Player::ChooseTargetBuilding() {
 
 	if (target_player->barrack[0] != nullptr)
 		target_building = target_player->barrack[0];
-	else if (target_player->barrack[1] != nullptr)
-		target_building = target_player->barrack[1];
 	else if (target_player->laboratory != nullptr)
 		target_building = target_player->laboratory;
+	else if (target_player->barrack[1] != nullptr)
+		target_building = target_player->barrack[1];
 	else if (target_player->base != nullptr)
 		target_building = target_player->base;
 
