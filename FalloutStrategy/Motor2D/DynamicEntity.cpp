@@ -410,8 +410,8 @@ void DynamicEntity::Move(float dt) {
 				current_tile = target_tile;
 				path_to_target.clear();
 				state = IDLE;
-				direction = last_direction;
 			}
+			direction = last_direction;
 			break;
 		case TOP_LEFT:
 			position.x -= speed.x * dt;

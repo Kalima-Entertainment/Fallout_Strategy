@@ -94,6 +94,7 @@ bool AI_Manager::PostUpdate() {
 	bool ret = true;
 	iPoint node_world_position;
 	SDL_Rect node;
+	/*
 	if ((App->render->debug) && (show_nodes))
 	{
 		for (int i = 0; i < node_map.size(); i++)
@@ -103,6 +104,7 @@ bool AI_Manager::PostUpdate() {
 			App->render->DrawQuad(node, 0, 0, 255, 255);
 		}
 	}
+	*/
 	return ret;
 }
 
