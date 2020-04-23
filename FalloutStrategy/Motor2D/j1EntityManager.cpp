@@ -44,33 +44,7 @@ j1EntityManager::j1EntityManager(){
 	unit_data[GHOUL][MELEE] = { 80, 60 , 30 };
 	unit_data[GHOUL][RANGED] = { 80, 80, 40 };
 	unit_data[GHOUL][GATHERER] = { 40, 0 , 15 };
-
-	//Initialize upgrades
-	base_resource_limit[0] = { VAULT, RESOURCES_LIMIT, 0, 250, 250, 45 };
-	base_resource_limit[1] = { BROTHERHOOD, RESOURCES_LIMIT, 0, 250, 250, 45 };
-	base_resource_limit[2] = { MUTANT, RESOURCES_LIMIT, 0, 250, 250, 45 };
-	base_resource_limit[3] = { GHOUL, RESOURCES_LIMIT, 0, 250, 250, 45 };
-	gatherer_resource_limit[0] = { VAULT, GATHERER_CAPACITY, 0, 250, 250, 45 };
-	gatherer_resource_limit[1] = { BROTHERHOOD, GATHERER_CAPACITY, 0, 250, 250, 45 };
-	gatherer_resource_limit[2] = { MUTANT, GATHERER_CAPACITY, 0, 250, 250, 45 };
-	gatherer_resource_limit[3] = { GHOUL, GATHERER_CAPACITY, 0, 250, 250, 45 };
-	units_damage[0] = { VAULT, UNITS_DAMAGE, 0, 350, 250, 45 };
-	units_damage[1] = { BROTHERHOOD, UNITS_DAMAGE, 0, 350, 250, 45 };
-	units_damage[2] = { MUTANT, UNITS_DAMAGE, 0, 350, 250, 45 };
-	units_damage[3] = { GHOUL, UNITS_DAMAGE, 0, 350, 250, 45 };
-	units_speed[0] = { VAULT, UNITS_SPEED, 0, 350, 250, 45 };
-	units_speed[1] = { BROTHERHOOD, UNITS_SPEED, 0, 350, 250, 45 };
-	units_speed[2] = { MUTANT, UNITS_SPEED, 0, 350, 250, 45 };
-	units_speed[3] = { GHOUL, UNITS_SPEED, 0, 350, 250, 45 };
-	units_health[0] = { VAULT, UNITS_HEALTH, 0, 150, 250, 45 };
-	units_health[1] = { BROTHERHOOD, UNITS_HEALTH, 0, 150, 250, 45 };
-	units_health[2] = { MUTANT, UNITS_HEALTH, 0, 150, 250, 45 };
-	units_health[3] = { GHOUL, UNITS_HEALTH, 0, 150, 250, 45 };
-	units_creation_time[0] = { VAULT, CREATION_TIME, 0, 150, 250, 45 };
-	units_creation_time[1] = { BROTHERHOOD, CREATION_TIME, 0, 150, 250, 45 };
-	units_creation_time[2] = { MUTANT, CREATION_TIME, 0, 150, 250, 45 };
-	units_creation_time[3] = { GHOUL, CREATION_TIME, 0, 150, 250, 45 };
-
+	
 	for (int faction = VAULT; faction < NO_FACTION; faction++)
 	{
 		for (int type = MELEE; type <= BASE; type++)
@@ -260,6 +234,38 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 	bool ret = true;
 	config_data = config;
 	RandomFactions();
+
+	pugi::xml_node boost_node = config.first_child().first_child();
+	Faction faction = NO_FACTION;
+	std::string faction_name;
+
+	for (int j = 0; j < 3; j++) {
+		for (int i = 0; i < 4; i++) {
+			if (i == 0)faction = VAULT;
+			else if (i == 1)faction = BROTHERHOOD;
+			else if (i == 2)faction = MUTANT;
+			else if (i == 3)faction = GHOUL;
+
+			int caps_cost = boost_node.attribute("cost").as_int();
+			int upgrade_time = boost_node.attribute("upgrade_time").as_int();
+			int cost_increment = boost_node.attribute("cost_increment").as_int();
+
+			if (j == 0) { //BASE upgrades
+				base_resource_limit[i] = { faction, RESOURCES_LIMIT, 0, caps_cost, cost_increment, upgrade_time };
+				gatherer_resource_limit[i] = { faction, GATHERER_CAPACITY, 0, caps_cost, cost_increment, upgrade_time };
+			}
+			else if (j == 1) {//LABORATORY upgrades
+				units_health[i] = { faction, UNITS_HEALTH, 0, caps_cost, cost_increment, upgrade_time };
+				units_creation_time[i] = { faction, CREATION_TIME, 0, caps_cost, cost_increment, upgrade_time };
+			}
+			else if (j == 2) {//BARRACK upgrades
+				units_damage[i] = { faction, UNITS_DAMAGE, 0, caps_cost, cost_increment, upgrade_time };
+				units_speed[i] = { faction, UNITS_SPEED, 0, caps_cost, cost_increment, upgrade_time };
+			}	
+		}
+		boost_node = boost_node.next_sibling();
+	}
+
 	return ret;
 }
 
