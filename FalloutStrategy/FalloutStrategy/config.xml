@@ -8,7 +8,12 @@
   <renderer>
     <vsync value="true"/>
   </renderer>
-
+  <AI>
+   <vault minimum_melees="1" minimum_rangeds="1" caps="100" water="100" food="100"/>
+   <brotherhood minimum_melees="1" minimum_rangeds="1" caps="100" water="100" food="100"/>
+   <mutant minimum_melees="1" minimum_rangeds="1" caps="100" water="100" food="100"/>
+   <ghoul minimum_melees="1" minimum_rangeds="1" caps="100" water="100" food="100"/>
+  </AI>
   <window>
     <resolution width="1280" height="720" scale="1"/>
     <fullscreen value="false"/>

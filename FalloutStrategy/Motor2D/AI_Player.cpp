@@ -14,17 +14,18 @@
 
 AI_Player::AI_Player(Faction g_faction) : GenericPlayer() {
 	faction = g_faction;
-	caps = 500;
-	water = 500;
-	food = 500;
-	melee_minimum = 1;
-	ranged_minimum = 1;
+	caps = App->ai_manager->GetAI_PlayerInfo(faction).initial_caps;
+	water = App->ai_manager->GetAI_PlayerInfo(faction).initial_water;
+	food = App->ai_manager->GetAI_PlayerInfo(faction).initial_food;
+	melee_minimum = App->ai_manager->GetAI_PlayerInfo(faction).minimum_melees;
+	ranged_minimum = App->ai_manager->GetAI_PlayerInfo(faction).minimum_rangeds;
 	is_attacking = false;
 	defeated = false;
 	goal_tile_set = false;
 	target_player = nullptr;
 	target_building = nullptr;
 	base = barrack[0] = barrack[1] = laboratory = nullptr;
+	last_barrack_to_spawn = 1;
 }
 
 AI_Player::~AI_Player() 
@@ -69,25 +70,26 @@ bool AI_Player::Update(float dt) {
 	//Spawn Units -------------------------------------------------
 
 	//melee-ranged proportion
-	
+	/*
 	float mr_proportion = 0;
-
 	if (rangeds > 0)
 		mr_proportion = melees / rangeds;
-
+	*/
 
 	//spawn melee
-	if ((water > App->entities->unit_data[faction][MELEE].cost_water)&&(caps > App->entities->unit_data[faction][MELEE].cost_meat) && (mr_proportion < 2) && (barrack[0] != nullptr)) {
+	if ((barrack[0] != nullptr) &&(water > App->entities->unit_data[faction][MELEE].cost_water)&&(caps > App->entities->unit_data[faction][MELEE].cost_meat) && (last_barrack_to_spawn == 1) ) {
 		barrack[0]->SpawnUnit(MELEE);
 		water -= App->entities->unit_data[faction][MELEE].cost_water;
 		food -= App->entities->unit_data[faction][MELEE].cost_meat;
+		last_barrack_to_spawn = 0;
 	}
 
 	//spawn ranged
-	if ((water > App->entities->unit_data[faction][RANGED].cost_water) && (caps > App->entities->unit_data[faction][RANGED].cost_meat)&&(barrack[1] != nullptr)) {
+	if ((barrack[0] != nullptr) && (water > App->entities->unit_data[faction][RANGED].cost_water) && (caps > App->entities->unit_data[faction][RANGED].cost_meat)&&(barrack[1] != nullptr) && (last_barrack_to_spawn == 0)) {
 		barrack[1]->SpawnUnit(RANGED);
 		water -= App->entities->unit_data[faction][RANGED].cost_water;
 		food -= App->entities->unit_data[faction][RANGED].cost_meat;
+		last_barrack_to_spawn = 1;
 	}
 
 	//Choose enemy player -----------------------------------------

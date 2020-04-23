@@ -20,6 +20,36 @@ AI_Manager::~AI_Manager() {
 
 }
 
+bool AI_Manager::Awake(pugi::xml_node& config) {
+	bool ret = true;
+	pugi::xml_node faction_node = config.first_child();
+	Faction faction = NO_FACTION;
+	std::string faction_name;
+
+	for (int i = 0; i < 4; i++)
+	{
+		faction_name = faction_node.name();
+		if (faction_name == "vault")
+			faction = VAULT;
+		else if (faction_name == "brotherhood")
+			faction = BROTHERHOOD;
+		else if (faction_name == "mutant")
+			faction = MUTANT;
+		else if (faction_name == "ghoul")
+			faction = GHOUL; 
+
+		ai_info[faction].initial_caps = faction_node.attribute("caps").as_int();
+		ai_info[faction].initial_water = faction_node.attribute("water").as_int();
+		ai_info[faction].initial_food = faction_node.attribute("food").as_int();
+		ai_info[faction].minimum_melees = faction_node.attribute("minimum_melees").as_int();
+		ai_info[faction].minimum_rangeds = faction_node.attribute("minimum_rangeds").as_int();
+
+		faction_node = faction_node.next_sibling();
+	}
+
+	return ret;
+}
+
 bool AI_Manager::Start() {
 	bool ret = true;	
 	node_map = CreateNodeMap();
@@ -107,3 +137,5 @@ std::vector<iPoint> AI_Manager::CreateNodeMap(){
 }
 
 std::vector<iPoint> AI_Manager::GetNodeMap() { return node_map;}
+
+AI_Info AI_Manager::GetAI_PlayerInfo(Faction faction) { return ai_info[faction]; }

@@ -403,7 +403,7 @@ void DynamicEntity::Move(float dt) {
 				}
 				path_to_target.erase(path_to_target.begin());
 			}
-			else
+			else if (node_path.size() == 0)
 			{
 				position.x = next_tile_rect.x + 2;
 				position.y = next_tile_rect.y + 2;

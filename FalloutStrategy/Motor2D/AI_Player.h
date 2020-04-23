@@ -34,6 +34,7 @@ private:
 	j1Group* group;
 	StaticEntity* target_building;
 	iPoint target_building_position;
+	int last_barrack_to_spawn;
 };
 
 #endif // !_AI_PLAYER_H_
