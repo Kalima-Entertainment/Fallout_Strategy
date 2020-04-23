@@ -149,6 +149,7 @@ void j1Transition::Transition()
 		App->Mmanager->Enable();
 		App->scene->Enable();
 		App->player->Enable();
+		App->isPaused = false;
 	}
 	else if ((fadetimer.Read() > 1500)&&(!App->gui->ingame)) {
 		Mix_ResumeMusic();
@@ -159,6 +160,7 @@ void j1Transition::Transition()
 		App->player->Disable();
 		App->entities->Disable();
 		transition = false;
+		App->isPaused = false;
 	}
 }
 

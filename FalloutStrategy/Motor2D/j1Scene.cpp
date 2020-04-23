@@ -264,7 +264,7 @@ void j1Scene::CheckWinner() {
 					App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 					App->menu_manager->CreateWinLoseScene();
 					App->gui->ingame = false;
-					App->isPaused = false;
+					App->isPaused = true;
 				}
 				else { 
 					beaten_enemies++;
@@ -288,7 +288,7 @@ void j1Scene::CheckWinner() {
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 		App->menu_manager->CreateWinLoseScene();
 		App->gui->ingame = false;
-		App->isPaused = false;
+		App->isPaused = true;
 	}
 }
 
