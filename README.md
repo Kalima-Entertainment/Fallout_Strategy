@@ -17,6 +17,13 @@ F8 - UI Debug ON/OFF
 F9 - Debug mode ON/OFF
 F10 - Godmode
 ESC - Pause 
+
+## Boost
+Upgrade your buildings to give differents boosts to your faction. Every building will gain a different boost depending of the level of the upgrade.
+Base - Increase resource limit and Gatherer resource limit
+Barrack - Damage and Speed to all the units
+Laboratory - Add health to units and decrease creation time
+
 ### Debug
 In debug mode you will be able to see the path the player follows and how it does so. 
 
