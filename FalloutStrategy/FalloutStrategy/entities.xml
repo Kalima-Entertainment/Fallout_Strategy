@@ -27,7 +27,7 @@
      <melee health="100" damage="15" speed="100">
        <cost food="60" caps="0" water="60" time="30"/>
      </melee>
-     <ranged health="100" damage="3000" speed="100">
+     <ranged health="100" damage="30" speed="100">
      <cost food="80" caps="0" water="80" time="40"/>
        </ranged>
      <gatherer health="100" damage="60" speed="100">
