@@ -194,7 +194,7 @@ bool j1Scene::CleanUp()
 	LOG("Freeing scene");
 	App->map->Disable();
 	App->ai_manager->Disable();
-	players[0] = players[1] = players[2] = players[3];
+	players[0] = players[1] = players[2] = players[3] = nullptr;
 	return true;
 }
 

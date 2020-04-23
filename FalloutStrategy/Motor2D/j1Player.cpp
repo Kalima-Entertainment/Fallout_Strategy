@@ -49,6 +49,7 @@ bool j1Player::Start() {
 	App->console->CreateCommand("god_mode", "turn god mode on and off", this);
 	App->console->CreateCommand("spawn_units", "spawn 1 gatherer, 1 melee and 1 ranged. Must have a building selected", this);	
 	App->console->CreateCommand("spawn", "<spawn gatherer><spawn melee><spawn ranged><spawn army>. Spawn one unit or an army. Must have a building selected", this);
+	defeated = false;
 	return true;
 }
 
