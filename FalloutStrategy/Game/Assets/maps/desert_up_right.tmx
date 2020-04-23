@@ -33838,12 +33838,12 @@
     <property name="faction" type="int" value="0"/>
    </properties>
   </object>
-  <object id="20" name="Static" type="Barrack" x="1689.33" y="323.083" width="50.6667" height="103.333">
+  <object id="20" name="Static" type="Barrack" x="1504" y="320" width="50.6667" height="103.333">
    <properties>
     <property name="faction" type="int" value="0"/>
    </properties>
   </object>
-  <object id="21" name="Static" type="Barrack" x="1776.66" y="327.913" width="50.6667" height="105.333">
+  <object id="21" name="Static" type="Barrack" x="1792" y="320" width="50.6667" height="105.333">
    <properties>
     <property name="faction" type="int" value="0"/>
    </properties>

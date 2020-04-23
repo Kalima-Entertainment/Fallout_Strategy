@@ -33878,7 +33878,7 @@
     <property name="faction" type="int" value="3"/>
    </properties>
   </object>
-  <object id="32" name="Static" type="Barrack" x="677.97" y="164.62" width="50.6667" height="101.333">
+  <object id="32" name="Static" type="Barrack" x="768" y="160" width="50.6667" height="101.333">
    <properties>
     <property name="faction" type="int" value="3"/>
    </properties>

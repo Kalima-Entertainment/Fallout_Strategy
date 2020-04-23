@@ -33873,12 +33873,12 @@
     <property name="Water" type="int" value="150"/>
    </properties>
   </object>
-  <object id="43" name="Static" type="Barrack" x="1655.92" y="288.336" width="50.6667" height="103.333">
+  <object id="43" name="Static" type="Barrack" x="1568" y="288" width="50.6667" height="103.333">
    <properties>
     <property name="faction" type="int" value="0"/>
    </properties>
   </object>
-  <object id="44" name="Static" type="Barrack" x="1743.25" y="293.166" width="50.6667" height="105.333">
+  <object id="44" name="Static" type="Barrack" x="1824" y="288" width="50.6667" height="105.333">
    <properties>
     <property name="faction" type="int" value="0"/>
    </properties>

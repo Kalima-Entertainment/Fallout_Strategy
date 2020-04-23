@@ -33927,7 +33927,7 @@
     <property name="Nuka-Cola" type="int" value="50"/>
    </properties>
   </object>
-  <object id="46" name="Static" type="Barrack" x="601.667" y="2008.5" width="50.6667" height="106.833">
+  <object id="46" name="Static" type="Barrack" x="736" y="2016" width="50.6667" height="106.833">
    <properties>
     <property name="faction" type="int" value="1"/>
    </properties>

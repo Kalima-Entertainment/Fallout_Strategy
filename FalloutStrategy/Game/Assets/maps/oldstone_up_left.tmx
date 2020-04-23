@@ -33830,12 +33830,12 @@
     <property name="Nuka-Cola" type="int" value="200"/>
    </properties>
   </object>
-  <object id="34" name="Static" type="Barrack" x="577.834" y="108.249" width="50.6667" height="101.333">
+  <object id="34" name="Static" type="Barrack" x="640" y="96" width="50.6667" height="101.333">
    <properties>
     <property name="faction" type="int" value="3"/>
    </properties>
   </object>
-  <object id="35" name="Static" type="Base" x="109.5" y="105.75" width="113.833" height="118.309">
+  <object id="35" name="Static" type="Base" x="160" y="192" width="113.833" height="118.309">
    <properties>
     <property name="faction" type="int" value="3"/>
    </properties>
@@ -33845,7 +33845,7 @@
     <property name="faction" type="int" value="3"/>
    </properties>
   </object>
-  <object id="37" name="Static" type="Barrack" x="447.667" y="93.2497" width="50.6667" height="102.333">
+  <object id="37" name="Static" type="Barrack" x="416" y="96" width="50.6667" height="102.333">
    <properties>
     <property name="faction" type="int" value="3"/>
    </properties>

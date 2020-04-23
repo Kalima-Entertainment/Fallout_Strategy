@@ -33863,7 +33863,7 @@
     <property name="Water" type="int" value="200"/>
    </properties>
   </object>
-  <object id="31" name="Static" type="Barrack" x="1403.71" y="1898.11" width="54.5908" height="109.323">
+  <object id="31" name="Static" type="Barrack" x="1344" y="1920" width="54.5908" height="109.323">
    <properties>
     <property name="faction" type="int" value="2"/>
    </properties>
@@ -33873,7 +33873,7 @@
     <property name="faction" type="int" value="2"/>
    </properties>
   </object>
-  <object id="33" name="Static" type="Barrack" x="1522.5" y="1914.32" width="54.5908" height="96.9776">
+  <object id="33" name="Static" type="Barrack" x="1600" y="1920" width="54.5908" height="96.9776">
    <properties>
     <property name="faction" type="int" value="2"/>
    </properties>

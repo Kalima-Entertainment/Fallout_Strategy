@@ -33832,7 +33832,7 @@
     <property name="Water" type="int" value="220"/>
    </properties>
   </object>
-  <object id="16" name="Static" type="Barrack" x="702.667" y="2002.17" width="50.6667" height="106.833">
+  <object id="16" name="Static" type="Barrack" x="867.5" y="2010.5" width="50.6667" height="106.833">
    <properties>
     <property name="faction" type="int" value="1"/>
    </properties>
