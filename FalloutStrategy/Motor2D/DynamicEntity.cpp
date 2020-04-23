@@ -363,7 +363,7 @@ bool DynamicEntity::PostUpdate() {
 	if (App->render->debug) 
 	{
 		App->render->DrawQuad({ (int)position.x - 2, (int)position.y - 2 , 4,4 }, 255, 0, 0, 255);
-		App->render->DrawQuad({ (int)(next_tile_rect_center.x), (int)(next_tile_rect_center.y), next_tile_rect_center.w, next_tile_rect_center.h }, 0, 255, 0, 255);
+		App->render->DrawQuad({ (int)(next_tile_rect.x), (int)(next_tile_rect.y), next_tile_rect.w, next_tile_rect.h }, 0, 255, 0, 255);
 	}
 
 	//Rendering Selected Units Quad
@@ -384,35 +384,13 @@ void DynamicEntity::Move(float dt) {
 	if (path_to_target.size() > 0) {
 		//get next tile center
 		next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
-		next_tile_rect_center = { next_tile_position.x + HALF_TILE - 5, next_tile_position.y + HALF_TILE -5, 10, 10 };
+		next_tile_rect = { next_tile_position.x + HALF_TILE - 5, next_tile_position.y + HALF_TILE -5, 10, 10 };
 
-		//move to next tile
-		if ((position.x > next_tile_rect_center.x + next_tile_rect_center.w * 0.5f) && (position.x > next_tile_rect_center.x) 
-			&& (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h * 0.5f)) {
-			direction = TOP_LEFT;
-			position.x -= speed.x * dt;
-			position.y -= speed.y * dt;
-		}
-		else if ((position.x < next_tile_rect_center.x) && (position.x < next_tile_rect_center.x + next_tile_rect_center.w * 0.5f)
-			&& (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h * 0.5f)) {
-			direction = TOP_RIGHT;
-			position.x += speed.x * dt;
-			position.y -= speed.y * dt;
-		}
-		else if ((position.x > next_tile_rect_center.x) && (position.x > next_tile_rect_center.x + next_tile_rect_center.w * 0.5f)
-			&& (position.y < next_tile_rect_center.y) && (position.y < next_tile_rect_center.y + next_tile_rect_center.h * 0.5f)) {
-			direction = BOTTOM_LEFT;
-			position.x -= speed.x * dt;
-			position.y += speed.y * dt;
-		}
-		else if ((position.x < next_tile_rect_center.x) && (position.x < next_tile_rect_center.x + next_tile_rect_center.w * 0.5f)
-			&& (position.y < next_tile_rect_center.y) && (position.y < next_tile_rect_center.y + next_tile_rect_center.h * 0.5f)) {
-			direction = BOTTOM_RIGHT;
-			position.x += speed.x * dt;
-			position.y += speed.y * dt;
-		}
-		else
+		direction = GetDirectionToGo(next_tile_rect);
+
+		switch (direction)
 		{
+		case NO_DIRECTION:
 			if (next_tile != target_tile)
 			{
 				//current_tile = path_to_target.front();
@@ -424,11 +402,30 @@ void DynamicEntity::Move(float dt) {
 			}
 			else
 			{
-				position.x = next_tile_rect_center.x + 2;
-				position.y = next_tile_rect_center.y + 2;
+				position.x = next_tile_rect.x + 2;
+				position.y = next_tile_rect.y + 2;
 				current_tile = target_tile;
 				state = IDLE;
 			}
+			break;
+		case TOP_LEFT:
+			position.x -= speed.x * dt;
+			position.y -= speed.y * dt;
+			break;
+		case TOP_RIGHT:
+			position.x += speed.x * dt;
+			position.y -= speed.y * dt;
+			break;
+		case BOTTOM_LEFT:
+			position.x -= speed.x * dt;
+			position.y += speed.y * dt;
+			break;
+		case BOTTOM_RIGHT:
+			position.x += speed.x * dt;
+			position.y += speed.y * dt;
+			break;
+		default:
+			break;
 		}
 	}
 }
@@ -446,7 +443,6 @@ void DynamicEntity::Attack() {
 			dynamic_target->state = HIT;
 		}
 	}
-
 
 	//Change animation directions to fit
 	if (target_entity->is_dynamic) {
@@ -779,6 +775,73 @@ bool DynamicEntity::TargetTileReached(iPoint target_tile) {
 		return true;
 
 	return ret;
+}
+
+Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
+
+	if ((position.x > next_tile_rect.x)&&(position.x < next_tile_rect.x + next_tile_rect.w)
+		&&(position.y > next_tile_rect.y) && (position.y < next_tile_rect.y + next_tile_rect.h)) {
+		return Direction::NO_DIRECTION;
+	}
+	else if ((position.x > next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y > next_tile_rect.y + next_tile_rect.h * 0.5f)) {
+		return Direction::TOP_LEFT;
+	}
+	else if ((position.x < next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y > next_tile_rect.y + next_tile_rect.h * 0.5f)) {
+		return Direction::TOP_RIGHT;
+	}
+	else if ((position.x > next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y < next_tile_rect.y + next_tile_rect.h * 0.5f)) {
+		return Direction::BOTTOM_LEFT;
+	}
+	else if ((position.x < next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y < next_tile_rect.y + next_tile_rect.h * 0.5f)) {
+		return Direction::BOTTOM_RIGHT;
+	}
+
+	//move to next tile
+	/*
+	if ((position.x > next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.x > next_tile_rect.x)
+		&& (position.y > next_tile_rect.y) && (position.y > next_tile_rect.y + next_tile_rect.h * 0.5f)) {
+		direction = TOP_LEFT;
+		position.x -= speed.x * dt;
+		position.y -= speed.y * dt;
+	}
+	else if ((position.x < next_tile_rect.x) && (position.x < next_tile_rect.x + next_tile_rect.w * 0.5f)
+		&& (position.y > next_tile_rect.y) && (position.y > next_tile_rect.y + next_tile_rect.h * 0.5f)) {
+		direction = TOP_RIGHT;
+		position.x += speed.x * dt;
+		position.y -= speed.y * dt;
+	}
+	else if ((position.x > next_tile_rect.x) && (position.x > next_tile_rect.x + next_tile_rect.w * 0.5f)
+		&& (position.y < next_tile_rect.y) && (position.y < next_tile_rect.y + next_tile_rect.h * 0.5f)) {
+		direction = BOTTOM_LEFT;
+		position.x -= speed.x * dt;
+		position.y += speed.y * dt;
+	}
+	else if ((position.x < next_tile_rect.x) && (position.x < next_tile_rect.x + next_tile_rect.w * 0.5f)
+		&& (position.y < next_tile_rect.y) && (position.y < next_tile_rect.y + next_tile_rect.h * 0.5f)) {
+		direction = BOTTOM_RIGHT;
+		position.x += speed.x * dt;
+		position.y += speed.y * dt;
+	}
+	else
+	{
+		if (next_tile != target_tile)
+		{
+			//current_tile = path_to_target.front();
+			if (path_to_target.size() > 1)
+			{
+				next_tile = path_to_target[1];
+			}
+			path_to_target.erase(path_to_target.begin());
+		}
+		else
+		{
+			position.x = next_tile_rect.x + 2;
+			position.y = next_tile_rect.y + 2;
+			current_tile = target_tile;
+			state = IDLE;
+		}
+	}
+	*/
 }
 
 // --- UnitInfo Constructors and Destructor ---

@@ -50,11 +50,12 @@ bool StaticEntity::Update(float dt) {
 		if (!delete_timer.Started())
 			delete_timer.Start();
 
-		if (delete_timer.ReadSec() > 5)
+		if ((delete_timer.ReadSec() > 5)||(current_animation->Finished()))
 			to_delete = true;
 
 		if (Mix_Playing(21) == 0)
 			SpatialAudio(App->audio->explode, 21, position.x, position.y);
+
 		break;
 	default:
 		break;

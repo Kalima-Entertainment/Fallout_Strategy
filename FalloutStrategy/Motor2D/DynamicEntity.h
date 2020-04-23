@@ -53,6 +53,7 @@ public:
 	void Gather();
 	void DrawQuad();
 	bool TargetTileReached(iPoint target_tile);
+	Direction GetDirectionToGo(SDL_Rect next_tile_rect) const;
 
 public:
 	int mov_speed;
@@ -69,7 +70,7 @@ public:
 	j1Timer timer;
 
 	iPoint next_tile_position;
-	SDL_Rect next_tile_rect_center;
+	SDL_Rect next_tile_rect;
 
 	uint fx[6];
 
