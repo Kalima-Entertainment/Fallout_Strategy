@@ -56,21 +56,20 @@ public:
 	Direction GetDirectionToGo(SDL_Rect next_tile_rect) const;
 
 public:
-	int mov_speed;
 	float action_time;
 	iPoint next_tile;
+	iPoint next_tile_position;
+	SDL_Rect next_tile_rect;
 
 	Animation animations[MAX_ANIMATIONS][4];
 	Direction direction;
+	Direction last_direction;
 	DynamicState state;
 	int range;
 	int resource_collected;
 	ResourceBuilding* resource_building;
 	Resource resource_type;
 	j1Timer timer;
-
-	iPoint next_tile_position;
-	SDL_Rect next_tile_rect;
 
 	uint fx[6];
 

@@ -50,8 +50,6 @@ private:
 	Animation animations[3];
 	iPoint render_texture_pos;
 
-	
-
 	Spawn_Stack spawn_stack[10];
 	Upgrade_Stack upgrade_stack;
 

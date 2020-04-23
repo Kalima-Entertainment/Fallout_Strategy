@@ -313,3 +313,8 @@ bool j1Render::Blit_UI(SDL_Texture* texture, int x, int y, const SDL_Rect* secti
 
 	return ret;
 }
+
+bool j1Render::OnScreen(iPoint position, int sprite_size) {
+	return ((position.x + sprite_size > -camera.x) && (position.x < -camera.x + camera.w) &&
+		    (position.y + sprite_size  > -camera.y) && (position.y < -camera.y + camera.h));
+}
