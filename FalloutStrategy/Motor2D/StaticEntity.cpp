@@ -47,8 +47,11 @@ bool StaticEntity::Update(float dt) {
 	case WORK:
 		break;
 	case EXPLODE:
-		if (current_animation->Finished())
-			to_destroy = true;
+		if (!delete_timer.Started())
+			delete_timer.Start();
+
+		if (delete_timer.ReadSec() > 5)
+			to_delete = true;
 
 		if (Mix_Playing(21) == 0)
 			SpatialAudio(App->audio->explode, 21, position.x, position.y);

@@ -258,11 +258,8 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 
 bool j1EntityManager::Awake(pugi::xml_node& config){
 	bool ret = true;
-
 	config_data = config;
-
 	RandomFactions();
-
 	return ret;
 }
 
@@ -328,6 +325,25 @@ bool j1EntityManager::CleanUp()
 	return ret;
 }
 
+bool j1EntityManager::PreUpdate() {
+	bool ret = true;
+
+	for (int i = 0; i < entities.size(); i++)
+	{
+		//delete entities to destroy
+		if (entities[i]->to_delete)
+		{
+			entities[i]->owner->DeleteEntity(entities[i]);
+			if (!entities[i]->is_dynamic)App->scene->CheckWinner();
+			delete entities[i];
+			entities[i] = nullptr;
+			entities.erase(entities.begin() + i);
+		}
+	}
+
+	return ret;
+}
+
 bool j1EntityManager::Update(float dt)
 {
 	BROFILER_CATEGORY("EntitiesUpdate", Profiler::Color::GreenYellow)
@@ -359,7 +375,7 @@ bool j1EntityManager::Update(float dt)
 	{
 		for (int i = 0; i < entities.size(); i++)
 		{
-			if(!entities[i]->to_destroy)
+			if(!entities[i]->to_delete)
 				entities[i]->Update(dt);
 		}
 	}
@@ -500,35 +516,22 @@ bool j1EntityManager::PostUpdate()
 				}
 				break;
 			}
-			}
+		}
 		
-
 		for (int i = 0; i < entities.size(); i++)
 		{
-			//delete entities to destroy
-			if (entities[i]->to_destroy)
-			{
-				entities[i]->owner->DeleteEntity(entities[i]);
-				if (!entities[i]->is_dynamic)App->scene->CheckWinner();
-				delete entities[i];
-				entities[i] = nullptr;
-				entities.erase(entities.begin() + i);
-			}
-			else
-			{
-				//camera culling
-				if ((entities[i]->position.x + entities[i]->sprite_size * 0.5f > -App->render->camera.x)
-					&& (entities[i]->position.x - entities[i]->sprite_size * 0.5f < -App->render->camera.x + App->render->camera.w)
-					&& (entities[i]->position.y + entities[i]->sprite_size * 0.25f > -App->render->camera.y)
-					&& (entities[i]->position.y - entities[i]->sprite_size * 0.25f < -App->render->camera.y + App->render->camera.h)) {
+			//camera culling
+			if ((entities[i]->position.x + entities[i]->sprite_size * 0.5f > -App->render->camera.x)
+				&& (entities[i]->position.x - entities[i]->sprite_size * 0.5f < -App->render->camera.x + App->render->camera.w)
+				&& (entities[i]->position.y + entities[i]->sprite_size * 0.25f > -App->render->camera.y)
+				&& (entities[i]->position.y - entities[i]->sprite_size * 0.25f < -App->render->camera.y + App->render->camera.h)) {
 
-					//sort and blit entities
-					if (sort_timer.Read() > 500) {
-						BubbleSortEntities();
-						sort_timer.Start();
-					}
-					entities[i]->PostUpdate();
+				//sort and blit entities
+				if (sort_timer.Read() > 500) {
+					BubbleSortEntities();
+					sort_timer.Start();
 				}
+				entities[i]->PostUpdate();
 			}
 		}
 	}
@@ -610,12 +613,12 @@ bool j1EntityManager::LoadReferenceEntityData() {
 	return ret;
 }
 
-void j1EntityManager::DestroyEntity(j1Entity* entity) { entity->to_destroy = true;}
+void j1EntityManager::DestroyEntity(j1Entity* entity) { entity->to_delete = true;}
 
 void j1EntityManager::DestroyAllEntities() {
 	for (int i = 0; i < entities.size(); i++)
 	{
-		entities[i]->to_destroy = true;
+		entities[i]->to_delete = true;
 	}
 }
 
@@ -762,15 +765,13 @@ void j1EntityManager::OnCommand(std::vector<std::string> command_parts) {
 		for (int i = 0; i < entities.size(); i++)
 		{
 			if (entities[i]->is_dynamic)
-				entities[i]->to_destroy = true;
+				entities[i]->to_delete = true;
 		}
 	}
 }
 
 void j1EntityManager::LoadCosts() {
 	//Loads the cost of spawning units and creating upgrades from XML file
-	
-
 	
 	//water, food, spawn time (seconds)
 	unit_data[VAULT][MELEE] = { 60, 60, 30 };

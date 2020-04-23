@@ -27,7 +27,7 @@ j1Entity::j1Entity() {
 	texture = nullptr;
 
 	is_dynamic = false;
-	to_destroy = false;
+	to_delete = false;
 	particles_created = false;
 	playing_fx = false;
 

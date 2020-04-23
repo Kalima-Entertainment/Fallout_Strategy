@@ -9,6 +9,7 @@
 #include "p2Log.h"
 #include "j1MovementManager.h"
 #include "j1Group.h"
+#include "j1Timer.h"
 
 #define TILE_SIZE 64
 #define HALF_TILE 32
@@ -86,11 +87,12 @@ public:
 	float last_dt;
 
 	bool is_dynamic;
-	bool to_destroy;
+	bool to_delete;
 	bool particles_created;
 	bool playing_fx;
 
 	Group_Unit info;
+	j1Timer delete_timer;
 };
 
 #endif // !_j1ENTITY_H

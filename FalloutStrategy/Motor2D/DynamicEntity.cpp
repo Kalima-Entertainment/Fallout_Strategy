@@ -236,7 +236,7 @@ bool DynamicEntity::Update(float dt) {
 		if (current_animation->Finished())
 		{
 			attacking_entity->target_entity = nullptr;
-			to_destroy = true;
+			to_delete = true;
 		}
 		
 		if (reference_entity->faction == MUTANT)
