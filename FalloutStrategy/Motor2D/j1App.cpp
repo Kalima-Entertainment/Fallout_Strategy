@@ -245,8 +245,13 @@ void j1App::FinishUpdate()
 	uint32 frames_on_last_update = prev_last_sec_frame_count;
 	static char title[256];
 
+	/*
 	sprintf_s(title, 256, " Fallout Strategy 0.5 - Kalima Entertainment | FPS: %d | Last dt: %.3f | Camera X: %i Camera Y: %i",
 		prev_last_sec_frame_count, dt, App->render->camera.x, App->render->camera.y);
+	App->win->SetTitle(title);
+	*/
+	sprintf_s(title, 256, " Fallout Strategy 0.5 - Kalima Entertainment | FPS: %d",
+		prev_last_sec_frame_count);
 	App->win->SetTitle(title);
 
 	if(capped_ms > 0 && last_frame_ms < capped_ms)
