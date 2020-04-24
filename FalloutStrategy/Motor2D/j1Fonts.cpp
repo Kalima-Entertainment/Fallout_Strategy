@@ -40,7 +40,7 @@ bool j1Fonts::Awake(pugi::xml_node& conf)
 
 	while (font_node) {
 		Font font;
-		std::string path = ("fonts/");
+		std::string path = ("Assets/fonts/");
 		std::string font_name = std::string(font_node.attribute("name").as_string());
 		std::string folder = std::string(font_node.attribute("folder").as_string());
 		font.name = font_name;
@@ -118,7 +118,6 @@ SDL_Texture* j1Fonts::Print(const char* text, SDL_Color color, std::string font_
 bool j1Fonts::CalcSize(const char* text, int& width, int& height, _TTF_Font* font) const
 {
 	bool ret = false;
-
 	if (TTF_SizeText((font) ? font : default, text, & width, & height) != 0)
 		LOG("Unable to calc size of text surface! SDL_ttf Error: %s\n", TTF_GetError());
 	else

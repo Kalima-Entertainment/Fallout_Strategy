@@ -18,6 +18,7 @@ j1MovementManager::j1MovementManager()
 
 j1MovementManager::~j1MovementManager()
 {
+
 }
 
 bool j1MovementManager::Update(float dt)
@@ -132,7 +133,7 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 
 			// --- On call to Move, Units will request a path to the destination ---
 
-			if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && (*unit)->info.IsSelected)|| !(*unit)->owner->goal_tile_set)
+			if (((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && (*unit)->info.IsSelected))||(!(*unit)->owner->goal_tile_set))
 			{
 				if (group->IsGroupLead((*unit)) == false)
 				{
@@ -146,6 +147,7 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 					(*unit)->info.goal_tile = goal_path;
 					group->Occupied_tiles.push_back(&(*unit)->info.goal_tile);
 					LOG("CREATE PATH RETURNS: %i", App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile));
+					(*unit)->owner->goal_tile_set = true;
 				}
 
 				if (App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile) != -1)
@@ -156,8 +158,10 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 
 					(*unit)->info.UnitMovementState = MovementState::MovementState_NextStep;
 				}
-				else
+				else 
+				{
 					stop_iteration = true;
+				}
 			}
 
 			break;

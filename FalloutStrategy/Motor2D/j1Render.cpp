@@ -58,7 +58,7 @@ bool j1Render::Awake(pugi::xml_node& config)
 bool j1Render::Start()
 {
 	LOG("render start");
-	debug_tex = App->tex->Load("maps/debug_textures.png");
+	debug_tex = App->tex->Load("Assets/maps/debug_textures.png");
 	// back background
 	SDL_RenderGetViewport(renderer, &viewport);
 	return true;
@@ -312,4 +312,9 @@ bool j1Render::Blit_UI(SDL_Texture* texture, int x, int y, const SDL_Rect* secti
 	}
 
 	return ret;
+}
+
+bool j1Render::OnScreen(iPoint position, int sprite_size) {
+	return ((position.x + sprite_size > -camera.x) && (position.x < -camera.x + camera.w) &&
+		    (position.y + sprite_size  > -camera.y) && (position.y < -camera.y + camera.h));
 }

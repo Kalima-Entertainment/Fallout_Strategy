@@ -37,7 +37,7 @@ public:
 	void Change_Volume_Music(float value);
 	void Change_Volume_FX(float value);
 
-	float Music_Volume;
+	float Music_Volume = 0;
 	float Get_Music_Volume();
 	float Get_FX_Volume();
 
@@ -65,11 +65,20 @@ public:
 	int factory;
 
 	int intro_fx;
-	int intro_fx1;
 	int F_press;
 	int Press_F_to_start;
 
 	int loading;
+	int win;
+	int lose;
+
+	int click_fx;
+	int hover_fx;
+	int back_fx;
+	int volume_fx;
+	int members_fx;
+	int character_fx;
+
 private:
 
 	float				music_volume;

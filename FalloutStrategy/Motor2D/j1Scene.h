@@ -50,6 +50,8 @@ public:
 	//Creates rectangle and check wich entities are inside the are to create groups
 	void RectangleSelection();
 
+	void OnCommand(std::vector<std::string> command_parts);
+
 public:
 
 	int topleft;
@@ -65,9 +67,10 @@ public:
 	iPoint rectangle_origin = { 0,0 };
 	int rectangle_width = 0;
 	int rectangle_height = 0;
+	bool win = false;
 private:
 	int SongPlaying = 0;
-
+	int beaten_enemies;
 };
 
 #endif // __j1SCENE_H__

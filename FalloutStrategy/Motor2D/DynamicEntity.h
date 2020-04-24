@@ -40,26 +40,30 @@ public:
 	~DynamicEntity();
 
 	//Core
-	bool PreUpdate(float dt);
 	bool Update(float dt);
 	bool PostUpdate();
 
 	bool LoadAnimations();
 	//bool LoadFx();
 	bool LoadReferenceData();
+	void PathfindToGather(iPoint target);
 	void PathfindToPosition(iPoint target);
 	void Move(float dt);
 	void Attack();
 	void Gather();
 	void DrawQuad();
+	bool TargetTileReached(iPoint target_tile);
+	Direction GetDirectionToGo(SDL_Rect next_tile_rect) const;
 
 public:
-	int mov_speed;
 	float action_time;
 	iPoint next_tile;
+	iPoint next_tile_position;
+	SDL_Rect next_tile_rect;
 
 	Animation animations[MAX_ANIMATIONS][4];
 	Direction direction;
+	Direction last_direction;
 	DynamicState state;
 	int range;
 	int resource_collected;
@@ -67,13 +71,10 @@ public:
 	Resource resource_type;
 	j1Timer timer;
 
-	iPoint next_tile_position;
-	SDL_Rect next_tile_rect_center;
-
 	uint fx[6];
 
 	UnitInfo unitinfo;	
-	std::vector<iPoint> path_node;
+	std::vector<iPoint> node_path;
 };
 
 

@@ -5,6 +5,7 @@
 #include "j1Textures.h"
 #include "j1Audio.h"
 #include "j1Render.h"
+#include "j1Transition.h"
 #include "j1Window.h"
 #include "j1Map.h"
 #include "j1PathFinding.h"
@@ -19,6 +20,7 @@
 #include "j1Image.h"
 #include "MenuManager.h"
 #include "MainMenu.h"
+
 
 MainMenu::MainMenu()
 {
@@ -38,13 +40,12 @@ bool MainMenu::Start()
 {
 	App->menu_manager->CreateMainMenu();
 	//App->menu_manager->CreateGUI();
+
 	return true;
 }
 
 bool MainMenu::Update(float dt)
 {
-	
-
 
 	return true;
 }

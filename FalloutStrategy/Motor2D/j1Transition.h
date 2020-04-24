@@ -17,10 +17,12 @@ public:
 	bool j1Transition::LoadAnimations();
 	bool Start();
 	bool Update(float dt);
-	bool PostUpdate(float dt);
+	bool PostUpdate();
 	~j1Transition();
 	bool CleanUp();
 	void Transition();
+	void StartTimer();
+
 private:
 	float speed_reducer;
 	SDL_Texture* gif_tex;

@@ -22,6 +22,7 @@ enum class Menu {
 	PAUSE_MENU,
 	GUI,
 	BUI_BASES,
+	WIN_LOSE_SCENE,
 	NO_MENU,
 };
 
@@ -87,13 +88,15 @@ public:
 	void CreateVault_Barrack();
 	void CreateVault_Lab();
 
+	void CreateWinLoseScene();
+	
 
 
 public:
 
 	UI_element* main_menu[14];
 	UI_element* settings_menu[23];
-	UI_element* credits_menu[13];
+	UI_element* credits_menu[5];
 	UI_element* collaborators[9];
 	UI_element* select_faction_menu[10];
 	UI_element* select_faction_photos[4];
@@ -101,26 +104,29 @@ public:
 	UI_element* gui_ingame[1];
 	UI_element* resources[3];
 
-	UI_element* brotherhood_base[5];
-	UI_element* brotherhood_barrack[7];
-	UI_element* brotherhood_lab[3];
+	UI_element* brotherhood_base[6];
+	UI_element* brotherhood_barrack[8];
+	UI_element* brotherhood_lab[4];
 
-	UI_element* ghoul_base[5];
-	UI_element* ghoul_barrack[7];
-	UI_element* ghoul_lab[3];
+	UI_element* ghoul_base[6];
+	UI_element* ghoul_barrack[8];
+	UI_element* ghoul_lab[4];
 
-	UI_element* vault_base[5];
-	UI_element* vault_barrack[7];
-	UI_element* vault_lab[3];
+	UI_element* vault_base[6];
+	UI_element* vault_barrack[8];
+	UI_element* vault_lab[4];
 
-	UI_element* supermutant_base[5];
-	UI_element* supermutant_barrack[7];
-	UI_element* supermutant_lab[3];
+	UI_element* supermutant_base[6];
+	UI_element* supermutant_barrack[8];
+	UI_element* supermutant_lab[4];
+
+	UI_element* win_scene[5];
+
+	UI_Label* cap_label = nullptr;
+	UI_Label* fullscreen_label = nullptr;
 
 	Menu current_menu;
 	Menu last_menu;
-
-	char collaborator = 'M';
 };
 
 

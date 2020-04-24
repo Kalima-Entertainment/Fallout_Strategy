@@ -3,11 +3,12 @@
 
 #include "j1Module.h"
 #include "p2Point.h"
+#include "j1Timer.h"
 #include <list>
 
 #define DEFAULT_PATH_LENGTH 100
 #define INVALID_WALK_CODE 255
-#define MAX_PATH_ITERATIONS 1000
+#define MAX_PATH_ITERATIONS 1500
 
 class j1PathFinding : public j1Module
 {
@@ -39,7 +40,11 @@ public:
 	// Utility: return the walkability value of a tile
 	uchar GetTileAt(const iPoint& pos) const;
 
+	iPoint FindNearestWalkableTile(iPoint current_tile, iPoint target_tile) const;
+	iPoint ExpandTile(iPoint target_tile) const;
 	iPoint FindWalkableAdjacentTile(iPoint point) const; 
+
+	float GetLastPathRequestTime() const;
 
 private:
 
@@ -49,6 +54,8 @@ private:
 	// all map walkability values [0..255]
 	uchar* map = nullptr;
 	std::vector<iPoint> last_path;
+	j1Timer path_timer;
+
 };
 
 // forward declaration

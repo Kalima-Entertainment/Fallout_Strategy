@@ -41,7 +41,7 @@ public:
 	std::vector<DynamicEntity*> gatherers_vector;
 
 	bool goal_tile_set;
-
+	GenericPlayer* target_player;
 };
 
 #endif // !_GENERIC_PLAYER_H_

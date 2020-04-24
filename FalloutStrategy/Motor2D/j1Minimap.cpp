@@ -9,6 +9,7 @@
 #include "j1EntityManager.h"
 #include "j1Entity.h"
 #include "MenuManager.h"
+#include "AI_Manager.h"
 #include "j1Player.h"
 
 j1Minimap::j1Minimap() : j1Module() {
@@ -112,6 +113,16 @@ bool j1Minimap::PostUpdate() {
 			else { App->render->DrawQuad(entity_rect, 255, 0, 0, 255, true, false);}
 		}
 
+		if (App->render->debug && App->ai_manager->show_nodes)
+		{
+			iPoint node_world_position;
+			for (int i = 0; i < App->ai_manager->node_map.size(); i++)
+			{
+				node_world_position = App->map->MapToWorld(App->ai_manager->node_map[i].x, App->ai_manager->node_map[i].y);
+				node_world_position = App->minimap->WorldToMinimap(node_world_position.x, node_world_position.y);
+				App->render->DrawQuad({ node_world_position.x, node_world_position.y, 2, 2 }, 0, 0, 255, 255, true, false);
+			}
+		}
 		SDL_Rect rect = { 0,0,0,0 };
 		iPoint rect_position = WorldToMinimap(-App->render->camera.x, -App->render->camera.y);
 		App->render->DrawQuad({ rect_position.x, rect_position.y, (int)(App->render->camera.w * scale),(int)(App->render->camera.h * scale) }, 255, 255, 255, 255, false, false);

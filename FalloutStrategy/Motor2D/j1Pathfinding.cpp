@@ -2,11 +2,14 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1PathFinding.h"
-//#include "brofiler/Brofiler/Brofiler.h"
+#include "j1Entity.h"
+#include "StaticEntity.h"
+#include "brofiler/Brofiler/Brofiler.h"
 
 j1PathFinding::j1PathFinding() : j1Module(), map(NULL), last_path(DEFAULT_PATH_LENGTH), width(0), height(0)
 {
 	name = ("pathfinding");
+	path_timer.Start();
 }
 
 // Destructor
@@ -85,6 +88,52 @@ iPoint j1PathFinding::FindWalkableAdjacentTile(iPoint point) const {
 	return { -1,-1 };
 }
 
+iPoint j1PathFinding::FindNearestWalkableTile(iPoint origin, iPoint destination) const
+{
+	//if there is a resource building 
+
+	if (!IsWalkable(origin)) 
+		origin = FindWalkableAdjacentTile(origin);
+
+	ResourceBuilding* reference_resource_building = App->entities->FindResourceBuildingByTile(destination);
+	if (reference_resource_building != nullptr)
+	{
+		destination = App->entities->ClosestTile(origin, reference_resource_building->tiles);
+		destination = FindWalkableAdjacentTile(destination);
+
+		if (!IsWalkable(destination)) {
+			destination = App->pathfinding->ExpandTile(destination);
+		}
+	}
+	else
+	{
+		j1Entity* entity;
+		entity = App->entities->FindEntityByTile(destination);
+
+		if ((entity != nullptr) && (!entity->is_dynamic))
+		{
+			StaticEntity* reference_static_entity = (StaticEntity*)App->entities->FindEntityByTile(destination);
+			{
+				destination = App->entities->ClosestTile(origin, reference_static_entity->tiles);
+				destination = App->pathfinding->FindWalkableAdjacentTile(destination);
+				if (!IsWalkable(destination))
+					LOG("Unwalkable building tile");
+			}
+		}
+		else
+		{
+			destination = App->pathfinding->ExpandTile(destination);
+			if (!IsWalkable(destination))
+				LOG("Unwalkable tile 2");
+		}
+	}
+
+	if (!IsWalkable(destination))
+		LOG("Unwalkable");
+
+	return destination;
+}
+
 std::vector<iPoint> j1PathFinding::GetLastPath() const
 {
 	std::vector<iPoint> vector;
@@ -93,6 +142,10 @@ std::vector<iPoint> j1PathFinding::GetLastPath() const
 		vector.push_back(last_path[i]);
 	}
 	return vector;
+}
+
+float j1PathFinding::GetLastPathRequestTime() const {
+	return path_timer.Read();
 }
 
 // PathList ------------------------------------------------------------------------
@@ -198,11 +251,20 @@ int PathNode::CalculateF(const iPoint& destination)
 // ----------------------------------------------------------------------------------
 int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
-	//BROFILER_CATEGORY("CreatePath", Profiler::Color::Azure)
+	BROFILER_CATEGORY("CreatePath", Profiler::Color::Azure)
 
 	last_path.clear();
 
-	if ((!CheckBoundaries(origin)) || (!CheckBoundaries(destination))) return -1;
+	if (!IsWalkable(origin)) {
+		LOG("Unwalkable origin");
+		return -1;
+	}
+
+	if ((!IsWalkable(destination))) {
+		LOG("Unwalkable destination");
+		return -1;
+	}
+
 
 	PathList open;
 	PathList close;
@@ -227,6 +289,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 			last_path.push_back(path_item->pos);
 			std::reverse(last_path.begin(), last_path.end());
 			
+			path_timer.Start();
 			return last_path.size();
 		}
 
@@ -262,5 +325,31 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 		}
 	}
 
+	path_timer.Start();
+
 	return -1;
+}
+
+iPoint j1PathFinding::ExpandTile(iPoint target_tile) const {
+
+	iPoint pivot = target_tile;
+	int max = 1;
+	
+	while (!IsWalkable(pivot) && (max < 50))
+	{
+		for (int y = -max; y < max; y++)
+		{
+			for (int x = -max; x < max; x++)
+			{
+				pivot.x = target_tile.x + x;
+				pivot.y = target_tile.y + y;
+
+				if (IsWalkable(pivot)) 
+					return pivot;
+			}
+		}
+		max++;
+	}
+
+	return pivot;
 }

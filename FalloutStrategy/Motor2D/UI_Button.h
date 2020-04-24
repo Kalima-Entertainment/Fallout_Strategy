@@ -52,31 +52,19 @@ public:
 
 	UI_Type t;
 
-	int click_fx;
-	int hover_fx;
-	int back_fx;
-	int volume_fx;
-	int members_fx;
+	void DoNotShowElement(UI_element*);
+
+	j1Image* faction_image;
+
+	SDL_Rect supermutant_rect;
+	SDL_Rect brotherhood_rect;
+	SDL_Rect vault_rect;
+	SDL_Rect ghoul_rect;
+
+	BUTTON_STATE current_state;
+
+	bool inHover;
 	int counter;
-	int character_fx;
-
-	bool cap = false;
-	bool fullscreen = false;
-
-	void AddElementToShow(UI_element*);
-
-	j1Image* vault_image = nullptr;
-	j1Image* ghoul_image = nullptr;
-	j1Image* brotherhood_image = nullptr;
-	j1Image* supermutant_image = nullptr;
-
-	UI_Label* cap_label = nullptr;
-	UI_Label* fullscreen_label = nullptr;
-
-	std::list<UI_element*> elements_to_show;
-
-	BUTTON_STATE current_state = BUTTON_STATE::NONE;
-
 
 };
 

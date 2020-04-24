@@ -1,0 +1,51 @@
+<!-- Config file for the game -->
+
+<config>
+  <app framerate_cap="60">
+    <title>Loading...</title>
+    <organization>UPC</organization>
+  </app>
+  <renderer>
+    <vsync value="true"/>
+  </renderer>
+  
+  <AI>
+   <vault minimum_melees="5" minimum_rangeds="2" caps="100" water="100" food="100"/>
+   <brotherhood minimum_melees="3" minimum_rangeds="2" caps="100" water="100" food="100"/>
+   <mutant minimum_melees="3" minimum_rangeds="3" caps="100" water="100" food="100"/>
+   <ghoul minimum_melees="5" minimum_rangeds="2" caps="100" water="100" food="100"/>
+  </AI>
+  
+  <window>
+    <resolution width="1280" height="720" scale="1"/>
+    <fullscreen value="false"/>
+    <borderless value="false"/>
+    <resizable value="false"/>
+    <fullscreen_window value="false"/>
+  </window>
+
+  <fonts>
+   <font name="r_fallouty" folder="fallout_fonts" size="24"/>
+   <font name="OpenSans-Light" folder="open_sans" size="14"/>
+   <font name="StackedPixel" folder="stacked" size="38"/>
+    <font name="StackedPixelMedium" folder="stacked" size="32"/>
+    <font name="StackedPixelSmall" folder="stacked" size="22"/>
+  </fonts>
+
+  <entities>
+    <boost>
+      <base cost="250" upgrade_time="45" cost_increment="250"/>
+      <laboratory cost="150" upgrade_time="45" cost_increment="250"/>
+      <barrack cost="350" upgrade_time="45" cost_increment="250"/>
+    </boost>
+  </entities>
+  <gui>
+    <folder>Assets/gui/</folder>
+    <ui file1="atlas.png"/>
+  </gui>
+
+  <map>
+    <folder>Assets/maps/</folder>
+  </map>
+  <minimap width="300" corner="bottom_left" margin="22"/>
+</config>

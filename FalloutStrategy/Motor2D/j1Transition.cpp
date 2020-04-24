@@ -9,9 +9,12 @@
 #include "j1Scene.h"
 #include "j1Textures.h"
 #include "j1EntityManager.h"
+#include "AI_Manager.h"
 #include "j1Gui.h"
 #include "j1Minimap.h"
+#include "j1Player.h"
 #include "j1Audio.h"
+#include "j1MovementManager.h"
 
 #include "SDL_mixer\include\SDL_mixer.h"
 
@@ -27,16 +30,16 @@ j1Transition::~j1Transition()
 bool j1Transition::LoadAnimations() {
 	bool ret = true;
 	pugi::xml_document animation_file;
-	pugi::xml_parse_result result = animation_file.load_file("gui/loading.tmx");
+	pugi::xml_parse_result result = animation_file.load_file("Assets/gui/loading.tmx");
 
 	std::string image = std::string(animation_file.child("tileset").child("image").attribute("source").as_string());
 
-	logo_tex = App->tex->Load("gui/logo_spritesheet.png");
-	gif_tex = App->tex->Load("gui/gifwheel.png");
-	background = App->tex->Load("gui/background.png");
+	logo_tex = App->tex->Load("Assets/gui/logo_spritesheet.png");
+	gif_tex = App->tex->Load("Assets/gui/gifwheel.png");
+	background = App->tex->Load("Assets/gui/background.png");
 	if (result == NULL)
 	{
-		LOG("Could not load animation tmx file %s. pugi error: %s", "gui/LogoIntro.tmx", result.description());
+		LOG("Could not load animation tmx file %s. pugi error: %s", "Assets/gui/LogoIntro.tmx", result.description());
 		ret = false;
 	}
 
@@ -114,36 +117,51 @@ bool j1Transition::CleanUp()
 bool j1Transition::Update(float dt)
 {
 	lastdt = dt;
-	Transition();
 	return true;
 }
-bool j1Transition::PostUpdate(float dt)
+bool j1Transition::PostUpdate()
 {
+	if (transition)
+	{
+		Transition();
+	}
 	return true;
 }
 
 
 void j1Transition::Transition()
 {
-	if (transition == true)
-	{
-		Mix_PauseMusic();
-		if (Mix_Playing(1) == 0) {
-			App->audio->PlayFx(1, App->audio->loading, 0);
-		}
-		App->render->Blit(background, 0, 0,0,1.0F,0);
-		App->render->Blit(gif_tex, 536, 191, &animationGif.GetCurrentFrame(lastdt),1.0F,0);
-		App->render->Blit(logo_tex, 470, 400, &animationLogo.GetCurrentFrame(lastdt), 1.0F, 0);
-		App->gui->active = false;
-		App->minimap->active = false;
-		App->entities->active = false;
+	Mix_PauseMusic();
+	if (Mix_Playing(1) == 0) {
+		App->audio->PlayFx(1, App->audio->loading, 0);
+
 	}
-	
-	if (fadetimer.Read() > 6000)
+	App->render->Blit(background, 0, 0, 0, 1.0F, 0);
+	App->render->Blit(gif_tex, 536, 191, &animationGif.GetCurrentFrame(lastdt), 1.0F, 0);
+	App->render->Blit(logo_tex, 470, 400, &animationLogo.GetCurrentFrame(lastdt), 1.0F, 0);
+
+	if ((!App->entities->loading_reference_entities) && (App->gui->ingame == true))
 	{
+		Mix_HaltChannel(1);
 		transition = false;
-		App->gui->active = true;
-		App->minimap->active = true;
-		App->entities->active = true;
+		App->gui->active;
+		App->minimap->active;
+		App->Mmanager->Enable();
+		App->scene->Enable();
+		App->player->Enable();
+		App->isPaused = false;
+	}
+	else if ((fadetimer.Read() > 1500)&&(!App->gui->ingame)) {
+		Mix_ResumeMusic();
+		Mix_HaltChannel(1);
+		App->entities->Disable();
+		App->scene->Disable();
+		App->Mmanager->Disable();
+		App->player->Disable();
+		App->entities->Disable();
+		transition = false;
+		App->isPaused = false;
 	}
 }
+
+void j1Transition::StartTimer() {fadetimer.Start();}

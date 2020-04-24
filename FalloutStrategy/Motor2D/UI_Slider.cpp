@@ -15,7 +15,7 @@ UI_Slider::UI_Slider(int x, int y, UI_Type type, SDL_Rect scrollbar, SDL_Rect bu
 	dimensions.w = button.w + 265;
 	dimensions.h = button.h + 25;
 
-	App->audio->Change_Volume_Music(get_valors());
+	//App->audio->Change_Volume_Music(get_valors());
 
 	t = type;
 

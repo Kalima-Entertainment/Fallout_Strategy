@@ -23,9 +23,9 @@ j1Player::j1Player() : GenericPlayer() {
 
 	base = barrack[0] = barrack[1] = laboratory = nullptr;
 
-	caps = 20000;
-	food = 20000;
-	water = 20000;
+	caps = 100;
+	food = 100;
+	water = 100;
 
 	god_mode = false;
 
@@ -49,6 +49,7 @@ bool j1Player::Start() {
 	App->console->CreateCommand("god_mode", "turn god mode on and off", this);
 	App->console->CreateCommand("spawn_units", "spawn 1 gatherer, 1 melee and 1 ranged. Must have a building selected", this);	
 	App->console->CreateCommand("spawn", "<spawn gatherer><spawn melee><spawn ranged><spawn army>. Spawn one unit or an army. Must have a building selected", this);
+	defeated = false;
 	return true;
 }
 
@@ -92,7 +93,7 @@ bool j1Player::PreUpdate() {
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
 			selected_entity = SelectEntity();
 
-			if ((App->entities->showing_building_menu) && (selected_entity == nullptr)) {
+			if (App->entities->showing_building_menu && selected_entity == nullptr) {
 				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::ALL, BUILDING_TYPE::ALL);
 				App->entities->showing_building_menu = false;
 			}

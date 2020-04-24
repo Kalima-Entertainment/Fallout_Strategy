@@ -7,6 +7,7 @@
 #include "Animation.h"
 #include "j1Timer.h"
 #include "SDL_image/include/SDL_image.h"
+#include <string>
 
 class j1Entity;
 struct SDL_Texture;
@@ -39,6 +40,25 @@ struct Unit_Data {
 
 };
 
+enum Upgrades {
+	RESOURCES_LIMIT,
+	GATHERER_CAPACITY,
+	UNITS_DAMAGE,
+	UNITS_SPEED,
+	UNITS_HEALTH,
+	CREATION_TIME,
+	NO_UPGRADE
+};
+
+struct Upgrades_Data{
+	Faction faction;
+	Upgrades upgrade;
+	int upgrade_num;
+	int first_price;
+	int price_increment;
+	int seconds;
+};
+
 class j1EntityManager : public j1Module
 {
 public:
@@ -48,6 +68,7 @@ public:
 
 	bool Awake(pugi::xml_node&);
 	bool Start();
+	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
@@ -56,7 +77,6 @@ public:
 	// -----------------------------------------------------------------------------------------------------------------------------
 
 	j1Entity*		CreateEntity(Faction faction, EntityType type, int position_x, int position_y, GenericPlayer* owner = nullptr);
-	virtual void	SpawnUnit(int buildingID, EntityType type);
 
 	//Find entities
 	j1Entity*		FindEntityByTile(iPoint tile);
@@ -67,7 +87,7 @@ public:
 
 	bool LoadReferenceEntityData();
 	void DestroyEntity(j1Entity* delete_entity);
-	void DestroyAllEntities();
+	void DestroyAllEntities();	
 
 	void BubbleSortEntities();
 	//void QuickSortEntities(std::vector<j1Entity*> entities, int low, int high);
@@ -76,6 +96,7 @@ public:
 	void RandomFactions();
 	Faction FactionByIndex(int i) { return static_cast<Faction>(i); }
 
+	void LoadCosts();
 public:
 	std::vector<j1Entity*> entities;
 	std::vector<ResourceBuilding*> resource_buildings;
@@ -91,6 +112,18 @@ public:
 	j1Timer sort_timer;
 	SDL_Texture* selected_unit_tex;
 
+	bool loading_reference_entities;
+
+	Upgrades_Data base_resource_limit[4];
+	Upgrades_Data gatherer_resource_limit[4];
+	Upgrades_Data units_damage[4];
+	Upgrades_Data units_speed[4];
+	Upgrades_Data units_health[4];
+	Upgrades_Data units_creation_time[4];
+private:
+	int loading_faction;
+	int loading_entity;
+	j1Timer load_timer;
 };
 
 #endif // !_ENTITY_MANAGER_H_

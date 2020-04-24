@@ -24,14 +24,6 @@ enum UI_Type {
 	button_github_credits,
 	button_web_credits,
 	button_twitter_credits,
-	button_marc,
-	button_javi,
-	button_pablo,
-	button_german,
-	button_macia,
-	button_pol,
-	button_silvino,
-	button_christian,
 	button_load_game,
 	button_settings,
 	button_settings_pause,
@@ -43,6 +35,7 @@ enum UI_Type {
 	button_cap,
 	button_mute,
 	button_fullscreen,
+	button_win_lose_to_main,
 
 	Slider_music,
 	Slider_fx,
@@ -71,7 +64,9 @@ enum UI_Type {
 	Ghouls_ranged_button,
 
 	InputBox,
-	Boost_button,
+	Boost_base_button,
+	Boost_barrack_button,
+	Boost_lab_button,
 
 };
 
@@ -115,7 +110,6 @@ public:
 
 	bool drawable = true;
 
-	bool hover = false;
 
 	//pointer to an element
 	UI_element*	element_UI;

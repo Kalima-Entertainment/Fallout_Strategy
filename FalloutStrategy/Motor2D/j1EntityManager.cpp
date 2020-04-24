@@ -44,7 +44,7 @@ j1EntityManager::j1EntityManager(){
 	unit_data[GHOUL][MELEE] = { 80, 60 , 30 };
 	unit_data[GHOUL][RANGED] = { 80, 80, 40 };
 	unit_data[GHOUL][GATHERER] = { 40, 0 , 15 };
-
+	
 	for (int faction = VAULT; faction < NO_FACTION; faction++)
 	{
 		for (int type = MELEE; type <= BASE; type++)
@@ -230,16 +230,41 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	return entity;
 }
 
-void j1EntityManager::SpawnUnit(int buildingID, EntityType type)
-{
-}
-
 bool j1EntityManager::Awake(pugi::xml_node& config){
 	bool ret = true;
-
 	config_data = config;
-
 	RandomFactions();
+
+	pugi::xml_node boost_node = config.first_child().first_child();
+	Faction faction = NO_FACTION;
+	std::string faction_name;
+
+	for (int j = 0; j < 3; j++) {
+		for (int i = 0; i < 4; i++) {
+			if (i == 0)faction = VAULT;
+			else if (i == 1)faction = BROTHERHOOD;
+			else if (i == 2)faction = MUTANT;
+			else if (i == 3)faction = GHOUL;
+
+			int caps_cost = boost_node.attribute("cost").as_int();
+			int upgrade_time = boost_node.attribute("upgrade_time").as_int();
+			int cost_increment = boost_node.attribute("cost_increment").as_int();
+
+			if (j == 0) { //BASE upgrades
+				base_resource_limit[i] = { faction, RESOURCES_LIMIT, 0, caps_cost, cost_increment, upgrade_time };
+				gatherer_resource_limit[i] = { faction, GATHERER_CAPACITY, 0, caps_cost, cost_increment, upgrade_time };
+			}
+			else if (j == 1) {//LABORATORY upgrades
+				units_health[i] = { faction, UNITS_HEALTH, 0, caps_cost, cost_increment, upgrade_time };
+				units_creation_time[i] = { faction, CREATION_TIME, 0, caps_cost, cost_increment, upgrade_time };
+			}
+			else if (j == 2) {//BARRACK upgrades
+				units_damage[i] = { faction, UNITS_DAMAGE, 0, caps_cost, cost_increment, upgrade_time };
+				units_speed[i] = { faction, UNITS_SPEED, 0, caps_cost, cost_increment, upgrade_time };
+			}	
+		}
+		boost_node = boost_node.next_sibling();
+	}
 
 	return ret;
 }
@@ -249,6 +274,10 @@ bool j1EntityManager::Start() {
 	bool ret = true;
 	
 	App->console->CreateCommand("destroy_all_entities", "remove all dynamic entities", (j1Module*)this);
+
+	loading_reference_entities = true;
+	loading_faction = VAULT;
+	loading_entity = MELEE;
 
 	//automatic entities loading
 	for (int faction = VAULT; faction < NO_FACTION; faction++)
@@ -260,23 +289,10 @@ bool j1EntityManager::Start() {
 		}
 	}
 
-	ret = LoadReferenceEntityData();
-
-	//load all textures and animations
-	for (int faction = VAULT; faction < NO_FACTION; faction++)
-	{
-		for (int type = MELEE; type < NO_TYPE; type++)
-		{
-			reference_entities[faction][type]->LoadAnimations();
-			//reference_entities[faction][type]->LoadFx();
-		}
-
-		reference_entities[faction][BARRACK]->texture = reference_entities[faction][BASE]->texture;
-		reference_entities[faction][LABORATORY]->texture = reference_entities[faction][BASE]->texture;
-	}
-
 	showing_building_menu = false;
+
 	sort_timer.Start();
+	load_timer.Start();
 
 	return ret;
 }
@@ -300,6 +316,7 @@ bool j1EntityManager::CleanUp()
 	for (int i = 0; i < entities.size(); i++)
 	{
 		delete entities[i];
+		entities[i] = nullptr;
 	}
 
 	entities.clear();
@@ -314,16 +331,58 @@ bool j1EntityManager::CleanUp()
 	return ret;
 }
 
+bool j1EntityManager::PreUpdate() {
+	bool ret = true;
+
+	for (int i = 0; i < entities.size(); i++)
+	{
+		//delete entities to destroy
+		if (entities[i]->to_delete)
+		{
+			entities[i]->owner->DeleteEntity(entities[i]);
+			if (!entities[i]->is_dynamic)App->scene->CheckWinner();
+			delete entities[i];
+			entities[i] = nullptr;
+			entities.erase(entities.begin() + i);
+		}
+	}
+
+	return ret;
+}
+
 bool j1EntityManager::Update(float dt)
 {
 	BROFILER_CATEGORY("EntitiesUpdate", Profiler::Color::GreenYellow)
 	bool ret = true;
 
+	//load all textures and animations on the go
+	if ((loading_reference_entities) && (load_timer.Read() > 100)) {
+		reference_entities[loading_faction][loading_entity]->LoadAnimations();
+		
+		loading_entity = loading_entity++;
+		if (loading_entity == NO_TYPE) {
+			loading_entity = MELEE;
+			loading_faction++;
+		}
+		if (loading_faction == NO_FACTION) {
+			loading_reference_entities = false;
+
+			for (int faction = VAULT; faction < NO_FACTION; faction++)
+			{
+				reference_entities[faction][BARRACK]->texture = reference_entities[faction][BASE]->texture;
+				reference_entities[faction][LABORATORY]->texture = reference_entities[faction][BASE]->texture;
+			}
+			ret = LoadReferenceEntityData();
+		}
+		load_timer.Start();
+	}
+
 	if (!App->isPaused)
 	{
 		for (int i = 0; i < entities.size(); i++)
 		{
-			entities[i]->Update(dt);
+			if(!entities[i]->to_delete)
+				entities[i]->Update(dt);
 		}
 	}
 
@@ -337,76 +396,25 @@ bool j1EntityManager::PostUpdate()
 	SDL_Rect tex_rect = {128,0,64,64 };
 	iPoint tex_position;
 
-	//debug kind of entity and path
-	if (App->render->debug) {
-		for (int i = 0; i < entities.size(); i++)
-		{
-			if (entities[i]->is_dynamic)
+	if (!loading_reference_entities)
+	{
+		if (App->render->debug) {
+			//resource buildings debug
+			for (int i = 0; i < resource_buildings.size(); i++)
 			{
-				//Render path
-				if (App->render->debug)
+				//TODO resource buildings camera culling
+				for (int j = 0; j < resource_buildings[i]->tiles.size(); j++)
 				{
-					if (entities[i]->path_to_target.size() > 0)
-					{
-						for (uint j = 0; j < entities[i]->path_to_target.size(); ++j)
-						{
-							iPoint pos = App->map->MapToWorld(entities[i]->path_to_target[j].x, entities[i]->path_to_target[j].y);
-							SDL_Rect debug_rect = { 192, 0, 64,64 };
-							App->render->Blit(App->render->debug_tex, pos.x, pos.y, &debug_rect);
-						}
-					}
-				}
-
-				//dynamic entities debug
-				//change color depending on if it's an ally or an enemy
-				SDL_Rect rect;
-				if(App->player->faction == entities[i]->faction ) rect = { 0,0,64,64 };
-				else rect = { 64,0,64,64 };
-
-				tex_position = App->map->MapToWorld(entities[i]->current_tile.x, entities[i]->current_tile.y);
-				App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &rect);
-			}
-			else
-			{
-				//static entities debug
-				StaticEntity* static_entity = (StaticEntity*)entities[i];
-				for (int j = 0; j < static_entity->tiles.size(); j++)
-				{
-					SDL_Rect rect = { 256,0,64,64 };
-					tex_position = App->map->MapToWorld(static_entity->tiles[j].x, static_entity->tiles[j].y);
+					SDL_Rect rect = { 128,0,64,64 };
+					tex_position = App->map->MapToWorld(resource_buildings[i]->tiles[j].x, resource_buildings[i]->tiles[j].y);
 					App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &rect);
 				}
 			}
 		}
-		//resource buildings debug
-		for (int i = 0; i < resource_buildings.size(); i++)
+
+		if (App->player->selected_entity != nullptr)
 		{
-			for (int j = 0; j < resource_buildings[i]->tiles.size(); j++)
-			{
-				SDL_Rect rect = { 128,0,64,64 };
-				tex_position = App->map->MapToWorld(resource_buildings[i]->tiles[j].x, resource_buildings[i]->tiles[j].y);
-				App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &rect);
-			}
-		}
-	}
-
-	if (App->player->selected_entity != nullptr)
-	{
-		//Selected entity is a unit
-		if (App->player->selected_entity->is_dynamic == true) {
-			tex_position = App->map->MapToWorld(App->player->selected_entity->current_tile.x, App->player->selected_entity->current_tile.y);
-			App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tex_rect);
-		}
-		//Selected entity is a building
-		else {
-
 			StaticEntity* static_entity = (StaticEntity*)App->player->selected_entity;
-			for (int j = 0; j < static_entity->tiles.size(); j++)
-			{
-				tex_position = App->map->MapToWorld(static_entity->tiles[j].x, static_entity->tiles[j].y);
-				App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tex_rect);
-			}
-			
 			//Create HUD for the building
 			switch (static_entity->faction) {
 			case GHOUL:
@@ -421,8 +429,7 @@ bool j1EntityManager::PostUpdate()
 				}
 				else if (static_entity->type == BARRACK) {
 
-					if (count == 0) {
-
+					if (!showing_building_menu) {
 						App->menu_manager->CreateGhouls_Barrack();
 						showing_building_menu = true;
 					}
@@ -473,7 +480,7 @@ bool j1EntityManager::PostUpdate()
 						showing_building_menu = true;
 					}
 				}
-				else if (static_entity->type == BARRACK){
+				else if (static_entity->type == BARRACK) {
 
 					if (!showing_building_menu) {
 						App->menu_manager->CreateVault_Barrack();
@@ -497,7 +504,7 @@ bool j1EntityManager::PostUpdate()
 						App->menu_manager->CreateSuperMutants_Base();
 						showing_building_menu = true;
 					}
-				
+
 				}
 				else if (static_entity->type == BARRACK) {
 
@@ -516,26 +523,16 @@ bool j1EntityManager::PostUpdate()
 				break;
 			}
 		}
-	}
-
-	for (int i = 0; i < entities.size(); i++)
-	{
-		if (entities[i]->to_destroy)
+		
+		for (int i = 0; i < entities.size(); i++)
 		{
-			if (entities[i]->owner->DeleteEntity(entities[i]) == true) {
-				App->scene->CheckWinner();
-			};
-			delete entities[i];
-			entities[i] = nullptr;
-			entities.erase(entities.begin() + i);
-		}
-		else
-		{
+			//camera culling
 			if ((entities[i]->position.x + entities[i]->sprite_size * 0.5f > -App->render->camera.x)
 				&& (entities[i]->position.x - entities[i]->sprite_size * 0.5f < -App->render->camera.x + App->render->camera.w)
-				&& (entities[i]->position.y + entities[i]->sprite_size * 0.25f > -App->render->camera.y) 
+				&& (entities[i]->position.y + entities[i]->sprite_size * 0.25f > -App->render->camera.y)
 				&& (entities[i]->position.y - entities[i]->sprite_size * 0.25f < -App->render->camera.y + App->render->camera.h)) {
-			
+
+				//sort and blit entities
 				if (sort_timer.Read() > 500) {
 					BubbleSortEntities();
 					sort_timer.Start();
@@ -544,6 +541,7 @@ bool j1EntityManager::PostUpdate()
 			}
 		}
 	}
+
 	return ret;
 }
 
@@ -621,14 +619,12 @@ bool j1EntityManager::LoadReferenceEntityData() {
 	return ret;
 }
 
-void j1EntityManager::DestroyEntity(j1Entity* entity) {
-	delete entity;
-}
+void j1EntityManager::DestroyEntity(j1Entity* entity) { entity->to_delete = true;}
 
 void j1EntityManager::DestroyAllEntities() {
-	for (int i = REFERENCE_ENTITIES; i < entities.size(); i++)
+	for (int i = 0; i < entities.size(); i++)
 	{
-		entities[i]->to_destroy = true;
+		entities[i]->to_delete = true;
 	}
 }
 
@@ -705,6 +701,7 @@ ResourceBuilding* j1EntityManager::GetClosestResourceBuilding(iPoint current_pos
 }
 
 void j1EntityManager::BubbleSortEntities() {
+	BROFILER_CATEGORY("BubbleSortEntities", Profiler::Color::Blue)
 	int i, j;
 	int n = entities.size();
 	for (i = 0; i < n - 1; i++) {
@@ -774,8 +771,54 @@ void j1EntityManager::OnCommand(std::vector<std::string> command_parts) {
 		for (int i = 0; i < entities.size(); i++)
 		{
 			if (entities[i]->is_dynamic)
-				entities[i]->to_destroy = true;
+				entities[i]->to_delete = true;
 		}
 	}
 }
 
+void j1EntityManager::LoadCosts() {
+	//Loads the cost of spawning units and creating upgrades from XML file
+	
+	//water, food, spawn time (seconds)
+	unit_data[VAULT][MELEE] = { 60, 60, 30 };
+	unit_data[VAULT][RANGED] = { 80, 80, 40 };
+	unit_data[VAULT][GATHERER] = { 40, 0, 15 };
+
+	unit_data[BROTHERHOOD][MELEE] = { 100, 80, 30 };
+	unit_data[BROTHERHOOD][RANGED] = { 100, 100, 40 };
+	unit_data[BROTHERHOOD][GATHERER] = { 50, 0, 15 };
+
+	unit_data[MUTANT][MELEE] = { 80, 100, 30 };
+	unit_data[MUTANT][RANGED] = { 80, 120, 40 };
+	unit_data[MUTANT][GATHERER] = { 50, 0, 15 };
+
+	unit_data[GHOUL][MELEE] = { 80, 60 , 30 };
+	unit_data[GHOUL][RANGED] = { 80, 80, 40 };
+	unit_data[GHOUL][GATHERER] = { 40, 0 , 15 };
+
+	//Initialize upgrades
+	base_resource_limit[0] = { VAULT, RESOURCES_LIMIT, 0, 250, 250, 45 };
+	base_resource_limit[1] = { BROTHERHOOD, RESOURCES_LIMIT, 0, 250, 250, 45 };
+	base_resource_limit[2] = { MUTANT, RESOURCES_LIMIT, 0, 250, 250, 45 };
+	base_resource_limit[3] = { GHOUL, RESOURCES_LIMIT, 0, 250, 250, 45 };
+	gatherer_resource_limit[0] = { VAULT, GATHERER_CAPACITY, 0, 250, 250, 45 };
+	gatherer_resource_limit[1] = { BROTHERHOOD, GATHERER_CAPACITY, 0, 250, 250, 45 };
+	gatherer_resource_limit[2] = { MUTANT, GATHERER_CAPACITY, 0, 250, 250, 45 };
+	gatherer_resource_limit[3] = { GHOUL, GATHERER_CAPACITY, 0, 250, 250, 45 };
+	units_damage[0] = { VAULT, UNITS_DAMAGE, 0, 350, 250, 45 };
+	units_damage[1] = { BROTHERHOOD, UNITS_DAMAGE, 0, 350, 250, 45 };
+	units_damage[2] = { MUTANT, UNITS_DAMAGE, 0, 350, 250, 45 };
+	units_damage[3] = { GHOUL, UNITS_DAMAGE, 0, 350, 250, 45 };
+	units_speed[0] = { VAULT, UNITS_SPEED, 0, 350, 250, 45 };
+	units_speed[1] = { BROTHERHOOD, UNITS_SPEED, 0, 350, 250, 45 };
+	units_speed[2] = { MUTANT, UNITS_SPEED, 0, 350, 250, 45 };
+	units_speed[3] = { GHOUL, UNITS_SPEED, 0, 350, 250, 45 };
+	units_health[0] = { VAULT, UNITS_HEALTH, 0, 150, 250, 45 };
+	units_health[1] = { BROTHERHOOD, UNITS_HEALTH, 0, 150, 250, 45 };
+	units_health[2] = { MUTANT, UNITS_HEALTH, 0, 150, 250, 45 };
+	units_health[3] = { GHOUL, UNITS_HEALTH, 0, 150, 250, 45 };
+	units_creation_time[0] = { VAULT, CREATION_TIME, 0, 150, 250, 45 };
+	units_creation_time[1] = { BROTHERHOOD, CREATION_TIME, 0, 150, 250, 45 };
+	units_creation_time[2] = { MUTANT, CREATION_TIME, 0, 150, 250, 45 };
+	units_creation_time[3] = { GHOUL, CREATION_TIME, 0, 150, 250, 45 };
+}

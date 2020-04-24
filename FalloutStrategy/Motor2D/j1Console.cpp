@@ -16,15 +16,12 @@ j1Console::j1Console() : j1Module() {
 	input_box = nullptr;
 	CleanUpStarted = false;
 	l = 0;
-	//command_input = nullptr;
-	//current_consulting_command = nullptr;
 }
 
 j1Console::~j1Console() {}
 
 bool j1Console::Awake(pugi::xml_node& config) {
 	bool ret = true;
-
 	return ret;
 }
 
@@ -38,9 +35,6 @@ bool j1Console::Start() {
 
 	CreateCommand("help", "list all console commands", this);
 	CreateCommand("fps", "Change FPS cap", this);
-	//CreateCommand("list", (j1Module*)this, "List all console commands");
-	//App->console->CreateCommand("quit", (j1Module*)this, "Quit the game");
-	//App->console->CreateCommand("fps_", (j1Module*)this, "Change FPS cap");
 
 	return ret;
 }
@@ -68,19 +62,8 @@ bool j1Console::Update(float dt) {
 		}
 	}
 
-	if (isVisible) {
-		if ((App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)) {
-			//DestroyInterface();
-		}
+	last_dt = dt;
 
-		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN) {
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN) {
-		}
-
-		last_dt = dt;
-	}
 	return ret;
 }
 
@@ -90,8 +73,6 @@ bool j1Console::PostUpdate() {
 
 	if (isVisible)
 	{
-		//Draw console
-
 		//background 
 		log_box.x = command_background.x = -App->render->camera.x;
 		log_box.y = -App->render->camera.y;
@@ -105,6 +86,7 @@ bool j1Console::PostUpdate() {
 			on_screen_log[i]->Draw();
 		}
 		input_box->Update(last_dt);
+		input_box->Draw();
 	}
 	return ret;
 }
@@ -171,6 +153,14 @@ void j1Console::CreateCommand(std::string name, std::string description, j1Modul
 	command.description = description;
 	command.callback = callback;
 
+	//check the command doesn't already exist 
+	for (int i = 0; i < command_vector.size(); i++)
+	{
+		if (command_vector[i].name == name)
+			return;
+	}
+
+	//if it doesn't exist add it to the command list
 	command_vector.push_back(command);
 }
 
@@ -234,6 +224,7 @@ void j1Console::OnCommand(std::vector<std::string> command_parts) {
 		}
 		else
 		{
+			LOG("Framerate cap changed to: %i", std::stoi(command_parts[1].c_str()));
 			App->capped_ms = 1000 / std::stoi(command_parts[1].c_str());
 		}
 	}

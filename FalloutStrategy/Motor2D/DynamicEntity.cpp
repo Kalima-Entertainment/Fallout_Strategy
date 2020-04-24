@@ -41,7 +41,8 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 	resource_building = nullptr;
 	action_time = 3.0f;
 	resource_collected = 0;
-	sprite_size = 128;	
+	target_tile = { -1,-1 };
+	sprite_size = 128;
 }
 
 DynamicEntity::~DynamicEntity() {
@@ -55,17 +56,19 @@ DynamicEntity::~DynamicEntity() {
 	path_to_target.clear();
 }
 
-bool DynamicEntity::PreUpdate(float dt) {
-	return true;
-}
-
 bool DynamicEntity::Update(float dt) {
 
 	Mix_AllocateChannels(25);
+	current_tile = App->map->WorldToMap(position.x, position.y);
 
 	switch (state)
 	{
 	case IDLE:
+		if (node_path.size() > 0) {
+			target_tile = node_path.back();
+			node_path.pop_back();
+			PathfindToPosition(target_tile);
+		}
 		break;
 	case WALK:
 		//if the entitiy is about to reach it's target tile
@@ -76,7 +79,7 @@ bool DynamicEntity::Update(float dt) {
 				if (target_entity != nullptr)
 				{
 					//enemy target
-					if (faction != target_entity->faction) {
+					if ((faction != target_entity->faction)&&(node_path.size() == 0)) {
 						state = ATTACK;
 						target_entity->attacking_entity = this;
 						Attack();
@@ -120,7 +123,7 @@ bool DynamicEntity::Update(float dt) {
 
 						//go back to resource building to get more resources
 						if (resource_building->quantity > 0) {
-							PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
+							PathfindToGather(App->entities->ClosestTile(current_tile, resource_building->tiles));
 							state = WALK;
 						}
 						//find another building
@@ -129,7 +132,7 @@ bool DynamicEntity::Update(float dt) {
 							resource_building = App->entities->GetClosestResourceBuilding(current_tile);
 							//if there is at least a resource building left, go there
 							if (resource_building != nullptr) {
-								PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
+								PathfindToGather(App->entities->ClosestTile(current_tile, resource_building->tiles));
 								state = WALK;
 							}
 							//if there are no resource buildings left
@@ -146,6 +149,27 @@ bool DynamicEntity::Update(float dt) {
 			}
 		}
 
+		//node movement 
+		if ((node_path.size() > 0)) {
+			if (next_tile == target_tile) {
+				node_path.pop_back();
+
+				//if we have reached the final node pathfind to target building
+				if (node_path.size() == 0)
+				{
+					if (target_entity != nullptr) {
+						target_tile = App->entities->ClosestTile(current_tile, ((StaticEntity*)target_entity)->tiles);
+					}
+				}
+				//if not we keep following the path 
+				else
+				{
+					target_tile = node_path.back();
+				}
+				PathfindToPosition(target_tile);
+			}
+		}
+
 		Move(dt);
 
 		if (reference_entity->faction == MUTANT)
@@ -156,6 +180,7 @@ bool DynamicEntity::Update(float dt) {
 			if (Mix_Playing(18) == 0) { SpatialAudio(App->audio->Brotherhood_walk, 18, position.x, position.y); }
 		if (reference_entity->faction == GHOUL)
 			if (Mix_Playing(19) == 0) { SpatialAudio(App->audio->Brotherhood_walk, 19, position.x, position.y); }
+
 		break;
 
 	case ATTACK:
@@ -208,10 +233,12 @@ bool DynamicEntity::Update(float dt) {
 		
 		break;
 	case DIE:
-		if (current_animation->Finished())
-		{
+		if (!delete_timer.Started())
+			delete_timer.Start();
+
+		if ((delete_timer.ReadSec() > 5) || (current_animation->Finished())) {
+			to_delete = true;
 			attacking_entity->target_entity = nullptr;
-			to_destroy = true;
 		}
 		
 		if (reference_entity->faction == MUTANT)
@@ -232,31 +259,64 @@ bool DynamicEntity::Update(float dt) {
 	//Group Movement Request
 	if (this->info.current_group != nullptr)
 	{
-		if (info.current_group->IsGroupLead(this)) 
-			if(this->faction == App->player->faction) 
+		if (info.current_group->IsGroupLead(this)) {
+			if (this->faction == App->player->faction)
 				info.current_group->CheckForMovementRequest(App->player->Map_mouseposition, dt);
-
+			/*
 			else {
+				AI_Player* ai_owner = ((AI_Player*)this->owner);
 				// -- Group leader owns any other faction, then store path nodes into a vector to reach enemy base.
-				if (((AI_Player*)this->owner)->path_to_enemy_base.size() == 0) {
-					((AI_Player*)this->owner)->CreateNodePath(this->current_tile, ((AI_Player*)this->owner)->target_player->base->current_tile, path_node);
+				if (target_tile == iPoint(-1,-1)) {
+
+					target_tile = ai_owner->path_to_enemy_base.back();
+
+					if (!App->pathfinding->IsWalkable(target_tile)) {
+						LOG("Invalid node");
+						target_tile = App->pathfinding->ExpandTile(target_tile);
+						LOG("New node position x: %i y: %i", target_tile.x, target_tile.y);
+					}
+					ai_owner->goal_tile_set = false;
+					LOG("Starting position x: %i y: %i", target_tile.x, target_tile.y);
+				}
+				else if (TargetTileReached(target_tile) == true)
+				{
+					ai_owner->path_to_enemy_base.pop_back();
+					target_tile = ai_owner->path_to_enemy_base.back();
+
+					if (!App->pathfinding->IsWalkable(target_tile))
+					{
+						LOG("Invalid node");
+						target_tile = App->pathfinding->ExpandTile(target_tile);
+					}
+
+					LOG("New node position x: %i y: %i", target_tile.x, target_tile.y);
+
+					//if last node is reached go for the base
+					if (ai_owner->path_to_enemy_base.size() <= 0) { 
+						target_tile = ai_owner->target_player->base->current_tile; 
+					}
+
+					ai_owner->goal_tile_set = false;
 				}
 
 				// -- Make a movement request each node, when reached we proceed to reach next one until we finish all node list.
-				this->info.current_group->CheckForMovementRequest(path_node.front(), dt);
-				
-				// -- When node list finished we make last request move to reach enemy base.
-				this->info.current_group->CheckForMovementRequest(((AI_Player*)this->owner)->target_player->base->current_tile, dt);
-				this->owner->goal_tile_set = true;
-
-
-				if (((AI_Player*)this->owner)->path_to_enemy_base.size() > 0)
-				{
-					if (this->current_tile == ((AI_Player*)this->owner)->path_to_enemy_base.front()) {
-						((AI_Player*)this->owner)->path_to_enemy_base.erase(((AI_Player*)this->owner)->path_to_enemy_base.begin());
-					}
-				}
+				this->info.current_group->CheckForMovementRequest(target_tile, dt);
 			}
+			*/
+		}
+		/*
+		//if about to reach the base pathfind to attack it
+		if (this->faction != App->player->faction) {
+			if (((AI_Player*)owner)->path_to_enemy_base.size() == 0) {
+				info.current_group->removeUnit(this);
+				info.current_group = nullptr;
+				target_tile = ((AI_Player*)owner)->target_player->base->current_tile;
+				PathfindToPosition(target_tile);
+				state = WALK;
+				target_entity = ((AI_Player*)owner)->target_player->base;
+			}
+		}
+		*/
 	}
 
 	//save dt for animations
@@ -267,14 +327,49 @@ bool DynamicEntity::Update(float dt) {
 
 bool DynamicEntity::PostUpdate() {
 
+	//tile debug
+	SDL_Rect tile_rect;
+	iPoint tex_position = App->map->MapToWorld(current_tile.x, current_tile.y);
+
+	//debug
+	if (App->render->debug) 
+	{
+		//pathfinding debug
+		for (uint j = 0; j < path_to_target.size(); ++j) {
+			iPoint pos = App->map->MapToWorld(path_to_target[j].x, path_to_target[j].y);
+			tile_rect = { 192, 0, 64,64 };
+			App->render->Blit(App->render->debug_tex, pos.x, pos.y, &tile_rect);
+		}
+
+		//ally 
+		if (faction == App->player->faction) tile_rect = { 0,0,64,64 };
+		//enemy
+		else tile_rect = { 64,0,64,64 };
+		App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
+	}
+
+	//selected entity
+	if (App->player->selected_entity == this)
+	{
+		tile_rect = { 128,0,64,64 };
+		//blit tile
+		App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
+	}
+
+	if (direction >= NO_DIRECTION) {
+		direction = TOP_LEFT;
+	}
 	current_animation = &animations[state][direction];
 
 	//Render character
 	render_position = { (int)(position.x - sprite_size * 0.5f), (int)(position.y - 1.82f * TILE_SIZE)};
 	App->render->Blit(reference_entity->texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
-	if (App->render->debug)
-		App->render->DrawQuad({ (int)position.x -2, (int)position.y -2 , 4,4 }, 255, 0, 0, 255);
+	if (App->render->debug) 
+	{
+		App->render->DrawQuad({ (int)position.x - 2, (int)position.y - 2 , 4,4 }, 255, 0, 0, 255);
+		App->render->DrawQuad({ (int)(next_tile_rect.x), (int)(next_tile_rect.y), next_tile_rect.w, next_tile_rect.h }, 0, 255, 0, 255);
+	}
 
 	//Rendering Selected Units Quad
 	if (this->info.IsSelected) DrawQuad();
@@ -294,49 +389,57 @@ void DynamicEntity::Move(float dt) {
 	if (path_to_target.size() > 0) {
 		//get next tile center
 		next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
-		next_tile_rect_center = { next_tile_position.x + HALF_TILE - 2, next_tile_position.y + HALF_TILE, 4, 4 };
+		next_tile_rect = { next_tile_position.x + HALF_TILE - 5, next_tile_position.y + HALF_TILE -5, 10, 10 };
 
-		//move to next tile
-		if ((position.x > next_tile_rect_center.x + next_tile_rect_center.w) && (position.x > next_tile_rect_center.x) && (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h)) {
-			direction = TOP_LEFT;
-			position.x -= speed.x * dt;
-			position.y -= speed.y * dt;
-		}
-		else if ((position.x < next_tile_rect_center.x) && (position.x < next_tile_rect_center.x + next_tile_rect_center.w) && (position.y > next_tile_rect_center.y) && (position.y > next_tile_rect_center.y + next_tile_rect_center.h)) {
-			direction = TOP_RIGHT;
-			position.x += speed.x * dt;
-			position.y -= speed.y * dt;
-		}
-		else if ((position.x > next_tile_rect_center.x) && (position.x > next_tile_rect_center.x + next_tile_rect_center.w) && (position.y < next_tile_rect_center.y) && (position.y < next_tile_rect_center.y + next_tile_rect_center.h)) {
-			direction = BOTTOM_LEFT;
-			position.x -= speed.x * dt;
-			position.y += speed.y * dt;
-		}
-		else if ((position.x < next_tile_rect_center.x) && (position.x < next_tile_rect_center.x + next_tile_rect_center.w) && (position.y < next_tile_rect_center.y) && (position.y < next_tile_rect_center.y + next_tile_rect_center.h)) {
-			direction = BOTTOM_RIGHT;
-			position.x += speed.x * dt;
-			position.y += speed.y * dt;
-		}
-		else
+		last_direction = direction;
+		direction = GetDirectionToGo(next_tile_rect);
+
+		switch (direction)
 		{
-			if (path_to_target.front() != target_tile)
+		case NO_DIRECTION:
+			if (next_tile != target_tile)
 			{
-				current_tile = path_to_target.front();
+				//current_tile = path_to_target.front();
 				if (path_to_target.size() > 1)
 				{
 					next_tile = path_to_target[1];
 				}
 				path_to_target.erase(path_to_target.begin());
-
 			}
-			else
+			else if (node_path.size() == 0)
 			{
-				position.x = next_tile_rect_center.x + 2;
-				position.y = next_tile_rect_center.y + 2;
+				position.x = next_tile_rect.x + 2;
+				position.y = next_tile_rect.y + 2;
 				current_tile = target_tile;
+				path_to_target.clear();
 				state = IDLE;
 			}
+			direction = last_direction;
+			break;
+		case TOP_LEFT:
+			position.x -= speed.x * dt;
+			position.y -= speed.y * dt;
+			break;
+		case TOP_RIGHT:
+			position.x += speed.x * dt;
+			position.y -= speed.y * dt;
+			break;
+		case BOTTOM_LEFT:
+			position.x -= speed.x * dt;
+			position.y += speed.y * dt;
+			break;
+		case BOTTOM_RIGHT:
+			position.x += speed.x * dt;
+			position.y += speed.y * dt;
+			break;
+		default:
+			break;
 		}
+	}
+	else
+	{
+		direction = last_direction;
+		state = IDLE;
 	}
 }
 
@@ -345,7 +448,7 @@ void DynamicEntity::Attack() {
 	timer.Start();
 
 	//damage unit if god_mode isn't activated 
-	if ((target_entity->faction != App->player->faction) || (!App->player->god_mode)) {
+	if ((target_entity != nullptr) && ((target_entity->faction != App->player->faction) || (!App->player->god_mode))) {
 		target_entity->current_health -= damage;
 
 		if (target_entity->is_dynamic) {
@@ -354,10 +457,10 @@ void DynamicEntity::Attack() {
 		}
 	}
 
-
 	//Change animation directions to fit
 	if (target_entity->is_dynamic) {
 		DynamicEntity* dynamic_target = (DynamicEntity*)target_entity;
+
 		if ((current_tile.x > target_entity->current_tile.x) && (current_tile.y == target_entity->current_tile.y)) {
 			direction = TOP_LEFT;
 			dynamic_target->direction = BOTTOM_RIGHT;
@@ -380,6 +483,7 @@ void DynamicEntity::Attack() {
 			dynamic_target->state = DIE;
 			dynamic_target->direction = TOP_LEFT;
 			target_entity = nullptr;
+			path_to_target.clear();
 			state = IDLE;
 		}
 	}
@@ -390,6 +494,7 @@ void DynamicEntity::Attack() {
 		if (target_entity->current_health <= 0) {
 			static_target->state = EXPLODE;
 			target_entity = nullptr;
+			path_to_target.clear();
 			state = IDLE;
 		}
 	}
@@ -407,19 +512,49 @@ void DynamicEntity::Gather() {
 		PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
 		target_entity = base;
 	}
-	//resource_building = nullptr;
 }
 
 void DynamicEntity::PathfindToPosition(iPoint destination) {
+
+	//current_tile = App->map->WorldToMap(position.x, position.y);
+
+	//if the tile is in the map but it's not walkable
+	if (!App->pathfinding->IsWalkable(destination)) 
+	{
+		destination = App->pathfinding->FindNearestWalkableTile(current_tile, destination);
+	}
+
+	target_tile = destination;
+
+	if (!App->pathfinding->IsWalkable(current_tile)) {
+		next_tile = App->pathfinding->FindWalkableAdjacentTile(current_tile);
+		return;
+	}
+
+
+	if (App->pathfinding->CreatePath(current_tile, destination) == -1) {
+		LOG("Invalid path");
+	}
+
+	path_to_target.clear();
+	path_to_target = App->pathfinding->GetLastPath();
+
+	state = WALK;
+
+	if (path_to_target.size() > 0)
+		next_tile = path_to_target.front();
+}
+
+void DynamicEntity::PathfindToGather(iPoint destination) {
 	if ((!App->pathfinding->IsWalkable(destination)) && (App->pathfinding->CheckBoundaries(destination))) {
 		iPoint destination_copy = App->pathfinding->FindWalkableAdjacentTile(destination);
-		if (destination_copy == iPoint(-1,-1)) {
+		if (destination_copy == iPoint(-1, -1)) {
 			ResourceBuilding* reference_resource_building = App->entities->FindResourceBuildingByTile(destination);
-			if (reference_resource_building != nullptr) 
-				destination  = App->entities->ClosestTile(current_tile, reference_resource_building->tiles);
+			if (reference_resource_building != nullptr)
+				destination = App->entities->ClosestTile(current_tile, reference_resource_building->tiles);
 			else {
 				StaticEntity* reference_static_entity = (StaticEntity*)App->entities->FindEntityByTile(destination);
-				if (reference_static_entity != nullptr) 
+				if (reference_static_entity != nullptr)
 					destination = App->entities->ClosestTile(current_tile, reference_static_entity->tiles);
 			}
 			if (!App->pathfinding->IsWalkable(destination))
@@ -512,8 +647,8 @@ bool DynamicEntity::LoadAnimations() {
 		type_char = "Ranged";
 	if (type == GATHERER)
 		type_char = "Gatherer";
-
-	std::string file = std::string("textures/characters/").append(faction_char).append("/").append(faction_char).append("_").append(type_char);
+	
+	std::string file = std::string("Assets/textures/characters/").append(faction_char).append("/").append(faction_char).append("_").append(type_char);
 	std::string animation_path = file;
 	animation_path.append(".tmx");
 	std::string texture_path = file;
@@ -521,8 +656,6 @@ bool DynamicEntity::LoadAnimations() {
 
 	pugi::xml_document animation_file;
 	pugi::xml_parse_result result = animation_file.load_file(animation_path.c_str());
-
-	std::string image = std::string(animation_file.child("tileset").child("image").attribute("source").as_string());
 	texture = App->tex->Load(texture_path.c_str());
 
 	if (result == NULL)
@@ -535,6 +668,7 @@ bool DynamicEntity::LoadAnimations() {
 	int tile_height = animation_file.child("map").child("tileset").attribute("tileheight").as_int();
 	int columns = animation_file.child("map").child("tileset").attribute("columns").as_int();
 	int firstgid = animation_file.child("map").child("tileset").attribute("firstgid").as_int();
+	sprite_size = tile_width;
 	int id, tile_id;
 	float speed;
 
@@ -544,7 +678,7 @@ bool DynamicEntity::LoadAnimations() {
 	SDL_Rect rect;
 	rect.w = tile_width;
 	rect.h = tile_height;
-	int i = 0;
+
 	while (animation != nullptr)
 	{
 		std::string animation_direction = std::string(animation.child("properties").child("property").attribute("value").as_string());
@@ -603,6 +737,7 @@ bool DynamicEntity::LoadAnimations() {
 bool DynamicEntity::LoadReferenceData() {
 	bool ret = true;
 	DynamicEntity* dynamic_reference = (DynamicEntity*)reference_entity;
+
 	//load animations
 	for (int i = 0; i < MAX_ANIMATIONS; i++)
 	{
@@ -616,6 +751,7 @@ bool DynamicEntity::LoadReferenceData() {
 	current_health = max_health = reference_entity->max_health;
 	storage_capacity= damage = reference_entity->damage;
 	speed = reference_entity->speed;
+	sprite_size = reference_entity->sprite_size;
 
 	return ret;
 }
@@ -626,6 +762,56 @@ void DynamicEntity::DrawQuad()
 	App->render->DrawQuad(entityrect, unitinfo.color.r, unitinfo.color.g, unitinfo.color.b, unitinfo.color.a, false);
 }
 
+bool DynamicEntity::TargetTileReached(iPoint target_tile) {
+	bool ret = false;
+	
+	//north-west
+	if ((current_tile.x - 1 == target_tile.x) && (current_tile.y - 1 == target_tile.y))
+		return true;
+	//north
+	if ((current_tile.x == target_tile.x) && (current_tile.y - 1 == target_tile.y))
+		return true;
+	//north-east
+	if ((current_tile.x + 1 == target_tile.x) && (current_tile.y - 1 == target_tile.y))
+		return true;
+	//east
+	if ((current_tile.x + 1 == target_tile.x) && (current_tile.y == target_tile.y))
+		return true;
+	//south-east
+	if ((current_tile.x + 1 == target_tile.x) && (current_tile.y + 1 == target_tile.y))
+		return true;
+	//south
+	if ((current_tile.x  == target_tile.x) && (current_tile.y + 1 == target_tile.y))
+		return true;
+	//south-west
+	if ((current_tile.x - 1 == target_tile.x) && (current_tile.y + 1 == target_tile.y))
+		return true;
+	//west
+	if ((current_tile.x - 1 == target_tile.x) && (current_tile.y == target_tile.y))
+		return true;
+
+	return ret;
+}
+
+Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
+
+	if ((floor(position.x) > ceil(next_tile_rect.x)) && (floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w))
+		&& (ceil(position.y) > floor(next_tile_rect.y)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h))) {
+		return Direction::NO_DIRECTION;
+	}
+	if ((ceil(position.x) > floor(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (ceil(position.y) > floor(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+		return Direction::TOP_LEFT;
+	}
+	else if ((ceil(position.x) > floor(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+		return Direction::BOTTOM_LEFT;
+	}
+	else if ((floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (ceil(position.y) > floor(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+		return Direction::TOP_RIGHT;
+	}
+	else if ((floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+		return Direction::BOTTOM_RIGHT;
+	}
+}
 
 // --- UnitInfo Constructors and Destructor ---
 
