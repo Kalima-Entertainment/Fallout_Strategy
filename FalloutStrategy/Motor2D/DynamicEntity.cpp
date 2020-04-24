@@ -108,12 +108,10 @@ bool DynamicEntity::Update(float dt) {
 					else if ((resource_collected > 0) && (target_entity != nullptr) && (target_entity->volume < target_entity->storage_capacity)) {
 						target_entity->volume += resource_collected;
 
-						if (resource_type == Resource::CAPS)
-							owner->caps += resource_collected;
-						else if (resource_type == Resource::WATER)
-							owner->water += resource_collected;
-						else if (resource_type == Resource::FOOD)
-							owner->food += resource_collected;
+						//update owner resources
+						if (resource_type == Resource::CAPS) owner->caps += resource_collected;
+						else if (resource_type == Resource::WATER) owner->water += resource_collected;
+						else if (resource_type == Resource::FOOD) owner->food += resource_collected;
 
 						if (owner == App->player)
 							App->player->UpdateResourceData(resource_type, resource_collected);
@@ -162,10 +160,10 @@ bool DynamicEntity::Update(float dt) {
 					}
 				}
 				//if not we keep following the path 
-				else
-				{
+				else {
 					target_tile = node_path.back();
 				}
+
 				PathfindToPosition(target_tile);
 			}
 		}
@@ -631,22 +629,15 @@ bool DynamicEntity::LoadAnimations() {
 	float speed_reducer = 0.065f;
 
 	//entity faction
-	if (faction == VAULT)
-		faction_char = "VaultDwellers";
-	else if (faction == BROTHERHOOD)
-		faction_char = "Brotherhood";
-	else if (faction == MUTANT)
-		faction_char = "SuperMutant";
-	else if (faction == GHOUL)
-		faction_char = "Ghouls";
+	if (faction == VAULT) faction_char = "VaultDwellers";
+	else if (faction == BROTHERHOOD) faction_char = "Brotherhood";
+	else if (faction == MUTANT) faction_char = "SuperMutant";
+	else if (faction == GHOUL) faction_char = "Ghouls";
 
 	//entity type
-	if (type == MELEE)
-		type_char = "Melee";
-	else if (type == RANGED)
-		type_char = "Ranged";
-	if (type == GATHERER)
-		type_char = "Gatherer";
+	if (type == MELEE) type_char = "Melee";
+	else if (type == RANGED) type_char = "Ranged";
+	if (type == GATHERER) type_char = "Gatherer";
 	
 	std::string file = std::string("Assets/textures/characters/").append(faction_char).append("/").append(faction_char).append("_").append(type_char);
 	std::string animation_path = file;
@@ -688,32 +679,22 @@ bool DynamicEntity::LoadAnimations() {
 		bool loop = true;
 
 		//animation
-		if (animation_name == "idle")
-			state = IDLE;
-		else if (animation_name == "walk")
-			state = WALK;
-		else if (animation_name == "attack")
-			state = ATTACK;
-		else if (animation_name == "gather")
-			state = GATHER;
+		if (animation_name == "idle") state = IDLE;
+		else if (animation_name == "walk") state = WALK;
+		else if (animation_name == "attack") state = ATTACK;
+		else if (animation_name == "gather") state = GATHER;
 		else if (animation_name == "hit") {
 			state = HIT;
-			loop = false;
-		}
+			loop = false;}
 		else if (animation_name == "die") {
 			state = DIE;
-			loop = false;
-		}
+			loop = false; }
 
 		//animation direction
-		if (animation_direction == "top_left")
-			direction = TOP_LEFT;
-		else if (animation_direction == "top_right")
-			direction = TOP_RIGHT;
-		else if (animation_direction == "bottom_left")
-			direction = BOTTOM_LEFT;
-		else if (animation_direction == "bottom_right")
-			direction = BOTTOM_RIGHT;
+		if (animation_direction == "top_left") direction = TOP_LEFT;
+		else if (animation_direction == "top_right") direction = TOP_RIGHT;
+		else if (animation_direction == "bottom_left") direction = BOTTOM_LEFT;
+		else if (animation_direction == "bottom_right") direction = BOTTOM_RIGHT;
 
 		id = animation.attribute("id").as_int();
 
@@ -767,7 +748,7 @@ bool DynamicEntity::TargetTileReached(iPoint target_tile) {
 	
 	//north-west
 	if ((current_tile.x - 1 == target_tile.x) && (current_tile.y - 1 == target_tile.y))
-		return true;
+return true;
 	//north
 	if ((current_tile.x == target_tile.x) && (current_tile.y - 1 == target_tile.y))
 		return true;

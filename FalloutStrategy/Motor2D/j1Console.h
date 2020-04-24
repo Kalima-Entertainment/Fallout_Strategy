@@ -55,10 +55,9 @@ public:
 	bool CleanUpStarted;
 	float last_dt;
 
-	//GuiInputText* command_input;
-	//p2List<p2SString> input_commands;
-	//p2List<j1Command*> commands;
-	//p2List_item<p2SString>* current_consulting_command;
+private:
+	SDL_Color log_box_color;
+	SDL_Color input_box_color;
 };
 
 std::string ToLower(std::string string);
