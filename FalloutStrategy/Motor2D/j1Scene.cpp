@@ -97,13 +97,13 @@ bool j1Scene::Start()
 	App->minimap->Enable();
 		
 	//top_left
-	//App->entities->CreateEntity(VAULT, RANGED, 20, 20);
+	App->entities->CreateEntity(VAULT, MELEE, 20, 20);
 	//top_right
-	//App->entities->CreateEntity(VAULT, RANGED, 130, 20);
+	App->entities->CreateEntity(VAULT, MELEE, 130, 20);
 	//bottom_left
-	//App->entities->CreateEntity(VAULT, RANGED, 20, 130);
+	App->entities->CreateEntity(VAULT, MELEE, 20, 130);
 	//botto_right
-	//App->entities->CreateEntity(VAULT, RANGED, 130,110);
+	App->entities->CreateEntity(VAULT, MELEE, 130,110);
 
 	return true;
 }

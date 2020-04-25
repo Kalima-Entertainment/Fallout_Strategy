@@ -28,7 +28,7 @@ class StaticEntity : public j1Entity
 
 {
 public:
-	StaticEntity(Faction faction, EntityType type);
+	StaticEntity(Faction faction, EntityType type, GenericPlayer* owner = nullptr);
 	~StaticEntity();
 	bool Update(float dt);
 	bool PostUpdate();

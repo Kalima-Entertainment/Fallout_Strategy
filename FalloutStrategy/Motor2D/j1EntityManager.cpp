@@ -65,15 +65,13 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	j1Entity* entity = nullptr;
 
 	if ((type == MELEE) || (type == RANGED) || (type == GATHERER)) {
-		entity = new DynamicEntity(faction, type);
+		entity = new DynamicEntity(faction, type, owner);
 		entity->is_dynamic = true;
 
 		entity->reference_entity = reference_entities[faction][type];
 
 		if (entity != NULL)
 		{
-			entity->faction = faction;
-
 			//If there's another unit in that tile, we find a new spawn point
 			if (FindEntityByTile({ position_x,position_y }) == nullptr) {
 				//We can spawn here
@@ -125,7 +123,6 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 			entity->position.y += 32;
 
 			if (entity->reference_entity != nullptr){
-				entity->owner = owner;
 				entities.push_back(entity);
 				entity->LoadReferenceData();
 				switch (entity->type)
@@ -160,7 +157,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	}
 	else if ((type == BASE) || (type == LABORATORY) || (type == BARRACK))
 	{
-		entity = new StaticEntity(faction, type);
+		entity = new StaticEntity(faction, type, owner);
 		entity->is_dynamic = false;
 		entity->reference_entity = reference_entities[faction][type];
 		
@@ -173,7 +170,6 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 			entity->position = App->map->fMapToWorld(entity->current_tile.x, entity->current_tile.y);
 
 			if (entity->reference_entity != nullptr) {
-				entity->owner = owner;
 				entities.push_back(entity);
 				entity->LoadReferenceData();
 
@@ -188,6 +184,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 			//Render building
 			entity->render_position = { (int)(entity->position.x - 0.5f * entity->sprite_size),(int)(entity->position.y - entity->sprite_size * 0.75) };
 
+			//TODO: delete all this
 			//Add spawn position for units
 			if (faction == GHOUL) {
 				if (type == BASE)
@@ -251,16 +248,16 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 			int cost_increment = boost_node.attribute("cost_increment").as_int();
 
 			if (j == 0) { //BASE upgrades
-				base_resource_limit[i] = { faction, RESOURCES_LIMIT, 0, caps_cost, cost_increment, upgrade_time };
-				gatherer_resource_limit[i] = { faction, GATHERER_CAPACITY, 0, caps_cost, cost_increment, upgrade_time };
+				base_resource_limit[faction] = { faction, RESOURCES_LIMIT, 0, caps_cost, cost_increment, upgrade_time };
+				gatherer_resource_limit[faction] = { faction, GATHERER_CAPACITY, 0, caps_cost, cost_increment, upgrade_time };
 			}
 			else if (j == 1) {//LABORATORY upgrades
-				units_health[i] = { faction, UNITS_HEALTH, 0, caps_cost, cost_increment, upgrade_time };
-				units_creation_time[i] = { faction, CREATION_TIME, 0, caps_cost, cost_increment, upgrade_time };
+				units_health[faction] = { faction, UNITS_HEALTH, 0, caps_cost, cost_increment, upgrade_time };
+				units_creation_time[faction] = { faction, CREATION_TIME, 0, caps_cost, cost_increment, upgrade_time };
 			}
 			else if (j == 2) {//BARRACK upgrades
-				units_damage[i] = { faction, UNITS_DAMAGE, 0, caps_cost, cost_increment, upgrade_time };
-				units_speed[i] = { faction, UNITS_SPEED, 0, caps_cost, cost_increment, upgrade_time };
+				units_damage[faction] = { faction, UNITS_DAMAGE, 0, caps_cost, cost_increment, upgrade_time };
+				units_speed[faction] = { faction, UNITS_SPEED, 0, caps_cost, cost_increment, upgrade_time };
 			}	
 		}
 		boost_node = boost_node.next_sibling();
@@ -356,25 +353,29 @@ bool j1EntityManager::Update(float dt)
 	bool ret = true;
 
 	//load all textures and animations on the go
-	if ((loading_reference_entities) && (load_timer.Read() > 100)) {
-		reference_entities[loading_faction][loading_entity]->LoadAnimations();
-		
-		loading_entity = loading_entity++;
-		if (loading_entity == NO_TYPE) {
-			loading_entity = MELEE;
-			loading_faction++;
-		}
-		if (loading_faction == NO_FACTION) {
-			loading_reference_entities = false;
+	if (loading_reference_entities) {
+		if (load_timer.Read() > 100) {
+			reference_entities[loading_faction][loading_entity]->LoadAnimations();
 
-			for (int faction = VAULT; faction < NO_FACTION; faction++)
-			{
-				reference_entities[faction][BARRACK]->texture = reference_entities[faction][BASE]->texture;
-				reference_entities[faction][LABORATORY]->texture = reference_entities[faction][BASE]->texture;
+			loading_entity = loading_entity++;
+
+			if (loading_entity == NO_TYPE) {
+				loading_entity = MELEE;
+				loading_faction++;
 			}
-			ret = LoadReferenceEntityData();
+
+			if (loading_faction == NO_FACTION) {
+				loading_reference_entities = false;
+
+				for (int faction = VAULT; faction < NO_FACTION; faction++)
+				{
+					reference_entities[faction][BARRACK]->texture = reference_entities[faction][BASE]->texture;
+					reference_entities[faction][LABORATORY]->texture = reference_entities[faction][BASE]->texture;
+				}
+				ret = LoadReferenceEntityData();
+			}
+			load_timer.Start();
 		}
-		load_timer.Start();
 	}
 
 	if (!App->isPaused)
@@ -569,14 +570,10 @@ bool j1EntityManager::LoadReferenceEntityData() {
 			std::string faction_string = std::string(faction_node.name());
 
 			//check faction
-			if (faction_string == "vault")
-				faction = VAULT;
-			else if (faction_string == "brotherhood")
-				faction = BROTHERHOOD;
-			else if (faction_string == "mutants")
-				faction = MUTANT;
-			else if (faction_string == "ghouls")
-				faction = GHOUL;
+			if (faction_string == "vault") faction = VAULT;
+			else if (faction_string == "brotherhood") faction = BROTHERHOOD;
+			else if (faction_string == "mutants") faction = MUTANT;
+			else if (faction_string == "ghouls") faction = GHOUL;
 
 			pugi::xml_node entity_node = faction_node.first_child();
 			while (entity_node != nullptr)
@@ -584,18 +581,12 @@ bool j1EntityManager::LoadReferenceEntityData() {
 				std::string type_string = std::string(entity_node.name());
 
 				//check type
-				if (type_string == "melee")
-					type = MELEE;
-				else if (type_string == "ranged")
-					type = RANGED;
-				else if (type_string == "gatherer")
-					type = GATHERER;
-				else if (type_string == "base")
-					type = BASE;
-				else if (type_string == "barrack")
-					type = BARRACK;
-				else if (type_string == "laboratory")
-					type = LABORATORY;
+				if (type_string == "melee") type = MELEE;
+				else if (type_string == "ranged") type = RANGED;
+				else if (type_string == "gatherer") type = GATHERER;
+				else if (type_string == "base") type = BASE;
+				else if (type_string == "barrack") type = BARRACK;
+				else if (type_string == "laboratory") type = LABORATORY;
 
 				//load attributes
 				int health = entity_node.attribute("health").as_int();
@@ -712,33 +703,6 @@ void j1EntityManager::BubbleSortEntities() {
 	}
 }
 
-/*
-void j1EntityManager::QuickSortEntities(std::vector<j1Entity*> qck_entities, int low, int high) {
-	if (low < high) {
-		int pi = Partition(qck_entities, low, high);
-
-		QuickSortEntities(qck_entities, low, pi - 1);
-		QuickSortEntities(qck_entities, pi + 1, high);
-	}
-	LOG("Yes");
-}
-
-int j1EntityManager::Partition(std::vector<j1Entity*> qck_entities, int low, int high)
-{
-	float pivot = qck_entities[high]->position.y;
-	int i = (low - 1);
-	for (int j = low; j <= high -1; j++)
-	{
-		if (qck_entities[j]->position.y < pivot) {
-			i++;
-			std::swap(qck_entities[i], qck_entities[j]);
-		}
-	}
-	std::swap(qck_entities[i + 1], qck_entities[high]);
-	return (i + 1);
-}
-*/
-
 void j1EntityManager::RandomFactions() {
 	Faction faction = static_cast<Faction>(rand() % GHOUL);
 
@@ -779,6 +743,7 @@ void j1EntityManager::OnCommand(std::vector<std::string> command_parts) {
 void j1EntityManager::LoadCosts() {
 	//Loads the cost of spawning units and creating upgrades from XML file
 	
+	//TODO: Load from xml
 	//water, food, spawn time (seconds)
 	unit_data[VAULT][MELEE] = { 60, 60, 30 };
 	unit_data[VAULT][RANGED] = { 80, 80, 40 };

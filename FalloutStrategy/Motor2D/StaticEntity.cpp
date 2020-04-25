@@ -9,14 +9,14 @@
 #include "j1Scene.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
-StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
+StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, GenericPlayer* g_owner) {
 	type = g_type;
 	faction = g_faction;
 	state = WAIT;
 	storage_capacity = 1000;
 	max_capacity = 3000;
 	render_texture_pos = { 0,0 };	
-
+	owner = g_owner;
 	for (int i = 0; i < 10; i++)
 		spawn_stack[i].type = NO_TYPE;
 	spawning = false;

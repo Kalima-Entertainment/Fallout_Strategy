@@ -14,7 +14,7 @@
 #include <string>
 #include "SDL_mixer/include/SDL_mixer.h"
 
-DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
+DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, GenericPlayer* g_owner) : j1Entity(), resource_collected(0) {
 
 	switch (g_type)
 	{
@@ -30,17 +30,15 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
 	default:
 		break;
 	}
-
+	owner = g_owner;
 	type = g_type;
 	faction = g_faction;
 	state = IDLE;
 	direction = BOTTOM_RIGHT;
-
 	speed = { 0, 0 };
 	target_entity = nullptr;
 	resource_building = nullptr;
 	action_time = 3.0f;
-	resource_collected = 0;
 	target_tile = { -1,-1 };
 	sprite_size = 128;
 }
@@ -69,6 +67,19 @@ bool DynamicEntity::Update(float dt) {
 			node_path.pop_back();
 			PathfindToPosition(target_tile);
 		}
+
+		if (attacking_entity != nullptr) {
+			if (type != GATHERER){
+				target_entity = attacking_entity;
+				if (current_tile.DistanceManhattan(attacking_entity->current_tile) > range) {
+				PathfindToPosition(attacking_entity->current_tile);
+				}
+				else {
+					state = ATTACK;
+				}
+			}
+		}
+
 		break;
 	case WALK:
 		//if the entitiy is about to reach it's target tile
@@ -92,6 +103,9 @@ bool DynamicEntity::Update(float dt) {
 						path_to_target.clear();
 					}
 				}
+				else {
+					//target_entity
+				}
 			}
 			//gatherer
 			else {
@@ -101,7 +115,6 @@ bool DynamicEntity::Update(float dt) {
 					if ((resource_building != nullptr) && (resource_collected < storage_capacity)) {
 						state = GATHER;
 						timer.Start();
-						//return;
 					}
 
 					//give gathered resources
@@ -140,6 +153,7 @@ bool DynamicEntity::Update(float dt) {
 							}
 						}
 					}
+					
 					if (target_entity != nullptr) {
 						state = IDLE;
 					}
@@ -183,8 +197,7 @@ bool DynamicEntity::Update(float dt) {
 
 	case ATTACK:
 
-		if (timer.ReadSec() > action_time)
-		{
+		if (timer.ReadSec() > action_time) {
 			Attack();
 		}
 
@@ -207,15 +220,13 @@ bool DynamicEntity::Update(float dt) {
 
 		break;
 	case GATHER:
-		if (timer.ReadSec() > action_time)
-		{
+		if (timer.ReadSec() > action_time) {
 			Gather();
 			state = WALK;
 		}
 		break;
 	case HIT:
-		if (current_animation->Finished())
-		{
+		if (current_animation->Finished()) {
 			state = IDLE;
 			current_animation->Reset();
 		}
@@ -247,7 +258,6 @@ bool DynamicEntity::Update(float dt) {
 			if (Mix_Playing(13) == 0) { SpatialAudio(App->audio->Brotherhood_die, 13, position.x, position.y); }
 		if (reference_entity->faction == GHOUL)
 			if (Mix_Playing(14) == 0) { SpatialAudio(App->audio->Ghoul_die, 14, position.x, position.y); }
-		
 		
 		break;
 	default:
@@ -451,6 +461,7 @@ void DynamicEntity::Attack() {
 
 		if (target_entity->is_dynamic) {
 			DynamicEntity* dynamic_target = (DynamicEntity*)target_entity;
+			target_entity->attacking_entity = this;
 			dynamic_target->state = HIT;
 		}
 	}
@@ -524,15 +535,13 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 
 	target_tile = destination;
 
-	if (!App->pathfinding->IsWalkable(current_tile)) {
+	if (!App->pathfinding->IsWalkable(current_tile)) 
 		next_tile = App->pathfinding->FindWalkableAdjacentTile(current_tile);
-		return;
-	}
-
-
-	if (App->pathfinding->CreatePath(current_tile, destination) == -2) {
+		//return;
+	
+	if (App->pathfinding->CreatePath(current_tile, destination) == -2) 
 		node_path = App->pathfinding->CreateNodePath(current_tile, destination);
-	}
+	
 
 	path_to_target.clear();
 	path_to_target = App->pathfinding->GetLastPath();

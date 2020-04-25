@@ -27,14 +27,10 @@ bool AI_Manager::Awake(pugi::xml_node& config) {
 	for (int i = 0; i < 4; i++)
 	{
 		faction_name = faction_node.name();
-		if (faction_name == "vault")
-			faction = VAULT;
-		else if (faction_name == "brotherhood")
-			faction = BROTHERHOOD;
-		else if (faction_name == "mutant")
-			faction = MUTANT;
-		else if (faction_name == "ghoul")
-			faction = GHOUL; 
+		if (faction_name == "vault") faction = VAULT;
+		else if (faction_name == "brotherhood") faction = BROTHERHOOD;
+		else if (faction_name == "mutant") faction = MUTANT;
+		else if (faction_name == "ghoul") faction = GHOUL; 
 
 		ai_info[faction].initial_caps = faction_node.attribute("caps").as_int();
 		ai_info[faction].initial_water = faction_node.attribute("water").as_int();
