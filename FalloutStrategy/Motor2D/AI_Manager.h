@@ -28,18 +28,13 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
-	std::vector<iPoint> CreateNodeMap();
-	std::vector<iPoint> GetNodeMap();
-	int GetDistanceBetweenNodes() const { return 150 / node_map_divisions; }
 	AI_Info GetAI_PlayerInfo(Faction faction);
 
 public:
 	AI_Player* ai_player[4];
-	std::vector<iPoint> node_map;
 	bool players_created;
 	int beaten_ai_players;
-	int node_map_divisions;
-	bool show_nodes;
+
 private:
 	AI_Info ai_info[4];
 };

@@ -17,8 +17,6 @@ public:
 
 	bool Update(float dt);
 
-	std::vector<iPoint> CreateNodePath(iPoint origin, iPoint destination);
-
 public:
 	bool is_attacking;
 	std::vector<iPoint> path_to_enemy_base;

@@ -530,8 +530,8 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 	}
 
 
-	if (App->pathfinding->CreatePath(current_tile, destination) == -1) {
-		LOG("Invalid path");
+	if (App->pathfinding->CreatePath(current_tile, destination) == -2) {
+		node_path = App->pathfinding->CreateNodePath(current_tile, destination);
 	}
 
 	path_to_target.clear();

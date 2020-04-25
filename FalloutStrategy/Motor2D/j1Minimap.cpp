@@ -11,11 +11,11 @@
 #include "MenuManager.h"
 #include "AI_Manager.h"
 #include "j1Player.h"
+#include "j1Pathfinding.h"
 
-j1Minimap::j1Minimap() : j1Module() {
+j1Minimap::j1Minimap() : j1Module(), texture(nullptr) {
 	name = ("minimap");
 
-	texture = nullptr;
 	map_height = 200;
 	scale = 1;
 	width = 100;
@@ -83,6 +83,14 @@ bool j1Minimap::Start() {
 		break;
 	}
 
+	node_map = App->pathfinding->GetNodeMap();
+
+	for (int i = 0; i < node_map.size(); i++)
+	{
+		node_map[i] = App->map->MapToWorld(node_map[i].x, node_map[i].y);
+		node_map[i] = App->minimap->WorldToMinimap(node_map[i].x, node_map[i].y);
+	}
+
 	return ret;
 }
 
@@ -113,14 +121,12 @@ bool j1Minimap::PostUpdate() {
 			else { App->render->DrawQuad(entity_rect, 255, 0, 0, 255, true, false);}
 		}
 
-		if (App->render->debug && App->ai_manager->show_nodes)
+		if (App->render->debug && App->pathfinding->show_nodes)
 		{
 			iPoint node_world_position;
-			for (int i = 0; i < App->ai_manager->node_map.size(); i++)
+			for (int i = 0; i < node_map.size(); i++)
 			{
-				node_world_position = App->map->MapToWorld(App->ai_manager->node_map[i].x, App->ai_manager->node_map[i].y);
-				node_world_position = App->minimap->WorldToMinimap(node_world_position.x, node_world_position.y);
-				App->render->DrawQuad({ node_world_position.x, node_world_position.y, 2, 2 }, 0, 0, 255, 255, true, false);
+				App->render->DrawQuad({ node_map[i].x, node_map[i].y, 2, 2 }, 0, 0, 255, 255, true, false);
 			}
 		}
 		SDL_Rect rect = { 0,0,0,0 };

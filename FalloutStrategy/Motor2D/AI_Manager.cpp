@@ -8,12 +8,10 @@
 #include "j1Input.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
-AI_Manager::AI_Manager() : j1Module() {
+AI_Manager::AI_Manager() : j1Module(), beaten_ai_players(0) {
 	name = ("AI");
 	players_created = false;
 	ai_player[0] = ai_player[1] = ai_player[2] = ai_player[3] = nullptr;
-	beaten_ai_players = 0;
-	node_map_divisions = 15;
 }
 
 AI_Manager::~AI_Manager() {
@@ -52,8 +50,6 @@ bool AI_Manager::Awake(pugi::xml_node& config) {
 
 bool AI_Manager::Start() {
 	bool ret = true;	
-	node_map = CreateNodeMap();
-	show_nodes = App->render->debug;
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -74,10 +70,6 @@ bool AI_Manager::Start() {
 bool AI_Manager::Update(float dt) {
 	BROFILER_CATEGORY("AI_Update", Profiler::Color::Azure)
 	bool ret = true;
-
-	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN) {
-		show_nodes = !show_nodes;
-	}
 
 	if (players_created) {
 		for (int i = 0; i < 4; i++)
@@ -120,24 +112,7 @@ bool AI_Manager::CleanUp() {
 	}
 	players_created = false;
 
-	node_map.clear();
 	return ret;
 }
-
-std::vector<iPoint> AI_Manager::CreateNodeMap(){
-	std::vector<iPoint> map;
-	int distance = 150 / node_map_divisions;
-
-	for (int y = distance; y < 150; y += distance)
-	{
-		for (int x = distance; x < 150; x += distance)
-		{
-			map.push_back(iPoint(x,y));
-		}
-	}
-	return map;
-}
-
-std::vector<iPoint> AI_Manager::GetNodeMap() { return node_map;}
 
 AI_Info AI_Manager::GetAI_PlayerInfo(Faction faction) { return ai_info[faction]; }

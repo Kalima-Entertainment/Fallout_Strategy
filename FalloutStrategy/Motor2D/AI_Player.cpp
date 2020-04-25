@@ -9,23 +9,22 @@
 #include "j1Group.h"
 #include "j1MovementManager.h"
 #include "brofiler/Brofiler/Brofiler.h"
+#include "j1Pathfinding.h"
 #include <vector>
 #include <math.h>
 
-AI_Player::AI_Player(Faction g_faction) : GenericPlayer() {
+AI_Player::AI_Player(Faction g_faction) : GenericPlayer(), is_attacking(false), last_barrack_to_spawn(1) {
 	faction = g_faction;
 	caps = App->ai_manager->GetAI_PlayerInfo(faction).initial_caps;
 	water = App->ai_manager->GetAI_PlayerInfo(faction).initial_water;
 	food = App->ai_manager->GetAI_PlayerInfo(faction).initial_food;
 	melee_minimum = App->ai_manager->GetAI_PlayerInfo(faction).minimum_melees;
 	ranged_minimum = App->ai_manager->GetAI_PlayerInfo(faction).minimum_rangeds;
-	is_attacking = false;
 	defeated = false;
 	goal_tile_set = false;
 	target_player = nullptr;
 	target_building = nullptr;
 	base = barrack[0] = barrack[1] = laboratory = nullptr;
-	last_barrack_to_spawn = 1;
 }
 
 AI_Player::~AI_Player() 
@@ -145,7 +144,7 @@ bool AI_Player::Update(float dt) {
 					//check if it is too far to get to  position
 					//if it is create a node path for it
 					if (troops[i]->current_tile.DistanceManhattan(target_building_position) > 40)
-						troops[i]->node_path = CreateNodePath(troops[i]->current_tile, target_building_position);
+						troops[i]->node_path = App->pathfinding->CreateNodePath(troops[i]->current_tile, target_building_position);
 					//if it is close enough pathfind to the target
 					else
 						troops[i]->PathfindToPosition(target_building_position);
@@ -191,68 +190,6 @@ DynamicEntity* AI_Player::GetClosestDynamicEntity() {
 		}
 	}
 	return target_entity;
-}
-
-std::vector<iPoint> AI_Player::CreateNodePath(iPoint origin, iPoint destination) {
-	BROFILER_CATEGORY("CreateNodePath", Profiler::Color::Azure)
-	std::vector<iPoint> path;
-	iPoint current_node;
-	iPoint origin_node;
-	iPoint destination_node;
-	std::vector<iPoint> node_map = App->ai_manager->node_map;
-	int node_distance = App->ai_manager->GetDistanceBetweenNodes();
-
-	origin_node = node_map[0];
-	destination_node = node_map[0];
-
-	//closest origin node
-	for (int i = 0; i < node_map.size(); i++)
-	{
-		if (node_map[i].DistanceTo(origin) < origin_node.DistanceTo(origin))
-			origin_node = node_map[i];
-	}
-	
-	//closest destination node
-	for (int i = 0; i < node_map.size(); i++)
-	{
-		if (node_map[i].DistanceTo(destination) < destination_node.DistanceTo(destination))
-			destination_node = node_map[i];
-	}
-
-	current_node = origin_node;
-	path.push_back(current_node);
-
-	//iterate nodes to create the path
-	while (current_node != destination_node)
-	{
-		iPoint possible_node;
-		iPoint best_node;
-		//find neighbour nodes
-		for (int y = -node_distance; y <= node_distance; y += node_distance)
-		{
-			for (int x = -node_distance; x <= node_distance; x += node_distance)
-			{
-				possible_node.x = current_node.x + x;
-				possible_node.y = current_node.y + y;
-
-				if (possible_node.DistanceTo(destination_node) < current_node.DistanceTo(destination_node)) {
-					if (possible_node.DistanceTo(destination_node) < best_node.DistanceTo(destination_node))
-						best_node = possible_node;
-				}
-			}
-		}
-		current_node = best_node;
-
-		//if (best_node.DistanceManhattan(destination) > 20)
-			path.push_back(best_node);
-		//else
-			//break;
-	}
-
-	//flip final path 
-	std::reverse(path.begin(), path.end());
-
-	return path;
 }
 
 StaticEntity* AI_Player::ChooseTargetBuilding() {

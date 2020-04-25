@@ -6,9 +6,10 @@
 #include "StaticEntity.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
-j1PathFinding::j1PathFinding() : j1Module(), map(NULL), last_path(DEFAULT_PATH_LENGTH), width(0), height(0)
+j1PathFinding::j1PathFinding() : j1Module(), map(NULL), last_path(DEFAULT_PATH_LENGTH), width(0), height(0), node_map_divisions(15)
 {
 	name = ("pathfinding");
+	node_map = CreateNodeMap();
 	path_timer.Start();
 }
 
@@ -16,6 +17,7 @@ j1PathFinding::j1PathFinding() : j1Module(), map(NULL), last_path(DEFAULT_PATH_L
 j1PathFinding::~j1PathFinding()
 {
 	RELEASE_ARRAY(map);
+	node_map.clear();
 }
 
 // Called before quitting
@@ -90,46 +92,46 @@ iPoint j1PathFinding::FindWalkableAdjacentTile(iPoint point) const {
 
 iPoint j1PathFinding::FindNearestWalkableTile(iPoint origin, iPoint destination) const
 {
-	//if there is a resource building 
-
 	if (!IsWalkable(origin)) 
 		origin = FindWalkableAdjacentTile(origin);
 
-	ResourceBuilding* reference_resource_building = App->entities->FindResourceBuildingByTile(destination);
-	if (reference_resource_building != nullptr)
-	{
-		destination = App->entities->ClosestTile(origin, reference_resource_building->tiles);
-		destination = FindWalkableAdjacentTile(destination);
-
-		if (!IsWalkable(destination)) {
-			destination = App->pathfinding->ExpandTile(destination);
-		}
-	}
-	else
-	{
-		j1Entity* entity;
-		entity = App->entities->FindEntityByTile(destination);
-
-		if ((entity != nullptr) && (!entity->is_dynamic))
+	if (!IsWalkable(destination)) {
+		ResourceBuilding* reference_resource_building = App->entities->FindResourceBuildingByTile(destination);
+		if (reference_resource_building != nullptr)
 		{
-			StaticEntity* reference_static_entity = (StaticEntity*)App->entities->FindEntityByTile(destination);
-			{
-				destination = App->entities->ClosestTile(origin, reference_static_entity->tiles);
-				destination = App->pathfinding->FindWalkableAdjacentTile(destination);
-				if (!IsWalkable(destination))
-					LOG("Unwalkable building tile");
+			destination = App->entities->ClosestTile(origin, reference_resource_building->tiles);
+			destination = FindWalkableAdjacentTile(destination);
+
+			if (!IsWalkable(destination)) {
+				destination = App->pathfinding->ExpandTile(destination);
 			}
 		}
 		else
 		{
-			destination = App->pathfinding->ExpandTile(destination);
-			if (!IsWalkable(destination))
-				LOG("Unwalkable tile 2");
+			j1Entity* entity;
+			entity = App->entities->FindEntityByTile(destination);
+
+			if ((entity != nullptr) && (!entity->is_dynamic))
+			{
+				StaticEntity* reference_static_entity = (StaticEntity*)App->entities->FindEntityByTile(destination);
+				{
+					destination = App->entities->ClosestTile(origin, reference_static_entity->tiles);
+					destination = App->pathfinding->FindWalkableAdjacentTile(destination);
+					if (!IsWalkable(destination))
+						LOG("Unwalkable building tile");
+				}
+			}
+			else
+			{
+				destination = App->pathfinding->ExpandTile(destination);
+				if (!IsWalkable(destination))
+					LOG("Unwalkable tile 2");
+			}
 		}
 	}
 
 	if (!IsWalkable(destination))
-		LOG("Unwalkable");
+		LOG("Unwalkable destination");
 
 	return destination;
 }
@@ -146,6 +148,81 @@ std::vector<iPoint> j1PathFinding::GetLastPath() const
 
 float j1PathFinding::GetLastPathRequestTime() const {
 	return path_timer.Read();
+}
+
+//Node map ------------------------------------------------------------------------
+
+std::vector<iPoint> j1PathFinding::CreateNodeMap() {
+	std::vector<iPoint> map;
+	int distance = 150 / node_map_divisions;
+
+	for (int y = distance; y < 150; y += distance)
+	{
+		for (int x = distance; x < 150; x += distance)
+		{
+			map.push_back(iPoint(x, y));
+		}
+	}
+	return map;
+}
+
+std::vector<iPoint>j1PathFinding::GetNodeMap() const { return node_map; }
+
+std::vector<iPoint> j1PathFinding::CreateNodePath(iPoint origin, iPoint destination) {
+	BROFILER_CATEGORY("CreateNodePath", Profiler::Color::Azure)
+	std::vector<iPoint> path;
+	iPoint current_node;
+	iPoint origin_node;
+	iPoint destination_node;
+	int node_distance = GetDistanceBetweenNodes();
+
+	origin_node = node_map[0];
+	destination_node = node_map[0];
+
+	//closest origin node
+	for (int i = 0; i < node_map.size(); i++)
+	{
+		if (node_map[i].DistanceTo(origin) < origin_node.DistanceTo(origin))
+			origin_node = node_map[i];
+	}
+
+	//closest destination node
+	for (int i = 0; i < node_map.size(); i++)
+	{
+		if (node_map[i].DistanceTo(destination) < destination_node.DistanceTo(destination))
+			destination_node = node_map[i];
+	}
+
+	current_node = origin_node;
+	path.push_back(current_node);
+
+	//iterate nodes to create the path
+	while (current_node != destination_node)
+	{
+		iPoint possible_node;
+		iPoint best_node;
+		//find neighbour nodes
+		for (int y = -node_distance; y <= node_distance; y += node_distance)
+		{
+			for (int x = -node_distance; x <= node_distance; x += node_distance)
+			{
+				possible_node.x = current_node.x + x;
+				possible_node.y = current_node.y + y;
+
+				if (possible_node.DistanceTo(destination_node) < current_node.DistanceTo(destination_node)) {
+					if (possible_node.DistanceTo(destination_node) < best_node.DistanceTo(destination_node))
+						best_node = possible_node;
+				}
+			}
+		}
+		current_node = best_node;
+		path.push_back(best_node);
+	}
+
+	//flip final path 
+	std::reverse(path.begin(), path.end());
+
+	return path;
 }
 
 // PathList ------------------------------------------------------------------------
@@ -327,7 +404,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 	path_timer.Start();
 
-	return -1;
+	return -2;
 }
 
 iPoint j1PathFinding::ExpandTile(iPoint target_tile) const {

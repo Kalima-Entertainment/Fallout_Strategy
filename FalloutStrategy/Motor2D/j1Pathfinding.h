@@ -44,10 +44,17 @@ public:
 	iPoint ExpandTile(iPoint target_tile) const;
 	iPoint FindWalkableAdjacentTile(iPoint point) const; 
 
+	std::vector<iPoint> CreateNodeMap();
+	std::vector<iPoint> GetNodeMap() const;
+	int GetDistanceBetweenNodes() const { return 150 / node_map_divisions; }
+	std::vector<iPoint> CreateNodePath(iPoint origin, iPoint destination);
+
 	float GetLastPathRequestTime() const;
 
-private:
+public:
+	bool show_nodes;
 
+private:
 	// size of the map
 	uint width = 0u;
 	uint height = 0u;
@@ -55,7 +62,9 @@ private:
 	uchar* map = nullptr;
 	std::vector<iPoint> last_path;
 	j1Timer path_timer;
-
+	//node map
+	std::vector<iPoint> node_map;
+	int node_map_divisions;
 };
 
 // forward declaration
