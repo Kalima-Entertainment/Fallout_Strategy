@@ -20,12 +20,15 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, GenericPlayer
 	{
 	case MELEE:
 		range = 1;
+		agressive = true;
 		break;
 	case RANGED:
 		range = 3;
+		agressive = true;
 		break;
 	case GATHERER:
 		range = 1;
+		agressive = false;
 		break;
 	default:
 		break;
@@ -69,12 +72,13 @@ bool DynamicEntity::Update(float dt) {
 		}
 
 		if (attacking_entity != nullptr) {
-			if (type != GATHERER){
+			if (agressive){
 				target_entity = attacking_entity;
 				if (current_tile.DistanceManhattan(attacking_entity->current_tile) > range) {
 				PathfindToPosition(attacking_entity->current_tile);
 				}
 				else {
+					attacking_entity->attacking_entity = this;
 					state = ATTACK;
 				}
 			}
@@ -86,7 +90,7 @@ bool DynamicEntity::Update(float dt) {
 		if (current_tile.LinealDistance(target_tile) <= range) {
 			//we reach the destination and there is an entity in it
 				//ranged and melee
-			if (type != GATHERER) {
+			if (agressive) {
 				if (target_entity != nullptr)
 				{
 					//enemy target

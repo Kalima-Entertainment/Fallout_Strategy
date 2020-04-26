@@ -6,7 +6,8 @@
     <organization>UPC</organization>
   </app>
   <renderer>
-    <vsync value="true"/>
+    <vsync value="false"/>
+    <background r="35" g="28" b="12" a="155"/>
   </renderer>
   
   <AI>

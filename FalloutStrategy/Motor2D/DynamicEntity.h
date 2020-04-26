@@ -70,6 +70,7 @@ public:
 	ResourceBuilding* resource_building;
 	Resource resource_type;
 	j1Timer timer;
+	bool agressive;
 
 	uint fx[6];
 
