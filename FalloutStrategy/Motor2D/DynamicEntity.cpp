@@ -8,6 +8,7 @@
 #include "j1Textures.h"
 #include "j1EntityManager.h"
 #include "j1Player.h"
+#include "j1Input.h"
 #include "AI_Player.h"
 #include "StaticEntity.h"
 #include <iostream>
@@ -294,7 +295,9 @@ bool DynamicEntity::Update(float dt) {
 	{
 		if (info.current_group->IsGroupLead(this)) {
 			if (this->faction == App->player->faction)
-				info.current_group->CheckForMovementRequest(App->player->Map_mouseposition, dt);
+				if (App->input->GetKey(SDL_SCANCODE_M) == KEY_UP)
+					LOG("Calling group movement!");
+					info.current_group->CheckForMovementRequest(App->player->Map_mouseposition, dt);
 			/*
 			else {
 				AI_Player* ai_owner = ((AI_Player*)this->owner);
@@ -382,7 +385,7 @@ bool DynamicEntity::PostUpdate() {
 	}
 
 	//selected entity
-	if (App->player->selected_entity == this)
+	if (App->player->selected_entity == this || this->info.IsSelected)
 	{
 		tile_rect = { 128,0,64,64 };
 		//blit tile
@@ -404,9 +407,6 @@ bool DynamicEntity::PostUpdate() {
 		App->render->DrawQuad({ (int)(next_tile_rect.x), (int)(next_tile_rect.y), next_tile_rect.w, next_tile_rect.h }, 0, 255, 0, 255);
 	}
 
-	//Rendering Selected Units Quad
-	if (this->info.IsSelected) DrawQuad();
-
 	//Health Bar
 	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 50, 4 };
 	SDL_Rect foreground_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, (float)current_health/max_health * 50, 4 };
@@ -419,8 +419,10 @@ bool DynamicEntity::PostUpdate() {
 }
 
 void DynamicEntity::Move(float dt) {
+
 	if (path_to_target.size() > 0) {
-		//get next tile center
+
+		// -- Get next tile center
 		next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
 		next_tile_rect = { next_tile_position.x + HALF_TILE - 5, next_tile_position.y + HALF_TILE -5, 10, 10 };
 
@@ -738,12 +740,6 @@ bool DynamicEntity::LoadReferenceData() {
 	sprite_size = reference_entity->sprite_size;
 
 	return ret;
-}
-
-void DynamicEntity::DrawQuad()
-{
-	const SDL_Rect entityrect = { position.x - sprite_size * 0.5f  + 32,  position.y - 1.82f * TILE_SIZE + 32,  64,  96 };
-	App->render->DrawQuad(entityrect, unitinfo.color.r, unitinfo.color.g, unitinfo.color.b, unitinfo.color.a, false);
 }
 
 bool DynamicEntity::TargetTileReached(iPoint target_tile) {

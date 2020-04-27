@@ -42,8 +42,6 @@ public:
 	void Attack();
 	void Gather();
 
-	void DrawQuad();
-
 	void PathfindToPosition(iPoint target);
 	bool TargetTileReached(iPoint target_tile);
 	Direction GetDirectionToGo(SDL_Rect next_tile_rect) const;
