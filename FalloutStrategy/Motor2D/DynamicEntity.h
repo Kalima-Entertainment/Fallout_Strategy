@@ -35,16 +35,16 @@ public:
 	bool PostUpdate();
 
 	bool LoadAnimations();
-	//bool LoadFx();
 	bool LoadReferenceData();
 
 	void Move(float dt);
 	void Attack();
 	void Gather();
+	void StoreGatheredResources();
 
 	void PathfindToPosition(iPoint target);
-	bool TargetTileReached(iPoint target_tile);
 	Direction GetDirectionToGo(SDL_Rect next_tile_rect) const;
+	void UpdateTile();
 
 public:
 	float action_time;
