@@ -42,6 +42,7 @@ public:
 
 	bool goal_tile_set;
 	GenericPlayer* target_player;
+	StaticEntity* target_building;
 };
 
 #endif // !_GENERIC_PLAYER_H_

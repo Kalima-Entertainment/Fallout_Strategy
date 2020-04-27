@@ -110,7 +110,7 @@ public:
 	Unit_Data unit_data[4][3];
 	j1Entity* reference_entities[4][6];
 	j1Timer sort_timer;
-	SDL_Texture* selected_unit_tex;
+	bool occupied_tiles[150][150];
 
 	bool loading_reference_entities;
 

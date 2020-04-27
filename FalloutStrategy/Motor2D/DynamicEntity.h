@@ -35,18 +35,16 @@ public:
 	bool PostUpdate();
 
 	bool LoadAnimations();
-	//bool LoadFx();
 	bool LoadReferenceData();
 
 	void Move(float dt);
 	void Attack();
 	void Gather();
-
-	void DrawQuad();
+	void StoreGatheredResources();
 
 	void PathfindToPosition(iPoint target);
-	bool TargetTileReached(iPoint target_tile);
 	Direction GetDirectionToGo(SDL_Rect next_tile_rect) const;
+	void UpdateTile();
 
 public:
 	float action_time;
@@ -63,7 +61,7 @@ public:
 	ResourceBuilding* resource_building;
 	Resource resource_type;
 	j1Timer timer;
-	bool agressive;
+	bool is_agressive;
 
 	uint fx[6];
 

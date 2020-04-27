@@ -24,6 +24,7 @@ AI_Player::AI_Player(Faction g_faction) : GenericPlayer(), is_attacking(false), 
 	goal_tile_set = false;
 	target_player = nullptr;
 	target_building = nullptr;
+	target_building_position = { -1, -1 };
 	base = barrack[0] = barrack[1] = laboratory = nullptr;
 }
 

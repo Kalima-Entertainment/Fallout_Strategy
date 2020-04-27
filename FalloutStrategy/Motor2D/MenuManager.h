@@ -13,16 +13,17 @@ class UI_Label;
 #define MAX_UI_ELEMENTS 60
 
 enum class Menu {
+	
 	MAIN_MENU,
-	SETTINGS,
 	CREDITS,
-	COLLABORATORS_CREDITS,
-	RESOURCES,
+	SETTINGS,
 	SELECT_FACTION,
 	PAUSE_MENU,
 	GUI,
+	RESOURCES,
 	BUI_BASES,
 	WIN_LOSE_SCENE,
+	COLLABORATORS_CREDITS,
 	NO_MENU,
 };
 
@@ -57,40 +58,9 @@ public:
 public:
 
 	void CreateMenu(Menu menu);
+	void CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE type);
 	void DestroyMenu(Menu menu);
 	void DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type);
-
-	void CreateMainMenu();
-	void CreateCredits();
-	void CreateSettings();
-	void CreateCollaboratorPicture();
-	void CreateSelectFaction();
-	void CreatePauseMenu();
-	void CreatePauseSettings();
-	void CreateGUI();
-	void CreateResources();
-
-	void CreateBrotherHood_Base();
-	void CreateBrotherHood_Barrack();
-	void CreateBrotherHood_Lab();
-
-	void CreateSuperMutants_Base();
-	void CreateSuperMutants_Barrack();
-	void CreateSuperMutants_Lab();
-
-
-	void CreateGhouls_Base();
-	void CreateGhouls_Barrack();
-	void CreateGhouls_Lab();
-
-
-	void CreateVault_Base();
-	void CreateVault_Barrack();
-	void CreateVault_Lab();
-
-	void CreateWinLoseScene();
-	
-
 
 public:
 
@@ -127,6 +97,11 @@ public:
 
 	Menu current_menu;
 	Menu last_menu;
+
+	std::string water;
+	std::string food;
+	std::string caps;
+
 };
 
 

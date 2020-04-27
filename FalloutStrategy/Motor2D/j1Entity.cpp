@@ -64,25 +64,80 @@ void j1Entity::SpatialAudio(int positionx, int positiony, Faction faction, State
 	case ATTACK:
 		if (faction == VAULT) {
 			if (type == RANGED) {
-			channel = 4;
-			fx = App->audio->Vault_attack;
+				channel = 16;
+				fx = App->audio->pistol;
 			}
-			else if (type == MELEE) {
-
+			else if (type != RANGED) {
+				channel = 4;
+				fx = App->audio->Vault_attack;
 			}
 		}
 		else if (faction == BROTHERHOOD) {
-			channel = 5;
-			fx = App->audio->Brotherhood_attack;
+			if (type == RANGED) {
+				channel = 15;
+				fx = App->audio->minigun;
+			}
+			else if (type != RANGED) {
+				channel = 5;
+				fx = App->audio->Brotherhood_attack;
+			}
 		}
 		else if (faction == MUTANT) {
-			channel = 3;
+			if (type == RANGED) {
+				channel = 15;
+				fx = App->audio->minigun;
+			}
+			else if (type != RANGED) {
+				channel = 3;
+				fx = App->audio->Mutant_attack;
+			}
 		}
-		else if (faction == GHOUL) channel = 19;
+		else if (faction == GHOUL) {
+			if (type == RANGED) {
+				channel = 20;
+				fx = App->audio->pistol2;
+			}
+			else if (type != RANGED) {
+				channel = 6;
+				fx = App->audio->Ghoul_attack;
+			}
+		}
 		break;
 	case HIT:
+		if (faction == MUTANT) {
+			channel = 7;
+			fx = App->audio->Mutant_hit;
+		}
+		else if (faction == VAULT) {
+			channel = 8;
+			fx = App->audio->Vault_hit;
+		}
+		else if (faction == BROTHERHOOD) {
+			channel = 9;
+			fx = App->audio->Brotherhood_hit;
+		}
+		else if (faction == GHOUL) {
+			channel = 10;
+			fx = App->audio->Ghoul_hit;
+		}
 		break;
 	case DIE:
+		if (faction == MUTANT) {
+			channel = 11;
+			fx = App->audio->Mutant_die;
+		}
+		else if (faction == VAULT) {
+			channel = 12;
+			fx = App->audio->Vault_die;
+		}
+		else if (faction == BROTHERHOOD) {
+			channel = 13;
+			fx = App->audio->Brotherhood_die;
+		}
+		else if (faction == GHOUL) {
+			channel = 14;
+			fx = App->audio->Ghoul_die;
+		}
 		break;
 	case NO_STATE:
 		break;
