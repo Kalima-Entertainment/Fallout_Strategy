@@ -44,9 +44,11 @@ public:
 
 	void DrawQuad();
 
+	j1Entity* DetectEntitiesInRange();
+
 	void PathfindToPosition(iPoint target);
-	bool TargetTileReached(iPoint target_tile);
 	Direction GetDirectionToGo(SDL_Rect next_tile_rect) const;
+	void UpdateTile();
 
 public:
 	float action_time;
@@ -59,10 +61,13 @@ public:
 	Direction last_direction;
 
 	int range;
+	int detection_range;
+
 	int resource_collected;
 	ResourceBuilding* resource_building;
 	Resource resource_type;
 	j1Timer timer;
+	j1Timer detection_timer;
 	bool is_agressive;
 
 	uint fx[6];

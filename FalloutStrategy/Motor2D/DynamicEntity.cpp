@@ -21,10 +21,12 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, GenericPlayer
 	case MELEE:
 		range = 1;
 		is_agressive = true;
+		detection_timer.Start();
 		break;
 	case RANGED:
 		range = 3;
 		is_agressive = true;
+		detection_timer.Start();
 		break;
 	case GATHERER:
 		range = 1;
@@ -45,6 +47,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, GenericPlayer
 	action_time = 3.0f;
 	target_tile = { -1,-1 };
 	sprite_size = 128;
+	detection_range = 10;
 }
 
 DynamicEntity::~DynamicEntity() {
@@ -94,75 +97,61 @@ bool DynamicEntity::Update(float dt) {
 				if (target_entity != nullptr)
 				{
 					//enemy target
-					if ((faction != target_entity->faction)&&(node_path.size() == 0)) {
+					if ((faction != target_entity->faction)&&(node_path.size() == 0)) 
+					{
 						state = ATTACK;
 						target_entity->attacking_entity = this;
 						Attack();
 					}
-					//ally
-					else if (next_tile == target_tile)
-					{
-						state = IDLE;
-						next_tile = current_tile;
-						App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
-						current_tile = App->map->WorldToMap(position.x, position.y);
-						App->entities->occupied_tiles[current_tile.x][current_tile.y] = true;
-						path_to_target.clear();
-					}
-				}
-				else {
-					//target_entity
 				}
 			}
 			//gatherer
 			else {
-				if (next_tile == target_tile) {
-					//gather
-					if ((resource_building != nullptr) && (resource_collected < storage_capacity)) {
-						state = GATHER;
-						timer.Start();
+				//gather
+				if ((resource_building != nullptr) && (resource_collected < storage_capacity)) {
+					state = GATHER;
+					timer.Start();
+				}
+
+				//give gathered resources
+				else if ((resource_collected > 0) && (target_entity != nullptr) && (target_entity->volume < target_entity->storage_capacity)) {
+					target_entity->volume += resource_collected;
+
+					//update owner resources
+					if (resource_type == Resource::CAPS) owner->caps += resource_collected;
+					else if (resource_type == Resource::WATER) owner->water += resource_collected;
+					else if (resource_type == Resource::FOOD) owner->food += resource_collected;
+
+					if (owner == App->player)
+						App->player->UpdateResourceData(resource_type, resource_collected);
+
+					resource_collected = 0;
+					target_entity = nullptr;
+
+					//go back to resource building to get more resources
+					if (resource_building->quantity > 0) {
+						PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
+						state = WALK;
 					}
-
-					//give gathered resources
-					else if ((resource_collected > 0) && (target_entity != nullptr) && (target_entity->volume < target_entity->storage_capacity)) {
-						target_entity->volume += resource_collected;
-
-						//update owner resources
-						if (resource_type == Resource::CAPS) owner->caps += resource_collected;
-						else if (resource_type == Resource::WATER) owner->water += resource_collected;
-						else if (resource_type == Resource::FOOD) owner->food += resource_collected;
-
-						if (owner == App->player)
-							App->player->UpdateResourceData(resource_type, resource_collected);
-
-						resource_collected = 0;
-						target_entity = nullptr;
-
-						//go back to resource building to get more resources
-						if (resource_building->quantity > 0) {
+					//find another building
+					else
+					{
+						resource_building = App->entities->GetClosestResourceBuilding(current_tile);
+						//if there is at least a resource building left, go there
+						if (resource_building != nullptr) {
 							PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
 							state = WALK;
 						}
-						//find another building
+						//if there are no resource buildings left
 						else
 						{
-							resource_building = App->entities->GetClosestResourceBuilding(current_tile);
-							//if there is at least a resource building left, go there
-							if (resource_building != nullptr) {
-								PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
-								state = WALK;
-							}
-							//if there are no resource buildings left
-							else
-							{
-								state = IDLE;
-							}
+							state = IDLE;
 						}
 					}
+				}
 					
-					if (target_entity != nullptr) {
-						state = IDLE;
-					}
+				if (target_entity != nullptr) {
+					state = IDLE;
 				}
 			}
 		}
@@ -175,7 +164,7 @@ bool DynamicEntity::Update(float dt) {
 				//if we have reached the final node pathfind to target building
 				if (node_path.size() == 0)
 				{
-					if (target_entity != nullptr) {
+					if ((target_entity != nullptr)&&(!target_entity->is_dynamic)) {
 						target_tile = App->entities->ClosestTile(current_tile, ((StaticEntity*)target_entity)->tiles);
 					}
 				}
@@ -352,6 +341,39 @@ bool DynamicEntity::Update(float dt) {
 		*/
 	}
 
+	//range detection
+	/*
+	if ((is_agressive) && (detection_timer.Read() > 2500)) {
+		j1Entity* detected_entity;
+		detected_entity = DetectEntitiesInRange();
+
+		//if an enemy entity is in range
+		if ((detected_entity != nullptr)&&(target_entity == nullptr)) {
+			/*
+			if ((target_entity == nullptr)||(detected_entity != target_entity)) {
+				if (owner->target_building != nullptr) {
+					if ((detected_entity == owner->target_building) || (current_tile.DistanceManhattan(owner->target_building_position) > 50)) {
+						target_entity = detected_entity;
+						path_to_target.clear();
+						node_path.clear();
+						PathfindToPosition(target_entity->current_tile);
+					}
+				}
+				else
+				{
+					target_entity = detected_entity;
+					path_to_target.clear();
+					node_path.clear();
+					PathfindToPosition(target_entity->current_tile);
+				}
+			}
+			if (detected_entity != target_entity) {
+				target_entity = detected_entity;
+				PathfindToPosition(target_entity->current_tile);
+			}
+		}
+		detection_timer.Start();
+		*/
 	//save dt for animations
 	last_dt = dt;
 
@@ -445,9 +467,7 @@ void DynamicEntity::Move(float dt) {
 				state = IDLE;
 			}
 			direction = last_direction;
-			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
-			current_tile = App->map->WorldToMap(position.x, position.y);
-			App->entities->occupied_tiles[current_tile.x][current_tile.y] = true;
+			UpdateTile();
 			break;
 
 		case TOP_LEFT:
@@ -472,9 +492,7 @@ void DynamicEntity::Move(float dt) {
 	}
 	else
 	{
-		App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
-		current_tile = App->map->WorldToMap(position.x, position.y);
-		App->entities->occupied_tiles[current_tile.x][current_tile.y] = true;
+		UpdateTile();
 		direction = last_direction;
 		state = IDLE;
 	}
@@ -492,6 +510,7 @@ void DynamicEntity::Attack() {
 			DynamicEntity* dynamic_target = (DynamicEntity*)target_entity;
 			target_entity->attacking_entity = this;
 			dynamic_target->state = HIT;
+			dynamic_target->UpdateTile();
 		}
 	}
 
@@ -579,51 +598,6 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 		next_tile = path_to_target.front();
 	}
 }
-
-/*
-bool DynamicEntity::LoadFx() {
-	bool ret = true;
-	char* faction_char = { "NoFaction" };
-	char* state_char = { "NoState" };
-
-
-	for (int faction = VAULT; faction < NO_FACTION; faction++)
-	{
-		//entity faction
-		if (faction == VAULT)
-			faction_char = "VaultDwellers";
-		else if (faction == BROTHERHOOD)
-			faction_char = "Brotherhood";
-		else if (faction == MUTANT)
-			faction_char = "SuperMutant";
-		else if (faction == GHOUL)
-			faction_char = "Ghouls";
-	}
-
-	for (int animation = IDLE; animation < MAX_ANIMATIONS; animation++)
-	{
-		//entity action
-		if (animation == IDLE)
-			state_char = "Idle";
-		else if (animation == WALK)
-			state_char = "Walk";
-		else if (animation == ATTACK)
-			state_char = "Attack";
-		else if (animation == GATHER)
-			state_char = "Gather";
-		else if (animation == HIT)
-			state_char = "Hit";
-		else if (animation == DIE)
-			state_char = "Die";
-
-		std::string file = std::string("audio/fx/CharactersSounds/").append(faction_char).append("/").append(faction_char).append("_").append(state_char).append(".WAV");
-
-		fx[animation] = App->audio->LoadFx(file.c_str());
-	}
-
-	return ret;
-}
-*/
 
 bool DynamicEntity::LoadAnimations() {
 	bool ret = true;
@@ -746,36 +720,6 @@ void DynamicEntity::DrawQuad()
 	App->render->DrawQuad(entityrect, unitinfo.color.r, unitinfo.color.g, unitinfo.color.b, unitinfo.color.a, false);
 }
 
-bool DynamicEntity::TargetTileReached(iPoint target_tile) {
-	bool ret = false;
-	
-	//north-west
-	if ((current_tile.x - 1 == target_tile.x) && (current_tile.y - 1 == target_tile.y))
-return true;
-	//north
-	if ((current_tile.x == target_tile.x) && (current_tile.y - 1 == target_tile.y))
-		return true;
-	//north-east
-	if ((current_tile.x + 1 == target_tile.x) && (current_tile.y - 1 == target_tile.y))
-		return true;
-	//east
-	if ((current_tile.x + 1 == target_tile.x) && (current_tile.y == target_tile.y))
-		return true;
-	//south-east
-	if ((current_tile.x + 1 == target_tile.x) && (current_tile.y + 1 == target_tile.y))
-		return true;
-	//south
-	if ((current_tile.x  == target_tile.x) && (current_tile.y + 1 == target_tile.y))
-		return true;
-	//south-west
-	if ((current_tile.x - 1 == target_tile.x) && (current_tile.y + 1 == target_tile.y))
-		return true;
-	//west
-	if ((current_tile.x - 1 == target_tile.x) && (current_tile.y == target_tile.y))
-		return true;
-
-	return ret;
-}
 
 Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
 
@@ -795,6 +739,36 @@ Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
 	else if ((floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
 		return Direction::BOTTOM_RIGHT;
 	}
+}
+
+j1Entity* DynamicEntity::DetectEntitiesInRange() {
+	j1Entity* detected_entity = nullptr;
+	j1Entity* target = nullptr;
+	for (int y = current_tile.y -detection_range; y < current_tile.y + detection_range; y++)
+	{
+		for (int x = current_tile.x -detection_range; x < current_tile.x + detection_range; x++)
+		{
+			if (App->entities->occupied_tiles[x][y]) {
+				detected_entity = App->entities->FindEntityByTile({ x,y });
+				if (detected_entity == owner->target_building) {
+					target_entity = detected_entity;
+				}
+				else
+				{
+					if (detected_entity->faction != faction) {
+						target = detected_entity;
+					}
+				}
+			}
+		}
+	}
+	return detected_entity;
+}
+
+void DynamicEntity::UpdateTile() {
+	App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
+	current_tile = App->map->WorldToMap(position.x, position.y);
+	App->entities->occupied_tiles[current_tile.x][current_tile.y] = true;
 }
 
 // --- UnitInfo Constructors and Destructor ---
