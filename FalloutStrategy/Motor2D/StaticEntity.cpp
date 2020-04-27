@@ -12,7 +12,7 @@
 StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, GenericPlayer* g_owner) {
 	type = g_type;
 	faction = g_faction;
-	state = WAIT;
+	state = IDLE;
 	storage_capacity = 1000;
 	max_capacity = 3000;
 	render_texture_pos = { 0,0 };	
@@ -42,20 +42,21 @@ bool StaticEntity::Update(float dt) {
 	current_animation = &animations[state];
 
 	switch (state) {
-	case WAIT:
+	case IDLE:
 		break;
-	case WORK:
-		break;
-	case EXPLODE:
+	case DIE:
 		if (!delete_timer.Started())
 			delete_timer.Start();
 
 		if ((delete_timer.ReadSec() > 5)||(current_animation->Finished()))
 			to_delete = true;
 
+		SpatialAudio(position.x, position.y, faction, state, type);
+
+		/*
 		if (Mix_Playing(21) == 0)
 			SpatialAudio(App->audio->explode, 21, position.x, position.y);
-
+*/
 		break;
 	default:
 		break;
@@ -267,7 +268,7 @@ bool StaticEntity::LoadAnimations() {
 	{
 		std::string building_type = std::string(animation.child("properties").child("property").attribute("name").as_string());
 		std::string animation_name = std::string(animation.child("properties").child("property").attribute("value").as_string());
-		StaticState state = NO_STATE;
+		State state = NO_STATE;
 		EntityType entity_type = BASE;
 		bool loop = true;
 
@@ -281,14 +282,10 @@ bool StaticEntity::LoadAnimations() {
 
 		//animation
 		if (animation_name == "idle") {
-			state = WAIT;
-		}
-		else if (animation_name == "work") {
-			state = WORK;
-			loop = false;
+			state = IDLE;
 		}
 		else if (animation_name == "die") {
-			state = EXPLODE;
+			state = DIE;
 			loop = false;
 		}
 		else goto CHANGE_ANIMATION;

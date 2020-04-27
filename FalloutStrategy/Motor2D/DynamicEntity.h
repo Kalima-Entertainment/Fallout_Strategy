@@ -14,15 +14,6 @@ enum Direction {
 	NO_DIRECTION
 };
 
-enum DynamicState {
-	IDLE,
-	WALK,
-	ATTACK,
-	GATHER,
-	HIT,
-	DIE,
-	MAX_ANIMATIONS
-};
 
 struct UnitInfo {
 
@@ -46,12 +37,14 @@ public:
 	bool LoadAnimations();
 	//bool LoadFx();
 	bool LoadReferenceData();
-	void PathfindToGather(iPoint target);
-	void PathfindToPosition(iPoint target);
+
 	void Move(float dt);
 	void Attack();
 	void Gather();
+
 	void DrawQuad();
+
+	void PathfindToPosition(iPoint target);
 	bool TargetTileReached(iPoint target_tile);
 	Direction GetDirectionToGo(SDL_Rect next_tile_rect) const;
 
@@ -61,10 +54,10 @@ public:
 	iPoint next_tile_position;
 	SDL_Rect next_tile_rect;
 
-	Animation animations[MAX_ANIMATIONS][4];
+	Animation animations[NO_STATE][4];
 	Direction direction;
 	Direction last_direction;
-	DynamicState state;
+
 	int range;
 	int resource_collected;
 	ResourceBuilding* resource_building;

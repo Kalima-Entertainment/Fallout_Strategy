@@ -107,7 +107,7 @@ bool AI_Player::Update(float dt) {
 	if (is_attacking) 
 	{
 		//if the target building is destroyed forget about it
-		if ((target_building!=nullptr) && (target_building->state == EXPLODE))
+		if ((target_building!=nullptr) && (target_building->state == DIE))
 			target_building = nullptr;
 
 		//if there is no target building find one

@@ -301,25 +301,25 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 		{
 			if (players[i]->faction != App->player->faction) {
 				if (players[i]->base != nullptr)
-					players[i]->base->state = EXPLODE;
+					players[i]->base->state = DIE;
 				if (players[i]->laboratory != nullptr)
-					players[i]->laboratory->state = EXPLODE;
+					players[i]->laboratory->state = DIE;
 				if (players[i]->barrack[0] != nullptr)
-					players[i]->barrack[0]->state = EXPLODE;
+					players[i]->barrack[0]->state = DIE;
 				if (players[i]->barrack[1] != nullptr)
-					players[i]->barrack[1]->state = EXPLODE;
+					players[i]->barrack[1]->state = DIE;
 			}
 		}
 	}
 	//Instantly lose the game
 	else if (command_beginning == "lose") {
 		if (App->player->base != nullptr)
-			App->player->base->state = EXPLODE;
+			App->player->base->state = DIE;
 		if (App->player->laboratory != nullptr)
-			App->player->laboratory->state = EXPLODE;
+			App->player->laboratory->state = DIE;
 		if (App->player->barrack[0] != nullptr)
-			App->player->barrack[0]->state = EXPLODE;
+			App->player->barrack[0]->state = DIE;
 		if (App->player->barrack[1] != nullptr)
-			App->player->barrack[1]->state = EXPLODE;
+			App->player->barrack[1]->state = DIE;
 	}
 }

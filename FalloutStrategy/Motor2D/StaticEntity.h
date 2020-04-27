@@ -6,13 +6,6 @@
 #include <iostream>
 #include <chrono>
 
-enum StaticState {
-	WAIT,
-	WORK,
-	EXPLODE,
-	NO_STATE
-};
-
 struct Spawn_Stack {
 	EntityType type;
 	int spawn_seconds; //Seconds it requires to spawn
@@ -44,7 +37,7 @@ public:
 	
 public:
 	std::vector<iPoint> tiles;
-	StaticState state;
+
 private:
 	int gen_speed;
 	Animation animations[3];
