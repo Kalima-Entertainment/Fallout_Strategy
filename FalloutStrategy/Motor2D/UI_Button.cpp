@@ -130,7 +130,7 @@ bool UI_Button::Update(float dt)
 			if (t == button_new_game)
 			{
 				App->menu_manager->DestroyMenu(Menu::MAIN_MENU);
-				App->menu_manager->CreateSelectFaction();
+				App->menu_manager->CreateMenu(Menu::SELECT_FACTION);
 				App->audio->PlayFx(1, App->audio->click_fx, 0);
 			}
 			else if (t == Button_slider_music_left) {
@@ -167,12 +167,12 @@ bool UI_Button::Update(float dt)
 			else if (t == button_credits)
 			{
 				App->menu_manager->DestroyMenu(Menu::MAIN_MENU);
-				App->menu_manager->CreateCredits();
+				App->menu_manager->CreateMenu(Menu::CREDITS);
 				App->audio->PlayFx(1, App->audio->click_fx, 0);
 			}
 			else if (t == button_back_credits)
 			{
-				App->menu_manager->CreateMainMenu();
+				App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 				App->menu_manager->DestroyMenu(Menu::CREDITS);
 				App->audio->PlayFx(1, App->audio->back_fx, 0);
 			}
@@ -184,24 +184,24 @@ bool UI_Button::Update(float dt)
 			else if (t == button_settings) {
 
 				App->menu_manager->DestroyMenu(Menu::MAIN_MENU);
-				App->menu_manager->CreateSettings();
+				App->menu_manager->CreateMenu(Menu::SETTINGS);
 				App->audio->PlayFx(1, App->audio->click_fx, 0);
 			}
 			else if (t == button_settings_pause) {
 
 				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
-				App->menu_manager->CreatePauseSettings();
+				App->menu_manager->CreateMenu(Menu::SETTINGS);
 				App->audio->PlayFx(1, App->audio->click_fx, 0);
 			}
 			else if (t == button_back) {
 				App->menu_manager->DestroyMenu(Menu::SETTINGS);
-				App->menu_manager->CreateMainMenu();
+				App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 				
 				App->audio->PlayFx(1, App->audio->back_fx, 0);
 			}
 			else if (t == button_back_pause) {
 				App->menu_manager->DestroyMenu(Menu::SETTINGS);
-				App->menu_manager->CreatePauseMenu();
+				App->menu_manager->CreateMenu(Menu::PAUSE_MENU);
 				App->audio->PlayFx(1, App->audio->back_fx, 0);
 			}
 			else if (t == resume_button) {
@@ -211,7 +211,7 @@ bool UI_Button::Update(float dt)
 			}
 			else if (t == button_back_to_menu)
 			{
-				App->menu_manager->CreateMainMenu();
+				App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
 				App->audio->PlayFx(1, App->audio->back_fx, 0);
 				App->isPaused = false;
@@ -219,7 +219,7 @@ bool UI_Button::Update(float dt)
 			else if (t == button_pause_to_main)
 			{
 				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
-				App->menu_manager->CreateMainMenu();
+				App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 				App->audio->PlayFx(1, App->audio->back_fx, 0);
 				App->gui->ingame = false;
 				App->transition->StartTimer();
@@ -264,7 +264,7 @@ bool UI_Button::Update(float dt)
 			else if (t == button_win_lose_to_main)
 			{
 				App->menu_manager->DestroyMenu(Menu::WIN_LOSE_SCENE);
-				App->menu_manager->CreateMainMenu();
+				App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 				App->audio->PlayFx(1, App->audio->back_fx, 0);
 				App->gui->ingame = false;
 				App->transition->StartTimer();
@@ -317,8 +317,8 @@ bool UI_Button::Update(float dt)
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
 				App->gui->count = 0;
 				App->gui->ingame = true;
-				App->menu_manager->CreateGUI();
-				App->menu_manager->CreateResources();
+				App->menu_manager->CreateMenu(Menu::GUI);
+				App->menu_manager->CreateMenu(Menu::RESOURCES);
 				App->transition->fadetimer.Start();
 				App->transition->transition = true;
 				App->entities->Enable();
@@ -332,8 +332,8 @@ bool UI_Button::Update(float dt)
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
 				App->gui->count = 0;
 				App->gui->ingame = true;
-				App->menu_manager->CreateGUI();
-				App->menu_manager->CreateResources();
+				App->menu_manager->CreateMenu(Menu::GUI);
+				App->menu_manager->CreateMenu(Menu::RESOURCES);
 				App->transition->fadetimer.Start();
 				App->transition->transition = true;
 				App->entities->Enable();
@@ -346,8 +346,8 @@ bool UI_Button::Update(float dt)
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
 				App->gui->count = 0;
 				App->gui->ingame = true;
-				App->menu_manager->CreateGUI();
-				App->menu_manager->CreateResources();
+				App->menu_manager->CreateMenu(Menu::GUI);
+				App->menu_manager->CreateMenu(Menu::RESOURCES);
 				App->transition->fadetimer.Start();
 				App->transition->transition = true;				
 				App->entities->Enable();
@@ -360,8 +360,8 @@ bool UI_Button::Update(float dt)
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
 				App->gui->count = 0;
 				App->gui->ingame = true;
-				App->menu_manager->CreateGUI();
-				App->menu_manager->CreateResources();
+				App->menu_manager->CreateMenu(Menu::GUI);
+				App->menu_manager->CreateMenu(Menu::RESOURCES);
 				App->transition->fadetimer.Start();
 				App->transition->transition = true;
 				App->entities->Enable();

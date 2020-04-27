@@ -263,7 +263,7 @@ void j1Player::UpdateResourceData(Resource resource_type, int quantity) {
 
 	//update gui
 	App->menu_manager->DestroyMenu(Menu::RESOURCES);
-	App->menu_manager->CreateResources();
+	App->menu_manager->CreateMenu(Menu::RESOURCES);
 }
 
 void j1Player::OnCommand(std::vector<std::string> command_parts) {

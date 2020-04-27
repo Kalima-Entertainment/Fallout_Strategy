@@ -138,7 +138,7 @@ bool j1Scene::Update(float dt)
 
 		else if (create == false) {
 
-			App->menu_manager->CreatePauseMenu();
+			App->menu_manager->CreateMenu(Menu::PAUSE_MENU);
 			App->isPaused = true;
 			create = true;
 		}
@@ -169,7 +169,7 @@ bool j1Scene::Update(float dt)
 		
 		win = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
-		App->menu_manager->CreateWinLoseScene();
+		App->menu_manager->CreateMenu(Menu::WIN_LOSE_SCENE);
 		App->entities->Disable();
 		App->scene->Disable();
 		App->isPaused = false;
@@ -179,7 +179,7 @@ bool j1Scene::Update(float dt)
 
 		win = false;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
-		App->menu_manager->CreateWinLoseScene();
+		App->menu_manager->CreateMenu(Menu::WIN_LOSE_SCENE);
 		App->entities->Disable();
 		App->scene->Disable();
 		App->isPaused = false;
@@ -262,7 +262,7 @@ void j1Scene::CheckWinner() {
 					//LOSE
 					win = false;
 					App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
-					App->menu_manager->CreateWinLoseScene();
+					App->menu_manager->CreateMenu(Menu::WIN_LOSE_SCENE);
 					App->gui->ingame = false;
 					App->isPaused = true;
 				}
@@ -286,7 +286,7 @@ void j1Scene::CheckWinner() {
 		LOG("You won!");
 		win = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
-		App->menu_manager->CreateWinLoseScene();
+		App->menu_manager->CreateMenu(Menu::WIN_LOSE_SCENE);
 		App->gui->ingame = false;
 		App->isPaused = true;
 	}
