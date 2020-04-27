@@ -283,22 +283,22 @@ uint PathNode::FindWalkableAdjacents(PathList& list_to_fill) const
 
 	// north
 	cell.create(pos.x, pos.y + 1);
-	if (App->pathfinding->IsWalkable(cell))
+	if (App->pathfinding->IsWalkable(cell) && !App->entities->occupied_tiles[cell.x][cell.y])
 		list_to_fill.list.push_back(PathNode(-1, -1, cell, this));
 
 	// south
 	cell.create(pos.x, pos.y - 1);
-	if (App->pathfinding->IsWalkable(cell))
+	if (App->pathfinding->IsWalkable(cell) && !App->entities->occupied_tiles[cell.x][cell.y])
 		list_to_fill.list.push_back(PathNode(-1, -1, cell, this));
 
 	// east
 	cell.create(pos.x + 1, pos.y);
-	if (App->pathfinding->IsWalkable(cell))
+	if (App->pathfinding->IsWalkable(cell) && !App->entities->occupied_tiles[cell.x][cell.y])
 		list_to_fill.list.push_back(PathNode(-1, -1, cell, this));
 
 	// west
 	cell.create(pos.x - 1, pos.y);
-	if (App->pathfinding->IsWalkable(cell))
+	if (App->pathfinding->IsWalkable(cell) && !App->entities->occupied_tiles[cell.x][cell.y])
 		list_to_fill.list.push_back(PathNode(-1, -1, cell, this));
 
 	return list_to_fill.list.size();

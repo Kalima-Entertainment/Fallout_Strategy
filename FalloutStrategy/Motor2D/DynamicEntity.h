@@ -63,7 +63,7 @@ public:
 	ResourceBuilding* resource_building;
 	Resource resource_type;
 	j1Timer timer;
-	bool agressive;
+	bool is_agressive;
 
 	uint fx[6];
 

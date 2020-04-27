@@ -25,7 +25,6 @@
 j1EntityManager::j1EntityManager(){
 	name = ("entities");
 
-	selected_unit_tex = nullptr;
 	blocked_movement = false;
 
 	//water, food, spawn time (seconds)
@@ -67,7 +66,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	if ((type == MELEE) || (type == RANGED) || (type == GATHERER)) {
 		entity = new DynamicEntity(faction, type, owner);
 		entity->is_dynamic = true;
-
+		entity->current_tile = { position_x, position_y };
 		entity->reference_entity = reference_entities[faction][type];
 
 		if (entity != NULL)
@@ -113,7 +112,6 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 					//We didn't find a free spawn point, so we spawn in the same tile as other unit
 					entity->current_tile.x = position_x;
 					entity->current_tile.y = position_y;
-
 					break;
 				}
 			}
@@ -123,6 +121,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 			entity->position.y += 32;
 
 			if (entity->reference_entity != nullptr){
+				occupied_tiles[entity->current_tile.x][entity->current_tile.y] = true;
 				entities.push_back(entity);
 				entity->LoadReferenceData();
 				switch (entity->type)
@@ -275,6 +274,14 @@ bool j1EntityManager::Start() {
 	loading_reference_entities = true;
 	loading_faction = VAULT;
 	loading_entity = MELEE;
+
+	for (int y = 0; y < 150; y++)
+	{
+		for (int x = 0; x < 150; x++)
+		{
+			occupied_tiles[x][y] = false;
+		}
+	}
 
 	//automatic entities loading
 	for (int faction = VAULT; faction < NO_FACTION; faction++)
@@ -539,6 +546,19 @@ bool j1EntityManager::PostUpdate()
 					sort_timer.Start();
 				}
 				entities[i]->PostUpdate();
+			}
+		}
+
+		//
+		iPoint occuppied_tile = { -1,-1 };
+		for (int y = 0; y < 150; y++)
+		{
+			for (int x = 0; x < 150; x++)
+			{
+				if (occupied_tiles[x][y]) {
+					occuppied_tile = App->map->MapToWorld(x, y);
+					App->render->DrawQuad({ occuppied_tile.x + HALF_TILE,occuppied_tile.y + HALF_TILE,8,8 }, 155, 155, 155, 255);
+				}
 			}
 		}
 	}

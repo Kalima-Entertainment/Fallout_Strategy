@@ -20,15 +20,15 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, GenericPlayer
 	{
 	case MELEE:
 		range = 1;
-		agressive = true;
+		is_agressive = true;
 		break;
 	case RANGED:
 		range = 3;
-		agressive = true;
+		is_agressive = true;
 		break;
 	case GATHERER:
 		range = 1;
-		agressive = false;
+		is_agressive = false;
 		break;
 	default:
 		break;
@@ -41,6 +41,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, GenericPlayer
 	speed = { 0, 0 };
 	target_entity = nullptr;
 	resource_building = nullptr;
+	attacking_entity = nullptr;
 	action_time = 3.0f;
 	target_tile = { -1,-1 };
 	sprite_size = 128;
@@ -60,8 +61,7 @@ DynamicEntity::~DynamicEntity() {
 bool DynamicEntity::Update(float dt) {
 
 	Mix_AllocateChannels(25);
-	current_tile = App->map->WorldToMap(position.x, position.y);
-
+	
 	switch (state)
 	{
 	case IDLE:
@@ -72,7 +72,7 @@ bool DynamicEntity::Update(float dt) {
 		}
 
 		if (attacking_entity != nullptr) {
-			if (agressive){
+			if (is_agressive){
 				target_entity = attacking_entity;
 				if (current_tile.DistanceManhattan(attacking_entity->current_tile) > range) {
 				PathfindToPosition(attacking_entity->current_tile);
@@ -90,7 +90,7 @@ bool DynamicEntity::Update(float dt) {
 		if (current_tile.LinealDistance(target_tile) <= range) {
 			//we reach the destination and there is an entity in it
 			//ranged and melee
-			if (agressive) {
+			if (is_agressive) {
 				if (target_entity != nullptr)
 				{
 					//enemy target
@@ -104,6 +104,9 @@ bool DynamicEntity::Update(float dt) {
 					{
 						state = IDLE;
 						next_tile = current_tile;
+						App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
+						current_tile = App->map->WorldToMap(position.x, position.y);
+						App->entities->occupied_tiles[current_tile.x][current_tile.y] = true;
 						path_to_target.clear();
 					}
 				}
@@ -265,6 +268,7 @@ bool DynamicEntity::Update(float dt) {
 		if ((delete_timer.ReadSec() > 5) || (current_animation->Finished())) {
 			to_delete = true;
 			attacking_entity->target_entity = nullptr;
+			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
 			attacking_entity->state = IDLE;
 		}
 		
@@ -437,14 +441,15 @@ void DynamicEntity::Move(float dt) {
 			}
 			else if (node_path.size() == 0)
 			{
-				position.x = next_tile_rect.x + 2;
-				position.y = next_tile_rect.y + 2;
-				current_tile = target_tile;
 				path_to_target.clear();
 				state = IDLE;
 			}
 			direction = last_direction;
+			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
+			current_tile = App->map->WorldToMap(position.x, position.y);
+			App->entities->occupied_tiles[current_tile.x][current_tile.y] = true;
 			break;
+
 		case TOP_LEFT:
 			position.x -= speed.x * dt;
 			position.y -= speed.y * dt;
@@ -467,6 +472,9 @@ void DynamicEntity::Move(float dt) {
 	}
 	else
 	{
+		App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
+		current_tile = App->map->WorldToMap(position.x, position.y);
+		App->entities->occupied_tiles[current_tile.x][current_tile.y] = true;
 		direction = last_direction;
 		state = IDLE;
 	}
@@ -546,8 +554,6 @@ void DynamicEntity::Gather() {
 
 void DynamicEntity::PathfindToPosition(iPoint destination) {
 
-	//current_tile = App->map->WorldToMap(position.x, position.y);
-
 	//if the tile is in the map but it's not walkable
 	if (!App->pathfinding->IsWalkable(destination)) 
 	{
@@ -569,8 +575,9 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 
 	state = WALK;
 
-	if (path_to_target.size() > 0)
+	if (path_to_target.size() > 0) {
 		next_tile = path_to_target.front();
+	}
 }
 
 /*
