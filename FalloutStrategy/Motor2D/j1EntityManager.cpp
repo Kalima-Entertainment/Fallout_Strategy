@@ -549,15 +549,16 @@ bool j1EntityManager::PostUpdate()
 			}
 		}
 
-		//
-		iPoint occuppied_tile = { -1,-1 };
-		for (int y = 0; y < 150; y++)
-		{
-			for (int x = 0; x < 150; x++)
+		if (App->render->debug) {
+			iPoint occuppied_tile = { -1,-1 };
+			for (int y = 0; y < 150; y++)
 			{
-				if (occupied_tiles[x][y]) {
-					occuppied_tile = App->map->MapToWorld(x, y);
-					App->render->DrawQuad({ occuppied_tile.x + HALF_TILE,occuppied_tile.y + HALF_TILE,8,8 }, 155, 155, 155, 255);
+				for (int x = 0; x < 150; x++)
+				{
+					if (occupied_tiles[x][y]) {
+						occuppied_tile = App->map->MapToWorld(x, y);
+						App->render->DrawQuad({ occuppied_tile.x + HALF_TILE,occuppied_tile.y + HALF_TILE,8,8 }, 155, 155, 155, 255);
+					}
 				}
 			}
 		}
@@ -682,10 +683,11 @@ iPoint j1EntityManager::ClosestTile(iPoint position, std::vector<iPoint> entity_
 	return pivot;
 }
 
-iPoint j1EntityManager::FindFreeAdjacentTile(iPoint tile) const {
+iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) {
 	int max = 1;
 	iPoint possible_tile;
-	iPoint clossest_possible_tile;
+	iPoint closest_possible_tile = {-1,-1};
+	int distance = 100000;
 
 	while (max < 5) {
 		for (int y = -max; y < max; y++)
@@ -693,15 +695,23 @@ iPoint j1EntityManager::FindFreeAdjacentTile(iPoint tile) const {
 			for (int x = -max; x < max; x++)
 			{
 				if (x != 0 && y != 0) {
-					possible_tile.x = tile.x + x;
-					possible_tile.y = tile.y + y;
+					possible_tile.x = destination.x + x;
+					possible_tile.y = destination.y + y;
 
 					if ((!occupied_tiles[possible_tile.x][possible_tile.y])&&(App->pathfinding->IsWalkable(possible_tile))) {
-						return possible_tile;
+						if (possible_tile.DistanceManhattan(origin) < distance) {
+							distance = possible_tile.DistanceManhattan(origin);
+							closest_possible_tile = possible_tile;
+						}
+						
 					}
 				}
 			}
 		}
+
+		if (closest_possible_tile != iPoint(-1, -1))
+			return closest_possible_tile;
+
 		max++;
 	}
 	return possible_tile;

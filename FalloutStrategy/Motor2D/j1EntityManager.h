@@ -84,7 +84,7 @@ public:
 	ResourceBuilding* GetClosestResourceBuilding(iPoint current_position);
 
 	iPoint ClosestTile(iPoint position, std::vector<iPoint> entity_tiles) const;
-	iPoint FindFreeAdjacentTile(iPoint tile) const;
+	iPoint FindFreeAdjacentTile(iPoint origin, iPoint destination);
 
 	bool LoadReferenceEntityData();
 	void DestroyEntity(j1Entity* delete_entity);

@@ -429,7 +429,11 @@ void DynamicEntity::Attack() {
 
 		if (target_entity->is_dynamic) {
 			DynamicEntity* dynamic_target = (DynamicEntity*)target_entity;
-			target_entity->attacking_entity = this;
+
+			if(dynamic_target->attacking_entity == nullptr)
+				target_entity->attacking_entity = this;
+
+			path_to_target.clear();
 			dynamic_target->state = HIT;
 		}
 	}
@@ -513,7 +517,7 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 		destination = App->pathfinding->FindNearestWalkableTile(current_tile, destination);
 
 	if (App->entities->occupied_tiles[destination.x][destination.y])
-		destination = App->entities->FindFreeAdjacentTile(destination);
+		destination = App->entities->FindFreeAdjacentTile(current_tile, destination);
 
 	target_tile = destination;
 
