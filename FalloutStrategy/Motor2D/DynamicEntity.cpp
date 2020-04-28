@@ -93,7 +93,7 @@ bool DynamicEntity::Update(float dt) {
 			}
 		}
 
-		if ((target_entity == nullptr)&&(detection_timer.Read() > 750)) {
+		if ((target_entity == nullptr)&&(detection_timer.Read() > 250)) {
 			j1Entity* enemy_in_range = DetectEntitiesInRange();
 
 			if (enemy_in_range != nullptr) {
@@ -196,7 +196,12 @@ bool DynamicEntity::Update(float dt) {
 	case HIT:
 		current_animation = &animations[HIT][direction];
 		if (current_animation->Finished()) {
-			state = IDLE;
+			if ((attacking_entity != nullptr) && (is_agressive)) {
+				state = ATTACK;
+			}
+			else {
+				state = IDLE;
+			}
 		}
 
 		SpatialAudio(position.x, position.y, faction, state, type);
@@ -325,7 +330,7 @@ bool DynamicEntity::PostUpdate() {
 	}
 
 	if (direction >= NO_DIRECTION) {
-		if (last_direction != NO_DIRECTION)
+		if (last_direction < NO_DIRECTION)
 			direction = last_direction;
 		else 
 			direction = BOTTOM_RIGHT;
@@ -346,10 +351,11 @@ bool DynamicEntity::PostUpdate() {
 	//Health Bar
 	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 50, 4 };
 	SDL_Rect foreground_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, (float)current_health/max_health * 50, 4 };
+	SDL_Rect frame = { position.x - HALF_TILE * 0.75f - 1, position.y - TILE_SIZE * 1.5f - 1, 52, 6};
 	if (foreground_bar.w < 0) foreground_bar.w = 0;
-	App->render->DrawQuad(background_bar, 255, 255, 255, 255);
+	App->render->DrawQuad(background_bar, 55, 55, 55, 255);
 	App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
-
+	App->render->DrawQuad(frame, 155, 155, 155, 185, false);
 
 	return true;
 }
@@ -446,8 +452,11 @@ void DynamicEntity::Attack() {
 
 	timer.Start();
 
-	//damage unit if god_mode isn't activated 
-	if ((target_entity != nullptr) && ((target_entity->faction != App->player->faction) || (!App->player->god_mode))) {
+	//damage unit if god_mode isn't activated
+	if ((target_entity->faction == App->player->faction) && (App->player->god_mode))
+		return;
+
+	if (target_entity != nullptr) {
 		target_entity->current_health -= damage;
 
 		if (target_entity->is_dynamic) {

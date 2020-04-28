@@ -121,6 +121,7 @@ bool j1Console::CleanUp() {
 void j1Console::AddLogText(std::string incoming_text) {
 	
 	log_record.push_back(incoming_text);
+
 	if (isVisible) {
 		DestroyInterface();
 		if (log_record.size() > MAX_LOG_RECORD)
@@ -141,9 +142,9 @@ void j1Console::CreateInterface() {
 	int font_size = 14;
 	int x_margin = 14;
 	int spacing = 6;
-	int j = 0;
+	int j = 1;
 
-	for (int i = log_record.size(); i > 0; i--)
+	for (int i = log_record.size() -1; i >= 0; i--)
 	{
 		on_screen_log.push_back((UI_Label*)App->gui->CreateLabel(0 + x_margin, log_box.h - (j * (font_size + spacing)) -spacing, Label, log_record[i].c_str(), NULL, this, NULL, "OpenSans-Light"));
 		j++;
@@ -153,12 +154,18 @@ void j1Console::CreateInterface() {
 }
 
 void j1Console::DestroyInterface() {
+
 	for (int i = 0; i < on_screen_log.size(); i++)
 	{
 		App->gui->Delete_Element(on_screen_log[i]);
+		on_screen_log[i] = nullptr;
 	}
-	if (input_box != nullptr) App->gui->Delete_Element(input_box);
-	input_box = nullptr;
+
+	if (input_box != nullptr) {
+		App->gui->Delete_Element(input_box);
+		input_box = nullptr;
+	}
+
 	on_screen_log.clear();
 }
 
