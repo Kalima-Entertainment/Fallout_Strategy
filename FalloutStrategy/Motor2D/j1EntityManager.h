@@ -80,10 +80,11 @@ public:
 
 	//Find entities
 	j1Entity*		FindEntityByTile(iPoint tile);
-	j1Entity*		FindEntityByType(Faction faction, EntityType type);
 	ResourceBuilding* FindResourceBuildingByTile(iPoint tile);
 	ResourceBuilding* GetClosestResourceBuilding(iPoint current_position);
+
 	iPoint ClosestTile(iPoint position, std::vector<iPoint> entity_tiles) const;
+	iPoint FindFreeAdjacentTile(iPoint tile) const;
 
 	bool LoadReferenceEntityData();
 	void DestroyEntity(j1Entity* delete_entity);

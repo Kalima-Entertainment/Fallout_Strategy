@@ -105,12 +105,9 @@ bool DynamicEntity::Update(float dt) {
 					{
 						state = IDLE;
 						next_tile = current_tile;
-						UpdateTile();
 						path_to_target.clear();
+						UpdateTile();
 					}
-				}
-				else {
-					//target_entity
 				}
 			}
 			//gatherer
@@ -179,19 +176,21 @@ bool DynamicEntity::Update(float dt) {
 	case HIT:
 		if (current_animation->Finished()) {
 			state = IDLE;
-			current_animation->Reset();
 		}
 
 		SpatialAudio(position.x, position.y, faction, state, type);
 
 		break;
 	case DIE:
-		if (!delete_timer.Started())
+		if (!delete_timer.Started()) {
 			delete_timer.Start();
+			attacking_entity->state = IDLE;
+			attacking_entity->target_entity = nullptr;
+			attacking_entity->attacking_entity = nullptr;
+		}
 
 		if ((delete_timer.ReadSec() > 5) || (current_animation->Finished())) {
 			to_delete = true;
-			attacking_entity->target_entity = nullptr;
 			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
 			attacking_entity->state = IDLE;
 		}
@@ -278,7 +277,7 @@ bool DynamicEntity::PostUpdate() {
 
 	//tile debug
 	SDL_Rect tile_rect;
-	iPoint tex_position = App->map->MapToWorld(current_tile.x, current_tile.y);
+	iPoint tile_tex_position = App->map->MapToWorld(current_tile.x, current_tile.y);
 
 	//debug
 	if (App->render->debug) 
@@ -294,19 +293,20 @@ bool DynamicEntity::PostUpdate() {
 		if (faction == App->player->faction) tile_rect = { 0,0,64,64 };
 		//enemy
 		else tile_rect = { 64,0,64,64 };
-		App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
+		if(App->player->selected_entity != this)
+			App->render->Blit(App->render->debug_tex, tile_tex_position.x, tile_tex_position.y, &tile_rect);
 	}
 
 	//selected entity
 	if (App->player->selected_entity == this || this->info.IsSelected)
 	{
-		tile_rect = { 128,0,64,64 };
+		tile_rect = { 320,0,64,64 };
 		//blit tile
-		App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
+		App->render->Blit(App->render->debug_tex, tile_tex_position.x, tile_tex_position.y, &tile_rect);
 	}
 
 	if (direction >= NO_DIRECTION) {
-		direction = TOP_LEFT;
+		direction = last_direction;
 	}
 	current_animation = &animations[state][direction];
 
@@ -337,7 +337,7 @@ void DynamicEntity::Move(float dt) {
 
 		// -- Get next tile center
 		next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
-		next_tile_rect = { next_tile_position.x + HALF_TILE - 5, next_tile_position.y + HALF_TILE -5, 10, 10 };
+		next_tile_rect = { next_tile_position.x + HALF_TILE - 5, next_tile_position.y + HALF_TILE -3, 10, 10 };
 
 		last_direction = direction;
 		direction = GetDirectionToGo(next_tile_rect);
@@ -351,6 +351,12 @@ void DynamicEntity::Move(float dt) {
 				if (path_to_target.size() > 1)
 				{
 					next_tile = path_to_target[1];
+					
+					if (App->entities->occupied_tiles[next_tile.x][next_tile.y]) {
+						PathfindToPosition(target_tile);
+						return;
+					}
+					
 				}
 				path_to_target.erase(path_to_target.begin());
 			}
@@ -504,9 +510,10 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 
 	//if the tile is in the map but it's not walkable
 	if (!App->pathfinding->IsWalkable(destination)) 
-	{
 		destination = App->pathfinding->FindNearestWalkableTile(current_tile, destination);
-	}
+
+	if (App->entities->occupied_tiles[destination.x][destination.y])
+		destination = App->entities->FindFreeAdjacentTile(destination);
 
 	target_tile = destination;
 

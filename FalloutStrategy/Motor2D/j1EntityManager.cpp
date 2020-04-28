@@ -17,6 +17,7 @@
 #include "j1Console.h"
 #include "AI_Manager.h"
 #include "AI_Player.h"
+#include "j1Pathfinding.h"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -638,17 +639,6 @@ void j1EntityManager::DestroyAllEntities() {
 	}
 }
 
-j1Entity* j1EntityManager::FindEntityByType(Faction faction, EntityType type) {
-	for (int i = 0; i < entities.size(); i++)
-	{
-		if ((entities[i]->faction == faction)&&(entities[i]->type == type))
-		{
-			return entities[i];
-		}
-	}
-	return nullptr;
-}
-
 j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
 	for (int i = 0; i < entities.size(); i++)
 	{
@@ -690,6 +680,31 @@ iPoint j1EntityManager::ClosestTile(iPoint position, std::vector<iPoint> entity_
 			pivot = entity_tiles[i];
 	}
 	return pivot;
+}
+
+iPoint j1EntityManager::FindFreeAdjacentTile(iPoint tile) const {
+	int max = 1;
+	iPoint possible_tile;
+	iPoint clossest_possible_tile;
+
+	while (max < 5) {
+		for (int y = -max; y < max; y++)
+		{
+			for (int x = -max; x < max; x++)
+			{
+				if (x != 0 && y != 0) {
+					possible_tile.x = tile.x + x;
+					possible_tile.y = tile.y + y;
+
+					if ((!occupied_tiles[possible_tile.x][possible_tile.y])&&(App->pathfinding->IsWalkable(possible_tile))) {
+						return possible_tile;
+					}
+				}
+			}
+		}
+		max++;
+	}
+	return possible_tile;
 }
 
 ResourceBuilding* j1EntityManager::GetClosestResourceBuilding(iPoint current_position) {
