@@ -42,6 +42,7 @@ public:
 	void Gather();
 	void StoreGatheredResources();
 
+	j1Entity* DetectEntitiesInRange();
 	void PathfindToPosition(iPoint target);
 	Direction GetDirectionToGo(SDL_Rect next_tile_rect) const;
 	void UpdateTile();
@@ -57,16 +58,18 @@ public:
 	Direction last_direction;
 
 	int range;
+	int detection_radius;
 	int resource_collected;
 	ResourceBuilding* resource_building;
 	Resource resource_type;
-	j1Timer timer;
 	bool is_agressive;
 
-	uint fx[6];
+	j1Timer timer;
+	j1Timer detection_timer;
 
 	UnitInfo unitinfo;	
 	std::vector<iPoint> node_path;
+	std::vector<j1Entity*> entities_in_range;
 };
 
 

@@ -34,18 +34,26 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, GenericPlayer
 	default:
 		break;
 	}
+
 	owner = g_owner;
 	type = g_type;
 	faction = g_faction;
+
 	state = IDLE;
 	direction = BOTTOM_RIGHT;
+
 	speed = { 0, 0 };
+
 	target_entity = nullptr;
 	resource_building = nullptr;
 	attacking_entity = nullptr;
+
 	action_time = 3.0f;
 	target_tile = { -1,-1 };
 	sprite_size = 128;
+
+	detection_radius = 6;
+	detection_timer.Start();
 }
 
 DynamicEntity::~DynamicEntity() {
@@ -84,6 +92,18 @@ bool DynamicEntity::Update(float dt) {
 				}
 			}
 		}
+
+		if ((target_entity == nullptr)&&(detection_timer.Read() > 2500)) {
+			j1Entity* enemy_in_range = DetectEntitiesInRange();
+
+			if (enemy_in_range != nullptr) {
+				target_entity = enemy_in_range;
+				PathfindToPosition(target_entity->current_tile);
+			}
+
+			detection_timer.Start();
+		}
+
 		break;
 
 	case WALK:
@@ -306,8 +326,12 @@ bool DynamicEntity::PostUpdate() {
 	}
 
 	if (direction >= NO_DIRECTION) {
-		direction = last_direction;
+		if (last_direction != NO_DIRECTION)
+			direction = last_direction;
+		else 
+			direction = BOTTOM_RIGHT;
 	}
+
 	current_animation = &animations[state][direction];
 
 	//Render character
@@ -677,6 +701,40 @@ void DynamicEntity::UpdateTile() {
 	App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
 	current_tile = App->map->WorldToMap(position.x, position.y);
 	App->entities->occupied_tiles[current_tile.x][current_tile.y] = true;
+}
+
+j1Entity* DynamicEntity::DetectEntitiesInRange() {
+	iPoint checked_tile = { -1,-1 };
+	j1Entity* detected_entity = nullptr;
+	j1Entity* closest_enemy = nullptr;
+
+	entities_in_range.clear();
+
+	for (int y = -detection_radius; y < detection_radius; y++)
+	{
+		for (int x = -detection_radius; x < detection_radius; x++)
+		{
+			if ((x != 0) && (y != 0)) {
+				checked_tile.x = current_tile.x + x;
+				checked_tile.y = current_tile.y + y;
+
+				if (App->entities->occupied_tiles[checked_tile.x][checked_tile.y]) {
+					detected_entity = App->entities->FindEntityByTile(checked_tile);
+					entities_in_range.push_back(detected_entity);
+					if (detected_entity->faction != faction)
+						if (closest_enemy == nullptr) {
+							closest_enemy = detected_entity;
+						}
+						else {
+							if (detected_entity->current_tile.DistanceManhattan(current_tile) < closest_enemy->current_tile.DistanceManhattan(current_tile)) {
+								closest_enemy = detected_entity;
+							}
+						}
+				}
+			}
+		}
+	}
+	return closest_enemy;
 }
 
 // --- UnitInfo Constructors and Destructor ---

@@ -91,8 +91,6 @@ public:
 	void DestroyAllEntities();	
 
 	void BubbleSortEntities();
-	//void QuickSortEntities(std::vector<j1Entity*> entities, int low, int high);
-	//int Partition(std::vector<j1Entity*> entities, int low, int high);
 
 	void RandomFactions();
 	Faction FactionByIndex(int i) { return static_cast<Faction>(i); }
