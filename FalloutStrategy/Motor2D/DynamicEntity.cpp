@@ -70,7 +70,7 @@ DynamicEntity::~DynamicEntity() {
 bool DynamicEntity::Update(float dt) {
 
 	Mix_AllocateChannels(25);
-	
+
 	switch (state)
 	{
 	case IDLE:
@@ -80,7 +80,7 @@ bool DynamicEntity::Update(float dt) {
 			PathfindToPosition(target_tile);
 		}
 
-		if (attacking_entity != nullptr) {
+		if ((attacking_entity != nullptr)&&(attacking_entity->state != DIE)) {
 			if (is_agressive){
 				target_entity = attacking_entity;
 				if (current_tile.DistanceManhattan(attacking_entity->current_tile) > range) {
@@ -93,7 +93,7 @@ bool DynamicEntity::Update(float dt) {
 			}
 		}
 
-		if ((target_entity == nullptr)&&(detection_timer.Read() > 2500)) {
+		if ((target_entity == nullptr)&&(detection_timer.Read() > 750)) {
 			j1Entity* enemy_in_range = DetectEntitiesInRange();
 
 			if (enemy_in_range != nullptr) {
@@ -112,7 +112,7 @@ bool DynamicEntity::Update(float dt) {
 			//we reach the destination and there is an entity in it
 			//ranged and melee
 			if (is_agressive) {
-				if (target_entity != nullptr)
+				if ((target_entity != nullptr)&&(current_tile.LinealDistance(target_entity->current_tile)))
 				{
 					//enemy target
 					if ((faction != target_entity->faction)&&(node_path.size() == 0)) {
@@ -194,6 +194,7 @@ bool DynamicEntity::Update(float dt) {
 		}
 		break;
 	case HIT:
+		current_animation = &animations[HIT][direction];
 		if (current_animation->Finished()) {
 			state = IDLE;
 		}
@@ -204,12 +205,10 @@ bool DynamicEntity::Update(float dt) {
 	case DIE:
 		if (!delete_timer.Started()) {
 			delete_timer.Start();
-			attacking_entity->state = IDLE;
-			attacking_entity->target_entity = nullptr;
-			attacking_entity->attacking_entity = nullptr;
+			direction = TOP_LEFT;
 		}
 
-		if ((delete_timer.ReadSec() > 5) || (current_animation->Finished())) {
+		if (delete_timer.ReadSec() > 5) {
 			to_delete = true;
 			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
 			attacking_entity->state = IDLE;
@@ -486,7 +485,6 @@ void DynamicEntity::Attack() {
 		//Kill enemy
 		if (target_entity->current_health <= 0) {
 			dynamic_target->state = DIE;
-			dynamic_target->direction = TOP_LEFT;
 			target_entity = nullptr;
 			path_to_target.clear();
 			state = IDLE;
@@ -498,6 +496,7 @@ void DynamicEntity::Attack() {
 		StaticEntity* static_target = (StaticEntity*)target_entity;
 		if (target_entity->current_health <= 0) {
 			static_target->state = DIE;
+			attacking_entity = nullptr;
 			target_entity = nullptr;
 			path_to_target.clear();
 			state = IDLE;
@@ -662,7 +661,7 @@ bool DynamicEntity::LoadReferenceData() {
 	//load animations
 	for (int i = 0; i < NO_STATE; i++)
 	{
-		for (int j = 0; j < NO_FACTION; j++)
+		for (int j = 0; j < NO_DIRECTION; j++)
 		{
 			animations[i][j] = dynamic_reference->animations[i][j];
 		}

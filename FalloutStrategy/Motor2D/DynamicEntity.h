@@ -53,7 +53,7 @@ public:
 	iPoint next_tile_position;
 	SDL_Rect next_tile_rect;
 
-	Animation animations[NO_STATE][4];
+	Animation animations[NO_STATE][NO_DIRECTION];
 	Direction direction;
 	Direction last_direction;
 
