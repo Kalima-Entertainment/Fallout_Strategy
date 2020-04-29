@@ -95,6 +95,7 @@ bool DynamicEntity::Update(float dt) {
 				else {
 					attacking_entity->attacking_entity = this;
 					state = ATTACK;
+					UpdateTile();
 				}
 			}
 		}
@@ -587,11 +588,15 @@ bool DynamicEntity::LoadAnimations() {
 	else if (faction == BROTHERHOOD) faction_char = "Brotherhood";
 	else if (faction == MUTANT) faction_char = "SuperMutant";
 	else if (faction == GHOUL) faction_char = "Ghouls";
+	else if (faction == ANIMALS) faction_char = "Animals";
 
 	//entity type
 	if (type == MELEE) type_char = "Melee";
 	else if (type == RANGED) type_char = "Ranged";
-	if (type == GATHERER) type_char = "Gatherer";
+	else if (type == GATHERER) type_char = "Gatherer";
+	else if (type == BIGHRONER) type_char = "Bighorner";
+	else if (type == BRAHAM) type_char = "Braham";
+	else if (type == DEATHCLAW) type_char = "Deathclaw";
 	
 	std::string file = std::string("Assets/textures/characters/").append(faction_char).append("/").append(faction_char).append("_").append(type_char);
 	std::string animation_path = file;

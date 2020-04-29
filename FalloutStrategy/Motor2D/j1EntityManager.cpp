@@ -46,7 +46,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 
 	j1Entity* entity = nullptr;
 
-	if ((type == MELEE) || (type == RANGED) || (type == GATHERER)) {
+	if ((type == MELEE) || (type == RANGED) || (type == GATHERER) || (type == BIGHRONER) || (type == BRAHAM) || (type == DEATHCLAW)) {
 
 		//If there's another unit in that tile, we find a new spawn point
 		if (occupied_tiles[position_x][position_y]) {
@@ -83,7 +83,15 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		}
 		
 		entity = new DynamicEntity(faction, type, { position_x, position_y }, owner);
-		entity->reference_entity = reference_entities[faction][type];
+	
+		if (faction != ANIMALS)
+			entity->reference_entity = reference_entities[faction][type];
+		else if (type == BIGHRONER)
+			entity->reference_entity = reference_bighroner;
+		else if (type == BRAHAM)
+			entity->reference_entity = reference_braham;
+		else if (type == DEATHCLAW)
+			entity->reference_entity = reference_deathclaw;
 
 		if (entity->reference_entity != nullptr){
 			occupied_tiles[entity->current_tile.x][entity->current_tile.y] = true;
@@ -241,14 +249,18 @@ bool j1EntityManager::Start() {
 	}
 
 	//automatic entities loading
-	for (int faction = VAULT; faction < NO_FACTION; faction++)
+	for (int faction = VAULT; faction < ANIMALS; faction++)
 	{
-		for (int type = MELEE; type < NO_TYPE; type++)
+		for (int type = MELEE; type < BIGHRONER; type++)
 		{
 			reference_entities[faction][type] = nullptr;
 			reference_entities[faction][type] = CreateEntity((Faction)faction, (EntityType)type, faction, type, nullptr);
 		}
 	}
+
+	reference_bighroner = (DynamicEntity*)CreateEntity(ANIMALS, BIGHRONER, ANIMALS, BIGHRONER, nullptr);
+	reference_braham = (DynamicEntity*)CreateEntity(ANIMALS, BRAHAM, ANIMALS, BRAHAM, nullptr);
+	reference_deathclaw = (DynamicEntity*)CreateEntity(ANIMALS, DEATHCLAW, ANIMALS, DEATHCLAW, nullptr);
 
 	showing_building_menu = false;
 
@@ -318,28 +330,7 @@ bool j1EntityManager::Update(float dt)
 
 	//load all textures and animations on the go
 	if (loading_reference_entities) {
-		if (load_timer.Read() > 100) {
-			reference_entities[loading_faction][loading_entity]->LoadAnimations();
-
-			loading_entity = loading_entity++;
-
-			if (loading_entity == NO_TYPE) {
-				loading_entity = MELEE;
-				loading_faction++;
-			}
-
-			if (loading_faction == NO_FACTION) {
-				loading_reference_entities = false;
-
-				for (int faction = VAULT; faction < NO_FACTION; faction++)
-				{
-					reference_entities[faction][BARRACK]->texture = reference_entities[faction][BASE]->texture;
-					reference_entities[faction][LABORATORY]->texture = reference_entities[faction][BASE]->texture;
-				}
-				ret = LoadReferenceEntityData();
-			}
-			load_timer.Start();
-		}
+		LoadReferenceEntityAnimations();
 	}
 
 	if (!App->isPaused)
@@ -517,6 +508,52 @@ bool j1EntityManager::PostUpdate()
 					}
 				}
 			}
+		}
+	}
+
+	return ret;
+}
+
+
+bool j1EntityManager::LoadReferenceEntityAnimations() {
+	bool ret = true;
+
+	if (load_timer.Read() > 100) {
+
+		if (loading_entity == BIGHRONER) {
+			loading_entity = MELEE;
+			loading_faction++;
+		}
+
+		if (loading_faction == ANIMALS) {
+			loading_entity++;
+			if (loading_entity == NO_TYPE) {
+				loading_reference_entities = false;
+
+				for (int faction = VAULT; faction < NO_FACTION; faction++)
+				{
+					reference_entities[faction][BARRACK]->texture = reference_entities[faction][BASE]->texture;
+					reference_entities[faction][LABORATORY]->texture = reference_entities[faction][BASE]->texture;
+				}
+				ret = LoadReferenceEntityData();
+				load_timer.Start();
+			}
+			else
+			{
+				if (loading_entity == 1) 
+					reference_bighroner->LoadAnimations();
+				else if (loading_entity == 2)
+					reference_braham->LoadAnimations();
+				else if (loading_entity == 3) {
+					reference_deathclaw->LoadAnimations();
+					loading_reference_entities = false;
+				}
+			}
+		}
+		else if (loading_faction != NO_FACTION)
+		{
+			reference_entities[loading_faction][loading_entity]->LoadAnimations();
+			loading_entity = loading_entity++;
 		}
 	}
 

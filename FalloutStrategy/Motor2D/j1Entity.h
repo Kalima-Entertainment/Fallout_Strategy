@@ -21,6 +21,9 @@ enum EntityType {
 	BASE,
 	LABORATORY,
 	BARRACK,
+	BIGHRONER,
+	BRAHAM,
+	DEATHCLAW,
 	NO_TYPE
 };
 
@@ -29,6 +32,7 @@ enum Faction { //Don't change faction order. Just don't do it
 	BROTHERHOOD,
 	MUTANT,
 	GHOUL,
+	ANIMALS,
 	NO_FACTION
 };
 

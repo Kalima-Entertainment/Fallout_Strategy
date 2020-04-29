@@ -17,8 +17,8 @@
    <ghoul minimum_melees="5" minimum_rangeds="2" caps="100" water="100" food="100"/>
   </AI>
   <console>
-  <log_box r="0" g="115" b="25" a="225"/>
-  <input_box r="0" g="80" b="10" a="245"/>
+  <log_box r="20" g="20" b="20" a="225"/>
+  <input_box r="20" g="20" b="20" a="245"/>
   </console>
   <window>
     <resolution width="1280" height="720" scale="1"/>
