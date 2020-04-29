@@ -330,7 +330,7 @@ bool j1EntityManager::Update(float dt)
 
 	//load all textures and animations on the go
 	if (loading_reference_entities) {
-		LoadReferenceEntityAnimations();
+		ret = LoadReferenceEntityAnimations();
 	}
 
 	if (!App->isPaused)
@@ -526,34 +526,29 @@ bool j1EntityManager::LoadReferenceEntityAnimations() {
 		}
 
 		if (loading_faction == ANIMALS) {
-			loading_entity++;
-			if (loading_entity == NO_TYPE) {
-				loading_reference_entities = false;
+			if (loading_entity == 1) 
+				ret = reference_bighroner->LoadAnimations();
+			else if (loading_entity == 2)
+				ret = reference_braham->LoadAnimations();
+			else if (loading_entity == 3) {
+				reference_deathclaw->LoadAnimations();
 
-				for (int faction = VAULT; faction < NO_FACTION; faction++)
+				for (int faction = VAULT; faction < ANIMALS; faction++)
 				{
 					reference_entities[faction][BARRACK]->texture = reference_entities[faction][BASE]->texture;
 					reference_entities[faction][LABORATORY]->texture = reference_entities[faction][BASE]->texture;
 				}
+
+				load_timer.Start();
+				ret = LoadReferenceEntityData();
+				loading_reference_entities = false;
 			}
-			else
-			{
-				if (loading_entity == 1) 
-					reference_bighroner->LoadAnimations();
-				else if (loading_entity == 2)
-					reference_braham->LoadAnimations();
-				else if (loading_entity == 3) {
-					reference_deathclaw->LoadAnimations();
-					ret = LoadReferenceEntityData();
-					load_timer.Start();
-					loading_reference_entities = false;
-				}
-			}
+			loading_entity++;
 		}
 		else if (loading_faction != NO_FACTION)
 		{
-			reference_entities[loading_faction][loading_entity]->LoadAnimations();
-			loading_entity = loading_entity++;
+			ret = reference_entities[loading_faction][loading_entity]->LoadAnimations();
+			loading_entity++;
 		}
 	}
 
