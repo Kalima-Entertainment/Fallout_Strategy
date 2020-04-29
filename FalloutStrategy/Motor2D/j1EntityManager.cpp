@@ -26,24 +26,7 @@
 j1EntityManager::j1EntityManager(){
 	name = ("entities");
 
-	blocked_movement = false;
-
-	//water, food, spawn time (seconds)
-	unit_data[VAULT][MELEE] = {  60, 60, 30  };
-	unit_data[VAULT][RANGED] = { 80, 80, 40 };
-	unit_data[VAULT][GATHERER] = { 40, 0, 15 };
-
-	unit_data[BROTHERHOOD][MELEE] = { 100, 80, 30 };
-	unit_data[BROTHERHOOD][RANGED] = { 100, 100, 40 };
-	unit_data[BROTHERHOOD][GATHERER] = { 50, 0, 15 };
-
-	unit_data[MUTANT][MELEE] = { 80, 100, 30 };
-	unit_data[MUTANT][RANGED] = { 80, 120, 40 };
-	unit_data[MUTANT][GATHERER] = { 50, 0, 15 };
-
-	unit_data[GHOUL][MELEE] = { 80, 60 , 30 };
-	unit_data[GHOUL][RANGED] = { 80, 80, 40 };
-	unit_data[GHOUL][GATHERER] = { 40, 0 , 15 };
+	blocked_movement = false;	
 	
 	for (int faction = VAULT; faction < NO_FACTION; faction++)
 	{
@@ -233,6 +216,8 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 		}
 		boost_node = boost_node.next_sibling();
 	}
+
+	LoadCosts();
 
 	return ret;
 }
@@ -758,47 +743,56 @@ void j1EntityManager::OnCommand(std::vector<std::string> command_parts) {
 void j1EntityManager::LoadCosts() {
 	//Loads the cost of spawning units and creating upgrades from XML file
 	
-	//TODO: Load from xml
-	//water, food, spawn time (seconds)
-	unit_data[VAULT][MELEE] = { 60, 60, 30 };
-	unit_data[VAULT][RANGED] = { 80, 80, 40 };
-	unit_data[VAULT][GATHERER] = { 40, 0, 15 };
+	pugi::xml_document entities_file;
+	pugi::xml_node entities_node;
+	pugi::xml_parse_result result = entities_file.load_file("entities.xml");
 
-	unit_data[BROTHERHOOD][MELEE] = { 100, 80, 30 };
-	unit_data[BROTHERHOOD][RANGED] = { 100, 100, 40 };
-	unit_data[BROTHERHOOD][GATHERER] = { 50, 0, 15 };
+	if (result == NULL)
+		LOG("Could not load map xml file entities.xml. pugi error: %s", result.description());
+	else
+		entities_node = entities_file.child("entities");
 
-	unit_data[MUTANT][MELEE] = { 80, 100, 30 };
-	unit_data[MUTANT][RANGED] = { 80, 120, 40 };
-	unit_data[MUTANT][GATHERER] = { 50, 0, 15 };
+	pugi::xml_node type_node = entities_node.first_child();
+	pugi::xml_node faction_node;
+	Faction faction = NO_FACTION;
+	EntityType type = NO_TYPE;
 
-	unit_data[GHOUL][MELEE] = { 80, 60 , 30 };
-	unit_data[GHOUL][RANGED] = { 80, 80, 40 };
-	unit_data[GHOUL][GATHERER] = { 40, 0 , 15 };
+	//load unit costs
+	faction_node = type_node.first_child();
+	while (type_node != nullptr) {
+		while (faction_node != nullptr)
+		{
+			std::string faction_string = std::string(faction_node.name());
 
-	//Initialize upgrades
-	base_resource_limit[0] = { VAULT, RESOURCES_LIMIT, 0, 250, 250, 45 };
-	base_resource_limit[1] = { BROTHERHOOD, RESOURCES_LIMIT, 0, 250, 250, 45 };
-	base_resource_limit[2] = { MUTANT, RESOURCES_LIMIT, 0, 250, 250, 45 };
-	base_resource_limit[3] = { GHOUL, RESOURCES_LIMIT, 0, 250, 250, 45 };
-	gatherer_resource_limit[0] = { VAULT, GATHERER_CAPACITY, 0, 250, 250, 45 };
-	gatherer_resource_limit[1] = { BROTHERHOOD, GATHERER_CAPACITY, 0, 250, 250, 45 };
-	gatherer_resource_limit[2] = { MUTANT, GATHERER_CAPACITY, 0, 250, 250, 45 };
-	gatherer_resource_limit[3] = { GHOUL, GATHERER_CAPACITY, 0, 250, 250, 45 };
-	units_damage[0] = { VAULT, UNITS_DAMAGE, 0, 350, 250, 45 };
-	units_damage[1] = { BROTHERHOOD, UNITS_DAMAGE, 0, 350, 250, 45 };
-	units_damage[2] = { MUTANT, UNITS_DAMAGE, 0, 350, 250, 45 };
-	units_damage[3] = { GHOUL, UNITS_DAMAGE, 0, 350, 250, 45 };
-	units_speed[0] = { VAULT, UNITS_SPEED, 0, 350, 250, 45 };
-	units_speed[1] = { BROTHERHOOD, UNITS_SPEED, 0, 350, 250, 45 };
-	units_speed[2] = { MUTANT, UNITS_SPEED, 0, 350, 250, 45 };
-	units_speed[3] = { GHOUL, UNITS_SPEED, 0, 350, 250, 45 };
-	units_health[0] = { VAULT, UNITS_HEALTH, 0, 150, 250, 45 };
-	units_health[1] = { BROTHERHOOD, UNITS_HEALTH, 0, 150, 250, 45 };
-	units_health[2] = { MUTANT, UNITS_HEALTH, 0, 150, 250, 45 };
-	units_health[3] = { GHOUL, UNITS_HEALTH, 0, 150, 250, 45 };
-	units_creation_time[0] = { VAULT, CREATION_TIME, 0, 150, 250, 45 };
-	units_creation_time[1] = { BROTHERHOOD, CREATION_TIME, 0, 150, 250, 45 };
-	units_creation_time[2] = { MUTANT, CREATION_TIME, 0, 150, 250, 45 };
-	units_creation_time[3] = { GHOUL, CREATION_TIME, 0, 150, 250, 45 };
+			//check faction
+			if (faction_string == "vault") faction = VAULT;
+			else if (faction_string == "brotherhood") faction = BROTHERHOOD;
+			else if (faction_string == "mutants") faction = MUTANT;
+			else if (faction_string == "ghouls") faction = GHOUL;
+
+			pugi::xml_node entity_node = faction_node.first_child();
+			while (entity_node != nullptr)
+			{
+				std::string type_string = std::string(entity_node.name());
+
+				//check type
+				if (type_string == "melee") type = MELEE;
+				else if (type_string == "ranged") type = RANGED;
+				else if (type_string == "gatherer") type = GATHERER;
+
+				//load attributes
+				int food = entity_node.child("cost").attribute("food").as_int();
+				int water = entity_node.child("cost").attribute("water").as_int();
+				int time = entity_node.child("cost").attribute("time").as_int();
+
+				//load into unit_data
+				unit_data[faction][type] = { water, food, time };
+
+				entity_node = entity_node.next_sibling();
+			}
+			faction_node = faction_node.next_sibling();
+		}
+		type_node = type_node.next_sibling();
+		faction_node = type_node.first_child();
+	}
 }

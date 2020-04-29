@@ -25,46 +25,46 @@
  <dynamic>
    <vault>
      <melee health="100" damage="15" speed="100">
-       <cost food="60" caps="0" water="60" time="30"/>
+       <cost food="60" water="60" time="30"/>
      </melee>
      <ranged health="100" damage="30" speed="100">
-     <cost food="80" caps="0" water="80" time="40"/>
+     <cost food="80" water="80" time="40"/>
        </ranged>
      <gatherer health="100" damage="60" speed="100">
-      <cost food="0" caps="0" water="40" time="15"/>
+      <cost food="0"  water="40" time="15"/>
      </gatherer>
    </vault>
    <brotherhood>
      <melee health="200" damage="20" speed="80">
-       <cost food="80" caps="0" water="100" time="30"/>
+       <cost food="80"  water="100" time="30"/>
      </melee>
      <ranged health="200" damage="40" speed="80">
-       <cost food="100" caps="0" water="100" time="40"/>
+       <cost food="100"  water="100" time="40"/>
      </ranged>
      <gatherer health="180" damage="80" speed="80">
-       <cost food="0" caps="0" water="50" time="15"/>
+       <cost food="0"  water="50" time="15"/>
      </gatherer>
    </brotherhood>
    <mutants>
      <melee health="180" damage="20" speed="80">
-       <cost food="100" caps="0" water="80" time="30"/>
+       <cost food="100" water="80" time="30"/>
      </melee>
      <ranged health="180" damage="40" speed="80">
-       <cost food="120" caps="0" water="80" time="40"/>
+       <cost food="120" water="80" time="40"/>
      </ranged>
      <gatherer health="80" damage="60" speed="120">
-       <cost food="0" caps="0" water="50" time="15"/>
+       <cost food="0" water="50" time="15"/>
      </gatherer>
    </mutants>
   <ghouls>
     <melee health="80" damage="15" speed="120">
-      <cost food="60" caps="0" water="80" time="30"/>
+      <cost food="60" water="80" time="30"/>
     </melee>
     <ranged health="80" damage="30" speed="120">
-      <cost food="80" caps="0" water="80" time="40"/>
+      <cost food="80" water="80" time="40"/>
     </ranged>
     <gatherer health="70" damage="50" speed="120">
-      <cost food="0" caps="0" water="40" time="15"/>
+      <cost food="0" water="40" time="15"/>
     </gatherer>
   </ghouls>
  </dynamic> 
