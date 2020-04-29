@@ -67,5 +67,10 @@
       <cost food="0" water="40" time="15"/>
     </gatherer>
   </ghouls>
+  <animals>
+    <bighorner health="100" speed="60"/>
+    <braham health="100" speed="60"/>
+    <deathclaw health="1000" damage="400" speed="150"/>
+  </animals>
  </dynamic> 
 </entities>

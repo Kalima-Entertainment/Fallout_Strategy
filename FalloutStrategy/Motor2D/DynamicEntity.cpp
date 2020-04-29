@@ -31,6 +31,18 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 		range = 1;
 		is_agressive = false;
 		break;
+	case BIGHRONER:
+		range = 1;
+		is_agressive = false;
+		break;
+	case BRAHAM:
+		range = 1;
+		is_agressive = false;
+		break;
+	case DEATHCLAW:
+		range = 1;
+		is_agressive = true;
+		break;
 	default:
 		break;
 	}

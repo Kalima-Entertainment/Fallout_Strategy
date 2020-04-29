@@ -535,8 +535,6 @@ bool j1EntityManager::LoadReferenceEntityAnimations() {
 					reference_entities[faction][BARRACK]->texture = reference_entities[faction][BASE]->texture;
 					reference_entities[faction][LABORATORY]->texture = reference_entities[faction][BASE]->texture;
 				}
-				ret = LoadReferenceEntityData();
-				load_timer.Start();
 			}
 			else
 			{
@@ -546,6 +544,8 @@ bool j1EntityManager::LoadReferenceEntityAnimations() {
 					reference_braham->LoadAnimations();
 				else if (loading_entity == 3) {
 					reference_deathclaw->LoadAnimations();
+					ret = LoadReferenceEntityData();
+					load_timer.Start();
 					loading_reference_entities = false;
 				}
 			}
@@ -588,6 +588,7 @@ bool j1EntityManager::LoadReferenceEntityData() {
 			else if (faction_string == "brotherhood") faction = BROTHERHOOD;
 			else if (faction_string == "mutants") faction = MUTANT;
 			else if (faction_string == "ghouls") faction = GHOUL;
+			else if (faction_string == "animals") faction = ANIMALS;
 
 			pugi::xml_node entity_node = faction_node.first_child();
 			while (entity_node != nullptr)
@@ -601,6 +602,9 @@ bool j1EntityManager::LoadReferenceEntityData() {
 				else if (type_string == "base") type = BASE;
 				else if (type_string == "barrack") type = BARRACK;
 				else if (type_string == "laboratory") type = LABORATORY;
+				else if (type_string == "bighorner") type = BIGHRONER;
+				else if (type_string == "braham") type = BRAHAM;
+				else if (type_string == "deathclaw") type = DEATHCLAW;
 
 				//load attributes
 				int health = entity_node.attribute("health").as_int();
@@ -608,10 +612,22 @@ bool j1EntityManager::LoadReferenceEntityData() {
 				int speed = entity_node.attribute("speed").as_int();
 
 				//load into reference entities
-				reference_entities[faction][type]->max_health = health;
-				reference_entities[faction][type]->damage = damage;
-				reference_entities[faction][type]->speed.x = speed * 1.0f;
-				reference_entities[faction][type]->speed.y = speed * 0.5f;
+				if (faction != ANIMALS) {
+					reference_entities[faction][type]->max_health = health;
+					reference_entities[faction][type]->damage = damage;
+					reference_entities[faction][type]->speed = { (float)speed, (float)speed * 0.5f};
+				}
+				else
+				{
+					DynamicEntity* animal = nullptr;
+					if (type == BIGHRONER) animal = reference_bighroner;
+					else if (type == BRAHAM) animal = reference_braham;
+					else if (type == DEATHCLAW) animal = reference_deathclaw;
+
+					animal->max_health = health;
+					animal->damage = damage;
+					animal->speed = { (float)speed, (float)speed * 0.5f };
+				}
 
 				entity_node = entity_node.next_sibling();
 			}
