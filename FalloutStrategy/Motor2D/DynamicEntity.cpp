@@ -15,7 +15,7 @@
 #include <string>
 #include "SDL_mixer/include/SDL_mixer.h"
 
-DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, GenericPlayer* g_owner) : j1Entity(), resource_collected(0) {
+DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile, GenericPlayer* g_owner) : j1Entity(), resource_collected(0) {
 
 	switch (g_type)
 	{
@@ -31,6 +31,18 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, GenericPlayer
 		range = 1;
 		is_agressive = false;
 		break;
+	case BIGHRONER:
+		range = 1;
+		is_agressive = false;
+		break;
+	case BRAHAM:
+		range = 1;
+		is_agressive = false;
+		break;
+	case DEATHCLAW:
+		range = 1;
+		is_agressive = true;
+		break;
 	default:
 		break;
 	}
@@ -38,11 +50,16 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, GenericPlayer
 	owner = g_owner;
 	type = g_type;
 	faction = g_faction;
+	current_tile = g_current_tile;
+
+	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
+	position.x += HALF_TILE;
+	position.y += HALF_TILE;
+
+	is_dynamic = true;
 
 	state = IDLE;
 	direction = BOTTOM_RIGHT;
-
-	speed = { 0, 0 };
 
 	target_entity = nullptr;
 	resource_building = nullptr;
@@ -50,6 +67,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, GenericPlayer
 
 	action_time = 3.0f;
 	target_tile = { -1,-1 };
+	speed = { 0, 0 };
 	sprite_size = 128;
 
 	detection_radius = 6;
@@ -89,6 +107,7 @@ bool DynamicEntity::Update(float dt) {
 				else {
 					attacking_entity->attacking_entity = this;
 					state = ATTACK;
+					UpdateTile();
 				}
 			}
 		}
@@ -581,11 +600,15 @@ bool DynamicEntity::LoadAnimations() {
 	else if (faction == BROTHERHOOD) faction_char = "Brotherhood";
 	else if (faction == MUTANT) faction_char = "SuperMutant";
 	else if (faction == GHOUL) faction_char = "Ghouls";
+	else if (faction == ANIMALS) faction_char = "Animals";
 
 	//entity type
 	if (type == MELEE) type_char = "Melee";
 	else if (type == RANGED) type_char = "Ranged";
-	if (type == GATHERER) type_char = "Gatherer";
+	else if (type == GATHERER) type_char = "Gatherer";
+	else if (type == BIGHRONER) type_char = "Bighorner";
+	else if (type == BRAHAM) type_char = "Braham";
+	else if (type == DEATHCLAW) type_char = "Deathclaw";
 	
 	std::string file = std::string("Assets/textures/characters/").append(faction_char).append("/").append(faction_char).append("_").append(type_char);
 	std::string animation_path = file;

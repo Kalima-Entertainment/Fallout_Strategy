@@ -95,7 +95,7 @@ bool j1Console::PostUpdate() {
 		command_background.y = log_box.y + log_box.h;
 		App->render->DrawQuad(log_box, log_box_color.r, log_box_color.g, log_box_color.b, log_box_color.a);
 		App->render->DrawQuad(command_background, input_box_color.r, input_box_color.g, input_box_color.b, input_box_color.a);
-
+		App->render->DrawQuad(command_background, 255, 255, 255, 255, false);
 		//log text
 		for (int i = 0; i < on_screen_log.size(); i++)
 		{

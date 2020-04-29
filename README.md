@@ -2,51 +2,51 @@
 This is a real-time strategy game produced by 2nd year students from CITM/UPC University in Terrassa, Barcelona.
 
 ## Goal
-* Make your faction survive among the others in this exciting RTS! 
+* Make your faction survive among the others in this exciting RTS!
 
 ### Win / Lose conditions
 Destroy all other factions' buildings to win the game, if all of yours are destroyed you will lose.  
 
 ## Controls
-Left click on the unit and left click on the position you want to make it go to.
-º - Turn console ON/OFF
-Y - Block/Unblock border scroll
-F - Center camera on selected entity
-F7 - Show nodes in minimap
-F8 - UI Debug ON/OFF
-F9 - Debug mode ON/OFF
-F10 - Godmode
-ESC - Pause 
+* Left click on the unit and left click on the position you want to make it go to.
+* º - Turn console ON/OFF
+* Y - Block/Unblock border scroll
+* F - Center camera on selected entity
+* F7 - Show nodes in minimap
+* F8 - UI Debug ON/OFF
+* F9 - Debug mode ON/OFF
+* F10 - Godmode
+* ESC - Pause
 
 ## Boost
 Upgrade your buildings to give differents boosts to your faction. Every building will gain a different boost depending of the level of the upgrade.
-Base - Increase resource limit and Gatherer resource limit
-Barrack - Damage and Speed to all the units
-Laboratory - Add health to units and decrease creation time
+* Base - Increase resource limit and Gatherer resource limit
+* Barrack - Damage and Speed to all the units
+* Laboratory - Add health to units and decrease creation time
 
 ### Debug
-In debug mode you will be able to see the path the player follows and how it does so. 
+In debug mode you will be able to see the path the player follows and how it does so.
 
 ### Console commands
-help - list all commands
-destroy_all_entities - delete all characters from the map
-fps n - changes the fps cap to n
-caps+ n - add n caps
-food+ n - add n food
-water+ n - add n water
-resources+ n - add n amount of water, caps and food
-god_mode - turs godmode on/off
-spawn_units: spawn 1 gathere, 1 melee and 1 ranged. Must have a building selected
-spawn gatherer/melee/ranged/army -  spawns 1 unit of the selected type or an army of 10 melee and 10 ranged
-win - automatically win the game
-lose - automatically lose the game
+* help - list all commands
+* destroy_all_entities - delete all characters from the map
+* fps n - changes the fps cap to n
+* caps+ n - add n caps
+* food+ n - add n food
+* water+ n - add n water
+* resources+ n - add n amount of water, caps and food
+* god_mode - turs godmode on/off
+* spawn_units: spawn 1 gatherer, 1 melee and 1 ranged. Must have a building selected
+* spawn gatherer/melee/ranged/army -  spawns 1 unit of the selected type or an army of 10 melee and 10 ranged
+* win - automatically win the game
+* lose - automatically lose the game
 
 ## Team
 
 * Marc Pagès
 https://github.com/marcpages2020
 
-* Javier Belda 
+* Javier Belda
 https://github.com/JBGelsenorJ
 
 * Germán Insua
@@ -63,9 +63,9 @@ https://github.com/pablogalve
 
 * Christian Piña
 https://github.com/christianpi4
+
 * Pol Juan
 https://github.com/sauko22
-
 
 ## Credits
 All characters and buildings sprites as well as the audio were taken from The Spriters Resource: https://www.spriters-resource.com
@@ -77,7 +77,7 @@ https://kalima-entertainment.github.io/Fallout_Strategy/
 https://github.com/Kalima-Entertainment/Fallout_Strategy
 
 ## Twitter
-Take a look at our Twitter to see the latest updates and the development process! 
+Take a look at our Twitter to see the latest updates and the development process!
 https://twitter.com/kalimaentmt
 
 # License
