@@ -59,126 +59,65 @@ j1EntityManager::~j1EntityManager(){}
 j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int position_x, int position_y, GenericPlayer* owner){
 	BROFILER_CATEGORY("EntityCreation", Profiler::Color::Linen)
 
-	if (!owner)
-		owner = App->scene->players[faction];
+	if (!owner) owner = App->scene->players[faction];
 
 	j1Entity* entity = nullptr;
 
 	if ((type == MELEE) || (type == RANGED) || (type == GATHERER)) {
-		entity = new DynamicEntity(faction, type, owner);
-		entity->is_dynamic = true;
-		entity->current_tile = { position_x, position_y };
-		entity->reference_entity = reference_entities[faction][type];
 
-		if (entity != NULL)
-		{
-			//If there's another unit in that tile, we find a new spawn point
-			if (FindEntityByTile({ position_x,position_y }) == nullptr) {
-				//We can spawn here
-				entity->current_tile.x = position_x;
-				entity->current_tile.y = position_y;
-			}
-			else {
-				//There's another unit, let's find a new spawn point
-				bool spawnPointFound = false;
+		//If there's another unit in that tile, we find a new spawn point
+		if (occupied_tiles[position_x][position_y]) {
+			//There's another unit, let's find a new spawn point
+			bool spawnPointFound = false;
 
-				while (FindEntityByTile({ position_x,position_y}) != nullptr) {
-					for (int k = 0; k < 10; k++) {
-						for (int i = 0; i <= 5; i++) {
+			while (occupied_tiles[position_x][position_y]) {
+				for (int k = 0; k < 10; k++) {
+					for (int i = 0; i <= 5; i++) {
+						if (spawnPointFound == false) {
+							if (!occupied_tiles[position_x - i][position_y + k]) {
+								position_x -= i;
+								position_y += k;
+								spawnPointFound = true;
+							}
+						}
+					}
+					if (spawnPointFound == false) {
+						for (int j = 0; j <= 5; j++) {
 							if (spawnPointFound == false) {
-								if (FindEntityByTile({ position_x - i,position_y + k}) == nullptr) {
-									position_x -= i;
-									position_y += k;
-									entity->current_tile.x = position_x;
-									entity->current_tile.y = position_y;
+								if (!occupied_tiles[position_x + k][position_y - j]) {
+									position_y -= j;
+									position_x += k;
 									spawnPointFound = true;
 								}
 							}
 						}
-						if (spawnPointFound == false) {
-							for (int j = 0; j <= 5; j++) {
-								if (spawnPointFound == false) {
-									if (FindEntityByTile({ position_x + k,position_y - j }) == nullptr) {
-										position_y -= j;
-										position_x += k;
-										entity->current_tile.x = position_x;
-										entity->current_tile.y = position_y;
-										spawnPointFound = true;
-									}
-								}
-							}
-						}
-						//First line completed. Next look for spawn points in the next line
 					}
-					//We didn't find a free spawn point, so we spawn in the same tile as other unit
-					entity->current_tile.x = position_x;
-					entity->current_tile.y = position_y;
-					break;
+					//First line completed. Next look for spawn points in the next line
 				}
+				//We didn't find a free spawn point, so we spawn in the same tile as other unit
+				break;
 			}
+		}
+		
+		entity = new DynamicEntity(faction, type, { position_x, position_y }, owner);
+		entity->reference_entity = reference_entities[faction][type];
 
-			entity->position = App->map->fMapToWorld(entity->current_tile.x, entity->current_tile.y);
-			entity->position.x += 32;
-			entity->position.y += 32;
-
-			if (entity->reference_entity != nullptr){
-				occupied_tiles[entity->current_tile.x][entity->current_tile.y] = true;
-				entities.push_back(entity);
-				entity->LoadReferenceData();
-				switch (entity->type)
-				{
-				case MELEE:
-					owner->troops.push_back((DynamicEntity*)entity);
-					owner->melees++;
-					break;
-				case RANGED:
-					owner->troops.push_back((DynamicEntity*)entity);
-					owner->rangeds++;
-					break;
-				case GATHERER:
-					owner->gatherers_vector.push_back((DynamicEntity*)entity);
-					owner->gatherers++;
-					break;
-				case BASE:
-					owner->base = (StaticEntity*)entity;
-					break;
-				case BARRACK:
-					if (owner->barrack[0] == nullptr) owner->barrack[0] = (StaticEntity*)entity;
-					else if (owner->barrack[1] == nullptr) owner->barrack[1] = (StaticEntity*)entity;
-					break;
-				case LABORATORY:
-					if (owner->laboratory == nullptr) owner->laboratory = (StaticEntity*)entity;
-					break;
-				default:
-					break;
-				}
-			}
+		if (entity->reference_entity != nullptr){
+			occupied_tiles[entity->current_tile.x][entity->current_tile.y] = true;
+			entities.push_back(entity);
+			entity->LoadReferenceData();
 		}
 	}
 	else if ((type == BASE) || (type == LABORATORY) || (type == BARRACK))
 	{
-		entity = new StaticEntity(faction, type, owner);
-		entity->is_dynamic = false;
+		entity = new StaticEntity(faction, type, {position_x, position_y},owner);
 		entity->reference_entity = reference_entities[faction][type];
 		
 		if (entity != NULL)
 		{
-			entity->faction = faction;
-			entity->current_tile.x = position_x;
-			entity->current_tile.y = position_y;
-
-			entity->position = App->map->fMapToWorld(entity->current_tile.x, entity->current_tile.y);
-
 			if (entity->reference_entity != nullptr) {
 				entities.push_back(entity);
 				entity->LoadReferenceData();
-
-				if (type == BASE) owner->base = (StaticEntity*)entity;
-				if (type == LABORATORY) owner->laboratory = (StaticEntity*)entity;
-				else if (type == BARRACK) {
-					if (owner->barrack[0] == nullptr) owner->barrack[0] = (StaticEntity*)entity;
-					else owner->barrack[1] = (StaticEntity*)entity;
-				}
 			}
 
 			//Render building
@@ -222,6 +161,38 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 			//Spawn position is just below render position
 			entity->spawnPosition = { App->map->WorldToMap(entity->render_position.x, entity->render_position.y) };
 		}
+	}
+
+	//assign entity to owner
+	if (owner) {
+		switch (entity->type)
+		{
+		case MELEE:
+			owner->troops.push_back((DynamicEntity*)entity);
+			owner->melees++;
+			break;
+		case RANGED:
+			owner->troops.push_back((DynamicEntity*)entity);
+			owner->rangeds++;
+			break;
+		case GATHERER:
+			owner->gatherers_vector.push_back((DynamicEntity*)entity);
+			owner->gatherers++;
+			break;
+		case BASE:
+			owner->base = (StaticEntity*)entity;
+			break;
+		case BARRACK:
+			if (owner->barrack[0] == nullptr) owner->barrack[0] = (StaticEntity*)entity;
+			else if (owner->barrack[1] == nullptr) owner->barrack[1] = (StaticEntity*)entity;
+			break;
+		case LABORATORY:
+			if (owner->laboratory == nullptr) owner->laboratory = (StaticEntity*)entity;
+			break;
+		default:
+			break;
+		}
+
 	}
 
 	return entity;

@@ -15,7 +15,7 @@
 #include <string>
 #include "SDL_mixer/include/SDL_mixer.h"
 
-DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, GenericPlayer* g_owner) : j1Entity(), resource_collected(0) {
+DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile, GenericPlayer* g_owner) : j1Entity(), resource_collected(0) {
 
 	switch (g_type)
 	{
@@ -38,11 +38,16 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, GenericPlayer
 	owner = g_owner;
 	type = g_type;
 	faction = g_faction;
+	current_tile = g_current_tile;
+
+	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
+	position.x += HALF_TILE;
+	position.y += HALF_TILE;
+
+	is_dynamic = true;
 
 	state = IDLE;
 	direction = BOTTOM_RIGHT;
-
-	speed = { 0, 0 };
 
 	target_entity = nullptr;
 	resource_building = nullptr;
@@ -50,6 +55,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, GenericPlayer
 
 	action_time = 3.0f;
 	target_tile = { -1,-1 };
+	speed = { 0, 0 };
 	sprite_size = 128;
 
 	detection_radius = 6;

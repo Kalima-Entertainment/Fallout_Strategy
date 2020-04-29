@@ -9,16 +9,24 @@
 #include "j1Scene.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
-StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, GenericPlayer* g_owner) {
+StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile,  GenericPlayer* g_owner) {
 	type = g_type;
 	faction = g_faction;
+	owner = g_owner;
+
+	current_tile = g_current_tile;
+	render_texture_pos = { 0,0 };
+	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
+
 	state = IDLE;
 	storage_capacity = 1000;
 	max_capacity = 3000;
-	render_texture_pos = { 0,0 };	
-	owner = g_owner;
+
+	is_dynamic = false;
+
 	for (int i = 0; i < 10; i++)
 		spawn_stack[i].type = NO_TYPE;
+
 	spawning = false;
 	upgrading = false;
 	want_to_upgrade = false;
