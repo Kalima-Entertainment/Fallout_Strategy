@@ -60,94 +60,20 @@ bool StaticEntity::Update(float dt) {
 			to_delete = true;
 
 		SpatialAudio(position.x, position.y, faction, state, type);
-
-		/*
-		if (Mix_Playing(21) == 0)
-			SpatialAudio(App->audio->explode, 21, position.x, position.y);
-*/
 		break;
 	default:
 		break;
 	}
 
 	//Spawning Units with timer and stack
-	{
-		if (spawning == false && spawn_stack[0].type != NO_TYPE) {
-			chrono_spawn.Start();
-			spawning = true;
-		}
-		if (spawning == true) {
-			if (chrono_spawn.ReadSec() > spawn_stack[0].spawn_seconds) {
-				App->entities->CreateEntity(faction, spawn_stack[0].type, spawnPosition.x, spawnPosition.y, owner);
-				//LOG("Unit Spawned");
-				UpdateSpawnStack();
-			}
-			time_left = spawn_stack[0].spawn_seconds - chrono_spawn.ReadSec();
-		}
-	}
+	UpgradeChrono();
+
 	//Chrono for upgrades
-	{
-		if (upgrading == false && want_to_upgrade == true) {
-			chrono_upgrade.Start();
-			upgrading = true;
-		}
-		if (upgrading == true) {
-			//LOG("time remaining %f ", 45 - chrono_upgrade.ReadSec());
-			if (chrono_upgrade.ReadSec() > upgrade_stack.upgrade_seconds) {
-				if (upgrade_stack.building == BASE) {
-					ExecuteUpgrade(upgrade_stack.faction, RESOURCES_LIMIT);
-					ExecuteUpgrade(upgrade_stack.faction, GATHERER_CAPACITY);
-				}
-				else if (upgrade_stack.building == BARRACK) {
-					ExecuteUpgrade(upgrade_stack.faction, UNITS_DAMAGE);
-					ExecuteUpgrade(upgrade_stack.faction, UNITS_SPEED);
-				}
-				else if (upgrade_stack.building == LABORATORY) {
-					ExecuteUpgrade(upgrade_stack.faction, UNITS_HEALTH);
-					ExecuteUpgrade(upgrade_stack.faction, CREATION_TIME);
-
-				}
-
-									
-
-				UpdateUpgradeStack();
-			}
-		}
-	}
+	SpawnChrono();
 
 	//Interact with the building to spawn units or investigate upgrades
-	if (this == App->player->selected_entity) {
-		if (type == BASE) {
-			//Spawn GATHERER
-			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-				SpawnUnit(GATHERER);
-			//Upgrades
-			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-				Upgrade(App->entities->base_resource_limit[faction]);
-			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-				Upgrade(App->entities->gatherer_resource_limit[faction]);
-		}
-		else if (type == BARRACK) {
-			//Spawn MELEE
-			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-				SpawnUnit(MELEE);
-			//Spawn RANGED
-			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-				SpawnUnit(RANGED);
-			//Upgrades
-			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-				Upgrade(App->entities->units_damage[faction]);
-			if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
-				Upgrade(App->entities->units_speed[faction]);
-		}
-		else if (type == LABORATORY) {
-			//Upgrades
-			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-				Upgrade(App->entities->units_health[faction]);
-			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-				Upgrade(App->entities->units_creation_time[faction]);
-		}
-	}
+	//Select a building and press 1, 2, 3 or 4 to spawn or investigate
+	DebugSpawnsUpgrades();
 
 	last_dt = dt;
 
@@ -582,7 +508,84 @@ void StaticEntity::UpdateSpawnStack() {
 	spawning = false;
 }
 
-void StaticEntity::UpdateUpgradeStack() {
-	want_to_upgrade = false;
-	upgrading = false;
+void StaticEntity::SpawnChrono() {
+
+	//We start the chrono if the slot is not empty and we are not spawning already
+	if (spawning == false && spawn_stack[0].type != NO_TYPE) {
+		chrono_spawn.Start();
+		spawning = true;
+	}
+	if (spawning == true) {
+		if (chrono_spawn.ReadSec() > spawn_stack[0].spawn_seconds) {
+			App->entities->CreateEntity(faction, spawn_stack[0].type, spawnPosition.x, spawnPosition.y, owner);
+			//LOG("Unit Spawned");
+			UpdateSpawnStack();
+		}
+		time_left = spawn_stack[0].spawn_seconds - chrono_spawn.ReadSec();
+	}
+}
+
+void StaticEntity::UpgradeChrono() {
+
+	if (upgrading == false && want_to_upgrade == true) {
+		chrono_upgrade.Start();
+		upgrading = true;
+		want_to_upgrade = false;
+	}
+	if (upgrading == true) {
+		//LOG("time remaining %f ", 45 - chrono_upgrade.ReadSec());
+		if (chrono_upgrade.ReadSec() > upgrade_stack.upgrade_seconds) {
+			if (upgrade_stack.building == BASE) {
+				ExecuteUpgrade(upgrade_stack.faction, RESOURCES_LIMIT);
+				ExecuteUpgrade(upgrade_stack.faction, GATHERER_CAPACITY);
+			}
+			else if (upgrade_stack.building == BARRACK) {
+				ExecuteUpgrade(upgrade_stack.faction, UNITS_DAMAGE);
+				ExecuteUpgrade(upgrade_stack.faction, UNITS_SPEED);
+			}
+			else if (upgrade_stack.building == LABORATORY) {
+				ExecuteUpgrade(upgrade_stack.faction, UNITS_HEALTH);
+				ExecuteUpgrade(upgrade_stack.faction, CREATION_TIME);
+
+			}
+
+			upgrading = true;
+		}
+	}
+}
+
+void StaticEntity::DebugSpawnsUpgrades() {
+
+	if (this == App->player->selected_entity) {
+		if (type == BASE) {
+			//Spawn GATHERER
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+				SpawnUnit(GATHERER);
+			//Upgrades
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+				Upgrade(App->entities->base_resource_limit[faction]);
+			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+				Upgrade(App->entities->gatherer_resource_limit[faction]);
+		}
+		else if (type == BARRACK) {
+			//Spawn MELEE
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+				SpawnUnit(MELEE);
+			//Spawn RANGED
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+				SpawnUnit(RANGED);
+			//Upgrades
+			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+				Upgrade(App->entities->units_damage[faction]);
+			if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+				Upgrade(App->entities->units_speed[faction]);
+		}
+		else if (type == LABORATORY) {
+			//Upgrades
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+				Upgrade(App->entities->units_health[faction]);
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+				Upgrade(App->entities->units_creation_time[faction]);
+		}
+	}
 }
