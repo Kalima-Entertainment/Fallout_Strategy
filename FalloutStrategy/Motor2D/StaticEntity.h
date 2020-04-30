@@ -33,7 +33,11 @@ public:
 	void ExecuteUpgrade(Faction faction, Upgrades upgrade_name);
 	void SpawnUnit(EntityType type, bool no_cost = false);
 	void UpdateSpawnStack();
-	void UpdateUpgradeStack();
+
+	void SpawnChrono();
+	void UpgradeChrono();
+
+	void DebugSpawnsUpgrades();
 	
 public:
 	std::vector<iPoint> tiles;
