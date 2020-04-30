@@ -97,7 +97,8 @@ public:
 	void RandomFactions();
 	Faction FactionByIndex(int i) { return static_cast<Faction>(i); }
 
-	void LoadCosts();
+	void LoadUpgradeCosts(pugi::xml_node& config);
+	void LoadUnitCosts();
 public:
 	std::vector<j1Entity*> entities;
 	std::vector<ResourceBuilding*> resource_buildings;

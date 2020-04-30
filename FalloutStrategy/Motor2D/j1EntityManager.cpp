@@ -194,47 +194,9 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 	config_data = config;
 	RandomFactions();
 
-	pugi::xml_node boost_node = config.first_child().first_child();
-	Faction faction = NO_FACTION;
-	std::string faction_name;
+	LoadUpgradeCosts(config);
 
-	for (int j = 0; j < 3; j++) {
-		for (int i = 0; i < 4; i++) {
-			if (i == 0)faction = VAULT;
-			else if (i == 1)faction = BROTHERHOOD;
-			else if (i == 2)faction = MUTANT;
-			else if (i == 3)faction = GHOUL;
-
-			int caps_cost = boost_node.attribute("cost").as_int();
-			int upgrade_time = boost_node.attribute("upgrade_time").as_int();
-			int cost_increment = boost_node.attribute("cost_increment").as_int();			
-
-			if (j == 0) { //BASE upgrades
-				float storage_increment = boost_node.attribute("storage_increment").as_float();
-				float gatherer_capacity = boost_node.attribute("gatherer_capacity").as_float();
-
-				base_resource_limit[faction] = { faction, RESOURCES_LIMIT, 0, caps_cost, cost_increment, upgrade_time, storage_increment };
-				gatherer_resource_limit[faction] = { faction, GATHERER_CAPACITY, 0, caps_cost, cost_increment, upgrade_time, gatherer_capacity };
-			}
-			else if (j == 1) {//LABORATORY upgrades
-				float health_increment = boost_node.attribute("health_increment").as_float();
-				float creation_time = boost_node.attribute("creation_time").as_float();
-
-				units_health[faction] = { faction, UNITS_HEALTH, 0, caps_cost, cost_increment, upgrade_time, health_increment };
-				units_creation_time[faction] = { faction, CREATION_TIME, 0, caps_cost, cost_increment, upgrade_time, creation_time };
-			}
-			else if (j == 2) {//BARRACK upgrades
-				float damage_increment = boost_node.attribute("damage_increment").as_float();
-				float speed_increment = boost_node.attribute("speed_increment").as_float();
-
-				units_damage[faction] = { faction, UNITS_DAMAGE, 0, caps_cost, cost_increment, upgrade_time, damage_increment };
-				units_speed[faction] = { faction, UNITS_SPEED, 0, caps_cost, cost_increment, upgrade_time, speed_increment };
-			}	
-		}
-		boost_node = boost_node.next_sibling();
-	}
-
-	LoadCosts();
+	LoadUnitCosts();
 
 	return ret;
 }
@@ -797,7 +759,50 @@ void j1EntityManager::OnCommand(std::vector<std::string> command_parts) {
 	}
 }
 
-void j1EntityManager::LoadCosts() {
+void j1EntityManager::LoadUpgradeCosts(pugi::xml_node& config)
+{
+	pugi::xml_node boost_node = config.first_child().first_child();
+	Faction faction = NO_FACTION;
+	std::string faction_name;
+
+	for (int j = 0; j < 3; j++) {
+		for (int i = 0; i < 4; i++) {
+			if (i == 0)faction = VAULT;
+			else if (i == 1)faction = BROTHERHOOD;
+			else if (i == 2)faction = MUTANT;
+			else if (i == 3)faction = GHOUL;
+
+			int caps_cost = boost_node.attribute("cost").as_int();
+			int upgrade_time = boost_node.attribute("upgrade_time").as_int();
+			int cost_increment = boost_node.attribute("cost_increment").as_int();
+
+			if (j == 0) { //BASE upgrades
+				float storage_increment = boost_node.attribute("storage_increment").as_float();
+				float gatherer_capacity = boost_node.attribute("gatherer_capacity").as_float();
+
+				base_resource_limit[faction] = { faction, RESOURCES_LIMIT, 0, caps_cost, cost_increment, upgrade_time, storage_increment };
+				gatherer_resource_limit[faction] = { faction, GATHERER_CAPACITY, 0, caps_cost, cost_increment, upgrade_time, gatherer_capacity };
+			}
+			else if (j == 1) {//LABORATORY upgrades
+				float health_increment = boost_node.attribute("health_increment").as_float();
+				float creation_time = boost_node.attribute("creation_time").as_float();
+
+				units_health[faction] = { faction, UNITS_HEALTH, 0, caps_cost, cost_increment, upgrade_time, health_increment };
+				units_creation_time[faction] = { faction, CREATION_TIME, 0, caps_cost, cost_increment, upgrade_time, creation_time };
+			}
+			else if (j == 2) {//BARRACK upgrades
+				float damage_increment = boost_node.attribute("damage_increment").as_float();
+				float speed_increment = boost_node.attribute("speed_increment").as_float();
+
+				units_damage[faction] = { faction, UNITS_DAMAGE, 0, caps_cost, cost_increment, upgrade_time, damage_increment };
+				units_speed[faction] = { faction, UNITS_SPEED, 0, caps_cost, cost_increment, upgrade_time, speed_increment };
+			}
+		}
+		boost_node = boost_node.next_sibling();
+	}
+}
+
+void j1EntityManager::LoadUnitCosts() {
 	//Loads the cost of spawning units and creating upgrades from XML file
 	
 	pugi::xml_document entities_file;
