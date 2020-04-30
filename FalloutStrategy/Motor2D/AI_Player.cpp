@@ -105,6 +105,7 @@ bool AI_Player::Update(float dt) {
 	// Fight -------------------------------------------------------
 
 	//Assign all attacking units an entity to attack
+	/*
 	if (is_attacking) 
 	{
 		//if the target building is destroyed forget about it
@@ -153,6 +154,7 @@ bool AI_Player::Update(float dt) {
 			}
 		}
 	}
+	*/
 
 	return ret;
 }

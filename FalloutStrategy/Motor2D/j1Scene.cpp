@@ -98,9 +98,9 @@ bool j1Scene::Start()
 		
 	//top_left
 	App->entities->CreateEntity(VAULT, MELEE, 20, 20, App->player);
-	App->entities->CreateEntity(ANIMALS, BIGHRONER, 21, 20, App->player);
+	App->entities->CreateEntity(ANIMALS, BIGHRONER, 15, 20, App->player);
 	App->entities->CreateEntity(ANIMALS, BRAHAM, 22, 20, App->player);
-	App->entities->CreateEntity(ANIMALS, DEATHCLAW, 23, 20, App->player);
+	App->entities->CreateEntity(ANIMALS, DEATHCLAW, 28, 20, App->player);
 
 	//top_right
 	App->entities->CreateEntity(VAULT, MELEE, 130, 20, App->player);

@@ -88,10 +88,12 @@ DynamicEntity::~DynamicEntity() {
 bool DynamicEntity::Update(float dt) {
 
 	Mix_AllocateChannels(25);
+	j1Entity* enemy_in_range = nullptr;
 
 	switch (state)
 	{
 	case IDLE:
+		/*
 		if (node_path.size() > 0) {
 			target_tile = node_path.back();
 			node_path.pop_back();
@@ -112,26 +114,54 @@ bool DynamicEntity::Update(float dt) {
 			}
 		}
 
-		if ((target_entity == nullptr)&&(detection_timer.Read() > 250)) {
+		if (detection_timer.Read() > 250) {
 			j1Entity* enemy_in_range = DetectEntitiesInRange();
 
 			if (enemy_in_range != nullptr) {
-				target_entity = enemy_in_range;
-				PathfindToPosition(target_entity->current_tile);
+				if (is_agressive) {
+					if (target_entity == nullptr) {
+						target_entity = enemy_in_range;
+						PathfindToPosition(target_entity->current_tile);
+					}
+				}
+				else {
+					Flee();
+				}
 			}
 
 			detection_timer.Start();
 		}
+		*/
+		
+		enemy_in_range = DetectEntitiesInRange();
 
+		if (enemy_in_range) {
+			if (is_agressive) {
+				if ((target_entity == nullptr)||(target_entity == enemy_in_range)) {
+					target_entity = enemy_in_range;
+					if ((current_tile.DistanceNoSqrt(enemy_in_range->current_tile) > range) && (target_entity->current_tile != target_tile))
+						PathfindToPosition(enemy_in_range->current_tile);
+					else {
+						next_tile = current_tile;
+						path_to_target.clear();
+					}
+				}
+			}
+			else {
+				Flee();
+			}
+		}
+		
 		break;
 
 	case WALK:
 		//if the entitiy is about to reach it's target tile
+		/*
 		if (current_tile.LinealDistance(target_tile) <= range) {
 			//we reach the destination and there is an entity in it
 			//ranged and melee
 			if (is_agressive) {
-				if ((target_entity != nullptr)&&(current_tile.LinealDistance(target_entity->current_tile)))
+				if ((target_entity != nullptr)&&(current_tile.LinealDistance(target_entity->current_tile) <= range))
 				{
 					//enemy target
 					if ((faction != target_entity->faction)&&(node_path.size() == 0)) {
@@ -190,6 +220,18 @@ bool DynamicEntity::Update(float dt) {
 				}
 			}
 		}
+		*/
+		if (current_tile.DistanceNoSqrt(target_tile) <= range) {
+			if (is_agressive) {
+				if (target_entity != nullptr) {
+					if (target_entity->current_tile == target_tile) {
+					state = IDLE;
+					UpdateTile();
+					}
+				}
+			}
+		}
+			
 
 		Move(dt);
 
@@ -212,6 +254,7 @@ bool DynamicEntity::Update(float dt) {
 			state = WALK;
 		}
 		break;
+
 	case HIT:
 		current_animation = &animations[HIT][direction];
 		if (current_animation->Finished()) {
@@ -465,6 +508,8 @@ void DynamicEntity::Move(float dt) {
 		direction = last_direction;
 		state = IDLE;
 	}
+
+	UpdateTile();
 }
 
 void DynamicEntity::Attack() {
@@ -559,6 +604,34 @@ void DynamicEntity::StoreGatheredResources() {
 
 	resource_collected = 0;
 	target_entity = nullptr;
+}
+
+void DynamicEntity::Flee() {
+	int minimum_distance = 5;
+	int max_distance = 10;
+	int range_separation = max_distance - minimum_distance;
+	int x, y;
+	int x_sign, y_sign;
+	iPoint possible_tile;
+
+	do
+	{
+		srand(time(NULL));
+		x = rand() % range_separation;
+		y = rand() % range_separation;
+
+		if (rand() % 2 == 0) x_sign = -1;
+		else x_sign = 1;
+
+		if (rand() % 2 == 1) y_sign = 1;
+		else y_sign = -1;
+		
+		possible_tile.x = current_tile.x + (minimum_distance + x) * x_sign;
+		possible_tile.y = current_tile.y + (minimum_distance + y) * y_sign;
+
+	} while (App->entities->occupied_tiles[possible_tile.x][possible_tile.y]);
+
+	PathfindToPosition(possible_tile);
 }
 
 void DynamicEntity::PathfindToPosition(iPoint destination) {
@@ -752,7 +825,8 @@ j1Entity* DynamicEntity::DetectEntitiesInRange() {
 				if (App->entities->occupied_tiles[checked_tile.x][checked_tile.y]) {
 					detected_entity = App->entities->FindEntityByTile(checked_tile);
 					entities_in_range.push_back(detected_entity);
-					if (detected_entity->faction != faction)
+
+					if ((detected_entity != nullptr)&&(detected_entity->faction != faction))
 						if (closest_enemy == nullptr) {
 							closest_enemy = detected_entity;
 						}

@@ -41,6 +41,7 @@ public:
 	void Attack();
 	void Gather();
 	void StoreGatheredResources();
+	void Flee();
 
 	j1Entity* DetectEntitiesInRange();
 	void PathfindToPosition(iPoint target);
