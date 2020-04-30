@@ -207,19 +207,28 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 
 			int caps_cost = boost_node.attribute("cost").as_int();
 			int upgrade_time = boost_node.attribute("upgrade_time").as_int();
-			int cost_increment = boost_node.attribute("cost_increment").as_int();
+			int cost_increment = boost_node.attribute("cost_increment").as_int();			
 
 			if (j == 0) { //BASE upgrades
-				base_resource_limit[faction] = { faction, RESOURCES_LIMIT, 0, caps_cost, cost_increment, upgrade_time };
-				gatherer_resource_limit[faction] = { faction, GATHERER_CAPACITY, 0, caps_cost, cost_increment, upgrade_time };
+				float storage_increment = boost_node.attribute("storage_increment").as_float();
+				float gatherer_capacity = boost_node.attribute("gatherer_capacity").as_float();
+
+				base_resource_limit[faction] = { faction, RESOURCES_LIMIT, 0, caps_cost, cost_increment, upgrade_time, storage_increment };
+				gatherer_resource_limit[faction] = { faction, GATHERER_CAPACITY, 0, caps_cost, cost_increment, upgrade_time, gatherer_capacity };
 			}
 			else if (j == 1) {//LABORATORY upgrades
-				units_health[faction] = { faction, UNITS_HEALTH, 0, caps_cost, cost_increment, upgrade_time };
-				units_creation_time[faction] = { faction, CREATION_TIME, 0, caps_cost, cost_increment, upgrade_time };
+				float health_increment = boost_node.attribute("health_increment").as_float();
+				float creation_time = boost_node.attribute("creation_time").as_float();
+
+				units_health[faction] = { faction, UNITS_HEALTH, 0, caps_cost, cost_increment, upgrade_time, health_increment };
+				units_creation_time[faction] = { faction, CREATION_TIME, 0, caps_cost, cost_increment, upgrade_time, creation_time };
 			}
 			else if (j == 2) {//BARRACK upgrades
-				units_damage[faction] = { faction, UNITS_DAMAGE, 0, caps_cost, cost_increment, upgrade_time };
-				units_speed[faction] = { faction, UNITS_SPEED, 0, caps_cost, cost_increment, upgrade_time };
+				float damage_increment = boost_node.attribute("damage_increment").as_float();
+				float speed_increment = boost_node.attribute("speed_increment").as_float();
+
+				units_damage[faction] = { faction, UNITS_DAMAGE, 0, caps_cost, cost_increment, upgrade_time, damage_increment };
+				units_speed[faction] = { faction, UNITS_SPEED, 0, caps_cost, cost_increment, upgrade_time, speed_increment };
 			}	
 		}
 		boost_node = boost_node.next_sibling();

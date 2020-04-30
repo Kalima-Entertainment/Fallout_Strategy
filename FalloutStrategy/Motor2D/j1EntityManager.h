@@ -57,6 +57,7 @@ struct Upgrades_Data{
 	int first_price;
 	int price_increment;
 	int seconds;
+	float value_increment; 
 };
 
 class j1EntityManager : public j1Module
