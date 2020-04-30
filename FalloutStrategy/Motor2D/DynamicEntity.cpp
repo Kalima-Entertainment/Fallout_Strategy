@@ -143,6 +143,8 @@ bool DynamicEntity::Update(float dt) {
 						PathfindToPosition(enemy_in_range->current_tile);
 					else {
 						next_tile = current_tile;
+						target_tile = current_tile;
+						UpdateTile();
 						path_to_target.clear();
 					}
 				}
@@ -221,17 +223,26 @@ bool DynamicEntity::Update(float dt) {
 			}
 		}
 		*/
+
+
 		if (current_tile.DistanceNoSqrt(target_tile) <= range) {
 			if (is_agressive) {
 				if (target_entity != nullptr) {
-					if (target_entity->current_tile == target_tile) {
-					state = IDLE;
+					if ((target_entity->current_tile == target_tile)|| (current_tile.DistanceManhattan(target_entity->current_tile))) {
+					state = ATTACK;
+					path_to_target.clear();
 					UpdateTile();
 					}
 				}
 			}
 		}
-			
+		/*
+		if ((target_entity != nullptr) && (current_tile.DistanceManhattan(target_entity->current_tile) <= range) && (is_agressive)) {
+			state = ATTACK;
+			path_to_target.clear();
+			UpdateTile();
+		}
+		*/	
 
 		Move(dt);
 
