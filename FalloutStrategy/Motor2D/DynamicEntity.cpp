@@ -146,6 +146,8 @@ bool DynamicEntity::Update(float dt) {
 						target_tile = current_tile;
 						UpdateTile();
 						path_to_target.clear();
+						state = ATTACK;
+						action_timer.Start();
 					}
 				}
 			}
@@ -224,27 +226,20 @@ bool DynamicEntity::Update(float dt) {
 		}
 		*/
 
+		Move(dt);
 
 		if (current_tile.DistanceNoSqrt(target_tile) <= range) {
 			if (is_agressive) {
 				if (target_entity != nullptr) {
-					if ((target_entity->current_tile == target_tile)|| (current_tile.DistanceManhattan(target_entity->current_tile))) {
+					if ((target_entity->current_tile == target_tile)|| (current_tile.DistanceManhattan(target_entity->current_tile) <= range)) {
 					state = ATTACK;
 					path_to_target.clear();
 					UpdateTile();
+					action_timer.Start();
 					}
 				}
 			}
 		}
-		/*
-		if ((target_entity != nullptr) && (current_tile.DistanceManhattan(target_entity->current_tile) <= range) && (is_agressive)) {
-			state = ATTACK;
-			path_to_target.clear();
-			UpdateTile();
-		}
-		*/	
-
-		Move(dt);
 
 		SpatialAudio(position.x, position.y, faction, state, type);
 
@@ -252,7 +247,7 @@ bool DynamicEntity::Update(float dt) {
 
 	case ATTACK:
 
-		if (timer.ReadSec() > action_time) {
+		if (action_timer.ReadSec() > action_time) {
 			Attack();
 		}
 
@@ -260,7 +255,7 @@ bool DynamicEntity::Update(float dt) {
 
 		break;
 	case GATHER:
-		if (timer.ReadSec() > action_time) {
+		if (action_timer.ReadSec() > action_time) {
 			Gather();
 			state = WALK;
 		}
@@ -525,7 +520,7 @@ void DynamicEntity::Move(float dt) {
 
 void DynamicEntity::Attack() {
 
-	timer.Start();
+	action_timer.Start();
 
 	//damage unit if god_mode isn't activated
 	if ((target_entity->faction == App->player->faction) && (App->player->god_mode))

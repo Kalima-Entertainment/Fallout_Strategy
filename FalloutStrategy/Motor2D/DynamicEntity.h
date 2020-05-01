@@ -65,7 +65,7 @@ public:
 	Resource resource_type;
 	bool is_agressive;
 
-	j1Timer timer;
+	j1Timer action_timer;
 	j1Timer detection_timer;
 
 	UnitInfo unitinfo;	
