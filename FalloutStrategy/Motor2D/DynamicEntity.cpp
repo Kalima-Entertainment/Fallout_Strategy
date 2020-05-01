@@ -14,6 +14,7 @@
 #include <iostream>
 #include <string>
 #include "SDL_mixer/include/SDL_mixer.h"
+#include "FoWManager.h"
 
 DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile, GenericPlayer* g_owner) : j1Entity(), resource_collected(0) {
 
@@ -72,6 +73,18 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 
 	detection_radius = 6;
 	detection_timer.Start();
+
+	//Fog Of War
+	if (owner->faction == App->player->faction) {
+		//Player
+		//TODO: Change 0,0 to position
+		visionEntity = App->fowManager->CreateFoWEntity({0,0}, true);
+		visionEntity->SetNewVisionRadius(4);
+	}
+	else {
+		//Enemy
+		visionEntity = App->fowManager->CreateFoWEntity({ 0,0 }, false);
+	}
 }
 
 DynamicEntity::~DynamicEntity() {

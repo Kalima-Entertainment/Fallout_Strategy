@@ -30,7 +30,7 @@ j1Player::j1Player() : GenericPlayer() {
 	god_mode = false;
 
 	//faction = VAULT;
-	defeated = false;
+	defeated = false;	
 }
 
 j1Player::~j1Player() {
