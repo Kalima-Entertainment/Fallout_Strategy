@@ -62,6 +62,8 @@ bool j1Scene::Start()
 
 	//random map ----------------------------
 
+	App->pathfinding->SetMap();
+
 	std::string modules[4];
 
 	for (int i = 0; i < 4; i++)
@@ -86,12 +88,7 @@ bool j1Scene::Start()
 
 	if (App->map->Load(modules) == true)
 	{
-		int w, h;
-		uchar* data = NULL;
-		if (App->map->CreateWalkabilityMap(w, h, &data))
-			App->pathfinding->SetMap(w, h, data);
-
-		RELEASE_ARRAY(data);
+		App->map->CreateWalkabilityMap();
 	}
 
 	App->minimap->Enable();

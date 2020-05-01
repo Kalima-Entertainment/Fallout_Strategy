@@ -6,7 +6,7 @@
 #include "StaticEntity.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
-j1PathFinding::j1PathFinding() : j1Module(), map(NULL), last_path(DEFAULT_PATH_LENGTH), width(0), height(0), node_map_divisions(15)
+j1PathFinding::j1PathFinding() : j1Module(), last_path(DEFAULT_PATH_LENGTH), width(0), height(0), node_map_divisions(15)
 {
 	name = ("pathfinding");
 	node_map = CreateNodeMap();
@@ -16,7 +16,6 @@ j1PathFinding::j1PathFinding() : j1Module(), map(NULL), last_path(DEFAULT_PATH_L
 // Destructor
 j1PathFinding::~j1PathFinding()
 {
-	RELEASE_ARRAY(map);
 	node_map.clear();
 }
 
@@ -26,19 +25,19 @@ bool j1PathFinding::CleanUp()
 	LOG("Freeing pathfinding library");
 
 	last_path.clear();
-	RELEASE_ARRAY(map);
 	return true;
 }
 
 // Sets up the walkability map
-void j1PathFinding::SetMap(uint width, uint height, uchar* data)
+void j1PathFinding::SetMap()
 {
-	this->width = width;
-	this->height = height;
-
-	RELEASE_ARRAY(map);
-	map = new uchar[width * height];
-	memcpy(map, data, width * height);
+	for (int y = 0; y < 150; y++)
+	{
+		for (int x = 0; x < 150; x++)
+		{
+			map[x][y] = true;
+		}
+	}
 }
 
 // Utility: return true if pos is inside the map boundaries
@@ -51,17 +50,11 @@ bool j1PathFinding::CheckBoundaries(const iPoint& pos) const
 // Utility: returns true is the tile is walkable
 bool j1PathFinding::IsWalkable(const iPoint& pos) const
 {
-	uchar t = GetTileAt(pos);
-	return t != INVALID_WALK_CODE && t > 0;
+	return map[pos.x][pos.y];
 }
 
-// Utility: return the walkability value of a tile
-uchar j1PathFinding::GetTileAt(const iPoint& pos) const
-{
-	if (CheckBoundaries(pos))
-		return map[(pos.y * width) + pos.x];
-
-	return INVALID_WALK_CODE;
+void j1PathFinding::SetTileAsUnwalkable(int tile_x, int tile_y) {
+	map[tile_x][tile_y] = false;
 }
 
 iPoint j1PathFinding::FindWalkableAdjacentTile(iPoint point) const {
@@ -76,7 +69,7 @@ iPoint j1PathFinding::FindWalkableAdjacentTile(iPoint point) const {
 	tile = { point.x, point.y + 1 };
 	if (App->pathfinding->IsWalkable(tile))
 		return tile;
-
+	
 	// east
 	tile = { point.x + 1, point.y };
 	if (App->pathfinding->IsWalkable(tile))

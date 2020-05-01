@@ -14,6 +14,7 @@
 #include "GenericPlayer.h"
 #include "j1Player.h"
 #include "AI_Player.h"
+#include "j1Pathfinding.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -651,14 +652,11 @@ bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 	return ret;
 }
 
-bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
+bool j1Map::CreateWalkabilityMap() const
 {
 	bool ret = false;
 
 		MapLayer* layer = (MapLayer*)&data.layers[MAX_LAYERS -1];
-
-		uchar* map = new uchar[layer->width * layer->height];
-		memset(map, 1, layer->width * layer->height);
 
 		for (int y = 0; y < data.height; ++y)
 		{
@@ -670,15 +668,12 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 
 				if (tile_id != 0)
 				{
-					map[i] = 0;
+					App->pathfinding->SetTileAsUnwalkable(x, y);
 				}
 			}
 		}
 
-		*buffer = map;
-		width = data.width;
-		height = data.height;
-		ret = true;
+	ret = true;
 
 	return ret;
 }
@@ -698,8 +693,7 @@ std::vector<iPoint> j1Map::CalculateArea(iPoint first_tile_position, int width, 
 			area.push_back(tile_position);
 			
 			//set tile as unwalkable
-			uint position = ((tile_position.y) * MAP_LENGTH) + (tile_position.x);
-			data.layers[MAX_LAYERS-1].data[position] = 1;
+			App->pathfinding->SetTileAsUnwalkable(tile_position.x, tile_position.y);
 		}
 	}
 

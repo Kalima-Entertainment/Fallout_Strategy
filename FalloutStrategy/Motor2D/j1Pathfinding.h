@@ -23,7 +23,7 @@ public:
 	bool CleanUp();
 
 	// Sets up the walkability map
-	void SetMap(uint width, uint height, uchar* data);
+	void SetMap();
 
 	// Main function to request a path from A to B
 	int CreatePath(const iPoint& origin, const iPoint& destination);
@@ -37,8 +37,7 @@ public:
 	// Utility: returns true is the tile is walkable
 	bool IsWalkable(const iPoint& pos) const;
 
-	// Utility: return the walkability value of a tile
-	uchar GetTileAt(const iPoint& pos) const;
+	void SetTileAsUnwalkable(int tile_x, int tile_y);
 
 	iPoint FindNearestWalkableTile(iPoint current_tile, iPoint target_tile) const;
 	iPoint ExpandTile(iPoint target_tile) const;
@@ -58,8 +57,7 @@ private:
 	// size of the map
 	uint width = 0u;
 	uint height = 0u;
-	// all map walkability values [0..255]
-	uchar* map = nullptr;
+	bool map[150][150];
 	std::vector<iPoint> last_path;
 	j1Timer path_timer;
 	//node map

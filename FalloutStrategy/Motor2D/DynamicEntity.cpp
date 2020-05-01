@@ -71,6 +71,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 	sprite_size = 128;
 
 	detection_radius = 6;
+	action_timer.Start();
 	detection_timer.Start();
 }
 
@@ -203,8 +204,10 @@ bool DynamicEntity::Update(float dt) {
 	case HIT:
 		current_animation = &animations[HIT][direction];
 		if (current_animation->Finished()) {
-			if ((attacking_entity != nullptr) && (is_agressive)) {
-				state = ATTACK;
+			if (attacking_entity != nullptr) {
+				if (is_agressive) {
+					state = ATTACK;
+				}
 			}
 			else 
 			{

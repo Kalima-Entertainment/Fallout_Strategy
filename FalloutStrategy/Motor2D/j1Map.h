@@ -145,7 +145,7 @@ public:
 	iPoint WorldToMap(int x, int y) const;
 	iPoint fWorldToMap(float x, float y) const;
 	iPoint IsometricWorldToMap(int x, int y) const;
-	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
+	bool CreateWalkabilityMap() const;
 	std::vector<iPoint> CalculateArea(iPoint first_tile_position, int width, int height);
 	void SetBuildingTilesUnwalkable(std::vector<iPoint> tiles);
 
