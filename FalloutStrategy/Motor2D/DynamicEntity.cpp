@@ -24,7 +24,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 		is_agressive = true;
 		break;
 	case RANGED:
-		range = 3;
+		range = 6;
 		is_agressive = true;
 		break;
 	case GATHERER:
@@ -93,45 +93,6 @@ bool DynamicEntity::Update(float dt) {
 	switch (state)
 	{
 	case IDLE:
-		/*
-		if (node_path.size() > 0) {
-			target_tile = node_path.back();
-			node_path.pop_back();
-			PathfindToPosition(target_tile);
-		}
-
-		if ((attacking_entity != nullptr)&&(attacking_entity->state != DIE)) {
-			if (is_agressive){
-				target_entity = attacking_entity;
-				if (current_tile.DistanceManhattan(attacking_entity->current_tile) > range) {
-				PathfindToPosition(attacking_entity->current_tile);
-				}
-				else {
-					attacking_entity->attacking_entity = this;
-					state = ATTACK;
-					UpdateTile();
-				}
-			}
-		}
-
-		if (detection_timer.Read() > 250) {
-			j1Entity* enemy_in_range = DetectEntitiesInRange();
-
-			if (enemy_in_range != nullptr) {
-				if (is_agressive) {
-					if (target_entity == nullptr) {
-						target_entity = enemy_in_range;
-						PathfindToPosition(target_entity->current_tile);
-					}
-				}
-				else {
-					Flee();
-				}
-			}
-
-			detection_timer.Start();
-		}
-		*/
 		
 		enemy_in_range = DetectEntitiesInRange();
 
@@ -159,72 +120,6 @@ bool DynamicEntity::Update(float dt) {
 		break;
 
 	case WALK:
-		//if the entitiy is about to reach it's target tile
-		/*
-		if (current_tile.LinealDistance(target_tile) <= range) {
-			//we reach the destination and there is an entity in it
-			//ranged and melee
-			if (is_agressive) {
-				if ((target_entity != nullptr)&&(current_tile.LinealDistance(target_entity->current_tile) <= range))
-				{
-					//enemy target
-					if ((faction != target_entity->faction)&&(node_path.size() == 0)) {
-						state = ATTACK;
-						target_entity->attacking_entity = this;
-						Attack();
-					}
-					//ally
-					else if (next_tile == target_tile)
-					{
-						state = IDLE;
-						next_tile = current_tile;
-						path_to_target.clear();
-						UpdateTile();
-					}
-				}
-			}
-			//gatherer
-			else {
-				if (next_tile == target_tile) {
-					//gather
-					if ((resource_building != nullptr) && (resource_collected < storage_capacity)) {
-						state = GATHER;
-						timer.Start();
-					}
-
-					//give gathered resources
-					else if ((resource_collected > 0) && (target_entity != nullptr) && (target_entity->volume < target_entity->storage_capacity)) {
-						StoreGatheredResources();
-
-						//go back to resource building to get more resources
-						if (resource_building->quantity > 0) {
-							PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
-							state = WALK;
-						}
-						//find another building
-						else
-						{
-							resource_building = App->entities->GetClosestResourceBuilding(current_tile);
-							//if there is at least a resource building left, go there
-							if (resource_building != nullptr) {
-								PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
-								state = WALK;
-							}
-							//if there are no resource buildings left
-							else
-							{
-								state = IDLE;
-							}
-						}
-					}
-					
-					if (target_entity != nullptr) {
-						state = IDLE;
-					}
-				}
-			}
-		}
-		*/
 
 		Move(dt);
 
@@ -239,6 +134,18 @@ bool DynamicEntity::Update(float dt) {
 					}
 				}
 			}
+			else {
+				if (type == GATHERER) {
+					if (next_tile == target_tile) {
+						//gather
+						if (((resource_building != nullptr) && (resource_collected < storage_capacity))
+						  ||((resource_collected > 0) && (target_entity != nullptr))) {
+							state = GATHER;
+							action_timer.Start();
+						}
+					}
+				}
+			}
 		}
 
 		SpatialAudio(position.x, position.y, faction, state, type);
@@ -246,8 +153,14 @@ bool DynamicEntity::Update(float dt) {
 		break;
 
 	case ATTACK:
+		if (target_entity == nullptr)
+			state = IDLE;
 
-		if (action_timer.ReadSec() > action_time) {
+		else if (target_entity->current_tile.DistanceNoSqrt(current_tile) > range) {
+			PathfindToPosition(target_entity->current_tile);
+		}
+
+		else if (action_timer.ReadSec() > action_time) {
 			Attack();
 		}
 
@@ -256,8 +169,34 @@ bool DynamicEntity::Update(float dt) {
 		break;
 	case GATHER:
 		if (action_timer.ReadSec() > action_time) {
-			Gather();
-			state = WALK;
+			//collect resources
+			if (resource_collected < storage_capacity) {
+				Gather();
+				state = WALK;
+			}
+			else {
+				StoreGatheredResources();
+
+				//go back to resource building to get more resources
+				if (resource_building->quantity > 0) {
+					PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
+					state = WALK;
+				}
+				//find another building
+				else
+				{
+					resource_building = App->entities->GetClosestResourceBuilding(current_tile);
+					//if there is at least a resource building left, go there
+					if (resource_building != nullptr) {
+						PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
+						state = WALK;
+					}
+					//if there are no resource buildings left
+					else {
+						state = IDLE;
+					}
+				}
+			}
 		}
 		break;
 
@@ -267,7 +206,8 @@ bool DynamicEntity::Update(float dt) {
 			if ((attacking_entity != nullptr) && (is_agressive)) {
 				state = ATTACK;
 			}
-			else {
+			else 
+			{
 				state = IDLE;
 			}
 		}
@@ -276,12 +216,13 @@ bool DynamicEntity::Update(float dt) {
 
 		break;
 	case DIE:
+		direction = TOP_LEFT;
 		if (!delete_timer.Started()) {
 			delete_timer.Start();
 			direction = TOP_LEFT;
 		}
 
-		if (delete_timer.ReadSec() > 5) {
+		if (delete_timer.ReadSec() > 4) {
 			to_delete = true;
 			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
 			attacking_entity->state = IDLE;
@@ -290,6 +231,7 @@ bool DynamicEntity::Update(float dt) {
 		SpatialAudio(position.x, position.y, faction, state, type);
 
 		break;
+
 	default:
 		break;
 	}
@@ -641,6 +583,8 @@ void DynamicEntity::Flee() {
 }
 
 void DynamicEntity::PathfindToPosition(iPoint destination) {
+	
+	UpdateTile();
 
 	//if the tile is in the map but it's not walkable
 	if (!App->pathfinding->IsWalkable(destination)) 

@@ -46,7 +46,7 @@ void j1Map::Draw()
 	{
 		MapLayer* layer = &data.layers[l];
 
-		if (layer->properties.Get("Nodraw") != 0) 
+		if ((layer->properties.Get("Nodraw") != 0)&&(!App->render->debug))
 			continue;
 
 		for(int y = 0; y < data.height; ++y)
@@ -668,7 +668,7 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 
 				int tile_id = layer->Get(x, y);
 
-				if (tile_id == 1)
+				if (tile_id != 0)
 				{
 					map[i] = 0;
 				}
