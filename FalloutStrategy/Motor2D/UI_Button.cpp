@@ -190,7 +190,7 @@ bool UI_Button::Update(float dt)
 			else if (t == button_settings_pause) {
 
 				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
-				App->menu_manager->CreateMenu(Menu::SETTINGS);
+				App->menu_manager->CreateMenu(Menu::PAUSE_SETTINGS);
 				App->audio->PlayFx(1, App->audio->click_fx, 0);
 			}
 			else if (t == button_back) {
@@ -200,7 +200,7 @@ bool UI_Button::Update(float dt)
 				App->audio->PlayFx(1, App->audio->back_fx, 0);
 			}
 			else if (t == button_back_pause) {
-				App->menu_manager->DestroyMenu(Menu::SETTINGS);
+				App->menu_manager->DestroyMenu(Menu::PAUSE_SETTINGS);
 				App->menu_manager->CreateMenu(Menu::PAUSE_MENU);
 				App->audio->PlayFx(1, App->audio->back_fx, 0);
 			}
