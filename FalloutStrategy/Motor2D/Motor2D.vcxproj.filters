@@ -118,6 +118,12 @@
     <ClCompile Include="LogoScene.cpp">
       <Filter>Desenvolupament  ========\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="FowEntity.cpp">
+      <Filter>Desenvolupament  ========\FogOfWar</Filter>
+    </ClCompile>
+    <ClCompile Include="FoWManager.cpp">
+      <Filter>Desenvolupament  ========\FogOfWar</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -258,6 +264,15 @@
     <ClInclude Include="LogoScene.h">
       <Filter>Desenvolupament  ========\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="FoWManager.h">
+      <Filter>Desenvolupament  ========\FogOfWar</Filter>
+    </ClInclude>
+    <ClInclude Include="FoWEntity.h">
+      <Filter>Desenvolupament  ========\FogOfWar</Filter>
+    </ClInclude>
+    <ClInclude Include="FoWBitDefs.h">
+      <Filter>Desenvolupament  ========\FogOfWar</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -283,6 +298,9 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\UI">
       <UniqueIdentifier>{cae9da51-1fbe-495e-ad38-f6691ccd446f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\FogOfWar">
+      <UniqueIdentifier>{332896a8-4da6-4602-812c-8b8e497ac777}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
