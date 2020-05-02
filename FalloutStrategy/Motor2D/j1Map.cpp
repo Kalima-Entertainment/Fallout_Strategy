@@ -41,7 +41,7 @@ void j1Map::Draw()
 	BROFILER_CATEGORY("MapDraw", Profiler::Color::MediumPurple)
 	if(map_loaded == false)
 		return;
-	int tile_margin = 6;
+	int tile_margin = 7;
 
 	for(int l = 0; l < MAX_LAYERS; l++)
 	{
