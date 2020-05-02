@@ -9,12 +9,12 @@ build:
   verbosity: minimal
 after_build:
 - cmd: >-
-    copy C:\projects\fallout-strategy\FalloutStrategy\Release\Fallout_Strategy.exe C:\projects\fallout-strategy\FalloutStrategy\Game\
+    copy C:\projects\fallout-strategy\FalloutStrategy\Release\Fallout_Strategy.exe C:\projects\fallout-strategy\FalloutStrategy\FalloutStrategy\
 
 
-    copy C:\projects\fallout-strategy\README.md C:\projects\fallout-strategy\FalloutStrategy\Game\
+    copy C:\projects\fallout-strategy\README.md C:\projects\fallout-strategy\FalloutStrategy\FalloutStrategy\
 artifacts:
-- path: FalloutStrategy/Game
+- path: FalloutStrategy/FalloutStrategy
   name: Fallout_Strategy
   type: WebDeployPackage
 deploy:
