@@ -11,6 +11,8 @@
 #include "j1Render.h"
 #include "j1Player.h"
 #include "DynamicEntity.h"
+#include "StaticEntity.h"
+
 
 j1MovementManager::j1MovementManager()
 {
@@ -101,161 +103,101 @@ void j1MovementManager::CreateGroup(std::vector<DynamicEntity*> entities_vector)
 	// --- Finally, If the group is Valid add it to our Groups list, else delete it ---
 	if (Validgroup) Groups.push_back(group);
 	else delete group;
-
-	LOG("Group Created");
 }
 
-void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
+void j1MovementManager::Move(j1Group* group, iPoint goal_path , float dt)
 {
+	
+	// -- Getting group information
 	std::list <j1Entity*>::const_iterator unit = group->Units.begin();
-
-	iPoint Map_Entityposition;
-	fPoint distanceToNextTile;
-	iPoint next_tile_world;
-	float DirectDistance;
-	fPoint to_fPoint;
-
-	while (unit != group->Units.end())
+	
+	for (unit = group->Units.begin();  unit != group->Units.end(); unit++)
 	{
-		DynamicEntity* dynamic_entity = (DynamicEntity*)(*unit);
+		// -- Cast to Dynamic to work properly
+		DynamicEntity* entity = (DynamicEntity*)(*unit);
 
-		// --- We Get the map coords of the Entity ---
-		Map_Entityposition.x = (*unit)->position.x;
-		Map_Entityposition.y = (*unit)->position.y;
-		Map_Entityposition = App->map->WorldToMap(Map_Entityposition.x, Map_Entityposition.y);
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && entity->info.IsSelected) {
+			// -- Calculate new path to reach goal
+			entity->PathfindToPosition(goal_path);
 
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && (*unit)->info.IsSelected) (*unit)->info.UnitMovementState = MovementState::MovementState_NoState;
-
-		switch ((*unit)->info.UnitMovementState)
-		{
-
-		case MovementState::MovementState_NoState:
-
-			// --- On call to Move, Units will request a path to the destination ---
-
-			if (((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && (*unit)->info.IsSelected))||(!(*unit)->owner->goal_tile_set))
-			{
-				if (group->IsGroupLead((*unit)) == false)
-				{
-					// --- If any other unit of the group has the same goal, change the goal tile ---
-					group->SetUnitGoalTile((*unit));
-				}
-				else
-				{
-					// --- Clear previous path request occupied goal tiles ---
-					group->ClearOccupiedlist();
-					(*unit)->info.goal_tile = goal_path;
-					group->Occupied_tiles.push_back(&(*unit)->info.goal_tile);
-					LOG("CREATE PATH RETURNS: %i", App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile));
-					(*unit)->owner->goal_tile_set = true;
-				}
-
-				if (App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile) != -1)
-				{
-					(*unit)->info.Current_path = App->pathfinding->GetLastPath();
-					(*unit)->info.Current_path.erase((*unit)->info.Current_path.begin());
-					(*unit)->info.Current_path.erase((*unit)->info.Current_path.begin());
-
-					(*unit)->info.UnitMovementState = MovementState::MovementState_NextStep;
-				}
-				else 
-				{
-					stop_iteration = true;
-				}
-			}
-
-			break;
-
-		case MovementState::MovementState_Wait:
-
-			// --- Whenever the unit faces an obstacle of any type during a scheduled path, overcome it ---
-
-			break;
-
-		case MovementState::MovementState_FollowPath:
-
-			dynamic_entity->state = WALK;
-
-			// --- If a path is created, the unit will start following it ---
-
-			next_tile_world = App->map->MapToWorld((*unit)->info.next_tile.x, (*unit)->info.next_tile.y);
-
-			distanceToNextTile = { (float)next_tile_world.x - (*unit)->position.x,(float)next_tile_world.y - (*unit)->position.y };
-
-			// --- We compute the module of our vector ---
-			DirectDistance = sqrtf(pow(distanceToNextTile.x, 2.0f) + pow(distanceToNextTile.y, 2.0f));
-
-			// --- We want a unitary vector to update the unit's direction/position ---
-			if (DirectDistance > 0.0f)
-			{
-				distanceToNextTile.x /= DirectDistance;
-				distanceToNextTile.y /= DirectDistance;
-			}
-
-			// --- Now we Apply the unit's Speed and the dt to the unitary vector  ---
-			distanceToNextTile.x *= (*unit)->speed.x * dt;
-			distanceToNextTile.y *= (*unit)->speed.y * dt;
-
-			if ((distanceToNextTile.x >= 0) && (distanceToNextTile.y < 0)) { dynamic_entity->direction = TOP_RIGHT; }
-			else if ((distanceToNextTile.x > 0) && (distanceToNextTile.y >= 0)) { dynamic_entity->direction = BOTTOM_RIGHT; }
-			else if ((distanceToNextTile.x <= 0) && (distanceToNextTile.y > 0)) { dynamic_entity->direction = BOTTOM_LEFT; }
-			else if ((distanceToNextTile.x < 0) && (distanceToNextTile.y <= 0)) { dynamic_entity->direction = TOP_LEFT; }
-
-			(*unit)->current_tile = App->map->WorldToMap((*unit)->position.x, (*unit)->position.y);
-
-			// --- We convert an iPoint to fPoint for comparing purposes ---
-			to_fPoint.x = next_tile_world.x;
-			to_fPoint.y = next_tile_world.y;
-
-			if ((*unit)->position.DistanceTo(to_fPoint) < 3)
-			{
-				(*unit)->position.x = next_tile_world.x;
-				(*unit)->position.y = next_tile_world.y;
-				(*unit)->info.UnitMovementState = MovementState::MovementState_NextStep;
-			}
-
-			else
-			{
-				(*unit)->position.x += distanceToNextTile.x;
-				(*unit)->position.y += distanceToNextTile.y;
-			}
-
-
-			break;
-
-		case MovementState::MovementState_NextStep:
-
-			// --- If a path is being followed, the unit will get the next tile in the path ---
-
-			if ((*unit)->info.Current_path.size() > 0)
-			{
-				(*unit)->info.next_tile = (*unit)->info.Current_path.front();
-				(*unit)->info.Current_path.erase((*unit)->info.Current_path.begin());
-				(*unit)->info.UnitMovementState = MovementState::MovementState_FollowPath;
+			if (group->IsGroupLead(entity) == false) {
+				group->SetUnitGoalTile(entity);
 			}
 			else
 			{
-				(*unit)->info.UnitMovementState = MovementState::MovementState_DestinationReached;
+				// --- Clear previous path request occupied goal tiles ---
+				group->ClearOccupiedlist();
+				(*unit)->info.goal_tile = goal_path;
+				group->Occupied_tiles.push_back(&(*unit)->info.goal_tile);
 			}
 
-			break;
+			if (entity->path_to_target.size() > 0) {
 
-		case MovementState::MovementState_DestinationReached:
+				// -- Get next tile center
+				entity->next_tile_position = App->map->MapToWorld(entity->next_tile.x, entity->next_tile.y);
+				entity->next_tile_rect = { entity->next_tile_position.x + HALF_TILE - 5, entity->next_tile_position.y + HALF_TILE - 3, 10, 10 };
 
-			// --- The unit reaches the end of the path, thus stopping and returning to NoState ---
-			(*unit)->info.UnitMovementState = MovementState::MovementState_NoState;
-			(*unit)->current_tile = App->map->WorldToMap((*unit)->position.x, (*unit)->position.y);
-			dynamic_entity->state = IDLE;
+				entity->last_direction = entity->direction;
+				entity->direction = entity->GetDirectionToGo(entity->next_tile_rect);
 
-			break;
+				switch (entity->direction)
+				{
+				case NO_DIRECTION:
+					if (entity->next_tile != entity->target_tile)
+					{
+						//current_tile = path_to_target.front();
+						if (entity->path_to_target.size() > 1)
+						{
+							entity->next_tile = entity->path_to_target[1];
+
+							if (App->entities->occupied_tiles[entity->next_tile.x][entity->next_tile.y]) {
+								entity->PathfindToPosition(entity->target_tile);
+								return;
+							}
+
+						}
+						entity->path_to_target.erase(entity->path_to_target.begin());
+					}
+					else if (entity->node_path.size() == 0)
+					{
+						entity->path_to_target.clear();
+						entity->state = IDLE;
+					}
+
+					entity->direction = entity->last_direction;
+					entity->UpdateTile();
+					break;
+
+				case TOP_LEFT:
+					entity->position.x -= entity->speed.x * dt;
+					entity->position.y -= entity->speed.y * dt;
+					break;
+				case TOP_RIGHT:
+					entity->position.x += entity->speed.x * dt;
+					entity->position.y -= entity->speed.y * dt;
+					break;
+				case BOTTOM_LEFT:
+					entity->position.x -= entity->speed.x * dt;
+					entity->position.y += entity->speed.y * dt;
+					break;
+				case BOTTOM_RIGHT:
+					entity->position.x += entity->speed.x * dt;
+					entity->position.y += entity->speed.y * dt;
+					break;
+				default:
+					break;
+				}
+			}
+			else
+			{
+				entity->UpdateTile();
+				entity->direction = entity->last_direction;
+				entity->state = IDLE;
+			}
+
 		}
 
-
-		if (stop_iteration)
-		{
-			stop_iteration = false;
-			break;
-		}
-		unit++;
 	}
+	
+		
 }

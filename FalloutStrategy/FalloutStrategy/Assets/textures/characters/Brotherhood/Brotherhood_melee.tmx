@@ -151,7 +151,7 @@
   </tile>
   <tile id="105">
    <properties>
-    <property name="hit" value=" bottom_left"/>
+    <property name="hit" value="bottom_left"/>
    </properties>
    <animation>
     <frame tileid="105" duration="100"/>

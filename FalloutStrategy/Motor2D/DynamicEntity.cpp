@@ -8,41 +8,71 @@
 #include "j1Textures.h"
 #include "j1EntityManager.h"
 #include "j1Player.h"
+#include "j1Input.h"
 #include "AI_Player.h"
 #include "StaticEntity.h"
 #include <iostream>
 #include <string>
 #include "SDL_mixer/include/SDL_mixer.h"
 
-DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type) {
+DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile, GenericPlayer* g_owner) : j1Entity(), resource_collected(0) {
 
 	switch (g_type)
 	{
 	case MELEE:
 		range = 1;
+		is_agressive = true;
 		break;
 	case RANGED:
-		range = 3;
+		range = 6;
+		is_agressive = true;
 		break;
 	case GATHERER:
 		range = 1;
+		is_agressive = false;
+		break;
+	case BIGHRONER:
+		range = 1;
+		is_agressive = false;
+		break;
+	case BRAHAM:
+		range = 1;
+		is_agressive = false;
+		break;
+	case DEATHCLAW:
+		range = 1;
+		is_agressive = true;
 		break;
 	default:
 		break;
 	}
 
+	owner = g_owner;
 	type = g_type;
 	faction = g_faction;
+	current_tile = g_current_tile;
+
+	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
+	position.x += HALF_TILE;
+	position.y += HALF_TILE;
+
+	is_dynamic = true;
+
 	state = IDLE;
 	direction = BOTTOM_RIGHT;
 
-	speed = { 0, 0 };
 	target_entity = nullptr;
 	resource_building = nullptr;
+	attacking_entity = nullptr;
+
 	action_time = 3.0f;
-	resource_collected = 0;
 	target_tile = { -1,-1 };
+	speed = { 0, 0 };
 	sprite_size = 128;
+
+	detection_radius = 6;
+	action_timer.Start();
+	detection_timer.Start();
 }
 
 DynamicEntity::~DynamicEntity() {
@@ -59,199 +89,152 @@ DynamicEntity::~DynamicEntity() {
 bool DynamicEntity::Update(float dt) {
 
 	Mix_AllocateChannels(25);
-	current_tile = App->map->WorldToMap(position.x, position.y);
+	j1Entity* enemy_in_range = nullptr;
 
 	switch (state)
 	{
 	case IDLE:
-		if (node_path.size() > 0) {
-			target_tile = node_path.back();
-			node_path.pop_back();
-			PathfindToPosition(target_tile);
-		}
-		break;
-	case WALK:
-		//if the entitiy is about to reach it's target tile
-		if (current_tile.LinealDistance(target_tile) <= range) {
-			//we reach the destination and there is an entity in it
-				//ranged and melee
-			if (type != GATHERER) {
-				if (target_entity != nullptr)
-				{
-					//enemy target
-					if ((faction != target_entity->faction)&&(node_path.size() == 0)) {
-						state = ATTACK;
-						target_entity->attacking_entity = this;
-						Attack();
-					}
-					//ally
-					else if (next_tile == target_tile)
-					{
-						state = IDLE;
+		
+		enemy_in_range = DetectEntitiesInRange();
+
+		if (enemy_in_range) {
+			if (is_agressive) {
+				if ((target_entity == nullptr)||(target_entity == enemy_in_range)) {
+					target_entity = enemy_in_range;
+					if ((current_tile.DistanceNoSqrt(enemy_in_range->current_tile) > range) && (target_entity->current_tile != target_tile))
+						PathfindToPosition(enemy_in_range->current_tile);
+					else {
 						next_tile = current_tile;
+						target_tile = current_tile;
+						UpdateTile();
 						path_to_target.clear();
+						state = ATTACK;
+						action_timer.Start();
 					}
 				}
 			}
-			//gatherer
 			else {
-				if (next_tile == target_tile) {
-
-					//gather
-					if ((resource_building != nullptr) && (resource_collected < storage_capacity)) {
-						state = GATHER;
-						timer.Start();
-						//return;
-					}
-
-					//give gathered resources
-					else if ((resource_collected > 0) && (target_entity != nullptr) && (target_entity->volume < target_entity->storage_capacity)) {
-						target_entity->volume += resource_collected;
-
-						if (resource_type == Resource::CAPS)
-							owner->caps += resource_collected;
-						else if (resource_type == Resource::WATER)
-							owner->water += resource_collected;
-						else if (resource_type == Resource::FOOD)
-							owner->food += resource_collected;
-
-						if (owner == App->player)
-							App->player->UpdateResourceData(resource_type, resource_collected);
-
-						resource_collected = 0;
-						target_entity = nullptr;
-
-						//go back to resource building to get more resources
-						if (resource_building->quantity > 0) {
-							PathfindToGather(App->entities->ClosestTile(current_tile, resource_building->tiles));
-							state = WALK;
-						}
-						//find another building
-						else
-						{
-							resource_building = App->entities->GetClosestResourceBuilding(current_tile);
-							//if there is at least a resource building left, go there
-							if (resource_building != nullptr) {
-								PathfindToGather(App->entities->ClosestTile(current_tile, resource_building->tiles));
-								state = WALK;
-							}
-							//if there are no resource buildings left
-							else
-							{
-								state = IDLE;
-							}
-						}
-					}
-					if (target_entity != nullptr) {
-						state = IDLE;
-					}
-				}
+				Flee();
 			}
 		}
+		
+		break;
 
-		//node movement 
-		if ((node_path.size() > 0)) {
-			if (next_tile == target_tile) {
-				node_path.pop_back();
-
-				//if we have reached the final node pathfind to target building
-				if (node_path.size() == 0)
-				{
-					if (target_entity != nullptr) {
-						target_tile = App->entities->ClosestTile(current_tile, ((StaticEntity*)target_entity)->tiles);
-					}
-				}
-				//if not we keep following the path 
-				else
-				{
-					target_tile = node_path.back();
-				}
-				PathfindToPosition(target_tile);
-			}
-		}
+	case WALK:
 
 		Move(dt);
 
-		if (reference_entity->faction == MUTANT)
-			if (Mix_Playing(2) == 0) { SpatialAudio(App->audio->Brotherhood_walk, 2, position.x, position.y); }
-		if (reference_entity->faction == VAULT)
-			if (Mix_Playing(17) == 0) { SpatialAudio(App->audio->Brotherhood_walk, 17, position.x, position.y); }
-		if (reference_entity->faction == BROTHERHOOD)
-			if (Mix_Playing(18) == 0) { SpatialAudio(App->audio->Brotherhood_walk, 18, position.x, position.y); }
-		if (reference_entity->faction == GHOUL)
-			if (Mix_Playing(19) == 0) { SpatialAudio(App->audio->Brotherhood_walk, 19, position.x, position.y); }
+		if (current_tile.DistanceNoSqrt(target_tile) <= range) {
+			if (is_agressive) {
+				if (target_entity != nullptr) {
+					if ((target_entity->current_tile == target_tile)|| (current_tile.DistanceManhattan(target_entity->current_tile) <= range)) {
+					state = ATTACK;
+					path_to_target.clear();
+					UpdateTile();
+					action_timer.Start();
+					}
+				}
+			}
+			else {
+				if (type == GATHERER) {
+					if (next_tile == target_tile) {
+						//gather
+						if (((resource_building != nullptr) && (resource_collected < storage_capacity))
+						  ||((resource_collected > 0) && (target_entity != nullptr))) {
+							state = GATHER;
+							action_timer.Start();
+						}
+					}
+				}
+			}
+		}
+
+		SpatialAudio(position.x, position.y, faction, state, type);
 
 		break;
 
 	case ATTACK:
+		if (target_entity == nullptr)
+			state = IDLE;
 
-		if (timer.ReadSec() > action_time)
-		{
+		else if (target_entity->current_tile.DistanceNoSqrt(current_tile) > range) {
+			PathfindToPosition(target_entity->current_tile);
+		}
+
+		else if (action_timer.ReadSec() > action_time) {
 			Attack();
 		}
 
-		if (reference_entity->faction == MUTANT && reference_entity->type == RANGED || reference_entity->faction == BROTHERHOOD && reference_entity->type == RANGED)
-			if (Mix_Playing(15) == 0) { SpatialAudio(App->audio->minigun, 15, position.x, position.y); }
-		if (reference_entity->faction == VAULT && reference_entity->type == RANGED)
-			if (Mix_Playing(16) == 0) { SpatialAudio(App->audio->pistol, 16, position.x, position.y); }
-		if (reference_entity->faction == GHOUL && reference_entity->type == RANGED)
-			if (Mix_Playing(20) == 0) { SpatialAudio(App->audio->pistol2, 20, position.x, position.y); }
-
-		if (reference_entity->faction == MUTANT && reference_entity->type != RANGED)
-			if (Mix_Playing(3) == 0) { SpatialAudio(App->audio->Mutant_attack, 3, position.x, position.y); }
-		if (reference_entity->faction == VAULT && reference_entity->type != RANGED)
-			if (Mix_Playing(4) == 0) { SpatialAudio(App->audio->Vault_attack, 4, position.x, position.y); }
-		if (reference_entity->faction == BROTHERHOOD && reference_entity->type != RANGED)
-			if (Mix_Playing(5) == 0) { SpatialAudio(App->audio->Brotherhood_attack, 5, position.x, position.y); }
-		if (reference_entity->faction == GHOUL && reference_entity->type != RANGED)
-			if (Mix_Playing(6) == 0) { SpatialAudio(App->audio->Ghoul_attack, 6, position.x, position.y); }
-	
+		SpatialAudio(position.x, position.y, faction, state, type);
 
 		break;
 	case GATHER:
-		if (timer.ReadSec() > action_time)
-		{
-			Gather();
-			state = WALK;
+		if (action_timer.ReadSec() > action_time) {
+			//collect resources
+			if (resource_collected < storage_capacity) {
+				Gather();
+				state = WALK;
+			}
+			else {
+				StoreGatheredResources();
+
+				//go back to resource building to get more resources
+				if (resource_building->quantity > 0) {
+					PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
+					state = WALK;
+				}
+				//find another building
+				else
+				{
+					resource_building = App->entities->GetClosestResourceBuilding(current_tile);
+					//if there is at least a resource building left, go there
+					if (resource_building != nullptr) {
+						PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
+						state = WALK;
+					}
+					//if there are no resource buildings left
+					else {
+						state = IDLE;
+					}
+				}
+			}
 		}
 		break;
+
 	case HIT:
-		if (current_animation->Finished())
-		{
-			state = IDLE;
-			current_animation->Reset();
+		current_animation = &animations[HIT][direction];
+		if (current_animation->Finished()) {
+			if (attacking_entity != nullptr) {
+				if (is_agressive) {
+					state = ATTACK;
+				}
+			}
+			else 
+			{
+				state = IDLE;
+			}
 		}
 
-		if (reference_entity->faction == MUTANT)
-			if (Mix_Playing(7) == 0) { SpatialAudio(App->audio->Mutant_hit, 7, position.x, position.y); }
-		if (reference_entity->faction == VAULT)
-			if (Mix_Playing(8) == 0) { SpatialAudio(App->audio->Vault_hit, 8, position.x, position.y); }
-		if (reference_entity->faction == BROTHERHOOD)
-			if (Mix_Playing(9) == 0) { SpatialAudio(App->audio->Brotherhood_hit, 9, position.x, position.y); }
-		if (reference_entity->faction == GHOUL)
-			if (Mix_Playing(10) == 0) { SpatialAudio(App->audio->Ghoul_hit, 10, position.x, position.y); }
-		
+		SpatialAudio(position.x, position.y, faction, state, type);
+
 		break;
 	case DIE:
-		if (!delete_timer.Started())
+		direction = TOP_LEFT;
+		if (!delete_timer.Started()) {
 			delete_timer.Start();
+			direction = TOP_LEFT;
+		}
 
-		if ((delete_timer.ReadSec() > 5) || (current_animation->Finished())) {
+		if (delete_timer.ReadSec() > 4) {
 			to_delete = true;
-			attacking_entity->target_entity = nullptr;
+			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
+			attacking_entity->state = IDLE;
 		}
 		
-		if (reference_entity->faction == MUTANT)
-			if (Mix_Playing(11) == 0) { SpatialAudio(App->audio->Mutant_die, 11, position.x, position.y); }
-		if (reference_entity->faction == VAULT)
-			if (Mix_Playing(12) == 0) { SpatialAudio(App->audio->Vault_die, 12, position.x, position.y); }
-		if (reference_entity->faction == BROTHERHOOD)
-			if (Mix_Playing(13) == 0) { SpatialAudio(App->audio->Brotherhood_die, 13, position.x, position.y); }
-		if (reference_entity->faction == GHOUL)
-			if (Mix_Playing(14) == 0) { SpatialAudio(App->audio->Ghoul_die, 14, position.x, position.y); }
-		
-		
+		SpatialAudio(position.x, position.y, faction, state, type);
+
 		break;
+
 	default:
 		break;
 	}
@@ -261,7 +244,7 @@ bool DynamicEntity::Update(float dt) {
 	{
 		if (info.current_group->IsGroupLead(this)) {
 			if (this->faction == App->player->faction)
-				info.current_group->CheckForMovementRequest(App->player->Map_mouseposition, dt);
+					info.current_group->CheckForMovementRequest(App->player->Map_mouseposition, dt);
 			/*
 			else {
 				AI_Player* ai_owner = ((AI_Player*)this->owner);
@@ -329,7 +312,7 @@ bool DynamicEntity::PostUpdate() {
 
 	//tile debug
 	SDL_Rect tile_rect;
-	iPoint tex_position = App->map->MapToWorld(current_tile.x, current_tile.y);
+	iPoint tile_tex_position = App->map->MapToWorld(current_tile.x, current_tile.y);
 
 	//debug
 	if (App->render->debug) 
@@ -345,20 +328,25 @@ bool DynamicEntity::PostUpdate() {
 		if (faction == App->player->faction) tile_rect = { 0,0,64,64 };
 		//enemy
 		else tile_rect = { 64,0,64,64 };
-		App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
+		if(App->player->selected_entity != this)
+			App->render->Blit(App->render->debug_tex, tile_tex_position.x, tile_tex_position.y, &tile_rect);
 	}
 
 	//selected entity
-	if (App->player->selected_entity == this)
+	if (App->player->selected_entity == this || this->info.IsSelected)
 	{
-		tile_rect = { 128,0,64,64 };
+		tile_rect = { 320,0,64,64 };
 		//blit tile
-		App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
+		App->render->Blit(App->render->debug_tex, tile_tex_position.x, tile_tex_position.y, &tile_rect);
 	}
 
 	if (direction >= NO_DIRECTION) {
-		direction = TOP_LEFT;
+		if (last_direction < NO_DIRECTION)
+			direction = last_direction;
+		else 
+			direction = BOTTOM_RIGHT;
 	}
+
 	current_animation = &animations[state][direction];
 
 	//Render character
@@ -371,25 +359,25 @@ bool DynamicEntity::PostUpdate() {
 		App->render->DrawQuad({ (int)(next_tile_rect.x), (int)(next_tile_rect.y), next_tile_rect.w, next_tile_rect.h }, 0, 255, 0, 255);
 	}
 
-	//Rendering Selected Units Quad
-	if (this->info.IsSelected) DrawQuad();
-
 	//Health Bar
 	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 50, 4 };
 	SDL_Rect foreground_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, (float)current_health/max_health * 50, 4 };
+	SDL_Rect frame = { position.x - HALF_TILE * 0.75f - 1, position.y - TILE_SIZE * 1.5f - 1, 52, 6};
 	if (foreground_bar.w < 0) foreground_bar.w = 0;
-	App->render->DrawQuad(background_bar, 255, 255, 255, 255);
+	App->render->DrawQuad(background_bar, 55, 55, 55, 255);
 	App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
-
+	App->render->DrawQuad(frame, 155, 155, 155, 185, false);
 
 	return true;
 }
 
 void DynamicEntity::Move(float dt) {
+
 	if (path_to_target.size() > 0) {
-		//get next tile center
+
+		// -- Get next tile center
 		next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
-		next_tile_rect = { next_tile_position.x + HALF_TILE - 5, next_tile_position.y + HALF_TILE -5, 10, 10 };
+		next_tile_rect = { next_tile_position.x + HALF_TILE - 5, next_tile_position.y + HALF_TILE -3, 10, 10 };
 
 		last_direction = direction;
 		direction = GetDirectionToGo(next_tile_rect);
@@ -403,19 +391,46 @@ void DynamicEntity::Move(float dt) {
 				if (path_to_target.size() > 1)
 				{
 					next_tile = path_to_target[1];
+					
+					if (App->entities->occupied_tiles[next_tile.x][next_tile.y]) {
+						PathfindToPosition(target_tile);
+						return;
+					}
+					
 				}
 				path_to_target.erase(path_to_target.begin());
 			}
 			else if (node_path.size() == 0)
 			{
-				position.x = next_tile_rect.x + 2;
-				position.y = next_tile_rect.y + 2;
-				current_tile = target_tile;
 				path_to_target.clear();
 				state = IDLE;
 			}
+
+			//node movement 
+			else if ((node_path.size() > 0)) {
+				if (next_tile == target_tile) {
+					node_path.pop_back();
+
+					//if we have reached the final node pathfind to target building
+					if (node_path.size() == 0)
+					{
+						if (target_entity != nullptr) {
+							target_tile = App->entities->ClosestTile(current_tile, ((StaticEntity*)target_entity)->tiles);
+						}
+					}
+					//if not we keep following the path 
+					else {
+						target_tile = node_path.back();
+					}
+
+					PathfindToPosition(target_tile);
+				}
+			}
+
 			direction = last_direction;
+			UpdateTile();
 			break;
+
 		case TOP_LEFT:
 			position.x -= speed.x * dt;
 			position.y -= speed.y * dt;
@@ -438,21 +453,32 @@ void DynamicEntity::Move(float dt) {
 	}
 	else
 	{
+		UpdateTile();
 		direction = last_direction;
 		state = IDLE;
 	}
+
+	UpdateTile();
 }
 
 void DynamicEntity::Attack() {
 
-	timer.Start();
+	action_timer.Start();
 
-	//damage unit if god_mode isn't activated 
-	if ((target_entity != nullptr) && ((target_entity->faction != App->player->faction) || (!App->player->god_mode))) {
+	//damage unit if god_mode isn't activated
+	if ((target_entity->faction == App->player->faction) && (App->player->god_mode))
+		return;
+
+	if (target_entity != nullptr) {
 		target_entity->current_health -= damage;
 
 		if (target_entity->is_dynamic) {
 			DynamicEntity* dynamic_target = (DynamicEntity*)target_entity;
+
+			if(dynamic_target->attacking_entity == nullptr)
+				target_entity->attacking_entity = this;
+
+			path_to_target.clear();
 			dynamic_target->state = HIT;
 		}
 	}
@@ -481,7 +507,6 @@ void DynamicEntity::Attack() {
 		//Kill enemy
 		if (target_entity->current_health <= 0) {
 			dynamic_target->state = DIE;
-			dynamic_target->direction = TOP_LEFT;
 			target_entity = nullptr;
 			path_to_target.clear();
 			state = IDLE;
@@ -492,7 +517,8 @@ void DynamicEntity::Attack() {
 		//Destroy building
 		StaticEntity* static_target = (StaticEntity*)target_entity;
 		if (target_entity->current_health <= 0) {
-			static_target->state = EXPLODE;
+			static_target->state = DIE;
+			attacking_entity = nullptr;
 			target_entity = nullptr;
 			path_to_target.clear();
 			state = IDLE;
@@ -514,115 +540,78 @@ void DynamicEntity::Gather() {
 	}
 }
 
-void DynamicEntity::PathfindToPosition(iPoint destination) {
+void DynamicEntity::StoreGatheredResources() {
+	target_entity->volume += resource_collected;
 
-	//current_tile = App->map->WorldToMap(position.x, position.y);
+	//update owner resources
+	if (resource_type == Resource::CAPS) owner->caps += resource_collected;
+	else if (resource_type == Resource::WATER) owner->water += resource_collected;
+	else if (resource_type == Resource::FOOD) owner->food += resource_collected;
+
+	if (owner == App->player)
+		App->player->UpdateResourceData(resource_type, resource_collected);
+
+	resource_collected = 0;
+	target_entity = nullptr;
+}
+
+void DynamicEntity::Flee() {
+	int minimum_distance = 5;
+	int max_distance = 10;
+	int range_separation = max_distance - minimum_distance;
+	int x, y;
+	int x_sign, y_sign;
+	iPoint possible_tile;
+
+	do
+	{
+		srand(time(NULL));
+		x = rand() % range_separation;
+		y = rand() % range_separation;
+
+		if (rand() % 2 == 0) x_sign = -1;
+		else x_sign = 1;
+
+		if (rand() % 2 == 1) y_sign = 1;
+		else y_sign = -1;
+		
+		possible_tile.x = current_tile.x + (minimum_distance + x) * x_sign;
+		possible_tile.y = current_tile.y + (minimum_distance + y) * y_sign;
+
+	} while (App->entities->occupied_tiles[possible_tile.x][possible_tile.y]);
+
+	PathfindToPosition(possible_tile);
+}
+
+void DynamicEntity::PathfindToPosition(iPoint destination) {
+	
+	UpdateTile();
 
 	//if the tile is in the map but it's not walkable
 	if (!App->pathfinding->IsWalkable(destination)) 
-	{
 		destination = App->pathfinding->FindNearestWalkableTile(current_tile, destination);
-	}
+
+	if (App->entities->occupied_tiles[destination.x][destination.y])
+		destination = App->entities->FindFreeAdjacentTile(current_tile, destination);
 
 	target_tile = destination;
 
-	if (!App->pathfinding->IsWalkable(current_tile)) {
+	if (!App->pathfinding->IsWalkable(current_tile)) 
 		next_tile = App->pathfinding->FindWalkableAdjacentTile(current_tile);
-		return;
-	}
-
-
-	if (App->pathfinding->CreatePath(current_tile, destination) == -1) {
-		LOG("Invalid path");
-	}
+	
+	if (App->pathfinding->CreatePath(current_tile, destination) == -2) 
+		node_path = App->pathfinding->CreateNodePath(current_tile, destination);
+	
 
 	path_to_target.clear();
 	path_to_target = App->pathfinding->GetLastPath();
 
 	state = WALK;
 
-	if (path_to_target.size() > 0)
+	if (path_to_target.size() > 0) {
 		next_tile = path_to_target.front();
-}
-
-void DynamicEntity::PathfindToGather(iPoint destination) {
-	if ((!App->pathfinding->IsWalkable(destination)) && (App->pathfinding->CheckBoundaries(destination))) {
-		iPoint destination_copy = App->pathfinding->FindWalkableAdjacentTile(destination);
-		if (destination_copy == iPoint(-1, -1)) {
-			ResourceBuilding* reference_resource_building = App->entities->FindResourceBuildingByTile(destination);
-			if (reference_resource_building != nullptr)
-				destination = App->entities->ClosestTile(current_tile, reference_resource_building->tiles);
-			else {
-				StaticEntity* reference_static_entity = (StaticEntity*)App->entities->FindEntityByTile(destination);
-				if (reference_static_entity != nullptr)
-					destination = App->entities->ClosestTile(current_tile, reference_static_entity->tiles);
-			}
-			if (!App->pathfinding->IsWalkable(destination))
-				destination = App->pathfinding->FindWalkableAdjacentTile(destination);
-		}
-		else
-		{
-			destination = destination_copy;
-		}
 	}
-
-	current_tile = App->map->WorldToMap(position.x, position.y);
-	target_tile = destination;
-	App->pathfinding->CreatePath(current_tile, destination);
-
-	path_to_target.clear();
-	path_to_target = App->pathfinding->GetLastPath();
-
-	if (path_to_target.size() > 0)
-		next_tile = path_to_target.front();
-	else
-		state = IDLE;
 }
-
-/*
-bool DynamicEntity::LoadFx() {
-	bool ret = true;
-	char* faction_char = { "NoFaction" };
-	char* state_char = { "NoState" };
-
-
-	for (int faction = VAULT; faction < NO_FACTION; faction++)
-	{
-		//entity faction
-		if (faction == VAULT)
-			faction_char = "VaultDwellers";
-		else if (faction == BROTHERHOOD)
-			faction_char = "Brotherhood";
-		else if (faction == MUTANT)
-			faction_char = "SuperMutant";
-		else if (faction == GHOUL)
-			faction_char = "Ghouls";
-	}
-
-	for (int animation = IDLE; animation < MAX_ANIMATIONS; animation++)
-	{
-		//entity action
-		if (animation == IDLE)
-			state_char = "Idle";
-		else if (animation == WALK)
-			state_char = "Walk";
-		else if (animation == ATTACK)
-			state_char = "Attack";
-		else if (animation == GATHER)
-			state_char = "Gather";
-		else if (animation == HIT)
-			state_char = "Hit";
-		else if (animation == DIE)
-			state_char = "Die";
-
-		std::string file = std::string("audio/fx/CharactersSounds/").append(faction_char).append("/").append(faction_char).append("_").append(state_char).append(".WAV");
-
-		fx[animation] = App->audio->LoadFx(file.c_str());
-	}
-
-	return ret;
-}
-*/
 
 bool DynamicEntity::LoadAnimations() {
 	bool ret = true;
@@ -631,22 +620,19 @@ bool DynamicEntity::LoadAnimations() {
 	float speed_reducer = 0.065f;
 
 	//entity faction
-	if (faction == VAULT)
-		faction_char = "VaultDwellers";
-	else if (faction == BROTHERHOOD)
-		faction_char = "Brotherhood";
-	else if (faction == MUTANT)
-		faction_char = "SuperMutant";
-	else if (faction == GHOUL)
-		faction_char = "Ghouls";
+	if (faction == VAULT) faction_char = "VaultDwellers";
+	else if (faction == BROTHERHOOD) faction_char = "Brotherhood";
+	else if (faction == MUTANT) faction_char = "SuperMutant";
+	else if (faction == GHOUL) faction_char = "Ghouls";
+	else if (faction == ANIMALS) faction_char = "Animals";
 
 	//entity type
-	if (type == MELEE)
-		type_char = "Melee";
-	else if (type == RANGED)
-		type_char = "Ranged";
-	if (type == GATHERER)
-		type_char = "Gatherer";
+	if (type == MELEE) type_char = "Melee";
+	else if (type == RANGED) type_char = "Ranged";
+	else if (type == GATHERER) type_char = "Gatherer";
+	else if (type == BIGHRONER) type_char = "Bighorner";
+	else if (type == BRAHAM) type_char = "Braham";
+	else if (type == DEATHCLAW) type_char = "Deathclaw";
 	
 	std::string file = std::string("Assets/textures/characters/").append(faction_char).append("/").append(faction_char).append("_").append(type_char);
 	std::string animation_path = file;
@@ -684,36 +670,26 @@ bool DynamicEntity::LoadAnimations() {
 		std::string animation_direction = std::string(animation.child("properties").child("property").attribute("value").as_string());
 		std::string animation_name = std::string(animation.child("properties").child("property").attribute("name").as_string());
 		int direction = TOP_RIGHT;
-		DynamicState state = IDLE;
+		State state = IDLE;
 		bool loop = true;
 
 		//animation
-		if (animation_name == "idle")
-			state = IDLE;
-		else if (animation_name == "walk")
-			state = WALK;
-		else if (animation_name == "attack")
-			state = ATTACK;
-		else if (animation_name == "gather")
-			state = GATHER;
+		if (animation_name == "idle") state = IDLE;
+		else if (animation_name == "walk") state = WALK;
+		else if (animation_name == "attack") state = ATTACK;
+		else if (animation_name == "gather") state = GATHER;
 		else if (animation_name == "hit") {
 			state = HIT;
-			loop = false;
-		}
+			loop = false;}
 		else if (animation_name == "die") {
 			state = DIE;
-			loop = false;
-		}
+			loop = false; }
 
 		//animation direction
-		if (animation_direction == "top_left")
-			direction = TOP_LEFT;
-		else if (animation_direction == "top_right")
-			direction = TOP_RIGHT;
-		else if (animation_direction == "bottom_left")
-			direction = BOTTOM_LEFT;
-		else if (animation_direction == "bottom_right")
-			direction = BOTTOM_RIGHT;
+		if (animation_direction == "top_left") direction = TOP_LEFT;
+		else if (animation_direction == "top_right") direction = TOP_RIGHT;
+		else if (animation_direction == "bottom_left") direction = BOTTOM_LEFT;
+		else if (animation_direction == "bottom_right") direction = BOTTOM_RIGHT;
 
 		id = animation.attribute("id").as_int();
 
@@ -739,9 +715,9 @@ bool DynamicEntity::LoadReferenceData() {
 	DynamicEntity* dynamic_reference = (DynamicEntity*)reference_entity;
 
 	//load animations
-	for (int i = 0; i < MAX_ANIMATIONS; i++)
+	for (int i = 0; i < NO_STATE; i++)
 	{
-		for (int j = 0; j < 4; j++)
+		for (int j = 0; j < NO_DIRECTION; j++)
 		{
 			animations[i][j] = dynamic_reference->animations[i][j];
 		}
@@ -752,43 +728,6 @@ bool DynamicEntity::LoadReferenceData() {
 	storage_capacity= damage = reference_entity->damage;
 	speed = reference_entity->speed;
 	sprite_size = reference_entity->sprite_size;
-
-	return ret;
-}
-
-void DynamicEntity::DrawQuad()
-{
-	const SDL_Rect entityrect = { position.x - sprite_size * 0.5f  + 32,  position.y - 1.82f * TILE_SIZE + 32,  64,  96 };
-	App->render->DrawQuad(entityrect, unitinfo.color.r, unitinfo.color.g, unitinfo.color.b, unitinfo.color.a, false);
-}
-
-bool DynamicEntity::TargetTileReached(iPoint target_tile) {
-	bool ret = false;
-	
-	//north-west
-	if ((current_tile.x - 1 == target_tile.x) && (current_tile.y - 1 == target_tile.y))
-		return true;
-	//north
-	if ((current_tile.x == target_tile.x) && (current_tile.y - 1 == target_tile.y))
-		return true;
-	//north-east
-	if ((current_tile.x + 1 == target_tile.x) && (current_tile.y - 1 == target_tile.y))
-		return true;
-	//east
-	if ((current_tile.x + 1 == target_tile.x) && (current_tile.y == target_tile.y))
-		return true;
-	//south-east
-	if ((current_tile.x + 1 == target_tile.x) && (current_tile.y + 1 == target_tile.y))
-		return true;
-	//south
-	if ((current_tile.x  == target_tile.x) && (current_tile.y + 1 == target_tile.y))
-		return true;
-	//south-west
-	if ((current_tile.x - 1 == target_tile.x) && (current_tile.y + 1 == target_tile.y))
-		return true;
-	//west
-	if ((current_tile.x - 1 == target_tile.x) && (current_tile.y == target_tile.y))
-		return true;
 
 	return ret;
 }
@@ -811,6 +750,47 @@ Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
 	else if ((floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
 		return Direction::BOTTOM_RIGHT;
 	}
+}
+
+void DynamicEntity::UpdateTile() {
+	App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
+	current_tile = App->map->WorldToMap(position.x, position.y);
+	App->entities->occupied_tiles[current_tile.x][current_tile.y] = true;
+}
+
+j1Entity* DynamicEntity::DetectEntitiesInRange() {
+	iPoint checked_tile = { -1,-1 };
+	j1Entity* detected_entity = nullptr;
+	j1Entity* closest_enemy = nullptr;
+
+	entities_in_range.clear();
+
+	for (int y = -detection_radius; y < detection_radius; y++)
+	{
+		for (int x = -detection_radius; x < detection_radius; x++)
+		{
+			if ((x != 0) && (y != 0)) {
+				checked_tile.x = current_tile.x + x;
+				checked_tile.y = current_tile.y + y;
+
+				if (App->entities->occupied_tiles[checked_tile.x][checked_tile.y]) {
+					detected_entity = App->entities->FindEntityByTile(checked_tile);
+					entities_in_range.push_back(detected_entity);
+
+					if ((detected_entity != nullptr)&&(detected_entity->faction != faction))
+						if (closest_enemy == nullptr) {
+							closest_enemy = detected_entity;
+						}
+						else {
+							if (detected_entity->current_tile.DistanceManhattan(current_tile) < closest_enemy->current_tile.DistanceManhattan(current_tile)) {
+								closest_enemy = detected_entity;
+							}
+						}
+				}
+			}
+		}
+	}
+	return closest_enemy;
 }
 
 // --- UnitInfo Constructors and Destructor ---

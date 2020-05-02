@@ -52,6 +52,9 @@ bool InputText::Update(float dt) {
 		}
 		
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
+			if (text.size() == 0)
+				text = ("Please introduce text");
+
 			if (observer == (j1Module*)App->console) {
 				App->console->ProcessCommand(text.data());
 			}

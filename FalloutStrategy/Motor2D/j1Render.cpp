@@ -51,6 +51,11 @@ bool j1Render::Awake(pugi::xml_node& config)
 		camera.y = 0;
 	}
 
+	background.r = config.child("background").attribute("r").as_int(0);
+	background.g = config.child("background").attribute("g").as_int(0);
+	background.b = config.child("background").attribute("b").as_int(0);
+	background.a = config.child("background").attribute("a").as_int(0);
+
 	return ret;
 }
 

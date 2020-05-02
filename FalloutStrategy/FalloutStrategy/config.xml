@@ -6,7 +6,8 @@
     <organization>UPC</organization>
   </app>
   <renderer>
-    <vsync value="true"/>
+    <vsync value="false"/>
+    <background r="35" g="28" b="12" a="155"/>
   </renderer>
   
   <AI>
@@ -15,7 +16,10 @@
    <mutant minimum_melees="3" minimum_rangeds="3" caps="100" water="100" food="100"/>
    <ghoul minimum_melees="5" minimum_rangeds="2" caps="100" water="100" food="100"/>
   </AI>
-  
+  <console>
+  <log_box r="20" g="20" b="20" a="225"/>
+  <input_box r="20" g="20" b="20" a="245"/>
+  </console>
   <window>
     <resolution width="1280" height="720" scale="1"/>
     <fullscreen value="false"/>
@@ -34,9 +38,9 @@
 
   <entities>
     <boost>
-      <base cost="250" upgrade_time="45" cost_increment="250"/>
-      <laboratory cost="150" upgrade_time="45" cost_increment="250"/>
-      <barrack cost="350" upgrade_time="45" cost_increment="250"/>
+      <base cost="250" upgrade_time="45" cost_increment="250" storage_increment="0.3" gatherer_capacity="0.15"/>
+      <laboratory cost="150" upgrade_time="45" cost_increment="250" health_increment="0.15" creation_time="0.05"/>
+      <barrack cost="350" upgrade_time="45" cost_increment="250" damage_increment="0.15" speed_increment="0.15"/>
     </boost>
   </entities>
   <gui>

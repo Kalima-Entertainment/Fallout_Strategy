@@ -21,6 +21,9 @@ enum EntityType {
 	BASE,
 	LABORATORY,
 	BARRACK,
+	BIGHRONER,
+	BRAHAM,
+	DEATHCLAW,
 	NO_TYPE
 };
 
@@ -29,8 +32,20 @@ enum Faction { //Don't change faction order. Just don't do it
 	BROTHERHOOD,
 	MUTANT,
 	GHOUL,
+	ANIMALS,
 	NO_FACTION
 };
+
+enum State {
+	IDLE,
+	DIE,
+	WALK,
+	ATTACK,
+	GATHER,
+	HIT,
+	NO_STATE
+};
+
 
 class j1Entity
 {
@@ -54,7 +69,7 @@ public:
 
 	iPoint MapPosition();
 
-	void SpatialAudio(int fx, int channel, int positionx, int positiony);
+	void SpatialAudio(int positionx, int positiony, Faction faction, State state, EntityType type);
 
 	//Check if mouse pointer its inside the same spot than the entity and if pressed returns any advice
 
@@ -81,6 +96,7 @@ public:
 	j1Entity* target_entity;
 	DynamicEntity* attacking_entity;
 	GenericPlayer* owner;
+	State state;
 
 	Animation* current_animation;
 	SDL_Texture* texture;

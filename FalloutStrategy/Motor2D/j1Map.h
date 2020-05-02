@@ -12,8 +12,8 @@
 #define HALF_TILE 32
 #define MODULE_LENGTH 75
 #define MAP_LENGTH 150
-#define MAX_LAYERS 6
-#define MAX_TILESETS 4
+#define MAX_LAYERS 7
+#define MAX_TILESETS 5
 
 // ----------------------------------------------------
 struct Properties
@@ -145,7 +145,7 @@ public:
 	iPoint WorldToMap(int x, int y) const;
 	iPoint fWorldToMap(float x, float y) const;
 	iPoint IsometricWorldToMap(int x, int y) const;
-	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
+	bool CreateWalkabilityMap() const;
 	std::vector<iPoint> CalculateArea(iPoint first_tile_position, int width, int height);
 	void SetBuildingTilesUnwalkable(std::vector<iPoint> tiles);
 

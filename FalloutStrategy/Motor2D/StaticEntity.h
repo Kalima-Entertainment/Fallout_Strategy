@@ -6,13 +6,6 @@
 #include <iostream>
 #include <chrono>
 
-enum StaticState {
-	WAIT,
-	WORK,
-	EXPLODE,
-	NO_STATE
-};
-
 struct Spawn_Stack {
 	EntityType type;
 	int spawn_seconds; //Seconds it requires to spawn
@@ -28,7 +21,7 @@ class StaticEntity : public j1Entity
 
 {
 public:
-	StaticEntity(Faction faction, EntityType type);
+	StaticEntity(Faction faction, EntityType type, iPoint current_tile, GenericPlayer* owner = nullptr);
 	~StaticEntity();
 	bool Update(float dt);
 	bool PostUpdate();
@@ -40,11 +33,15 @@ public:
 	void ExecuteUpgrade(Faction faction, Upgrades upgrade_name);
 	void SpawnUnit(EntityType type, bool no_cost = false);
 	void UpdateSpawnStack();
-	void UpdateUpgradeStack();
+
+	void SpawnChrono();
+	void UpgradeChrono();
+
+	void DebugSpawnsUpgrades();
 	
 public:
 	std::vector<iPoint> tiles;
-	StaticState state;
+
 private:
 	int gen_speed;
 	Animation animations[3];

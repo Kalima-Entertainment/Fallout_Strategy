@@ -49,21 +49,115 @@ int j1Entity::GetPositionScore() const {
 }
 
 
-void j1Entity::SpatialAudio(int fx, int channel, int positionx, int positiony) {
+void j1Entity::SpatialAudio(int positionx, int positiony, Faction faction, State state, EntityType type) {
+	int channel = 0;
+	int fx = 0;
+	switch (state)
+	{
+	case WALK:
+		if (faction == VAULT) channel = 17;
+		else if (faction == BROTHERHOOD) channel = 18;
+		else if (faction == MUTANT) channel = 2;
+		else if (faction == GHOUL) channel = 19;
+		fx = App->audio->Brotherhood_walk;
+		break;
+	case ATTACK:
+		if (faction == VAULT) {
+			if (type == RANGED) {
+				channel = 16;
+				fx = App->audio->pistol;
+			}
+			else if (type != RANGED) {
+				channel = 4;
+				fx = App->audio->Vault_attack;
+			}
+		}
+		else if (faction == BROTHERHOOD) {
+			if (type == RANGED) {
+				channel = 15;
+				fx = App->audio->minigun;
+			}
+			else if (type != RANGED) {
+				channel = 5;
+				fx = App->audio->Brotherhood_attack;
+			}
+		}
+		else if (faction == MUTANT) {
+			if (type == RANGED) {
+				channel = 15;
+				fx = App->audio->minigun;
+			}
+			else if (type != RANGED) {
+				channel = 3;
+				fx = App->audio->Mutant_attack;
+			}
+		}
+		else if (faction == GHOUL) {
+			if (type == RANGED) {
+				channel = 20;
+				fx = App->audio->pistol2;
+			}
+			else if (type != RANGED) {
+				channel = 6;
+				fx = App->audio->Ghoul_attack;
+			}
+		}
+		break;
+	case HIT:
+		if (faction == MUTANT) {
+			channel = 7;
+			fx = App->audio->Mutant_hit;
+		}
+		else if (faction == VAULT) {
+			channel = 8;
+			fx = App->audio->Vault_hit;
+		}
+		else if (faction == BROTHERHOOD) {
+			channel = 9;
+			fx = App->audio->Brotherhood_hit;
+		}
+		else if (faction == GHOUL) {
+			channel = 10;
+			fx = App->audio->Ghoul_hit;
+		}
+		break;
+	case DIE:
+		if (faction == MUTANT) {
+			channel = 11;
+			fx = App->audio->Mutant_die;
+		}
+		else if (faction == VAULT) {
+			channel = 12;
+			fx = App->audio->Vault_die;
+		}
+		else if (faction == BROTHERHOOD) {
+			channel = 13;
+			fx = App->audio->Brotherhood_die;
+		}
+		else if (faction == GHOUL) {
+			channel = 14;
+			fx = App->audio->Ghoul_die;
+		}
+		break;
+	case NO_STATE:
+		break;
+	default:
+		break;
+	}
 
-	Mix_Playing(channel);
-	Mix_HaltChannel(channel);
+	if (Mix_Playing(channel) == 0) {
+		Mix_HaltChannel(channel);
 
-	iPoint distance = { positionx - (-App->render->camera.x + App->render->camera.w / 2), positiony - (-App->render->camera.y + App->render->camera.h / 2 )};
+		iPoint distance = { positionx - (-App->render->camera.x + App->render->camera.w / 2), positiony - (-App->render->camera.y + App->render->camera.h / 2) };
 
-	int distance_normalized = (distance.x * distance.x + distance.y * distance.y);
-	distance_normalized = distance_normalized / 500;
-	volume = (distance_normalized * 255) / App->render->camera.w;
+		int distance_normalized = (distance.x * distance.x + distance.y * distance.y);
+		distance_normalized = distance_normalized / 500;
+		volume = (distance_normalized * 255) / App->render->camera.w;
 
-	if (volume < 0) { volume = 0; }
-	if (volume > 255) { volume = 255; }
+		if (volume < 0) { volume = 0; }
+		if (volume > 255) { volume = 255; }
 
-	Mix_SetPosition(channel, 0, volume);
-	App->audio->PlayFx(channel, fx, 0);
-
+		Mix_SetPosition(channel, 0, volume);
+		App->audio->PlayFx(channel, fx, 0);
+	}
 }

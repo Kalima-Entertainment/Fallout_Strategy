@@ -9,16 +9,24 @@
 #include "j1Scene.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
-StaticEntity::StaticEntity(Faction g_faction, EntityType g_type) {
+StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile,  GenericPlayer* g_owner) {
 	type = g_type;
 	faction = g_faction;
-	state = WAIT;
+	owner = g_owner;
+
+	current_tile = g_current_tile;
+	render_texture_pos = { 0,0 };
+	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
+
+	state = IDLE;
 	storage_capacity = 1000;
 	max_capacity = 3000;
-	render_texture_pos = { 0,0 };	
+
+	is_dynamic = false;
 
 	for (int i = 0; i < 10; i++)
 		spawn_stack[i].type = NO_TYPE;
+
 	spawning = false;
 	upgrading = false;
 	want_to_upgrade = false;
@@ -42,103 +50,30 @@ bool StaticEntity::Update(float dt) {
 	current_animation = &animations[state];
 
 	switch (state) {
-	case WAIT:
+	case IDLE:
 		break;
-	case WORK:
-		break;
-	case EXPLODE:
+	case DIE:
 		if (!delete_timer.Started())
 			delete_timer.Start();
 
 		if ((delete_timer.ReadSec() > 5)||(current_animation->Finished()))
 			to_delete = true;
 
-		if (Mix_Playing(21) == 0)
-			SpatialAudio(App->audio->explode, 21, position.x, position.y);
-
+		SpatialAudio(position.x, position.y, faction, state, type);
 		break;
 	default:
 		break;
 	}
 
 	//Spawning Units with timer and stack
-	{
-		if (spawning == false && spawn_stack[0].type != NO_TYPE) {
-			chrono_spawn.Start();
-			spawning = true;
-		}
-		if (spawning == true) {
-			if (chrono_spawn.ReadSec() > spawn_stack[0].spawn_seconds) {
-				App->entities->CreateEntity(faction, spawn_stack[0].type, spawnPosition.x, spawnPosition.y, owner);
-				//LOG("Unit Spawned");
-				UpdateSpawnStack();
-			}
-			time_left = spawn_stack[0].spawn_seconds - chrono_spawn.ReadSec();
-		}
-	}
+	UpgradeChrono();
+
 	//Chrono for upgrades
-	{
-		if (upgrading == false && want_to_upgrade == true) {
-			chrono_upgrade.Start();
-			upgrading = true;
-		}
-		if (upgrading == true) {
-			//LOG("time remaining %f ", 45 - chrono_upgrade.ReadSec());
-			if (chrono_upgrade.ReadSec() > upgrade_stack.upgrade_seconds) {
-				if (upgrade_stack.building == BASE) {
-					ExecuteUpgrade(upgrade_stack.faction, RESOURCES_LIMIT);
-					ExecuteUpgrade(upgrade_stack.faction, GATHERER_CAPACITY);
-				}
-				else if (upgrade_stack.building == BARRACK) {
-					ExecuteUpgrade(upgrade_stack.faction, UNITS_DAMAGE);
-					ExecuteUpgrade(upgrade_stack.faction, UNITS_SPEED);
-				}
-				else if (upgrade_stack.building == LABORATORY) {
-					ExecuteUpgrade(upgrade_stack.faction, UNITS_HEALTH);
-					ExecuteUpgrade(upgrade_stack.faction, CREATION_TIME);
-
-				}
-
-									
-
-				UpdateUpgradeStack();
-			}
-		}
-	}
+	SpawnChrono();
 
 	//Interact with the building to spawn units or investigate upgrades
-	if (this == App->player->selected_entity) {
-		if (type == BASE) {
-			//Spawn GATHERER
-			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-				SpawnUnit(GATHERER);
-			//Upgrades
-			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-				Upgrade(App->entities->base_resource_limit[faction]);
-			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-				Upgrade(App->entities->gatherer_resource_limit[faction]);
-		}
-		else if (type == BARRACK) {
-			//Spawn MELEE
-			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-				SpawnUnit(MELEE);
-			//Spawn RANGED
-			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-				SpawnUnit(RANGED);
-			//Upgrades
-			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-				Upgrade(App->entities->units_damage[faction]);
-			if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
-				Upgrade(App->entities->units_speed[faction]);
-		}
-		else if (type == LABORATORY) {
-			//Upgrades
-			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-				Upgrade(App->entities->units_health[faction]);
-			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-				Upgrade(App->entities->units_creation_time[faction]);
-		}
-	}
+	//Select a building and press 1, 2, 3 or 4 to spawn or investigate
+	DebugSpawnsUpgrades();
 
 	last_dt = dt;
 
@@ -267,7 +202,7 @@ bool StaticEntity::LoadAnimations() {
 	{
 		std::string building_type = std::string(animation.child("properties").child("property").attribute("name").as_string());
 		std::string animation_name = std::string(animation.child("properties").child("property").attribute("value").as_string());
-		StaticState state = NO_STATE;
+		State state = NO_STATE;
 		EntityType entity_type = BASE;
 		bool loop = true;
 
@@ -281,14 +216,10 @@ bool StaticEntity::LoadAnimations() {
 
 		//animation
 		if (animation_name == "idle") {
-			state = WAIT;
-		}
-		else if (animation_name == "work") {
-			state = WORK;
-			loop = false;
+			state = IDLE;
 		}
 		else if (animation_name == "die") {
-			state = EXPLODE;
+			state = DIE;
 			loop = false;
 		}
 		else goto CHANGE_ANIMATION;
@@ -449,7 +380,8 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 		if (storage_capacity < max_capacity) {
 			int cost = App->entities->base_resource_limit[faction].first_price + (App->entities->base_resource_limit[faction].price_increment * App->entities->base_resource_limit[faction].upgrade_num);
 
-			storage_capacity += (int)storage_capacity * 0.3;
+			float value_increment = App->entities->base_resource_limit[faction].value_increment;
+			storage_capacity += (int)storage_capacity * value_increment;
 
 			if (storage_capacity > max_capacity)
 				storage_capacity = max_capacity;
@@ -460,67 +392,77 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 	else if (upgrade_name == GATHERER_CAPACITY) {
 		int cost = App->entities->gatherer_resource_limit[faction].first_price + (App->entities->gatherer_resource_limit[faction].price_increment * App->entities->gatherer_resource_limit[faction].upgrade_num);
 
+		float value_increment = App->entities->gatherer_resource_limit[faction].value_increment;
+
 		//Upgrade gatherers that are currently alive
 		for (int i = 0; i < App->entities->entities.size(); i++) {
 			if (App->entities->entities[i]->faction == faction)
 				if (App->entities->entities[i]->type == GATHERER)
-					App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.5);
+					App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * value_increment);
 		}
-		App->entities->reference_entities[faction][GATHERER]->damage += (App->entities->reference_entities[faction][GATHERER]->damage * 0.5);
+		App->entities->reference_entities[faction][GATHERER]->damage += (App->entities->reference_entities[faction][GATHERER]->damage * value_increment);
 		LOG("Gatherer Resource Limit Upgraded");
 	}
 	else if (upgrade_name == UNITS_DAMAGE) {
 		int cost = App->entities->units_damage[faction].first_price + (App->entities->units_damage[faction].price_increment * App->entities->units_damage[faction].upgrade_num);
 
+		float value_increment = App->entities->units_damage[faction].value_increment;
+
 		//Upgrade melees and ranged that are currently alive
 		for (int i = 0; i < App->entities->entities.size(); i++) {
 			if (App->entities->entities[i]->faction == faction)
 				if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED)
-					App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * 0.15);
+					App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * value_increment);
 		}
 		LOG("Units Damage Upgraded");
-		App->entities->reference_entities[faction][MELEE]->damage += (App->entities->reference_entities[faction][MELEE]->damage * 0.15);
-		App->entities->reference_entities[faction][RANGED]->damage += (App->entities->reference_entities[faction][RANGED]->damage * 0.15);
+		App->entities->reference_entities[faction][MELEE]->damage += (App->entities->reference_entities[faction][MELEE]->damage * value_increment);
+		App->entities->reference_entities[faction][RANGED]->damage += (App->entities->reference_entities[faction][RANGED]->damage * value_increment);
 	}
 	else if (upgrade_name == UNITS_SPEED) {
 		int cost = App->entities->units_speed[faction].first_price + (App->entities->units_speed[faction].price_increment * App->entities->units_speed[faction].upgrade_num);
 
+		float value_increment = App->entities->units_speed[faction].value_increment;
+
 		//Upgrade units that are currently alive
 		for (int i = 0; i < App->entities->entities.size(); i++) {
 			if (App->entities->entities[i]->faction == faction) {
-				App->entities->entities[i]->speed.x += App->entities->entities[i]->speed.x * 0.15;
-				App->entities->entities[i]->speed.y += App->entities->entities[i]->speed.y * 0.15;
+				App->entities->entities[i]->speed.x += App->entities->entities[i]->speed.x * value_increment;
+				App->entities->entities[i]->speed.y += App->entities->entities[i]->speed.y * value_increment;
 			}
 		}
 		LOG("Units Speed Upgraded");
-		App->entities->reference_entities[faction][MELEE]->speed.x += App->entities->reference_entities[faction][MELEE]->speed.x * 0.15;
-		App->entities->reference_entities[faction][MELEE]->speed.y += App->entities->reference_entities[faction][MELEE]->speed.y * 0.15;
-		App->entities->reference_entities[faction][RANGED]->speed.x += App->entities->reference_entities[faction][RANGED]->speed.x * 0.15;
-		App->entities->reference_entities[faction][RANGED]->speed.y += App->entities->reference_entities[faction][RANGED]->speed.y * 0.15;
-		App->entities->reference_entities[faction][GATHERER]->speed.x += App->entities->reference_entities[faction][GATHERER]->speed.x * 0.15;
-		App->entities->reference_entities[faction][GATHERER]->speed.y += App->entities->reference_entities[faction][GATHERER]->speed.y * 0.15;
+		App->entities->reference_entities[faction][MELEE]->speed.x += App->entities->reference_entities[faction][MELEE]->speed.x * value_increment;
+		App->entities->reference_entities[faction][MELEE]->speed.y += App->entities->reference_entities[faction][MELEE]->speed.y * value_increment;
+		App->entities->reference_entities[faction][RANGED]->speed.x += App->entities->reference_entities[faction][RANGED]->speed.x * value_increment;
+		App->entities->reference_entities[faction][RANGED]->speed.y += App->entities->reference_entities[faction][RANGED]->speed.y * value_increment;
+		App->entities->reference_entities[faction][GATHERER]->speed.x += App->entities->reference_entities[faction][GATHERER]->speed.x * value_increment;
+		App->entities->reference_entities[faction][GATHERER]->speed.y += App->entities->reference_entities[faction][GATHERER]->speed.y * value_increment;
 	}
 	else if (upgrade_name == UNITS_HEALTH) {
 		int cost = App->entities->units_health[faction].first_price + (App->entities->units_health[faction].price_increment * App->entities->units_health[faction].upgrade_num);
+
+		float value_increment = App->entities->units_health[faction].value_increment;
 
 		//Upgrade melees and ranged that are currently alive
 		for (int i = 0; i < App->entities->entities.size(); i++) {
 			if (App->entities->entities[i]->faction == faction)
 				if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED) {
-					App->entities->entities[i]->max_health += (int)(App->entities->entities[i]->max_health * 0.15);
-					App->entities->entities[i]->current_health += (int)(App->entities->entities[i]->max_health * 0.15);
+					App->entities->entities[i]->max_health += (int)(App->entities->entities[i]->max_health * value_increment);
+					App->entities->entities[i]->current_health += (int)(App->entities->entities[i]->max_health * value_increment);
 				}
 		}
 		LOG("Units Health Upgraded");	
-		App->entities->reference_entities[faction][MELEE]->max_health += (int)(App->entities->reference_entities[faction][MELEE]->max_health * 0.15);
-		App->entities->reference_entities[faction][RANGED]->max_health += (int)(App->entities->reference_entities[faction][RANGED]->max_health * 0.15);
+		App->entities->reference_entities[faction][MELEE]->max_health += (int)(App->entities->reference_entities[faction][MELEE]->max_health * value_increment);
+		App->entities->reference_entities[faction][RANGED]->max_health += (int)(App->entities->reference_entities[faction][RANGED]->max_health * value_increment);
 	}
 	else if (upgrade_name == CREATION_TIME) {
 		int cost = App->entities->units_creation_time[faction].first_price + (App->entities->units_creation_time[faction].price_increment * App->entities->units_creation_time[faction].upgrade_num);
 
-		App->entities->unit_data[faction][GATHERER].spawn_seconds = (floor)(App->entities->unit_data[faction][GATHERER].spawn_seconds * 0.95);
-		App->entities->unit_data[faction][MELEE].spawn_seconds = (floor)(App->entities->unit_data[faction][MELEE].spawn_seconds * 0.95);
-		App->entities->unit_data[faction][RANGED].spawn_seconds = (floor)(App->entities->unit_data[faction][RANGED].spawn_seconds * 0.95);
+		float value_increment = App->entities->units_creation_time[faction].value_increment;
+
+		App->entities->unit_data[faction][GATHERER].spawn_seconds = (floor)(App->entities->unit_data[faction][GATHERER].spawn_seconds * (1-value_increment));
+		App->entities->unit_data[faction][MELEE].spawn_seconds = (floor)(App->entities->unit_data[faction][MELEE].spawn_seconds * (1-value_increment));
+		App->entities->unit_data[faction][RANGED].spawn_seconds = (floor)(App->entities->unit_data[faction][RANGED].spawn_seconds * (1-value_increment));
 
 		LOG("Units Creation Upgraded Upgraded");	
 	}
@@ -529,8 +471,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 void StaticEntity::SpawnUnit(EntityType type, bool no_cost) {
 
 	int cost_water, cost_meat;
-	int spawn_seconds;
-	//Look for that unit data (spawn_seconds and cost)
+	int spawn_seconds;	
 
 	if (((faction == App->player->faction) && (App->player->god_mode))||(no_cost == true)) {
 		cost_water = 0;
@@ -538,6 +479,7 @@ void StaticEntity::SpawnUnit(EntityType type, bool no_cost) {
 		spawn_seconds = 0;
 	}
 	else {
+		//Look for that unit data (spawn_seconds and cost)
 		cost_water = App->entities->unit_data[faction][type].cost_water;
 		cost_meat = App->entities->unit_data[faction][type].cost_meat;
 		spawn_seconds = App->entities->unit_data[faction][type].spawn_seconds;
@@ -546,6 +488,7 @@ void StaticEntity::SpawnUnit(EntityType type, bool no_cost) {
 	if (owner->water >= cost_water && owner->food > cost_meat) {
 		//Substract resources
 		if (owner->faction == App->player->faction) {
+			//If it's the player we also update UI
 			App->player->UpdateResourceData(Resource::WATER, -cost_water);
 			App->player->UpdateResourceData(Resource::FOOD, -cost_meat);
 		}
@@ -577,7 +520,84 @@ void StaticEntity::UpdateSpawnStack() {
 	spawning = false;
 }
 
-void StaticEntity::UpdateUpgradeStack() {
-	want_to_upgrade = false;
-	upgrading = false;
+void StaticEntity::SpawnChrono() {
+
+	//We start the chrono if the slot is not empty and we are not spawning already
+	if (spawning == false && spawn_stack[0].type != NO_TYPE) {
+		chrono_spawn.Start();
+		spawning = true;
+	}
+	if (spawning == true) {
+		if (chrono_spawn.ReadSec() > spawn_stack[0].spawn_seconds) {
+			App->entities->CreateEntity(faction, spawn_stack[0].type, spawnPosition.x, spawnPosition.y, owner);
+			//LOG("Unit Spawned");
+			UpdateSpawnStack();
+		}
+		time_left = spawn_stack[0].spawn_seconds - chrono_spawn.ReadSec();
+	}
+}
+
+void StaticEntity::UpgradeChrono() {
+
+	if (upgrading == false && want_to_upgrade == true) {
+		chrono_upgrade.Start();
+		upgrading = true;
+		want_to_upgrade = false;
+	}
+	if (upgrading == true) {
+		//LOG("time remaining %f ", 45 - chrono_upgrade.ReadSec());
+		if (chrono_upgrade.ReadSec() > upgrade_stack.upgrade_seconds) {
+			if (upgrade_stack.building == BASE) {
+				ExecuteUpgrade(upgrade_stack.faction, RESOURCES_LIMIT);
+				ExecuteUpgrade(upgrade_stack.faction, GATHERER_CAPACITY);
+			}
+			else if (upgrade_stack.building == BARRACK) {
+				ExecuteUpgrade(upgrade_stack.faction, UNITS_DAMAGE);
+				ExecuteUpgrade(upgrade_stack.faction, UNITS_SPEED);
+			}
+			else if (upgrade_stack.building == LABORATORY) {
+				ExecuteUpgrade(upgrade_stack.faction, UNITS_HEALTH);
+				ExecuteUpgrade(upgrade_stack.faction, CREATION_TIME);
+
+			}
+
+			upgrading = true;
+		}
+	}
+}
+
+void StaticEntity::DebugSpawnsUpgrades() {
+
+	if (this == App->player->selected_entity) {
+		if (type == BASE) {
+			//Spawn GATHERER
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+				SpawnUnit(GATHERER);
+			//Upgrades
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+				Upgrade(App->entities->base_resource_limit[faction]);
+			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+				Upgrade(App->entities->gatherer_resource_limit[faction]);
+		}
+		else if (type == BARRACK) {
+			//Spawn MELEE
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+				SpawnUnit(MELEE);
+			//Spawn RANGED
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+				SpawnUnit(RANGED);
+			//Upgrades
+			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+				Upgrade(App->entities->units_damage[faction]);
+			if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+				Upgrade(App->entities->units_speed[faction]);
+		}
+		else if (type == LABORATORY) {
+			//Upgrades
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+				Upgrade(App->entities->units_health[faction]);
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+				Upgrade(App->entities->units_creation_time[faction]);
+		}
+	}
 }

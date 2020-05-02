@@ -57,6 +57,7 @@ struct Upgrades_Data{
 	int first_price;
 	int price_increment;
 	int seconds;
+	float value_increment; 
 };
 
 class j1EntityManager : public j1Module
@@ -80,23 +81,24 @@ public:
 
 	//Find entities
 	j1Entity*		FindEntityByTile(iPoint tile);
-	j1Entity*		FindEntityByType(Faction faction, EntityType type);
 	ResourceBuilding* FindResourceBuildingByTile(iPoint tile);
 	ResourceBuilding* GetClosestResourceBuilding(iPoint current_position);
-	iPoint ClosestTile(iPoint position, std::vector<iPoint> entity_tiles) const;
 
+	iPoint ClosestTile(iPoint position, std::vector<iPoint> entity_tiles) const;
+	iPoint FindFreeAdjacentTile(iPoint origin, iPoint destination);
+
+	bool LoadReferenceEntityAnimations();
 	bool LoadReferenceEntityData();
 	void DestroyEntity(j1Entity* delete_entity);
 	void DestroyAllEntities();	
 
 	void BubbleSortEntities();
-	//void QuickSortEntities(std::vector<j1Entity*> entities, int low, int high);
-	//int Partition(std::vector<j1Entity*> entities, int low, int high);
 
 	void RandomFactions();
 	Faction FactionByIndex(int i) { return static_cast<Faction>(i); }
 
-	void LoadCosts();
+	void LoadUpgradeCosts(pugi::xml_node& config);
+	void LoadUnitCosts();
 public:
 	std::vector<j1Entity*> entities;
 	std::vector<ResourceBuilding*> resource_buildings;
@@ -109,8 +111,11 @@ public:
 	int randomFaction[4];
 	Unit_Data unit_data[4][3];
 	j1Entity* reference_entities[4][6];
+	DynamicEntity* reference_bighroner;
+	DynamicEntity* reference_braham;
+	DynamicEntity* reference_deathclaw;
+	bool occupied_tiles[150][150];
 	j1Timer sort_timer;
-	SDL_Texture* selected_unit_tex;
 
 	bool loading_reference_entities;
 

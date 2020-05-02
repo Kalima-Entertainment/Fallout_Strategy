@@ -16,12 +16,28 @@ j1Console::j1Console() : j1Module() {
 	input_box = nullptr;
 	CleanUpStarted = false;
 	l = 0;
+	name = "console";
 }
 
 j1Console::~j1Console() {}
 
 bool j1Console::Awake(pugi::xml_node& config) {
 	bool ret = true;
+	pugi::xml_node log_box_node = config.child("log_box");
+	pugi::xml_node input_box_node = config.child("input_box");
+
+	//log box color
+	log_box_color.r = log_box_node.attribute("r").as_int();
+	log_box_color.g = log_box_node.attribute("g").as_int();
+	log_box_color.b = log_box_node.attribute("b").as_int();
+	log_box_color.a = log_box_node.attribute("a").as_int();
+
+	//input box color
+	input_box_color.r = input_box_node.attribute("r").as_int();
+	input_box_color.g = input_box_node.attribute("g").as_int();
+	input_box_color.b = input_box_node.attribute("b").as_int();
+	input_box_color.a = input_box_node.attribute("a").as_int();
+
 	return ret;
 }
 
@@ -77,9 +93,9 @@ bool j1Console::PostUpdate() {
 		log_box.x = command_background.x = -App->render->camera.x;
 		log_box.y = -App->render->camera.y;
 		command_background.y = log_box.y + log_box.h;
-		App->render->DrawQuad(log_box, 0, 115, 25, 225);
-		App->render->DrawQuad(command_background, 0, 80, 10, 245);
-
+		App->render->DrawQuad(log_box, log_box_color.r, log_box_color.g, log_box_color.b, log_box_color.a);
+		App->render->DrawQuad(command_background, input_box_color.r, input_box_color.g, input_box_color.b, input_box_color.a);
+		App->render->DrawQuad(command_background, 255, 255, 255, 255, false);
 		//log text
 		for (int i = 0; i < on_screen_log.size(); i++)
 		{
@@ -105,6 +121,7 @@ bool j1Console::CleanUp() {
 void j1Console::AddLogText(std::string incoming_text) {
 	
 	log_record.push_back(incoming_text);
+
 	if (isVisible) {
 		DestroyInterface();
 		if (log_record.size() > MAX_LOG_RECORD)
@@ -125,9 +142,9 @@ void j1Console::CreateInterface() {
 	int font_size = 14;
 	int x_margin = 14;
 	int spacing = 6;
-	int j = 0;
+	int j = 1;
 
-	for (int i = log_record.size(); i > 0; i--)
+	for (int i = log_record.size() -1; i >= 0; i--)
 	{
 		on_screen_log.push_back((UI_Label*)App->gui->CreateLabel(0 + x_margin, log_box.h - (j * (font_size + spacing)) -spacing, Label, log_record[i].c_str(), NULL, this, NULL, "OpenSans-Light"));
 		j++;
@@ -137,12 +154,18 @@ void j1Console::CreateInterface() {
 }
 
 void j1Console::DestroyInterface() {
+
 	for (int i = 0; i < on_screen_log.size(); i++)
 	{
 		App->gui->Delete_Element(on_screen_log[i]);
+		on_screen_log[i] = nullptr;
 	}
-	if (input_box != nullptr) App->gui->Delete_Element(input_box);
-	input_box = nullptr;
+
+	if (input_box != nullptr) {
+		App->gui->Delete_Element(input_box);
+		input_box = nullptr;
+	}
+
 	on_screen_log.clear();
 }
 

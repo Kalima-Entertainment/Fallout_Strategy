@@ -14,6 +14,7 @@
 #include "GenericPlayer.h"
 #include "j1Player.h"
 #include "AI_Player.h"
+#include "j1Pathfinding.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -40,16 +41,15 @@ void j1Map::Draw()
 	BROFILER_CATEGORY("MapDraw", Profiler::Color::MediumPurple)
 	if(map_loaded == false)
 		return;
-	int tile_margin = 6;
+	int tile_margin = 7;
 
 	for(int l = 0; l < MAX_LAYERS; l++)
 	{
 		MapLayer* layer = &data.layers[l];
 
-		if(layer->properties.Get("Nodraw") != 0)
+		if ((layer->properties.Get("Nodraw") != 0)&&(!App->render->debug))
 			continue;
 
-		int total_tiles = 0;
 		for(int y = 0; y < data.height; ++y)
 		{
 			for(int x = 0; x < data.width; ++x)
@@ -71,7 +71,6 @@ void j1Map::Draw()
 				}
 			}
 		}
-		total_tiles = 0;
 	}
 }
 
@@ -92,7 +91,7 @@ int Properties::Get(const char* value, int default_value) const
 TileSet* j1Map::GetTilesetFromTileId(int id) const
 {
 	TileSet* set = (TileSet*)&data.tilesets[0];
-	for (int i = 0; i < 4; i++){
+	for (int i = 0; i < MAX_TILESETS; i++){
 		set = (TileSet*)&data.tilesets[i];
 		if (id < data.tilesets[i + 1].firstgid)
 		{
@@ -250,7 +249,7 @@ bool j1Map::Load(std::string modules[4])
 			// Load all tilesets info ----------------------------------------------
 			pugi::xml_node tileset = map_file.child("map").child("tileset");
 			
-			for (int t = 0; t < 4 && ret; t++)
+			for (int t = 0; t < MAX_TILESETS && ret; t++)
 			{
 				TileSet* set = new TileSet();
 				if (ret == true)
@@ -276,7 +275,7 @@ bool j1Map::Load(std::string modules[4])
 
 		// Load layer info ----------------------------------------------
 		pugi::xml_node layer = map_file.child("map").child("layer");
-		for (int l = 0; l < 6 && ret; l++)
+		for (int l = 0; l < MAX_LAYERS && ret; l++)
 		{
 			ret = LoadLayer(layer, &data.layers[l], i);
 			layer = layer.next_sibling("layer");
@@ -300,7 +299,7 @@ bool j1Map::Load(std::string modules[4])
 			LOG("tile_width: %d tile_height: %d", data.tile_width, data.tile_height);
 
 			if (i == 0) {
-				for (int t = 0; t < 4; t++)
+				for (int t = 0; t < MAX_TILESETS; t++)
 				{
 					LOG("Tileset ----");
 					LOG("name: %s firstgid: %d", data.tilesets[t].name.c_str(), data.tilesets[t].firstgid);
@@ -309,7 +308,7 @@ bool j1Map::Load(std::string modules[4])
 				}
 			}
 
-			for (int l = 0; l < 6; l++)
+			for (int l = 0; l < MAX_LAYERS; l++)
 			{
 				LOG("Layer ----");
 				LOG("name: %s", data.layers[l].name.c_str());
@@ -466,20 +465,18 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer, int module_number)
 	{
 		LOG("Error parsing map xml file: Cannot find 'layer/data' tag.");
 		ret = false;
-		//RELEASE(layer);
 	}
-	//else
-	//{
-		//layer->data = new uint[layer->width * layer->height];
-		//memset(layer->data, 0, layer->width*layer->height);
 
 		int first_tile[4];
+
 		first_tile[0] = 0;
 		first_tile[1] = 75;
 		first_tile[2] = 11250;
 		first_tile[3] = 11325;
+
 		int i = first_tile[module_number];
 		int iterations = 0;
+
 		for(pugi::xml_node tile = layer_data.child("tile"); tile; tile = tile.next_sibling("tile"))
 		{
 			layer->data[i] = tile.attribute("gid").as_int(0);
@@ -490,7 +487,6 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer, int module_number)
 				iterations = 0;
 			}
 		}
-	//}
 
 	return ret;
 }
@@ -656,18 +652,11 @@ bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 	return ret;
 }
 
-bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
+bool j1Map::CreateWalkabilityMap() const
 {
 	bool ret = false;
 
-
-		MapLayer* layer = (MapLayer*)&data.layers[5];
-
-		//if (layer->properties.Get("Navigation", 0) == 0)
-			//continue;
-
-		uchar* map = new uchar[layer->width * layer->height];
-		memset(map, 1, layer->width * layer->height);
+		MapLayer* layer = (MapLayer*)&data.layers[MAX_LAYERS -1];
 
 		for (int y = 0; y < data.height; ++y)
 		{
@@ -677,17 +666,14 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 
 				int tile_id = layer->Get(x, y);
 
-				if (tile_id == 1)
+				if (tile_id != 0)
 				{
-					map[i] = 0;
+					App->pathfinding->SetTileAsUnwalkable(x, y);
 				}
 			}
 		}
 
-		*buffer = map;
-		width = data.width;
-		height = data.height;
-		ret = true;
+	ret = true;
 
 	return ret;
 }
@@ -707,8 +693,7 @@ std::vector<iPoint> j1Map::CalculateArea(iPoint first_tile_position, int width, 
 			area.push_back(tile_position);
 			
 			//set tile as unwalkable
-			uint position = ((tile_position.y) * MAP_LENGTH) + (tile_position.x);
-			data.layers[5].data[position] = 1;
+			App->pathfinding->SetTileAsUnwalkable(tile_position.x, tile_position.y);
 		}
 	}
 

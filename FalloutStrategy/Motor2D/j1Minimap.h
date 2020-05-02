@@ -31,7 +31,7 @@ public:
 	int width;
 	int height;
 
-public:
+private:
 	float scale;
 	int map_width;
 	int map_height;
@@ -39,6 +39,7 @@ public:
 	Corner corner;
 	SDL_Texture* texture;
 	j1PerfTimer	ptimer;
+	std::vector<iPoint> node_map;
 };
 
 #endif // !_j1MINIMAP_H

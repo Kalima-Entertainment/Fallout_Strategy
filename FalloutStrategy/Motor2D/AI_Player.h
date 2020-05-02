@@ -17,22 +17,19 @@ public:
 
 	bool Update(float dt);
 
-	std::vector<iPoint> CreateNodePath(iPoint origin, iPoint destination);
+private:
+	void ChooseRandomPlayerEnemy();
+	DynamicEntity* GetClosestDynamicEntity();
+	StaticEntity* ChooseTargetBuilding();
 
 public:
 	bool is_attacking;
 	std::vector<iPoint> path_to_enemy_base;
 
 private:
-	void ChooseRandomPlayerEnemy();
-	DynamicEntity* GetClosestDynamicEntity();
-	StaticEntity* ChooseTargetBuilding();
-
-private:
 	int ranged_minimum;
 	int melee_minimum;
 	j1Group* group;
-	StaticEntity* target_building;
 	iPoint target_building_position;
 	int last_barrack_to_spawn;
 };

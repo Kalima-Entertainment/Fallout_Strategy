@@ -62,6 +62,8 @@ bool j1Scene::Start()
 
 	//random map ----------------------------
 
+	App->pathfinding->SetMap();
+
 	std::string modules[4];
 
 	for (int i = 0; i < 4; i++)
@@ -86,24 +88,23 @@ bool j1Scene::Start()
 
 	if (App->map->Load(modules) == true)
 	{
-		int w, h;
-		uchar* data = NULL;
-		if (App->map->CreateWalkabilityMap(w, h, &data))
-			App->pathfinding->SetMap(w, h, data);
-
-		RELEASE_ARRAY(data);
+		App->map->CreateWalkabilityMap();
 	}
 
 	App->minimap->Enable();
 		
 	//top_left
-	//App->entities->CreateEntity(VAULT, RANGED, 20, 20);
+	//App->entities->CreateEntity(VAULT, MELEE, 20, 20, App->player);
+	//App->entities->CreateEntity(ANIMALS, BIGHRONER, 15, 20, App->player);
+	//App->entities->CreateEntity(ANIMALS, BRAHAM, 22, 20, App->player);
+	//App->entities->CreateEntity(ANIMALS, DEATHCLAW, 28, 20, App->player);
+
 	//top_right
-	//App->entities->CreateEntity(VAULT, RANGED, 130, 20);
+	//App->entities->CreateEntity(VAULT, MELEE, 130, 20, App->player);
 	//bottom_left
-	//App->entities->CreateEntity(VAULT, RANGED, 20, 130);
-	//botto_right
-	//App->entities->CreateEntity(VAULT, RANGED, 130,110);
+	//App->entities->CreateEntity(VAULT, MELEE, 20, 130, App->player);
+	//bottom_right
+	//App->entities->CreateEntity(VAULT, MELEE, 130,110, App->player);
 
 	return true;
 }
@@ -138,7 +139,7 @@ bool j1Scene::Update(float dt)
 
 		else if (create == false) {
 
-			App->menu_manager->CreatePauseMenu();
+			App->menu_manager->CreateMenu(Menu::PAUSE_MENU);
 			App->isPaused = true;
 			create = true;
 		}
@@ -169,7 +170,7 @@ bool j1Scene::Update(float dt)
 		
 		win = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
-		App->menu_manager->CreateWinLoseScene();
+		App->menu_manager->CreateMenu(Menu::WIN_LOSE_SCENE);
 		App->entities->Disable();
 		App->scene->Disable();
 		App->isPaused = false;
@@ -179,7 +180,7 @@ bool j1Scene::Update(float dt)
 
 		win = false;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
-		App->menu_manager->CreateWinLoseScene();
+		App->menu_manager->CreateMenu(Menu::WIN_LOSE_SCENE);
 		App->entities->Disable();
 		App->scene->Disable();
 		App->isPaused = false;
@@ -262,7 +263,7 @@ void j1Scene::CheckWinner() {
 					//LOSE
 					win = false;
 					App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
-					App->menu_manager->CreateWinLoseScene();
+					App->menu_manager->CreateMenu(Menu::WIN_LOSE_SCENE);
 					App->gui->ingame = false;
 					App->isPaused = true;
 				}
@@ -286,7 +287,7 @@ void j1Scene::CheckWinner() {
 		LOG("You won!");
 		win = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
-		App->menu_manager->CreateWinLoseScene();
+		App->menu_manager->CreateMenu(Menu::WIN_LOSE_SCENE);
 		App->gui->ingame = false;
 		App->isPaused = true;
 	}
@@ -301,25 +302,25 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 		{
 			if (players[i]->faction != App->player->faction) {
 				if (players[i]->base != nullptr)
-					players[i]->base->state = EXPLODE;
+					players[i]->base->state = DIE;
 				if (players[i]->laboratory != nullptr)
-					players[i]->laboratory->state = EXPLODE;
+					players[i]->laboratory->state = DIE;
 				if (players[i]->barrack[0] != nullptr)
-					players[i]->barrack[0]->state = EXPLODE;
+					players[i]->barrack[0]->state = DIE;
 				if (players[i]->barrack[1] != nullptr)
-					players[i]->barrack[1]->state = EXPLODE;
+					players[i]->barrack[1]->state = DIE;
 			}
 		}
 	}
 	//Instantly lose the game
 	else if (command_beginning == "lose") {
 		if (App->player->base != nullptr)
-			App->player->base->state = EXPLODE;
+			App->player->base->state = DIE;
 		if (App->player->laboratory != nullptr)
-			App->player->laboratory->state = EXPLODE;
+			App->player->laboratory->state = DIE;
 		if (App->player->barrack[0] != nullptr)
-			App->player->barrack[0]->state = EXPLODE;
+			App->player->barrack[0]->state = DIE;
 		if (App->player->barrack[1] != nullptr)
-			App->player->barrack[1]->state = EXPLODE;
+			App->player->barrack[1]->state = DIE;
 	}
 }

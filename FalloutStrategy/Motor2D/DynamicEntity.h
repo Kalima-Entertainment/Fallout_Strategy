@@ -14,15 +14,6 @@ enum Direction {
 	NO_DIRECTION
 };
 
-enum DynamicState {
-	IDLE,
-	WALK,
-	ATTACK,
-	GATHER,
-	HIT,
-	DIE,
-	MAX_ANIMATIONS
-};
 
 struct UnitInfo {
 
@@ -36,7 +27,7 @@ struct UnitInfo {
 class DynamicEntity : public j1Entity
 {
 public:
-	DynamicEntity(Faction faction, EntityType type);
+	DynamicEntity(Faction faction, EntityType type, iPoint current_tile, GenericPlayer* owner = nullptr);
 	~DynamicEntity();
 
 	//Core
@@ -44,16 +35,18 @@ public:
 	bool PostUpdate();
 
 	bool LoadAnimations();
-	//bool LoadFx();
 	bool LoadReferenceData();
-	void PathfindToGather(iPoint target);
-	void PathfindToPosition(iPoint target);
+
 	void Move(float dt);
 	void Attack();
 	void Gather();
-	void DrawQuad();
-	bool TargetTileReached(iPoint target_tile);
+	void StoreGatheredResources();
+	void Flee();
+
+	j1Entity* DetectEntitiesInRange();
+	void PathfindToPosition(iPoint target);
 	Direction GetDirectionToGo(SDL_Rect next_tile_rect) const;
+	void UpdateTile();
 
 public:
 	float action_time;
@@ -61,20 +54,23 @@ public:
 	iPoint next_tile_position;
 	SDL_Rect next_tile_rect;
 
-	Animation animations[MAX_ANIMATIONS][4];
+	Animation animations[NO_STATE][NO_DIRECTION];
 	Direction direction;
 	Direction last_direction;
-	DynamicState state;
+
 	int range;
+	int detection_radius;
 	int resource_collected;
 	ResourceBuilding* resource_building;
 	Resource resource_type;
-	j1Timer timer;
+	bool is_agressive;
 
-	uint fx[6];
+	j1Timer action_timer;
+	j1Timer detection_timer;
 
 	UnitInfo unitinfo;	
 	std::vector<iPoint> node_path;
+	std::vector<j1Entity*> entities_in_range;
 };
 
 
