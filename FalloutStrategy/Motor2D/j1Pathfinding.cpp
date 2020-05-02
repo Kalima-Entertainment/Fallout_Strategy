@@ -6,7 +6,7 @@
 #include "StaticEntity.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
-j1PathFinding::j1PathFinding() : j1Module(), last_path(DEFAULT_PATH_LENGTH), width(0), height(0), node_map_divisions(15)
+j1PathFinding::j1PathFinding() : j1Module(), last_path(DEFAULT_PATH_LENGTH), width(150), height(150), node_map_divisions(15)
 {
 	name = ("pathfinding");
 	node_map = CreateNodeMap();
@@ -50,7 +50,7 @@ bool j1PathFinding::CheckBoundaries(const iPoint& pos) const
 // Utility: returns true is the tile is walkable
 bool j1PathFinding::IsWalkable(const iPoint& pos) const
 {
-	return map[pos.x][pos.y];
+	return map[pos.x][pos.y] && CheckBoundaries(pos);
 }
 
 void j1PathFinding::SetTileAsUnwalkable(int tile_x, int tile_y) {

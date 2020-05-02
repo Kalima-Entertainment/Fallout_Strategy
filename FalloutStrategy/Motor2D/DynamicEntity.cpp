@@ -17,6 +17,8 @@
 
 DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile, GenericPlayer* g_owner) : j1Entity(), resource_collected(0) {
 
+	action_time = 3.0f;
+
 	switch (g_type)
 	{
 	case MELEE:
@@ -31,13 +33,15 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 		range = 1;
 		is_agressive = false;
 		break;
-	case BIGHRONER:
+	case BIGHORNER:
 		range = 1;
 		is_agressive = false;
+		action_time = 20;
 		break;
 	case BRAHAM:
 		range = 1;
 		is_agressive = false;
+		action_time = 20;
 		break;
 	case DEATHCLAW:
 		range = 1;
@@ -65,7 +69,6 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 	resource_building = nullptr;
 	attacking_entity = nullptr;
 
-	action_time = 3.0f;
 	target_tile = { -1,-1 };
 	speed = { 0, 0 };
 	sprite_size = 128;
@@ -104,20 +107,30 @@ bool DynamicEntity::Update(float dt) {
 					if ((current_tile.DistanceNoSqrt(enemy_in_range->current_tile) > range) && (target_entity->current_tile != target_tile))
 						PathfindToPosition(enemy_in_range->current_tile);
 					else {
-						next_tile = current_tile;
-						target_tile = current_tile;
+						//next_tile = current_tile;
+						//target_tile = current_tile;
 						UpdateTile();
 						path_to_target.clear();
 						state = ATTACK;
-						action_timer.Start();
+						//action_timer.Start();
 					}
 				}
 			}
-			else if ((enemy_in_range->is_dynamic)&&(((DynamicEntity*)enemy_in_range))->is_agressive) {
+			else if ((enemy_in_range->type != BRAHAM)&&(enemy_in_range->type != BIGHORNER)) {
 				Flee();
+				action_timer.Start();
+			}
+		}
+		else if ((type == BRAHAM)||(type  == BIGHORNER))
+		{
+			if (action_timer.ReadSec() > action_time) {
+				Flee();
+				LOG("Pasturing");
+				action_timer.Start();
 			}
 		}
 		
+
 		break;
 
 	case WALK:
@@ -127,7 +140,7 @@ bool DynamicEntity::Update(float dt) {
 		if (current_tile.DistanceNoSqrt(target_tile) <= range) {
 			if (is_agressive) {
 				if (target_entity != nullptr) {
-					if ((target_entity->current_tile == target_tile)|| (current_tile.DistanceManhattan(target_entity->current_tile) <= range)) {
+					if ((target_entity->current_tile == target_tile) || (current_tile.DistanceManhattan(target_entity->current_tile) <= range)) {
 					state = ATTACK;
 					path_to_target.clear();
 					UpdateTile();
@@ -630,7 +643,7 @@ bool DynamicEntity::LoadAnimations() {
 	if (type == MELEE) type_char = "Melee";
 	else if (type == RANGED) type_char = "Ranged";
 	else if (type == GATHERER) type_char = "Gatherer";
-	else if (type == BIGHRONER) type_char = "Bighorner";
+	else if (type == BIGHORNER) type_char = "Bighorner";
 	else if (type == BRAHAM) type_char = "Braham";
 	else if (type == DEATHCLAW) type_char = "Deathclaw";
 	

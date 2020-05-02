@@ -46,7 +46,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 
 	j1Entity* entity = nullptr;
 
-	if ((type == MELEE) || (type == RANGED) || (type == GATHERER) || (type == BIGHRONER) || (type == BRAHAM) || (type == DEATHCLAW)) {
+	if ((type == MELEE) || (type == RANGED) || (type == GATHERER) || (type == BIGHORNER) || (type == BRAHAM) || (type == DEATHCLAW)) {
 
 		//If there's another unit in that tile, we find a new spawn point
 		if (occupied_tiles[position_x][position_y]) {
@@ -86,7 +86,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	
 		if (faction != ANIMALS)
 			entity->reference_entity = reference_entities[faction][type];
-		else if (type == BIGHRONER)
+		else if (type == BIGHORNER)
 			entity->reference_entity = reference_bighroner;
 		else if (type == BRAHAM)
 			entity->reference_entity = reference_braham;
@@ -222,14 +222,14 @@ bool j1EntityManager::Start() {
 	//automatic entities loading
 	for (int faction = VAULT; faction < ANIMALS; faction++)
 	{
-		for (int type = MELEE; type < BIGHRONER; type++)
+		for (int type = MELEE; type < BIGHORNER; type++)
 		{
 			reference_entities[faction][type] = nullptr;
 			reference_entities[faction][type] = CreateEntity((Faction)faction, (EntityType)type, faction, type, nullptr);
 		}
 	}
 
-	reference_bighroner = (DynamicEntity*)CreateEntity(ANIMALS, BIGHRONER, ANIMALS, BIGHRONER, nullptr);
+	reference_bighroner = (DynamicEntity*)CreateEntity(ANIMALS, BIGHORNER, ANIMALS, BIGHORNER, nullptr);
 	reference_braham = (DynamicEntity*)CreateEntity(ANIMALS, BRAHAM, ANIMALS, BRAHAM, nullptr);
 	reference_deathclaw = (DynamicEntity*)CreateEntity(ANIMALS, DEATHCLAW, ANIMALS, DEATHCLAW, nullptr);
 
@@ -491,7 +491,7 @@ bool j1EntityManager::LoadReferenceEntityAnimations() {
 
 	if (load_timer.Read() > 100) {
 
-		if (loading_entity == BIGHRONER) {
+		if (loading_entity == BIGHORNER) {
 			loading_entity = MELEE;
 			loading_faction++;
 		}
@@ -568,7 +568,7 @@ bool j1EntityManager::LoadReferenceEntityData() {
 				else if (type_string == "base") type = BASE;
 				else if (type_string == "barrack") type = BARRACK;
 				else if (type_string == "laboratory") type = LABORATORY;
-				else if (type_string == "bighorner") type = BIGHRONER;
+				else if (type_string == "bighorner") type = BIGHORNER;
 				else if (type_string == "braham") type = BRAHAM;
 				else if (type_string == "deathclaw") type = DEATHCLAW;
 
@@ -586,7 +586,7 @@ bool j1EntityManager::LoadReferenceEntityData() {
 				else
 				{
 					DynamicEntity* animal = nullptr;
-					if (type == BIGHRONER) animal = reference_bighroner;
+					if (type == BIGHORNER) animal = reference_bighroner;
 					else if (type == BRAHAM) animal = reference_braham;
 					else if (type == DEATHCLAW) animal = reference_deathclaw;
 
