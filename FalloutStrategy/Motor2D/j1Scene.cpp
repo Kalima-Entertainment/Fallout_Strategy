@@ -86,6 +86,8 @@ bool j1Scene::Start()
 
 	// --------------------------------------
 
+	modules[0] = ("wasteland_up_left.tmx");
+
 	if (App->map->Load(modules) == true)
 	{
 		App->map->CreateWalkabilityMap();
@@ -94,17 +96,17 @@ bool j1Scene::Start()
 	App->minimap->Enable();
 		
 	//top_left
-	//App->entities->CreateEntity(VAULT, MELEE, 20, 20, App->player);
+	App->entities->CreateEntity(VAULT, MELEE, 20, 20, App->player);
 	//App->entities->CreateEntity(ANIMALS, BIGHRONER, 15, 20, App->player);
 	//App->entities->CreateEntity(ANIMALS, BRAHAM, 22, 20, App->player);
 	//App->entities->CreateEntity(ANIMALS, DEATHCLAW, 28, 20, App->player);
 
 	//top_right
-	//App->entities->CreateEntity(VAULT, MELEE, 130, 20, App->player);
+	App->entities->CreateEntity(VAULT, MELEE, 130, 20, App->player);
 	//bottom_left
-	//App->entities->CreateEntity(VAULT, MELEE, 20, 130, App->player);
+	App->entities->CreateEntity(VAULT, MELEE, 20, 130, App->player);
 	//bottom_right
-	//App->entities->CreateEntity(VAULT, MELEE, 130,110, App->player);
+	App->entities->CreateEntity(VAULT, MELEE, 130,110, App->player);
 
 	return true;
 }

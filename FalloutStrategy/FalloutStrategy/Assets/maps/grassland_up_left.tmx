@@ -39424,7 +39424,7 @@
    <tile gid="0"/>
   </data>
  </layer>
- <objectgroup name="resources">
+ <objectgroup name="objectgroups">
   <object id="1" name="Resources" x="1148.67" y="25.5" width="242.833" height="202">
    <properties>
     <property name="Nuka-Cola" type="int" value="200"/>

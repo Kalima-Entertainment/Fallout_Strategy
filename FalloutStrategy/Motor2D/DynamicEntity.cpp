@@ -113,7 +113,7 @@ bool DynamicEntity::Update(float dt) {
 					}
 				}
 			}
-			else {
+			else if ((enemy_in_range->is_dynamic)&&(((DynamicEntity*)enemy_in_range))->is_agressive) {
 				Flee();
 			}
 		}

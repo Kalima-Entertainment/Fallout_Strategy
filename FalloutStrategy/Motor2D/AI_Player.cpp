@@ -20,12 +20,14 @@ AI_Player::AI_Player(Faction g_faction) : GenericPlayer(), is_attacking(false), 
 	food = App->ai_manager->GetAI_PlayerInfo(faction).initial_food;
 	melee_minimum = App->ai_manager->GetAI_PlayerInfo(faction).minimum_melees;
 	ranged_minimum = App->ai_manager->GetAI_PlayerInfo(faction).minimum_rangeds;
+	wave_time = App->ai_manager->GetAI_PlayerInfo(faction).wave_time;
 	defeated = false;
 	goal_tile_set = false;
 	target_player = nullptr;
 	target_building = nullptr;
 	target_building_position = { -1, -1 };
 	base = barrack[0] = barrack[1] = laboratory = nullptr;
+	wave_timer.Start();
 }
 
 AI_Player::~AI_Player() 
@@ -95,9 +97,12 @@ bool AI_Player::Update(float dt) {
 	//Choose enemy player -----------------------------------------
 
 	//if the ai_player is ready choose a player to attack
-	if ((rangeds >= ranged_minimum) && (melees >= melee_minimum) && (target_player == nullptr)) { 
+
+	if(wave_timer.ReadSec() > wave_time){
+	//if ((rangeds >= ranged_minimum) && (melees >= melee_minimum) && (target_player == nullptr)) { 
 		ChooseRandomPlayerEnemy();
 		is_attacking = true;
+		LOG("attacking");
 	}
 
 	// -------------------------------------------------------------
@@ -105,7 +110,7 @@ bool AI_Player::Update(float dt) {
 	// Fight -------------------------------------------------------
 
 	//Assign all attacking units an entity to attack
-	/*
+	
 	if (is_attacking) 
 	{
 		//if the target building is destroyed forget about it
@@ -115,6 +120,7 @@ bool AI_Player::Update(float dt) {
 		//if there is no target building find one
 		if (target_building == nullptr) {
 			target_building = ChooseTargetBuilding();
+			//if the enemy player has no buildings left choose another player
 			if (target_building == nullptr) {
 				ChooseRandomPlayerEnemy();
 				target_building = ChooseTargetBuilding();
@@ -132,12 +138,15 @@ bool AI_Player::Update(float dt) {
 				if ((troops[i]->target_entity == nullptr)||(troops[i]->target_entity != target_building))
 				{
 						troops[i]->target_entity = target_building;
+						//and make it go there
+						troops[i]->PathfindToPosition(target_building_position);
 				}
 			}
 			//forget about the target if it is null because it means it has been destroyed 
-			else { troops[i]->target_entity = nullptr; }
+			//else { troops[i]->target_entity = nullptr; }
 
 			//if the unit has no path 
+			/*
 			if (troops[i]->path_to_target.size() == 0) 
 			{
 				//and has no node path
@@ -152,9 +161,11 @@ bool AI_Player::Update(float dt) {
 						troops[i]->PathfindToPosition(target_building_position);
 				}
 			}
+			*/
 		}
+
+		is_attacking = false;
 	}
-	*/
 
 	return ret;
 }

@@ -3,6 +3,7 @@
 #include "GenericPlayer.h"
 #include <vector>
 #include "p2Point.h"
+#include "j1Timer.h"
 
 class j1Entity;
 class DynamicEntity;
@@ -32,6 +33,8 @@ private:
 	j1Group* group;
 	iPoint target_building_position;
 	int last_barrack_to_spawn;
+	int wave_time;
+	j1Timer wave_timer;
 };
 
 #endif // !_AI_PLAYER_H_

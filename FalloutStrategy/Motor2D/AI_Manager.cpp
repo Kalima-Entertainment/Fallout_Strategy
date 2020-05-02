@@ -37,6 +37,7 @@ bool AI_Manager::Awake(pugi::xml_node& config) {
 		ai_info[faction].initial_food = faction_node.attribute("food").as_int();
 		ai_info[faction].minimum_melees = faction_node.attribute("minimum_melees").as_int();
 		ai_info[faction].minimum_rangeds = faction_node.attribute("minimum_rangeds").as_int();
+		ai_info[faction].wave_time = faction_node.attribute("wave_time").as_int();
 
 		faction_node = faction_node.next_sibling();
 	}

@@ -13,6 +13,7 @@ struct AI_Info {
 	int initial_food;
 	int minimum_melees;
 	int minimum_rangeds;
+	int wave_time;
 };
 
 class AI_Manager : public j1Module
