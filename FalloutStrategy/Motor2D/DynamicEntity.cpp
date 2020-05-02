@@ -244,8 +244,6 @@ bool DynamicEntity::Update(float dt) {
 	{
 		if (info.current_group->IsGroupLead(this)) {
 			if (this->faction == App->player->faction)
-				if (App->input->GetKey(SDL_SCANCODE_M) == KEY_UP)
-					LOG("Calling group movement!");
 					info.current_group->CheckForMovementRequest(App->player->Map_mouseposition, dt);
 			/*
 			else {

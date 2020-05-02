@@ -11,6 +11,8 @@
 #include "j1Render.h"
 #include "j1Player.h"
 #include "DynamicEntity.h"
+#include "StaticEntity.h"
+
 
 j1MovementManager::j1MovementManager()
 {
@@ -108,78 +110,94 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path , float dt)
 	
 	// -- Getting group information
 	std::list <j1Entity*>::const_iterator unit = group->Units.begin();
-	/*
+	
 	for (unit = group->Units.begin();  unit != group->Units.end(); unit++)
 	{
 		// -- Cast to Dynamic to work properly
 		DynamicEntity* entity = (DynamicEntity*)(*unit);
 
-		// -- Calculate new path to reach goal
-		entity->PathfindToPosition(goal_path);
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && entity->info.IsSelected) {
+			// -- Calculate new path to reach goal
+			entity->PathfindToPosition(goal_path);
 
-
-		if (entity->path_to_target.size() > 0) {
-
-			// -- Get next tile center
-			entity->next_tile_position = App->map->MapToWorld(entity->next_tile.x, entity->next_tile.y);
-			entity->next_tile_rect = { entity->next_tile_position.x + HALF_TILE - 5, entity->next_tile_position.y + HALF_TILE - 5, 10, 10 };
-
-			entity->last_direction = entity->direction;
-			entity->direction = entity->GetDirectionToGo(entity->next_tile_rect);
-
-			switch (entity->direction)
-			{
-			case NO_DIRECTION:
-				if (entity->next_tile != entity->target_tile)
-				{
-					//current_tile = path_to_target.front();
-					if (entity->path_to_target.size() > 1)
-					{
-						entity->next_tile = entity->path_to_target[1];
-					}
-					entity->path_to_target.erase(entity->path_to_target.begin());
-				}
-				else if (entity->node_path.size() == 0)
-				{
-					entity->path_to_target.clear();
-					entity->state = IDLE;
-				}
-				entity->direction = entity->last_direction;
-				App->entities->occupied_tiles[entity->current_tile.x][entity->current_tile.y] = false;
-				entity->current_tile = App->map->WorldToMap(entity->position.x, entity->position.y);
-				App->entities->occupied_tiles[entity->current_tile.x][entity->current_tile.y] = true;
-				break;
-
-			case TOP_LEFT:
-				entity->position.x -= entity->speed.x * dt;
-				entity->position.y -= entity->speed.y * dt;
-				break;
-			case TOP_RIGHT:
-				entity->position.x += entity->speed.x * dt;
-				entity->position.y -= entity->speed.y * dt;
-				break;
-			case BOTTOM_LEFT:
-				entity->position.x -= entity->speed.x * dt;
-				entity->position.y += entity->speed.y * dt;
-				break;
-			case BOTTOM_RIGHT:
-				entity->position.x += entity->speed.x * dt;
-				entity->position.y += entity->speed.y * dt;
-				break;
-			default:
-				break;
+			if (group->IsGroupLead(entity) == false) {
+				group->SetUnitGoalTile(entity);
 			}
-		}
-		else
-		{
-			App->entities->occupied_tiles[entity->current_tile.x][entity->current_tile.y] = false;
-			entity->current_tile = App->map->WorldToMap(entity->position.x, entity->position.y);
-			App->entities->occupied_tiles[entity->current_tile.x][entity->current_tile.y] = true;
-			entity->direction = entity->last_direction;
-			entity->state = IDLE;
+			else
+			{
+				// --- Clear previous path request occupied goal tiles ---
+				group->ClearOccupiedlist();
+				(*unit)->info.goal_tile = goal_path;
+				group->Occupied_tiles.push_back(&(*unit)->info.goal_tile);
+			}
+
+			if (entity->path_to_target.size() > 0) {
+
+				// -- Get next tile center
+				entity->next_tile_position = App->map->MapToWorld(entity->next_tile.x, entity->next_tile.y);
+				entity->next_tile_rect = { entity->next_tile_position.x + HALF_TILE - 5, entity->next_tile_position.y + HALF_TILE - 3, 10, 10 };
+
+				entity->last_direction = entity->direction;
+				entity->direction = entity->GetDirectionToGo(entity->next_tile_rect);
+
+				switch (entity->direction)
+				{
+				case NO_DIRECTION:
+					if (entity->next_tile != entity->target_tile)
+					{
+						//current_tile = path_to_target.front();
+						if (entity->path_to_target.size() > 1)
+						{
+							entity->next_tile = entity->path_to_target[1];
+
+							if (App->entities->occupied_tiles[entity->next_tile.x][entity->next_tile.y]) {
+								entity->PathfindToPosition(entity->target_tile);
+								return;
+							}
+
+						}
+						entity->path_to_target.erase(entity->path_to_target.begin());
+					}
+					else if (entity->node_path.size() == 0)
+					{
+						entity->path_to_target.clear();
+						entity->state = IDLE;
+					}
+
+					entity->direction = entity->last_direction;
+					entity->UpdateTile();
+					break;
+
+				case TOP_LEFT:
+					entity->position.x -= entity->speed.x * dt;
+					entity->position.y -= entity->speed.y * dt;
+					break;
+				case TOP_RIGHT:
+					entity->position.x += entity->speed.x * dt;
+					entity->position.y -= entity->speed.y * dt;
+					break;
+				case BOTTOM_LEFT:
+					entity->position.x -= entity->speed.x * dt;
+					entity->position.y += entity->speed.y * dt;
+					break;
+				case BOTTOM_RIGHT:
+					entity->position.x += entity->speed.x * dt;
+					entity->position.y += entity->speed.y * dt;
+					break;
+				default:
+					break;
+				}
+			}
+			else
+			{
+				entity->UpdateTile();
+				entity->direction = entity->last_direction;
+				entity->state = IDLE;
+			}
+
 		}
 
 	}
-	*/
+	
 		
 }
