@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="isometric" renderorder="right-down" width="75" height="75" tilewidth="64" tileheight="32" nextobjectid="15">
+<map version="1.0" orientation="isometric" renderorder="right-down" width="75" height="75" tilewidth="64" tileheight="32" nextobjectid="19">
  <tileset firstgid="1" name="Floors" tilewidth="64" tileheight="32" tilecount="512" columns="16">
   <image source="Floors64x32.png" width="1024" height="1024"/>
  </tileset>
@@ -45115,5 +45115,8 @@
     <property name="faction" type="int" value="2"/>
    </properties>
   </object>
+  <object id="15" name="Animal" type="Braham" x="2207.72" y="763.22" width="24.25" height="21.5"/>
+  <object id="16" name="Animal" type="Bighorner" x="905.905" y="1277.4" width="24.25" height="21.5"/>
+  <object id="18" name="Animal" type="Bighorner" x="163.481" y="747.098" width="24.25" height="21.5"/>
  </objectgroup>
 </map>
