@@ -20,6 +20,7 @@
   <image source="WaterTank.png" width="2048" height="2048"/>
  </tileset>
  <tileset firstgid="897" name="Decoration" tilewidth="128" tileheight="128" tilecount="100" columns="10">
+  <tileoffset x="0" y="-100"/>
   <image source="Decoration.png" trans="ff00ff" width="1280" height="1281"/>
  </tileset>
  <layer name="ground" width="75" height="75">

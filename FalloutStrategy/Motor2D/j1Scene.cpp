@@ -86,8 +86,6 @@ bool j1Scene::Start()
 
 	// --------------------------------------
 
-	modules[0] = ("wasteland_up_left.tmx");
-
 	if (App->map->Load(modules) == true)
 	{
 		App->map->CreateWalkabilityMap();

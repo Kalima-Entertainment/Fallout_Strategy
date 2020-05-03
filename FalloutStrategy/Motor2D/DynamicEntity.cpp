@@ -167,13 +167,10 @@ bool DynamicEntity::Update(float dt) {
 		break;
 
 	case ATTACK:
-		if (target_entity == nullptr)
-			state = IDLE;
-
-		else if (target_entity->current_tile.DistanceNoSqrt(current_tile) > range) {
+		if (target_entity == nullptr)state = IDLE;
+		else if (target_entity->current_tile.DistanceNoSqrt(current_tile) > 1.5f * range) {
 			PathfindToPosition(target_entity->current_tile);
 		}
-
 		else if (action_timer.ReadSec() > action_time) {
 			Attack();
 		}
@@ -216,10 +213,14 @@ bool DynamicEntity::Update(float dt) {
 
 	case HIT:
 		current_animation = &animations[HIT][direction];
+
 		if (current_animation->Finished()) {
 			if (attacking_entity != nullptr) {
 				if (is_agressive) {
 					state = ATTACK;
+				}
+				else {
+					Flee();
 				}
 			}
 			else 
@@ -507,10 +508,10 @@ void DynamicEntity::Attack() {
 		if (target_entity->is_dynamic) {
 			DynamicEntity* dynamic_target = (DynamicEntity*)target_entity;
 
-			if(dynamic_target->attacking_entity == nullptr)
+			//if(dynamic_target->attacking_entity == nullptr)
 				target_entity->attacking_entity = this;
 
-			path_to_target.clear();
+			//path_to_target.clear();
 			dynamic_target->state = HIT;
 		}
 	}
