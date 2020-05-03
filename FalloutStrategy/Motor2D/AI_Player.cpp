@@ -28,6 +28,7 @@ AI_Player::AI_Player(Faction g_faction) : GenericPlayer(), is_attacking(false), 
 	target_building_position = { -1, -1 };
 	base = barrack[0] = barrack[1] = laboratory = nullptr;
 	wave_timer.Start();
+	is_ai = true;
 }
 
 AI_Player::~AI_Player() 
@@ -222,4 +223,16 @@ StaticEntity* AI_Player::ChooseTargetBuilding() {
 		target_building = target_player->base;
 
 	return target_building;
+}
+
+void AI_Player::GatherFood(ResourceBuilding* resource_spot) {
+
+	for (int i = 0; i < gatherers; i++)
+	{
+		if ((gatherers_vector[i]->resource_building == nullptr)||(gatherers_vector[i]->resource_collected == 0)) {
+			gatherers_vector[i]->resource_building = resource_spot;
+			gatherers_vector[i]->PathfindToPosition(resource_spot->tiles.front());
+			return;
+		}
+	}
 }

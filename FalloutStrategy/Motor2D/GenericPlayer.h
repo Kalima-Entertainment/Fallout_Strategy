@@ -18,8 +18,6 @@ public:
 	virtual bool Start() { return true; };
 	virtual bool Update(float dt) { return true; };
 
-	//virtual int GetMelees() const;
-	//virtual int GetRangeds() const;
 	int GetTroopsAmount() const;
 	bool DeleteEntity(j1Entity* entity);
 
@@ -30,6 +28,7 @@ public:
 
 	Faction faction;
 	bool defeated;
+	bool is_ai;
 
 	StaticEntity* base;
 	StaticEntity* barrack[2];

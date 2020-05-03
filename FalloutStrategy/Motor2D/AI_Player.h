@@ -9,6 +9,7 @@ class j1Entity;
 class DynamicEntity;
 enum Faction;
 class j1Group;
+struct ResourceBuilding;
 
 class AI_Player : public GenericPlayer
 {
@@ -17,6 +18,7 @@ public:
 	~AI_Player();
 
 	bool Update(float dt);
+	void GatherFood(ResourceBuilding* resource_spot);
 
 private:
 	void ChooseRandomPlayerEnemy();

@@ -237,11 +237,16 @@ bool DynamicEntity::Update(float dt) {
 		if (!delete_timer.Started()) {
 			delete_timer.Start();
 			direction = TOP_LEFT;
+
 			if (faction == ANIMALS) {
 				resource_building = App->entities->CreateResourceSpot(current_tile.x, current_tile.y, resource_type, resource_collected);
 				App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
 				current_tile = { -1,-1 };
 				next_tile = {-1,-1};
+				if (attacking_entity->owner->is_ai) {
+					((AI_Player*)attacking_entity->owner)->GatherFood(resource_building);
+					attacking_entity = nullptr;
+				}
 			}
 		}
 
