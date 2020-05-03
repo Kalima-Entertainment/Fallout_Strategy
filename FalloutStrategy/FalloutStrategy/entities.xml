@@ -68,9 +68,9 @@
     </gatherer>
   </ghouls>
   <animals>
-    <bighorner health="1500" speed="40"/>
-    <braham health="700" speed="30"/>
-    <deathclaw health="5000" damage="300" speed="100"/>
+    <bighorner health="10" speed="40" resource_quantity="300"/>
+    <braham health="10" speed="30" resource_quantity="800"/>
+    <deathclaw health="5000" damage="300" speed="100" resource_quantity="2000"/>
   </animals>
  </dynamic> 
 </entities>

@@ -77,7 +77,12 @@ public:
 
 	// -----------------------------------------------------------------------------------------------------------------------------
 
-	j1Entity*		CreateEntity(Faction faction, EntityType type, int position_x, int position_y, GenericPlayer* owner = nullptr);
+	j1Entity* CreateEntity(Faction faction, EntityType type, int position_x, int position_y, GenericPlayer* owner = nullptr);
+	void DestroyEntity(j1Entity* delete_entity);
+	void DestroyAllEntities();
+
+	ResourceBuilding* CreateResourceSpot(int position_x, int position_y, Resource resource_type, int resource_quantity);
+	void DestroyResourceSpot(ResourceBuilding* resource_spot);
 
 	//Find entities
 	j1Entity*		FindEntityByTile(iPoint tile);
@@ -89,8 +94,6 @@ public:
 
 	bool LoadReferenceEntityAnimations();
 	bool LoadReferenceEntityData();
-	void DestroyEntity(j1Entity* delete_entity);
-	void DestroyAllEntities();	
 
 	void BubbleSortEntities();
 

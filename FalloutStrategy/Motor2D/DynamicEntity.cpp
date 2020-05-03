@@ -236,12 +236,25 @@ bool DynamicEntity::Update(float dt) {
 		if (!delete_timer.Started()) {
 			delete_timer.Start();
 			direction = TOP_LEFT;
+			if (faction == ANIMALS) {
+				resource_building = App->entities->CreateResourceSpot(current_tile.x, current_tile.y, resource_type, resource_collected);
+				App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
+				current_tile = { -1,-1 };
+				next_tile = {-1,-1};
+			}
 		}
 
-		if (delete_timer.ReadSec() > 4) {
-			to_delete = true;
-			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
-			attacking_entity->state = IDLE;
+		if (faction != ANIMALS) {
+			if (delete_timer.ReadSec() > 4) {
+				to_delete = true;
+				App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
+				attacking_entity->state = IDLE;
+			}
+		}
+		else {
+			if (resource_building->quantity <= 0) {
+				to_delete = true;
+			}
 		}
 		
 		SpatialAudio(position.x, position.y, faction, state, type);
@@ -747,6 +760,10 @@ bool DynamicEntity::LoadReferenceData() {
 	storage_capacity= damage = reference_entity->damage;
 	speed = reference_entity->speed;
 	sprite_size = reference_entity->sprite_size;
+
+	if (faction == ANIMALS) {
+		resource_collected = ((DynamicEntity*)reference_entity)->resource_collected;
+	}
 
 	return ret;
 }

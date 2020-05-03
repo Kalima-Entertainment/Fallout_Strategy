@@ -593,6 +593,7 @@ bool j1EntityManager::LoadReferenceEntityData() {
 					animal->max_health = health;
 					animal->damage = damage;
 					animal->speed = { (float)speed, (float)speed * 0.5f };
+					animal->resource_collected = entity_node.attribute("resource_quantity").as_int();
 				}
 
 				entity_node = entity_node.next_sibling();
@@ -856,5 +857,26 @@ void j1EntityManager::LoadUnitCosts() {
 		}
 		type_node = type_node.next_sibling();
 		faction_node = type_node.first_child();
+	}
+}
+
+ResourceBuilding* j1EntityManager::CreateResourceSpot(int position_x, int position_y, Resource resource_type, int resource_quantity) {
+	ResourceBuilding* resource_spot = new ResourceBuilding();
+	resource_spot->resource_type = resource_type;
+	resource_spot->quantity = resource_quantity;
+	resource_spot->tiles.push_back({ position_x, position_y });
+	resource_buildings.push_back(resource_spot);
+
+	return resource_spot;
+}
+
+void j1EntityManager::DestroyResourceSpot(ResourceBuilding* resource_spot) {
+	for (int i = 0; i < resource_buildings.size(); i++)
+	{
+		if (resource_spot == resource_buildings[i]) {
+			delete resource_buildings[i];
+			resource_buildings[i] = nullptr;
+			resource_buildings.erase(resource_buildings.begin() + i);
+		}
 	}
 }
