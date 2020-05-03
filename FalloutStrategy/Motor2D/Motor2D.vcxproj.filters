@@ -285,4 +285,12 @@
       <UniqueIdentifier>{cae9da51-1fbe-495e-ad38-f6691ccd446f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\FalloutStrategy\config.xml">
+      <Filter>Desenvolupament  ========\Tools</Filter>
+    </Xml>
+    <Xml Include="..\FalloutStrategy\entities.xml">
+      <Filter>Desenvolupament  ========\Tools</Filter>
+    </Xml>
+  </ItemGroup>
 </Project>

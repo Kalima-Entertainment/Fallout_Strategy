@@ -164,6 +164,10 @@
     <ClInclude Include="UI_Label.h" />
     <ClInclude Include="UI_Slider.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\FalloutStrategy\config.xml" />
+    <Xml Include="..\FalloutStrategy\entities.xml" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

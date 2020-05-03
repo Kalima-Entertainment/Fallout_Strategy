@@ -13,7 +13,7 @@
 #include <vector>
 #include <math.h>
 
-AI_Player::AI_Player(Faction g_faction) : GenericPlayer(), is_attacking(false), last_barrack_to_spawn(1) {
+AI_Player::AI_Player(Faction g_faction) : GenericPlayer(), is_attacking(false), last_barrack_to_spawn(1), gatherers_commanded(false) {
 	faction = g_faction;
 	caps = App->ai_manager->GetAI_PlayerInfo(faction).initial_caps;
 	water = App->ai_manager->GetAI_PlayerInfo(faction).initial_water;
@@ -47,39 +47,39 @@ bool AI_Player::Update(float dt) {
 	bool ret = true;
 
 	// Gather -----------------------------------------------------
-	
-	for (int i = 0; i < gatherers_vector.size(); i++)
-	{
-		//authomatic gathering
-		if (gatherers_vector[i]->resource_building == nullptr) {
-			gatherers_vector[i]->resource_building = App->entities->GetClosestResourceBuilding(gatherers_vector[i]->current_tile);
-			//if there is at least a resource building left, go there
-			if (gatherers_vector[i]->resource_building != nullptr) {
-				gatherers_vector[i]->PathfindToPosition(App->entities->ClosestTile(gatherers_vector[i]->current_tile, gatherers_vector[i]->resource_building->tiles));
-				gatherers_vector[i]->state = WALK;
-			}
-			//if there are no resource buildings left
-			else
-			{
-				gatherers_vector[i]->state = IDLE;
+	if (!gatherers_commanded) {
+		for (int i = 0; i < gatherers_vector.size(); i++)
+		{
+			//authomatic gathering
+			if (gatherers_vector[i]->resource_building == nullptr) {
+				gatherers_vector[i]->resource_building = App->entities->GetClosestResourceBuilding(gatherers_vector[i]->current_tile);
+				//if there is at least a resource building left, go there
+				if (gatherers_vector[i]->resource_building != nullptr) {
+					gatherers_vector[i]->PathfindToPosition(App->entities->ClosestTile(gatherers_vector[i]->current_tile, gatherers_vector[i]->resource_building->tiles));
+					gatherers_vector[i]->state = WALK;
+				}
+				//if there are no resource buildings left
+				else
+				{
+					gatherers_vector[i]->state = IDLE;
+				}
 			}
 		}
+		gatherers_commanded = true;
 	}
-
 
 	// ------------------------------------------------------------
 
 	//Spawn Units -------------------------------------------------
 
 	//melee-ranged proportion
-	/*
+
 	float mr_proportion = 0;
 	if (rangeds > 0)
 		mr_proportion = melees / rangeds;
-	*/
 
 	//spawn melee
-	if ((barrack[0] != nullptr) &&(water > App->entities->unit_data[faction][MELEE].cost_water)&&(caps > App->entities->unit_data[faction][MELEE].cost_meat) && (last_barrack_to_spawn == 1) ) {
+	if ((barrack[0] != nullptr) &&(water > App->entities->unit_data[faction][MELEE].cost_water)&&(caps > App->entities->unit_data[faction][MELEE].cost_meat) && (last_barrack_to_spawn == 1) && (mr_proportion < 2)) {
 		barrack[0]->SpawnUnit(MELEE);
 		water -= App->entities->unit_data[faction][MELEE].cost_water;
 		food -= App->entities->unit_data[faction][MELEE].cost_meat;

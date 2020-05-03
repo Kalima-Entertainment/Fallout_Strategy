@@ -69,7 +69,7 @@
   </ghouls>
   <animals>
     <bighorner health="1500" speed="40"/>
-    <braham health="700" speed="40"/>
+    <braham health="700" speed="30"/>
     <deathclaw health="5000" damage="300" speed="100"/>
   </animals>
  </dynamic> 

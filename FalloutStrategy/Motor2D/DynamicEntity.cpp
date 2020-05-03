@@ -406,16 +406,22 @@ void DynamicEntity::Move(float dt) {
 					next_tile = path_to_target[1];
 					
 					if (App->entities->occupied_tiles[next_tile.x][next_tile.y]) {
-						PathfindToPosition(target_tile);
+						if (path_to_target.size() > 2) {
+							PathfindToPosition(target_tile);
+						}
+						else
+						{
+							path_to_target.clear();
+							state = IDLE;
+						}
 						return;
-					}
-					
+					}					
 				}
 				path_to_target.erase(path_to_target.begin());
 			}
 			else if (node_path.size() == 0)
 			{
-				path_to_target.clear();
+				//path_to_target.clear();
 				state = IDLE;
 			}
 

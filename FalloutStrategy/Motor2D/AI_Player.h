@@ -35,6 +35,7 @@ private:
 	int last_barrack_to_spawn;
 	int wave_time;
 	j1Timer wave_timer;
+	bool gatherers_commanded;
 };
 
 #endif // !_AI_PLAYER_H_

@@ -12,7 +12,7 @@
 #define HALF_TILE 32
 #define MODULE_LENGTH 75
 #define MAP_LENGTH 150
-#define MAX_LAYERS 7
+#define MAX_LAYERS 8
 #define MAX_TILESETS 5
 
 // ----------------------------------------------------
