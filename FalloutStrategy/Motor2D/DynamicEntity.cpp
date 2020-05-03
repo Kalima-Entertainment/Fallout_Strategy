@@ -137,14 +137,15 @@ bool DynamicEntity::Update(float dt) {
 
 		Move(dt);
 
-		if (current_tile.DistanceNoSqrt(target_tile) <= range) {
+		if (current_tile.DistanceNoSqrt(target_tile) <= range + 1) {
 			if (is_agressive) {
 				if (target_entity != nullptr) {
-					if ((target_entity->current_tile == target_tile) || (current_tile.DistanceManhattan(target_entity->current_tile) <= range)) {
+					if ((target_entity->current_tile == target_tile) || (current_tile.DistanceNoSqrt(target_entity->current_tile) <= range)) {
 					state = ATTACK;
 					path_to_target.clear();
 					UpdateTile();
 					action_timer.Start();
+					target_entity->state = HIT;
 					}
 				}
 			}
@@ -215,6 +216,7 @@ bool DynamicEntity::Update(float dt) {
 		current_animation = &animations[HIT][direction];
 
 		if (current_animation->Finished()) {
+			current_animation->Reset();
 			if (attacking_entity != nullptr) {
 				if (is_agressive) {
 					state = ATTACK;
@@ -276,62 +278,8 @@ bool DynamicEntity::Update(float dt) {
 	{
 		if (info.current_group->IsGroupLead(this)) {
 			if (this->faction == App->player->faction)
-					info.current_group->CheckForMovementRequest(App->player->Map_mouseposition, dt);
-			/*
-			else {
-				AI_Player* ai_owner = ((AI_Player*)this->owner);
-				// -- Group leader owns any other faction, then store path nodes into a vector to reach enemy base.
-				if (target_tile == iPoint(-1,-1)) {
-
-					target_tile = ai_owner->path_to_enemy_base.back();
-
-					if (!App->pathfinding->IsWalkable(target_tile)) {
-						LOG("Invalid node");
-						target_tile = App->pathfinding->ExpandTile(target_tile);
-						LOG("New node position x: %i y: %i", target_tile.x, target_tile.y);
-					}
-					ai_owner->goal_tile_set = false;
-					LOG("Starting position x: %i y: %i", target_tile.x, target_tile.y);
-				}
-				else if (TargetTileReached(target_tile) == true)
-				{
-					ai_owner->path_to_enemy_base.pop_back();
-					target_tile = ai_owner->path_to_enemy_base.back();
-
-					if (!App->pathfinding->IsWalkable(target_tile))
-					{
-						LOG("Invalid node");
-						target_tile = App->pathfinding->ExpandTile(target_tile);
-					}
-
-					LOG("New node position x: %i y: %i", target_tile.x, target_tile.y);
-
-					//if last node is reached go for the base
-					if (ai_owner->path_to_enemy_base.size() <= 0) { 
-						target_tile = ai_owner->target_player->base->current_tile; 
-					}
-
-					ai_owner->goal_tile_set = false;
-				}
-
-				// -- Make a movement request each node, when reached we proceed to reach next one until we finish all node list.
-				this->info.current_group->CheckForMovementRequest(target_tile, dt);
-			}
-			*/
+				info.current_group->CheckForMovementRequest(App->player->Map_mouseposition, dt);
 		}
-		/*
-		//if about to reach the base pathfind to attack it
-		if (this->faction != App->player->faction) {
-			if (((AI_Player*)owner)->path_to_enemy_base.size() == 0) {
-				info.current_group->removeUnit(this);
-				info.current_group = nullptr;
-				target_tile = ((AI_Player*)owner)->target_player->base->current_tile;
-				PathfindToPosition(target_tile);
-				state = WALK;
-				target_entity = ((AI_Player*)owner)->target_player->base;
-			}
-		}
-		*/
 	}
 
 	//save dt for animations
@@ -507,23 +455,25 @@ void DynamicEntity::Attack() {
 	if ((target_entity->faction == App->player->faction) && (App->player->god_mode))
 		return;
 
-	if (target_entity != nullptr) {
-		target_entity->current_health -= damage;
+	target_entity->current_health -= damage;
 
-		if (target_entity->is_dynamic) {
-			DynamicEntity* dynamic_target = (DynamicEntity*)target_entity;
+	if (target_entity->current_health <= 0) {
+		target_entity->state = DIE;
+		path_to_target.clear();
+		state = IDLE;
 
-			//if(dynamic_target->attacking_entity == nullptr)
-				target_entity->attacking_entity = this;
+		if (attacking_entity == target_entity)
+			attacking_entity = nullptr;
 
-			//path_to_target.clear();
-			dynamic_target->state = HIT;
-		}
+		target_entity = nullptr;
 	}
 
 	//Change animation directions to fit
-	if (target_entity->is_dynamic) {
+	else if (target_entity->is_dynamic) {
 		DynamicEntity* dynamic_target = (DynamicEntity*)target_entity;
+
+		target_entity->attacking_entity = this;
+		dynamic_target->state = HIT;
 
 		if ((current_tile.x > target_entity->current_tile.x) && (current_tile.y == target_entity->current_tile.y)) {
 			direction = TOP_LEFT;
@@ -540,26 +490,6 @@ void DynamicEntity::Attack() {
 		else if ((current_tile.x < target_entity->current_tile.x) && (current_tile.y == target_entity->current_tile.y)) {
 			direction = BOTTOM_RIGHT;
 			dynamic_target->direction = TOP_LEFT;
-		}
-
-		//Kill enemy
-		if (target_entity->current_health <= 0) {
-			dynamic_target->state = DIE;
-			target_entity = nullptr;
-			path_to_target.clear();
-			state = IDLE;
-		}
-	}
-	else
-	{
-		//Destroy building
-		StaticEntity* static_target = (StaticEntity*)target_entity;
-		if (target_entity->current_health <= 0) {
-			static_target->state = DIE;
-			attacking_entity = nullptr;
-			target_entity = nullptr;
-			path_to_target.clear();
-			state = IDLE;
 		}
 	}
 }
