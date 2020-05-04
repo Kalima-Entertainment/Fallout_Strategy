@@ -107,8 +107,8 @@ bool DynamicEntity::Update(float dt) {
 					if ((current_tile.DistanceNoSqrt(enemy_in_range->current_tile) > range) && (target_entity->current_tile != target_tile))
 						PathfindToPosition(enemy_in_range->current_tile);
 					else {
-						//next_tile = current_tile;
-						//target_tile = current_tile;
+						next_tile = current_tile;
+						target_tile = current_tile;
 						UpdateTile();
 						path_to_target.clear();
 						state = ATTACK;
@@ -125,7 +125,7 @@ bool DynamicEntity::Update(float dt) {
 		{
 			if (action_timer.ReadSec() > action_time) {
 				Flee();
-				LOG("Pasturing");
+				//LOG("Pasturing");
 				action_timer.Start();
 			}
 		}
@@ -137,7 +137,7 @@ bool DynamicEntity::Update(float dt) {
 
 		Move(dt);
 
-		if (current_tile.DistanceNoSqrt(target_tile) <= range + 1) {
+		if (current_tile.DistanceNoSqrt(target_tile) <= range) {
 			if (is_agressive) {
 				if (target_entity != nullptr) {
 					if ((target_entity->current_tile == target_tile) || (current_tile.DistanceNoSqrt(target_entity->current_tile) <= range)) {
@@ -168,8 +168,9 @@ bool DynamicEntity::Update(float dt) {
 		break;
 
 	case ATTACK:
-		if (target_entity == nullptr)state = IDLE;
-		else if (target_entity->current_tile.DistanceNoSqrt(current_tile) > 1.5f * range) {
+		if (target_entity == nullptr)
+			state = IDLE;
+		else if ((target_entity->current_tile.DistanceNoSqrt(current_tile) > range)&&(current_tile.DistanceManhattan(target_entity->current_tile) >2)) {
 			PathfindToPosition(target_entity->current_tile);
 		}
 		else if (action_timer.ReadSec() > action_time) {
@@ -262,6 +263,7 @@ bool DynamicEntity::Update(float dt) {
 		else {
 			if (resource_building->quantity <= 0) {
 				to_delete = true;
+				App->entities->DestroyResourceSpot(resource_building);
 			}
 		}
 		
@@ -373,7 +375,7 @@ void DynamicEntity::Move(float dt) {
 					next_tile = path_to_target[1];
 					
 					if (App->entities->occupied_tiles[next_tile.x][next_tile.y]) {
-						if (path_to_target.size() > 2) {
+						if (current_tile.DistanceManhattan(target_tile) > 2) {
 							PathfindToPosition(target_tile);
 						}
 						else
@@ -458,6 +460,7 @@ void DynamicEntity::Attack() {
 	target_entity->current_health -= damage;
 
 	if (target_entity->current_health <= 0) {
+		target_entity->attacking_entity = this;
 		target_entity->state = DIE;
 		path_to_target.clear();
 		state = IDLE;
@@ -546,7 +549,7 @@ void DynamicEntity::Flee() {
 		possible_tile.x = current_tile.x + (minimum_distance + x) * x_sign;
 		possible_tile.y = current_tile.y + (minimum_distance + y) * y_sign;
 
-	} while (App->entities->occupied_tiles[possible_tile.x][possible_tile.y]);
+	} while ((App->entities->occupied_tiles[possible_tile.x][possible_tile.y])&&(!App->pathfinding->IsWalkable(possible_tile)));
 
 	PathfindToPosition(possible_tile);
 }

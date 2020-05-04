@@ -663,7 +663,8 @@ iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) 
 	int max = 1;
 	iPoint possible_tile;
 	iPoint closest_possible_tile = {-1,-1};
-	int distance = 100000;
+	int distance_to_origin = 100000;
+	int distance_to_destination = 100000;
 
 	while (max < 5) {
 		for (int y = -max; y < max; y++)
@@ -675,11 +676,12 @@ iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) 
 					possible_tile.y = destination.y + y;
 
 					if ((!occupied_tiles[possible_tile.x][possible_tile.y])&&(App->pathfinding->IsWalkable(possible_tile))) {
-						if (possible_tile.DistanceManhattan(origin) < distance) {
-							distance = possible_tile.DistanceManhattan(origin);
-							closest_possible_tile = possible_tile;
-						}
-						
+						if ((possible_tile.DistanceNoSqrt(origin) <= distance_to_origin)&& (possible_tile.DistanceNoSqrt(destination) < distance_to_destination)) {
+								distance_to_origin = possible_tile.DistanceNoSqrt(origin);
+								distance_to_destination = possible_tile.DistanceNoSqrt(destination);
+								closest_possible_tile = possible_tile;
+							}
+		
 					}
 				}
 			}
