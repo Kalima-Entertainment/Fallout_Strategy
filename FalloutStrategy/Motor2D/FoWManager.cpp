@@ -29,10 +29,10 @@ bool FoWManager::Start()
 {
 	bool ret = true;
 
-	smoothFoWtexture = App->tex->Load("maps/fogTiles.png");
-	debugFoWtexture = App->tex->Load("maps/fogTilesDebug.png");
+	smoothFoWtexture = App->tex->Load("Assets/maps/fogTiles.png");
+	debugFoWtexture = App->tex->Load("Assets/maps/fogTilesDebug.png");
 
-	if (smoothFoWtexture == nullptr || debugFoWtexture == nullptr);
+	if (smoothFoWtexture == nullptr || debugFoWtexture == nullptr)
 	ret = false;
 
 	//---------Initialize the map being used to translate bits to texture ID---------//
@@ -344,10 +344,9 @@ FoWEntity* FoWManager::CreateFoWEntity(iPoint pos, bool providesVisibility)
 
 	entity = new FoWEntity(pos, providesVisibility);
 
-	if (entity != nullptr)
-	{
+	if (entity != nullptr) 
 		fowEntities.push_back(entity);
-	}
+	
 
 	return entity;
 }

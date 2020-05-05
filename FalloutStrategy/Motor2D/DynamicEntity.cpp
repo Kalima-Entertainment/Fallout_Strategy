@@ -73,18 +73,20 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 
 	detection_radius = 6;
 	detection_timer.Start();
+	
 
 	//Fog Of War
-	if (owner->faction == App->player->faction) {
+	if (this->faction == App->player->faction) {
 		//Player
-		//TODO: Change 0,0 to position
-		visionEntity = App->fowManager->CreateFoWEntity({0,0}, true);
-		visionEntity->SetNewVisionRadius(4);
+		visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, true);
+		visionEntity->SetNewVisionRadius(3);
 	}
 	else {
 		//Enemy
-		visionEntity = App->fowManager->CreateFoWEntity({ 0,0 }, false);
+		visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
+		visionEntity->SetNewVisionRadius(3);
 	}
+
 }
 
 DynamicEntity::~DynamicEntity() {

@@ -69,11 +69,12 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	//AddModule(collision);
 	AddModule(pathfinding);
 	AddModule(main_menu);
-	AddModule(fowManager);
 	AddModule(entities);
 	AddModule(font);
 	AddModule(scene);
 	AddModule(Mmanager);
+	AddModule(fowManager);
+
 
 	// scene last
 	AddModule(menu_manager);
