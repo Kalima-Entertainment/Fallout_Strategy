@@ -130,6 +130,10 @@ bool j1Player::PreUpdate() {
 		}
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
+		App->minimap->EnableRadar();
+	}
+
 	return ret;
 }
 

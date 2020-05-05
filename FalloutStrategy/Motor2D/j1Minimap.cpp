@@ -21,6 +21,8 @@ j1Minimap::j1Minimap() : j1Module(), texture(nullptr) {
 	width = 100;
 	margin = 0;
 	corner = Corner::TOP_LEFT;
+	radar_time = 5;
+	radar = false;
 }
 
 j1Minimap::~j1Minimap() {
@@ -83,6 +85,9 @@ bool j1Minimap::Start() {
 		break;
 	}
 
+	radar_line.x1 = position.x + width * 0.5f;
+	radar_line.y1 = position.y + height * 0.5f;
+
 	node_map = App->pathfinding->GetNodeMap();
 
 	for (int i = 0; i < node_map.size(); i++)
@@ -109,18 +114,25 @@ bool j1Minimap::PostUpdate() {
 
 		App->render->Blit(texture, position.x, position.y, NULL, 1.0, 0);
 
-		for (int i = 0; i < App->entities->entities.size(); i++)
-		{
-			SDL_Rect entity_rect = {0,0,3,3};
-			iPoint entity_position = App->minimap->WorldToMinimap(App->entities->entities[i]->position.x, App->entities->entities[i]->position.y);
-			entity_rect.x = entity_position.x;
-			entity_rect.y = entity_position.y;
+		if (radar) {
+			for (int i = 0; i < App->entities->entities.size(); i++)
+			{
+				SDL_Rect entity_rect = { 0,0,3,3 };
+				iPoint entity_position = App->minimap->WorldToMinimap(App->entities->entities[i]->position.x, App->entities->entities[i]->position.y);
+				entity_rect.x = entity_position.x;
+				entity_rect.y = entity_position.y;
 
-			Faction entity_faction = App->entities->entities[i]->faction;
-			if (App->player->faction == entity_faction) { App->render->DrawQuad(entity_rect, 0, 255, 0, 255, true, false);}
-			else { App->render->DrawQuad(entity_rect, 255, 0, 0, 255, true, false);}
+				Faction entity_faction = App->entities->entities[i]->faction;
+				if (App->player->faction == entity_faction) { App->render->DrawQuad(entity_rect, 0, 255, 0, 255, true, false); }
+				else { App->render->DrawQuad(entity_rect, 255, 0, 0, 255, true, false); }
+			}
+
+			if (radar_timer.ReadSec() > radar_time) 
+				radar = false;
+
+			CalculateRadarLine();
+			App->render->DrawLine(radar_line.x1, radar_line.y1, radar_line.x2, radar_line.y2, 0,255,0,255,false);
 		}
-
 		if (App->render->debug && App->pathfinding->show_nodes)
 		{
 			iPoint node_world_position;
@@ -195,4 +207,19 @@ iPoint j1Minimap::ScreenToMinimapToWorld(int x, int y) {
 	minimap_position.x = (x - position.x - width * 0.5f)/scale;
 	minimap_position.y = (y - position.y)/scale;
 	return minimap_position;
+}
+
+void j1Minimap::EnableRadar() {
+	radar = true;
+	radar_timer.Start();
+}
+
+void j1Minimap::CalculateRadarLine() {
+	radar_line.x2 = radar_line.x1 + height * 0.5f * cos(radar_timer.Read() * 0.1 * PI / 180);
+	radar_line.y2 = radar_line.y1 + height * 0.5f * sin(radar_timer.Read() * 0.1 * PI / 180);
+
+	/*
+	if (radar_line.y2 > radar_line.y1 + height * 0.5f)
+		radar_line.y2 = radar_line.y1 + height * 0.5f;
+	*/
 }
