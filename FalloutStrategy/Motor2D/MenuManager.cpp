@@ -365,10 +365,12 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1050, 600, Brotherhood_melee, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 							//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1105, 600, Brotherhood_ranged, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 							brotherhood_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_lab_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
-
+							brotherhood_lab[4] = (UI_Button*)App->gui->CreateButton(1050, 570, Boost_radar_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+						
 							//Images
 							brotherhood_lab[1] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 663, 1567, 108, 104 }, NULL, this);
 							brotherhood_lab[2] = (j1Image*)App->gui->CreateImage(1060, 630, Image, { 877, 1874, 33, 20 }, NULL, this);
+							brotherhood_lab[5] = (j1Image*)App->gui->CreateImage(1060, 575, Image, { 982, 1869, 31, 33 }, NULL, this);
 
 							//Labels
 							if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
@@ -383,6 +385,8 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
 							//bases_hud.brotherhood_ranged = (j1Image*)App->gui->CreateImage(1110, 605, Brotherhood_ranged, { 83, 1866, 35, 36 }, NULL, this);
 							//bases_hud.brotherhood_melee = (j1Image*)App->gui->CreateImage(1055, 605, Brotherhood_melee, { 28, 1869, 35, 33 }, NULL, this);
+							
+							
 							last_menu = current_menu;
 							current_menu = Menu::BUI_BASES;
 
@@ -450,10 +454,12 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1050, 600, Brotherhood_melee, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 							//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1105, 600, Brotherhood_ranged, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 							supermutant_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_lab_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
-
+							supermutant_lab[4] = (UI_Button*)App->gui->CreateButton(1050, 570, Boost_radar_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+							
 							//Images
 							supermutant_lab[1] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 663, 1567, 108, 104 }, NULL, this);
 							supermutant_lab[2] = (j1Image*)App->gui->CreateImage(1060, 630, Image, { 877, 1874, 33, 20 }, NULL, this);
+							supermutant_lab[5] = (j1Image*)App->gui->CreateImage(1060, 575, Image, { 982, 1869, 31, 33 }, NULL, this);
 
 							//Labels
 							if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
@@ -535,10 +541,13 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1050, 600, Brotherhood_melee, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 							//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1105, 600, Brotherhood_ranged, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 							ghoul_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_lab_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+							ghoul_lab[4] = (UI_Button*)App->gui->CreateButton(1050, 570, Boost_radar_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+							
 
 							//Images
 							ghoul_lab[1] = (j1Image*)App->gui->CreateImage(900, 590, Image, { 536, 1741, 101, 73 }, NULL, this);
 							ghoul_lab[2] = (j1Image*)App->gui->CreateImage(1060, 630, Image, { 877, 1874, 33, 20 }, NULL, this);
+							ghoul_lab[5] = (j1Image*)App->gui->CreateImage(1060, 575, Image, { 982, 1869, 31, 33 }, NULL, this);
 
 							//Labels
 							if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
@@ -621,10 +630,13 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1050, 600, Brotherhood_melee, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 							//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1105, 600, Brotherhood_ranged, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 							vault_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_lab_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
-
+							vault_lab[4] = (UI_Button*)App->gui->CreateButton(1050, 570, Boost_radar_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+							
 							//Images
 							vault_lab[1] = (j1Image*)App->gui->CreateImage(920, 570, Image, { 426, 1726, 72, 96 }, NULL, this);
 							vault_lab[2] = (j1Image*)App->gui->CreateImage(1060, 630, Image, { 877, 1874, 33, 20 }, NULL, this);
+							vault_lab[5] = (j1Image*)App->gui->CreateImage(1060, 575, Image, { 982, 1869, 31, 33 }, NULL, this);
+
 
 							//Labels
 							if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
@@ -722,16 +734,16 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 			case BUILDING_TYPE::ALL:
 				App->gui->DeleteArrayElements(brotherhood_base, 6);
 				App->gui->DeleteArrayElements(brotherhood_barrack, 8);
-				App->gui->DeleteArrayElements(brotherhood_lab, 4);
+				App->gui->DeleteArrayElements(brotherhood_lab, 6);
 				App->gui->DeleteArrayElements(supermutant_base, 6);
 				App->gui->DeleteArrayElements(supermutant_barrack, 8);
-				App->gui->DeleteArrayElements(supermutant_lab, 4);
+				App->gui->DeleteArrayElements(supermutant_lab, 6);
 				App->gui->DeleteArrayElements(ghoul_base, 6);
 				App->gui->DeleteArrayElements(ghoul_barrack, 8);
-				App->gui->DeleteArrayElements(ghoul_lab, 4);
+				App->gui->DeleteArrayElements(ghoul_lab, 6);
 				App->gui->DeleteArrayElements(vault_base, 6);
 				App->gui->DeleteArrayElements(vault_barrack, 8);
-				App->gui->DeleteArrayElements(vault_lab, 4);
+				App->gui->DeleteArrayElements(vault_lab, 6);
 				break;
 			case BUILDING_TYPE::NONE:
 				break;
@@ -750,7 +762,7 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 				App->gui->DeleteArrayElements(brotherhood_barrack, 8);
 				break;
 			case BUILDING_TYPE::LAB:
-				App->gui->DeleteArrayElements(brotherhood_lab, 4);
+				App->gui->DeleteArrayElements(brotherhood_lab, 6);
 				break;
 			case BUILDING_TYPE::ALL:
 				break;
@@ -775,7 +787,7 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 				App->gui->DeleteArrayElements(supermutant_barrack, 8);
 				break;
 			case BUILDING_TYPE::LAB:
-				App->gui->DeleteArrayElements(supermutant_lab, 4);
+				App->gui->DeleteArrayElements(supermutant_lab, 6);
 				break;
 			case BUILDING_TYPE::NONE:
 				App->gui->Delete_Element(select_faction_photos[0]);
@@ -798,7 +810,7 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 				App->gui->DeleteArrayElements(ghoul_barrack, 8);
 				break;
 			case BUILDING_TYPE::LAB:
-				App->gui->DeleteArrayElements(ghoul_lab, 4);
+				App->gui->DeleteArrayElements(ghoul_lab, 6);
 				break;
 			case BUILDING_TYPE::NONE:
 				App->gui->Delete_Element(select_faction_photos[1]);
@@ -820,7 +832,7 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 				App->gui->DeleteArrayElements(vault_barrack, 8);
 				break;
 			case BUILDING_TYPE::LAB:
-				App->gui->DeleteArrayElements(vault_lab, 4);
+				App->gui->DeleteArrayElements(vault_lab, 6);
 				break;
 			case BUILDING_TYPE::NONE:
 				App->gui->Delete_Element(select_faction_photos[0]);

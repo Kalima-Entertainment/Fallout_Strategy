@@ -14,6 +14,7 @@
 #include "j1Window.h"
 #include "StaticEntity.h"
 #include "j1Transition.h"
+#include "j1Minimap.h"
 
 #include "./brofiler/Brofiler/Brofiler.h"
 #include "SDL_mixer\include\SDL_mixer.h"
@@ -401,6 +402,9 @@ bool UI_Button::Update(float dt)
 				}
 				static_entity->Upgrade(App->entities->units_health[static_entity->faction]);
 				static_entity->Upgrade(App->entities->units_creation_time[static_entity->faction]);
+			}
+			else if (t == Boost_radar_button) {
+				App->minimap->EnableRadar();
 			}
 			 			 		  		  		 	   		
 		}
