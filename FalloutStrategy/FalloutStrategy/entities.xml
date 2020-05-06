@@ -72,5 +72,8 @@
     <braham health="700" speed="25" resource_quantity="800"/>
     <deathclaw health="5000" damage="300" speed="100" resource_quantity="2000"/>
   </animals>
+  <mr_handy>
+   <mr_handy health="1000" speed="40" damage="150"/>
+  </mr_handy>
  </dynamic> 
 </entities>

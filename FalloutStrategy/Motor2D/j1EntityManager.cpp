@@ -557,6 +557,7 @@ bool j1EntityManager::LoadReferenceEntityData() {
 			else if (faction_string == "mutants") faction = MUTANT;
 			else if (faction_string == "ghouls") faction = GHOUL;
 			else if (faction_string == "animals") faction = ANIMALS;
+			else if (faction_string == "mr_handy") faction = NO_FACTION;
 
 			pugi::xml_node entity_node = faction_node.first_child();
 			while (entity_node != nullptr)
@@ -573,6 +574,7 @@ bool j1EntityManager::LoadReferenceEntityData() {
 				else if (type_string == "bighorner") type = BIGHORNER;
 				else if (type_string == "braham") type = BRAHAM;
 				else if (type_string == "deathclaw") type = DEATHCLAW;
+				else if (type_string == "mr_handy") type = MR_HANDY;
 
 				//load attributes
 				int health = entity_node.attribute("health").as_int();
@@ -580,12 +582,12 @@ bool j1EntityManager::LoadReferenceEntityData() {
 				int speed = entity_node.attribute("speed").as_int();
 
 				//load into reference entities
-				if (faction != ANIMALS) {
+				if ((faction != ANIMALS)&&(faction != NO_FACTION)) {
 					reference_entities[faction][type]->max_health = health;
 					reference_entities[faction][type]->damage = damage;
 					reference_entities[faction][type]->speed = { (float)speed, (float)speed * 0.5f};
 				}
-				else
+				else if (type != MR_HANDY)
 				{
 					DynamicEntity* animal = nullptr;
 					if (type == BIGHORNER) animal = reference_bighroner;
@@ -596,6 +598,14 @@ bool j1EntityManager::LoadReferenceEntityData() {
 					animal->damage = damage;
 					animal->speed = { (float)speed, (float)speed * 0.5f };
 					animal->resource_collected = entity_node.attribute("resource_quantity").as_int();
+				}
+				else
+				{
+					DynamicEntity* mr_handy;
+					mr_handy = reference_MrHandy;
+					mr_handy->max_health = health;
+					mr_handy->speed = { (float)speed, (float)speed * 0.5f };
+					mr_handy->damage = damage;
 				}
 
 				entity_node = entity_node.next_sibling();
