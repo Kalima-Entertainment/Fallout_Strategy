@@ -48,8 +48,7 @@ bool j1Render::Awake(pugi::xml_node& config)
 	{
 		camera.w = App->win->screen_surface->w;
 		camera.h = App->win->screen_surface->h;
-		camera.x = 0;
-		camera.y = 0;
+		//Camera position initialized on scene
 	}
 
 	background.r = config.child("background").attribute("r").as_int(0);

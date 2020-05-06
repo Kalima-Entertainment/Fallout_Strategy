@@ -4,6 +4,7 @@
 #include "j1Map.h"
 #include "j1Render.h"
 #include "j1Input.h"
+#include "j1Console.h"
 
 FoWManager::FoWManager()
 {
@@ -80,7 +81,7 @@ bool FoWManager::Start()
 	bitToTextureTable.insert(std::pair<unsigned short, int>(256, 12));
 	//------------------------end of map initialization------------------------//
 
-
+	App->console->CreateCommand("fog_of_war", "(De)Activates fog of war", this);
 
 	return ret;
 }
@@ -176,7 +177,6 @@ bool FoWManager::CleanUp()
 
 	return ret;
 }
-
 
 void FoWManager::ResetFoWMap()
 {
@@ -379,4 +379,15 @@ void FoWManager::MapNeedsUpdate()
 {
 	if (foWMapNeedsRefresh == false)
 		foWMapNeedsRefresh = true;
+}
+
+void FoWManager::OnCommand(std::vector<std::string> command_parts)
+{
+	std::string command_beginning = command_parts[0];
+
+	//Increase all resources
+	if (command_beginning == "fog_of_war") {
+		
+		//LOG("All resources increased");
+	}
 }

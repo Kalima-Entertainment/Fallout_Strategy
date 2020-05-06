@@ -35,6 +35,8 @@ public:
 
 	bool CleanUp();
 
+	void OnCommand(std::vector<std::string> command_parts);
+
 	FoWEntity* CreateFoWEntity(iPoint pos, bool providesVisibility);
 
 	//Resets the map to its shrouded state
