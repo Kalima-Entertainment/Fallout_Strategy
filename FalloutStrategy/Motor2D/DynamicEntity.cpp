@@ -626,6 +626,7 @@ bool DynamicEntity::LoadAnimations() {
 	case BIGHORNER: type_char = "Bighorner"; break;
 	case BRAHAM: type_char = "Braham"; break;
 	case DEATHCLAW: type_char = "Deathclaw"; break;
+	case MR_HANDY: type_char = faction_char = "Mr_Handy"; break;
 	default: break;
 	}
 	

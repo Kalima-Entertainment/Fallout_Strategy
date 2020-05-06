@@ -69,6 +69,9 @@ bool j1Player::PreUpdate() {
 		else LOG("God Mode: OFF");
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+		App->entities->CreateEntity(faction, MR_HANDY, 1, 1, this);
+
 	//block border scroll
 	if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
 		border_scroll = !border_scroll;
@@ -157,6 +160,7 @@ bool j1Player::Update(float dt) {
 	// --- We get the map coords of the mouse ---
 	Map_mouseposition = App->map->WorldToMap((int)App->scene->mouse_pos.x, (int)App->scene->mouse_pos.y);
 
+	
 
 	/*
 	//Zoom in, zoom out

@@ -25,6 +25,7 @@ enum EntityType {
 	BIGHORNER,
 	BRAHAM,
 	DEATHCLAW,
+	MR_HANDY,
 	NO_TYPE
 };
 

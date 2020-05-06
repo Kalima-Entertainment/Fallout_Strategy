@@ -46,7 +46,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 
 	j1Entity* entity = nullptr;
 
-	if ((type == MELEE) || (type == RANGED) || (type == GATHERER) || (type == BIGHORNER) || (type == BRAHAM) || (type == DEATHCLAW)) {
+	if ((type == MELEE) || (type == RANGED) || (type == GATHERER) || (type == BIGHORNER) || (type == BRAHAM) || (type == DEATHCLAW) || (type == MR_HANDY)) {
 
 		//If there's another unit in that tile, we find a new spawn point
 		if (occupied_tiles[position_x][position_y]) {
@@ -84,7 +84,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		
 		entity = new DynamicEntity(faction, type, { position_x, position_y }, owner);
 	
-		if (faction != ANIMALS)
+		if ((faction != ANIMALS) && (type != MR_HANDY))
 			entity->reference_entity = reference_entities[faction][type];
 		else if (type == BIGHORNER)
 			entity->reference_entity = reference_bighroner;
@@ -92,7 +92,9 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 			entity->reference_entity = reference_braham;
 		else if (type == DEATHCLAW)
 			entity->reference_entity = reference_deathclaw;
-
+		else if (type == MR_HANDY)
+			entity->reference_entity = reference_MrHandy;
+		
 		if (entity->reference_entity != nullptr){
 			occupied_tiles[entity->current_tile.x][entity->current_tile.y] = true;
 			entities.push_back(entity);
@@ -225,13 +227,14 @@ bool j1EntityManager::Start() {
 		for (int type = MELEE; type < BIGHORNER; type++)
 		{
 			reference_entities[faction][type] = nullptr;
-			reference_entities[faction][type] = CreateEntity((Faction)faction, (EntityType)type, faction, type, nullptr);
+			reference_entities[faction][type] = CreateEntity((Faction)faction, (EntityType)type, faction, type);
 		}
 	}
 
-	reference_bighroner = (DynamicEntity*)CreateEntity(ANIMALS, BIGHORNER, ANIMALS, BIGHORNER, nullptr);
-	reference_braham = (DynamicEntity*)CreateEntity(ANIMALS, BRAHAM, ANIMALS, BRAHAM, nullptr);
-	reference_deathclaw = (DynamicEntity*)CreateEntity(ANIMALS, DEATHCLAW, ANIMALS, DEATHCLAW, nullptr);
+	reference_bighroner = (DynamicEntity*)CreateEntity(ANIMALS, BIGHORNER, ANIMALS, BIGHORNER);
+	reference_braham = (DynamicEntity*)CreateEntity(ANIMALS, BRAHAM, ANIMALS, BRAHAM);
+	reference_deathclaw = (DynamicEntity*)CreateEntity(ANIMALS, DEATHCLAW, ANIMALS, DEATHCLAW);
+	reference_MrHandy = (DynamicEntity*)CreateEntity(NO_FACTION, MR_HANDY, NO_FACTION, MR_HANDY);
 
 	showing_building_menu = false;
 
@@ -501,6 +504,7 @@ bool j1EntityManager::LoadReferenceEntityAnimations() {
 				ret = reference_braham->LoadAnimations();
 			else if (loading_entity == 3) {
 				reference_deathclaw->LoadAnimations();
+				reference_MrHandy->LoadAnimations();
 
 				for (int faction = VAULT; faction < ANIMALS; faction++)
 				{

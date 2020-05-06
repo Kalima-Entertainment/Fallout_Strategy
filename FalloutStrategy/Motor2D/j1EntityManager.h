@@ -117,6 +117,7 @@ public:
 	DynamicEntity* reference_bighroner;
 	DynamicEntity* reference_braham;
 	DynamicEntity* reference_deathclaw;
+	DynamicEntity* reference_MrHandy;
 	bool occupied_tiles[150][150];
 	j1Timer sort_timer;
 
