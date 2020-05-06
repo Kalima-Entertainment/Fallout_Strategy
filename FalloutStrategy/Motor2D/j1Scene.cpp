@@ -28,6 +28,7 @@
 #include "AI_Player.h"
 #include "j1Transition.h"
 #include "j1Console.h"
+#include "FoWManager.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -56,6 +57,7 @@ bool j1Scene::Start()
 
 	App->ai_manager->Enable();
 	App->transition->Enable();
+	if (App->render->fog_of_war)App->fowManager->Enable();
 
 	App->console->CreateCommand("win", "Automatically win the game", this);
 	App->console->CreateCommand("lose", "Automatically lose the game", this);
@@ -90,6 +92,9 @@ bool j1Scene::Start()
 	{
 		App->map->CreateWalkabilityMap();
 	}
+
+	// -- Creates FoW in current Map
+	if (App->render->fog_of_war)App->fowManager->CreateFoWMap(App->map->data.width, App->map->data.height);
 
 	App->minimap->Enable();
 		

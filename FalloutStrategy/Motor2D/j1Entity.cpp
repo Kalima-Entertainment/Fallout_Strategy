@@ -7,6 +7,8 @@
 #include "j1Map.h"
 #include "p2Log.h"
 #include "j1Collision.h"
+#include "FoWManager.h"
+#include "j1Player.h"
 
 #include "j1Scene.h"
 #include "SDL_mixer/include/SDL_mixer.h"
@@ -30,7 +32,6 @@ j1Entity::j1Entity() {
 	to_delete = false;
 	particles_created = false;
 	playing_fx = false;
-
 }
 
 j1Entity::~j1Entity() {}

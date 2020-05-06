@@ -2,6 +2,7 @@
 #define _PLAYER_H
 #include "GenericPlayer.h"
 #include "p2Point.h"
+#include "FoWEntity.h"
 
 class j1Player : public GenericPlayer
 {
@@ -24,7 +25,6 @@ public:
 	j1Entity* last_selected_entity;
 	bool god_mode;
 	iPoint Map_mouseposition;
-
 private:
 	float mouse_speed_multiplier;
 	bool border_scroll;

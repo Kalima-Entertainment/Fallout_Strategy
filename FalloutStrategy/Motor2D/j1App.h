@@ -30,6 +30,7 @@ class j1MovementManager;
 class AI_Manager;
 class j1Transition;
 class LogoScene;
+class FoWManager;
 
 
 class j1App
@@ -118,6 +119,7 @@ public:
 	AI_Manager*			ai_manager = NULL;
 	j1Transition*		transition = NULL;
 	LogoScene*			logo_scene = NULL;
+	FoWManager*			fowManager = NULL;
 
 	bool isPaused;
 	bool quitGame = false;

@@ -79,6 +79,8 @@
     <ClCompile Include="AI_Manager.cpp" />
     <ClCompile Include="AI_Player.cpp" />
     <ClCompile Include="DynamicEntity.cpp" />
+    <ClCompile Include="FowEntity.cpp" />
+    <ClCompile Include="FoWManager.cpp" />
     <ClCompile Include="GenericPlayer.cpp" />
     <ClCompile Include="j1Collision.cpp" />
     <ClCompile Include="j1Console.cpp" />
@@ -121,6 +123,9 @@
     <ClInclude Include="AI_Player.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="DynamicEntity.h" />
+    <ClInclude Include="FoWBitDefs.h" />
+    <ClInclude Include="FoWEntity.h" />
+    <ClInclude Include="FoWManager.h" />
     <ClInclude Include="GenericPlayer.h" />
     <ClInclude Include="j1Collision.h" />
     <ClInclude Include="j1Console.h" />

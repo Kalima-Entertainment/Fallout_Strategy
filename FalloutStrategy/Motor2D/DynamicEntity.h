@@ -2,6 +2,7 @@
 #define _DYNAMIC_ENTITY_H
 #include "j1Entity.h"
 #include "j1Timer.h"
+#include "FoWEntity.h"
 
 struct ResourceBuilding;
 enum class Resource;
@@ -71,6 +72,8 @@ public:
 	UnitInfo unitinfo;	
 	std::vector<iPoint> node_path;
 	std::vector<j1Entity*> entities_in_range;
+
+	FoWEntity* visionEntity = nullptr;
 };
 
 
