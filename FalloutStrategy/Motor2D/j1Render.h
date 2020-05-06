@@ -60,6 +60,7 @@ public:
 
 	SDL_Texture*	debug_tex;
 	bool			debug;
+	bool			fog_of_war;
 };
 
 #endif // __j1RENDER_H__
