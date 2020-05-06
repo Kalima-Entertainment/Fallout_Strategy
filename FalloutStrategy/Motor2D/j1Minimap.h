@@ -36,12 +36,14 @@ public:
 	iPoint WorldToMinimap(int x, int y);
 	iPoint ScreenToMinimapToWorld(int x, int y);
 	void EnableRadar();
-	void CalculateRadarLine();
 
 public:
 	iPoint position;
 	int width;
 	int height;
+
+	std::vector<iPoint> black_squares;
+	std::vector<iPoint> grey_squares;
 
 private:
 	float scale;

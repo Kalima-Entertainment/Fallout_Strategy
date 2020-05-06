@@ -73,6 +73,7 @@ bool j1Render::Start()
 bool j1Render::PreUpdate()
 {
 	SDL_RenderClear(renderer);
+
 	return true;
 }
 

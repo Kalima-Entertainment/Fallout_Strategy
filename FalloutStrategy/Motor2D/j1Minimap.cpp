@@ -114,6 +114,33 @@ bool j1Minimap::PostUpdate() {
 
 		App->render->Blit(texture, position.x, position.y, NULL, 1.0, 0);
 
+		if (App->render->fog_of_war) {
+			SDL_Rect fog_of_war_rect = {0,0, map_width/width, map_height/height};
+			iPoint rect_pos;
+
+			fog_of_war_rect.w = width / 150;
+			fog_of_war_rect.h = fog_of_war_rect.w * 0.5f;
+
+			for (int i = 0; i < black_squares.size(); i++)
+			{
+				rect_pos = WorldToMinimap(black_squares[i].x, black_squares[i].y);
+				fog_of_war_rect.x = rect_pos.x;
+				fog_of_war_rect.y = rect_pos.y;
+				App->render->DrawQuad(fog_of_war_rect, 0, 0, 0, 255, true, false);
+			}
+
+			for (int i = 0; i < grey_squares.size(); i++)
+			{
+				rect_pos = WorldToMinimap(black_squares[i].x, black_squares[i].y);
+				fog_of_war_rect.x = rect_pos.x;
+				fog_of_war_rect.y = rect_pos.y;
+				App->render->DrawQuad(fog_of_war_rect, 0, 255, 0, 255, true, false);
+			}
+
+			black_squares.clear();
+			grey_squares.clear();
+		}
+
 		if (radar) {
 			for (int i = 0; i < App->entities->entities.size(); i++)
 			{
@@ -130,7 +157,9 @@ bool j1Minimap::PostUpdate() {
 			if (radar_timer.ReadSec() > radar_time) 
 				radar = false;
 
-			CalculateRadarLine();
+			radar_line.x2 = radar_line.x1 + height * 0.5f * cos(radar_timer.Read() * 0.1 * PI / 180);
+			radar_line.y2 = radar_line.y1 + height * 0.5f * sin(radar_timer.Read() * 0.1 * PI / 180);
+
 			App->render->DrawLine(radar_line.x1, radar_line.y1, radar_line.x2, radar_line.y2, 0,255,0,255,false);
 		}
 		if (App->render->debug && App->pathfinding->show_nodes)
@@ -212,9 +241,4 @@ iPoint j1Minimap::ScreenToMinimapToWorld(int x, int y) {
 void j1Minimap::EnableRadar() {
 	radar = true;
 	radar_timer.Start();
-}
-
-void j1Minimap::CalculateRadarLine() {
-	radar_line.x2 = radar_line.x1 + height * 0.5f * cos(radar_timer.Read() * 0.1 * PI / 180);
-	radar_line.y2 = radar_line.y1 + height * 0.5f * sin(radar_timer.Read() * 0.1 * PI / 180);
 }

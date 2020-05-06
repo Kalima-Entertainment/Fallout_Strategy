@@ -148,7 +148,7 @@ public:
 	bool CreateWalkabilityMap() const;
 	std::vector<iPoint> CalculateArea(iPoint first_tile_position, int width, int height);
 	void SetBuildingTilesUnwalkable(std::vector<iPoint> tiles);
-
+	int GetWidth() const { return data.width * data.tile_width; };
 	TileSet* GetTilesetFromTileId(int id) const;
 
 private:

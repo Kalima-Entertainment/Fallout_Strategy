@@ -6,6 +6,7 @@
 #include "j1Input.h"
 #include "j1Console.h"
 #include "p2Log.h"
+#include "j1Minimap.h"
 
 FoWManager::FoWManager()
 {
@@ -115,6 +116,11 @@ bool FoWManager::PreUpdate()
 	{
 		debugMode = !debugMode;
 		MapNeedsUpdate();
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+	{
+		App->render->fog_of_war = !App->render->fog_of_war;
 	}
 
 	return ret;
@@ -284,6 +290,9 @@ void FoWManager::UpdateFoWMap()
 
 void FoWManager::DrawFoWMap()
 {
+	int minimap_rect_width = App->map->GetWidth() / App->minimap->width;
+	int minimap_rect_height = minimap_rect_width * 0.5f;
+
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
@@ -323,16 +332,17 @@ void FoWManager::DrawFoWMap()
 				SDL_SetTextureAlphaMod(displayFogTexture, 128);//set the alpha of the texture to half to reproduce fog
 				SDL_Rect r = { fogId * 64,0,64,64 }; //this rect crops the desired fog Id texture from the fogTiles spritesheet
 				App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
+				
+				App->minimap->grey_squares.push_back({ worldDrawPos.x, worldDrawPos.y });
 			}
 			if (shroudId != -1)
 			{
 				SDL_SetTextureAlphaMod(displayFogTexture, 255);//set the alpha to white again
 				SDL_Rect r = { shroudId * 64,0,64,64 }; //this rect crops the desired fog Id texture from the fogTiles spritesheet
 				App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
+				App->minimap->grey_squares.pop_back();
+				App->minimap->black_squares.push_back({ worldDrawPos.x, worldDrawPos.y });
 			}
-
-
-
 		}
 	}
 }
