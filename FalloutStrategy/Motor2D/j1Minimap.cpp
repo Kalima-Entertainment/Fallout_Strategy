@@ -217,9 +217,4 @@ void j1Minimap::EnableRadar() {
 void j1Minimap::CalculateRadarLine() {
 	radar_line.x2 = radar_line.x1 + height * 0.5f * cos(radar_timer.Read() * 0.1 * PI / 180);
 	radar_line.y2 = radar_line.y1 + height * 0.5f * sin(radar_timer.Read() * 0.1 * PI / 180);
-
-	/*
-	if (radar_line.y2 > radar_line.y1 + height * 0.5f)
-		radar_line.y2 = radar_line.y1 + height * 0.5f;
-	*/
 }
