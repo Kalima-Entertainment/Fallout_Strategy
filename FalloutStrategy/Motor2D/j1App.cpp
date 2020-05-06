@@ -63,7 +63,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 
-	AddModule(player);
+	
 	AddModule(ai_manager);
 	AddModule(map);
 	//AddModule(collision);
@@ -74,7 +74,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(Mmanager);
 	AddModule(fowManager);
-
+	AddModule(player);
 
 	// scene last
 	AddModule(menu_manager);
@@ -82,7 +82,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(minimap);
 	AddModule(console);
 	AddModule(logo_scene);
-	AddModule(transition);
+	AddModule(transition);	
 	// render last to swap buffer
 	AddModule(render);
 

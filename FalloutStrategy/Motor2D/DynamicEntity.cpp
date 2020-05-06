@@ -374,6 +374,8 @@ bool DynamicEntity::Update(float dt) {
 		*/
 	}
 
+	visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
+
 	//save dt for animations
 	last_dt = dt;
 
