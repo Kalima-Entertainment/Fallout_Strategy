@@ -377,7 +377,6 @@ bool j1EntityManager::PostUpdate()
 						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, FACTION::BROTHERHOOD, BUILDING_TYPE::BASE);
 						showing_building_menu = true;
 					}
-
 				}
 				else if (static_entity->type == BARRACK) {
 
@@ -386,7 +385,6 @@ bool j1EntityManager::PostUpdate()
 						showing_building_menu = true;
 
 					}
-
 				}
 				else if (static_entity->type == LABORATORY) {
 

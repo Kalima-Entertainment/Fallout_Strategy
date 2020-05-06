@@ -619,12 +619,15 @@ bool DynamicEntity::LoadAnimations() {
 	else if (faction == ANIMALS) faction_char = "Animals";
 
 	//entity type
-	if (type == MELEE) type_char = "Melee";
-	else if (type == RANGED) type_char = "Ranged";
-	else if (type == GATHERER) type_char = "Gatherer";
-	else if (type == BIGHORNER) type_char = "Bighorner";
-	else if (type == BRAHAM) type_char = "Braham";
-	else if (type == DEATHCLAW) type_char = "Deathclaw";
+	switch (type) {
+	case MELEE: type_char = "Melee"; break;
+	case RANGED: type_char = "Ranged"; break;
+	case GATHERER: type_char = "Gatherer"; break;
+	case BIGHORNER: type_char = "Bighorner"; break;
+	case BRAHAM: type_char = "Braham"; break;
+	case DEATHCLAW: type_char = "Deathclaw"; break;
+	default: break;
+	}
 	
 	std::string file = std::string("Assets/textures/characters/").append(faction_char).append("/").append(faction_char).append("_").append(type_char);
 	std::string animation_path = file;

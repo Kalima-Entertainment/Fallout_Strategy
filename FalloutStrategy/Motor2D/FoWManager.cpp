@@ -5,6 +5,7 @@
 #include "j1Render.h"
 #include "j1Input.h"
 #include "j1Console.h"
+#include "p2Log.h"
 
 FoWManager::FoWManager()
 {
@@ -387,7 +388,8 @@ void FoWManager::OnCommand(std::vector<std::string> command_parts)
 
 	//Increase all resources
 	if (command_beginning == "fog_of_war") {
-		
-		//LOG("All resources increased");
+		App->render->fog_of_war = !App->render->fog_of_war;
+		if (App->render->fog_of_war)	LOG("Fog Of War Activated");
+		else LOG("Fog Of War Deactivated");
 	}
 }
