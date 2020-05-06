@@ -145,8 +145,7 @@ bool DynamicEntity::Update(float dt) {
 				//LOG("Pasturing");
 				action_timer.Start();
 			}
-		}
-		
+		}		
 
 		break;
 
@@ -187,7 +186,7 @@ bool DynamicEntity::Update(float dt) {
 	case ATTACK:
 		if (target_entity == nullptr)
 			state = IDLE;
-		else if ((target_entity->current_tile.DistanceNoSqrt(current_tile) > range)&&(current_tile.DistanceManhattan(target_entity->current_tile) >2)) {
+		else if ((target_entity->current_tile.DistanceNoSqrt(current_tile) > range) && (current_tile.DistanceManhattan(target_entity->current_tile) > 2)) {
 			PathfindToPosition(target_entity->current_tile);
 		}
 		else if (action_timer.ReadSec() > action_time) {
@@ -534,13 +533,15 @@ void DynamicEntity::Gather() {
 void DynamicEntity::StoreGatheredResources() {
 	target_entity->volume += resource_collected;
 
-	//update owner resources
-	if (resource_type == Resource::CAPS) owner->caps += resource_collected;
-	else if (resource_type == Resource::WATER) owner->water += resource_collected;
-	else if (resource_type == Resource::FOOD) owner->food += resource_collected;
-
-	if (owner == App->player)
+	if (owner == App->player) {
 		App->player->UpdateResourceData(resource_type, resource_collected);
+	}
+	else {
+		//update owner resources
+		if (resource_type == Resource::CAPS) owner->caps += resource_collected;
+		else if (resource_type == Resource::WATER) owner->water += resource_collected;
+		else if (resource_type == Resource::FOOD) owner->food += resource_collected;
+	}	
 
 	resource_collected = 0;
 	target_entity = nullptr;
