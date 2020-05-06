@@ -72,8 +72,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 	sprite_size = 128;
 
 	detection_radius = 6;
-	detection_timer.Start();
-	
+	detection_timer.Start();	
 
 	//Fog Of War
 	if (this->faction == App->player->faction) {
@@ -86,7 +85,6 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 		visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
 		visionEntity->SetNewVisionRadius(3);
 	}
-
 }
 
 DynamicEntity::~DynamicEntity() {
@@ -372,9 +370,7 @@ bool DynamicEntity::Update(float dt) {
 			}
 		}
 		*/
-	}
-
-	visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
+	}	
 
 	//save dt for animations
 	last_dt = dt;
@@ -524,6 +520,8 @@ void DynamicEntity::Move(float dt) {
 		default:
 			break;
 		}
+
+		visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
 	}
 	else
 	{
