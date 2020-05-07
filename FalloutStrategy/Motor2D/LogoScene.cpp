@@ -22,6 +22,7 @@ LogoScene::~LogoScene() {
 
 bool LogoScene::Start()
 {
+	App->audio->PlayFx(1, App->audio->intro_fx, 0);
 	my_video = App->video->Load("Assets/video/intro.ogv", App->render->renderer);
 	
 
@@ -42,6 +43,7 @@ bool LogoScene::Update(float dt) {
 		App->audio->PlayFx(2, App->audio->F_press, 0);
 		App->audio->PlayMusic("Assets/audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
 		App->logo_scene->Disable();
+		App->video->DestroyVideo(my_video);
 	}
 
 	return true;

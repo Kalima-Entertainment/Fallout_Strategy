@@ -33,7 +33,6 @@ public:
 	bool CleanUp();
 
 	THEORAPLAY_Decoder* decoder;
-	const THEORAPLAY_AudioPacket* audio;
 	const THEORAPLAY_VideoFrame* video;
 	SDL_Texture* texture;
 	SDL_AudioSpec audio_spec;

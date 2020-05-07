@@ -54,7 +54,6 @@ bool j1Video::CleanUp()
 int j1Video::Load(const char* file, SDL_Renderer* renderer)
 {
 	//TODO 2: After that we need to create a vido and audio buffer and fill them with THEORAPLAY_getAudio and THEORAPLAY_getVideo. 
-	const THEORAPLAY_AudioPacket* audio = NULL;
 	const THEORAPLAY_VideoFrame* video = NULL;
 
 	//TODO 1: Decode the format. To do that we use THEORAPLAY_Decoder
@@ -65,10 +64,9 @@ int j1Video::Load(const char* file, SDL_Renderer* renderer)
 		return 0;
 	}
 
-
-	while (!audio || !video)
+	while (!video)
 	{
-		if (!audio) audio = THEORAPLAY_getAudio(decoder);
+		
 		if (!video) video = THEORAPLAY_getVideo(decoder);
 		SDL_Delay(10);
 	}
@@ -77,7 +75,6 @@ int j1Video::Load(const char* file, SDL_Renderer* renderer)
 	if (overlay == 0)
 	{
 		// Error set by SDL_CreateTexture()
-		THEORAPLAY_freeAudio(audio);
 		THEORAPLAY_freeVideo(video);
 		THEORAPLAY_stopDecode(decoder);
 		return 0;
@@ -85,38 +82,11 @@ int j1Video::Load(const char* file, SDL_Renderer* renderer)
 
 	// Create video item
 	j1Video* player = (j1Video*)malloc(sizeof(j1Video));
-	player->audio = audio;
 	player->video = video;
 	player->decoder = decoder;
 	player->texture = overlay;
 	player->baseticks = SDL_GetTicks();
 	player->framems = (video->fps == 0.0) ? 0 : ((Uint32)(1000.0 / video->fps));
-
-	//Load audio specs
-	memset(&player->audio_spec, '\0', sizeof(SDL_AudioSpec));
-	player->audio_spec.freq = audio->freq;
-	player->audio_spec.format = AUDIO_S16SYS;
-	player->audio_spec.channels = audio->channels;
-	player->audio_spec.samples = 2048;
-	player->audio_spec.callback = AudioCallback;
-
-	if (SDL_OpenAudio(&player->audio_spec, NULL) != 0)
-	{
-		//Error set by SDL_OpenAudio()
-		THEORAPLAY_freeAudio(audio);
-		THEORAPLAY_freeVideo(video);
-		THEORAPLAY_stopDecode(decoder);
-		return 0;
-	}
-
-	//After the audio packet is processed we process the next audio packet
-	while (audio)
-	{
-		QueueAudio(audio);
-		audio = THEORAPLAY_getAudio(decoder);
-	}
-
-	SDL_PauseAudio(0);
 
 	return (int)player;
 }
@@ -175,9 +145,7 @@ SDL_Texture* j1Video::UpdateVideo(int video_id)
 		}
 	}
 
-	//For echa frame the audio need to be processed again
-	while ((vid->audio = THEORAPLAY_getAudio(vid->decoder)) != NULL)
-		QueueAudio(vid->audio);
+	
 
 	return vid->texture;
 }
@@ -196,7 +164,6 @@ void j1Video::DestroyVideo(int video)
 	//TODO 4: Just free everything the texture, video, audio and decoder:
 	SDL_DestroyTexture(vid->texture);
 	THEORAPLAY_freeVideo(vid->video);
-	THEORAPLAY_freeAudio(vid->audio);
 	THEORAPLAY_stopDecode(vid->decoder);
 }
 
@@ -204,75 +171,4 @@ int j1Video::IsPlaying(int video)
 {
 	return THEORAPLAY_isDecoding(((j1Video*)video)->decoder);
 }
-
-void j1Video::QueueAudio(const THEORAPLAY_AudioPacket* audio)
-{
-	AudioQueue* item = (AudioQueue*)malloc(sizeof(AudioQueue));
-	if (!item)
-	{
-		THEORAPLAY_freeAudio(audio);
-		return;
-	}
-
-	item->audio = audio;
-	item->offset = 0;
-	item->next = NULL;
-
-	SDL_LockAudio();
-	if (audio_queue_tail)
-		audio_queue_tail->next = item;
-	else
-		audio_queue = item;
-	audio_queue_tail = item;
-	SDL_UnlockAudio();
-}
-
-void SDLCALL j1Video::AudioCallback(void* userdata, Uint8* stream, int len)
-{
-
-	Sint16* dst = (Sint16*)stream;
-
-	while (audio_queue && (len > 0))
-	{
-		volatile AudioQueue* item = audio_queue;
-		AudioQueue* next = item->next;
-		const int channels = item->audio->channels;
-
-		const float* src = item->audio->samples + (item->offset * channels);
-		int cpy = (item->audio->frames - item->offset) * channels;
-		int i;
-
-		if (cpy > (len / sizeof(Sint16)))
-			cpy = len / sizeof(Sint16);
-
-		for (i = 0; i < cpy; i++)
-		{
-			const float val = *(src++);
-			if (val < -1.0f)
-				*(dst++) = -32768;
-			else if (val > 1.0f)
-				*(dst++) = 32767;
-			else
-				*(dst++) = (Sint16)(val * 32767.0f);
-		}
-
-		item->offset += (cpy / channels);
-		len -= cpy * sizeof(Sint16);
-
-		if (item->offset >= item->audio->frames)
-		{
-			THEORAPLAY_freeAudio(item->audio);
-			free((void*)item);
-			audio_queue = next;
-		}
-	}
-
-	if (!audio_queue)
-		audio_queue_tail = NULL;
-
-	if (len > 0)
-		memset(dst, '\0', len);
-
-}
-
 
