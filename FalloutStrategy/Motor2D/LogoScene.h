@@ -22,8 +22,9 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
-	bool LogoScene::LoadAnimations();
-
+	
+	SDL_Texture* video_texture = nullptr;
+	int my_video;
 private:
 	Animation	animationLogo;
 	Animation	animationStartGameText;
@@ -36,6 +37,8 @@ private:
 	j1Timer Timer;
 	bool drawable = true;
 	bool sound_end = true;
+
+
 };
 
 #endif // __j1LOGOSCENE_H__

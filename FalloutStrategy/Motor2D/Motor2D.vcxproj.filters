@@ -124,6 +124,12 @@
     <ClCompile Include="FoWManager.cpp">
       <Filter>Desenvolupament  ========\FogOfWar</Filter>
     </ClCompile>
+    <ClCompile Include="j1Video.cpp">
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="theoraplay.cpp">
+      <Filter>Desenvolupament  ========\Tools\theoraplay</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -273,6 +279,15 @@
     <ClInclude Include="FoWBitDefs.h">
       <Filter>Desenvolupament  ========\FogOfWar</Filter>
     </ClInclude>
+    <ClInclude Include="j1Video.h">
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="theoraplay.h">
+      <Filter>Desenvolupament  ========\Tools\theoraplay</Filter>
+    </ClInclude>
+    <ClInclude Include="theoraplay_cvtrgb.h">
+      <Filter>Desenvolupament  ========\Tools\theoraplay</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -301,6 +316,9 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\FogOfWar">
       <UniqueIdentifier>{332896a8-4da6-4602-812c-8b8e497ac777}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Tools\theoraplay">
+      <UniqueIdentifier>{bb46ab85-3f93-4d5e-a5e5-825dad5972a8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

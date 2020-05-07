@@ -31,6 +31,7 @@ class AI_Manager;
 class j1Transition;
 class LogoScene;
 class FoWManager;
+class j1Video;
 
 
 class j1App
@@ -120,7 +121,7 @@ public:
 	j1Transition*		transition = NULL;
 	LogoScene*			logo_scene = NULL;
 	FoWManager*			fowManager = NULL;
-
+	j1Video*			video = NULL;
 	bool isPaused;
 	bool quitGame = false;
 	int	 capped_ms = -1;

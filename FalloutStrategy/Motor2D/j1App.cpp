@@ -27,6 +27,7 @@
 #include "LogoScene.h"
 #include "j1Transition.h"
 #include "FoWManager.h"
+#include "j1Video.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -55,6 +56,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	transition = new j1Transition();
 	logo_scene = new LogoScene();
 	fowManager = new FoWManager();
+	video = new j1Video();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -62,7 +64,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
-
+	AddModule(video);
 	
 	AddModule(ai_manager);
 	AddModule(map);
