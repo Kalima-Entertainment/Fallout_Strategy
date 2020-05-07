@@ -32,6 +32,7 @@ j1Player::j1Player() : GenericPlayer() {
 	//faction = VAULT;
 	defeated = false;
 	is_ai = false;
+	radar_cost = 100;
 }
 
 j1Player::~j1Player() {

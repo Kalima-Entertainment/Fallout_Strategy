@@ -332,12 +332,18 @@ bool j1EntityManager::PostUpdate()
 			//resource buildings debug
 			for (int i = 0; i < resource_buildings.size(); i++)
 			{
-				//TODO resource buildings camera culling
 				for (int j = 0; j < resource_buildings[i]->tiles.size(); j++)
 				{
 					SDL_Rect rect = { 128,0,64,64 };
 					tex_position = App->map->MapToWorld(resource_buildings[i]->tiles[j].x, resource_buildings[i]->tiles[j].y);
-					App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &rect);
+
+					if ((tex_position.x + rect.w > -(App->render->camera.x))
+						&& (tex_position.x < -App->render->camera.x + App->render->camera.w)
+						&& (tex_position.y + rect.h > -(App->render->camera.y))
+						&& (tex_position.y < (-App->render->camera.y + App->render->camera.h)))
+						{
+							App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &rect);
+						}
 				}
 			}
 		}
@@ -451,6 +457,11 @@ bool j1EntityManager::PostUpdate()
 			}
 		}
 		
+		if (sort_timer.Read() > 500) {
+			BubbleSortEntities();
+			sort_timer.Start();
+		}
+
 		for (int i = 0; i < entities.size(); i++)
 		{
 			//camera culling
@@ -460,10 +471,6 @@ bool j1EntityManager::PostUpdate()
 				&& (entities[i]->position.y - entities[i]->sprite_size * 0.25f < -App->render->camera.y + App->render->camera.h)) {
 
 				//sort and blit entities
-				if (sort_timer.Read() > 500) {
-					BubbleSortEntities();
-					sort_timer.Start();
-				}
 				entities[i]->PostUpdate();
 			}
 		}
