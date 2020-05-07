@@ -70,8 +70,10 @@ bool j1Player::PreUpdate() {
 		else LOG("God Mode: OFF");
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) {
 		App->entities->CreateEntity(faction, MR_HANDY, 1, 1, this);
+
+	}
 
 	//block border scroll
 	if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)

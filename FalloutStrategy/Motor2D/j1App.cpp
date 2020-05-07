@@ -160,11 +160,11 @@ bool j1App::Start()
 	PERF_START(ptimer);
 	bool ret = true;
 
-	map->Disable();
-	entities->Disable();
-	ai_manager->Disable();
-	scene->Disable();
-	minimap->Disable();
+	entities->active = false;
+	map->active = false;
+	ai_manager->active = false;
+	scene->active = false;
+	minimap->active = false;
 
 	for (int i = 0; i < modules.size() && ret == true; i++)
 	{

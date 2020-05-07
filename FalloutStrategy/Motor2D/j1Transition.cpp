@@ -140,7 +140,7 @@ void j1Transition::Transition()
 	App->render->Blit(gif_tex, 536, 191, &animationGif.GetCurrentFrame(lastdt), 1.0F, 0);
 	App->render->Blit(logo_tex, 470, 400, &animationLogo.GetCurrentFrame(lastdt), 1.0F, 0);
 
-	if ((!App->entities->loading_reference_entities) && (App->gui->ingame == true))
+	if ((!App->entities->loading_reference_entities) && (App->gui->ingame == true) && (fadetimer.Read() > 2500))
 	{
 		Mix_HaltChannel(1);
 		transition = false;
@@ -151,7 +151,7 @@ void j1Transition::Transition()
 		App->player->Enable();
 		App->isPaused = false;
 	}
-	else if ((fadetimer.Read() > 1500)&&(!App->gui->ingame)) {
+	else if ((fadetimer.Read() > 2500)&&(!App->gui->ingame)) {
 		Mix_ResumeMusic();
 		Mix_HaltChannel(1);
 		App->entities->Disable();

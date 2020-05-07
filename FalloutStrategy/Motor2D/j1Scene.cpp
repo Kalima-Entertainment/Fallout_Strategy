@@ -56,7 +56,7 @@ bool j1Scene::Start()
 	beaten_enemies = 0;
 
 	App->ai_manager->Enable();
-	App->transition->Enable();
+	//App->transition->Enable();
 	if (App->render->fog_of_war)App->fowManager->Enable();
 
 	App->console->CreateCommand("win", "Automatically win the game", this);
@@ -184,7 +184,7 @@ bool j1Scene::Update(float dt)
 		win = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 		App->menu_manager->CreateMenu(Menu::WIN_LOSE_SCENE);
-		App->entities->Disable();
+		//App->entities->Disable();
 		App->scene->Disable();
 		App->isPaused = false;
 	}

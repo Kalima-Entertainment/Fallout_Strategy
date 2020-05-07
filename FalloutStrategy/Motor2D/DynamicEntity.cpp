@@ -48,6 +48,10 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 		range = 1;
 		is_agressive = true;
 		break;
+	case MR_HANDY:
+		range = 3;
+		is_agressive = true;
+		break;
 	default:
 		break;
 	}
@@ -142,7 +146,6 @@ bool DynamicEntity::Update(float dt) {
 		{
 			if (action_timer.ReadSec() > action_time) {
 				Flee();
-				//LOG("Pasturing");
 				action_timer.Start();
 			}
 		}		

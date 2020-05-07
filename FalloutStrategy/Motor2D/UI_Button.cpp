@@ -133,6 +133,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->DestroyMenu(Menu::MAIN_MENU);
 				App->menu_manager->CreateMenu(Menu::SELECT_FACTION);
 				App->audio->PlayFx(1, App->audio->click_fx, 0);
+				App->transition->fadetimer.Start();
 			}
 			else if (t == Button_slider_music_left) {
 				App->gui->volume_up = 1;

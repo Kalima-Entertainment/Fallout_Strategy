@@ -42,7 +42,7 @@ j1EntityManager::~j1EntityManager(){}
 j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int position_x, int position_y, GenericPlayer* owner){
 	BROFILER_CATEGORY("EntityCreation", Profiler::Color::Linen)
 
-	if (!owner) owner = App->scene->players[faction];
+	//if (!owner) owner = App->scene->players[faction];
 
 	j1Entity* entity = nullptr;
 
@@ -195,9 +195,7 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 	bool ret = true;
 	config_data = config;
 	RandomFactions();
-
 	LoadUpgradeCosts(config);
-
 	LoadUnitCosts();
 
 	return ret;
@@ -235,6 +233,8 @@ bool j1EntityManager::Start() {
 	reference_braham = (DynamicEntity*)CreateEntity(ANIMALS, BRAHAM, ANIMALS, BRAHAM);
 	reference_deathclaw = (DynamicEntity*)CreateEntity(ANIMALS, DEATHCLAW, ANIMALS, DEATHCLAW);
 	reference_MrHandy = (DynamicEntity*)CreateEntity(NO_FACTION, MR_HANDY, NO_FACTION, MR_HANDY);
+
+	LoadReferenceEntityData();
 
 	showing_building_menu = false;
 
@@ -520,7 +520,6 @@ bool j1EntityManager::LoadReferenceEntityAnimations() {
 				}
 
 				load_timer.Start();
-				ret = LoadReferenceEntityData();
 				loading_reference_entities = false;
 			}
 			loading_entity++;
@@ -695,7 +694,7 @@ iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) 
 					possible_tile.y = destination.y + y;
 
 					if ((!occupied_tiles[possible_tile.x][possible_tile.y])&&(App->pathfinding->IsWalkable(possible_tile))) {
-						if ((possible_tile.DistanceNoSqrt(origin) <= distance_to_origin)&& (possible_tile.DistanceNoSqrt(destination) < distance_to_destination)) {
+						if ((possible_tile.DistanceNoSqrt(origin) <= distance_to_origin)&& (possible_tile.DistanceNoSqrt(destination) <= distance_to_destination)) {
 								distance_to_origin = possible_tile.DistanceNoSqrt(origin);
 								distance_to_destination = possible_tile.DistanceNoSqrt(destination);
 								closest_possible_tile = possible_tile;
