@@ -23,6 +23,7 @@
 #include "p2Defs.h"
 #include "UI_InputText.h"
 #include "brofiler/Brofiler/Brofiler.h"
+#include "SDL_mixer/include/SDL_mixer.h"
 
 MenuManager::MenuManager()
 {

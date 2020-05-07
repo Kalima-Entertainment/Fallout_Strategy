@@ -148,6 +148,7 @@ bool j1Scene::Update(float dt)
 			App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
 			App->isPaused = false;
 			create = false;
+			Mix_PauseMusic();
 		}
 
 		else if (create == false) {
@@ -155,6 +156,10 @@ bool j1Scene::Update(float dt)
 			App->menu_manager->CreateMenu(Menu::PAUSE_MENU);
 			App->isPaused = true;
 			create = true;
+			if (Mix_PlayingMusic() == 1) {
+				Mix_ResumeMusic();
+			}
+			App->audio->PlayMusic("Assets/audio/music/Fallout4TitleScreenwithThemeMusic.ogg");
 		}
 
 	}
