@@ -59,16 +59,18 @@ public:
 	//VARIABLES
 public:
 	//A number of precomputed circle masks for you to use ranging between a radius of 2 to a radius of 5
-	unsigned short circleMasks[4][fow_MAX_CIRCLE_LENGTH * fow_MAX_CIRCLE_LENGTH] =
+	unsigned short circleMasks[6][fow_MAX_CIRCLE_LENGTH * fow_MAX_CIRCLE_LENGTH] =
 	{
-		{//R2
+		// -- level + (level + 1)
+
+		{//Level 2: 2 + 3 = 5 ---> [5][5]
 		fow_ALL, fow_CNW, fow_NNN, fow_CNE, fow_ALL,
 		fow_CNW, fow_JNW, fow_NON, fow_JNE, fow_CNE,
 		fow_WWW, fow_NON, fow_NON, fow_NON, fow_EEE,
 		fow_CSW, fow_JSW, fow_NON, fow_JSE, fow_CSE,
 		fow_ALL, fow_CSW, fow_SSS, fow_CSE, fow_ALL,
 		},
-		{//R3
+		{//Level 3: 3 + 4 = 7 ---> [7][7]
 		fow_ALL, fow_ALL, fow_CNW, fow_NNN, fow_CNE, fow_ALL, fow_ALL,
 		fow_ALL, fow_CNW, fow_JNW, fow_NON, fow_JNE, fow_CNE, fow_ALL,
 		fow_CNW, fow_JNW, fow_NON, fow_NON, fow_NON, fow_JNE, fow_CNE,
@@ -77,7 +79,7 @@ public:
 		fow_ALL, fow_CSW, fow_JSW, fow_NON, fow_JSE, fow_CSE, fow_ALL,
 		fow_ALL, fow_ALL, fow_CSW, fow_SSS, fow_CSE, fow_ALL, fow_ALL,
 		},
-		{//R4
+		{//Level 4: 4 + 5 = 9 ---> [9][9]
 		fow_ALL, fow_ALL, fow_CNW, fow_NNN, fow_NNN, fow_NNN, fow_CNE, fow_ALL, fow_ALL,
 		fow_ALL, fow_CNW, fow_JNW, fow_NON, fow_NON, fow_NON, fow_JNE, fow_CNE, fow_ALL,
 		fow_CNW, fow_JNW, fow_NON, fow_NON, fow_NON, fow_NON, fow_NON, fow_JNE, fow_CNE,
@@ -88,7 +90,7 @@ public:
 		fow_ALL, fow_CSW, fow_JSW, fow_NON, fow_NON, fow_NON, fow_JSE, fow_CSE, fow_ALL,
 		fow_ALL, fow_ALL, fow_CSW, fow_SSS, fow_SSS, fow_SSS, fow_CSE, fow_ALL, fow_ALL,
 		},
-		{//R5
+		{//Level 5: 5 + 6 = 11 ---> [11][11]
 		fow_ALL, fow_ALL, fow_ALL, fow_ALL, fow_CNW, fow_NNN, fow_CNE, fow_ALL, fow_ALL, fow_ALL, fow_ALL,
 		fow_ALL, fow_ALL, fow_CNW, fow_NNN, fow_JNW, fow_NON, fow_JNE, fow_NNN, fow_CNE, fow_ALL, fow_ALL,
 		fow_ALL, fow_CNW, fow_JNW, fow_NON, fow_NON, fow_NON, fow_NON, fow_NON, fow_JNE, fow_CNE, fow_ALL,
@@ -101,6 +103,39 @@ public:
 		fow_ALL, fow_ALL, fow_CSW, fow_SSS, fow_JSW, fow_NON, fow_JSE, fow_SSS, fow_CSE, fow_ALL, fow_ALL,
 		fow_ALL, fow_ALL, fow_ALL, fow_ALL, fow_CSW, fow_SSS, fow_CSE, fow_ALL, fow_ALL, fow_ALL, fow_ALL,
 		},
+		{//Level 6: 6 + 7 = 13 ---> [13][13]
+		fow_ALL, fow_ALL, fow_ALL, fow_ALL,	fow_ALL, fow_CNW, fow_NNN, fow_CNE,	fow_ALL, fow_ALL, fow_ALL, fow_ALL, fow_ALL,
+		fow_ALL, fow_ALL, fow_ALL, fow_ALL,	fow_CNW, fow_JNW, fow_NON, fow_JNE,	fow_CNE, fow_ALL, fow_ALL, fow_ALL, fow_ALL,
+		fow_ALL, fow_ALL, fow_ALL, fow_CNW,	fow_JNW, fow_NON, fow_NON, fow_NON,	fow_JNE, fow_CNE, fow_ALL, fow_ALL, fow_ALL,
+		fow_ALL, fow_ALL, fow_CNW, fow_JNW,	fow_NON, fow_NON, fow_NON, fow_NON,	fow_NON, fow_JNE, fow_CNE, fow_ALL, fow_ALL,
+		fow_ALL, fow_CNW, fow_JNW, fow_NON,	fow_NON, fow_NON, fow_NON, fow_NON,	fow_NON, fow_NON, fow_JNE, fow_CNE, fow_ALL,
+		fow_CNW, fow_JNW, fow_NON, fow_NON,	fow_NON, fow_NON, fow_NON, fow_NON,	fow_NON, fow_NON, fow_NON, fow_JNE, fow_CNE,
+		fow_WWW, fow_NON, fow_NON, fow_NON,	fow_NON, fow_NON, fow_NON, fow_NON,	fow_NON, fow_NON, fow_NON, fow_NON, fow_EEE,
+		fow_CSW, fow_JSW, fow_NON, fow_NON,	fow_NON, fow_NON, fow_NON, fow_NON,	fow_NON, fow_NON, fow_NON, fow_JSE, fow_CSE,
+		fow_ALL, fow_CSW, fow_JSW, fow_NON,	fow_NON, fow_NON, fow_NON, fow_NON,	fow_NON, fow_NON, fow_JSE, fow_CSE, fow_ALL,
+		fow_ALL, fow_ALL, fow_CSW, fow_JSW,	fow_NON, fow_NON, fow_NON, fow_NON,	fow_NON, fow_JSE, fow_CSE, fow_ALL, fow_ALL,
+		fow_ALL, fow_ALL, fow_ALL, fow_CSW,	fow_JSW, fow_NON, fow_NON, fow_NON,	fow_JSE, fow_CSE, fow_ALL, fow_ALL, fow_ALL,
+		fow_ALL, fow_ALL, fow_ALL, fow_ALL,	fow_CSW, fow_JSW, fow_NON, fow_JSE,	fow_CSE, fow_ALL, fow_ALL, fow_ALL, fow_ALL,
+		fow_ALL, fow_ALL, fow_ALL, fow_ALL,	fow_ALL, fow_CSW, fow_SSS, fow_CSE,	fow_ALL, fow_ALL, fow_ALL, fow_ALL, fow_ALL,
+		},
+		{ //Level 7; 7 + 8 = 15 ---> [15][15]
+		fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,	fow_CNW,	fow_NNN,	fow_CNE,	fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,
+		fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,	fow_CNW,	fow_JNW,	fow_NON,	fow_JNE,	fow_CNE,	fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,
+		fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,	fow_CNW,	fow_JNW,	fow_NON,	fow_NON,	fow_NON,	fow_JNE,	fow_CNE,	fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,
+		fow_ALL,	fow_ALL,	fow_ALL,	fow_CNW,	fow_JNW,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_JNE,	fow_CNE,	fow_ALL,	fow_ALL,	fow_ALL,
+		fow_ALL,	fow_ALL,	fow_CNW,	fow_JNW,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_JNE,	fow_CNE,	fow_ALL,	fow_ALL,
+		fow_ALL,	fow_CNW,	fow_JNW,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_JNE,	fow_CNE,	fow_ALL,
+		fow_CNW,	fow_JNW,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_JNE,	fow_CNE,
+		fow_WWW,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_EEE,
+		fow_CSW,	fow_JSW,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_JSE,	fow_CSE,
+		fow_ALL,	fow_CSW,	fow_JSW,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_JSE,	fow_CSE,	fow_ALL,
+		fow_ALL,	fow_ALL,	fow_CSW,	fow_JSW,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_JSE,	fow_CSE,	fow_ALL,	fow_ALL,
+		fow_ALL,	fow_ALL,	fow_ALL,	fow_CSW,	fow_JSW,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_NON,	fow_JSE,	fow_CSE,	fow_ALL,	fow_ALL,	fow_ALL,
+		fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,	fow_CSW,	fow_JSW,	fow_NON,	fow_NON,	fow_NON,	fow_JSE,	fow_CSE,	fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,
+		fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,	fow_CSW,	fow_JSW,	fow_NON,	fow_JSE,	fow_CSE,	fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,
+		fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,	fow_CSW,	fow_SSS,	fow_CSE,	fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,	fow_ALL,
+		},
+
 	};
 
 

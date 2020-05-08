@@ -43,7 +43,7 @@
 
 // max and min radii of the circle mask
 #define fow_MIN_CIRCLE_RADIUS 2
-#define fow_MAX_CIRCLE_RADIUS 5
+#define fow_MAX_CIRCLE_RADIUS 7
 #define fow_MAX_CIRCLE_LENGTH ((fow_MAX_CIRCLE_RADIUS*2)+1)
 
 #endif // !__FOW_BIT_DEFS__

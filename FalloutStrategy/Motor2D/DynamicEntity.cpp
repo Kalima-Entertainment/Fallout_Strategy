@@ -87,12 +87,11 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 		if (this->faction == App->player->faction) {
 			//Player
 			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, true);
-			visionEntity->SetNewVisionRadius(3);
+			visionEntity->SetNewVisionRadius(7);
 		}
 		else {
 			//Enemy
 			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
-			visionEntity->SetNewVisionRadius(3);
 		}
 		visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
 	}	

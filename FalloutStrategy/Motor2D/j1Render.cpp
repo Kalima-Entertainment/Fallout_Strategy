@@ -16,7 +16,7 @@ j1Render::j1Render() : j1Module()
 	background.b = 0;
 	background.a = 0;
 	debug = true;
-	fog_of_war = false;
+	fog_of_war = true;
 }
 
 // Destructor
