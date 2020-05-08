@@ -616,10 +616,10 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 				}
 
 				//create building
-				static_entity = (StaticEntity*)App->entities->CreateEntity(building_faction, type, x,y, App->scene->players[faction_number]);
+				static_entity = (StaticEntity*)App->entities->CreateEntity(building_faction, type, x,y, App->scene->players[building_faction]);
 				static_entity->tiles = CalculateArea(first_tile_position, width, height);
 
-				App->entities->CreateEntity(building_faction, dynamic_type, x + 1, y + 1, App->scene->players[faction_number]);
+				App->entities->CreateEntity(building_faction, dynamic_type, x + 1, y + 1, App->scene->players[building_faction]);
 
 			}
 			else if (object_name == "Animal") {
