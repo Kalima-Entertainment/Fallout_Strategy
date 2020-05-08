@@ -10,7 +10,7 @@
 
 j1Render::j1Render() : j1Module()
 {
-	name = ("renderer");
+	name.assign("renderer");
 	background.r = 0;
 	background.g = 0;
 	background.b = 0;
@@ -97,6 +97,8 @@ bool j1Render::Load(pugi::xml_node& data)
 	camera.x = data.child("camera").attribute("x").as_int();
 	camera.y = data.child("camera").attribute("y").as_int();
 
+	LOG("%i %i", data.child("camera").attribute("x").as_int(), data.child("camera").attribute("y").as_int());
+
 	return true;
 }
 
@@ -107,6 +109,8 @@ bool j1Render::Save(pugi::xml_node& data) const
 
 	cam.append_attribute("x") = camera.x;
 	cam.append_attribute("y") = camera.y;
+
+	LOG("%i %i", camera.x, camera.y);
 
 	return true;
 }

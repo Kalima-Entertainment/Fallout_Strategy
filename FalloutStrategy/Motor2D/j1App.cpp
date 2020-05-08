@@ -33,6 +33,7 @@
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
 	PERF_START(ptimer);
+	want_to_save = want_to_load = false;
 
 	input = new j1Input();
 	win = new j1Window();
@@ -380,6 +381,8 @@ void j1App::LoadGame(const char* file)
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list
 	want_to_load = true;
+	load_game = (file);
+
 	//load_game.create("%s%s", fs->GetSaveDirectory(), file);
 }
 
@@ -438,7 +441,7 @@ bool j1App::LoadGameNow()
 bool j1App::SavegameNow() const
 {
 	bool ret = true;
-
+	save_game.assign("save_file.xml");
 	LOG("Saving Game State to %s...", save_game.c_str());
 
 	// xml object were we will store all data
@@ -446,11 +449,12 @@ bool j1App::SavegameNow() const
 	pugi::xml_node root;
 
 	root = data.append_child("game_state");
+
 	j1Module* pModule = modules[0];
 
 	for (int i = 0; i < modules.size() && ret == true; i++)
 	{
-		ret = modules[i]->Save(root.child(modules[i]->name.c_str()));
+		ret = modules[i]->Save(root.append_child(modules[i]->name.c_str()));
 		pModule = modules[i];
 	}
 
@@ -459,12 +463,13 @@ bool j1App::SavegameNow() const
 		std::stringstream stream;
 		data.save(stream);
 
-		// we are done, so write data to disk
-		//fs->Save(save_game.GetString(), stream.str().c_str(), stream.str().length());
+		data.save_file(save_game.c_str());
+
 		LOG("... finished saving", save_game.c_str());
 	}
-	else
+	else{
 		LOG("Save process halted from an error in module %s", (pModule != NULL) ? pModule->name.c_str() : "unknown");
+	}
 
 	data.reset();
 	want_to_save = false;

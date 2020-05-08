@@ -407,12 +407,11 @@ bool UI_Button::Update(float dt)
 				static_entity->Upgrade(App->entities->units_creation_time[static_entity->faction]);
 			}
 			else if (t == Boost_radar_button) {
-				if (App->player->caps >= App->player->radar_cost) {
+				if (App->player->caps >= App->entities->radar_cost) {
 					App->minimap->EnableRadar();
-					App->player->UpdateResourceData(Resource::CAPS, -100);
+					App->player->UpdateResourceData(Resource::CAPS, -App->entities->radar_cost);
 				}
-			}
-			 			 		  		  		 	   		
+			}			 			 		  		  		 	   		
 		}
 
 		else {

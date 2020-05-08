@@ -162,6 +162,13 @@ bool j1Scene::Update(float dt)
 
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN){
+		App->SaveGame("save_file.xml");
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
+		App->LoadGame("save_file.xml");
+	}
+
 	int x, y;
 	App->input->GetMousePosition(x, y);
 	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
