@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<game_state>
+	<input />
+	<window />
+	<textures />
+	<audio />
+	<AI />
+	<map />
+	<:anonymous />
+	<pathfinding />
+	<main_menu />
+	<entities />
+	<fonts />
+	<scene />
+	<menu_manager />
+	<gui />
+	<minimap />
+	<console />
+	<logo_scene />
+	<transition />
+	<renderer>
+		<camera x="-3200" y="-2136" />
+	</renderer>
+</game_state>
