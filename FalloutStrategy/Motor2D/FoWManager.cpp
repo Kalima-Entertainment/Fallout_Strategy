@@ -297,11 +297,27 @@ void FoWManager::DrawFoWMap()
 	{
 		for (int x = 0; x < width; x++)
 		{
+			iPoint worldDrawPos;
+			worldDrawPos = App->map->MapToWorld(x, y);
+
+			bool draw_map = false;
+
+			if ((worldDrawPos.x > -(App->render->camera.x) )
+				&& (worldDrawPos.x < -App->render->camera.x + App->render->camera.w) 
+				&& (worldDrawPos.y > -(App->render->camera.y)) 
+				&& (worldDrawPos.y < (-App->render->camera.y + App->render->camera.h))) {
+				draw_map = true;
+			}
+			else {
+				draw_map = false;
+			}
+
+
 			FoWDataStruct* tileInfo = GetFoWTileState({ x, y });
 			int fogId = -1;
 			int shroudId = -1;
 
-			if (tileInfo != nullptr)
+			if (tileInfo != nullptr && draw_map)
 			{
 
 				if (bitToTextureTable.find(tileInfo->tileFogBits) != bitToTextureTable.end())
@@ -315,9 +331,6 @@ void FoWManager::DrawFoWMap()
 				}
 
 			}
-
-			iPoint worldDrawPos;
-			worldDrawPos = App->map->MapToWorld(x, y);
 
 			SDL_Texture* displayFogTexture = nullptr;
 			if (debugMode)

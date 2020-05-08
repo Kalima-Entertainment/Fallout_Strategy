@@ -86,8 +86,8 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 	if (App->render->fog_of_war) {
 		if (this->faction == App->player->faction) {
 			//Player
-			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, true);
-			visionEntity->SetNewVisionRadius(7);
+			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y}, true);
+			visionEntity->SetNewVisionRadius(5);
 		}
 		else {
 			//Enemy
