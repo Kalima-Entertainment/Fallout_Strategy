@@ -55,8 +55,6 @@ bool j1Scene::Start()
 	menu_state = StatesMenu::NONE;
 	beaten_enemies = 0;
 
-	App->ai_manager->Enable();
-	//App->transition->Enable();
 	if (App->render->fog_of_war)App->fowManager->Enable();
 
 	App->console->CreateCommand("win", "Automatically win the game", this);
@@ -95,9 +93,9 @@ bool j1Scene::Start()
 
 	// -- Creates FoW in current Map
 	if (App->render->fog_of_war)App->fowManager->CreateFoWMap(App->map->data.width, App->map->data.height);
-
-	App->minimap->Enable();
 		
+	App->minimap->Enable();
+
 	//top_left
 	App->entities->CreateEntity(VAULT, MELEE, 20, 20, App->player);
 	//App->entities->CreateEntity(ANIMALS, BIGHRONER, 15, 20, App->player);
@@ -211,8 +209,6 @@ bool j1Scene::Update(float dt)
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
-	App->map->Disable();
-	App->ai_manager->Disable();
 	players[0] = players[1] = players[2] = players[3] = nullptr;
 	return true;
 }

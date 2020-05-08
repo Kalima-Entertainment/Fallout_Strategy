@@ -14,6 +14,7 @@
 #include "GenericPlayer.h"
 #include "j1Player.h"
 #include "AI_Player.h"
+#include "j1Scene.h"
 #include "j1Pathfinding.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -615,10 +616,10 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 				}
 
 				//create building
-				static_entity = (StaticEntity*)App->entities->CreateEntity(building_faction, type, x,y);
+				static_entity = (StaticEntity*)App->entities->CreateEntity(building_faction, type, x,y, App->scene->players[faction_number]);
 				static_entity->tiles = CalculateArea(first_tile_position, width, height);
 
-				App->entities->CreateEntity(building_faction, dynamic_type, x + 1, y + 1);
+				App->entities->CreateEntity(building_faction, dynamic_type, x + 1, y + 1, App->scene->players[faction_number]);
 
 			}
 			else if (object_name == "Animal") {

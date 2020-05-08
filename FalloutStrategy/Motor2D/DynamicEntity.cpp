@@ -189,7 +189,7 @@ bool DynamicEntity::Update(float dt) {
 	case ATTACK:
 		if (target_entity == nullptr)
 			state = IDLE;
-		else if ((target_entity->current_tile.DistanceNoSqrt(current_tile) > range) && (current_tile.DistanceManhattan(target_entity->current_tile) > 2)) {
+		else if (target_entity->current_tile.DistanceNoSqrt(current_tile) > range) {
 			PathfindToPosition(target_entity->current_tile);
 		}
 		else if (action_timer.ReadSec() > action_time) {
@@ -394,15 +394,7 @@ void DynamicEntity::Move(float dt) {
 					next_tile = path_to_target[1];
 					
 					if (App->entities->occupied_tiles[next_tile.x][next_tile.y]) {
-						if (current_tile.DistanceManhattan(target_tile) > 2) {
-							PathfindToPosition(target_tile);
-						}
-						else
-						{
-							path_to_target.clear();
-							state = IDLE;
-						}
-						return;
+						PathfindToPosition(target_tile);
 					}					
 				}
 				path_to_target.erase(path_to_target.begin());
@@ -435,7 +427,6 @@ void DynamicEntity::Move(float dt) {
 			}
 
 			direction = last_direction;
-			UpdateTile();
 			break;
 
 		case TOP_LEFT:

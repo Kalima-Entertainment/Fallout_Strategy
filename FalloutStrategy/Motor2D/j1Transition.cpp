@@ -145,20 +145,23 @@ void j1Transition::Transition()
 		Mix_HaltChannel(1);
 		transition = false;
 		App->gui->active;
-		App->minimap->active;
 		App->Mmanager->Enable();
-		App->scene->Enable();
 		App->player->Enable();
+		App->ai_manager->Enable();
+		App->scene->Enable();
+		//App->minimap->Enable();
 		App->isPaused = false;
 	}
 	else if ((fadetimer.Read() > 2500)&&(!App->gui->ingame)) {
 		Mix_ResumeMusic();
 		Mix_HaltChannel(1);
-		App->entities->Disable();
-		App->scene->Disable();
-		App->Mmanager->Disable();
+		App->ai_manager->Disable();
 		App->player->Disable();
 		App->entities->Disable();
+		App->scene->Disable();
+		App->map->Disable();
+		App->minimap->Disable();
+		App->Mmanager->Disable();
 		transition = false;
 		App->isPaused = false;
 	}

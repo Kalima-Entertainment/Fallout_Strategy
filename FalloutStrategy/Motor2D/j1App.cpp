@@ -69,6 +69,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(ai_manager);
 	AddModule(map);
 	//AddModule(collision);
+	AddModule(player);
 	AddModule(pathfinding);
 	AddModule(main_menu);
 	AddModule(entities);
@@ -76,7 +77,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(Mmanager);
 	AddModule(fowManager);
-	AddModule(player);
 
 	// scene last
 	AddModule(menu_manager);

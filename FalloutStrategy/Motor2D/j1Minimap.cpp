@@ -114,6 +114,7 @@ bool j1Minimap::PostUpdate() {
 
 		App->render->Blit(texture, position.x, position.y, NULL, 1.0, 0);
 
+		/*
 		if (App->render->fog_of_war) {
 			SDL_Rect fog_of_war_rect = {0,0, map_width/width, map_height/height};
 			iPoint rect_pos;
@@ -140,20 +141,24 @@ bool j1Minimap::PostUpdate() {
 			black_squares.clear();
 			grey_squares.clear();
 		}
+		*/
+
+		for (int i = 0; i < App->entities->entities.size(); i++)
+		{
+			SDL_Rect entity_rect = { 0,0,3,3 };
+			iPoint entity_position = App->minimap->WorldToMinimap(App->entities->entities[i]->position.x, App->entities->entities[i]->position.y);
+			entity_rect.x = entity_position.x;
+			entity_rect.y = entity_position.y;
+
+			Faction entity_faction = App->entities->entities[i]->faction;
+			if (App->player->faction == entity_faction) { App->render->DrawQuad(entity_rect, 0, 255, 0, 255, true, false); }
+			else { 
+				if(radar)
+				App->render->DrawQuad(entity_rect, 255, 0, 0, 255, true, false);
+			}
+		}
 
 		if (radar) {
-			for (int i = 0; i < App->entities->entities.size(); i++)
-			{
-				SDL_Rect entity_rect = { 0,0,3,3 };
-				iPoint entity_position = App->minimap->WorldToMinimap(App->entities->entities[i]->position.x, App->entities->entities[i]->position.y);
-				entity_rect.x = entity_position.x;
-				entity_rect.y = entity_position.y;
-
-				Faction entity_faction = App->entities->entities[i]->faction;
-				if (App->player->faction == entity_faction) { App->render->DrawQuad(entity_rect, 0, 255, 0, 255, true, false); }
-				else { App->render->DrawQuad(entity_rect, 255, 0, 0, 255, true, false); }
-			}
-
 			if (radar_timer.ReadSec() > radar_time) 
 				radar = false;
 
@@ -162,6 +167,7 @@ bool j1Minimap::PostUpdate() {
 
 			App->render->DrawLine(radar_line.x1, radar_line.y1, radar_line.x2, radar_line.y2, 0,255,0,255,false);
 		}
+
 		if (App->render->debug && App->pathfinding->show_nodes)
 		{
 			iPoint node_world_position;
@@ -182,7 +188,6 @@ bool j1Minimap::PostUpdate() {
 bool j1Minimap::CreateMinimap() {
 
 	PERF_START(ptimer);
-	int tile_margin = 3;
 	int half_width = map_width * 0.5f;
 
 	texture = SDL_CreateTexture(App->render->renderer, SDL_GetWindowPixelFormat(App->win->window), SDL_TEXTUREACCESS_TARGET, width, height);
@@ -195,7 +200,6 @@ bool j1Minimap::CreateMinimap() {
 		if (layer->properties.Get("Nodraw") != 0)
 			continue;
 
-		int total_tiles = 0;
 		for (int y = 0; y < MAP_LENGTH; ++y)
 		{
 			for (int x = 0; x < MAP_LENGTH; ++x)
@@ -207,10 +211,8 @@ bool j1Minimap::CreateMinimap() {
 
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = App->map->MapToWorld(x, y);
-					//camera culling
 
 					App->render->Blit(tileset->texture, pos.x + half_width + tileset->offset_x, pos.y + tileset->offset_y, &r, scale);
-					//total_tiles++;
 				}
 			}
 		}
