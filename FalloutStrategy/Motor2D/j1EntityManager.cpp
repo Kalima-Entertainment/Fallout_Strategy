@@ -197,6 +197,10 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 bool j1EntityManager::Awake(pugi::xml_node& config){
 	bool ret = true;
 	config_data = config;
+
+	radar_cost = config.child("radar").attribute("cost").as_int();
+	mr_handy_cost = config.child("mr_handy").attribute("cost").as_int();
+
 	RandomFactions();
 	LoadUpgradeCosts(config);
 	LoadUnitCosts();

@@ -30,7 +30,6 @@ public:
 	j1Entity* last_selected_entity;
 	bool god_mode;
 	iPoint Map_mouseposition;
-	int radar_cost;
 private:
 	float mouse_speed_multiplier;
 	bool border_scroll;
