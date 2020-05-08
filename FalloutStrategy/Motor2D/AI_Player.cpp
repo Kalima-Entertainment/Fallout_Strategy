@@ -14,6 +14,10 @@
 #include <math.h>
 
 AI_Player::AI_Player(Faction g_faction) : GenericPlayer(), is_attacking(false), last_barrack_to_spawn(1), gatherers_commanded(false) {
+	
+
+	name.assign("AI_Player");
+
 	faction = g_faction;
 	caps = App->ai_manager->GetAI_PlayerInfo(faction).initial_caps;
 	water = App->ai_manager->GetAI_PlayerInfo(faction).initial_water;
@@ -235,4 +239,24 @@ void AI_Player::GatherFood(ResourceBuilding* resource_spot) {
 			return;
 		}
 	}
+}
+
+// Load Game State
+bool AI_Player::Load(pugi::xml_node& data)
+{
+	//camera.x = data.child("camera").attribute("x").as_int();
+	//camera.y = data.child("camera").attribute("y").as_int();
+
+	return true;
+}
+
+// Save Game State
+bool AI_Player::Save(pugi::xml_node& data) const
+{
+	//pugi::xml_node cam = data.append_child("camera");
+
+	//cam.append_attribute("x") = camera.x;
+	//cam.append_attribute("y") = camera.y;
+
+	return true;
 }

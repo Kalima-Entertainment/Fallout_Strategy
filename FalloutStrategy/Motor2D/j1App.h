@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <list>
 #include "j1Module.h"
 #include "j1PerfTimer.h"
 #include "j1Timer.h"

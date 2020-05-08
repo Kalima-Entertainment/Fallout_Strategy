@@ -24,7 +24,10 @@
 #include <string>
 
 j1EntityManager::j1EntityManager(){
-	name = ("entities");
+
+
+	name.assign("entities");
+
 
 	blocked_movement = false;	
 	
@@ -194,6 +197,10 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 bool j1EntityManager::Awake(pugi::xml_node& config){
 	bool ret = true;
 	config_data = config;
+
+	radar_cost = config.child("radar").attribute("cost").as_int();
+	mr_handy_cost = config.child("mr_handy").attribute("cost").as_int();
+
 	RandomFactions();
 	LoadUpgradeCosts(config);
 	LoadUnitCosts();
@@ -899,4 +906,24 @@ void j1EntityManager::DestroyResourceSpot(ResourceBuilding* resource_spot) {
 			resource_buildings.erase(resource_buildings.begin() + i);
 		}
 	}
+}
+
+// Load Game State
+bool j1EntityManager::Load(pugi::xml_node& data)
+{
+	//camera.x = data.child("camera").attribute("x").as_int();
+	//camera.y = data.child("camera").attribute("y").as_int();
+
+	return true;
+}
+
+// Save Game State
+bool j1EntityManager::Save(pugi::xml_node& data) const
+{
+	//pugi::xml_node cam = data.append_child("camera");
+
+	//cam.append_attribute("x") = camera.x;
+	//cam.append_attribute("y") = camera.y;
+
+	return true;
 }

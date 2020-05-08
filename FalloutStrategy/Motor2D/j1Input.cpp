@@ -9,8 +9,9 @@
 
 j1Input::j1Input() : j1Module()
 {
-	name = ("input");
 
+	name = ("input");
+	
 	keyboard = new j1KeyState[MAX_KEYS];
 	memset(keyboard, KEY_IDLE, sizeof(j1KeyState) * MAX_KEYS);
 	memset(mouse_buttons, KEY_IDLE, sizeof(j1KeyState) * NUM_MOUSE_BUTTONS);

@@ -20,12 +20,16 @@ public:
 	void MoveEntity();
 	void UpdateResourceData(Resource resource_type, int quantity);
 	bool TouchingUI(int x, int y);
+
+	// Load / Save
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+
 public:
 	j1Entity* selected_entity;
 	j1Entity* last_selected_entity;
 	bool god_mode;
 	iPoint Map_mouseposition;
-	int radar_cost;
 private:
 	float mouse_speed_multiplier;
 	bool border_scroll;

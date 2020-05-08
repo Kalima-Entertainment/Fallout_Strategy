@@ -102,6 +102,12 @@ public:
 
 	void LoadUpgradeCosts(pugi::xml_node& config);
 	void LoadUnitCosts();
+
+	// Load / Save
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+
+
 public:
 	std::vector<j1Entity*> entities;
 	std::vector<ResourceBuilding*> resource_buildings;
@@ -129,6 +135,9 @@ public:
 	Upgrades_Data units_speed[4];
 	Upgrades_Data units_health[4];
 	Upgrades_Data units_creation_time[4];
+	int radar_cost;
+	int mr_handy_cost;
+
 private:
 	int loading_faction;
 	int loading_entity;

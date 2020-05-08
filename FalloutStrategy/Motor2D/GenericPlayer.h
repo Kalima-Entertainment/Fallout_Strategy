@@ -21,6 +21,10 @@ public:
 	int GetTroopsAmount() const;
 	bool DeleteEntity(j1Entity* entity);
 
+	// Load / Save
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+
 public:
 	int caps;
 	int water;

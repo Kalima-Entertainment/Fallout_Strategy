@@ -36,6 +36,10 @@ public:
 	bool FindFreeAdjacents(iPoint* base_tile);
 	bool IsTileFree(iPoint* adjacent);
 
+	// Load / Save
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+
 public:
 	std::list <j1Entity*> Units;
 private:
