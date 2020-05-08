@@ -4,14 +4,17 @@
 	<window />
 	<textures />
 	<audio />
-	<AI />
-	<map />
 	<:anonymous />
+	<AI_Manager />
+	<map />
+	<GenericPlayer />
 	<pathfinding />
 	<main_menu />
-	<entities />
+	<EntityManager />
 	<fonts />
 	<scene />
+	<MovementManager />
+	<:anonymous />
 	<menu_manager />
 	<gui />
 	<minimap />
@@ -19,6 +22,6 @@
 	<logo_scene />
 	<transition />
 	<renderer>
-		<camera x="-3200" y="-2136" />
+		<camera x="-192" y="-1016" />
 	</renderer>
 </game_state>

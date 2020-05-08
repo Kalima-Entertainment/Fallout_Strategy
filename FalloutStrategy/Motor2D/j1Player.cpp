@@ -17,6 +17,11 @@
 #include "j1Console.h"
 
 j1Player::j1Player() : GenericPlayer() {
+	
+
+	name.assign("GenericPlayer");
+
+
 	selected_entity = last_selected_entity = nullptr;
 	border_scroll = false;
 	mouse_speed_multiplier = 1.5f;
@@ -372,4 +377,24 @@ bool j1Player::TouchingUI(int x, int y) {
 	bool ret = false;
 	if (y > App->minimap->position.y - 8) { ret = true; }
 	return ret;
+}
+
+// Load Game State
+bool j1Player::Load(pugi::xml_node& data)
+{
+	//camera.x = data.child("camera").attribute("x").as_int();
+	//camera.y = data.child("camera").attribute("y").as_int();
+
+	return true;
+}
+
+// Save Game State
+bool j1Player::Save(pugi::xml_node& data) const
+{
+	//pugi::xml_node cam = data.append_child("camera");
+
+	//cam.append_attribute("x") = camera.x;
+	//cam.append_attribute("y") = camera.y;
+
+	return true;
 }

@@ -16,6 +16,10 @@
 
 j1MovementManager::j1MovementManager()
 {
+
+	name.assign("MovementManager");
+
+
 }
 
 j1MovementManager::~j1MovementManager()
@@ -200,4 +204,24 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path , float dt)
 	}
 	
 		
+}
+
+// Load Game State
+bool j1MovementManager::Load(pugi::xml_node& data)
+{
+	//camera.x = data.child("camera").attribute("x").as_int();
+	//camera.y = data.child("camera").attribute("y").as_int();
+
+	return true;
+}
+
+// Save Game State
+bool j1MovementManager::Save(pugi::xml_node& data) const
+{
+	//pugi::xml_node cam = data.append_child("camera");
+
+	//cam.append_attribute("x") = camera.x;
+	//cam.append_attribute("y") = camera.y;
+
+	return true;
 }

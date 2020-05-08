@@ -49,6 +49,10 @@ public:
 	Direction GetDirectionToGo(SDL_Rect next_tile_rect) const;
 	void UpdateTile();
 
+	// Load / Save
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+
 public:
 	float action_time;
 	iPoint next_tile;

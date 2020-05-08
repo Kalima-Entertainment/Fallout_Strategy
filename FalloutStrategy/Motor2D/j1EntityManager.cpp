@@ -24,7 +24,10 @@
 #include <string>
 
 j1EntityManager::j1EntityManager(){
-	name = ("entities");
+
+
+	name.assign("EntityManager");
+
 
 	blocked_movement = false;	
 	
@@ -899,4 +902,24 @@ void j1EntityManager::DestroyResourceSpot(ResourceBuilding* resource_spot) {
 			resource_buildings.erase(resource_buildings.begin() + i);
 		}
 	}
+}
+
+// Load Game State
+bool j1EntityManager::Load(pugi::xml_node& data)
+{
+	//camera.x = data.child("camera").attribute("x").as_int();
+	//camera.y = data.child("camera").attribute("y").as_int();
+
+	return true;
+}
+
+// Save Game State
+bool j1EntityManager::Save(pugi::xml_node& data) const
+{
+	//pugi::xml_node cam = data.append_child("camera");
+
+	//cam.append_attribute("x") = camera.x;
+	//cam.append_attribute("y") = camera.y;
+
+	return true;
 }

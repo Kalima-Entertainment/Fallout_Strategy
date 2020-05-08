@@ -20,6 +20,10 @@ public:
 	bool Update(float dt);
 	void GatherFood(ResourceBuilding* resource_spot);
 
+	// Load / Save
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+
 private:
 	void ChooseRandomPlayerEnemy();
 	DynamicEntity* GetClosestDynamicEntity();

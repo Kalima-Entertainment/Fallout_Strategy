@@ -38,6 +38,10 @@ public:
 	void UpgradeChrono();
 
 	void DebugSpawnsUpgrades();
+
+	// Load / Save
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
 	
 public:
 	std::vector<iPoint> tiles;

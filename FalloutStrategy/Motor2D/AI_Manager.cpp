@@ -9,7 +9,9 @@
 #include "brofiler/Brofiler/Brofiler.h"
 
 AI_Manager::AI_Manager() : j1Module(), beaten_ai_players(0) {
-	name = ("AI");
+
+	name.assign("AI_Manager");
+
 	players_created = false;
 	ai_player[0] = ai_player[1] = ai_player[2] = ai_player[3] = nullptr;
 }
@@ -113,3 +115,24 @@ bool AI_Manager::CleanUp() {
 }
 
 AI_Info AI_Manager::GetAI_PlayerInfo(Faction faction) { return ai_info[faction]; }
+
+// Load Game State
+bool AI_Manager::Load(pugi::xml_node& data)
+{
+	//camera.x = data.child("camera").attribute("x").as_int();
+	//camera.y = data.child("camera").attribute("y").as_int();
+
+	return true;
+}
+
+// Save Game State
+bool AI_Manager::Save(pugi::xml_node& data) const
+{
+	//pugi::xml_node cam = data.append_child("camera");
+
+	//cam.append_attribute("x") = camera.x;
+	//cam.append_attribute("y") = camera.y;
+
+
+	return true;
+}

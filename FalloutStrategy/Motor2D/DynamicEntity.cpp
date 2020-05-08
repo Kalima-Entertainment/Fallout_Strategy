@@ -794,3 +794,23 @@ UnitInfo::UnitInfo() {}
 UnitInfo::~UnitInfo() {}
 
 UnitInfo::UnitInfo(const UnitInfo& info) : color(info.color) {}
+
+// Load Game State
+bool DynamicEntity::Load(pugi::xml_node& data)
+{
+	//camera.x = data.child("camera").attribute("x").as_int();
+	//camera.y = data.child("camera").attribute("y").as_int();
+
+	return true;
+}
+
+// Save Game State
+bool DynamicEntity::Save(pugi::xml_node& data) const
+{
+	//pugi::xml_node cam = data.append_child("camera");
+
+	//cam.append_attribute("x") = camera.x;
+	//cam.append_attribute("y") = camera.y;
+
+	return true;
+}

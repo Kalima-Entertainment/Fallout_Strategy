@@ -102,6 +102,12 @@ public:
 
 	void LoadUpgradeCosts(pugi::xml_node& config);
 	void LoadUnitCosts();
+
+	// Load / Save
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+
+
 public:
 	std::vector<j1Entity*> entities;
 	std::vector<ResourceBuilding*> resource_buildings;

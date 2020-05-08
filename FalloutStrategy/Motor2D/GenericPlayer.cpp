@@ -2,7 +2,13 @@
 #include "j1Entity.h"
 #include <vector>
 
-GenericPlayer::GenericPlayer() : j1Module() {}
+GenericPlayer::GenericPlayer() : j1Module() {
+
+
+	name.assign("GenericPlayer");
+
+
+}
 
 GenericPlayer::~GenericPlayer() {}
 
@@ -53,5 +59,25 @@ bool GenericPlayer::DeleteEntity(j1Entity* entity) {
 	default:
 		break;
 	}
+	return true;
+}
+
+// Load Game State
+bool GenericPlayer::Load(pugi::xml_node& data)
+{
+	//camera.x = data.child("camera").attribute("x").as_int();
+	//camera.y = data.child("camera").attribute("y").as_int();
+
+	return true;
+}
+
+// Save Game State
+bool GenericPlayer::Save(pugi::xml_node& data) const
+{
+	//pugi::xml_node cam = data.append_child("camera");
+
+	//cam.append_attribute("x") = camera.x;
+	//cam.append_attribute("y") = camera.y;
+
 	return true;
 }
