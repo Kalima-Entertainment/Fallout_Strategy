@@ -26,7 +26,7 @@
 j1EntityManager::j1EntityManager(){
 
 
-	name.assign("EntityManager");
+	name.assign("entities");
 
 
 	blocked_movement = false;	

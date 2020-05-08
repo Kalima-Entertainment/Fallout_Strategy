@@ -10,7 +10,7 @@
 
 AI_Manager::AI_Manager() : j1Module(), beaten_ai_players(0) {
 
-	name.assign("AI_Manager");
+	name.assign("AI");
 
 	players_created = false;
 	ai_player[0] = ai_player[1] = ai_player[2] = ai_player[3] = nullptr;
