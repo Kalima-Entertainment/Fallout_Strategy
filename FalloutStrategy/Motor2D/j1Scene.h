@@ -67,6 +67,8 @@ public:
 	StatesMenu menu_state = StatesMenu::NONE;
 	GenericPlayer* players[4];
 
+	std::string modules[4];
+
 	//Rectangle Selection needed
 	iPoint mouse_pos = { 0,0 };
 	iPoint rectangle_origin = { 0,0 };

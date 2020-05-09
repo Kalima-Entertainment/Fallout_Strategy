@@ -64,8 +64,6 @@ bool j1Scene::Start()
 
 	App->pathfinding->SetMap();
 
-	std::string modules[4];
-
 	for (int i = 0; i < 4; i++)
 	{
 		int type = rand() % 4;
@@ -350,11 +348,24 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 // Load Game State
 bool j1Scene::Load(pugi::xml_node& data)
 {
-	//music_volume = data.child("volume").attribute("music").as_float();
-	//fx_volume = data.child("volume").attribute("fx").as_float();
+	
+	App->map->CleanUp();
+	App->minimap->CleanUp();
+	pugi::xml_node iterator;
+	int i = 0;
 
-	//Change_Volume_FX(fx_volume);
-	//Change_Volume_Music(music_volume);
+	while(iterator){
+		modules[i] = iterator.attribute("map").as_string();
+		LOG("%s", modules[i]);
+		iterator = iterator.next_sibling();
+		i++;
+	}
+
+	if (App->map->Load(modules) == true)
+	{
+		App->map->CreateWalkabilityMap();
+		App->minimap->Start();
+	}
 
 
 	return true;
@@ -363,10 +374,13 @@ bool j1Scene::Load(pugi::xml_node& data)
 // Save Game State
 bool j1Scene::Save(pugi::xml_node& data) const
 {
-	//pugi::xml_node volume = data.append_child("volume");
 
-	//volume.append_attribute("music") = music_volume;
-	//volume.append_attribute("fx") = fx_volume;
+	for(int i=0; i<4;i++){
+
+		pugi::xml_node module = data.append_child("modules");
+		module.append_attribute("map") = modules[i].c_str();
+
+	}
 
 	return true;
 
