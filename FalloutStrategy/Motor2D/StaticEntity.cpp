@@ -624,10 +624,11 @@ void StaticEntity::DebugSpawnsUpgrades() {
 // Load Game State
 bool StaticEntity::Load(pugi::xml_node& data)
 {
-	//camera.x = data.child("camera").attribute("x").as_int();
-	//camera.y = data.child("camera").attribute("y").as_int();
+	//float time_chrono_spawn = chrono_spawn.ReadSec(), time_chrono_upgrade = chrono_upgrade.ReadSec();
 
-	//LOG("%i %i", data.child("camera").attribute("x").as_int(), data.child("camera").attribute("y").as_int());
+	//upgrade_stack.upgrade_seconds = data.child("upgrade_stack").attribute("upgrade_seconds").as_int();
+	//time_chrono_spawn = data.child("chrono").attribute("chrono_spawn").as_float();
+	//time_chrono_upgrade = data.child("chrono").attribute("chrono_upgrade").as_float();
 
 	return true;
 }
@@ -635,10 +636,12 @@ bool StaticEntity::Load(pugi::xml_node& data)
 // Save Game State
 bool StaticEntity::Save(pugi::xml_node& data) const
 {
-	//pugi::xml_node cam = data.append_child("camera");
+	//pugi::xml_node upgrade_stack_pugi = data.append_child("upgrade_stack");
+	//pugi::xml_node chrono = data.append_child("chrono");
 
-	//cam.append_attribute("x") = camera.x;
-	//cam.append_attribute("y") = camera.y;
+	//upgrade_stack_pugi.append_attribute("upgrade_seconds") = upgrade_stack.upgrade_seconds;
+	//chrono.append_attribute("chrono_spawn") = chrono_spawn.Start;
+	//chrono.append_attribute("chrono_upgrade") = chrono_upgrade.Start;
 
 	return true;
 }

@@ -42,6 +42,11 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	// Load / Save
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+
+
 	StatesMenu GetMenuState();
 	void SetMenuState(const StatesMenu& menu);
 
@@ -61,6 +66,8 @@ public:
 	bool create = false;
 	StatesMenu menu_state = StatesMenu::NONE;
 	GenericPlayer* players[4];
+
+	std::string modules[4];
 
 	//Rectangle Selection needed
 	iPoint mouse_pos = { 0,0 };

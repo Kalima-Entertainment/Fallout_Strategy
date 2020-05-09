@@ -35,6 +35,10 @@ public:
 
 	void ChangeFullScreen(bool big=false);
 
+	// Load / Save
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+
 public:
 	//The window we'll be rendering to
 	SDL_Window* window;
@@ -43,6 +47,8 @@ public:
 	SDL_Surface* screen_surface;
 
 	bool fullscreen = false;
+
+	bool big_screen = false;
 
 private:
 	std::string	title;

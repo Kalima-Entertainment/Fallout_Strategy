@@ -41,6 +41,10 @@ public:
 	float Get_Music_Volume();
 	float Get_FX_Volume();
 
+	// Load / Save
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+
 	int Brotherhood_walk;
 	int Brotherhood_die;
 	int Brotherhood_hit;
@@ -79,10 +83,12 @@ public:
 	int members_fx;
 	int character_fx;
 
-private:
-
 	float				music_volume;
 	float				fx_volume;
+
+private:
+
+	
 
 
 	_Mix_Music*			music = NULL;

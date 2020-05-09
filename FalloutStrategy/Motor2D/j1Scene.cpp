@@ -64,8 +64,6 @@ bool j1Scene::Start()
 
 	App->pathfinding->SetMap();
 
-	std::string modules[4];
-
 	for (int i = 0; i < 4; i++)
 	{
 		int type = rand() % 4;
@@ -344,4 +342,46 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 		if (App->player->barrack[1] != nullptr)
 			App->player->barrack[1]->state = DIE;
 	}
+}
+
+
+// Load Game State
+bool j1Scene::Load(pugi::xml_node& data)
+{
+	
+	App->map->CleanUp();
+	App->minimap->CleanUp();
+	pugi::xml_node iterator;
+	int i = 0;
+
+	while(iterator){
+		modules[i] = iterator.attribute("map").as_string();
+		LOG("%s", modules[i]);
+		iterator = iterator.next_sibling();
+		i++;
+	}
+
+	if (App->map->Load(modules) == true)
+	{
+		App->map->CreateWalkabilityMap();
+		App->minimap->Start();
+	}
+
+
+	return true;
+}
+
+// Save Game State
+bool j1Scene::Save(pugi::xml_node& data) const
+{
+
+	for(int i=0; i<4;i++){
+
+		pugi::xml_node module = data.append_child("modules");
+		module.append_attribute("map") = modules[i].c_str();
+
+	}
+
+	return true;
+
 }
