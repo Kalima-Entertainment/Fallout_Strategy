@@ -48,11 +48,12 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	//if (!owner) owner = App->scene->players[faction];
 
 	j1Entity* entity = nullptr;
+	iPoint available_tile;
 
 	switch (type)
 	{
 	case MELEE:
-		iPoint available_tile = FindSpawnPoint(position_x, position_y);
+		available_tile = FindSpawnPoint(position_x, position_y);
 		entity = new Troop(MELEE, faction, available_tile, owner);
 		if (owner) {
 			owner->troops.push_back((Troop*)entity);
@@ -62,7 +63,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		break;
 
 	case RANGED:
-		iPoint available_tile = FindSpawnPoint(position_x, position_y);
+		available_tile = FindSpawnPoint(position_x, position_y);
 		entity = new Troop(RANGED, faction, available_tile, owner);
 		if (owner) {
 			owner->troops.push_back((Troop*)entity);
@@ -72,7 +73,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		break;
 
 	case GATHERER:
-		iPoint available_tile = FindSpawnPoint(position_x, position_y);
+		available_tile = FindSpawnPoint(position_x, position_y);
 		entity = new Gatherer(faction, available_tile, owner);
 		if (owner) {
 			owner->gatherers_vector.push_back((Gatherer*)entity);
@@ -135,9 +136,10 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	if (entity->reference_entity != nullptr) {
 		occupied_tiles[entity->current_tile.x][entity->current_tile.y] = true;
 		entities.push_back(entity);
-		entity->LoadReferenceData();
+		entity->LoadDataFromReference();
 	}
 
+	/*
 	if ((type == MELEE) || (type == RANGED) || (type == GATHERER) || (type == BIGHORNER) || (type == BRAHAM) || (type == DEATHCLAW) || (type == MR_HANDY)) {
 
 		//If there's another unit in that tile, we find a new spawn point
@@ -247,7 +249,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		}
 
 	}
-
+	*/
 	return entity;
 }
 
@@ -557,7 +559,6 @@ bool j1EntityManager::PostUpdate()
 	return ret;
 }
 
-
 bool j1EntityManager::LoadReferenceEntityAnimations() {
 	bool ret = true;
 
@@ -638,33 +639,43 @@ bool j1EntityManager::LoadReferenceEntityData() {
 				//type
 				if (type_node.name() == "melee") {
 					reference_entities[faction][MELEE]->LoadReferenceData(faction_node);
+					reference_entities[faction][MELEE]->LoadAnimations();
 				}
 				else if (type_node.name() == "ranged") {
 					reference_entities[faction][RANGED]->LoadReferenceData(faction_node);
+					reference_entities[faction][RANGED]->LoadAnimations();
 				}
 				else if (type_node.name() == "gatherer") {
 					reference_entities[faction][GATHERER]->LoadReferenceData(faction_node);
+					reference_entities[faction][GATHERER]->LoadAnimations();
 				}
 				else if (type_node.name() == "base") {
 					reference_entities[faction][BASE]->LoadReferenceData(faction_node);
+					reference_entities[faction][BASE]->LoadAnimations();
 				}
 				else if (type_node.name() == "laboratory") {
 					reference_entities[faction][LABORATORY]->LoadReferenceData(faction_node);
+					reference_entities[faction][LABORATORY]->LoadAnimations();
 				}
 				else if (type_node.name() == "barrack") {
 					reference_entities[faction][BARRACK]->LoadReferenceData(faction_node);
+					reference_entities[faction][BARRACK]->LoadAnimations();
 				}
 				else if (type_node.name() == "bighorner") {
 					reference_bighorner->LoadReferenceData(type_node);
+					reference_bighorner->LoadAnimations();
 				}
 				else if (type_node.name() == "braham") {
 					reference_braham->LoadReferenceData(type_node);
+					reference_bighorner->LoadAnimations();
 				}
 				else if (type_node.name() == "deathclaw") {
 					reference_deathclaw->LoadReferenceData(type_node);
+					reference_bighorner->LoadAnimations();
 				}
 				else if (type_node.name() == "mr_handy") {
 					reference_MrHandy->LoadReferenceData(type_node);
+					reference_bighorner->LoadAnimations();
 				}
 
 				faction_node = faction_node.next_sibling();

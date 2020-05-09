@@ -83,3 +83,36 @@ void Troop::Attack() {
 		}
 	}
 }
+
+bool Troop::LoadDataFromReference() {
+	bool ret = true;
+	Troop* reference_troop = (Troop*)reference_entity;
+
+	//load animations
+	for (int i = 0; i < NO_STATE; i++)
+	{
+		for (int j = 0; j < NO_DIRECTION; j++)
+		{
+			animations[i][j] = reference_troop->animations[i][j];
+		}
+	}
+
+	//load property data
+	current_health = max_health = reference_entity->max_health;
+	damage = reference_troop->damage;
+	speed = reference_troop->speed;
+	sprite_size = reference_entity->sprite_size;
+
+	return ret;
+}
+
+bool Troop::LoadReferenceData(pugi::xml_node& node) {
+	bool ret = true;
+	
+	max_health = node.attribute("health").as_int();
+	damage = node.attribute("damage").as_int();
+	speed.x = node.attribute("speed").as_int();
+	speed.y = speed.x * 0.5f;
+
+	return ret;
+}

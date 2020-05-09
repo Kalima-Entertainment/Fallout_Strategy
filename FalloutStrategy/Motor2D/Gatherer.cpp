@@ -77,3 +77,36 @@ void Gatherer::StoreGatheredResources() {
 	resource_collected = 0;
 	target_entity = nullptr;
 }
+
+bool Gatherer::LoadDataFromReference() {
+	bool ret = true;
+	Gatherer* reference_gatherer = (Gatherer*)reference_entity;
+
+	//load animations
+	for (int i = 0; i < NO_STATE; i++)
+	{
+		for (int j = 0; j < NO_DIRECTION; j++)
+		{
+			animations[i][j] = reference_gatherer->animations[i][j];
+		}
+	}
+
+	//load property data
+	current_health = max_health = reference_entity->max_health;
+	resource_capacity = reference_gatherer->resource_capacity;
+	speed = reference_gatherer->speed;
+	sprite_size = reference_entity->sprite_size;
+
+	return ret;
+}
+
+bool Gatherer::LoadReferenceData(pugi::xml_node& node) {
+	bool ret = true;
+
+	max_health = node.attribute("health").as_int();
+	resource_capacity = node.attribute("damage").as_int();
+	speed.x = node.attribute("speed").as_int();
+	speed.y = speed.x * 0.5f;
+
+	return ret;
+}

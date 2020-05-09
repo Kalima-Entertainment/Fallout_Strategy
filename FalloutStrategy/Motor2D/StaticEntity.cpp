@@ -56,7 +56,6 @@ StaticEntity::~StaticEntity() {
 	attacking_entity = nullptr;
 	current_animation = nullptr;
 	texture = nullptr;
-	path_to_target.clear();
 	tiles.clear();
 }
 

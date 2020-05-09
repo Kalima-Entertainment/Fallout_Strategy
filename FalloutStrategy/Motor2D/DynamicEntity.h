@@ -44,13 +44,10 @@ public:
 	Direction GetDirectionToGo(SDL_Rect next_tile_rect) const;
 	void UpdateTile();
 
-	bool LoadAnimations();
-//	bool LoadReferenceData();
-	bool DynamicEntity::LoadReferenceData(pugi::xml_node& node);
+	bool LoadAnimations(char* folder, char* file_name);
 
 private:
 	iPoint target_tile;
-	fPoint speed;
 	iPoint next_tile;
 	iPoint next_tile_position;
 	SDL_Rect next_tile_rect;
@@ -64,6 +61,7 @@ public:
 	Direction direction;
 	Direction last_direction;
 
+	fPoint speed;
 	bool is_agressive;
 
 	j1Timer action_timer;

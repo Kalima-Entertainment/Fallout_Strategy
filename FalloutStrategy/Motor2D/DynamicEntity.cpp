@@ -17,7 +17,7 @@
 #include "FoWManager.h"
 
 DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile, GenericPlayer* g_owner) : j1Entity() {
-
+	/*
 	switch (g_type)
 	{
 	case MELEE:
@@ -94,7 +94,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 		}
 		visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
 	}	
-	
+	*/
 }
 
 DynamicEntity::~DynamicEntity() {
@@ -520,44 +520,23 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 	}
 }
 
-bool DynamicEntity::LoadAnimations() {
+bool DynamicEntity::LoadAnimations(char* folder, char* file_name) {
 	bool ret = true;
 	char* faction_char = { "NoFaction" };
 	char* type_char = { "NoType" };
 	float speed_reducer = 0.065f;
-
-	//entity faction
-	if (faction == VAULT) faction_char = "VaultDwellers";
-	else if (faction == BROTHERHOOD) faction_char = "Brotherhood";
-	else if (faction == MUTANT) faction_char = "SuperMutant";
-	else if (faction == GHOUL) faction_char = "Ghouls";
-	else if (faction == ANIMALS) faction_char = "Animals";
-
-	//entity type
-	switch (type) {
-	case MELEE: type_char = "Melee"; break;
-	case RANGED: type_char = "Ranged"; break;
-	case GATHERER: type_char = "Gatherer"; break;
-	case BIGHORNER: type_char = "Bighorner"; break;
-	case BRAHAM: type_char = "Braham"; break;
-	case DEATHCLAW: type_char = "Deathclaw"; break;
-	case MR_HANDY: type_char = faction_char = "Mr_Handy"; break;
-	default: break;
-	}
 	
-	std::string file = std::string("Assets/textures/characters/").append(faction_char).append("/").append(faction_char).append("_").append(type_char);
-	std::string animation_path = file;
-	animation_path.append(".tmx");
-	std::string texture_path = file;
-	texture_path.append(".png");
+	std::string tmx = std::string(folder).append(file_name);
 
 	pugi::xml_document animation_file;
-	pugi::xml_parse_result result = animation_file.load_file(animation_path.c_str());
-	texture = App->tex->Load(texture_path.c_str());
+	pugi::xml_parse_result result = animation_file.load_file(tmx.c_str());
+
+	std::string image_path = std::string(folder).append(animation_file.child("map").child("tileset").child("image").attribute("source").as_string());
+	texture = App->tex->Load(image_path.c_str());
 
 	if (result == NULL)
 	{
-		LOG("Could not load animation tmx file %s. pugi error: %s", file.c_str(), result.description());
+		LOG("Could not load animation tmx file %s. pugi error: %s", tmx, result.description());
 		ret = false;
 	}
 
@@ -585,16 +564,22 @@ bool DynamicEntity::LoadAnimations() {
 		bool loop = true;
 
 		//animation
-		if (animation_name == "idle") state = IDLE;
-		else if (animation_name == "walk") state = WALK;
-		else if (animation_name == "attack") state = ATTACK;
-		else if (animation_name == "gather") state = GATHER;
+		if (animation_name == "idle") 
+			state = IDLE;
+		else if (animation_name == "walk") 
+			state = WALK;
+		else if (animation_name == "attack") 
+			state = ATTACK;
+		else if (animation_name == "gather") 
+			state = GATHER;
 		else if (animation_name == "hit") {
 			state = HIT;
-			loop = false;}
+			loop = false;
+		}
 		else if (animation_name == "die") {
 			state = DIE;
-			loop = false; }
+			loop = false; 
+		}
 
 		//animation direction
 		if (animation_direction == "top_left") direction = TOP_LEFT;
@@ -621,31 +606,6 @@ bool DynamicEntity::LoadAnimations() {
 	return ret;
 }
 
-bool DynamicEntity::LoadReferenceData(pugi::xml_node& node) {
-	bool ret = true;
-	DynamicEntity* dynamic_reference = (DynamicEntity*)reference_entity;
-
-	//load animations
-	for (int i = 0; i < NO_STATE; i++)
-	{
-		for (int j = 0; j < NO_DIRECTION; j++)
-		{
-			animations[i][j] = dynamic_reference->animations[i][j];
-		}
-	}
-
-	//load property data
-	current_health = max_health = reference_entity->max_health;
-	storage_capacity= damage = reference_entity->damage;
-	speed = reference_entity->speed;
-	sprite_size = reference_entity->sprite_size;
-
-	if (faction == ANIMALS) {
-		resource_collected = ((DynamicEntity*)reference_entity)->resource_collected;
-	}
-
-	return ret;
-}
 
 Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
 

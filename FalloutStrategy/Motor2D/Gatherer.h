@@ -13,6 +13,9 @@ public:
 	void Gather();
 	void StoreGatheredResources();
 
+	bool LoadDataFromReference();
+	bool LoadReferenceData(pugi::xml_node& node);
+
 private:
 	ResourceBuilding* resource_building;
 	Resource resource_type;

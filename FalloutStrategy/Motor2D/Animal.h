@@ -9,10 +9,13 @@ public:
 
 	bool Update(float dt);
 
+	bool LoadDataFromReference();
+	bool LoadReferenceData(pugi::xml_node& node);
+
 public:
 
 private:
-
+	int resource_quantity;
 };
 
 #endif // !_ANIMAL_H_

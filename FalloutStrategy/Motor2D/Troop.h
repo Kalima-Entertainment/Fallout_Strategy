@@ -11,6 +11,9 @@ public:
 	bool Update(float dt);
 	void Attack();
 
+	bool LoadDataFromReference();
+	bool LoadReferenceData(pugi::xml_node& node);
+
 private:
 	int damage;
 	int range;

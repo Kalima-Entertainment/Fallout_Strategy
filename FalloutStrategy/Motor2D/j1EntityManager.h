@@ -18,7 +18,7 @@ class StaticEntity;
 enum EntityType;
 class GenericPlayer;
 
-#define REFERENCE_ENTITIES 24
+#define REFERENCE_ENTITIES 28
 
 enum class Resource {
 	CAPS,
@@ -93,7 +93,6 @@ public:
 	iPoint ClosestTile(iPoint position, std::vector<iPoint> entity_tiles) const;
 	iPoint FindFreeAdjacentTile(iPoint origin, iPoint destination);
 
-	bool SetReferenceEntities();
 	bool LoadReferenceEntityAnimations();
 	bool LoadReferenceEntityData();
 
