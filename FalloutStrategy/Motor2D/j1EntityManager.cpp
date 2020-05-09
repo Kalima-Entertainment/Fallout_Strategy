@@ -58,7 +58,9 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 			owner->troops.push_back((Troop*)entity);
 			owner->melees++;
 		}
+		entity->reference_entity = reference_entities[faction][MELEE];
 		break;
+
 	case RANGED:
 		iPoint available_tile = FindSpawnPoint(position_x, position_y);
 		entity = new Troop(RANGED, faction, available_tile, owner);
@@ -66,7 +68,9 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 			owner->troops.push_back((Troop*)entity);
 			owner->rangeds++;
 		}
+		entity->reference_entity = reference_entities[faction][RANGED];
 		break;
+
 	case GATHERER:
 		iPoint available_tile = FindSpawnPoint(position_x, position_y);
 		entity = new Gatherer(faction, available_tile, owner);
@@ -74,19 +78,25 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 			owner->gatherers_vector.push_back((Gatherer*)entity);
 			owner->gatherers++;
 		}
+		entity->reference_entity = reference_entities[faction][GATHERER];
 		break;
+
 	case BASE:
 		entity = new StaticEntity(faction, BASE, { position_x, position_y }, owner);
 		if (owner) {
 			owner->base = (StaticEntity*)entity;
 		}
+		entity->reference_entity = reference_entities[faction][BASE];
 		break;
+
 	case LABORATORY:
 		entity = new StaticEntity(faction, LABORATORY, { position_x, position_y }, owner);
 		if (owner) {
 			owner->laboratory = (StaticEntity*)entity;
 		}
+		entity->reference_entity = reference_entities[faction][LABORATORY];
 		break;
+
 	case BARRACK:
 		entity = new StaticEntity(faction, BIGHORNER, { position_x, position_y }, owner);
 		if (owner) {
@@ -95,23 +105,37 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 			else if (!owner->barrack[1])
 				owner->barrack[1] = (StaticEntity*)entity;
 		}
+		entity->reference_entity = reference_entities[faction][BARRACK];
 		break;
+
 	case BIGHORNER:
 		entity = new Animal(BIGHORNER, { position_x, position_y });
+		entity->reference_entity = reference_bighorner;
 		break;
+
 	case BRAHAM:
 		entity = new Animal(BRAHAM, { position_x, position_y });
+		entity->reference_entity = reference_braham;
 		break;
+
 	case DEATHCLAW:
 		break;
+
 	case MR_HANDY:
 		entity = new Troop(MR_HANDY, faction, { position_x, position_y }, owner);
 		if (owner) {
 			owner->troops.push_back((Troop*)entity);
 		}
+		entity->reference_entity = reference_MrHandy;
 		break;
 	default:
 		break;
+	}
+
+	if (entity->reference_entity != nullptr) {
+		occupied_tiles[entity->current_tile.x][entity->current_tile.y] = true;
+		entities.push_back(entity);
+		entity->LoadReferenceData();
 	}
 
 	if ((type == MELEE) || (type == RANGED) || (type == GATHERER) || (type == BIGHORNER) || (type == BRAHAM) || (type == DEATHCLAW) || (type == MR_HANDY)) {
@@ -123,7 +147,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		if ((faction != ANIMALS) && (type != MR_HANDY))
 			entity->reference_entity = reference_entities[faction][type];
 		else if (type == BIGHORNER)
-			entity->reference_entity = reference_bighroner;
+			entity->reference_entity = reference_bighorner;
 		else if (type == BRAHAM)
 			entity->reference_entity = reference_braham;
 		else if (type == DEATHCLAW)
@@ -269,7 +293,7 @@ bool j1EntityManager::Start() {
 		}
 	}
 
-	reference_bighroner = (DynamicEntity*)CreateEntity(NO_FACTION, BIGHORNER, NO_FACTION, BIGHORNER);
+	reference_bighorner = (DynamicEntity*)CreateEntity(NO_FACTION, BIGHORNER, NO_FACTION, BIGHORNER);
 	reference_braham = (DynamicEntity*)CreateEntity(NO_FACTION, BRAHAM, NO_FACTION, BRAHAM);
 	reference_deathclaw = (DynamicEntity*)CreateEntity(NO_FACTION, DEATHCLAW, NO_FACTION, DEATHCLAW);
 	reference_MrHandy = (DynamicEntity*)CreateEntity(NO_FACTION, MR_HANDY, NO_FACTION, MR_HANDY);
@@ -546,7 +570,7 @@ bool j1EntityManager::LoadReferenceEntityAnimations() {
 
 		if (loading_faction == ANIMALS) {
 			if (loading_entity == 1) 
-				ret = reference_bighroner->LoadAnimations();
+				ret = reference_bighorner->LoadAnimations();
 			else if (loading_entity == 2)
 				ret = reference_braham->LoadAnimations();
 			else if (loading_entity == 3) {
@@ -585,11 +609,72 @@ bool j1EntityManager::LoadReferenceEntityData() {
 	else
 		 entities_node = entities_file.child("entities");
 
-	pugi::xml_node type_node = entities_node.first_child();
+	pugi::xml_node class_node = entities_node.child("dynamic").first_child();
+	pugi::xml_node type_node;
 	pugi::xml_node faction_node;
 	Faction faction = NO_FACTION;
 	EntityType type = NO_TYPE;
 
+	while (class_node)
+	{
+		type_node = class_node.first_child();
+
+		while (type_node)
+		{
+			faction_node = type_node.first_child();
+
+			while (faction_node)
+			{
+				//faction
+				if (faction_node.name() == "vault")
+					faction = VAULT;
+				else if (faction_node.name() == "brotherhood")
+					faction = BROTHERHOOD;
+				else if (faction_node.name() == "mutant")
+					faction = MUTANT;
+				else if (faction_node.name() == "ghoul")
+					faction = GHOUL;
+
+				//type
+				if (type_node.name() == "melee") {
+					reference_entities[faction][MELEE]->LoadReferenceData(faction_node);
+				}
+				else if (type_node.name() == "ranged") {
+					reference_entities[faction][RANGED]->LoadReferenceData(faction_node);
+				}
+				else if (type_node.name() == "gatherer") {
+					reference_entities[faction][GATHERER]->LoadReferenceData(faction_node);
+				}
+				else if (type_node.name() == "base") {
+					reference_entities[faction][BASE]->LoadReferenceData(faction_node);
+				}
+				else if (type_node.name() == "laboratory") {
+					reference_entities[faction][LABORATORY]->LoadReferenceData(faction_node);
+				}
+				else if (type_node.name() == "barrack") {
+					reference_entities[faction][BARRACK]->LoadReferenceData(faction_node);
+				}
+				else if (type_node.name() == "bighorner") {
+					reference_bighorner->LoadReferenceData(type_node);
+				}
+				else if (type_node.name() == "braham") {
+					reference_braham->LoadReferenceData(type_node);
+				}
+				else if (type_node.name() == "deathclaw") {
+					reference_deathclaw->LoadReferenceData(type_node);
+				}
+				else if (type_node.name() == "mr_handy") {
+					reference_MrHandy->LoadReferenceData(type_node);
+				}
+
+				faction_node = faction_node.next_sibling();
+			}
+			type_node = type_node.next_sibling();
+		}
+		class_node = class_node.next_sibling();
+	}
+
+	/*
 	//load dynamic entities
 	faction_node = type_node.first_child();
 	while (type_node != nullptr) {
@@ -636,7 +721,7 @@ bool j1EntityManager::LoadReferenceEntityData() {
 				else if (type != MR_HANDY)
 				{
 					DynamicEntity* animal = nullptr;
-					if (type == BIGHORNER) animal = reference_bighroner;
+					if (type == BIGHORNER) animal = reference_bighorner;
 					else if (type == BRAHAM) animal = reference_braham;
 					else if (type == DEATHCLAW) animal = reference_deathclaw;
 
@@ -661,6 +746,7 @@ bool j1EntityManager::LoadReferenceEntityData() {
 		type_node = type_node.next_sibling();
 		faction_node = type_node.first_child();
 	}
+	*/
 
 	return ret;
 }
@@ -975,8 +1061,4 @@ iPoint j1EntityManager::FindSpawnPoint(int position_x, int position_y) {
 		}
 	}
 	return iPoint(position_x, position_y);
-}
-
-bool j1EntityManager::CreateReferenceEntities() {
-
 }

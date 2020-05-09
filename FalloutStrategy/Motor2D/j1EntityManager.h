@@ -93,7 +93,7 @@ public:
 	iPoint ClosestTile(iPoint position, std::vector<iPoint> entity_tiles) const;
 	iPoint FindFreeAdjacentTile(iPoint origin, iPoint destination);
 
-	bool CreateReferenceEntities();
+	bool SetReferenceEntities();
 	bool LoadReferenceEntityAnimations();
 	bool LoadReferenceEntityData();
 
@@ -116,7 +116,7 @@ public:
 	int randomFaction[4];
 	Unit_Data unit_data[4][3];
 	j1Entity* reference_entities[4][6];
-	DynamicEntity* reference_bighroner;
+	DynamicEntity* reference_bighorner;
 	DynamicEntity* reference_braham;
 	DynamicEntity* reference_deathclaw;
 	DynamicEntity* reference_MrHandy;
