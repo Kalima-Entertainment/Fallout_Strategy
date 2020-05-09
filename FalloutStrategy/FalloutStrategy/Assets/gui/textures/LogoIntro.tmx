@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="2" height="2" tilewidth="416" tileheight="416" nextobjectid="1">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="2" height="2" tilewidth="416" tileheight="260" nextobjectid="1">
  <tileset firstgid="1" name="LogoFallout" tilewidth="416" tileheight="416" tilecount="60" columns="10">
   <image source="LogoFallout.png" trans="ff00ff" width="4178" height="2532"/>
   <tile id="0">

@@ -21,7 +21,7 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
-
+	bool LogoScene::LoadAnimations();
 	
 	SDL_Texture* video_texture = nullptr;
 	int my_video;
@@ -33,7 +33,7 @@ private:
 	SDL_Texture* start_game_tex;
 	SDL_Rect start_game_rect;
 	float last_dt;
-	bool renderLogo = true;
+	bool Loop = true;
 	j1Timer Timer;
 	bool drawable = true;
 	bool sound_end = true;

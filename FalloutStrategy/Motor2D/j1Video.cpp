@@ -53,9 +53,6 @@ bool j1Video::CleanUp()
 
 int j1Video::Load(const char* file, SDL_Renderer* renderer)
 {
-	//TODO 2: After that we need to create a vido and audio buffer and fill them with THEORAPLAY_getAudio and THEORAPLAY_getVideo. 
-	const THEORAPLAY_VideoFrame* video = NULL;
-
 	//TODO 1: Decode the format. To do that we use THEORAPLAY_Decoder
 	THEORAPLAY_Decoder* decoder = THEORAPLAY_startDecodeFile(file, 30, THEORAPLAY_VIDFMT_IYUV);
 	if (!decoder)
@@ -63,6 +60,9 @@ int j1Video::Load(const char* file, SDL_Renderer* renderer)
 		LOG("Failed to start decoding file");
 		return 0;
 	}
+
+	//TODO 2: After that we need to create a vido and audio buffer and fill them with THEORAPLAY_getAudio and THEORAPLAY_getVideo. 
+	const THEORAPLAY_VideoFrame* video = NULL;
 
 	while (!video)
 	{
@@ -87,6 +87,9 @@ int j1Video::Load(const char* file, SDL_Renderer* renderer)
 	player->texture = overlay;
 	player->baseticks = SDL_GetTicks();
 	player->framems = (video->fps == 0.0) ? 0 : ((Uint32)(1000.0 / video->fps));
+
+	
+
 
 	return (int)player;
 }
@@ -145,7 +148,6 @@ SDL_Texture* j1Video::UpdateVideo(int video_id)
 		}
 	}
 
-	
 
 	return vid->texture;
 }
@@ -153,13 +155,6 @@ SDL_Texture* j1Video::UpdateVideo(int video_id)
 void j1Video::DestroyVideo(int video)
 {
 	j1Video* vid = (j1Video*)video;
-
-	while (audio_queue != NULL)
-	{
-		SDL_LockAudio();
-		SDL_UnlockAudio();
-		SDL_Delay(10);
-	}
 
 	//TODO 4: Just free everything the texture, video, audio and decoder:
 	SDL_DestroyTexture(vid->texture);

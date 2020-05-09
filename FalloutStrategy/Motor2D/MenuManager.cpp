@@ -45,23 +45,22 @@ void MenuManager::CreateMenu(Menu menu) {
 
 		//Images															
 		main_menu[0] = (j1Image*)App->gui->CreateImage(-5, 0, Image, { 1529, 0, 1502, 775 }, NULL, this);
-		main_menu[1] = (j1Image*)App->gui->CreateImage(0, 350, Image, { 0, 1016, 871, 516 }, NULL, this);
-		main_menu[2] = (j1Image*)App->gui->CreateImage(40, 40, Image, { 938, 903, 505, 233 }, NULL, this);
-		main_menu[3] = (j1Image*)App->gui->CreateImage(827, 260, Image, { 0, 0, 416, 448 }, NULL, this);
-
-		//Labels
-		main_menu[4] = (UI_Label*)App->gui->CreateLabel(957, 310, Label, "NEW GAME", NULL, this, NULL);
-		main_menu[5] = (UI_Label*)App->gui->CreateLabel(957, 387, Label, "LOAD GAME", NULL, this, NULL);
-		main_menu[6] = (UI_Label*)App->gui->CreateLabel(957, 464, Label, "SETTINGS", NULL, this, NULL);
-		main_menu[7] = (UI_Label*)App->gui->CreateLabel(957, 541, Label, "CREDITS", NULL, this, NULL);
-		main_menu[8] = (UI_Label*)App->gui->CreateLabel(957, 618, Label, "EXIT", NULL, this, NULL);
 
 		//Buttons
-		main_menu[9] = (UI_Button*)App->gui->CreateButton(887, 295, button_new_game, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
-		main_menu[10] = (UI_Button*)App->gui->CreateButton(887, 373, button_load_game, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
-		main_menu[11] = (UI_Button*)App->gui->CreateButton(887, 450, button_settings, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
-		main_menu[12] = (UI_Button*)App->gui->CreateButton(887, 527, button_credits, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
-		main_menu[13] = (UI_Button*)App->gui->CreateButton(887, 604, button_exit, { 1596,834,60,62 }, { 1596,901,60,62 }, { 1596,967,60,62 }, NULL, this);
+		main_menu[1] = (UI_Button*)App->gui->CreateButton(160, 540, button_new_game, { 1372,927,187,49 }, { 1372,987,187,49 }, { 1372,1046,187,49 }, NULL, this);
+		main_menu[2] = (UI_Button*)App->gui->CreateButton(360, 540, button_load_game, { 1372,927,187,49 }, { 1372,987,187,49 }, { 1372,1046,187,49 }, NULL, this);
+		main_menu[3] = (UI_Button*)App->gui->CreateButton(90, 610, button_settings, { 1372,927,187,49 }, { 1372,987,187,49 }, { 1372,1046,187,49 }, NULL, this);
+		main_menu[4] = (UI_Button*)App->gui->CreateButton(290, 610, button_credits, { 1372,927,187,49 }, { 1372,987,187,49 }, { 1372,1046,187,49 }, NULL, this);
+		main_menu[5] = (UI_Button*)App->gui->CreateButton(490, 610, button_exit, { 1372,927,187,49 }, { 1372,987,187,49 }, { 1372,1046,187,49 }, NULL, this);
+
+		//Labels
+		main_menu[6] = (UI_Label*)App->gui->CreateLabel(205, 555, Label, "NEW GAME", NULL, this, NULL, "StackedPixelSmall");
+		main_menu[7] = (UI_Label*)App->gui->CreateLabel(405, 555, Label, "LOAD GAME", NULL, this, NULL, "StackedPixelSmall");
+		main_menu[8] = (UI_Label*)App->gui->CreateLabel(140, 625, Label, "SETTINGS", NULL, this, NULL, "StackedPixelSmall");
+		main_menu[9] = (UI_Label*)App->gui->CreateLabel(345, 625, Label, "CREDITS", NULL, this, NULL, "StackedPixelSmall");
+		main_menu[10] = (UI_Label*)App->gui->CreateLabel(560, 625, Label, "EXIT", NULL, this, NULL, "StackedPixelSmall");
+
+
 
 		App->render->camera.x = 0;
 		App->render->camera.y = 0;
@@ -682,7 +681,7 @@ void MenuManager::DestroyMenu(Menu menu) {
 	{
 
 	case Menu::MAIN_MENU:
-		App->gui->DeleteArrayElements(main_menu, 14);
+		App->gui->DeleteArrayElements(main_menu, 11);
 		break;
 	case Menu::SETTINGS:
 		App->gui->DeleteArrayElements(settings_menu, 23);

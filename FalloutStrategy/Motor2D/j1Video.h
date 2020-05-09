@@ -43,8 +43,6 @@ public:
 	SDL_Texture* SDLCALL UpdateVideo(int video);
 	int SDLCALL IsPlaying(int video);
 	void SDLCALL DestroyVideo(int video);
-	static void SDLCALL AudioCallback(void* userdata, Uint8* stream, int len);
-	static void QueueAudio(const THEORAPLAY_AudioPacket* audio);
 
 private:
 

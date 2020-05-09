@@ -708,10 +708,8 @@ int THEORAPLAY_isDecoding(THEORAPLAY_Decoder* decoder)
     int retval = 0;
     if (ctx)
     {
-        Mutex_Lock(ctx->lock);
-        retval = (ctx && (ctx->audiolist || ctx->videolist ||
+        retval = (ctx && (ctx->videolist ||
             (ctx->thread_created && !ctx->thread_done)));
-        Mutex_Unlock(ctx->lock);
     } // if
     return retval;
 } // THEORAPLAY_isDecoding
