@@ -5,12 +5,14 @@
 	<textures />
 	<audio />
 	<:anonymous />
-	<AI_Manager />
+	<AI />
 	<map />
-	<GenericPlayer />
+	<GenericPlayer>
+		<resource caps="100" food="50" water="20" />
+	</GenericPlayer>
 	<pathfinding />
 	<main_menu />
-	<EntityManager />
+	<entities />
 	<fonts />
 	<scene />
 	<MovementManager />
@@ -22,6 +24,6 @@
 	<logo_scene />
 	<transition />
 	<renderer>
-		<camera x="-192" y="-1016" />
+		<camera x="771" y="-3942" />
 	</renderer>
 </game_state>

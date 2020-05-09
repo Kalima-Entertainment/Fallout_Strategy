@@ -19,7 +19,7 @@
 j1Player::j1Player() : GenericPlayer() {
 	
 
-	name.assign("GenericPlayer");
+	name.assign("Player");
 
 
 	selected_entity = last_selected_entity = nullptr;
@@ -29,7 +29,7 @@ j1Player::j1Player() : GenericPlayer() {
 	base = barrack[0] = barrack[1] = laboratory = nullptr;
 
 	caps = 100;
-	food = 100;
+	food = 110;
 	water = 100;
 
 	god_mode = false;
@@ -381,19 +381,22 @@ bool j1Player::TouchingUI(int x, int y) {
 // Load Game State
 bool j1Player::Load(pugi::xml_node& data)
 {
-	//camera.x = data.child("camera").attribute("x").as_int();
-	//camera.y = data.child("camera").attribute("y").as_int();
-
+	caps = data.child("resource").attribute("caps").as_int();
+	food = data.child("resource").attribute("food").as_int();
+	water= data.child("resource").attribute("water").as_int();
+	App->menu_manager->DestroyMenu(Menu::RESOURCES);
+	App->menu_manager->CreateMenu(Menu::RESOURCES);
 	return true;
 }
 
 // Save Game State
 bool j1Player::Save(pugi::xml_node& data) const
 {
-	//pugi::xml_node cam = data.append_child("camera");
+	pugi::xml_node res = data.append_child("resource");
 
-	//cam.append_attribute("x") = camera.x;
-	//cam.append_attribute("y") = camera.y;
+	res.append_attribute("caps") = caps;
+	res.append_attribute("food") = food;
+	res.append_attribute("water") = water;
 
 	return true;
 }
