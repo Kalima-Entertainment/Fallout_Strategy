@@ -911,8 +911,62 @@ void j1EntityManager::DestroyResourceSpot(ResourceBuilding* resource_spot) {
 // Load Game State
 bool j1EntityManager::Load(pugi::xml_node& data)
 {
-	//camera.x = data.child("camera").attribute("x").as_int();
-	//camera.y = data.child("camera").attribute("y").as_int();
+
+	//DestroyAllEntities();
+
+	Faction faction;
+	EntityType type;
+	fPoint position;
+	iPoint current_tile, target_tile;
+	int current_health;
+
+	pugi::xml_node iterator = data.first_child();
+
+	while (iterator)
+	{
+
+
+		if (iterator.attribute("type:").as_string() == "melee") { type = MELEE; }
+		else if (iterator.attribute("type:").as_string() == "ranged") { type = RANGED; }
+		else if (iterator.attribute("type:").as_string() == "gatherer") { type = GATHERER; }
+		else if (iterator.attribute("type:").as_string() == "base") { type = BASE; }
+		else if (iterator.attribute("type:").as_string() == "laboratory") { type = LABORATORY; }
+		else if (iterator.attribute("type:").as_string() == "barrack") { type = BARRACK; }
+		else if (iterator.attribute("type:").as_string() == "bighorner") { type = BIGHORNER; }
+		else if (iterator.attribute("type:").as_string() == "braham") { type = BRAHAM; }
+		else if (iterator.attribute("type:").as_string() == "deathclaw") { type = DEATHCLAW; }
+		else if (iterator.attribute("type:").as_string() == "mr_handy") { type = MR_HANDY; }
+
+		if (iterator.attribute("faction:").as_string() == "brotherhood") { faction = BROTHERHOOD; }
+		else if (iterator.attribute("faction:").as_string() == "supermutant"){ faction = MUTANT; }
+		else if (iterator.attribute("faction:").as_string() == "vault"){ faction = VAULT; }
+		else if (iterator.attribute("faction:").as_string() == "ghoul") { faction = GHOUL; }
+		else if (iterator.attribute("faction:").as_string() == "no_faction") { faction = NO_FACTION; }
+
+		
+
+		position.x = iterator.attribute("position_x:").as_float();
+		position.y = iterator.attribute("position_y:").as_float();
+		current_tile.x = iterator.attribute("current_tile_x:").as_int();
+		current_tile.y = iterator.attribute("current_tile_y:").as_int();
+		target_tile.x = iterator.attribute("target_tile_x:").as_int();
+		target_tile.y = iterator.attribute("target_tile_y:").as_int();
+		current_health = iterator.attribute("current_health:").as_int();
+
+		LOG("%f %f %i", position.x, position.y, current_health);
+
+		//if (faction == ANIMALS) {CreateEntity(faction,type, position.x, position.y);}
+		//else {CreateEntity(faction, type, position.x, position.y, App->scene->players[faction]);}
+		
+		iterator = iterator.next_sibling();
+
+	}
+
+
+
+
+
+	LOG("%i", entities.size());
 
 	return true;
 }
@@ -920,10 +974,40 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 // Save Game State
 bool j1EntityManager::Save(pugi::xml_node& data) const
 {
-	//pugi::xml_node cam = data.append_child("camera");
+	
+	for (int i = 0; i < entities.size(); i++)
+	{
+		
+		pugi::xml_node entities_pugi = data.append_child("entity");
+		entities_pugi.append_attribute("number") = i;
 
-	//cam.append_attribute("x") = camera.x;
-	//cam.append_attribute("y") = camera.y;
+		if (entities[i]->type == MELEE) { entities_pugi.append_attribute("type:") = "melee"; }
+		else if (entities[i]->type == RANGED) { entities_pugi.append_attribute("type:") = "ranged"; }
+		else if (entities[i]->type == GATHERER) { entities_pugi.append_attribute("type:") = "gatherer"; }
+		else if (entities[i]->type == BASE) { entities_pugi.append_attribute("type:") = "base"; }
+		else if (entities[i]->type == LABORATORY) { entities_pugi.append_attribute("type:") = "laboratory"; }
+		else if (entities[i]->type == BARRACK) { entities_pugi.append_attribute("type:") = "barrack"; }
+		else if (entities[i]->type == BIGHORNER) { entities_pugi.append_attribute("type:") = "bighorner"; }
+		else if (entities[i]->type == BRAHAM) { entities_pugi.append_attribute("type:") = "braham"; }
+		else if (entities[i]->type == DEATHCLAW) { entities_pugi.append_attribute("type:") = "deathclaw"; }
+		else if (entities[i]->type == MR_HANDY) { entities_pugi.append_attribute("type:") = "mr_handy"; }
+
+		if (entities[i]->faction == BROTHERHOOD) {entities_pugi.append_attribute("faction:") = "brotherhood";}
+		else if (entities[i]->faction == MUTANT) { entities_pugi.append_attribute("faction:") = "supermutant"; }
+		else if (entities[i]->faction == VAULT) { entities_pugi.append_attribute("faction:") = "vault"; }
+		else if (entities[i]->faction == GHOUL) { entities_pugi.append_attribute("faction:") = "ghoul"; }
+		else if (entities[i]->faction == ANIMALS) { entities_pugi.append_attribute("faction:") = "no_faction"; }
+
+		entities_pugi.append_attribute("position_x:") = entities[i]->position.x;
+		entities_pugi.append_attribute("position_y:") = entities[i]->position.y;
+		entities_pugi.append_attribute("current_tile_x:") = entities[i]->current_tile.x;
+		entities_pugi.append_attribute("current_tile_y:") = entities[i]->current_tile.y;
+		entities_pugi.append_attribute("target_tile_x:") = entities[i]->target_tile.x;
+		entities_pugi.append_attribute("target_tile_x:") = entities[i]->target_tile.y;
+		entities_pugi.append_attribute("current_health:") = entities[i]->current_health;
+
+	}
+	LOG("%i", entities.size());
 
 	return true;
 }
