@@ -18,6 +18,9 @@
 #include "AI_Manager.h"
 #include "AI_Player.h"
 #include "j1Pathfinding.h"
+#include "Troop.h"
+#include "Animal.h"
+#include "Gatherer.h"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -46,42 +49,75 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 
 	j1Entity* entity = nullptr;
 
+	switch (type)
+	{
+	case MELEE:
+		iPoint available_tile = FindSpawnPoint(position_x, position_y);
+		entity = new Troop(MELEE, faction, available_tile, owner);
+		if (owner) {
+			owner->troops.push_back((Troop*)entity);
+			owner->melees++;
+		}
+		break;
+	case RANGED:
+		iPoint available_tile = FindSpawnPoint(position_x, position_y);
+		entity = new Troop(RANGED, faction, available_tile, owner);
+		if (owner) {
+			owner->troops.push_back((Troop*)entity);
+			owner->rangeds++;
+		}
+		break;
+	case GATHERER:
+		iPoint available_tile = FindSpawnPoint(position_x, position_y);
+		entity = new Gatherer(faction, available_tile, owner);
+		if (owner) {
+			owner->gatherers_vector.push_back((Gatherer*)entity);
+			owner->gatherers++;
+		}
+		break;
+	case BASE:
+		entity = new StaticEntity(faction, BASE, { position_x, position_y }, owner);
+		if (owner) {
+			owner->base = (StaticEntity*)entity;
+		}
+		break;
+	case LABORATORY:
+		entity = new StaticEntity(faction, LABORATORY, { position_x, position_y }, owner);
+		if (owner) {
+			owner->laboratory = (StaticEntity*)entity;
+		}
+		break;
+	case BARRACK:
+		entity = new StaticEntity(faction, BIGHORNER, { position_x, position_y }, owner);
+		if (owner) {
+			if(!owner->barrack[0])
+				owner->barrack[0] = (StaticEntity*)entity;
+			else if (!owner->barrack[1])
+				owner->barrack[1] = (StaticEntity*)entity;
+		}
+		break;
+	case BIGHORNER:
+		entity = new Animal(BIGHORNER, { position_x, position_y });
+		break;
+	case BRAHAM:
+		entity = new Animal(BRAHAM, { position_x, position_y });
+		break;
+	case DEATHCLAW:
+		break;
+	case MR_HANDY:
+		entity = new Troop(MR_HANDY, faction, { position_x, position_y }, owner);
+		if (owner) {
+			owner->troops.push_back((Troop*)entity);
+		}
+		break;
+	default:
+		break;
+	}
+
 	if ((type == MELEE) || (type == RANGED) || (type == GATHERER) || (type == BIGHORNER) || (type == BRAHAM) || (type == DEATHCLAW) || (type == MR_HANDY)) {
 
 		//If there's another unit in that tile, we find a new spawn point
-		if (occupied_tiles[position_x][position_y]) {
-			//There's another unit, let's find a new spawn point
-			bool spawnPointFound = false;
-
-			while (occupied_tiles[position_x][position_y]) {
-				for (int k = 0; k < 10; k++) {
-					for (int i = 0; i <= 5; i++) {
-						if (spawnPointFound == false) {
-							if (!occupied_tiles[position_x - i][position_y + k]) {
-								position_x -= i;
-								position_y += k;
-								spawnPointFound = true;
-							}
-						}
-					}
-					if (spawnPointFound == false) {
-						for (int j = 0; j <= 5; j++) {
-							if (spawnPointFound == false) {
-								if (!occupied_tiles[position_x + k][position_y - j]) {
-									position_y -= j;
-									position_x += k;
-									spawnPointFound = true;
-								}
-							}
-						}
-					}
-					//First line completed. Next look for spawn points in the next line
-				}
-				//We didn't find a free spawn point, so we spawn in the same tile as other unit
-				break;
-			}
-		}
-		
+				
 		entity = new DynamicEntity(faction, type, { position_x, position_y }, owner);
 	
 		if ((faction != ANIMALS) && (type != MR_HANDY))
@@ -224,7 +260,7 @@ bool j1EntityManager::Start() {
 	}
 
 	//automatic entities loading
-	for (int faction = VAULT; faction < ANIMALS; faction++)
+	for (int faction = VAULT; faction < NO_FACTION; faction++)
 	{
 		for (int type = MELEE; type < BIGHORNER; type++)
 		{
@@ -233,9 +269,9 @@ bool j1EntityManager::Start() {
 		}
 	}
 
-	reference_bighroner = (DynamicEntity*)CreateEntity(ANIMALS, BIGHORNER, ANIMALS, BIGHORNER);
-	reference_braham = (DynamicEntity*)CreateEntity(ANIMALS, BRAHAM, ANIMALS, BRAHAM);
-	reference_deathclaw = (DynamicEntity*)CreateEntity(ANIMALS, DEATHCLAW, ANIMALS, DEATHCLAW);
+	reference_bighroner = (DynamicEntity*)CreateEntity(NO_FACTION, BIGHORNER, NO_FACTION, BIGHORNER);
+	reference_braham = (DynamicEntity*)CreateEntity(NO_FACTION, BRAHAM, NO_FACTION, BRAHAM);
+	reference_deathclaw = (DynamicEntity*)CreateEntity(NO_FACTION, DEATHCLAW, NO_FACTION, DEATHCLAW);
 	reference_MrHandy = (DynamicEntity*)CreateEntity(NO_FACTION, MR_HANDY, NO_FACTION, MR_HANDY);
 
 	LoadReferenceEntityData();
@@ -903,4 +939,44 @@ void j1EntityManager::DestroyResourceSpot(ResourceBuilding* resource_spot) {
 			resource_buildings.erase(resource_buildings.begin() + i);
 		}
 	}
+}
+
+iPoint j1EntityManager::FindSpawnPoint(int position_x, int position_y) {
+	if (occupied_tiles[position_x][position_y]) {
+		//There's another unit, let's find a new spawn point
+		bool spawnPointFound = false;
+
+		while (occupied_tiles[position_x][position_y]) {
+			for (int k = 0; k < 10; k++) {
+				for (int i = 0; i <= 5; i++) {
+					if (spawnPointFound == false) {
+						if (!occupied_tiles[position_x - i][position_y + k]) {
+							position_x -= i;
+							position_y += k;
+							spawnPointFound = true;
+						}
+					}
+				}
+				if (spawnPointFound == false) {
+					for (int j = 0; j <= 5; j++) {
+						if (spawnPointFound == false) {
+							if (!occupied_tiles[position_x + k][position_y - j]) {
+								position_y -= j;
+								position_x += k;
+								spawnPointFound = true;
+							}
+						}
+					}
+				}
+				//First line completed. Next look for spawn points in the next line
+			}
+			//We didn't find a free spawn point, so we spawn in the same tile as other unit
+			break;
+		}
+	}
+	return iPoint(position_x, position_y);
+}
+
+bool j1EntityManager::CreateReferenceEntities() {
+
 }

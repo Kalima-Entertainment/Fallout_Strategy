@@ -16,9 +16,7 @@
 #include "SDL_mixer/include/SDL_mixer.h"
 #include "FoWManager.h"
 
-DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile, GenericPlayer* g_owner) : j1Entity(), resource_collected(0) {
-
-	action_time = 3.0f;
+DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile, GenericPlayer* g_owner) : j1Entity() {
 
 	switch (g_type)
 	{
@@ -110,6 +108,7 @@ DynamicEntity::~DynamicEntity() {
 	path_to_target.clear();
 }
 
+/*
 bool DynamicEntity::Update(float dt) {
 
 	Mix_AllocateChannels(25);
@@ -308,6 +307,7 @@ bool DynamicEntity::Update(float dt) {
 
 	return true;
 }
+*/
 
 bool DynamicEntity::PostUpdate() {
 
@@ -460,85 +460,6 @@ void DynamicEntity::Move(float dt) {
 	}
 
 	UpdateTile();
-}
-
-void DynamicEntity::Attack() {
-
-	action_timer.Start();
-
-	//damage unit if god_mode isn't activated
-	if ((target_entity->faction == App->player->faction) && (App->player->god_mode))
-		return;
-
-	target_entity->current_health -= damage;
-
-	if (target_entity->current_health <= 0) {
-		target_entity->attacking_entity = this;
-		target_entity->state = DIE;
-		path_to_target.clear();
-		state = IDLE;
-
-		if (attacking_entity == target_entity)
-			attacking_entity = nullptr;
-
-		target_entity = nullptr;
-	}
-
-	//Change animation directions to fit
-	else if (target_entity->is_dynamic) {
-		DynamicEntity* dynamic_target = (DynamicEntity*)target_entity;
-
-		target_entity->attacking_entity = this;
-		dynamic_target->state = HIT;
-
-		if ((current_tile.x > target_entity->current_tile.x) && (current_tile.y == target_entity->current_tile.y)) {
-			direction = TOP_LEFT;
-			dynamic_target->direction = BOTTOM_RIGHT;
-		}
-		else if ((current_tile.x == target_entity->current_tile.x) && (current_tile.y > target_entity->current_tile.y)) {
-			direction = TOP_RIGHT;
-			dynamic_target->direction = BOTTOM_LEFT;
-		}
-		else if ((current_tile.x == target_entity->current_tile.x) && (current_tile.y < target_entity->current_tile.y)) {
-			direction = BOTTOM_LEFT;
-			dynamic_target->direction = TOP_RIGHT;
-		}
-		else if ((current_tile.x < target_entity->current_tile.x) && (current_tile.y == target_entity->current_tile.y)) {
-			direction = BOTTOM_RIGHT;
-			dynamic_target->direction = TOP_LEFT;
-		}
-	}
-}
-
-void DynamicEntity::Gather() {
-	uint resource = resource_building->quantity - (resource_building->quantity - damage);
-
-	resource_building->quantity -= resource;
-	resource_collected += resource;
-	resource_type = resource_building->resource_type;
-
-	StaticEntity* base = owner->base;
-	if (base != nullptr) {
-		PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
-		target_entity = base;
-	}
-}
-
-void DynamicEntity::StoreGatheredResources() {
-	target_entity->volume += resource_collected;
-
-	if (owner == App->player) {
-		App->player->UpdateResourceData(resource_type, resource_collected);
-	}
-	else {
-		//update owner resources
-		if (resource_type == Resource::CAPS) owner->caps += resource_collected;
-		else if (resource_type == Resource::WATER) owner->water += resource_collected;
-		else if (resource_type == Resource::FOOD) owner->food += resource_collected;
-	}	
-
-	resource_collected = 0;
-	target_entity = nullptr;
 }
 
 void DynamicEntity::Flee() {
@@ -700,7 +621,7 @@ bool DynamicEntity::LoadAnimations() {
 	return ret;
 }
 
-bool DynamicEntity::LoadReferenceData() {
+bool DynamicEntity::LoadReferenceData(pugi::xml_node& node) {
 	bool ret = true;
 	DynamicEntity* dynamic_reference = (DynamicEntity*)reference_entity;
 

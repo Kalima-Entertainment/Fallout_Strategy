@@ -80,6 +80,7 @@ public:
 	j1Entity* CreateEntity(Faction faction, EntityType type, int position_x, int position_y, GenericPlayer* owner = nullptr);
 	void DestroyEntity(j1Entity* delete_entity);
 	void DestroyAllEntities();
+	iPoint FindSpawnPoint(int position_x, int position_y);
 
 	ResourceBuilding* CreateResourceSpot(int position_x, int position_y, Resource resource_type, int resource_quantity);
 	void DestroyResourceSpot(ResourceBuilding* resource_spot);
@@ -92,6 +93,7 @@ public:
 	iPoint ClosestTile(iPoint position, std::vector<iPoint> entity_tiles) const;
 	iPoint FindFreeAdjacentTile(iPoint origin, iPoint destination);
 
+	bool CreateReferenceEntities();
 	bool LoadReferenceEntityAnimations();
 	bool LoadReferenceEntityData();
 

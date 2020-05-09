@@ -34,7 +34,6 @@ enum Faction { //Don't change faction order. Just don't do it
 	BROTHERHOOD,
 	MUTANT,
 	GHOUL,
-	ANIMALS,
 	NO_FACTION
 };
 
@@ -65,7 +64,7 @@ public:
 
 	virtual bool LoadAnimations() { return true; };
 	virtual bool LoadFx() { return true; };
-	virtual bool LoadReferenceData() { return true; };	
+	virtual bool LoadReferenceData(pugi::xml_node& node) { return true; };	
 
 	int GetPositionScore() const;
 
@@ -76,21 +75,21 @@ public:
 	//Check if mouse pointer its inside the same spot than the entity and if pressed returns any advice
 
 public:
+	//position
 	iPoint current_tile;
 	fPoint position;
 	iPoint render_position;
-	iPoint target_tile;
-	std::vector<iPoint> path_to_target;
-	fPoint speed;
 	iPoint spawnPosition;
 	int sprite_size;
 
+	//stats
 	int current_health;
 	int max_health;
-	int damage;
 	int storage_capacity;
-	int max_capacity;
+
+	//audio
 	int volume;
+	bool playing_fx;
 
 	EntityType type;
 	Faction faction;
@@ -100,6 +99,7 @@ public:
 	GenericPlayer* owner;
 	State state;
 
+	//graphics
 	Animation* current_animation;
 	SDL_Texture* texture;
 	float last_dt;
@@ -107,7 +107,6 @@ public:
 	bool is_dynamic;
 	bool to_delete;
 	bool particles_created;
-	bool playing_fx;
 
 	Group_Unit info;
 	j1Timer delete_timer;

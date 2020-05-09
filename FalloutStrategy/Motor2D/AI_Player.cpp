@@ -10,6 +10,8 @@
 #include "j1MovementManager.h"
 #include "brofiler/Brofiler/Brofiler.h"
 #include "j1Pathfinding.h"
+#include "Troop.h"
+#include "Gatherer.h"
 #include <vector>
 #include <math.h>
 

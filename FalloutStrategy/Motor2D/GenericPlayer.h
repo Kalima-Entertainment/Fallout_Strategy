@@ -8,6 +8,8 @@ class DynamicEntity;
 class StaticEntity;
 enum class Resource;
 enum Faction;
+class Troop;
+class Gatherer;
 
 class GenericPlayer : public j1Module
 {
@@ -33,11 +35,13 @@ public:
 	StaticEntity* base;
 	StaticEntity* barrack[2];
 	StaticEntity* laboratory;
+
 	int melees;
 	int rangeds;
 	int gatherers;
-	std::vector<DynamicEntity*> troops;
-	std::vector<DynamicEntity*> gatherers_vector;
+
+	std::vector<Troop*> troops;
+	std::vector<Gatherer*> gatherers_vector;
 
 	bool goal_tile_set;
 	GenericPlayer* target_player;
