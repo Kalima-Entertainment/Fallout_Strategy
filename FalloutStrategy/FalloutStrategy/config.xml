@@ -43,8 +43,14 @@
       <laboratory cost="150" upgrade_time="45" cost_increment="250" health_increment="0.15" creation_time="0.05"/>
       <barrack cost="350" upgrade_time="45" cost_increment="250" damage_increment="0.15" speed_increment="0.15"/>
     </boost>
-   <radar cost="50"/>
-   <mr_handy cost="10"/>
+    <animation_files base_folder="Assets/textures/characters">
+     <folder="VaultDwellers/" file="VaultDwellers_Melee"/>
+     <folder="VaultDwellers/" file="VaultDwellers_Ranged"/>
+     <folder="VaultDwellers/" file="VaultDwellers_Gatherer"/>
+     <folder="VaultDwellers/" file="VaultDwellers_Buildings"/>
+     <folder="VaultDwellers/" file="VaultDwellers_Buildings"/>
+     <folder="VaultDwellers/" file="VaultDwellers_Buildings"/>
+    </animation_files>
   </entities>
   <gui>
     <folder>Assets/gui/</folder>

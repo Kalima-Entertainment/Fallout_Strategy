@@ -99,7 +99,6 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 
 DynamicEntity::~DynamicEntity() {
 	target_entity = nullptr;
-	resource_building = nullptr;
 	reference_entity = nullptr;
 	owner = nullptr;
 	attacking_entity = nullptr;

@@ -62,7 +62,7 @@ public:
 	virtual bool CleanUp() { return true; }
 	virtual void OnCollision(Collider* c1, Collider* c2) {};
 
-	virtual bool LoadAnimations(char* folder, char* file_name) { return true; };
+	virtual bool LoadAnimations(const char* folder, const char* file_name) { return true; };
 	virtual bool LoadFx() { return true; };
 	virtual bool LoadReferenceData(pugi::xml_node& ) { return true; };	
 	virtual bool LoadDataFromReference() { return true; }

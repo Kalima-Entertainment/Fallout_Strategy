@@ -16,6 +16,9 @@ public:
 	bool LoadDataFromReference();
 	bool LoadReferenceData(pugi::xml_node& node);
 
+	int GetResourceCollected() { return resource_collected; }
+	ResourceBuilding* GetResourceBuilding() { return resource_building; }
+
 private:
 	ResourceBuilding* resource_building;
 	Resource resource_type;

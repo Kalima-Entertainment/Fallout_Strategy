@@ -54,11 +54,11 @@ bool AI_Player::Update(float dt) {
 		for (int i = 0; i < gatherers_vector.size(); i++)
 		{
 			//authomatic gathering
-			if (gatherers_vector[i]->resource_building == nullptr) {
+			if (gatherers_vector[i]->GetResourceBuilding() == nullptr) {
 				gatherers_vector[i]->resource_building = App->entities->GetClosestResourceBuilding(gatherers_vector[i]->current_tile);
 				//if there is at least a resource building left, go there
-				if (gatherers_vector[i]->resource_building != nullptr) {
-					gatherers_vector[i]->PathfindToPosition(App->entities->ClosestTile(gatherers_vector[i]->current_tile, gatherers_vector[i]->resource_building->tiles));
+				if (gatherers_vector[i]->GetResourceBuilding() != nullptr) {
+					gatherers_vector[i]->PathfindToPosition(App->entities->ClosestTile(gatherers_vector[i]->current_tile, gatherers_vector[i]->GetResourceBuilding()->tiles));
 					gatherers_vector[i]->state = WALK;
 				}
 				//if there are no resource buildings left
@@ -231,7 +231,7 @@ void AI_Player::GatherFood(ResourceBuilding* resource_spot) {
 
 	for (int i = 0; i < gatherers; i++)
 	{
-		if ((gatherers_vector[i]->resource_building == nullptr)||(gatherers_vector[i]->resource_collected == 0)) {
+		if ((gatherers_vector[i]->GetResourceBuilding() == nullptr)||(gatherers_vector[i]->GetResourceCollected() == 0)) {
 			gatherers_vector[i]->resource_building = resource_spot;
 			gatherers_vector[i]->PathfindToPosition(resource_spot->tiles.front());
 			return;

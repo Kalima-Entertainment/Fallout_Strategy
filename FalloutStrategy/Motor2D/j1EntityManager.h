@@ -86,7 +86,7 @@ public:
 	void DestroyResourceSpot(ResourceBuilding* resource_spot);
 
 	//Find entities
-	j1Entity*		FindEntityByTile(iPoint tile);
+	j1Entity*		  FindEntityByTile(iPoint tile);
 	ResourceBuilding* FindResourceBuildingByTile(iPoint tile);
 	ResourceBuilding* GetClosestResourceBuilding(iPoint current_position);
 
@@ -103,6 +103,9 @@ public:
 
 	void LoadUpgradeCosts(pugi::xml_node& config);
 	void LoadUnitCosts();
+
+	int GetReferenceEntityID(Faction faction, EntityType type);
+
 public:
 	std::vector<j1Entity*> entities;
 	std::vector<ResourceBuilding*> resource_buildings;
@@ -114,11 +117,7 @@ public:
 
 	int randomFaction[4];
 	Unit_Data unit_data[4][3];
-	j1Entity* reference_entities[4][6];
-	DynamicEntity* reference_bighorner;
-	DynamicEntity* reference_braham;
-	DynamicEntity* reference_deathclaw;
-	DynamicEntity* reference_MrHandy;
+	j1Entity* reference_entities[REFERENCE_ENTITIES];
 	bool occupied_tiles[150][150];
 	j1Timer sort_timer;
 
@@ -136,6 +135,9 @@ public:
 private:
 	int loading_faction;
 	int loading_entity;
+	int entities_loaded;
+	std::string texture_folders[REFERENCE_ENTITIES];
+	std::string tmx_files[REFERENCE_ENTITIES];
 	j1Timer load_timer;
 };
 
