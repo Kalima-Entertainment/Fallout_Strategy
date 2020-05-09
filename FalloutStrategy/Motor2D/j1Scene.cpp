@@ -27,6 +27,7 @@
 #include "j1Minimap.h"
 #include "AI_Player.h"
 #include "j1Transition.h"
+#include "LogoScene.h"
 #include "j1Console.h"
 #include "FoWManager.h"
 
@@ -282,7 +283,7 @@ void j1Scene::CheckWinner() {
 				players[i]->defeated = true;
 				if (players[i]->faction == App->player->faction) {
 					//LOSE
-					win = false;
+					lose = true;
 					App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 					App->menu_manager->CreateMenu(Menu::WIN_LOSE_SCENE);
 					App->gui->ingame = false;
@@ -332,6 +333,12 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 					players[i]->barrack[1]->state = DIE;
 			}
 		}
+		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+		App->menu_manager->DestroyMenu(Menu::RESOURCES);
+		App->gui->ingame = false;
+		App->isPaused = true;
+		App->logo_scene->Loop = true;
+		win = true;
 	}
 	//Instantly lose the game
 	else if (command_beginning == "lose") {
@@ -343,5 +350,11 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 			App->player->barrack[0]->state = DIE;
 		if (App->player->barrack[1] != nullptr)
 			App->player->barrack[1]->state = DIE;
+		lose = true;
+		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+		App->menu_manager->DestroyMenu(Menu::RESOURCES);
+		App->gui->ingame = false;
+		App->isPaused = true;
+		App->logo_scene->Loop = true;
 	}
 }

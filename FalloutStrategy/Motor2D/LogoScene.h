@@ -24,7 +24,12 @@ public:
 	bool LogoScene::LoadAnimations();
 	
 	SDL_Texture* video_texture = nullptr;
+	SDL_Texture* win_tex = nullptr;
+	SDL_Texture* lose_tex = nullptr;
 	int my_video;
+	int win_video;
+	int lose_video;
+	bool Loop = true;
 private:
 	Animation	animationLogo;
 	Animation	animationStartGameText;
@@ -33,7 +38,7 @@ private:
 	SDL_Texture* start_game_tex;
 	SDL_Rect start_game_rect;
 	float last_dt;
-	bool Loop = true;
+
 	j1Timer Timer;
 	bool drawable = true;
 	bool sound_end = true;

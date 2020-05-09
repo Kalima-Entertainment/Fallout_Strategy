@@ -164,6 +164,8 @@ void j1Transition::Transition()
 		App->Mmanager->Disable();
 		transition = false;
 		App->isPaused = false;
+		App->scene->win = false;
+		App->scene->lose = false;
 	}
 }
 

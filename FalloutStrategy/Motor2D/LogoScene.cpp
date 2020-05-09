@@ -8,8 +8,10 @@
 #include "LogoScene.h"
 #include "j1Audio.h"
 #include "j1Video.h"
+#include "j1Scene.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 #include "MenuManager.h"
+#include "j1Transition.h"
 
 LogoScene::LogoScene() : j1Module()
 {
@@ -74,7 +76,11 @@ bool LogoScene::Start()
 {
 	App->audio->PlayFx(1, App->audio->intro_fx, 0);
 	my_video = App->video->Load("Assets/video/intro.ogv", App->render->renderer);
-	
+	// Win and lose video
+	win_video = App->video->Load("Assets/video/win.ogv", App->render->renderer);
+	lose_video = App->video->Load("Assets/video/lose.ogv", App->render->renderer);
+
+
 	start_game_rect = { 0, 0,561,30 };
 	LoadAnimations();
 	Loop = true;
@@ -91,7 +97,8 @@ bool LogoScene::CleanUp() {
 	ret = App->tex->UnLoad(start_game_tex);
 	start_game_tex = nullptr;
 	loader = nullptr;
-
+	win_tex = nullptr;
+	lose_tex = nullptr;
 	return ret;
 }
 
@@ -99,7 +106,7 @@ bool LogoScene::Update(float dt) {
 	
 	last_dt = dt;
 
-	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && App->scene->win == false && App->scene->lose == false)
 	{
 		App->audio->PlayFx(2, App->audio->F_press, 0);
 		App->audio->PlayMusic("Assets/audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
@@ -107,38 +114,112 @@ bool LogoScene::Update(float dt) {
 		my_video = 0;
 		Loop = false;
 	}
+	else if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && App->scene->win == true)
+	{
+		Loop = false;
+		App->audio->PlayFx(2, App->audio->F_press, 0);
+		win_video = 0;
+		App->menu_manager->CreateMenu(Menu::MAIN_MENU);
+		App->audio->PlayFx(1, App->audio->back_fx, 0);
+		App->gui->ingame = false;
+		App->transition->StartTimer();
+		App->transition->transition = true;
+		App->transition->fadetimer.Start();
+
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && App->scene->lose == true)
+	{
+		Loop = false;
+		App->audio->PlayFx(2, App->audio->F_press, 0);
+		lose_video = 0;
+		App->menu_manager->CreateMenu(Menu::MAIN_MENU);
+		App->audio->PlayFx(1, App->audio->back_fx, 0);
+		App->gui->ingame = false;
+		App->transition->StartTimer();
+		App->transition->transition = true;
+		App->transition->fadetimer.Start();
+
+	}
+
 
 	return true;
 }
 
 bool LogoScene::PostUpdate()
 {
-	
-	if (my_video != 0)
+	if (App->scene->win == false && App->scene->lose == false)
 	{
-		video_texture = App->video->UpdateVideo(my_video);
-
-		App->render->Blit(video_texture, 0, 0);
-
-		if (App->video->IsPlaying(my_video) == 0)
+		if (my_video != 0)
 		{
-			App->video->DestroyVideo(my_video);
-			my_video = 0;
+			video_texture = App->video->UpdateVideo(my_video);
+
+			App->render->Blit(video_texture, 0, 0);
+
+			if (App->video->IsPlaying(my_video) == 0)
+			{
+				App->video->DestroyVideo(my_video);
+				my_video = 0;
+			}
 		}
+
+
+		if (my_video == 0 && Loop)
+		{
+			my_video = App->video->Load("Assets/video/intro.ogv", App->render->renderer);
+
+
+		}
+
+		if (!Loop && App->menu_manager->current_menu == Menu::MAIN_MENU)
+		{
+
+			App->render->Blit(logo_tex, 70, -130, &loader->GetCurrentFrame(last_dt), 1.0f, 0.0f);
+
+		}
+
 	}
 	
-
-	if(my_video == 0 && Loop)
+	if (App->scene->win == true && App->scene->lose == false)
 	{
-		my_video = App->video->Load("Assets/video/intro.ogv", App->render->renderer);
+		if (win_video != 0)
+		{
+			win_tex = App->video->UpdateVideo(win_video);
 
-		
+			App->render->Blit(win_tex, 0, 0,0,1.0F,0);
+
+			if (App->video->IsPlaying(win_video) == 0)
+			{
+				LOG("WIN");
+				App->video->DestroyVideo(win_video);
+				win_video = 0;
+			}
+		}
+		if (win_video == 0 && Loop)
+		{
+			win_video = App->video->Load("Assets/video/win.ogv", App->render->renderer);
+		}
+
 	}
 
-	if (!Loop && App->menu_manager->current_menu == Menu::MAIN_MENU)
+	if (App->scene->lose == true && App->scene->win == false)
 	{
-		
-		App->render->Blit(logo_tex, 70, -130, &loader->GetCurrentFrame(last_dt), 1.0f, 0.0f);
+		if (lose_video != 0)
+		{
+			lose_tex = App->video->UpdateVideo(lose_video);
+
+			App->render->Blit(lose_tex, 0, 0, 0, 1.0F, 0);
+
+			if (App->video->IsPlaying(lose_video) == 0)
+			{
+				LOG("LOSE");
+				App->video->DestroyVideo(lose_video);
+				lose_video = 0;
+			}
+		}
+		if (lose_video == 0 && Loop)
+		{
+			lose_video = App->video->Load("Assets/video/lose.ogv", App->render->renderer);
+		}
 
 	}
 

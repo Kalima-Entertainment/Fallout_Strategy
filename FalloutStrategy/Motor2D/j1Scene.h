@@ -68,6 +68,8 @@ public:
 	int rectangle_width = 0;
 	int rectangle_height = 0;
 	bool win = false;
+	bool lose = false;
+
 private:
 	int SongPlaying = 0;
 	int beaten_enemies;

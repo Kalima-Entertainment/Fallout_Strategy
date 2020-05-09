@@ -245,6 +245,7 @@ void MenuManager::CreateMenu(Menu menu) {
 		break;
 	case Menu::RESOURCES:
 
+
 		water = std::to_string(App->player->water);
 		food = std::to_string(App->player->food);
 		caps = std::to_string(App->player->caps);
@@ -253,6 +254,9 @@ void MenuManager::CreateMenu(Menu menu) {
 		resources[1] = (UI_Label*)App->gui->CreateLabel(220, 15, Label, water, NULL, this, NULL, "StackedPixelSmall");
 		resources[2] = (UI_Label*)App->gui->CreateLabel(365, 15, Label, caps, NULL, this, NULL, "StackedPixelSmall");
 
+		/*last_menu = current_menu;
+		current_menu = Menu::RESOURCES;*/
+
 		break;
 
 	case Menu::BUI_BASES:
@@ -260,7 +264,7 @@ void MenuManager::CreateMenu(Menu menu) {
 	case Menu::WIN_LOSE_SCENE:
 
 		//Images+
-		if (App->scene->win)
+		/*if (App->scene->win)
 		{
 			win_scene[0] = (j1Image*)App->gui->CreateImage(0, 0, Image, { 0, 3190, 1280, 720 }, NULL, this);
 			App->audio->PlayFx(1, App->audio->win, 0);
@@ -271,16 +275,16 @@ void MenuManager::CreateMenu(Menu menu) {
 			App->audio->PlayFx(1, App->audio->lose, 0);
 		}
 
-		//Buttons
+		Buttons
 		win_scene[1] = (UI_Button*)App->gui->CreateButton(108, 260, button_win_lose_to_main, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
 		win_scene[2] = (UI_Button*)App->gui->CreateButton(108, 350, button_exit, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
 
-		//Labels
+		Labels
 		win_scene[3] = (UI_Label*)App->gui->CreateLabel(140, 278, Label, "MAIN MENU", NULL, this, NULL);
 		win_scene[4] = (UI_Label*)App->gui->CreateLabel(195, 368, Label, "EXIT", NULL, this, NULL);
 
 		last_menu = current_menu;
-		current_menu = Menu::WIN_LOSE_SCENE;
+		current_menu = Menu::WIN_LOSE_SCENE;*/
 
 		break;
 
