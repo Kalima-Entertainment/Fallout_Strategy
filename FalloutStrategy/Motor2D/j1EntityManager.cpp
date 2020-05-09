@@ -911,8 +911,28 @@ void j1EntityManager::DestroyResourceSpot(ResourceBuilding* resource_spot) {
 // Load Game State
 bool j1EntityManager::Load(pugi::xml_node& data)
 {
-	//camera.x = data.child("camera").attribute("x").as_int();
-	//camera.y = data.child("camera").attribute("y").as_int();
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	for (int i = 0; i < entities.size(); i++)
+	{
+		entities[i]->position.x = data.child("entity").attribute("position_x").as_float();
+		entities[i]->position.y = data.child("entity").attribute("position_y").as_float();
+		entities[i]->current_tile.x = data.child("entitiy").attribute("current_tile_x").as_int();
+		entities[i]->current_tile.y = data.child("entitiy").attribute("current_tile_y").as_int();
+		entities[i]->target_tile.x = data.child("entitiy").attribute("target_tile_x").as_int();
+		entities[i]->target_tile.y = data.child("entitiy").attribute("target_tile_y").as_int();
+		entities[i]->current_health = data.child("entitiy").attribute("current_health").as_int();
+	}
+	LOG("%i", entities.size());
 
 	return true;
 }
@@ -920,10 +940,30 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 // Save Game State
 bool j1EntityManager::Save(pugi::xml_node& data) const
 {
-	//pugi::xml_node cam = data.append_child("camera");
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	pugi::xml_node entities_pugi = data.append_child("entity");
 
-	//cam.append_attribute("x") = camera.x;
-	//cam.append_attribute("y") = camera.y;
+	for (int i = 0; i < entities.size(); i++)
+	{
+		entities_pugi.append_attribute("position_x") = entities[i]->position.x;
+		entities_pugi.append_attribute("position_y") = entities[i]->position.y;
+		entities_pugi.append_attribute("current_tile_x") = entities[i]->current_tile.x;
+		entities_pugi.append_attribute("current_tile_y") = entities[i]->current_tile.y;
+		entities_pugi.append_attribute("target_tile_x") = entities[i]->target_tile.x;
+		entities_pugi.append_attribute("target_tile_x") = entities[i]->target_tile.y;
+		entities_pugi.append_attribute("current_health") = entities[i]->current_health;
+
+	}
+	LOG("%i", entities.size());
 
 	return true;
 }

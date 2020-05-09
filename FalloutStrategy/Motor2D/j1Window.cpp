@@ -120,10 +120,32 @@ void j1Window::SetScale(uint& zoom)
 
 void j1Window::ChangeFullScreen(bool big)
 {
-	if (big == false) {
+	big_screen = big;
+
+	if (big_screen == false) {
 		SDL_SetWindowFullscreen(window, 0);
 	}
-	else if (big == true) {
+	else if (big_screen == true) {
 		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 	}
+}
+
+// Load Game State
+bool j1Window::Load(pugi::xml_node& data)
+{
+	big_screen = data.child("fullscreen").attribute("is").as_bool();
+	ChangeFullScreen(big_screen);
+
+	return true;
+}
+
+// Save Game State
+bool j1Window::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node full = data.append_child("fullscreen");
+
+	full.append_attribute("is") = big_screen;
+
+	return true;
+
 }

@@ -345,3 +345,29 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 			App->player->barrack[1]->state = DIE;
 	}
 }
+
+
+// Load Game State
+bool j1Scene::Load(pugi::xml_node& data)
+{
+	//music_volume = data.child("volume").attribute("music").as_float();
+	//fx_volume = data.child("volume").attribute("fx").as_float();
+
+	//Change_Volume_FX(fx_volume);
+	//Change_Volume_Music(music_volume);
+
+
+	return true;
+}
+
+// Save Game State
+bool j1Scene::Save(pugi::xml_node& data) const
+{
+	//pugi::xml_node volume = data.append_child("volume");
+
+	//volume.append_attribute("music") = music_volume;
+	//volume.append_attribute("fx") = fx_volume;
+
+	return true;
+
+}

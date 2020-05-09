@@ -261,3 +261,27 @@ float j1Audio::Get_Music_Volume() {
 float j1Audio::Get_FX_Volume() {
 	return fx_volume;
 }
+
+// Load Game State
+bool j1Audio::Load(pugi::xml_node& data)
+{
+	music_volume = data.child("volume").attribute("music").as_float();
+	fx_volume = data.child("volume").attribute("fx").as_float();
+
+	Change_Volume_FX(fx_volume);
+	Change_Volume_Music(music_volume);
+
+	return true;
+}
+
+// Save Game State
+bool j1Audio::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node volume = data.append_child("volume");
+
+	volume.append_attribute("music") = music_volume;
+	volume.append_attribute("fx") = fx_volume;
+
+	return true;
+
+}
