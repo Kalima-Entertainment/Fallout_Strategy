@@ -1,10 +1,14 @@
 #include "Animal.h"
+#include "j1Map.h"
 
 Animal::Animal(EntityType g_type, iPoint g_current_tile) : DynamicEntity() {
 	type = g_type;
 	current_tile = g_current_tile;
 	is_dynamic = true;
 	is_agressive = false;
+	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
+	position.x += HALF_TILE;
+	position.y += HALF_TILE;
 }
 
 Animal::~Animal() {
@@ -29,6 +33,8 @@ bool Animal::Update(float dt) {
     default:
         break;
 	}
+
+	last_dt = dt;
 
 	return ret;
 }

@@ -166,36 +166,30 @@ bool StaticEntity::LoadReferenceData() {
 	return ret;
 }
 
-bool StaticEntity::LoadAnimations() {
+bool StaticEntity::LoadAnimations(const char* folder, const char* file_name) {
 
 	bool ret = true;
-	char* faction_char = "NoFaction";
 	float speed_multiplier = 0.065f;
 
-	if (faction == VAULT)
-		faction_char = "VaultDwellers";
-	else if (faction == BROTHERHOOD)
-		faction_char = "Brotherhood";
-	else if (faction == GHOUL)
-		faction_char = "Ghouls";
-	else if (faction == MUTANT)
-		faction_char = "SuperMutant";
-
-	std::string file = std::string("Assets/textures/characters/").append(faction_char).append("/").append(faction_char).append("_Buildings.tmx");
+	std::string tmx = std::string(folder).append(file_name);
 
 	pugi::xml_document animation_file;
-	pugi::xml_parse_result result = animation_file.load_file(file.c_str());
-	std::string image = std::string(animation_file.child("tileset").child("image").attribute("source").as_string());
-	std::string texture_path = std::string("Assets/textures/characters/").append(faction_char).append("/").append(faction_char).append("_Buildings.png");
+	pugi::xml_parse_result result = animation_file.load_file(tmx.c_str());
+
+	std::string image_path = std::string(folder).append(animation_file.child("map").child("tileset").child("image").attribute("source").as_string());
 
 	if (type == BASE)
 	{
-		this->texture = App->tex->Load(texture_path.c_str());
+		texture = App->tex->Load(image_path.c_str());
+	}
+	else
+	{
+		texture = App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, BASE)]->texture;
 	}
 
 	if (result == NULL)
 	{
-		LOG("Could not load animation tmx file %s. pugi error: %s", file, result.description());
+		LOG("Could not load animation tmx file %s. pugi error: %s", tmx, result.description());
 		ret = false;
 	}
 

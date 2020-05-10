@@ -1,5 +1,6 @@
 #include "Troop.h"
 #include "j1Player.h"
+#include "j1Map.h"
 
 Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, GenericPlayer* g_owner) : DynamicEntity() {
 	type = g_type;
@@ -8,6 +9,9 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 	owner = g_owner;
 	is_dynamic = true;
 	is_agressive = true;
+	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
+	position.x += HALF_TILE;
+	position.y += HALF_TILE;
 }
 
 Troop::~Troop() {
@@ -37,6 +41,8 @@ bool Troop::Update(float dt) {
     default:
         break;
 	}
+
+	last_dt = dt;
 
 	return ret;
 }

@@ -44,7 +44,7 @@ public:
 	Direction GetDirectionToGo(SDL_Rect next_tile_rect) const;
 	void UpdateTile();
 
-	bool LoadAnimations(char* folder, char* file_name);
+	bool LoadAnimations(const char* folder, const char* file_name);
 
 private:
 	iPoint target_tile;

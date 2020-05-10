@@ -260,10 +260,12 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 	std::string base_folder = animation_node.attribute("base_folder").as_string();
 	pugi::xml_node file_node = animation_node.child("file");
 
-	for (int i = 0; i < REFERENCE_ENTITIES; i++)
+	for (int i = 0; i < REFERENCE_ENTITIES && file_node; i++)
 	{
-		texture_folders[i] = file_node.attribute("folder").as_string();
+		texture_folders[i] = base_folder;
+		texture_folders[i].append(file_node.attribute("folder").as_string());
 		tmx_files[i] = file_node.attribute("tmx").as_string();
+		file_node = file_node.next_sibling();
 	}
 
 	RandomFactions();
@@ -374,7 +376,16 @@ bool j1EntityManager::Update(float dt)
 
 	//load all textures and animations on the go
 	if (loading_reference_entities) {
-		ret = LoadReferenceEntityAnimations();
+		if (load_timer.Read() > 100) {
+			if (loading_entity < REFERENCE_ENTITIES) {
+				reference_entities[loading_entity]->LoadAnimations(texture_folders[loading_entity].c_str(), tmx_files[loading_entity].c_str());
+				loading_entity++;
+				load_timer.Start();
+			}
+			else {
+				loading_reference_entities = false;
+			}
+		}
 	}
 
 	if (!App->isPaused)
@@ -565,17 +576,6 @@ bool j1EntityManager::PostUpdate()
 
 bool j1EntityManager::LoadReferenceEntityAnimations() {
 	bool ret = true;
-
-	if (load_timer.Read() > 100) {
-		if (loading_entity < REFERENCE_ENTITIES) {
-			reference_entities[loading_entity]->LoadAnimations(texture_folders[loading_entity].c_str(), tmx_files[loading_entity].c_str());
-			loading_entity++;
-			load_timer.Start();
-		}
-		else {
-			loading_reference_entities = false;
-		}
-	}
 
 	return ret;
 }

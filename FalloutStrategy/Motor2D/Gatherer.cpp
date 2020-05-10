@@ -4,6 +4,7 @@
 #include "StaticEntity.h"
 #include "GenericPlayer.h"
 #include "j1Player.h"
+#include "j1Map.h"
 
 Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_owner) : DynamicEntity(), resource_collected(0) {
 	type = GATHERER;
@@ -12,6 +13,9 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 	owner = g_owner;
 	is_dynamic = true;
 	is_agressive = false;
+	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
+	position.x += HALF_TILE;
+	position.y += HALF_TILE;
 }
 
 Gatherer::~Gatherer() {
@@ -40,6 +44,8 @@ bool Gatherer::Update(float dt) {
 	default:
 		break;
 	}
+
+	last_dt = dt;
 
 	return ret;
 }

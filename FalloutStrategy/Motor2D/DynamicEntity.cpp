@@ -519,10 +519,8 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 	}
 }
 
-bool DynamicEntity::LoadAnimations(char* folder, char* file_name) {
+bool DynamicEntity::LoadAnimations(const char* folder, const char* file_name) {
 	bool ret = true;
-	char* faction_char = { "NoFaction" };
-	char* type_char = { "NoType" };
 	float speed_reducer = 0.065f;
 	
 	std::string tmx = std::string(folder).append(file_name);

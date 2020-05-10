@@ -43,39 +43,39 @@
       <laboratory cost="150" upgrade_time="45" cost_increment="250" health_increment="0.15" creation_time="0.05"/>
       <barrack cost="350" upgrade_time="45" cost_increment="250" damage_increment="0.15" speed_increment="0.15"/>
     </boost>
-    <animation_files base_folder="Assets/textures/characters">
-     <file folder="VaultDwellers/" tmx="VaultDwellers_Melee"/>
-     <file folder="VaultDwellers/" tmx="VaultDwellers_Ranged"/>
-     <file folder="VaultDwellers/" tmx="VaultDwellers_Gatherer"/>
-     <file folder="VaultDwellers/" tmx="VaultDwellers_Buildings"/>
-     <file folder="VaultDwellers/" tmx="VaultDwellers_Buildings"/>
-     <file folder="VaultDwellers/" tmx="VaultDwellers_Buildings"/>
+    <animation_files base_folder="Assets/textures/characters/">
+     <file folder="VaultDwellers/" tmx="VaultDwellers_Melee.tmx"/>
+     <file folder="VaultDwellers/" tmx="VaultDwellers_Ranged.tmx"/>
+     <file folder="VaultDwellers/" tmx="VaultDwellers_Gatherer.tmx"/>
+     <file folder="VaultDwellers/" tmx="VaultDwellers_Buildings.tmx"/>
+     <file folder="VaultDwellers/" tmx="VaultDwellers_Buildings.tmx"/>
+     <file folder="VaultDwellers/" tmx="VaultDwellers_Buildings.tmx"/>
       
-     <file folder="Brotherhood/" tmx="Brotherhood_Melee"/>
-     <file folder="Brotherhood/" tmx="Brotherhood_Ranged"/>
-     <file folder="Brotherhood/" tmx="Brotherhood_Gatherer"/>
-     <file folder="Brotherhood/" tmx="Brotherhood_Buildings"/>
-     <file folder="Brotherhood/" tmx="Brotherhood_Buildings"/>
-     <file folder="Brotherhood/" tmx="Brotherhood_Buildings"/>
+     <file folder="Brotherhood/" tmx="Brotherhood_Melee.tmx"/>
+     <file folder="Brotherhood/" tmx="Brotherhood_Ranged.tmx"/>
+     <file folder="Brotherhood/" tmx="Brotherhood_Gatherer.tmx"/>
+     <file folder="Brotherhood/" tmx="Brotherhood_Buildings.tmx"/>
+     <file folder="Brotherhood/" tmx="Brotherhood_Buildings.tmx"/>
+     <file folder="Brotherhood/" tmx="Brotherhood_Buildings.tmx"/>
       
-     <file folder="SuperMutant/" tmx="SuperMutant_Melee"/>
-     <file folder="SuperMutant/" tmx="SuperMutant_Ranged"/>
-     <file folder="SuperMutant/" tmx="SuperMutant_Gatherer"/>
-     <file folder="SuperMutant/" tmx="SuperMutant_Buildings"/>
-     <file folder="SuperMutant/" tmx="SuperMutant_Buildings"/>
-     <file folder="SuperMutant/" tmx="SuperMutant_Buildings"/>
+     <file folder="SuperMutant/" tmx="SuperMutant_Melee.tmx"/>
+     <file folder="SuperMutant/" tmx="SuperMutant_Ranged.tmx"/>
+     <file folder="SuperMutant/" tmx="SuperMutant_Gatherer.tmx"/>
+     <file folder="SuperMutant/" tmx="SuperMutant_Buildings.tmx"/>
+     <file folder="SuperMutant/" tmx="SuperMutant_Buildings.tmx"/>
+     <file folder="SuperMutant/" tmx="SuperMutant_Buildings.tmx"/>
       
-     <file folder="Ghouls/" tmx="Ghouls_Melee"/>
-     <file folder="Ghouls/" tmx="Ghouls_Ranged"/>
-     <file folder="Ghouls/" tmx="Ghouls_Gatherer"/>
-     <file folder="Ghouls/" tmx="Ghouls_Buildings"/>
-     <file folder="Ghouls/" tmx="Ghouls_Buildings"/>
-     <file folder="Ghouls/" tmx="Ghouls_Buildings"/>
+     <file folder="Ghouls/" tmx="Ghouls_Melee.tmx"/>
+     <file folder="Ghouls/" tmx="Ghouls_Ranged.tmx"/>
+     <file folder="Ghouls/" tmx="Ghouls_Gatherer.tmx"/>
+     <file folder="Ghouls/" tmx="Ghouls_Buildings.tmx"/>
+     <file folder="Ghouls/" tmx="Ghouls_Buildings.tmx"/>
+     <file folder="Ghouls/" tmx="Ghouls_Buildings.tmx"/>
       
-     <file folder="Animals/" tmx="Animals_Bighorner"/>
-     <file folder="Animals/" tmx="Animals_Braham"/>
-     <file folder="Animals/" tmx="Animals_Deathclaw"/>
-     <file folder="Mr_Handy/" tmx="Mr_Handy_Mr_Handy"/>
+     <file folder="Animals/" tmx="Animals_Bighorner.tmx"/>
+     <file folder="Animals/" tmx="Animals_Braham.tmx"/>
+     <file folder="Animals/" tmx="Animals_Deathclaw.tmx"/>
+     <file folder="Mr_Handy/" tmx="Mr_Handy_Mr_Handy.tmx"/>
 
     </animation_files>
   </entities>

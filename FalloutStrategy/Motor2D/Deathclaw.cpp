@@ -1,10 +1,14 @@
 #include "Deathclaw.h"
 #include "j1Player.h"
+#include "j1Map.h"
 
 Deathclaw::Deathclaw(iPoint g_current_tile) : DynamicEntity() {
 	current_tile = g_current_tile;
 	is_dynamic = true;
 	is_agressive = true;
+	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
+	position.x += HALF_TILE;
+	position.y += HALF_TILE;
 }
 
 Deathclaw::~Deathclaw() {
@@ -29,6 +33,9 @@ bool Deathclaw::Update(float dt) {
     default:
         break;
 	}
+
+	last_dt = dt;
+
 	return ret;
 }
 

@@ -26,7 +26,7 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 
-	bool LoadAnimations();
+	bool LoadAnimations(const char* folder, const char* file_name);
 	bool LoadReferenceData();	
 
 	void Upgrade(Upgrades_Data upgrades_data);
