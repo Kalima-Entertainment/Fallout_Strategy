@@ -109,7 +109,7 @@ void j1MovementManager::CreateGroup(std::vector<DynamicEntity*> entities_vector)
 	else delete group;
 }
 
-void j1MovementManager::Move(j1Group* group, iPoint goal_path , float dt)
+void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 {
 	/*
 	// -- Getting group information
@@ -202,6 +202,7 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path , float dt)
 		}
 
 	}
+	*/
 }
 
 // Load Game State

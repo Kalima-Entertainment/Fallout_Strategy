@@ -1006,7 +1006,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 // Save Game State
 bool j1EntityManager::Save(pugi::xml_node& data) const
 {
-
+	/*
 	for (int i = 0; i < entities.size(); i++)
 	{
 
@@ -1037,10 +1037,9 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 		entities_pugi.append_attribute("target_tile_x:") = entities[i]->target_tile.x;
 		entities_pugi.append_attribute("target_tile_x:") = entities[i]->target_tile.y;
 		entities_pugi.append_attribute("current_health:") = entities[i]->current_health;
-
 	}
 	LOG("%i", entities.size());
-
+	*/
 	return true;
 }
 

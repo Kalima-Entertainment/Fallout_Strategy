@@ -447,8 +447,8 @@ void DynamicEntity::Move(float dt) {
 			break;
 		}
 
-		if(App->render->fog_of_war)
-			visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
+		//if(App->render->fog_of_war)
+			//visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
 	}
 	else
 	{
