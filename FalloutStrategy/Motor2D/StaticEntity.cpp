@@ -151,7 +151,7 @@ bool StaticEntity::PostUpdate() {
 	return true;
 }
 
-bool StaticEntity::LoadReferenceData() {
+bool StaticEntity::LoadDataFromReference() {
 	bool ret = true;
 	StaticEntity* static_reference = (StaticEntity*)reference_entity;
 
@@ -164,6 +164,15 @@ bool StaticEntity::LoadReferenceData() {
 	//load property data
 	current_health = max_health = reference_entity->max_health;
 	sprite_size = reference_entity->sprite_size;
+	return ret;
+}
+
+
+bool StaticEntity::LoadReferenceData(pugi::xml_node& node) {
+	bool ret = true;
+
+	max_health = node.attribute("health").as_int();
+
 	return ret;
 }
 

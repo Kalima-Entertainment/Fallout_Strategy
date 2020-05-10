@@ -536,7 +536,7 @@ bool DynamicEntity::LoadAnimations(const char* folder, const char* file_name) {
 		ret = false;
 	}
 	else {
-		LOG("Successfully loaded %s", tmx);
+		//LOG("Successfully loaded %s", tmx);
 	}
 
 	int tile_width = animation_file.child("map").child("tileset").attribute("tilewidth").as_int();
