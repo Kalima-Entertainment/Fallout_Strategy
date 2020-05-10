@@ -96,7 +96,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		break;
 
 	case BARRACK:
-		entity = new StaticEntity(faction, BIGHORNER, { position_x, position_y }, owner);
+		entity = new StaticEntity(faction, BARRACK, { position_x, position_y }, owner);
 		if (owner) {
 			if(!owner->barrack[0])
 				owner->barrack[0] = (StaticEntity*)entity;
@@ -594,11 +594,13 @@ bool j1EntityManager::LoadReferenceEntityData() {
 	else
 		 entities_node = entities_file.child("entities");
 
-	pugi::xml_node class_node = entities_node.child("dynamic").first_child();
+	pugi::xml_node class_node = entities_node.first_child();
 	pugi::xml_node type_node;
 	pugi::xml_node faction_node;
 	Faction faction = NO_FACTION;
 	EntityType type = NO_TYPE;
+	std::string faction_name;
+	std::string type_name;
 
 	while (class_node)
 	{
@@ -606,56 +608,61 @@ bool j1EntityManager::LoadReferenceEntityData() {
 
 		while (type_node)
 		{
+			type_name = type_node.name();
 			faction_node = type_node.first_child();
 
 			while (faction_node)
 			{
+				faction_name = faction_node.name();
+
 				//faction
-				if (faction_node.name() == "vault")
+				if ( faction_name == "vault")
 					faction = VAULT;
-				else if (faction_node.name() == "brotherhood")
+				else if (faction_name == "brotherhood")
 					faction = BROTHERHOOD;
-				else if (faction_node.name() == "mutant")
+				else if (faction_name == "mutant")
 					faction = MUTANT;
-				else if (faction_node.name() == "ghoul")
+				else if (faction_name == "ghoul")
 					faction = GHOUL;
 
 				//type
-				if (type_node.name() == "melee") {
+				if (type_name == "melee") {
 					reference_entities[GetReferenceEntityID(faction,MELEE)]->LoadReferenceData(faction_node);
 				}
-				else if (type_node.name() == "ranged") {
+				else if (type_name == "ranged") {
 					reference_entities[GetReferenceEntityID(faction, RANGED)]->LoadReferenceData(faction_node);
 				}
-				else if (type_node.name() == "gatherer") {
+				else if (type_name == "gatherer") {
 					reference_entities[GetReferenceEntityID(faction, GATHERER)]->LoadReferenceData(faction_node);
 				}
-				else if (type_node.name() == "base") {
+				else if (type_name == "base") {
 					reference_entities[GetReferenceEntityID(faction, BASE)]->LoadReferenceData(faction_node);
 				}
-				else if (type_node.name() == "laboratory") {
+				else if (type_name == "laboratory") {
 					reference_entities[GetReferenceEntityID(faction, LABORATORY)]->LoadReferenceData(faction_node);
 				}
-				else if (type_node.name() == "barrack") {
+				else if (type_name == "barrack") {
 					reference_entities[GetReferenceEntityID(faction, BARRACK)]->LoadReferenceData(faction_node);
 				}
-				else if (type_node.name() == "bighorner") {
+				else if (type_name == "bighorner") {
 					reference_entities[GetReferenceEntityID(NO_FACTION, BIGHORNER)]->LoadReferenceData(faction_node);
 				}
-				else if (type_node.name() == "braham") {
+				else if (type_name == "braham") {
 					reference_entities[GetReferenceEntityID(NO_FACTION, BRAHAM)]->LoadReferenceData(faction_node);
 				}
-				else if (type_node.name() == "deathclaw") {
+				else if (type_name == "deathclaw") {
 					reference_entities[GetReferenceEntityID(NO_FACTION, DEATHCLAW)]->LoadReferenceData(faction_node);
 				}
-				else if (type_node.name() == "mr_handy") {
+				else if (type_name == "mr_handy") {
 					reference_entities[GetReferenceEntityID(NO_FACTION, MR_HANDY)]->LoadReferenceData(faction_node);
 				}
 
 				faction_node = faction_node.next_sibling();
 			}
+
 			type_node = type_node.next_sibling();
 		}
+
 		class_node = class_node.next_sibling();
 	}
 
@@ -993,10 +1000,6 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		iterator = iterator.next_sibling();
 
 	}
-
-
-
-
 
 	LOG("%i", entities.size());
 

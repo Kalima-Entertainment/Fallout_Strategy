@@ -27,7 +27,8 @@ public:
 	bool PostUpdate();
 
 	bool LoadAnimations(const char* folder, const char* file_name);
-	bool LoadReferenceData();	
+	bool LoadReferenceData(pugi::xml_node& node);
+	bool LoadDataFromReference();
 
 	void Upgrade(Upgrades_Data upgrades_data);
 	void ExecuteUpgrade(Faction faction, Upgrades upgrade_name);
