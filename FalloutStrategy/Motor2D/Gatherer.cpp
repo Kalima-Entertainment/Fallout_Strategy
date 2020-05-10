@@ -7,6 +7,11 @@
 
 Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_owner) : DynamicEntity(), resource_collected(0) {
 	type = GATHERER;
+	faction = g_faction;
+	current_tile = g_current_tile;
+	owner = g_owner;
+	is_dynamic = true;
+	is_agressive = false;
 }
 
 Gatherer::~Gatherer() {
@@ -39,6 +44,7 @@ bool Gatherer::Update(float dt) {
 	return ret;
 }
 
+/*
 bool Gatherer::PostUpdate() {
 	bool ret = true;
 
@@ -47,6 +53,7 @@ bool Gatherer::PostUpdate() {
 
 	return ret;
 }
+*/
 
 void Gatherer::Gather() {
 	uint resource = resource_building->quantity - (resource_capacity - resource_collected);
@@ -59,6 +66,10 @@ void Gatherer::Gather() {
 		PathfindToPosition(App->entities->ClosestTile(current_tile, owner->base->tiles));
 		target_entity = owner->base;
 	}
+}
+
+void Gatherer::AssignResourceBuilding(ResourceBuilding* g_resource_building) {
+	resource_building = g_resource_building;
 }
 
 void Gatherer::StoreGatheredResources() {
@@ -96,6 +107,7 @@ bool Gatherer::LoadDataFromReference() {
 	resource_capacity = reference_gatherer->resource_capacity;
 	speed = reference_gatherer->speed;
 	sprite_size = reference_entity->sprite_size;
+	texture = reference_entity->texture;
 
 	return ret;
 }

@@ -538,6 +538,9 @@ bool DynamicEntity::LoadAnimations(char* folder, char* file_name) {
 		LOG("Could not load animation tmx file %s. pugi error: %s", tmx, result.description());
 		ret = false;
 	}
+	else {
+		LOG("Successfully loaded %s", tmx);
+	}
 
 	int tile_width = animation_file.child("map").child("tileset").attribute("tilewidth").as_int();
 	int tile_height = animation_file.child("map").child("tileset").attribute("tileheight").as_int();
@@ -604,7 +607,6 @@ bool DynamicEntity::LoadAnimations(char* folder, char* file_name) {
 
 	return ret;
 }
-
 
 Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
 

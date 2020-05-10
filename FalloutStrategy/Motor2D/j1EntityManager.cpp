@@ -21,6 +21,7 @@
 #include "Troop.h"
 #include "Animal.h"
 #include "Gatherer.h"
+#include "Deathclaw.h"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -30,14 +31,7 @@ j1EntityManager::j1EntityManager(){
 	name = ("entities");
 
 	blocked_movement = false;	
-	
-	for (int faction = VAULT; faction < NO_FACTION; faction++)
-	{
-		for (int type = MELEE; type <= BASE; type++)
-		{
-			reference_entities[faction][type] = nullptr;
-		}
-	}
+
 }
 
 j1EntityManager::~j1EntityManager(){}
@@ -59,7 +53,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 			owner->troops.push_back((Troop*)entity);
 			owner->melees++;
 		}
-		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, type)];
+		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, MELEE)];
 		break;
 
 	case RANGED:
@@ -69,7 +63,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 			owner->troops.push_back((Troop*)entity);
 			owner->rangeds++;
 		}
-		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, type)];
+		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, RANGED)];
 		break;
 
 	case GATHERER:
@@ -79,7 +73,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 			owner->gatherers_vector.push_back((Gatherer*)entity);
 			owner->gatherers++;
 		}
-		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, type)];
+		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, GATHERER)];
 		break;
 
 	case BASE:
@@ -87,7 +81,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		if (owner) {
 			owner->base = (StaticEntity*)entity;
 		}
-		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, type)];
+		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, BASE)];
 		break;
 
 	case LABORATORY:
@@ -95,7 +89,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		if (owner) {
 			owner->laboratory = (StaticEntity*)entity;
 		}
-		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, type)];
+		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, LABORATORY)];
 		break;
 
 	case BARRACK:
@@ -106,20 +100,22 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 			else if (!owner->barrack[1])
 				owner->barrack[1] = (StaticEntity*)entity;
 		}
-		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, type)];
+		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, BARRACK)];
 		break;
 
 	case BIGHORNER:
 		entity = new Animal(BIGHORNER, { position_x, position_y });
-		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, BIGHORNER)];
+		entity->reference_entity = reference_entities[GetReferenceEntityID(NO_FACTION, BIGHORNER)];
 		break;
 
 	case BRAHAM:
 		entity = new Animal(BRAHAM, { position_x, position_y });
-		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, BRAHAM)];
+		entity->reference_entity = reference_entities[GetReferenceEntityID(NO_FACTION, BRAHAM)];
 		break;
 
 	case DEATHCLAW:
+		entity = new Deathclaw({ position_x, position_y });
+		entity->reference_entity = reference_entities[GetReferenceEntityID(NO_FACTION, DEATHCLAW)];
 		break;
 
 	case MR_HANDY:
@@ -127,7 +123,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		if (owner) {
 			owner->troops.push_back((Troop*)entity);
 		}
-		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, MR_HANDY)];
+		entity->reference_entity = reference_entities[GetReferenceEntityID(NO_FACTION, MR_HANDY)];
 		break;
 	default:
 		break;
@@ -260,9 +256,14 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 	radar_cost = config.child("radar").attribute("cost").as_int();
 	mr_handy_cost = config.child("mr_handy").attribute("cost").as_int();
 
+	pugi::xml_node animation_node = config.child("animation_files");
+	std::string base_folder = animation_node.attribute("base_folder").as_string();
+	pugi::xml_node file_node = animation_node.child("file");
+
 	for (int i = 0; i < REFERENCE_ENTITIES; i++)
 	{
-
+		texture_folders[i] = file_node.attribute("folder").as_string();
+		tmx_files[i] = file_node.attribute("tmx").as_string();
 	}
 
 	RandomFactions();
@@ -291,23 +292,25 @@ bool j1EntityManager::Start() {
 	}
 
 	//automatic entities loading
+	int i = 0;
 	for (int faction = VAULT; faction < NO_FACTION; faction++)
 	{
 		for (int type = MELEE; type < BIGHORNER; type++)
 		{
-			reference_entities[faction][type] = nullptr;
-			reference_entities[faction][type] = CreateEntity((Faction)faction, (EntityType)type, faction, type);
+			reference_entities[i] = CreateEntity((Faction)faction, (EntityType)type, faction, type);
+			i++;
 		}
 	}
-
-	reference_bighorner = (DynamicEntity*)CreateEntity(NO_FACTION, BIGHORNER, NO_FACTION, BIGHORNER);
-	reference_braham = (DynamicEntity*)CreateEntity(NO_FACTION, BRAHAM, NO_FACTION, BRAHAM);
-	reference_deathclaw = (DynamicEntity*)CreateEntity(NO_FACTION, DEATHCLAW, NO_FACTION, DEATHCLAW);
-	reference_MrHandy = (DynamicEntity*)CreateEntity(NO_FACTION, MR_HANDY, NO_FACTION, MR_HANDY);
+	reference_entities[i++] = CreateEntity(NO_FACTION, BIGHORNER, NO_FACTION, BIGHORNER);
+	reference_entities[i++] = CreateEntity(NO_FACTION, BRAHAM, NO_FACTION, BRAHAM);
+	reference_entities[i++] = CreateEntity(NO_FACTION, DEATHCLAW, NO_FACTION, DEATHCLAW);
+	reference_entities[i++] = CreateEntity(NO_FACTION, MR_HANDY, NO_FACTION, MR_HANDY);
 
 	LoadReferenceEntityData();
 
+	loading_entity = 0;
 	showing_building_menu = false;
+	loading_reference_entities = true;
 
 	sort_timer.Start();
 	load_timer.Start();
@@ -319,16 +322,12 @@ bool j1EntityManager::CleanUp()
 {
 	bool ret = true;
 
-	for (int faction = VAULT; faction < NO_FACTION; faction++)
+
+	for (int i = 0; i < REFERENCE_ENTITIES; i++)
 	{
-		for (int type = MELEE; type <= BASE; type++)
-		{
-			if (reference_entities[faction][type] != nullptr) {
-				App->tex->UnLoad(reference_entities[faction][type]->texture);
-				delete reference_entities[faction][type];
-				reference_entities[faction][type] = nullptr;
-			}
-		}
+		App->tex->UnLoad(reference_entities[i]->texture);
+		delete reference_entities[i];
+		reference_entities[i] = nullptr;
 	}
 
 	for (int i = 0; i < entities.size(); i++)
@@ -567,10 +566,15 @@ bool j1EntityManager::PostUpdate()
 bool j1EntityManager::LoadReferenceEntityAnimations() {
 	bool ret = true;
 
-	if ((load_timer.Read() > 100)&&(loading_entity < REFERENCE_ENTITIES)) {
-
-		reference_entities[loading_entity]->LoadAnimations(texture_folders[loading_entity].c_str(), tmx_files[loading_entity].c_str());
-
+	if (load_timer.Read() > 100) {
+		if (loading_entity < REFERENCE_ENTITIES) {
+			reference_entities[loading_entity]->LoadAnimations(texture_folders[loading_entity].c_str(), tmx_files[loading_entity].c_str());
+			loading_entity++;
+			load_timer.Start();
+		}
+		else {
+			loading_reference_entities = false;
+		}
 	}
 
 	return ret;

@@ -1,6 +1,7 @@
 #ifndef _ANIMAL_H_
 #define _ANIMAL_H_
 #include "DynamicEntity.h"
+#include "j1Entity.h"
 
 class Animal : public DynamicEntity {
 public:

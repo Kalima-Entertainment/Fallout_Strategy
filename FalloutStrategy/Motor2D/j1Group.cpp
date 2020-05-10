@@ -74,7 +74,7 @@ void j1Group::SetUnitGoalTile(j1Entity* entity)
 		if (Goal_found)
 		{
 			entity->info.goal_tile = last_goal;
-			entity->target_tile = last_goal;
+			//entity->target_tile = last_goal;
 			break;
 		}
 

@@ -107,7 +107,7 @@ void j1MovementManager::CreateGroup(std::vector<DynamicEntity*> entities_vector)
 
 void j1MovementManager::Move(j1Group* group, iPoint goal_path , float dt)
 {
-	
+	/*
 	// -- Getting group information
 	std::list <j1Entity*>::const_iterator unit = group->Units.begin();
 	
@@ -198,6 +198,5 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path , float dt)
 		}
 
 	}
-	
-		
+	*/
 }

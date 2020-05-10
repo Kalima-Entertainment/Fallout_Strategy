@@ -1,7 +1,10 @@
 #include "Animal.h"
 
-Animal::Animal(EntityType type, iPoint current_tile) : DynamicEntity() {
-
+Animal::Animal(EntityType g_type, iPoint g_current_tile) : DynamicEntity() {
+	type = g_type;
+	current_tile = g_current_tile;
+	is_dynamic = true;
+	is_agressive = false;
 }
 
 Animal::~Animal() {

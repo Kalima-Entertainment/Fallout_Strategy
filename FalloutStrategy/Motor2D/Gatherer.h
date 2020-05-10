@@ -1,6 +1,7 @@
 #ifndef _GATHERER_H_
 #define _GATHERER_H_
 #include "DynamicEntity.h"
+#include "j1Entity.h"
 
 class Gatherer : public DynamicEntity
 {
@@ -9,13 +10,14 @@ public:
 	~Gatherer();
 
 	bool Update(float dt);
-	bool PostUpdate();
+	//bool PostUpdate();
 	void Gather();
 	void StoreGatheredResources();
 
 	bool LoadDataFromReference();
 	bool LoadReferenceData(pugi::xml_node& node);
 
+	void AssignResourceBuilding(ResourceBuilding* resource_building);
 	int GetResourceCollected() { return resource_collected; }
 	ResourceBuilding* GetResourceBuilding() { return resource_building; }
 

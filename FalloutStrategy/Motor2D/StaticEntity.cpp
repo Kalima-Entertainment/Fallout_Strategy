@@ -392,6 +392,7 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 }
 
 void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
+	/*
 	//We execute the upgrade as upgrade_seconds have already passed
 	if (upgrade_name == RESOURCES_LIMIT) {
 		if (storage_capacity < max_capacity) {
@@ -483,6 +484,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 
 		LOG("Units Creation Upgraded Upgraded");	
 	}
+	*/
 }
 
 void StaticEntity::SpawnUnit(EntityType type, bool no_cost) {

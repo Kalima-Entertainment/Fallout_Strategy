@@ -1,20 +1,17 @@
-#include "Troop.h"
+#include "Deathclaw.h"
 #include "j1Player.h"
 
-Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, GenericPlayer* g_owner) : DynamicEntity() {
-	type = g_type;
-	faction = g_faction;
+Deathclaw::Deathclaw(iPoint g_current_tile) : DynamicEntity() {
 	current_tile = g_current_tile;
-	owner = g_owner;
 	is_dynamic = true;
 	is_agressive = true;
 }
 
-Troop::~Troop() {
+Deathclaw::~Deathclaw() {
 
 }
 
-bool Troop::Update(float dt) {
+bool Deathclaw::Update(float dt) {
 	bool ret = true;
 
 	switch (state)
@@ -22,26 +19,20 @@ bool Troop::Update(float dt) {
     case IDLE:
         break;
     case WALK:
-		Move(dt);
         break;
     case ATTACK:
-		if (attack_timer.Read() > attack_time) {
-			Attack();
-		}
         break;
     case HIT:
         break;
     case DIE:
-		direction = TOP_LEFT;
         break;
     default:
         break;
 	}
-
 	return ret;
 }
 
-void Troop::Attack() {
+void Deathclaw::Attack() {
 
 	action_timer.Start();
 
@@ -89,31 +80,31 @@ void Troop::Attack() {
 	}
 }
 
-bool Troop::LoadDataFromReference() {
+bool Deathclaw::LoadDataFromReference() {
 	bool ret = true;
-	Troop* reference_troop = (Troop*)reference_entity;
+	Deathclaw* reference_deathclaw = (Deathclaw*)reference_entity;
 
 	//load animations
 	for (int i = 0; i < NO_STATE; i++)
 	{
 		for (int j = 0; j < NO_DIRECTION; j++)
 		{
-			animations[i][j] = reference_troop->animations[i][j];
+			animations[i][j] = reference_deathclaw->animations[i][j];
 		}
 	}
 
 	//load property data
 	current_health = max_health = reference_entity->max_health;
-	damage = reference_troop->damage;
-	speed = reference_troop->speed;
+	damage = reference_deathclaw->damage;
+	speed = reference_deathclaw->speed;
 	sprite_size = reference_entity->sprite_size;
 
 	return ret;
 }
 
-bool Troop::LoadReferenceData(pugi::xml_node& node) {
+bool Deathclaw::LoadReferenceData(pugi::xml_node& node) {
 	bool ret = true;
-	
+
 	max_health = node.attribute("health").as_int();
 	damage = node.attribute("damage").as_int();
 	speed.x = node.attribute("speed").as_int();
