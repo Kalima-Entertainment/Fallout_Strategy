@@ -58,6 +58,7 @@ bool j1Scene::Start()
 
 	if (App->render->fog_of_war)App->fowManager->Enable();
 
+
 	App->console->CreateCommand("win", "Automatically win the game", this);
 	App->console->CreateCommand("lose", "Automatically lose the game", this);
 
@@ -192,20 +193,20 @@ bool j1Scene::Update(float dt)
 		
 		win = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
-		App->menu_manager->CreateMenu(Menu::WIN_LOSE_SCENE);
-		//App->entities->Disable();
-		App->scene->Disable();
-		App->isPaused = false;
+		App->menu_manager->DestroyMenu(Menu::RESOURCES);
+		App->gui->ingame = false;
+		App->isPaused = true;
+		App->logo_scene->Loop = true;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_KP_2) == KEY_DOWN)
 	{
 
-		win = false;
+		lose = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
-		App->menu_manager->CreateMenu(Menu::WIN_LOSE_SCENE);
-		App->entities->Disable();
-		App->scene->Disable();
-		App->isPaused = false;
+		App->menu_manager->DestroyMenu(Menu::RESOURCES);
+		App->gui->ingame = false;
+		App->isPaused = true;
+		App->logo_scene->Loop = true;
 	}
 
 	return true;
@@ -273,7 +274,6 @@ void j1Scene::RectangleSelection()
 }
 
 void j1Scene::CheckWinner() {
-
 	for (int i = 0; i < 4; i++)
 	{
 		if (!players[i]->defeated) {
@@ -282,6 +282,7 @@ void j1Scene::CheckWinner() {
 				if (players[i]->faction == App->player->faction) {
 					//LOSE
 					lose = true;
+					App->logo_scene->Loop = true;
 					App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 					App->menu_manager->CreateMenu(Menu::WIN_LOSE_SCENE);
 					App->gui->ingame = false;
@@ -310,6 +311,7 @@ void j1Scene::CheckWinner() {
 		App->menu_manager->CreateMenu(Menu::WIN_LOSE_SCENE);
 		App->gui->ingame = false;
 		App->isPaused = true;
+		App->logo_scene->Loop = true;
 	}
 }
 
