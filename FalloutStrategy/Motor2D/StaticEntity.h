@@ -26,7 +26,7 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 
-	bool LoadAnimations();
+	bool LoadAnimations(const char* folder, const char* file_name);
 	bool LoadReferenceData();	
 
 	void Upgrade(Upgrades_Data upgrades_data);
@@ -50,6 +50,8 @@ private:
 	int gen_speed;
 	Animation animations[3];
 	iPoint render_texture_pos;
+
+	int max_capacity;
 
 	Spawn_Stack spawn_stack[10];
 	Upgrade_Stack upgrade_stack;

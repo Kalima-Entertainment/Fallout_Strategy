@@ -23,7 +23,7 @@ bool GenericPlayer::DeleteEntity(j1Entity* entity) {
 	case MELEE:
 		for (int m = 0; m < troops.size(); m++)
 		{
-			if (troops[m] == (DynamicEntity*)entity) {
+			if (troops[m] == (Troop*)entity) {
 				troops.erase(troops.begin() + m);
 			}
 		}
@@ -32,7 +32,7 @@ bool GenericPlayer::DeleteEntity(j1Entity* entity) {
 	case RANGED:
 		for (int r = 0; r < troops.size(); r++)
 		{
-			if (troops[r] == (DynamicEntity*)entity) {
+			if (troops[r] == (Troop*)entity) {
 				troops.erase(troops.begin() + r);
 			}
 		}
@@ -40,7 +40,7 @@ bool GenericPlayer::DeleteEntity(j1Entity* entity) {
 		break;
 	case GATHERER:
 		for (int g = 0; g < gatherers_vector.size(); g++) {
-			if (gatherers_vector[g] == (DynamicEntity*)entity) {
+			if (gatherers_vector[g] == (Gatherer*)entity) {
 				gatherers_vector.erase(gatherers_vector.begin() + g);
 			}
 		}

@@ -15,6 +15,7 @@
 #include "MenuManager.h"
 #include "j1Scene.h"
 #include "j1Console.h"
+#include "Gatherer.h"
 
 j1Player::j1Player() : GenericPlayer() {
 	
@@ -256,8 +257,9 @@ void j1Player::MoveEntity(){
 			resource_building = App->entities->FindResourceBuildingByTile(selected_spot);
 
 			//assign a resource building to the entity
-			if ((resource_building != nullptr)&&(resource_building->quantity > 0))
-				dynamic_entity->resource_building = resource_building;
+			if ((resource_building != nullptr) && (resource_building->quantity > 0) && (dynamic_entity->type == GATHERER)) {
+				((Gatherer*)dynamic_entity)->AssignResourceBuilding(resource_building);
+			}
 		}
 	}
 	//static entities

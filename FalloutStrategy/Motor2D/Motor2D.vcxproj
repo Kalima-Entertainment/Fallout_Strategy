@@ -79,9 +79,12 @@
   <ItemGroup>
     <ClCompile Include="AI_Manager.cpp" />
     <ClCompile Include="AI_Player.cpp" />
+    <ClCompile Include="Animal.cpp" />
+    <ClCompile Include="Deathclaw.cpp" />
     <ClCompile Include="DynamicEntity.cpp" />
     <ClCompile Include="FowEntity.cpp" />
     <ClCompile Include="FoWManager.cpp" />
+    <ClCompile Include="Gatherer.cpp" />
     <ClCompile Include="GenericPlayer.cpp" />
     <ClCompile Include="j1Collision.cpp" />
     <ClCompile Include="j1Console.cpp" />
@@ -115,6 +118,7 @@
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="StaticEntity.cpp" />
     <ClCompile Include="theoraplay.cpp" />
+    <ClCompile Include="Troop.cpp" />
     <ClCompile Include="UI_Button.cpp" />
     <ClCompile Include="UI_element.cpp" />
     <ClCompile Include="UI_InputText.cpp" />
@@ -124,11 +128,14 @@
   <ItemGroup>
     <ClInclude Include="AI_Manager.h" />
     <ClInclude Include="AI_Player.h" />
+    <ClInclude Include="Animal.h" />
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="Deathclaw.h" />
     <ClInclude Include="DynamicEntity.h" />
     <ClInclude Include="FoWBitDefs.h" />
     <ClInclude Include="FoWEntity.h" />
     <ClInclude Include="FoWManager.h" />
+    <ClInclude Include="Gatherer.h" />
     <ClInclude Include="GenericPlayer.h" />
     <ClInclude Include="theoraplay.h" />
     <ClInclude Include="j1Collision.h" />
@@ -169,6 +176,7 @@
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="StaticEntity.h" />
     <ClInclude Include="theoraplay_cvtrgb.h" />
+    <ClInclude Include="Troop.h" />
     <ClInclude Include="UI_Button.h" />
     <ClInclude Include="UI_element.h" />
     <ClInclude Include="UI_InputText.h" />

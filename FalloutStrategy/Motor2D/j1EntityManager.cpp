@@ -18,6 +18,10 @@
 #include "AI_Manager.h"
 #include "AI_Player.h"
 #include "j1Pathfinding.h"
+#include "Troop.h"
+#include "Animal.h"
+#include "Gatherer.h"
+#include "Deathclaw.h"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -29,15 +33,8 @@ j1EntityManager::j1EntityManager(){
 	name.assign("entities");
 
 
-	blocked_movement = false;	
-	
-	for (int faction = VAULT; faction < NO_FACTION; faction++)
-	{
-		for (int type = MELEE; type <= BASE; type++)
-		{
-			reference_entities[faction][type] = nullptr;
-		}
-	}
+	blocked_movement = false;
+
 }
 
 j1EntityManager::~j1EntityManager(){}
@@ -48,56 +45,117 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	//if (!owner) owner = App->scene->players[faction];
 
 	j1Entity* entity = nullptr;
+	iPoint available_tile;
 
+	switch (type)
+	{
+	case MELEE:
+		available_tile = FindSpawnPoint(position_x, position_y);
+		entity = new Troop(MELEE, faction, available_tile, owner);
+		if (owner) {
+			owner->troops.push_back((Troop*)entity);
+			owner->melees++;
+		}
+		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, MELEE)];
+		break;
+
+	case RANGED:
+		available_tile = FindSpawnPoint(position_x, position_y);
+		entity = new Troop(RANGED, faction, available_tile, owner);
+		if (owner) {
+			owner->troops.push_back((Troop*)entity);
+			owner->rangeds++;
+		}
+		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, RANGED)];
+		break;
+
+	case GATHERER:
+		available_tile = FindSpawnPoint(position_x, position_y);
+		entity = new Gatherer(faction, available_tile, owner);
+		if (owner) {
+			owner->gatherers_vector.push_back((Gatherer*)entity);
+			owner->gatherers++;
+		}
+		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, GATHERER)];
+		break;
+
+	case BASE:
+		entity = new StaticEntity(faction, BASE, { position_x, position_y }, owner);
+		if (owner) {
+			owner->base = (StaticEntity*)entity;
+		}
+		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, BASE)];
+		break;
+
+	case LABORATORY:
+		entity = new StaticEntity(faction, LABORATORY, { position_x, position_y }, owner);
+		if (owner) {
+			owner->laboratory = (StaticEntity*)entity;
+		}
+		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, LABORATORY)];
+		break;
+
+	case BARRACK:
+		entity = new StaticEntity(faction, BIGHORNER, { position_x, position_y }, owner);
+		if (owner) {
+			if(!owner->barrack[0])
+				owner->barrack[0] = (StaticEntity*)entity;
+			else if (!owner->barrack[1])
+				owner->barrack[1] = (StaticEntity*)entity;
+		}
+		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, BARRACK)];
+		break;
+
+	case BIGHORNER:
+		entity = new Animal(BIGHORNER, { position_x, position_y });
+		entity->reference_entity = reference_entities[GetReferenceEntityID(NO_FACTION, BIGHORNER)];
+		break;
+
+	case BRAHAM:
+		entity = new Animal(BRAHAM, { position_x, position_y });
+		entity->reference_entity = reference_entities[GetReferenceEntityID(NO_FACTION, BRAHAM)];
+		break;
+
+	case DEATHCLAW:
+		entity = new Deathclaw({ position_x, position_y });
+		entity->reference_entity = reference_entities[GetReferenceEntityID(NO_FACTION, DEATHCLAW)];
+		break;
+
+	case MR_HANDY:
+		entity = new Troop(MR_HANDY, faction, { position_x, position_y }, owner);
+		if (owner) {
+			owner->troops.push_back((Troop*)entity);
+		}
+		entity->reference_entity = reference_entities[GetReferenceEntityID(NO_FACTION, MR_HANDY)];
+		break;
+	default:
+		break;
+	}
+
+	if (entity->reference_entity != nullptr) {
+		occupied_tiles[entity->current_tile.x][entity->current_tile.y] = true;
+		entities.push_back(entity);
+		entity->LoadDataFromReference();
+	}
+
+	/*
 	if ((type == MELEE) || (type == RANGED) || (type == GATHERER) || (type == BIGHORNER) || (type == BRAHAM) || (type == DEATHCLAW) || (type == MR_HANDY)) {
 
 		//If there's another unit in that tile, we find a new spawn point
-		if (occupied_tiles[position_x][position_y]) {
-			//There's another unit, let's find a new spawn point
-			bool spawnPointFound = false;
 
-			while (occupied_tiles[position_x][position_y]) {
-				for (int k = 0; k < 10; k++) {
-					for (int i = 0; i <= 5; i++) {
-						if (spawnPointFound == false) {
-							if (!occupied_tiles[position_x - i][position_y + k]) {
-								position_x -= i;
-								position_y += k;
-								spawnPointFound = true;
-							}
-						}
-					}
-					if (spawnPointFound == false) {
-						for (int j = 0; j <= 5; j++) {
-							if (spawnPointFound == false) {
-								if (!occupied_tiles[position_x + k][position_y - j]) {
-									position_y -= j;
-									position_x += k;
-									spawnPointFound = true;
-								}
-							}
-						}
-					}
-					//First line completed. Next look for spawn points in the next line
-				}
-				//We didn't find a free spawn point, so we spawn in the same tile as other unit
-				break;
-			}
-		}
-		
 		entity = new DynamicEntity(faction, type, { position_x, position_y }, owner);
-	
+
 		if ((faction != ANIMALS) && (type != MR_HANDY))
 			entity->reference_entity = reference_entities[faction][type];
 		else if (type == BIGHORNER)
-			entity->reference_entity = reference_bighroner;
+			entity->reference_entity = reference_bighorner;
 		else if (type == BRAHAM)
 			entity->reference_entity = reference_braham;
 		else if (type == DEATHCLAW)
 			entity->reference_entity = reference_deathclaw;
 		else if (type == MR_HANDY)
 			entity->reference_entity = reference_MrHandy;
-		
+
 		if (entity->reference_entity != nullptr){
 			occupied_tiles[entity->current_tile.x][entity->current_tile.y] = true;
 			entities.push_back(entity);
@@ -108,7 +166,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	{
 		entity = new StaticEntity(faction, type, {position_x, position_y},owner);
 		entity->reference_entity = reference_entities[faction][type];
-		
+
 		if (entity != NULL)
 		{
 			if (entity->reference_entity != nullptr) {
@@ -190,7 +248,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		}
 
 	}
-
+	*/
 	return entity;
 }
 
@@ -200,6 +258,18 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 
 	radar_cost = config.child("radar").attribute("cost").as_int();
 	mr_handy_cost = config.child("mr_handy").attribute("cost").as_int();
+
+	pugi::xml_node animation_node = config.child("animation_files");
+	std::string base_folder = animation_node.attribute("base_folder").as_string();
+	pugi::xml_node file_node = animation_node.child("file");
+
+	for (int i = 0; i < REFERENCE_ENTITIES && file_node; i++)
+	{
+		texture_folders[i] = base_folder;
+		texture_folders[i].append(file_node.attribute("folder").as_string());
+		tmx_files[i] = file_node.attribute("tmx").as_string();
+		file_node = file_node.next_sibling();
+	}
 
 	RandomFactions();
 	LoadUpgradeCosts(config);
@@ -211,7 +281,7 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 bool j1EntityManager::Start() {
 	BROFILER_CATEGORY("EntitiesStart", Profiler::Color::Linen)
 	bool ret = true;
-	
+
 	App->console->CreateCommand("destroy_all_entities", "remove all dynamic entities", (j1Module*)this);
 
 	loading_reference_entities = true;
@@ -227,23 +297,25 @@ bool j1EntityManager::Start() {
 	}
 
 	//automatic entities loading
-	for (int faction = VAULT; faction < ANIMALS; faction++)
+	int i = 0;
+	for (int faction = VAULT; faction < NO_FACTION; faction++)
 	{
 		for (int type = MELEE; type < BIGHORNER; type++)
 		{
-			reference_entities[faction][type] = nullptr;
-			reference_entities[faction][type] = CreateEntity((Faction)faction, (EntityType)type, faction, type);
+			reference_entities[i] = CreateEntity((Faction)faction, (EntityType)type, faction, type);
+			i++;
 		}
 	}
-
-	reference_bighroner = (DynamicEntity*)CreateEntity(ANIMALS, BIGHORNER, ANIMALS, BIGHORNER);
-	reference_braham = (DynamicEntity*)CreateEntity(ANIMALS, BRAHAM, ANIMALS, BRAHAM);
-	reference_deathclaw = (DynamicEntity*)CreateEntity(ANIMALS, DEATHCLAW, ANIMALS, DEATHCLAW);
-	reference_MrHandy = (DynamicEntity*)CreateEntity(NO_FACTION, MR_HANDY, NO_FACTION, MR_HANDY);
+	reference_entities[i++] = CreateEntity(NO_FACTION, BIGHORNER, NO_FACTION, BIGHORNER);
+	reference_entities[i++] = CreateEntity(NO_FACTION, BRAHAM, NO_FACTION, BRAHAM);
+	reference_entities[i++] = CreateEntity(NO_FACTION, DEATHCLAW, NO_FACTION, DEATHCLAW);
+	reference_entities[i++] = CreateEntity(NO_FACTION, MR_HANDY, NO_FACTION, MR_HANDY);
 
 	LoadReferenceEntityData();
 
+	loading_entity = 0;
 	showing_building_menu = false;
+	loading_reference_entities = true;
 
 	sort_timer.Start();
 	load_timer.Start();
@@ -255,16 +327,12 @@ bool j1EntityManager::CleanUp()
 {
 	bool ret = true;
 
-	for (int faction = VAULT; faction < NO_FACTION; faction++)
+
+	for (int i = 0; i < REFERENCE_ENTITIES; i++)
 	{
-		for (int type = MELEE; type <= BASE; type++)
-		{
-			if (reference_entities[faction][type] != nullptr) {
-				App->tex->UnLoad(reference_entities[faction][type]->texture);
-				delete reference_entities[faction][type];
-				reference_entities[faction][type] = nullptr;
-			}
-		}
+		App->tex->UnLoad(reference_entities[i]->texture);
+		delete reference_entities[i];
+		reference_entities[i] = nullptr;
 	}
 
 	for (int i = 0; i < entities.size(); i++)
@@ -311,7 +379,16 @@ bool j1EntityManager::Update(float dt)
 
 	//load all textures and animations on the go
 	if (loading_reference_entities) {
-		ret = LoadReferenceEntityAnimations();
+		if (load_timer.Read() > 100) {
+			if (loading_entity < REFERENCE_ENTITIES) {
+				reference_entities[loading_entity]->LoadAnimations(texture_folders[loading_entity].c_str(), tmx_files[loading_entity].c_str());
+				loading_entity++;
+				load_timer.Start();
+			}
+			else {
+				loading_reference_entities = false;
+			}
+		}
 	}
 
 	if (!App->isPaused)
@@ -463,7 +540,7 @@ bool j1EntityManager::PostUpdate()
 				break;
 			}
 		}
-		
+
 		if (sort_timer.Read() > 500) {
 			BubbleSortEntities();
 			sort_timer.Start();
@@ -500,43 +577,8 @@ bool j1EntityManager::PostUpdate()
 	return ret;
 }
 
-
 bool j1EntityManager::LoadReferenceEntityAnimations() {
 	bool ret = true;
-
-	if (load_timer.Read() > 100) {
-
-		if (loading_entity == BIGHORNER) {
-			loading_entity = MELEE;
-			loading_faction++;
-		}
-
-		if (loading_faction == ANIMALS) {
-			if (loading_entity == 1) 
-				ret = reference_bighroner->LoadAnimations();
-			else if (loading_entity == 2)
-				ret = reference_braham->LoadAnimations();
-			else if (loading_entity == 3) {
-				reference_deathclaw->LoadAnimations();
-				reference_MrHandy->LoadAnimations();
-
-				for (int faction = VAULT; faction < ANIMALS; faction++)
-				{
-					reference_entities[faction][BARRACK]->texture = reference_entities[faction][BASE]->texture;
-					reference_entities[faction][LABORATORY]->texture = reference_entities[faction][BASE]->texture;
-				}
-
-				load_timer.Start();
-				loading_reference_entities = false;
-			}
-			loading_entity++;
-		}
-		else if (loading_faction != NO_FACTION)
-		{
-			ret = reference_entities[loading_faction][loading_entity]->LoadAnimations();
-			loading_entity++;
-		}
-	}
 
 	return ret;
 }
@@ -552,82 +594,72 @@ bool j1EntityManager::LoadReferenceEntityData() {
 	else
 		 entities_node = entities_file.child("entities");
 
-	pugi::xml_node type_node = entities_node.first_child();
+	pugi::xml_node class_node = entities_node.child("dynamic").first_child();
+	pugi::xml_node type_node;
 	pugi::xml_node faction_node;
 	Faction faction = NO_FACTION;
 	EntityType type = NO_TYPE;
 
-	//load dynamic entities
-	faction_node = type_node.first_child();
-	while (type_node != nullptr) {
-		while (faction_node != nullptr)
+	while (class_node)
+	{
+		type_node = class_node.first_child();
+
+		while (type_node)
 		{
-			std::string faction_string = std::string(faction_node.name());
+			faction_node = type_node.first_child();
 
-			//check faction
-			if (faction_string == "vault") faction = VAULT;
-			else if (faction_string == "brotherhood") faction = BROTHERHOOD;
-			else if (faction_string == "mutants") faction = MUTANT;
-			else if (faction_string == "ghouls") faction = GHOUL;
-			else if (faction_string == "animals") faction = ANIMALS;
-			else if (faction_string == "mr_handy") faction = NO_FACTION;
-
-			pugi::xml_node entity_node = faction_node.first_child();
-			while (entity_node != nullptr)
+			while (faction_node)
 			{
-				std::string type_string = std::string(entity_node.name());
+				//faction
+				if (faction_node.name() == "vault")
+					faction = VAULT;
+				else if (faction_node.name() == "brotherhood")
+					faction = BROTHERHOOD;
+				else if (faction_node.name() == "mutant")
+					faction = MUTANT;
+				else if (faction_node.name() == "ghoul")
+					faction = GHOUL;
 
-				//check type
-				if (type_string == "melee") type = MELEE;
-				else if (type_string == "ranged") type = RANGED;
-				else if (type_string == "gatherer") type = GATHERER;
-				else if (type_string == "base") type = BASE;
-				else if (type_string == "barrack") type = BARRACK;
-				else if (type_string == "laboratory") type = LABORATORY;
-				else if (type_string == "bighorner") type = BIGHORNER;
-				else if (type_string == "braham") type = BRAHAM;
-				else if (type_string == "deathclaw") type = DEATHCLAW;
-				else if (type_string == "mr_handy") type = MR_HANDY;
-
-				//load attributes
-				int health = entity_node.attribute("health").as_int();
-				int damage = entity_node.attribute("damage").as_int();
-				int speed = entity_node.attribute("speed").as_int();
-
-				//load into reference entities
-				if ((faction != ANIMALS)&&(faction != NO_FACTION)) {
-					reference_entities[faction][type]->max_health = health;
-					reference_entities[faction][type]->damage = damage;
-					reference_entities[faction][type]->speed = { (float)speed, (float)speed * 0.5f};
+				//type
+				if (type_node.name() == "melee") {
+					reference_entities[GetReferenceEntityID(faction,MELEE)]->LoadReferenceData(faction_node);
 				}
-				else if (type != MR_HANDY)
-				{
-					DynamicEntity* animal = nullptr;
-					if (type == BIGHORNER) animal = reference_bighroner;
-					else if (type == BRAHAM) animal = reference_braham;
-					else if (type == DEATHCLAW) animal = reference_deathclaw;
-
-					animal->max_health = health;
-					animal->damage = damage;
-					animal->speed = { (float)speed, (float)speed * 0.5f };
-					animal->resource_collected = entity_node.attribute("resource_quantity").as_int();
+				else if (type_node.name() == "ranged") {
+					reference_entities[GetReferenceEntityID(faction, RANGED)]->LoadReferenceData(faction_node);
 				}
-				else
-				{
-					DynamicEntity* mr_handy;
-					mr_handy = reference_MrHandy;
-					mr_handy->max_health = health;
-					mr_handy->speed = { (float)speed, (float)speed * 0.5f };
-					mr_handy->damage = damage;
+				else if (type_node.name() == "gatherer") {
+					reference_entities[GetReferenceEntityID(faction, GATHERER)]->LoadReferenceData(faction_node);
+				}
+				else if (type_node.name() == "base") {
+					reference_entities[GetReferenceEntityID(faction, BASE)]->LoadReferenceData(faction_node);
+				}
+				else if (type_node.name() == "laboratory") {
+					reference_entities[GetReferenceEntityID(faction, LABORATORY)]->LoadReferenceData(faction_node);
+				}
+				else if (type_node.name() == "barrack") {
+					reference_entities[GetReferenceEntityID(faction, BARRACK)]->LoadReferenceData(faction_node);
+				}
+				else if (type_node.name() == "bighorner") {
+					reference_entities[GetReferenceEntityID(NO_FACTION, BIGHORNER)]->LoadReferenceData(faction_node);
+				}
+				else if (type_node.name() == "braham") {
+					reference_entities[GetReferenceEntityID(NO_FACTION, BRAHAM)]->LoadReferenceData(faction_node);
+				}
+				else if (type_node.name() == "deathclaw") {
+					reference_entities[GetReferenceEntityID(NO_FACTION, DEATHCLAW)]->LoadReferenceData(faction_node);
+				}
+				else if (type_node.name() == "mr_handy") {
+					reference_entities[GetReferenceEntityID(NO_FACTION, MR_HANDY)]->LoadReferenceData(faction_node);
 				}
 
-				entity_node = entity_node.next_sibling();
+				faction_node = faction_node.next_sibling();
 			}
-			faction_node = faction_node.next_sibling();
+			type_node = type_node.next_sibling();
 		}
-		type_node = type_node.next_sibling();
-		faction_node = type_node.first_child();
+		class_node = class_node.next_sibling();
 	}
+
+
 
 	return ret;
 }
@@ -706,7 +738,7 @@ iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) 
 								distance_to_destination = possible_tile.DistanceManhattan(destination);
 								closest_possible_tile = possible_tile;
 							}
-		
+
 					}
 				}
 			}
@@ -756,7 +788,7 @@ void j1EntityManager::RandomFactions() {
 	//Initialize at { 0,1,2,3 }
 	for(int i = 0; i < 4; i++)
 		randomFaction[i] = i;
-	
+
 	//Randomize faction order
 	//std::random_shuffle(&randomFaction[0], &randomFaction[3]);
 
@@ -772,7 +804,7 @@ void j1EntityManager::RandomFactions() {
 		randomFaction[randomIndex] = temp;
 	}
 
-	
+
 	for (int i = 0; i < 4; i++)
 		LOG("faction %i", randomFaction[i]);
 }
@@ -832,7 +864,7 @@ void j1EntityManager::LoadUpgradeCosts(pugi::xml_node& config)
 
 void j1EntityManager::LoadUnitCosts() {
 	//Loads the cost of spawning units and creating upgrades from XML file
-	
+
 	pugi::xml_document entities_file;
 	pugi::xml_node entities_node;
 	pugi::xml_parse_result result = entities_file.load_file("entities.xml");
@@ -943,7 +975,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		else if (iterator.attribute("faction:").as_string() == "ghoul") { faction = GHOUL; }
 		else if (iterator.attribute("faction:").as_string() == "no_faction") { faction = NO_FACTION; }
 
-		
+
 
 		position.x = iterator.attribute("position_x:").as_float();
 		position.y = iterator.attribute("position_y:").as_float();
@@ -957,7 +989,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 
 		//if (faction == ANIMALS) {CreateEntity(faction,type, position.x, position.y);}
 		//else {CreateEntity(faction, type, position.x, position.y, App->scene->players[faction]);}
-		
+
 		iterator = iterator.next_sibling();
 
 	}
@@ -974,10 +1006,10 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 // Save Game State
 bool j1EntityManager::Save(pugi::xml_node& data) const
 {
-	
+
 	for (int i = 0; i < entities.size(); i++)
 	{
-		
+
 		pugi::xml_node entities_pugi = data.append_child("entity");
 		entities_pugi.append_attribute("number") = i;
 
@@ -1010,4 +1042,87 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 	LOG("%i", entities.size());
 
 	return true;
+}
+
+iPoint j1EntityManager::FindSpawnPoint(int position_x, int position_y) {
+	if (occupied_tiles[position_x][position_y]) {
+		//There's another unit, let's find a new spawn point
+		bool spawnPointFound = false;
+
+		while (occupied_tiles[position_x][position_y]) {
+			for (int k = 0; k < 10; k++) {
+				for (int i = 0; i <= 5; i++) {
+					if (spawnPointFound == false) {
+						if (!occupied_tiles[position_x - i][position_y + k]) {
+							position_x -= i;
+							position_y += k;
+							spawnPointFound = true;
+						}
+					}
+				}
+				if (spawnPointFound == false) {
+					for (int j = 0; j <= 5; j++) {
+						if (spawnPointFound == false) {
+							if (!occupied_tiles[position_x + k][position_y - j]) {
+								position_y -= j;
+								position_x += k;
+								spawnPointFound = true;
+							}
+						}
+					}
+				}
+				//First line completed. Next look for spawn points in the next line
+			}
+			//We didn't find a free spawn point, so we spawn in the same tile as other unit
+			break;
+		}
+	}
+	return iPoint(position_x, position_y);
+}
+
+int j1EntityManager::GetReferenceEntityID(Faction faction, EntityType type) {
+
+	switch (faction)
+	{
+	case VAULT:
+		if (type == MELEE) return 0;
+		else if (type == RANGED) return 1;
+		else if (type == GATHERER) return 2;
+		else if (type == BASE) return 3;
+		else if (type == LABORATORY) return 4;
+		else if (type == BARRACK) return 5;
+		break;
+	case BROTHERHOOD:
+		if (type == MELEE) return 6;
+		else if (type == RANGED) return 7;
+		else if (type == GATHERER) return 8;
+		else if (type == BASE) return 9;
+		else if (type == LABORATORY) return 10;
+		else if (type == BARRACK) return 11;
+		break;
+	case MUTANT:
+		if (type == MELEE) return 12;
+		else if (type == RANGED) return 13;
+		else if (type == GATHERER) return 14;
+		else if (type == BASE) return 15;
+		else if (type == LABORATORY) return 16;
+		else if (type == BARRACK) return 17;
+		break;
+	case GHOUL:
+		if (type == MELEE) return 18;
+		else if (type == RANGED) return 19;
+		else if (type == GATHERER) return 20;
+		else if (type == BASE) return 21;
+		else if (type == LABORATORY) return 22;
+		else if (type == BARRACK) return 23;
+		break;
+	case NO_FACTION:
+		if (type == BIGHORNER) return 24;
+		else if (type == BRAHAM) return 25;
+		else if (type == DEATHCLAW) return 26;
+		else if (type == MR_HANDY) return 27;
+		break;
+	default:
+		break;
+	}
 }

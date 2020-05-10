@@ -626,8 +626,8 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 				iPoint position;
 				std::string object_type = std::string(object_node.attribute("type").as_string());
 				position = App->map->IsometricWorldToMap(x, y);
-				if (object_type == "Braham") App->entities->CreateEntity(ANIMALS, BRAHAM, position.x, position.y);
-				else if (object_type == "Bighorner") App->entities->CreateEntity(ANIMALS, BIGHORNER, position.x, position.y);
+				if (object_type == "Braham") App->entities->CreateEntity(NO_FACTION, BRAHAM, position.x, position.y);
+				else if (object_type == "Bighorner") App->entities->CreateEntity(NO_FACTION, BIGHORNER, position.x, position.y);
 			}
 
 			object_node = object_node.next_sibling();
