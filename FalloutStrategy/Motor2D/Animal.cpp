@@ -12,6 +12,7 @@ Animal::Animal(EntityType g_type, iPoint g_current_tile) : DynamicEntity() {
 	position.x += HALF_TILE;
 	position.y += HALF_TILE;
 	pasturing_time = 20;
+	faction = NO_FACTION;
 }
 
 Animal::~Animal() {

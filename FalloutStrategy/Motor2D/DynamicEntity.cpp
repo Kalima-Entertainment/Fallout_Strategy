@@ -638,27 +638,31 @@ j1Entity* DynamicEntity::DetectEntitiesInRange() {
 
 	entities_in_range.clear();
 
-	for (int y = -detection_radius; y < detection_radius; y++)
+	for (int y = -detection_radius; y <= detection_radius; y++)
 	{
-		for (int x = -detection_radius; x < detection_radius; x++)
+		for (int x = -detection_radius; x <= detection_radius; x++)
 		{
-			if ((x != 0) && (y != 0)) {
+			if (x != 0 || y != 0) {
 				checked_tile.x = current_tile.x + x;
 				checked_tile.y = current_tile.y + y;
 
 				if (App->entities->occupied_tiles[checked_tile.x][checked_tile.y]) {
-					detected_entity = App->entities->FindEntityByTile(checked_tile);
-					entities_in_range.push_back(detected_entity);
 
-					if ((detected_entity != nullptr)&&(detected_entity->faction != faction))
-						if (closest_enemy == nullptr) {
-							closest_enemy = detected_entity;
-						}
-						else {
-							if (detected_entity->current_tile.DistanceManhattan(current_tile) < closest_enemy->current_tile.DistanceManhattan(current_tile)) {
+					detected_entity = App->entities->FindEntityByTile(checked_tile);
+
+					if ((detected_entity)&&(detected_entity->is_dynamic)) {
+						entities_in_range.push_back(detected_entity);
+
+						if (detected_entity->faction != faction)
+							if (closest_enemy == nullptr) {
 								closest_enemy = detected_entity;
 							}
-						}
+							else {
+								if (detected_entity->current_tile.DistanceManhattan(current_tile) < closest_enemy->current_tile.DistanceManhattan(current_tile)) {
+									closest_enemy = detected_entity;
+								}
+							}
+					}
 				}
 			}
 		}

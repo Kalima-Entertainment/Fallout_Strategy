@@ -266,6 +266,10 @@ void j1App::FinishUpdate()
 		j1PerfTimer t;
 		SDL_Delay(capped_ms - last_frame_ms);
 	}
+
+	//Warning if FPS < 10
+	if (last_frame_ms > 100)
+		LOG("FPS drop");
 }
 
 // Call modules before each loop iteration

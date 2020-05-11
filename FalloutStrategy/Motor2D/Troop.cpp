@@ -15,6 +15,7 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 	position.y += HALF_TILE;
 	attack_timer.Start();
 	attack_time = 3;
+	detection_radius = 4;
 
 	switch (type)
 	{
@@ -22,10 +23,10 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 		range = 1;
 		break;
 	case RANGED:
-		range = 3;
+		range = 4;
 		break;
 	case MR_HANDY:
-		range = 3;
+		range = 4;
 		break;
 	default:
 		break;
@@ -48,10 +49,18 @@ Troop::~Troop() {
 
 bool Troop::Update(float dt) {
 	bool ret = true;
+	j1Entity* enemy_in_range = nullptr;
 
 	switch (state)
 	{
     case IDLE:
+		enemy_in_range = DetectEntitiesInRange();
+
+		if ((enemy_in_range) && (enemy_in_range != target_entity)) {
+			target_entity = enemy_in_range;
+			PathfindToPosition(enemy_in_range->current_tile);
+		}
+
         break;
     case WALK:
 		Move(dt);
@@ -61,10 +70,15 @@ bool Troop::Update(float dt) {
 				state = ATTACK;
 			}
 		}
-
         break;
+
     case ATTACK:
 		if (attack_timer.ReadSec() > attack_time) {
+			current_animation->Reset();
+			if (current_tile.DistanceNoSqrt(target_entity->current_tile) > range) {
+				PathfindToPosition(target_entity->current_tile);
+			}
+
 			Attack();
 		}
         break;

@@ -151,7 +151,9 @@ bool j1Minimap::PostUpdate() {
 			entity_rect.y = entity_position.y;
 
 			Faction entity_faction = App->entities->entities[i]->faction;
-			if (App->player->faction == entity_faction) { App->render->DrawQuad(entity_rect, 0, 255, 0, 255, true, false); }
+			if (App->player->faction == entity_faction){
+				App->render->DrawQuad(entity_rect, 0, 255, 0, 255, true, false); 
+			}
 			else { 
 				if(radar)
 				App->render->DrawQuad(entity_rect, 255, 0, 0, 255, true, false);
