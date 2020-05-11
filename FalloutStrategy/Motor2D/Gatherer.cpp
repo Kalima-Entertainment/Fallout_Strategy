@@ -22,6 +22,13 @@ Gatherer::~Gatherer() {
 	target_entity = nullptr;
 	attacking_entity = nullptr;
 	resource_building = nullptr;
+	reference_entity = nullptr;
+	owner = nullptr;
+	current_animation = nullptr;
+	texture = nullptr;
+	node_path.clear();
+	path_to_target.clear();
+	entities_in_range.clear();
 }
 
 bool Gatherer::Update(float dt) {

@@ -50,12 +50,13 @@ public:
 
 	bool LoadAnimations(const char* folder, const char* file_name);
 
-private:
+protected:
 	iPoint target_tile;
 	iPoint next_tile;
 	iPoint next_tile_position;
 	SDL_Rect next_tile_rect;
 	int detection_radius;
+	fPoint speed;
 
 	j1Timer detection_timer;
 
@@ -65,10 +66,7 @@ public:
 	Direction direction;
 	Direction last_direction;
 
-	fPoint speed;
 	bool is_agressive;
-
-	j1Timer action_timer;
 
 	UnitInfo unitinfo;
 	std::vector<iPoint> node_path;

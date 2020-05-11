@@ -16,7 +16,10 @@ public:
 public:
 
 private:
-	int resource_quantity;
+	int food_quantity;
+	ResourceBuilding* resource_spot;
+	j1Timer timer;
+	int pasturing_time;
 };
 
 #endif // !_ANIMAL_H_

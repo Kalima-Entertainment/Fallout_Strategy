@@ -12,7 +12,15 @@ Deathclaw::Deathclaw(iPoint g_current_tile) : DynamicEntity() {
 }
 
 Deathclaw::~Deathclaw() {
-
+	target_entity = nullptr;
+	attacking_entity = nullptr;
+	reference_entity = nullptr;
+	owner = nullptr;
+	current_animation = nullptr;
+	texture = nullptr;
+	node_path.clear();
+	path_to_target.clear();
+	entities_in_range.clear();
 }
 
 bool Deathclaw::Update(float dt) {
@@ -25,6 +33,9 @@ bool Deathclaw::Update(float dt) {
     case WALK:
         break;
     case ATTACK:
+		if (attack_timer.Read() > attack_time) {
+			Attack();
+		}
         break;
     case HIT:
         break;
@@ -41,7 +52,7 @@ bool Deathclaw::Update(float dt) {
 
 void Deathclaw::Attack() {
 
-	action_timer.Start();
+	attack_timer.Start();
 
 	//damage unit if god_mode isn't activated
 	if ((target_entity->faction == App->player->faction) && (App->player->god_mode))

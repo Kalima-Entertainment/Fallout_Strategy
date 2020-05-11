@@ -144,7 +144,8 @@ bool FoWManager::Update(float dt)
 bool FoWManager::PostUpdate()
 {
 	bool ret = true;
-	DrawFoWMap();
+	if(App->render->fog_of_war)
+		DrawFoWMap();
 	return ret;
 }
 

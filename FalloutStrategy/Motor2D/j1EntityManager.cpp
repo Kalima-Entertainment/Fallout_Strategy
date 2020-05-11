@@ -29,9 +29,7 @@
 
 j1EntityManager::j1EntityManager(){
 
-
 	name.assign("entities");
-
 
 	blocked_movement = false;
 
@@ -602,70 +600,70 @@ bool j1EntityManager::LoadReferenceEntityData() {
 	std::string faction_name;
 	std::string type_name;
 
-	while (class_node)
+	while (class_node) 
 	{
-		type_node = class_node.first_child();
+		faction_node = class_node.first_child();
 
-		while (type_node)
+		while (faction_node)
 		{
-			type_name = type_node.name();
-			faction_node = type_node.first_child();
+			faction_name = faction_node.name();
 
-			while (faction_node)
+			//faction
+			if (faction_name == "vault")
+				faction = VAULT;
+			else if (faction_name == "brotherhood")
+				faction = BROTHERHOOD;
+			else if (faction_name == "mutant")
+				faction = MUTANT;
+			else if (faction_name == "ghoul")
+				faction = GHOUL;
+
+			type_node = faction_node.first_child();
+
+			while (type_node)
 			{
-				faction_name = faction_node.name();
-
-				//faction
-				if ( faction_name == "vault")
-					faction = VAULT;
-				else if (faction_name == "brotherhood")
-					faction = BROTHERHOOD;
-				else if (faction_name == "mutant")
-					faction = MUTANT;
-				else if (faction_name == "ghoul")
-					faction = GHOUL;
+				type_name = type_node.name();
 
 				//type
 				if (type_name == "melee") {
-					reference_entities[GetReferenceEntityID(faction,MELEE)]->LoadReferenceData(faction_node);
+					reference_entities[GetReferenceEntityID(faction, MELEE)]->LoadReferenceData(type_node);
 				}
 				else if (type_name == "ranged") {
-					reference_entities[GetReferenceEntityID(faction, RANGED)]->LoadReferenceData(faction_node);
+					reference_entities[GetReferenceEntityID(faction, RANGED)]->LoadReferenceData(type_node);
 				}
 				else if (type_name == "gatherer") {
-					reference_entities[GetReferenceEntityID(faction, GATHERER)]->LoadReferenceData(faction_node);
+					reference_entities[GetReferenceEntityID(faction, GATHERER)]->LoadReferenceData(type_node);
 				}
 				else if (type_name == "base") {
-					reference_entities[GetReferenceEntityID(faction, BASE)]->LoadReferenceData(faction_node);
+					reference_entities[GetReferenceEntityID(faction, BASE)]->LoadReferenceData(type_node);
 				}
 				else if (type_name == "laboratory") {
-					reference_entities[GetReferenceEntityID(faction, LABORATORY)]->LoadReferenceData(faction_node);
+					reference_entities[GetReferenceEntityID(faction, LABORATORY)]->LoadReferenceData(type_node);
 				}
 				else if (type_name == "barrack") {
-					reference_entities[GetReferenceEntityID(faction, BARRACK)]->LoadReferenceData(faction_node);
+					reference_entities[GetReferenceEntityID(faction, BARRACK)]->LoadReferenceData(type_node);
 				}
 				else if (type_name == "bighorner") {
-					reference_entities[GetReferenceEntityID(NO_FACTION, BIGHORNER)]->LoadReferenceData(faction_node);
+					reference_entities[GetReferenceEntityID(NO_FACTION, BIGHORNER)]->LoadReferenceData(type_node);
 				}
 				else if (type_name == "braham") {
-					reference_entities[GetReferenceEntityID(NO_FACTION, BRAHAM)]->LoadReferenceData(faction_node);
+					reference_entities[GetReferenceEntityID(NO_FACTION, BRAHAM)]->LoadReferenceData(type_node);
 				}
 				else if (type_name == "deathclaw") {
-					reference_entities[GetReferenceEntityID(NO_FACTION, DEATHCLAW)]->LoadReferenceData(faction_node);
+					reference_entities[GetReferenceEntityID(NO_FACTION, DEATHCLAW)]->LoadReferenceData(type_node);
 				}
 				else if (type_name == "mr_handy") {
-					reference_entities[GetReferenceEntityID(NO_FACTION, MR_HANDY)]->LoadReferenceData(faction_node);
+					reference_entities[GetReferenceEntityID(NO_FACTION, MR_HANDY)]->LoadReferenceData(type_node);
 				}
 
-				faction_node = faction_node.next_sibling();
+				type_node = type_node.next_sibling();
 			}
 
-			type_node = type_node.next_sibling();
+			faction_node = faction_node.next_sibling();
 		}
 
 		class_node = class_node.next_sibling();
 	}
-
 
 
 	return ret;
@@ -731,16 +729,16 @@ iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) 
 	int distance_to_destination = 100000;
 
 	while (max < 5) {
-		for (int y = -max; y < max; y++)
+		for (int y = -max; y <= max; y++)
 		{
-			for (int x = -max; x < max; x++)
+			for (int x = -max; x <= max; x++)
 			{
-				if (x != 0 && y != 0) {
+				if (x != 0 || y != 0) {
 					possible_tile.x = destination.x + x;
 					possible_tile.y = destination.y + y;
 
 					if ((!occupied_tiles[possible_tile.x][possible_tile.y])&&(App->pathfinding->IsWalkable(possible_tile))) {
-						if ((possible_tile.DistanceManhattan(origin) <= distance_to_origin)&& (possible_tile.DistanceManhattan(destination) <= distance_to_destination)) {
+						if ((possible_tile.DistanceManhattan(origin) <= distance_to_origin)&& (possible_tile.DistanceNoSqrt(destination) <= distance_to_destination)) {
 								distance_to_origin = possible_tile.DistanceManhattan(origin);
 								distance_to_destination = possible_tile.DistanceManhattan(destination);
 								closest_possible_tile = possible_tile;

@@ -4,6 +4,8 @@
 #include "j1Entity.h"
 #include "j1Timer.h"
 
+class StaticEntity;
+
 class Troop : public DynamicEntity {
 public:
 	Troop(EntityType type, Faction faction, iPoint current_tile, GenericPlayer* owner = nullptr);
@@ -20,6 +22,7 @@ private:
 	int range;
 	int attack_time;
 	j1Timer attack_timer;
+	StaticEntity* target_building;
 };
 
 #endif // !_TROOP_H_

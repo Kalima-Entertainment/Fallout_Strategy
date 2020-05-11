@@ -1,47 +1,77 @@
 <!-- Entities file for the game -->
 <entities>
  <dynamic>
-   <melee>
-    <vault health="150" damage="15" speed="100"/>
-    <brotherhood health="200" damage="15" speed="80"/>
-    <mutant health="150" damage="20" speed="80"/>
-    <ghoul health="100" damage="15" speed="120"/>
-   </melee>
-  <ranged>
-    <vault health="150" damage="30" speed="100"/>
-    <brotherhood health="200" damage="30" speed="80"/>
-    <mutant health="150" damage="40" speed="80"/>
-    <ghoul health="100" damage="30" speed="120"/>
-  </ranged>
-  <gatherer>
-    <vault health="120" damage="60" speed="100"/>
-    <brotherhood health="180" damage="80" speed="80"/>
-    <mutant health="120" damage="60" speed="120"/>
-    <ghoul health="90" damage="50" speed="140"/>
-  </gatherer>
-  <bighorner health="1500" speed="40" resource_quantity="300"/>
-  <braham health="700" speed="25" resource_quantity="800"/>
-  <deathclaw health="5000" damage="300" speed="100" resource_quantity="2000"/>
-  <mr_handy health="1000" speed="40" damage="150"/>
- </dynamic>
+   <vault>
+     <melee health="150" damage="15" speed="100">
+       <cost food="60" water="60" time="20"/>
+     </melee>
+     <ranged health="150" damage="30" speed="100">
+     <cost food="80" water="80" time="30"/>
+       </ranged>
+     <gatherer health="120" damage="60" speed="100">
+      <cost food="0"  water="40" time="10"/>
+     </gatherer>
+   </vault>
+   <brotherhood>
+     <melee health="200" damage="15" speed="80">
+       <cost food="80"  water="100" time="20"/>
+     </melee>
+     <ranged health="200" damage="30" speed="80">
+       <cost food="100"  water="100" time="30"/>
+     </ranged>
+     <gatherer health="180" damage="80" speed="80">
+       <cost food="0"  water="50" time="10"/>
+     </gatherer>
+   </brotherhood>
+   <mutants>
+     <melee health="150" damage="20" speed="80">
+       <cost food="100" water="100" time="20"/>
+     </melee>
+     <ranged health="150" damage="40" speed="80">
+       <cost food="120" water="100" time="30"/>
+     </ranged>
+     <gatherer health="120" damage="60" speed="120">
+       <cost food="0" water="50" time="10"/>
+     </gatherer>
+   </mutants>
+  <ghouls>
+    <melee health="100" damage="15" speed="120">
+      <cost food="60" water="80" time="20"/>
+    </melee>
+    <ranged health="100" damage="30" speed="120">
+      <cost food="80" water="80" time="30"/>
+    </ranged>
+    <gatherer health="90" damage="50" speed="140">
+      <cost food="0" water="40" time="10"/>
+    </gatherer>
+  </ghouls>
+  <no_faction>
+    <bighorner health="1500" speed="40" resource_quantity="300"/>
+    <braham health="700" speed="25" resource_quantity="800"/>
+    <deathclaw health="5000" damage="300" speed="100" resource_quantity="2000"/>
+   <mr_handy health="1000" speed="40" damage="150"/>
+  </no_faction>
+ </dynamic> 
  <static>
-  <base>
-    <vault health="8000"/>
-    <brotherhood health="8000"/>
-    <mutant health="8000"/>
-    <ghoul health="8000"/>
-  </base>
-  <barrack>
-    <vault health="6000"/>
-    <brotherhood health="6000"/>
-    <mutant health="6000"/>
-    <ghoul health="6000"/>
-  </barrack>
-  <laboratory>
-    <vault health="7000"/>
-    <brotherhood health="7000"/>
-    <mutant health="7000"/>
-    <ghoul health="7000"/>
-  </laboratory>
+   <vault>
+    <base health="8000"/>
+    <barrack health="6000"/>
+    <laboratory health="7000"/>    
+   </vault>
+   <brotherhood>
+    <base health="8000"/>
+    <barrack health="6000"/>
+    <laboratory health="7000"/>
+   </brotherhood>
+   <mutants>
+    <base health="8000"/>
+    <barrack health="6000"/>
+    <laboratory health="7000"/>
+   </mutants>
+   <ghouls>
+    <base health="8000"/>
+    <barrack health="6000"/>
+    <laboratory health="7000"/>
+  </ghouls>
  </static>
 </entities>

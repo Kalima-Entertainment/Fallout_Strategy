@@ -1,6 +1,7 @@
 #include "Troop.h"
 #include "j1Player.h"
 #include "j1Map.h"
+#include "StaticEntity.h"
 
 Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, GenericPlayer* g_owner) : DynamicEntity() {
 	type = g_type;
@@ -15,7 +16,16 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 }
 
 Troop::~Troop() {
-
+	target_entity = nullptr;
+	attacking_entity = nullptr;
+	reference_entity = nullptr;
+	owner = nullptr;
+	current_animation = nullptr;
+	texture = nullptr;
+	target_building = nullptr;
+	node_path.clear();
+	path_to_target.clear();
+	entities_in_range.clear();
 }
 
 bool Troop::Update(float dt) {
@@ -34,10 +44,29 @@ bool Troop::Update(float dt) {
 		}
         break;
     case HIT:
+		if (current_animation->Finished()) {
+			current_animation->Reset();
+			if (attacking_entity != nullptr) 
+				state = ATTACK;
+			else
+				state = IDLE;
+		}
         break;
+
     case DIE:
 		direction = TOP_LEFT;
+		if (!delete_timer.Started()) {
+			delete_timer.Start();
+			direction = TOP_LEFT;
+		}
+
+		if (delete_timer.ReadSec() > 4) {
+			to_delete = true;
+			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
+			attacking_entity->state = IDLE;
+		}
         break;
+
     default:
         break;
 	}
@@ -49,7 +78,7 @@ bool Troop::Update(float dt) {
 
 void Troop::Attack() {
 
-	action_timer.Start();
+	attack_timer.Start();
 
 	//damage unit if god_mode isn't activated
 	if ((target_entity->faction == App->player->faction) && (App->player->god_mode))
