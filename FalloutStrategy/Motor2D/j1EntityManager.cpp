@@ -956,7 +956,12 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 	fPoint position;
 	iPoint current_tile, target_tile;
 	int current_health;
-	int upgrade_num;
+	int upgrade_gath;
+	int upgrade_base;
+	int upgrade_heal;
+	int upgrade_creat;
+	int upgrade_dama;
+	int upgrade_speed;
 	pugi::xml_node iterator = data.first_child();
 
 	while (iterator)
@@ -982,7 +987,17 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 
 
 		
-		if (iterator.attribute("type:").as_string() == "base") { upgrade_num=iterator.attribute("level_gatherer_resource_limit").as_int();
+		if (iterator.attribute("type:").as_string() == "base") { 
+			upgrade_gath=iterator.attribute("level_gatherer_resource_limit").as_int();
+			upgrade_base = iterator.attribute("level_base_resource_limit").as_int();
+		}
+		if (iterator.attribute("type:").as_string() == "laboratory") {
+			upgrade_heal = iterator.attribute("level_units_health").as_int();
+			upgrade_creat = iterator.attribute("level_units_creation_time").as_int();
+		}
+		if (iterator.attribute("type:").as_string() == "barrack") {
+			upgrade_dama = iterator.attribute("level_units_damage").as_int();
+			upgrade_speed = iterator.attribute("level_units_speed").as_int();
 		}
 
 
@@ -995,7 +1010,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		target_tile.y = iterator.attribute("target_tile_y:").as_int();
 		current_health = iterator.attribute("current_health:").as_int();
 
-		LOG("%f %f %i %I", position.x, position.y, current_health,upgrade_num);
+		LOG("%f %f %i %I", position.x, position.y, current_health,upgrade_gath);
 
 		//if (faction == ANIMALS) {CreateEntity(faction,type, position.x, position.y);}
 		//else {CreateEntity(faction, type, position.x, position.y, App->scene->players[faction]);}
@@ -1012,8 +1027,8 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 // Save Game State
 bool j1EntityManager::Save(pugi::xml_node& data) const
 {
-	/*
-	for (int i = 0; i < entities.size(); i++)
+	
+	/*for (int i = 0; i < entities.size(); i++)
 	{
 
 		pugi::xml_node entities_pugi = data.append_child("entity");
@@ -1047,18 +1062,26 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 		
 		if (entities[i]->type == BASE) {
 			entities_pugi.append_attribute("level_gatherer_resource_limit") = App->entities->gatherer_resource_limit[entities[i]->faction].upgrade_num;
-		
+			entities_pugi.append_attribute("level_base_resource_limit") = App->entities->base_resource_limit[entities[i]->faction].upgrade_num;
 		}
 
+		if (entities[i]->type == LABORATORY) {
+		entities_pugi.append_attribute("level_units_health") = App->entities->units_health[entities[i]->faction].upgrade_num;
+		entities_pugi.append_attribute("level_units_creation_time") = App->entities->units_creation_time[entities[i]->faction].upgrade_num;
+		}
+		
+		if (entities[i]->type == BARRACK) {
+		entities_pugi.append_attribute("level_units_damage") = App->entities->units_damage[entities[i]->faction].upgrade_num;
+		entities_pugi.append_attribute("level_units_speed") = App->entities-> units_speed[entities[i]->faction].upgrade_num;
+		}
 
 	}
-	LOG("%i", entities.size());
+	LOG("%i", entities.size());*/
 
 	
 
-	}
-	LOG("%i", entities.size());
-	*/
+	
+	
 
 	return true;
 }
