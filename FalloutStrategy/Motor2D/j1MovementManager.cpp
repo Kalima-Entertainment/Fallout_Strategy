@@ -2,7 +2,7 @@
 #include "j1Group.h"
 #include "j1MovementManager.h"
 #include "j1App.h"
-#include "j1EntityManager.h" 
+#include "j1EntityManager.h"
 #include "p2Log.h"
 #include "j1Pathfinding.h"
 #include "j1Scene.h"
@@ -66,7 +66,7 @@ void j1MovementManager::SelectEntities_inRect(SDL_Rect SRect)
 				//Comparing if intersection between Selection Rect and Entity Rect
 				if (SDL_HasIntersection(&entityrect, &SRect))
 					(*entity)->info.IsSelected = true;
-				else 
+				else
 					(*entity)->info.IsSelected = false;
 			}
 		}
@@ -109,12 +109,12 @@ void j1MovementManager::CreateGroup(std::vector<DynamicEntity*> entities_vector)
 	else delete group;
 }
 
-void j1MovementManager::Move(j1Group* group, iPoint goal_path , float dt)
+void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 {
-	
+	/*
 	// -- Getting group information
 	std::list <j1Entity*>::const_iterator unit = group->Units.begin();
-	
+
 	for (unit = group->Units.begin();  unit != group->Units.end(); unit++)
 	{
 		// -- Cast to Dynamic to work properly
@@ -202,8 +202,7 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path , float dt)
 		}
 
 	}
-	
-		
+	*/
 }
 
 // Load Game State

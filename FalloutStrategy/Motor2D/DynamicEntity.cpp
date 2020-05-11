@@ -16,10 +16,8 @@
 #include "SDL_mixer/include/SDL_mixer.h"
 #include "FoWManager.h"
 
-DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile, GenericPlayer* g_owner) : j1Entity(), resource_collected(0) {
-
-	action_time = 3.0f;
-
+DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile, GenericPlayer* g_owner) : j1Entity() {
+	/*
 	switch (g_type)
 	{
 	case MELEE:
@@ -95,12 +93,11 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 		}
 		visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
 	}	
-	
+	*/
 }
 
 DynamicEntity::~DynamicEntity() {
 	target_entity = nullptr;
-	resource_building = nullptr;
 	reference_entity = nullptr;
 	owner = nullptr;
 	attacking_entity = nullptr;
@@ -109,6 +106,7 @@ DynamicEntity::~DynamicEntity() {
 	path_to_target.clear();
 }
 
+/*
 bool DynamicEntity::Update(float dt) {
 
 	Mix_AllocateChannels(25);
@@ -307,6 +305,7 @@ bool DynamicEntity::Update(float dt) {
 
 	return true;
 }
+*/
 
 bool DynamicEntity::PostUpdate() {
 
@@ -448,8 +447,8 @@ void DynamicEntity::Move(float dt) {
 			break;
 		}
 
-		if(App->render->fog_of_war)
-			visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
+		//if(App->render->fog_of_war)
+			//visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
 	}
 	else
 	{
@@ -459,85 +458,6 @@ void DynamicEntity::Move(float dt) {
 	}
 
 	UpdateTile();
-}
-
-void DynamicEntity::Attack() {
-
-	action_timer.Start();
-
-	//damage unit if god_mode isn't activated
-	if ((target_entity->faction == App->player->faction) && (App->player->god_mode))
-		return;
-
-	target_entity->current_health -= damage;
-
-	if (target_entity->current_health <= 0) {
-		target_entity->attacking_entity = this;
-		target_entity->state = DIE;
-		path_to_target.clear();
-		state = IDLE;
-
-		if (attacking_entity == target_entity)
-			attacking_entity = nullptr;
-
-		target_entity = nullptr;
-	}
-
-	//Change animation directions to fit
-	else if (target_entity->is_dynamic) {
-		DynamicEntity* dynamic_target = (DynamicEntity*)target_entity;
-
-		target_entity->attacking_entity = this;
-		dynamic_target->state = HIT;
-
-		if ((current_tile.x > target_entity->current_tile.x) && (current_tile.y == target_entity->current_tile.y)) {
-			direction = TOP_LEFT;
-			dynamic_target->direction = BOTTOM_RIGHT;
-		}
-		else if ((current_tile.x == target_entity->current_tile.x) && (current_tile.y > target_entity->current_tile.y)) {
-			direction = TOP_RIGHT;
-			dynamic_target->direction = BOTTOM_LEFT;
-		}
-		else if ((current_tile.x == target_entity->current_tile.x) && (current_tile.y < target_entity->current_tile.y)) {
-			direction = BOTTOM_LEFT;
-			dynamic_target->direction = TOP_RIGHT;
-		}
-		else if ((current_tile.x < target_entity->current_tile.x) && (current_tile.y == target_entity->current_tile.y)) {
-			direction = BOTTOM_RIGHT;
-			dynamic_target->direction = TOP_LEFT;
-		}
-	}
-}
-
-void DynamicEntity::Gather() {
-	uint resource = resource_building->quantity - (resource_building->quantity - damage);
-
-	resource_building->quantity -= resource;
-	resource_collected += resource;
-	resource_type = resource_building->resource_type;
-
-	StaticEntity* base = owner->base;
-	if (base != nullptr) {
-		PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
-		target_entity = base;
-	}
-}
-
-void DynamicEntity::StoreGatheredResources() {
-	target_entity->volume += resource_collected;
-
-	if (owner == App->player) {
-		App->player->UpdateResourceData(resource_type, resource_collected);
-	}
-	else {
-		//update owner resources
-		if (resource_type == Resource::CAPS) owner->caps += resource_collected;
-		else if (resource_type == Resource::WATER) owner->water += resource_collected;
-		else if (resource_type == Resource::FOOD) owner->food += resource_collected;
-	}	
-
-	resource_collected = 0;
-	target_entity = nullptr;
 }
 
 void DynamicEntity::Flee() {
@@ -598,45 +518,25 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 	}
 }
 
-bool DynamicEntity::LoadAnimations() {
+bool DynamicEntity::LoadAnimations(const char* folder, const char* file_name) {
 	bool ret = true;
-	char* faction_char = { "NoFaction" };
-	char* type_char = { "NoType" };
 	float speed_reducer = 0.065f;
-
-	//entity faction
-	if (faction == VAULT) faction_char = "VaultDwellers";
-	else if (faction == BROTHERHOOD) faction_char = "Brotherhood";
-	else if (faction == MUTANT) faction_char = "SuperMutant";
-	else if (faction == GHOUL) faction_char = "Ghouls";
-	else if (faction == ANIMALS) faction_char = "Animals";
-
-	//entity type
-	switch (type) {
-	case MELEE: type_char = "Melee"; break;
-	case RANGED: type_char = "Ranged"; break;
-	case GATHERER: type_char = "Gatherer"; break;
-	case BIGHORNER: type_char = "Bighorner"; break;
-	case BRAHAM: type_char = "Braham"; break;
-	case DEATHCLAW: type_char = "Deathclaw"; break;
-	case MR_HANDY: type_char = faction_char = "Mr_Handy"; break;
-	default: break;
-	}
 	
-	std::string file = std::string("Assets/textures/characters/").append(faction_char).append("/").append(faction_char).append("_").append(type_char);
-	std::string animation_path = file;
-	animation_path.append(".tmx");
-	std::string texture_path = file;
-	texture_path.append(".png");
+	std::string tmx = std::string(folder).append(file_name);
 
 	pugi::xml_document animation_file;
-	pugi::xml_parse_result result = animation_file.load_file(animation_path.c_str());
-	texture = App->tex->Load(texture_path.c_str());
+	pugi::xml_parse_result result = animation_file.load_file(tmx.c_str());
+
+	std::string image_path = std::string(folder).append(animation_file.child("map").child("tileset").child("image").attribute("source").as_string());
+	texture = App->tex->Load(image_path.c_str());
 
 	if (result == NULL)
 	{
-		LOG("Could not load animation tmx file %s. pugi error: %s", file.c_str(), result.description());
+		LOG("Could not load animation tmx file %s. pugi error: %s", tmx, result.description());
 		ret = false;
+	}
+	else {
+		//LOG("Successfully loaded %s", tmx);
 	}
 
 	int tile_width = animation_file.child("map").child("tileset").attribute("tilewidth").as_int();
@@ -663,16 +563,22 @@ bool DynamicEntity::LoadAnimations() {
 		bool loop = true;
 
 		//animation
-		if (animation_name == "idle") state = IDLE;
-		else if (animation_name == "walk") state = WALK;
-		else if (animation_name == "attack") state = ATTACK;
-		else if (animation_name == "gather") state = GATHER;
+		if (animation_name == "idle") 
+			state = IDLE;
+		else if (animation_name == "walk") 
+			state = WALK;
+		else if (animation_name == "attack") 
+			state = ATTACK;
+		else if (animation_name == "gather") 
+			state = GATHER;
 		else if (animation_name == "hit") {
 			state = HIT;
-			loop = false;}
+			loop = false;
+		}
 		else if (animation_name == "die") {
 			state = DIE;
-			loop = false; }
+			loop = false; 
+		}
 
 		//animation direction
 		if (animation_direction == "top_left") direction = TOP_LEFT;
@@ -694,32 +600,6 @@ bool DynamicEntity::LoadAnimations() {
 
 		animation = animation.next_sibling();
 		frame = animation.child("animation").child("frame");
-	}
-
-	return ret;
-}
-
-bool DynamicEntity::LoadReferenceData() {
-	bool ret = true;
-	DynamicEntity* dynamic_reference = (DynamicEntity*)reference_entity;
-
-	//load animations
-	for (int i = 0; i < NO_STATE; i++)
-	{
-		for (int j = 0; j < NO_DIRECTION; j++)
-		{
-			animations[i][j] = dynamic_reference->animations[i][j];
-		}
-	}
-
-	//load property data
-	current_health = max_health = reference_entity->max_health;
-	storage_capacity= damage = reference_entity->damage;
-	speed = reference_entity->speed;
-	sprite_size = reference_entity->sprite_size;
-
-	if (faction == ANIMALS) {
-		resource_collected = ((DynamicEntity*)reference_entity)->resource_collected;
 	}
 
 	return ret;

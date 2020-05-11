@@ -18,7 +18,7 @@ class StaticEntity;
 enum EntityType;
 class GenericPlayer;
 
-#define REFERENCE_ENTITIES 24
+#define REFERENCE_ENTITIES 28
 
 enum class Resource {
 	CAPS,
@@ -57,7 +57,7 @@ struct Upgrades_Data{
 	int first_price;
 	int price_increment;
 	int seconds;
-	float value_increment; 
+	float value_increment;
 };
 
 class j1EntityManager : public j1Module
@@ -80,12 +80,13 @@ public:
 	j1Entity* CreateEntity(Faction faction, EntityType type, int position_x, int position_y, GenericPlayer* owner = nullptr);
 	void DestroyEntity(j1Entity* delete_entity);
 	void DestroyAllEntities();
+	iPoint FindSpawnPoint(int position_x, int position_y);
 
 	ResourceBuilding* CreateResourceSpot(int position_x, int position_y, Resource resource_type, int resource_quantity);
 	void DestroyResourceSpot(ResourceBuilding* resource_spot);
 
 	//Find entities
-	j1Entity*		FindEntityByTile(iPoint tile);
+	j1Entity*		  FindEntityByTile(iPoint tile);
 	ResourceBuilding* FindResourceBuildingByTile(iPoint tile);
 	ResourceBuilding* GetClosestResourceBuilding(iPoint current_position);
 
@@ -102,11 +103,11 @@ public:
 
 	void LoadUpgradeCosts(pugi::xml_node& config);
 	void LoadUnitCosts();
-
 	// Load / Save
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
+	int GetReferenceEntityID(Faction faction, EntityType type);
 
 public:
 	std::vector<j1Entity*> entities;
@@ -119,11 +120,7 @@ public:
 
 	int randomFaction[4];
 	Unit_Data unit_data[4][3];
-	j1Entity* reference_entities[4][6];
-	DynamicEntity* reference_bighroner;
-	DynamicEntity* reference_braham;
-	DynamicEntity* reference_deathclaw;
-	DynamicEntity* reference_MrHandy;
+	j1Entity* reference_entities[REFERENCE_ENTITIES];
 	bool occupied_tiles[150][150];
 	j1Timer sort_timer;
 
@@ -141,8 +138,10 @@ public:
 private:
 	int loading_faction;
 	int loading_entity;
+	int entities_loaded;
+	std::string texture_folders[REFERENCE_ENTITIES];
+	std::string tmx_files[REFERENCE_ENTITIES];
 	j1Timer load_timer;
 };
 
 #endif // !_ENTITY_MANAGER_H_
-

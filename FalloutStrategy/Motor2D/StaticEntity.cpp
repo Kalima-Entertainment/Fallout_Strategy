@@ -57,7 +57,6 @@ StaticEntity::~StaticEntity() {
 	attacking_entity = nullptr;
 	current_animation = nullptr;
 	texture = nullptr;
-	path_to_target.clear();
 	tiles.clear();
 }
 
@@ -152,7 +151,7 @@ bool StaticEntity::PostUpdate() {
 	return true;
 }
 
-bool StaticEntity::LoadReferenceData() {
+bool StaticEntity::LoadDataFromReference() {
 	bool ret = true;
 	StaticEntity* static_reference = (StaticEntity*)reference_entity;
 
@@ -168,36 +167,39 @@ bool StaticEntity::LoadReferenceData() {
 	return ret;
 }
 
-bool StaticEntity::LoadAnimations() {
+
+bool StaticEntity::LoadReferenceData(pugi::xml_node& node) {
+	bool ret = true;
+
+	max_health = node.attribute("health").as_int();
+
+	return ret;
+}
+
+bool StaticEntity::LoadAnimations(const char* folder, const char* file_name) {
 
 	bool ret = true;
-	char* faction_char = "NoFaction";
 	float speed_multiplier = 0.065f;
 
-	if (faction == VAULT)
-		faction_char = "VaultDwellers";
-	else if (faction == BROTHERHOOD)
-		faction_char = "Brotherhood";
-	else if (faction == GHOUL)
-		faction_char = "Ghouls";
-	else if (faction == MUTANT)
-		faction_char = "SuperMutant";
-
-	std::string file = std::string("Assets/textures/characters/").append(faction_char).append("/").append(faction_char).append("_Buildings.tmx");
+	std::string tmx = std::string(folder).append(file_name);
 
 	pugi::xml_document animation_file;
-	pugi::xml_parse_result result = animation_file.load_file(file.c_str());
-	std::string image = std::string(animation_file.child("tileset").child("image").attribute("source").as_string());
-	std::string texture_path = std::string("Assets/textures/characters/").append(faction_char).append("/").append(faction_char).append("_Buildings.png");
+	pugi::xml_parse_result result = animation_file.load_file(tmx.c_str());
+
+	std::string image_path = std::string(folder).append(animation_file.child("map").child("tileset").child("image").attribute("source").as_string());
 
 	if (type == BASE)
 	{
-		this->texture = App->tex->Load(texture_path.c_str());
+		texture = App->tex->Load(image_path.c_str());
+	}
+	else
+	{
+		texture = App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, BASE)]->texture;
 	}
 
 	if (result == NULL)
 	{
-		LOG("Could not load animation tmx file %s. pugi error: %s", file, result.description());
+		LOG("Could not load animation tmx file %s. pugi error: %s", tmx, result.description());
 		ret = false;
 	}
 
@@ -394,6 +396,7 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 }
 
 void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
+	/*
 	//We execute the upgrade as upgrade_seconds have already passed
 	if (upgrade_name == RESOURCES_LIMIT) {
 		if (storage_capacity < max_capacity) {
@@ -485,6 +488,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 
 		LOG("Units Creation Upgraded Upgraded");	
 	}
+	*/
 }
 
 void StaticEntity::SpawnUnit(EntityType type, bool no_cost) {

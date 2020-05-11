@@ -26,8 +26,9 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 
-	bool LoadAnimations();
-	bool LoadReferenceData();	
+	bool LoadAnimations(const char* folder, const char* file_name);
+	bool LoadReferenceData(pugi::xml_node& node);
+	bool LoadDataFromReference();
 
 	void Upgrade(Upgrades_Data upgrades_data);
 	void ExecuteUpgrade(Faction faction, Upgrades upgrade_name);
@@ -50,6 +51,8 @@ private:
 	int gen_speed;
 	Animation animations[3];
 	iPoint render_texture_pos;
+
+	int max_capacity;
 
 	Spawn_Stack spawn_stack[10];
 	Upgrade_Stack upgrade_stack;
