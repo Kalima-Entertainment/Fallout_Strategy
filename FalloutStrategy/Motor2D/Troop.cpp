@@ -13,6 +13,24 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
 	position.x += HALF_TILE;
 	position.y += HALF_TILE;
+	attack_timer.Start();
+	attack_time = 3;
+
+	switch (type)
+	{
+	case MELEE:
+		range = 1;
+		break;
+	case RANGED:
+		range = 3;
+		break;
+	case MR_HANDY:
+		range = 3;
+		break;
+	default:
+		break;
+	}
+
 }
 
 Troop::~Troop() {
@@ -37,17 +55,26 @@ bool Troop::Update(float dt) {
         break;
     case WALK:
 		Move(dt);
+
+		if (target_entity) {
+			if (current_tile.DistanceManhattan(target_entity->current_tile) <= range) {
+				state = ATTACK;
+			}
+		}
+
         break;
     case ATTACK:
-		if (attack_timer.Read() > attack_time) {
+		if (attack_timer.ReadSec() > attack_time) {
 			Attack();
 		}
         break;
     case HIT:
 		if (current_animation->Finished()) {
 			current_animation->Reset();
-			if (attacking_entity != nullptr) 
+			if (attacking_entity != nullptr) {
 				state = ATTACK;
+				target_entity = attacking_entity;
+			}
 			else
 				state = IDLE;
 		}

@@ -613,9 +613,9 @@ bool j1EntityManager::LoadReferenceEntityData() {
 				faction = VAULT;
 			else if (faction_name == "brotherhood")
 				faction = BROTHERHOOD;
-			else if (faction_name == "mutant")
+			else if (faction_name == "mutants")
 				faction = MUTANT;
-			else if (faction_name == "ghoul")
+			else if (faction_name == "ghouls")
 				faction = GHOUL;
 
 			type_node = faction_node.first_child();

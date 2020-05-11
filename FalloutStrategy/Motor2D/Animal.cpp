@@ -40,6 +40,7 @@ bool Animal::Update(float dt) {
         break;
     case WALK:
         Move(dt);
+
         break;
     case HIT:
 		if (current_animation->Finished()) {
