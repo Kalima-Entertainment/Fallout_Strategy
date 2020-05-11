@@ -919,7 +919,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 	fPoint position;
 	iPoint current_tile, target_tile;
 	int current_health;
-
+	int upgrade_num;
 	pugi::xml_node iterator = data.first_child();
 
 	while (iterator)
@@ -944,6 +944,9 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		else if (iterator.attribute("faction:").as_string() == "no_faction") { faction = NO_FACTION; }
 
 		
+		if (iterator.attribute("type:").as_string() == "base") { upgrade_num=iterator.attribute("level_gatherer_resource_limit").as_int();
+		}
+
 
 		position.x = iterator.attribute("position_x:").as_float();
 		position.y = iterator.attribute("position_y:").as_float();
@@ -953,7 +956,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		target_tile.y = iterator.attribute("target_tile_y:").as_int();
 		current_health = iterator.attribute("current_health:").as_int();
 
-		LOG("%f %f %i", position.x, position.y, current_health);
+		LOG("%f %f %i %I", position.x, position.y, current_health,upgrade_num);
 
 		//if (faction == ANIMALS) {CreateEntity(faction,type, position.x, position.y);}
 		//else {CreateEntity(faction, type, position.x, position.y, App->scene->players[faction]);}
@@ -977,7 +980,7 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 	
 	for (int i = 0; i < entities.size(); i++)
 	{
-		
+
 		pugi::xml_node entities_pugi = data.append_child("entity");
 		entities_pugi.append_attribute("number") = i;
 
@@ -992,7 +995,7 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 		else if (entities[i]->type == DEATHCLAW) { entities_pugi.append_attribute("type:") = "deathclaw"; }
 		else if (entities[i]->type == MR_HANDY) { entities_pugi.append_attribute("type:") = "mr_handy"; }
 
-		if (entities[i]->faction == BROTHERHOOD) {entities_pugi.append_attribute("faction:") = "brotherhood";}
+		if (entities[i]->faction == BROTHERHOOD) { entities_pugi.append_attribute("faction:") = "brotherhood"; }
 		else if (entities[i]->faction == MUTANT) { entities_pugi.append_attribute("faction:") = "supermutant"; }
 		else if (entities[i]->faction == VAULT) { entities_pugi.append_attribute("faction:") = "vault"; }
 		else if (entities[i]->faction == GHOUL) { entities_pugi.append_attribute("faction:") = "ghoul"; }
@@ -1005,9 +1008,16 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 		entities_pugi.append_attribute("target_tile_x:") = entities[i]->target_tile.x;
 		entities_pugi.append_attribute("target_tile_x:") = entities[i]->target_tile.y;
 		entities_pugi.append_attribute("current_health:") = entities[i]->current_health;
+		
+		if (entities[i]->type == BASE) {
+			entities_pugi.append_attribute("level_gatherer_resource_limit") = App->entities->gatherer_resource_limit[entities[i]->faction].upgrade_num;
+		
+		}
+
 
 	}
 	LOG("%i", entities.size());
 
+	
 	return true;
 }
