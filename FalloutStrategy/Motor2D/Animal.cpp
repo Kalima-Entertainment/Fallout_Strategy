@@ -65,11 +65,17 @@ bool Animal::Update(float dt) {
 			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
 			current_tile = { -1,-1 };
 			next_tile = { -1,-1 };
+
 			if (attacking_entity->owner->is_ai) {
 				((AI_Player*)attacking_entity->owner)->GatherFood(resource_spot);
 				attacking_entity = nullptr;
 			}
 		}
+		if ((resource_spot->quantity <= 0) && (delete_timer.ReadSec() > 4)) {
+			App->entities->DestroyResourceSpot(resource_spot);
+			to_delete = true;
+		}
+
         break;
 
     default:

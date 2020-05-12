@@ -35,6 +35,8 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 
 	time_left = 0;
 
+	CalculateRenderAndSpawnPositions();
+
 	//Fog Of War
 	if (App->render->fog_of_war) {
 		if (this->faction == App->player->faction) {
@@ -648,4 +650,50 @@ bool StaticEntity::Save(pugi::xml_node& data) const
 	//chrono.append_attribute("chrono_upgrade") = chrono_upgrade.Start;
 
 	return true;
+}
+
+void StaticEntity::CalculateRenderAndSpawnPositions() {
+
+	render_position = { (int)(position.x - 0.5f * sprite_size),(int)(position.y - sprite_size * 0.75) };
+
+	switch (faction)
+	{
+	case VAULT:
+		if (type == BASE)
+			render_position += App->map->MapToWorld(9, 5);
+		else if (type == BARRACK)
+			render_position += App->map->MapToWorld(8, 5);
+		else if (type == LABORATORY)
+			render_position += App->map->MapToWorld(7, 3);
+		break;
+	case BROTHERHOOD:
+		if (type == BASE)
+			render_position += App->map->MapToWorld(10, 6);
+		else if (type == BARRACK)
+			render_position += App->map->MapToWorld(10, 7);
+		else if (type == LABORATORY)
+			render_position += App->map->MapToWorld(10, 6);
+		break;
+	case MUTANT:
+		if (type == BASE)
+			render_position += App->map->MapToWorld(10, 6);
+		else if (type == BARRACK)
+			render_position += App->map->MapToWorld(9, 7);
+		else if (type == LABORATORY)
+			render_position += App->map->MapToWorld(9, 6);
+		break;
+	case GHOUL:
+		if (type == BASE)
+			render_position += App->map->MapToWorld(20, 12);
+		else if (type == BARRACK)
+			render_position += App->map->MapToWorld(20, 13);
+		else if (type == LABORATORY)
+			render_position += App->map->MapToWorld(20, 11);
+		break;
+	default:
+		break;
+	}
+
+	//Spawn position is just below render position
+	spawnPosition = { App->map->WorldToMap(render_position.x, render_position.y) };
 }

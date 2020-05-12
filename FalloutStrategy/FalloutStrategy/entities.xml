@@ -49,7 +49,9 @@
     <bighorner health="1500" speed="40" resource_quantity="300"/>
     <braham health="700" speed="25" resource_quantity="800"/>
     <deathclaw health="5000" damage="300" speed="100" resource_quantity="2000"/>
-    <mr_handy health="1000" speed="40" damage="150"/>
+    <mr_handy health="1000" speed="240" damage="150">
+      <cost caps="1000" time="50"/>
+    </mr_handy>
   </no_faction>
  </dynamic> 
  <static>

@@ -116,7 +116,6 @@ bool Troop::Update(float dt) {
 		if (delete_timer.ReadSec() > 4) {
 			to_delete = true;
 			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
-			attacking_entity->state = IDLE;
 		}
         break;
 

@@ -395,13 +395,6 @@ void DynamicEntity::Move(float dt) {
 				}
 				path_to_target.erase(path_to_target.begin());
 			}
-			else if (node_path.size() == 0)
-			{
-				//path_to_target.clear();
-				state = IDLE;
-				direction = last_direction;
-			}
-
 			//node movement 
 			else if ((node_path.size() > 0)) {
 				if (next_tile == target_tile) {
@@ -421,6 +414,12 @@ void DynamicEntity::Move(float dt) {
 
 					PathfindToPosition(target_tile);
 				}
+			}
+			else if (node_path.size() == 0)
+			{
+				path_to_target.clear();
+				state = IDLE;
+				direction = last_direction;
 			}
 
 			break;

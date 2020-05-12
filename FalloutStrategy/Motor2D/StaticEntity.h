@@ -39,6 +39,7 @@ public:
 	void UpgradeChrono();
 
 	void DebugSpawnsUpgrades();
+	void CalculateRenderAndSpawnPositions();
 
 	// Load / Save
 	bool Load(pugi::xml_node&);
