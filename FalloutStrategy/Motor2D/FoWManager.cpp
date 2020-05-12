@@ -7,6 +7,7 @@
 #include "j1Console.h"
 #include "p2Log.h"
 #include "j1Minimap.h"
+#include "brofiler/Brofiler/Brofiler.h"
 
 FoWManager::FoWManager()
 {
@@ -126,8 +127,8 @@ bool FoWManager::PreUpdate()
 }
 
 
-bool FoWManager::Update(float dt)
-{
+bool FoWManager::Update(float dt) {
+	BROFILER_CATEGORY("Fog of War Update", Profiler::Color::Gray)
 	bool ret = true;
 
 	//We update the fowMap only when its needed
@@ -140,8 +141,8 @@ bool FoWManager::Update(float dt)
 }
 
 
-bool FoWManager::PostUpdate()
-{
+bool FoWManager::PostUpdate() {
+BROFILER_CATEGORY("Fog of War PostUpdate", Profiler::Color::Black)
 	bool ret = true;
 	if(App->render->fog_of_war)
 		DrawFoWMap();
@@ -343,7 +344,6 @@ void FoWManager::DrawFoWMap()
 				SDL_SetTextureAlphaMod(displayFogTexture, 128);//set the alpha of the texture to half to reproduce fog
 				SDL_Rect r = { fogId * 64,0,64,64 }; //this rect crops the desired fog Id texture from the fogTiles spritesheet
 				App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
-				//App->minimap->grid[x][y] = 1;
 				
 			}
 			if (shroudId != -1)
@@ -351,7 +351,7 @@ void FoWManager::DrawFoWMap()
 				SDL_SetTextureAlphaMod(displayFogTexture, 255);//set the alpha to white again
 				SDL_Rect r = { shroudId * 64,0,64,64 }; //this rect crops the desired fog Id texture from the fogTiles spritesheet
 				App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
-				App->minimap->grid[x][y] = 2;
+				//App->minimap->grid[x][y] = 2;
 			}
 		}
 	}

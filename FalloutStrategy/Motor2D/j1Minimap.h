@@ -60,6 +60,7 @@ private:
 	j1Timer radar_timer;
 	int radar_time;
 	Line radar_line;
+	float minimap_x_center;
 };
 
 #endif // !_j1MINIMAP_H

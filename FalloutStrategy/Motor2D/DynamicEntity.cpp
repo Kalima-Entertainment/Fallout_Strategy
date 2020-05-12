@@ -17,43 +17,6 @@
 #include "FoWManager.h"
 
 DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile, GenericPlayer* g_owner) : j1Entity() {
-	/*
-	switch (g_type)
-	{
-	case MELEE:
-		range = 1;
-		is_agressive = true;
-		break;
-	case RANGED:
-		range = 6;
-		is_agressive = true;
-		break;
-	case GATHERER:
-		range = 1;
-		is_agressive = false;
-		break;
-	case BIGHORNER:
-		range = 1;
-		is_agressive = false;
-		action_time = 20;
-		break;
-	case BRAHAM:
-		range = 1;
-		is_agressive = false;
-		action_time = 20;
-		break;
-	case DEATHCLAW:
-		range = 1;
-		is_agressive = true;
-		break;
-	case MR_HANDY:
-		range = 3;
-		is_agressive = true;
-		break;
-	default:
-		break;
-	}*/
-
 	owner = g_owner;
 	type = g_type;
 	faction = g_faction;
@@ -95,6 +58,10 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 	}		
 }
 
+DynamicEntity::DynamicEntity() {
+	is_dynamic = true;
+}
+
 DynamicEntity::~DynamicEntity() {
 	target_entity = nullptr;
 	reference_entity = nullptr;
@@ -103,6 +70,7 @@ DynamicEntity::~DynamicEntity() {
 	current_animation = nullptr;
 	texture = nullptr;
 	path_to_target.clear();
+	entities_in_range.clear();
 }
 
 /*

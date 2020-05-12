@@ -6,26 +6,17 @@
 Animal::Animal(EntityType g_type, iPoint g_current_tile) : DynamicEntity() {
 	type = g_type;
 	current_tile = g_current_tile;
-	is_dynamic = true;
 	is_agressive = false;
+	pasturing_time = 20;
+	faction = NO_FACTION;
+
 	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
 	position.x += HALF_TILE;
 	position.y += HALF_TILE;
-	pasturing_time = 20;
-	faction = NO_FACTION;
 }
 
 Animal::~Animal() {
-	target_entity = nullptr;
-	attacking_entity = nullptr;
 	resource_spot = nullptr;
-	reference_entity = nullptr;
-	owner = nullptr;
-	current_animation = nullptr;
-	texture = nullptr;
-	node_path.clear();
-	path_to_target.clear();
-	entities_in_range.clear();
 }
 
 bool Animal::Update(float dt) {

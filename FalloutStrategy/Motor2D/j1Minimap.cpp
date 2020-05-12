@@ -86,7 +86,8 @@ bool j1Minimap::Start() {
 		break;
 	}
 
-	radar_line.x1 = position.x + width * 0.5f;
+	minimap_x_center = position.x + width * 0.5f;
+	radar_line.x1 = minimap_x_center;
 	radar_line.y1 = position.y + height * 0.5f;
 
 	node_map = App->pathfinding->GetNodeMap();
@@ -232,7 +233,7 @@ bool j1Minimap::CreateMinimap() {
 
 iPoint j1Minimap::WorldToMinimap(int x, int y) {
 	iPoint minimap_position;
-	minimap_position.x = position.x + width * 0.5f + x * scale;
+	minimap_position.x = minimap_x_center + x * scale;
 	minimap_position.y = position.y + y * scale;
 
 	return minimap_position;
@@ -247,7 +248,7 @@ iPoint j1Minimap::ScreenToMinimapToWorld(int x, int y) {
 
 iPoint  j1Minimap::MapToMinimap(int x, int y) {
 	iPoint minimap_position;
-	minimap_position.x = position.x + width * 0.5f + (x - y) * HALF_TILE * scale;
+	minimap_position.x = minimap_x_center + (x - y) * HALF_TILE * scale;
 	minimap_position.y = position.y + (x + y) * HALF_TILE * 0.5f * scale;
 	return minimap_position;
 }

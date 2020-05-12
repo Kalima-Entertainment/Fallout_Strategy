@@ -28,7 +28,7 @@ struct UnitInfo {
 class DynamicEntity : public j1Entity
 {
 public:
-	DynamicEntity() {};
+	DynamicEntity();
 	DynamicEntity(Faction faction, EntityType type, iPoint current_tile, GenericPlayer* owner = nullptr);
 	~DynamicEntity();
 

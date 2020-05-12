@@ -10,14 +10,14 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 	faction = g_faction;
 	current_tile = g_current_tile;
 	owner = g_owner;
-	is_dynamic = true;
 	is_agressive = true;
-	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
-	position.x += HALF_TILE;
-	position.y += HALF_TILE;
 	attack_timer.Start();
 	attack_time = 3;
 	detection_radius = 4;
+
+	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
+	position.x += HALF_TILE;
+	position.y += HALF_TILE;
 
 	switch (type)
 	{
@@ -50,16 +50,7 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 }
 
 Troop::~Troop() {
-	target_entity = nullptr;
-	attacking_entity = nullptr;
-	reference_entity = nullptr;
-	owner = nullptr;
-	current_animation = nullptr;
-	texture = nullptr;
 	target_building = nullptr;
-	node_path.clear();
-	path_to_target.clear();
-	entities_in_range.clear();
 }
 
 bool Troop::Update(float dt) {

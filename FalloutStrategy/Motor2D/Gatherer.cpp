@@ -13,13 +13,13 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 	faction = g_faction;
 	current_tile = g_current_tile;
 	owner = g_owner;
-	is_dynamic = true;
 	is_agressive = false;
+	gather_time = 2;
+	
 	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
 	position.x += HALF_TILE;
 	position.y += HALF_TILE;
-	gather_time = 2;
-	
+
 	if (owner)
 		base = owner->base;
 
@@ -39,16 +39,7 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 }
 
 Gatherer::~Gatherer() {
-	target_entity = nullptr;
-	attacking_entity = nullptr;
 	resource_building = nullptr;
-	reference_entity = nullptr;
-	owner = nullptr;
-	current_animation = nullptr;
-	texture = nullptr;
-	node_path.clear();
-	path_to_target.clear();
-	entities_in_range.clear();
 	base = nullptr;
 }
 
