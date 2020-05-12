@@ -327,15 +327,14 @@ bool DynamicEntity::PostUpdate() {
 		if (faction == App->player->faction) tile_rect = { 0,0,64,64 };
 		//enemy
 		else tile_rect = { 64,0,64,64 };
+
 		if(App->player->selected_entity != this)
 			App->render->Blit(App->render->debug_tex, tile_tex_position.x, tile_tex_position.y, &tile_rect);
 	}
 
 	//selected entity
-	if (App->player->selected_entity == this || this->info.IsSelected)
-	{
+	if (App->player->selected_entity == this || this->info.IsSelected) {
 		tile_rect = { 320,0,64,64 };
-		//blit tile
 		App->render->Blit(App->render->debug_tex, tile_tex_position.x, tile_tex_position.y, &tile_rect);
 	}
 
@@ -345,12 +344,11 @@ bool DynamicEntity::PostUpdate() {
 		else 
 			direction = BOTTOM_RIGHT;
 	}
-
 	current_animation = &animations[state][direction];
 
 	//Render character
 	render_position = { (int)(position.x - sprite_size * 0.5f), (int)(position.y - 1.82f * TILE_SIZE)};
-	App->render->Blit(reference_entity->texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
+	App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
 	if (App->render->debug) 
 	{
@@ -504,8 +502,10 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 	if (!App->pathfinding->IsWalkable(current_tile)) 
 		next_tile = App->pathfinding->FindWalkableAdjacentTile(current_tile);
 	
-	if (App->pathfinding->CreatePath(current_tile, destination) == -2) 
+	if (App->pathfinding->CreatePath(current_tile, destination) == -1) {
 		node_path = App->pathfinding->CreateNodePath(current_tile, destination);
+		PathfindToPosition(node_path.back());
+	}
 	
 
 	path_to_target.clear();

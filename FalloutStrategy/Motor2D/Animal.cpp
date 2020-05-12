@@ -30,6 +30,7 @@ Animal::~Animal() {
 
 bool Animal::Update(float dt) {
 	bool ret = true;
+	current_animation = &animations[state][direction];
 
 	switch (state)
 	{
@@ -98,6 +99,7 @@ bool Animal::LoadDataFromReference() {
 	food_quantity = reference_animal->food_quantity;
 	speed = reference_animal->speed;
 	sprite_size = reference_entity->sprite_size;
+	texture = reference_entity->texture;
 
 	return ret;
 }

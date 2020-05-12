@@ -17,12 +17,14 @@ public:
 	bool LoadDataFromReference();
 	bool LoadReferenceData(pugi::xml_node& node);
 
+public:
+	StaticEntity* target_building;
+
 private:
 	int damage;
 	int range;
 	int attack_time;
 	j1Timer attack_timer;
-	StaticEntity* target_building;
 };
 
 #endif // !_TROOP_H_

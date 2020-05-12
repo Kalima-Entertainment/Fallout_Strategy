@@ -50,6 +50,7 @@ Troop::~Troop() {
 bool Troop::Update(float dt) {
 	bool ret = true;
 	j1Entity* enemy_in_range = nullptr;
+	current_animation = &animations[state][direction];
 
 	switch (state)
 	{
@@ -60,14 +61,20 @@ bool Troop::Update(float dt) {
 			target_entity = enemy_in_range;
 			PathfindToPosition(enemy_in_range->current_tile);
 		}
-
+		else if(target_building)
+		{
+			target_entity = target_building;
+			PathfindToPosition(target_building->current_tile);
+		}
         break;
+
     case WALK:
 		Move(dt);
 
 		if (target_entity) {
 			if (current_tile.DistanceManhattan(target_entity->current_tile) <= range) {
 				state = ATTACK;
+				Attack();
 			}
 		}
         break;
@@ -82,6 +89,7 @@ bool Troop::Update(float dt) {
 			Attack();
 		}
         break;
+
     case HIT:
 		if (current_animation->Finished()) {
 			current_animation->Reset();
@@ -183,6 +191,7 @@ bool Troop::LoadDataFromReference() {
 	damage = reference_troop->damage;
 	speed = reference_troop->speed;
 	sprite_size = reference_entity->sprite_size;
+	texture = reference_entity->texture;
 
 	return ret;
 }

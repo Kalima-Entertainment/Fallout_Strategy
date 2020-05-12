@@ -105,7 +105,7 @@ bool AI_Player::Update(float dt) {
 
 	//if the ai_player is ready choose a player to attack
 
-	if (wave_timer.ReadSec() > wave_time) {
+	if ((wave_timer.ReadSec() > wave_time)&&(!is_attacking)) {
 		if ((rangeds >= ranged_minimum) && (melees >= melee_minimum) && (target_player == nullptr)) {
 			ChooseRandomPlayerEnemy();
 			is_attacking = true;
@@ -123,7 +123,7 @@ bool AI_Player::Update(float dt) {
 	if (is_attacking) 
 	{
 		//if the target building is destroyed forget about it
-		if ((target_building!=nullptr) && (target_building->state == DIE))
+		if ((target_building != nullptr) && (target_building->state == DIE))
 			target_building = nullptr;
 
 		//if there is no target building find one
@@ -141,36 +141,7 @@ bool AI_Player::Update(float dt) {
 
 		for (int i = 0; i < troops.size(); i++)
 		{
-			if (target_building != nullptr)
-			{
-				//if the troop has no target assign one
-				if ((troops[i]->target_entity == nullptr)||(troops[i]->target_entity != target_building))
-				{
-						troops[i]->target_entity = target_building;
-						//and make it go there
-						troops[i]->PathfindToPosition(target_building_position);
-				}
-			}
-			//forget about the target if it is null because it means it has been destroyed 
-			//else { troops[i]->target_entity = nullptr; }
-
-			//if the unit has no path 
-			/*
-			if (troops[i]->path_to_target.size() == 0) 
-			{
-				//and has no node path
-				if (troops[i]->node_path.size() == 0)
-				{
-					//check if it is too far to get to  position
-					//if it is create a node path for it
-					if (troops[i]->current_tile.DistanceManhattan(target_building_position) > 40)
-						troops[i]->node_path = App->pathfinding->CreateNodePath(troops[i]->current_tile, target_building_position);
-					//if it is close enough pathfind to the target
-					else
-						troops[i]->PathfindToPosition(target_building_position);
-				}
-			}
-			*/
+			troops[i]->target_building = target_building;
 		}
 
 		is_attacking = false;

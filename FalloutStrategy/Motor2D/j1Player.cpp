@@ -19,9 +19,7 @@
 
 j1Player::j1Player() : GenericPlayer() {
 	
-
 	name.assign("Player");
-
 
 	selected_entity = last_selected_entity = nullptr;
 	border_scroll = false;
