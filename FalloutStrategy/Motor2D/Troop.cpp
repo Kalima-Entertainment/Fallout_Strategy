@@ -2,6 +2,8 @@
 #include "j1Player.h"
 #include "j1Map.h"
 #include "StaticEntity.h"
+#include "FoWManager.h"
+#include "j1Render.h"
 
 Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, GenericPlayer* g_owner) : DynamicEntity() {
 	type = g_type;
@@ -32,6 +34,19 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 		break;
 	}
 
+	//Fog Of War
+	if (App->render->fog_of_war) {
+		if (this->faction == App->player->faction) {
+			//Player
+			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, true);
+			visionEntity->SetNewVisionRadius(5);
+		}
+		else {
+			//Enemy
+			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
+		}
+		visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
+	}
 }
 
 Troop::~Troop() {
@@ -70,6 +85,8 @@ bool Troop::Update(float dt) {
 
     case WALK:
 		Move(dt);
+		if (App->render->fog_of_war)
+			visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
 
 		enemy_in_range = DetectEntitiesInRange();
 
