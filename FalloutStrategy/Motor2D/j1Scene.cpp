@@ -287,6 +287,7 @@ void j1Scene::CheckWinner() {
 					App->menu_manager->CreateMenu(Menu::WIN_LOSE_SCENE);
 					App->gui->ingame = false;
 					App->isPaused = true;
+					App->logo_scene->playsound = true;
 				}
 				else { 
 					beaten_enemies++;
@@ -312,6 +313,7 @@ void j1Scene::CheckWinner() {
 		App->gui->ingame = false;
 		App->isPaused = true;
 		App->logo_scene->Loop = true;
+		App->logo_scene->playsound = true;
 	}
 }
 
@@ -335,6 +337,7 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 		}
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 		App->menu_manager->DestroyMenu(Menu::RESOURCES);
+		App->logo_scene->playsound = true;
 		App->gui->ingame = false;
 		App->isPaused = true;
 		App->logo_scene->Loop = true;
@@ -353,6 +356,7 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 		lose = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 		App->menu_manager->DestroyMenu(Menu::RESOURCES);
+		App->logo_scene->playsound = true;
 		App->gui->ingame = false;
 		App->isPaused = true;
 		App->logo_scene->Loop = true;

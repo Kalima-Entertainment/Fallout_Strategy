@@ -202,10 +202,15 @@ bool LogoScene::PostUpdate()
 
 	if (App->scene->lose == true && App->scene->win == false)
 	{
-		if (Mix_Playing(4) == 0)
-		App->audio->PlayFx(4, App->audio->lose, 0);
-		if (Mix_Playing(5) == 0)
-		App->audio->PlayFx(5, App->audio->you_lose, 0);
+		if (playsound == true)
+		{
+			if (Mix_Playing(4) == 0)
+				App->audio->PlayFx(4, App->audio->lose, 0);
+			if (Mix_Playing(5) == 0)
+				App->audio->PlayFx(5, App->audio->you_lose, 0);
+			playsound = false;
+		}
+		
 
 		if (lose_video != 0)
 		{
