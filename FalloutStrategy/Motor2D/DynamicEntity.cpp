@@ -52,7 +52,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 		break;
 	default:
 		break;
-	}
+	}*/
 
 	owner = g_owner;
 	type = g_type;
@@ -69,7 +69,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 	direction = BOTTOM_RIGHT;
 
 	target_entity = nullptr;
-	resource_building = nullptr;
+	//resource_building = nullptr;
 	attacking_entity = nullptr;
 
 	target_tile = { -1,-1 };
@@ -77,7 +77,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 	sprite_size = 128;
 
 	detection_radius = 6;
-	action_timer.Start();
+	//action_timer.Start();
 	detection_timer.Start();	
 
 	//Fog Of War
@@ -92,8 +92,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
 		}
 		visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
-	}	
-	*/
+	}		
 }
 
 DynamicEntity::~DynamicEntity() {
