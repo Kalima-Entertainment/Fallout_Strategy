@@ -71,8 +71,22 @@ bool Troop::Update(float dt) {
     case WALK:
 		Move(dt);
 
+		enemy_in_range = DetectEntitiesInRange();
+
+		if ((enemy_in_range) && (enemy_in_range != target_entity)) {
+			target_entity = enemy_in_range;
+			PathfindToPosition(enemy_in_range->current_tile);
+		}
+		else if (target_building)
+		{
+			target_entity = target_building;
+			PathfindToPosition(target_building->current_tile);
+		}
+
 		if (target_entity) {
 			if (current_tile.DistanceManhattan(target_entity->current_tile) <= range) {
+				UpdateTile();
+				path_to_target.clear();
 				state = ATTACK;
 				Attack();
 			}
@@ -85,8 +99,13 @@ bool Troop::Update(float dt) {
 			if (current_tile.DistanceNoSqrt(target_entity->current_tile) > range) {
 				PathfindToPosition(target_entity->current_tile);
 			}
-			Attack();
-			animations[ATTACK][direction].Reset();
+			else
+			{
+				UpdateTile();
+				path_to_target.clear();
+				Attack();
+				animations[ATTACK][direction].Reset();
+			}
 		}
         break;
 

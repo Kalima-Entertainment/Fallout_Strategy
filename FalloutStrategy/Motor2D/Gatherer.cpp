@@ -59,7 +59,7 @@ bool Gatherer::Update(float dt) {
 	case GATHER:
 		if (gathering_timer.ReadSec() > gather_time) {
 			//collect resources
-			if (resource_collected < storage_capacity) {
+			if ((resource_building)&&(resource_collected < storage_capacity)) {
 				Gather();
 				state = WALK;
 			}
@@ -67,7 +67,7 @@ bool Gatherer::Update(float dt) {
 				StoreGatheredResources();
 
 				//go back to resource building to get more resources
-				if (resource_building->quantity > 0) {
+				if ((resource_building)&&(resource_building->quantity > 0)) {
 					PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
 					state = WALK;
 				}
@@ -124,6 +124,9 @@ void Gatherer::Gather() {
 		PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
 		target_entity = base;
 	}
+
+	if (resource_building->quantity <= 0)
+		resource_building = nullptr;
 }
 
 void Gatherer::AssignResourceBuilding(ResourceBuilding* g_resource_building) {

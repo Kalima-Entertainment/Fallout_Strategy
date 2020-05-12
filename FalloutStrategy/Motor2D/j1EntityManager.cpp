@@ -829,7 +829,7 @@ void j1EntityManager::DestroyResourceSpot(ResourceBuilding* resource_spot) {
 		if (resource_spot == resource_buildings[i]) {
 			delete resource_buildings[i];
 			resource_buildings[i] = nullptr;
-			resource_buildings.erase(resource_buildings.begin() + i);
+			resource_buildings.erase(resource_buildings.cbegin() + i);
 		}
 	}
 }

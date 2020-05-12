@@ -415,8 +415,10 @@ bool UI_Button::Update(float dt)
 			else if (t == summon_mrhandy_button) {
 				if (App->player->caps >= App->entities->mr_handy_cost) {
 					App->player->laboratory->SpawnUnit(MR_HANDY, true);
+					App->player->UpdateResourceData(Resource::CAPS, -App->entities->mr_handy_cost);
 					App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
-					}
+
+				}
 			}
 
 		}
