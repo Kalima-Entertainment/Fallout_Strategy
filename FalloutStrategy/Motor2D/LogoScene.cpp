@@ -80,7 +80,6 @@ bool LogoScene::Start()
 	win_video = App->video->Load("Assets/video/win.ogv", App->render->renderer);
 	lose_video = App->video->Load("Assets/video/lose.ogv", App->render->renderer);
 
-
 	start_game_rect = { 0, 0,561,30 };
 	LoadAnimations();
 	Loop = true;
@@ -203,6 +202,11 @@ bool LogoScene::PostUpdate()
 
 	if (App->scene->lose == true && App->scene->win == false)
 	{
+		if (Mix_Playing(4) == 0)
+		App->audio->PlayFx(4, App->audio->lose, 0);
+		if (Mix_Playing(5) == 0)
+		App->audio->PlayFx(5, App->audio->you_lose, 0);
+
 		if (lose_video != 0)
 		{
 			lose_tex = App->video->UpdateVideo(lose_video);

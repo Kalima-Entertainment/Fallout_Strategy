@@ -75,6 +75,8 @@ public:
 	int loading;
 	int win;
 	int lose;
+	int you_win;
+	int you_lose;
 
 	int click_fx;
 	int hover_fx;
