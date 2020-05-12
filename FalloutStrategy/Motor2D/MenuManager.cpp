@@ -366,18 +366,16 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 						case BUILDING_TYPE::LAB:
 
 							//Buttons
-							//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1050, 600, Brotherhood_melee, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
-							//bases_hud.lab_create_brotherhood = (UI_Button*)App->gui->CreateButton(1105, 600, Brotherhood_ranged, { 1355,2027,45,42 }, { 1355,2111,45,42 }, { 1355,2196,45,42 }, NULL, this);
 							brotherhood_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_lab_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 							brotherhood_lab[4] = (UI_Button*)App->gui->CreateButton(1050, 570, Boost_radar_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
-							brotherhood_lab[6] = (UI_Button*)App->gui->CreateButton(1050, 520, summon_mrhandy_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+							brotherhood_lab[6] = (UI_Button*)App->gui->CreateButton(1050, 670, summon_mrhandy_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 						
 							//Images
 							brotherhood_lab[1] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 663, 1567, 108, 104 }, NULL, this);
 							brotherhood_lab[2] = (j1Image*)App->gui->CreateImage(1060, 630, Image, { 877, 1874, 33, 20 }, NULL, this);
 							
 							brotherhood_lab[5] = (j1Image*)App->gui->CreateImage(1060, 575, Image, { 982, 1869, 31, 33 }, NULL, this);
-							brotherhood_lab[7] = (j1Image*)App->gui->CreateImage(1060, 525, Image, { 1034, 1869, 35, 33 }, NULL, this);
+							brotherhood_lab[7] = (j1Image*)App->gui->CreateImage(1060, 675, Image, { 1034, 1869, 35, 33 }, NULL, this);
 
 							//Labels
 							if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
@@ -455,7 +453,7 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 		
 							supermutant_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_lab_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 							supermutant_lab[4] = (UI_Button*)App->gui->CreateButton(1050, 570, Boost_radar_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
-							supermutant_lab[6] = (UI_Button*)App->gui->CreateButton(1050, 520, summon_mrhandy_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+							supermutant_lab[6] = (UI_Button*)App->gui->CreateButton(1050, 670, summon_mrhandy_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 							
 
 							//Images
@@ -463,7 +461,7 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							supermutant_lab[2] = (j1Image*)App->gui->CreateImage(1060, 630, Image, { 877, 1874, 33, 20 }, NULL, this);
 							
 							supermutant_lab[5] = (j1Image*)App->gui->CreateImage(1060, 575, Image, { 982, 1869, 31, 33 }, NULL, this);
-							supermutant_lab[7] = (j1Image*)App->gui->CreateImage(1060, 525, Image, { 1034, 1869, 35, 33 }, NULL, this);
+							supermutant_lab[7] = (j1Image*)App->gui->CreateImage(1060, 675, Image, { 1034, 1869, 35, 33 }, NULL, this);
 
 							//Labels
 							if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
@@ -539,7 +537,7 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							//Buttons
 							ghoul_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_lab_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 							ghoul_lab[4] = (UI_Button*)App->gui->CreateButton(1050, 570, Boost_radar_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
-							ghoul_lab[6] = (UI_Button*)App->gui->CreateButton(1050, 520, summon_mrhandy_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+							ghoul_lab[6] = (UI_Button*)App->gui->CreateButton(1050, 670, summon_mrhandy_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 							
 
 							//Images
@@ -547,7 +545,7 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							ghoul_lab[2] = (j1Image*)App->gui->CreateImage(1060, 630, Image, { 877, 1874, 33, 20 }, NULL, this);
 							
 							ghoul_lab[5] = (j1Image*)App->gui->CreateImage(1060, 575, Image, { 982, 1869, 31, 33 }, NULL, this);
-							ghoul_lab[7] = (j1Image*)App->gui->CreateImage(1060, 525, Image, { 1034, 1869, 35, 33 }, NULL, this);
+							ghoul_lab[7] = (j1Image*)App->gui->CreateImage(1060, 675, Image, { 1034, 1869, 35, 33 }, NULL, this);
 
 							//Labels
 							if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
@@ -624,7 +622,7 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							//Buttons
 							vault_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_lab_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 							vault_lab[4] = (UI_Button*)App->gui->CreateButton(1050, 570, Boost_radar_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
-							vault_lab[6] = (UI_Button*)App->gui->CreateButton(1050, 520, summon_mrhandy_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+							vault_lab[6] = (UI_Button*)App->gui->CreateButton(1050, 670, summon_mrhandy_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
 							
 							
 							//Images
@@ -632,7 +630,7 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							vault_lab[2] = (j1Image*)App->gui->CreateImage(1060, 630, Image, { 877, 1874, 33, 20 }, NULL, this);
 							
 							vault_lab[5] = (j1Image*)App->gui->CreateImage(1060, 575, Image, { 982, 1869, 31, 33 }, NULL, this);
-							vault_lab[7] = (j1Image*)App->gui->CreateImage(1060, 525, Image, { 1034, 1869, 35, 33 }, NULL, this);
+							vault_lab[7] = (j1Image*)App->gui->CreateImage(1060, 675, Image, { 1034, 1869, 35, 33 }, NULL, this);
 
 							//Labels
 							if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
@@ -725,16 +723,16 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 			case BUILDING_TYPE::ALL:
 				App->gui->DeleteArrayElements(brotherhood_base, 6);
 				App->gui->DeleteArrayElements(brotherhood_barrack, 8);
-				App->gui->DeleteArrayElements(brotherhood_lab, 6);
+				App->gui->DeleteArrayElements(brotherhood_lab, 8);
 				App->gui->DeleteArrayElements(supermutant_base, 6);
 				App->gui->DeleteArrayElements(supermutant_barrack, 8);
-				App->gui->DeleteArrayElements(supermutant_lab, 6);
+				App->gui->DeleteArrayElements(supermutant_lab, 8);
 				App->gui->DeleteArrayElements(ghoul_base, 6);
 				App->gui->DeleteArrayElements(ghoul_barrack, 8);
-				App->gui->DeleteArrayElements(ghoul_lab, 6);
+				App->gui->DeleteArrayElements(ghoul_lab, 8);
 				App->gui->DeleteArrayElements(vault_base, 6);
 				App->gui->DeleteArrayElements(vault_barrack, 8);
-				App->gui->DeleteArrayElements(vault_lab, 6);
+				App->gui->DeleteArrayElements(vault_lab, 8);
 				break;
 			case BUILDING_TYPE::NONE:
 				break;
