@@ -180,6 +180,15 @@ bool LogoScene::PostUpdate()
 	
 	if (App->scene->win == true && App->scene->lose == false)
 	{
+		if (playsound == true)
+		{
+			if (Mix_Playing(2) == 0)
+				App->audio->PlayFx(2, App->audio->win, 0);
+			if (Mix_Playing(3) == 0)
+				App->audio->PlayFx(3, App->audio->you_win, 0);
+			playsound = false;
+		}
+		
 		if (win_video != 0)
 		{
 			win_tex = App->video->UpdateVideo(win_video);
