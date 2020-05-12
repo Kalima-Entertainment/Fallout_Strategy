@@ -263,8 +263,6 @@ void FoWManager::UpdateFoWMap()
 			fowEntities[i]->Update();
 		}
 
-
-
 		if (!debugMode)
 		{
 			for (int i = 0; i < fowEntities.size(); i++)
@@ -274,7 +272,6 @@ void FoWManager::UpdateFoWMap()
 					fowEntities[i]->isVisible = true;
 				}
 				else fowEntities[i]->isVisible = false;
-
 			}
 		}
 		else
@@ -284,8 +281,6 @@ void FoWManager::UpdateFoWMap()
 				fowEntities[i]->isVisible = true;
 			}
 		}
-
-
 	}
 }
 
@@ -306,7 +301,8 @@ void FoWManager::DrawFoWMap()
 			if ((worldDrawPos.x > -(App->render->camera.x) )
 				&& (worldDrawPos.x < -App->render->camera.x + App->render->camera.w) 
 				&& (worldDrawPos.y > -(App->render->camera.y)) 
-				&& (worldDrawPos.y < (-App->render->camera.y + App->render->camera.h))) {
+				&& (worldDrawPos.y < (-App->render->camera.y + App->render->camera.h))) 
+			{
 				draw_map = true;
 			}
 			else {
