@@ -411,7 +411,13 @@ bool UI_Button::Update(float dt)
 					App->minimap->EnableRadar();
 					App->player->UpdateResourceData(Resource::CAPS, -App->entities->radar_cost);
 				}
-			}			 			 		  		  		 	   		
+			}		
+			else if (t == summon_mrhandy_button) {
+				if (App->player->caps >= App->entities->mr_handy_cost) {
+				
+				}
+			}
+
 		}
 
 		else {
