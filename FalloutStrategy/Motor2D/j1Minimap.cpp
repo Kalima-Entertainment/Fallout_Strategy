@@ -12,6 +12,7 @@
 #include "AI_Manager.h"
 #include "j1Player.h"
 #include "j1Pathfinding.h"
+#include "brofiler/Brofiler/Brofiler.h"
 
 j1Minimap::j1Minimap() : j1Module(), texture(nullptr) {
 	name = ("minimap");
@@ -100,7 +101,7 @@ bool j1Minimap::Start() {
 	{
 		for (int x = 0; x < 150; x++) 
 		{
-			grid[x][y] = 2;
+			grid[x][y] = 0;
 		}
 	}
 
@@ -117,6 +118,7 @@ bool j1Minimap::CleanUp() {
 }
 
 bool j1Minimap::PostUpdate() {
+	BROFILER_CATEGORY("Minimap draw", Profiler::Color::DarkGoldenRod)
 
  	if ((App->menu_manager->current_menu == Menu::NO_MENU)||(App->menu_manager->current_menu == Menu::PAUSE_MENU) || (App->menu_manager->current_menu == Menu::GUI) || (App->menu_manager->current_menu == Menu::BUI_BASES)) {
 
@@ -154,10 +156,8 @@ bool j1Minimap::PostUpdate() {
 					fog_of_war_rect.x = rect_pos.x;
 					fog_of_war_rect.y = rect_pos.y;
 
-					if (grid[x][y] == 2)
+					if (grid[x][y] != 0)
 						App->render->DrawQuad(fog_of_war_rect, 0, 0, 0, 255, true, false);
-					else if (grid[x][y] == 1)
-						App->render->DrawQuad(fog_of_war_rect, 0, 0, 0, 122, true, false);
 						
 				}
 			}
