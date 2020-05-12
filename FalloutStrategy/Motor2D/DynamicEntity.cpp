@@ -490,6 +490,9 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 	
 	UpdateTile();
 
+	if (!App->pathfinding->IsWalkable(current_tile))
+		destination = App->pathfinding->FindWalkableAdjacentTile(current_tile);
+
 	//if the tile is in the map but it's not walkable
 	if (!App->pathfinding->IsWalkable(destination)) 
 		destination = App->pathfinding->FindNearestWalkableTile(current_tile, destination);
@@ -498,9 +501,6 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 		destination = App->entities->FindFreeAdjacentTile(current_tile, destination);
 
 	target_tile = destination;
-
-	if (!App->pathfinding->IsWalkable(current_tile)) 
-		next_tile = App->pathfinding->FindWalkableAdjacentTile(current_tile);
 	
 	if (App->pathfinding->CreatePath(current_tile, destination) == -1) {
 		node_path = App->pathfinding->CreateNodePath(current_tile, destination);
@@ -650,7 +650,7 @@ j1Entity* DynamicEntity::DetectEntitiesInRange() {
 
 					detected_entity = App->entities->FindEntityByTile(checked_tile);
 
-					if ((detected_entity)&&(detected_entity->is_dynamic)) {
+					if ((detected_entity)&&(detected_entity->is_dynamic) &&(detected_entity->state != DIE)) {
 						entities_in_range.push_back(detected_entity);
 
 						if (detected_entity->faction != faction)

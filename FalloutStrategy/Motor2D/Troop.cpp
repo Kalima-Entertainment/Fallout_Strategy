@@ -85,8 +85,8 @@ bool Troop::Update(float dt) {
 			if (current_tile.DistanceNoSqrt(target_entity->current_tile) > range) {
 				PathfindToPosition(target_entity->current_tile);
 			}
-
 			Attack();
+			animations[ATTACK][direction].Reset();
 		}
         break;
 
@@ -107,6 +107,10 @@ bool Troop::Update(float dt) {
 		if (!delete_timer.Started()) {
 			delete_timer.Start();
 			direction = TOP_LEFT;
+			if (attacking_entity) {
+				attacking_entity->target_entity = nullptr;
+				attacking_entity->state = IDLE;
+			}
 		}
 
 		if (delete_timer.ReadSec() > 4) {
@@ -136,7 +140,6 @@ void Troop::Attack() {
 	target_entity->current_health -= damage;
 
 	if (target_entity->current_health <= 0) {
-		target_entity->attacking_entity = this;
 		target_entity->state = DIE;
 		path_to_target.clear();
 		state = IDLE;
@@ -146,8 +149,6 @@ void Troop::Attack() {
 
 		target_entity = nullptr;
 	}
-
-	//Change animation directions to fit
 	else if (target_entity->is_dynamic) {
 		DynamicEntity* dynamic_target = (DynamicEntity*)target_entity;
 

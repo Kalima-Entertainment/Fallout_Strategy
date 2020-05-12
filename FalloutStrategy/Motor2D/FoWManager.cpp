@@ -347,15 +347,12 @@ void FoWManager::DrawFoWMap()
 				SDL_Rect r = { fogId * 64,0,64,64 }; //this rect crops the desired fog Id texture from the fogTiles spritesheet
 				App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
 				
-				App->minimap->grey_squares.push_back({ worldDrawPos.x, worldDrawPos.y });
 			}
 			if (shroudId != -1)
 			{
 				SDL_SetTextureAlphaMod(displayFogTexture, 255);//set the alpha to white again
 				SDL_Rect r = { shroudId * 64,0,64,64 }; //this rect crops the desired fog Id texture from the fogTiles spritesheet
 				App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
-				App->minimap->grey_squares.pop_back();
-				App->minimap->black_squares.push_back({ worldDrawPos.x, worldDrawPos.y });
 			}
 		}
 	}

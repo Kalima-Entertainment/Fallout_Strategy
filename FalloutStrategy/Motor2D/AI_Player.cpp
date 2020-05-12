@@ -17,7 +17,6 @@
 
 AI_Player::AI_Player(Faction g_faction) : GenericPlayer(), is_attacking(false), last_barrack_to_spawn(1), gatherers_commanded(false) {
 	
-
 	name.assign("AI");
 
 	faction = g_faction;
@@ -54,6 +53,7 @@ bool AI_Player::Update(float dt) {
 	bool ret = true;
 
 	// Gather -----------------------------------------------------
+
 	if (!gatherers_commanded) {
 		for (int i = 0; i < gatherers_vector.size(); i++)
 		{
@@ -104,7 +104,6 @@ bool AI_Player::Update(float dt) {
 	//Choose enemy player -----------------------------------------
 
 	//if the ai_player is ready choose a player to attack
-
 	if ((wave_timer.ReadSec() > wave_time)&&(!is_attacking)) {
 		if ((rangeds >= ranged_minimum) && (melees >= melee_minimum) && (target_player == nullptr)) {
 			ChooseRandomPlayerEnemy();
@@ -162,14 +161,6 @@ void AI_Player::ChooseRandomPlayerEnemy() {
 
 	if (target_player == nullptr)
 		target_player = (GenericPlayer*)App->player;
-
-	iPoint origin = { (int)troops[0]->current_tile.x, (int)troops[0]->current_tile.y };
-	if (target_player->base != nullptr) {
-		iPoint enemy_base_position = App->entities->ClosestTile(origin, target_player->base->tiles);
-	}
-
-	//CreateNodePath(troops[0]->current_tile, enemy_base_position, path_to_enemy_base);
-	//App->Mmanager->CreateGroup(troops);
 }
 
 DynamicEntity* AI_Player::GetClosestDynamicEntity() {

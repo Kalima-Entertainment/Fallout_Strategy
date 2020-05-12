@@ -35,6 +35,7 @@ public:
 	bool CreateMinimap();
 	iPoint WorldToMinimap(int x, int y);
 	iPoint ScreenToMinimapToWorld(int x, int y);
+	iPoint MapToMinimap(int x, int y);
 	void EnableRadar();
 
 public:
@@ -42,8 +43,7 @@ public:
 	int width;
 	int height;
 
-	std::vector<iPoint> black_squares;
-	std::vector<iPoint> grey_squares;
+	unsigned short int grid[150][150];
 
 private:
 	float scale;

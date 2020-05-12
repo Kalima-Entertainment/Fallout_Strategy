@@ -96,6 +96,14 @@ bool j1Minimap::Start() {
 		node_map[i] = App->minimap->WorldToMinimap(node_map[i].x, node_map[i].y);
 	}
 
+	for (int y = 0; y < 150; y++) 
+	{
+		for (int x = 0; x < 150; x++) 
+		{
+			grid[x][y] = 2;
+		}
+	}
+
 	return ret;
 }
 
@@ -114,35 +122,6 @@ bool j1Minimap::PostUpdate() {
 
 		App->render->Blit(texture, position.x, position.y, NULL, 1.0, 0);
 
-		/*
-		if (App->render->fog_of_war) {
-			SDL_Rect fog_of_war_rect = {0,0, map_width/width, map_height/height};
-			iPoint rect_pos;
-
-			fog_of_war_rect.w = width / 150;
-			fog_of_war_rect.h = fog_of_war_rect.w * 0.5f;
-
-			for (int i = 0; i < black_squares.size(); i++)
-			{
-				rect_pos = WorldToMinimap(black_squares[i].x, black_squares[i].y);
-				fog_of_war_rect.x = rect_pos.x;
-				fog_of_war_rect.y = rect_pos.y;
-				App->render->DrawQuad(fog_of_war_rect, 0, 0, 0, 255, true, false);
-			}
-
-			for (int i = 0; i < grey_squares.size(); i++)
-			{
-				rect_pos = WorldToMinimap(black_squares[i].x, black_squares[i].y);
-				fog_of_war_rect.x = rect_pos.x;
-				fog_of_war_rect.y = rect_pos.y;
-				App->render->DrawQuad(fog_of_war_rect, 0, 255, 0, 255, true, false);
-			}
-
-			black_squares.clear();
-			grey_squares.clear();
-		}
-		*/
-
 		for (int i = 0; i < App->entities->entities.size(); i++)
 		{
 			SDL_Rect entity_rect = { 0,0,3,3 };
@@ -157,6 +136,30 @@ bool j1Minimap::PostUpdate() {
 			else { 
 				if(radar)
 				App->render->DrawQuad(entity_rect, 255, 0, 0, 255, true, false);
+			}
+		}
+
+		if (App->render->fog_of_war) {
+			SDL_Rect fog_of_war_rect = { 0,0,1,1 };
+			iPoint rect_pos;
+
+			fog_of_war_rect.w = width / 150;
+			fog_of_war_rect.h = fog_of_war_rect.w * 0.5f;
+
+			for (int y = 0; y < MAP_LENGTH; y++)
+			{
+				for (int x = 0; x < MAP_LENGTH; x++)
+				{
+					rect_pos = MapToMinimap(x, y);
+					fog_of_war_rect.x = rect_pos.x;
+					fog_of_war_rect.y = rect_pos.y;
+
+					if (grid[x][y] == 2)
+						App->render->DrawQuad(fog_of_war_rect, 0, 0, 0, 255, true, false);
+					else if (grid[x][y] == 1)
+						App->render->DrawQuad(fog_of_war_rect, 0, 0, 0, 122, true, false);
+						
+				}
 			}
 		}
 
@@ -239,6 +242,13 @@ iPoint j1Minimap::ScreenToMinimapToWorld(int x, int y) {
 	iPoint minimap_position;
 	minimap_position.x = (x - position.x - width * 0.5f)/scale;
 	minimap_position.y = (y - position.y)/scale;
+	return minimap_position;
+}
+
+iPoint  j1Minimap::MapToMinimap(int x, int y) {
+	iPoint minimap_position;
+	minimap_position.x = position.x + width * 0.5f + (x - y) * HALF_TILE * scale;
+	minimap_position.y = position.y + (x + y) * HALF_TILE * 0.5f * scale;
 	return minimap_position;
 }
 

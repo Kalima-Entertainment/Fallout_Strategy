@@ -37,219 +37,6 @@ j1EntityManager::j1EntityManager(){
 
 j1EntityManager::~j1EntityManager(){}
 
-j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int position_x, int position_y, GenericPlayer* owner){
-	BROFILER_CATEGORY("EntityCreation", Profiler::Color::Linen)
-
-	//if (!owner) owner = App->scene->players[faction];
-
-	j1Entity* entity = nullptr;
-	iPoint available_tile;
-
-	switch (type)
-	{
-	case MELEE:
-		available_tile = FindSpawnPoint(position_x, position_y);
-		entity = new Troop(MELEE, faction, available_tile, owner);
-		if (owner) {
-			owner->troops.push_back((Troop*)entity);
-			owner->melees++;
-		}
-		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, MELEE)];
-		break;
-
-	case RANGED:
-		available_tile = FindSpawnPoint(position_x, position_y);
-		entity = new Troop(RANGED, faction, available_tile, owner);
-		if (owner) {
-			owner->troops.push_back((Troop*)entity);
-			owner->rangeds++;
-		}
-		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, RANGED)];
-		break;
-
-	case GATHERER:
-		available_tile = FindSpawnPoint(position_x, position_y);
-		entity = new Gatherer(faction, available_tile, owner);
-		if (owner) {
-			owner->gatherers_vector.push_back((Gatherer*)entity);
-			owner->gatherers++;
-		}
-		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, GATHERER)];
-		break;
-
-	case BASE:
-		entity = new StaticEntity(faction, BASE, { position_x, position_y }, owner);
-		if (owner) {
-			owner->base = (StaticEntity*)entity;
-		}
-		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, BASE)];
-		break;
-
-	case LABORATORY:
-		entity = new StaticEntity(faction, LABORATORY, { position_x, position_y }, owner);
-		if (owner) {
-			owner->laboratory = (StaticEntity*)entity;
-		}
-		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, LABORATORY)];
-		break;
-
-	case BARRACK:
-		entity = new StaticEntity(faction, BARRACK, { position_x, position_y }, owner);
-		if (owner) {
-			if(!owner->barrack[0])
-				owner->barrack[0] = (StaticEntity*)entity;
-			else if (!owner->barrack[1])
-				owner->barrack[1] = (StaticEntity*)entity;
-		}
-		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, BARRACK)];
-		break;
-
-	case BIGHORNER:
-		entity = new Animal(BIGHORNER, { position_x, position_y });
-		entity->reference_entity = reference_entities[GetReferenceEntityID(NO_FACTION, BIGHORNER)];
-		break;
-
-	case BRAHAM:
-		entity = new Animal(BRAHAM, { position_x, position_y });
-		entity->reference_entity = reference_entities[GetReferenceEntityID(NO_FACTION, BRAHAM)];
-		break;
-
-	case DEATHCLAW:
-		entity = new Deathclaw({ position_x, position_y });
-		entity->reference_entity = reference_entities[GetReferenceEntityID(NO_FACTION, DEATHCLAW)];
-		break;
-
-	case MR_HANDY:
-		entity = new Troop(MR_HANDY, faction, { position_x, position_y }, owner);
-		if (owner) {
-			owner->troops.push_back((Troop*)entity);
-		}
-		entity->reference_entity = reference_entities[GetReferenceEntityID(NO_FACTION, MR_HANDY)];
-		break;
-	default:
-		break;
-	}
-
-	if (entity->reference_entity != nullptr) {
-		occupied_tiles[entity->current_tile.x][entity->current_tile.y] = true;
-		entities.push_back(entity);
-		entity->LoadDataFromReference();
-	}
-
-	/*
-	if ((type == MELEE) || (type == RANGED) || (type == GATHERER) || (type == BIGHORNER) || (type == BRAHAM) || (type == DEATHCLAW) || (type == MR_HANDY)) {
-
-		//If there's another unit in that tile, we find a new spawn point
-
-		entity = new DynamicEntity(faction, type, { position_x, position_y }, owner);
-
-		if ((faction != ANIMALS) && (type != MR_HANDY))
-			entity->reference_entity = reference_entities[faction][type];
-		else if (type == BIGHORNER)
-			entity->reference_entity = reference_bighorner;
-		else if (type == BRAHAM)
-			entity->reference_entity = reference_braham;
-		else if (type == DEATHCLAW)
-			entity->reference_entity = reference_deathclaw;
-		else if (type == MR_HANDY)
-			entity->reference_entity = reference_MrHandy;
-
-		if (entity->reference_entity != nullptr){
-			occupied_tiles[entity->current_tile.x][entity->current_tile.y] = true;
-			entities.push_back(entity);
-			entity->LoadReferenceData();
-		}
-	}
-	else if ((type == BASE) || (type == LABORATORY) || (type == BARRACK))
-	{
-		entity = new StaticEntity(faction, type, {position_x, position_y},owner);
-		entity->reference_entity = reference_entities[faction][type];
-
-		if (entity != NULL)
-		{
-			if (entity->reference_entity != nullptr) {
-				entities.push_back(entity);
-				entity->LoadReferenceData();
-			}
-
-			//Render building
-			entity->render_position = { (int)(entity->position.x - 0.5f * entity->sprite_size),(int)(entity->position.y - entity->sprite_size * 0.75) };
-
-			//TODO: delete all this
-			//Add spawn position for units
-			if (faction == GHOUL) {
-				if (type == BASE)
-					entity->render_position += App->map->MapToWorld(20, 12);
-				else if (type == BARRACK)
-					entity->render_position += App->map->MapToWorld(20, 13);
-				else if (type == LABORATORY)
-					entity->render_position += App->map->MapToWorld(20, 11);
-			}
-			else if(faction == VAULT){
-				if (type == BASE)
-					entity->render_position += App->map->MapToWorld(9, 5);
-				else if (type == BARRACK)
-					entity->render_position += App->map->MapToWorld(8, 5);
-				else if (type == LABORATORY)
-					entity->render_position += App->map->MapToWorld(7, 3);
-			}
-			else if (faction == MUTANT) {
-				if (type == BASE)
-					entity->render_position += App->map->MapToWorld(10, 6);
-				else if (type == BARRACK)
-					entity->render_position += App->map->MapToWorld(9, 7);
-				else if (type == LABORATORY)
-					entity->render_position += App->map->MapToWorld(9, 6);
-			}
-			else if (faction == BROTHERHOOD) {
-				if (type == BASE)
-					entity->render_position += App->map->MapToWorld(10, 6);
-				else if (type == BARRACK)
-					entity->render_position += App->map->MapToWorld(10, 7);
-				else if (type == LABORATORY)
-					entity->render_position += App->map->MapToWorld(10, 6);
-			}
-
-			//Spawn position is just below render position
-			entity->spawnPosition = { App->map->WorldToMap(entity->render_position.x, entity->render_position.y) };
-		}
-	}
-
-	//assign entity to owner
-	if (owner) {
-		switch (entity->type)
-		{
-		case MELEE:
-			owner->troops.push_back((DynamicEntity*)entity);
-			owner->melees++;
-			break;
-		case RANGED:
-			owner->troops.push_back((DynamicEntity*)entity);
-			owner->rangeds++;
-			break;
-		case GATHERER:
-			owner->gatherers_vector.push_back((DynamicEntity*)entity);
-			owner->gatherers++;
-			break;
-		case BASE:
-			owner->base = (StaticEntity*)entity;
-			break;
-		case BARRACK:
-			if (owner->barrack[0] == nullptr) owner->barrack[0] = (StaticEntity*)entity;
-			else if (owner->barrack[1] == nullptr) owner->barrack[1] = (StaticEntity*)entity;
-			break;
-		case LABORATORY:
-			if (owner->laboratory == nullptr) owner->laboratory = (StaticEntity*)entity;
-			break;
-		default:
-			break;
-		}
-
-	}
-	*/
-	return entity;
-}
-
 bool j1EntityManager::Awake(pugi::xml_node& config){
 	bool ret = true;
 	config_data = config;
@@ -573,6 +360,219 @@ bool j1EntityManager::PostUpdate()
 	}
 
 	return ret;
+}
+
+j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int position_x, int position_y, GenericPlayer* owner) {
+	BROFILER_CATEGORY("EntityCreation", Profiler::Color::Linen)
+
+		//if (!owner) owner = App->scene->players[faction];
+
+		j1Entity* entity = nullptr;
+	iPoint available_tile;
+
+	switch (type)
+	{
+	case MELEE:
+		available_tile = FindSpawnPoint(position_x, position_y);
+		entity = new Troop(MELEE, faction, available_tile, owner);
+		if (owner) {
+			owner->troops.push_back((Troop*)entity);
+			owner->melees++;
+		}
+		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, MELEE)];
+		break;
+
+	case RANGED:
+		available_tile = FindSpawnPoint(position_x, position_y);
+		entity = new Troop(RANGED, faction, available_tile, owner);
+		if (owner) {
+			owner->troops.push_back((Troop*)entity);
+			owner->rangeds++;
+		}
+		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, RANGED)];
+		break;
+
+	case GATHERER:
+		available_tile = FindSpawnPoint(position_x, position_y);
+		entity = new Gatherer(faction, available_tile, owner);
+		if (owner) {
+			owner->gatherers_vector.push_back((Gatherer*)entity);
+			owner->gatherers++;
+		}
+		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, GATHERER)];
+		break;
+
+	case BASE:
+		entity = new StaticEntity(faction, BASE, { position_x, position_y }, owner);
+		if (owner) {
+			owner->base = (StaticEntity*)entity;
+		}
+		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, BASE)];
+		break;
+
+	case LABORATORY:
+		entity = new StaticEntity(faction, LABORATORY, { position_x, position_y }, owner);
+		if (owner) {
+			owner->laboratory = (StaticEntity*)entity;
+		}
+		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, LABORATORY)];
+		break;
+
+	case BARRACK:
+		entity = new StaticEntity(faction, BARRACK, { position_x, position_y }, owner);
+		if (owner) {
+			if (!owner->barrack[0])
+				owner->barrack[0] = (StaticEntity*)entity;
+			else if (!owner->barrack[1])
+				owner->barrack[1] = (StaticEntity*)entity;
+		}
+		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, BARRACK)];
+		break;
+
+	case BIGHORNER:
+		entity = new Animal(BIGHORNER, { position_x, position_y });
+		entity->reference_entity = reference_entities[GetReferenceEntityID(NO_FACTION, BIGHORNER)];
+		break;
+
+	case BRAHAM:
+		entity = new Animal(BRAHAM, { position_x, position_y });
+		entity->reference_entity = reference_entities[GetReferenceEntityID(NO_FACTION, BRAHAM)];
+		break;
+
+	case DEATHCLAW:
+		entity = new Deathclaw({ position_x, position_y });
+		entity->reference_entity = reference_entities[GetReferenceEntityID(NO_FACTION, DEATHCLAW)];
+		break;
+
+	case MR_HANDY:
+		entity = new Troop(MR_HANDY, faction, { position_x, position_y }, owner);
+		if (owner) {
+			owner->troops.push_back((Troop*)entity);
+		}
+		entity->reference_entity = reference_entities[GetReferenceEntityID(NO_FACTION, MR_HANDY)];
+		break;
+	default:
+		break;
+	}
+
+	if (entity->reference_entity != nullptr) {
+		occupied_tiles[entity->current_tile.x][entity->current_tile.y] = true;
+		entities.push_back(entity);
+		entity->LoadDataFromReference();
+	}
+
+	/*
+	if ((type == MELEE) || (type == RANGED) || (type == GATHERER) || (type == BIGHORNER) || (type == BRAHAM) || (type == DEATHCLAW) || (type == MR_HANDY)) {
+
+		//If there's another unit in that tile, we find a new spawn point
+
+		entity = new DynamicEntity(faction, type, { position_x, position_y }, owner);
+
+		if ((faction != ANIMALS) && (type != MR_HANDY))
+			entity->reference_entity = reference_entities[faction][type];
+		else if (type == BIGHORNER)
+			entity->reference_entity = reference_bighorner;
+		else if (type == BRAHAM)
+			entity->reference_entity = reference_braham;
+		else if (type == DEATHCLAW)
+			entity->reference_entity = reference_deathclaw;
+		else if (type == MR_HANDY)
+			entity->reference_entity = reference_MrHandy;
+
+		if (entity->reference_entity != nullptr){
+			occupied_tiles[entity->current_tile.x][entity->current_tile.y] = true;
+			entities.push_back(entity);
+			entity->LoadReferenceData();
+		}
+	}
+	else if ((type == BASE) || (type == LABORATORY) || (type == BARRACK))
+	{
+		entity = new StaticEntity(faction, type, {position_x, position_y},owner);
+		entity->reference_entity = reference_entities[faction][type];
+
+		if (entity != NULL)
+		{
+			if (entity->reference_entity != nullptr) {
+				entities.push_back(entity);
+				entity->LoadReferenceData();
+			}
+
+			//Render building
+			entity->render_position = { (int)(entity->position.x - 0.5f * entity->sprite_size),(int)(entity->position.y - entity->sprite_size * 0.75) };
+
+			//TODO: delete all this
+			//Add spawn position for units
+			if (faction == GHOUL) {
+				if (type == BASE)
+					entity->render_position += App->map->MapToWorld(20, 12);
+				else if (type == BARRACK)
+					entity->render_position += App->map->MapToWorld(20, 13);
+				else if (type == LABORATORY)
+					entity->render_position += App->map->MapToWorld(20, 11);
+			}
+			else if(faction == VAULT){
+				if (type == BASE)
+					entity->render_position += App->map->MapToWorld(9, 5);
+				else if (type == BARRACK)
+					entity->render_position += App->map->MapToWorld(8, 5);
+				else if (type == LABORATORY)
+					entity->render_position += App->map->MapToWorld(7, 3);
+			}
+			else if (faction == MUTANT) {
+				if (type == BASE)
+					entity->render_position += App->map->MapToWorld(10, 6);
+				else if (type == BARRACK)
+					entity->render_position += App->map->MapToWorld(9, 7);
+				else if (type == LABORATORY)
+					entity->render_position += App->map->MapToWorld(9, 6);
+			}
+			else if (faction == BROTHERHOOD) {
+				if (type == BASE)
+					entity->render_position += App->map->MapToWorld(10, 6);
+				else if (type == BARRACK)
+					entity->render_position += App->map->MapToWorld(10, 7);
+				else if (type == LABORATORY)
+					entity->render_position += App->map->MapToWorld(10, 6);
+			}
+
+			//Spawn position is just below render position
+			entity->spawnPosition = { App->map->WorldToMap(entity->render_position.x, entity->render_position.y) };
+		}
+	}
+
+	//assign entity to owner
+	if (owner) {
+		switch (entity->type)
+		{
+		case MELEE:
+			owner->troops.push_back((DynamicEntity*)entity);
+			owner->melees++;
+			break;
+		case RANGED:
+			owner->troops.push_back((DynamicEntity*)entity);
+			owner->rangeds++;
+			break;
+		case GATHERER:
+			owner->gatherers_vector.push_back((DynamicEntity*)entity);
+			owner->gatherers++;
+			break;
+		case BASE:
+			owner->base = (StaticEntity*)entity;
+			break;
+		case BARRACK:
+			if (owner->barrack[0] == nullptr) owner->barrack[0] = (StaticEntity*)entity;
+			else if (owner->barrack[1] == nullptr) owner->barrack[1] = (StaticEntity*)entity;
+			break;
+		case LABORATORY:
+			if (owner->laboratory == nullptr) owner->laboratory = (StaticEntity*)entity;
+			break;
+		default:
+			break;
+		}
+
+	}
+	*/
+	return entity;
 }
 
 bool j1EntityManager::LoadReferenceEntityAnimations() {
