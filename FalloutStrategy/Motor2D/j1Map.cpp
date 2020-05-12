@@ -16,6 +16,7 @@
 #include "AI_Player.h"
 #include "j1Scene.h"
 #include "j1Pathfinding.h"
+#include "FoWManager.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -62,13 +63,17 @@ void j1Map::Draw()
 					TileSet* tileset = GetTilesetFromTileId(tile_id);
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 		
-					//camera culling
-					if ((pos.x + r.w + tileset->offset_x > -(App->render->camera.x)) 
-						&& (pos.x < -App->render->camera.x + App->render->camera.w)
-						&& (pos.y + r.h > -(App->render->camera.y))
-						&& (pos.y + tileset->offset_y < (-App->render->camera.y + App->render->camera.h)))
-					{
-						App->render->Blit(tileset->texture, pos.x + tileset->offset_x, pos.y + tileset->offset_y, &r);
+					//Only render if there is no fog of war at these coordinates
+					if (App->fowManager->GetFoWTileState({ x, y })->tileFogBits != fow_ALL) {
+						//camera culling
+						if ((pos.x + r.w + tileset->offset_x > -(App->render->camera.x))
+							&& (pos.x < -App->render->camera.x + App->render->camera.w)
+							&& (pos.y + r.h > -(App->render->camera.y))
+							&& (pos.y + tileset->offset_y < (-App->render->camera.y + App->render->camera.h)))
+						{
+
+							App->render->Blit(tileset->texture, pos.x + tileset->offset_x, pos.y + tileset->offset_y, &r);
+						}
 					}
 				}
 			}
