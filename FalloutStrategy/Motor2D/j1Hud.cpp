@@ -23,8 +23,8 @@ j1Hud::j1Hud() :j1Module()
 
 bool j1Hud::Awake(pugi::xml_node& node)
 {
-	timer = 0;
-	minutes = 0;
+	timer = 59;
+	minutes = 14;
 	
 	return true;
 }
@@ -47,17 +47,17 @@ bool j1Hud::Update(float dt)
 
 	//TIMER
 
-	if(activateTimer)
+	if (activateTimer)
 	{
 		if (timer_game.Read() >= 1000)
 		{
 			timer_game.Start();
-			timer++;
+			timer--;
 		}
-		if (timer == 60)
+		if (timer == 0)
 		{
-			timer = 0;
-			minutes += 1;
+			timer = 59;
+			minutes -= 1;
 		}
 
 		sprintf_s(timer_text, 10, "%d", timer);
@@ -79,17 +79,19 @@ bool j1Hud::Update(float dt)
 		App->menu_manager->timer_item->SetTextTimer(timer_text);
 
 		App->menu_manager->timer_minutes->SetTextTimer(minutes_text);
-		
 
-		
+		if (minutes == 0 && timer == 0) {
+			activateTimer = false;
+		}
+
 	}
-	
-		
-	
 
 
 
-	
+
+
+
+
 
 	return true;
 }
