@@ -88,13 +88,15 @@ public:
 	float				music_volume;
 	float				fx_volume;
 
+	_Mix_Music* music = NULL;
+	std::vector<Mix_Chunk*> fx;
+
 private:
 
 	
 
 
-	_Mix_Music*			music = NULL;
-	std::vector<Mix_Chunk*> fx;
+
 };
 
 #endif // __j1AUDIO_H__

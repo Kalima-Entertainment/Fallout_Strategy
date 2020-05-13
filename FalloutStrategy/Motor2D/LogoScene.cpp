@@ -107,8 +107,8 @@ bool LogoScene::Update(float dt) {
 
 	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && App->scene->win == false && App->scene->lose == false)
 	{
+		App->audio->PlayMusic("Assets/audio/music/FalloutStrategyMainTheme.ogg", 0.0F);
 		App->audio->PlayFx(2, App->audio->F_press, 0);
-		App->audio->PlayMusic("Assets/audio/music/FalloutStrategyMainTheme.ogg", 4.0F);
 		App->video->DestroyVideo(my_video);
 		my_video = 0;
 		Loop = false;
@@ -124,6 +124,7 @@ bool LogoScene::Update(float dt) {
 		App->transition->StartTimer();
 		App->transition->transition = true;
 		App->transition->fadetimer.Start();
+		Mix_PauseMusic();
 
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && App->scene->lose == true)
@@ -139,8 +140,6 @@ bool LogoScene::Update(float dt) {
 		App->transition->fadetimer.Start();
 
 	}
-
-
 	return true;
 }
 
@@ -186,7 +185,10 @@ bool LogoScene::PostUpdate()
 				App->audio->PlayFx(2, App->audio->win, 0);
 			if (Mix_Playing(3) == 0)
 				App->audio->PlayFx(3, App->audio->you_win, 0);
+			Mix_PauseMusic();
+			App->audio->PlayMusic("Assets/audio/music/winmusic.ogg", 0.0F);
 			playsound = false;
+		
 		}
 		
 		if (win_video != 0)
@@ -217,6 +219,8 @@ bool LogoScene::PostUpdate()
 				App->audio->PlayFx(4, App->audio->lose, 0);
 			if (Mix_Playing(5) == 0)
 				App->audio->PlayFx(5, App->audio->you_lose, 0);
+			Mix_PauseMusic();
+			App->audio->PlayMusic("Assets/audio/music/losemusic.ogg", 0.0F);
 			playsound = false;
 		}
 		

@@ -153,7 +153,8 @@ void j1Transition::Transition()
 		App->isPaused = false;
 	}
 	else if ((fadetimer.Read() > 2500)&&(!App->gui->ingame)) {
-		Mix_ResumeMusic();
+		Mix_PauseMusic();
+		App->audio->PlayMusic("Assets/audio/music/FalloutStrategyMainTheme.ogg", 0.0F);
 		Mix_HaltChannel(1);
 		App->ai_manager->Disable();
 		App->player->Disable();

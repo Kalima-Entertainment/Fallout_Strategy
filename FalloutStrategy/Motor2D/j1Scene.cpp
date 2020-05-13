@@ -157,7 +157,7 @@ bool j1Scene::Update(float dt)
 			if (Mix_PlayingMusic() == 1) {
 				Mix_ResumeMusic();
 			}
-			App->audio->PlayMusic("Assets/audio/music/Fallout4TitleScreenwithThemeMusic.ogg");
+			App->audio->PlayMusic("Assets/audio/music/Fallout4TitleScreenwithThemeMusic.ogg", 0.0F);
 		}
 
 	}
@@ -197,6 +197,7 @@ bool j1Scene::Update(float dt)
 		App->gui->ingame = false;
 		App->isPaused = true;
 		App->logo_scene->Loop = true;
+
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_KP_2) == KEY_DOWN)
 	{
