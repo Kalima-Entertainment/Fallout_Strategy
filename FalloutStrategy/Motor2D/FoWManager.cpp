@@ -286,8 +286,8 @@ void FoWManager::UpdateFoWMap()
 
 void FoWManager::DrawFoWMap()
 {
-	int minimap_rect_width = App->map->GetWidth() / App->minimap->width;
-	int minimap_rect_height = minimap_rect_width * 0.5f;
+	//int minimap_rect_width = App->map->GetWidth() / App->minimap->width;
+	//int minimap_rect_height = minimap_rect_width * 0.5f;
 
 	for (int y = 0; y < height; y++)
 	{
@@ -296,63 +296,47 @@ void FoWManager::DrawFoWMap()
 			iPoint worldDrawPos;
 			worldDrawPos = App->map->MapToWorld(x, y);
 
-			bool draw_map = false;
-
 			if ((worldDrawPos.x > -(App->render->camera.x) )
 				&& (worldDrawPos.x < -App->render->camera.x + App->render->camera.w) 
 				&& (worldDrawPos.y > -(App->render->camera.y)) 
 				&& (worldDrawPos.y < (-App->render->camera.y + App->render->camera.h))) 
 			{
-				draw_map = true;
-			}
-			else {
-				draw_map = false;
-			}
+				FoWDataStruct* tileInfo = GetFoWTileState({ x, y });
+				int fogId = -1;
+				int shroudId = -1;
 
-
-			FoWDataStruct* tileInfo = GetFoWTileState({ x, y });
-			int fogId = -1;
-			int shroudId = -1;
-
-			if (tileInfo != nullptr && draw_map)
-			{
-
-				if (bitToTextureTable.find(tileInfo->tileFogBits) != bitToTextureTable.end())
+				if (tileInfo != nullptr)
 				{
-					fogId = bitToTextureTable[tileInfo->tileFogBits];
+					if (bitToTextureTable.find(tileInfo->tileFogBits) != bitToTextureTable.end())					
+						fogId = bitToTextureTable[tileInfo->tileFogBits];					
+
+					if (bitToTextureTable.find(tileInfo->tileShroudBits) != bitToTextureTable.end())					
+						shroudId = bitToTextureTable[tileInfo->tileShroudBits];	
 				}
 
-				if (bitToTextureTable.find(tileInfo->tileShroudBits) != bitToTextureTable.end())
+				SDL_Texture* displayFogTexture = nullptr;
+
+				if (debugMode) displayFogTexture = debugFoWtexture;				
+				else displayFogTexture = smoothFoWtexture;
+
+				App->minimap->grid[x][y] = tileInfo->tileShroudBits;
+
+				//draw fog
+				if (fogId != -1)
 				{
-					shroudId = bitToTextureTable[tileInfo->tileShroudBits];
+					SDL_SetTextureAlphaMod(displayFogTexture, 128);//set the alpha of the texture to half to reproduce fog
+					SDL_Rect r = { fogId * 64,0,64,64 }; //this rect crops the desired fog Id texture from the fogTiles spritesheet
+					App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
+
 				}
-
-			}
-
-			SDL_Texture* displayFogTexture = nullptr;
-			if (debugMode)
-			{
-				displayFogTexture = debugFoWtexture;
-			}
-			else displayFogTexture = smoothFoWtexture;
-
-			App->minimap->grid[x][y] = tileInfo->tileShroudBits;
-
-			//draw fog
-			if (fogId != -1)
-			{
-				SDL_SetTextureAlphaMod(displayFogTexture, 128);//set the alpha of the texture to half to reproduce fog
-				SDL_Rect r = { fogId * 64,0,64,64 }; //this rect crops the desired fog Id texture from the fogTiles spritesheet
-				App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
-				
-			}
-			if (shroudId != -1)
-			{
-				SDL_SetTextureAlphaMod(displayFogTexture, 255);//set the alpha to white again
-				SDL_Rect r = { shroudId * 64,0,64,64 }; //this rect crops the desired fog Id texture from the fogTiles spritesheet
-				App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
-				//App->minimap->grid[x][y] = 2;
-			}
+				if (shroudId != -1)
+				{
+					SDL_SetTextureAlphaMod(displayFogTexture, 255);//set the alpha to white again
+					SDL_Rect r = { shroudId * 64,0,64,64 }; //this rect crops the desired fog Id texture from the fogTiles spritesheet
+					App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
+					//App->minimap->grid[x][y] = 2;
+				}
+			}		
 		}
 	}
 }
