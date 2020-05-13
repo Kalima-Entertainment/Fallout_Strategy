@@ -89,5 +89,5 @@
   <map>
     <folder>Assets/maps/</folder>
   </map>
-  <minimap width="300" corner="bottom_left" margin="22"/>
+  <minimap width="260" corner="bottom_left" margin="22"/>
 </config>

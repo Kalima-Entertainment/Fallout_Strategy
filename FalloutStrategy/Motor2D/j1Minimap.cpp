@@ -147,7 +147,7 @@ bool j1Minimap::PostUpdate() {
 			iPoint rect_pos;
 
 			fog_of_war_rect.w = width / 150;
-			fog_of_war_rect.h = fog_of_war_rect.w * 0.5f;
+			fog_of_war_rect.h = ceil(fog_of_war_rect.w * 0.5f);
 
 			for (int y = 0; y < MAP_LENGTH; y++)
 			{
