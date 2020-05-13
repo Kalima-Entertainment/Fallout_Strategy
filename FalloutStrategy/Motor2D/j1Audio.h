@@ -75,6 +75,8 @@ public:
 	int loading;
 	int win;
 	int lose;
+	int you_win;
+	int you_lose;
 
 	int click_fx;
 	int hover_fx;
@@ -86,13 +88,15 @@ public:
 	float				music_volume;
 	float				fx_volume;
 
+	_Mix_Music* music = NULL;
+	std::vector<Mix_Chunk*> fx;
+
 private:
 
 	
 
 
-	_Mix_Music*			music = NULL;
-	std::vector<Mix_Chunk*> fx;
+
 };
 
 #endif // __j1AUDIO_H__

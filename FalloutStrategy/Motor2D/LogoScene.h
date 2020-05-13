@@ -30,6 +30,7 @@ public:
 	int win_video;
 	int lose_video;
 	bool Loop = true;
+	bool playsound = false;
 private:
 	Animation	animationLogo;
 	Animation	animationStartGameText;
