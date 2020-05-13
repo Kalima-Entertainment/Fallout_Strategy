@@ -6,9 +6,9 @@
 #include "j1Timer.h"
 #include <list>
 
-#define DEFAULT_PATH_LENGTH 100
+#define DEFAULT_PATH_LENGTH 40
 #define INVALID_WALK_CODE 255
-#define MAX_PATH_ITERATIONS 400
+#define MAX_PATH_ITERATIONS 250
 
 class j1PathFinding : public j1Module
 {

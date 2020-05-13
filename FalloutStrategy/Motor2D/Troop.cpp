@@ -85,7 +85,7 @@ bool Troop::Update(float dt) {
 			target_entity = enemy_in_range;
 			PathfindToPosition(enemy_in_range->current_tile);
 		}
-		else if (target_building)
+		else if ((target_building)&&(target_entity != target_building))
 		{
 			target_entity = target_building;
 			PathfindToPosition(target_building->current_tile);

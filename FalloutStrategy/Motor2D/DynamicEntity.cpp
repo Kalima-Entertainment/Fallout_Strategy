@@ -468,18 +468,28 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 
 	target_tile = destination;
 	
-	if (App->pathfinding->CreatePath(current_tile, destination) == -1) {
+	if (current_tile.DistanceManhattan(destination) > DEFAULT_PATH_LENGTH) {
 		node_path = App->pathfinding->CreateNodePath(current_tile, destination);
-		PathfindToPosition(node_path.back());
+
+		if (!App->pathfinding->IsWalkable(node_path.back()))
+			node_path.back() = App->pathfinding->FindNearestWalkableTile(current_tile, node_path.back());
+
+		App->pathfinding->CreatePath(current_tile, node_path.back());
+		target_tile = node_path.back();
+	}
+	else {
+		App->pathfinding->CreatePath(current_tile, destination);
 	}
 	
-
 	path_to_target.clear();
 	path_to_target = App->pathfinding->GetLastPath();
 
 	state = WALK;
 
 	if (path_to_target.size() > 0) {
+		if (path_to_target.front() == current_tile)
+			path_to_target.erase(path_to_target.begin());
+
 		next_tile = path_to_target.front();
 	}
 }
