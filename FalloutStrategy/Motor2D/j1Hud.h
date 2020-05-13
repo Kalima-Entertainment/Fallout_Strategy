@@ -47,7 +47,7 @@ public:
 	char coins_text[10];
 	char score_text[10];
 	char timer_text[10];
-	char minutes_text[10];
+	char minutes_text[15];
 	
 
 	
