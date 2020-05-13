@@ -271,8 +271,10 @@ void j1App::FinishUpdate()
 	}
 
 	//Warning if FPS < 10
-	if (last_frame_ms > 100)
+	if (last_frame_ms > 100) {
 		LOG("FPS drop");
+		App->render->DrawQuad({1100, 200, 10,10}, 255,250,0,255, true,false);
+	}
 }
 
 // Call modules before each loop iteration

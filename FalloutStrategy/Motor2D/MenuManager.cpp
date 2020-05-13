@@ -67,7 +67,6 @@ void MenuManager::CreateMenu(Menu menu) {
 
 		last_menu = current_menu;
 		current_menu = Menu::MAIN_MENU;
-
 		break;
 	case Menu::CREDITS:
 

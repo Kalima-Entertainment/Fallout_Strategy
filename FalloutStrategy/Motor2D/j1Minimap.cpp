@@ -168,7 +168,7 @@ bool j1Minimap::PostUpdate() {
 			if (radar_timer.ReadSec() > radar_time) 
 				radar = false;
 
-			radar_line.x2 = radar_line.x1 + height * 0.5f * cos(radar_timer.Read() * 0.1 * PI / 180);
+			radar_line.x2 = radar_line.x1 + width * 0.5f * cos(radar_timer.Read() * 0.1 * PI / 180);
 			radar_line.y2 = radar_line.y1 + height * 0.5f * sin(radar_timer.Read() * 0.1 * PI / 180);
 
 			App->render->DrawLine(radar_line.x1, radar_line.y1, radar_line.x2, radar_line.y2, 0,255,0,255,false);
