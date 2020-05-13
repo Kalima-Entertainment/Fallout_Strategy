@@ -72,7 +72,9 @@ public:
 	UI_element* select_faction_menu[10];
 	UI_element* select_faction_photos[4];
 	UI_element* pause_menu[7];
-	UI_element* gui_ingame[1];
+	UI_element* gui_ingame[2];
+	UI_Label*	timer_item;
+	UI_Label*	timer_minutes;
 	UI_element* resources[3];
 
 	UI_element* brotherhood_base[6];

@@ -284,7 +284,6 @@ void j1Scene::CheckWinner() {
 					lose = true;
 					App->logo_scene->Loop = true;
 					App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
-					App->menu_manager->CreateMenu(Menu::WIN_LOSE_SCENE);
 					App->gui->ingame = false;
 					App->isPaused = true;
 				}
@@ -308,7 +307,6 @@ void j1Scene::CheckWinner() {
 		LOG("You won!");
 		win = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
-		App->menu_manager->CreateMenu(Menu::WIN_LOSE_SCENE);
 		App->gui->ingame = false;
 		App->isPaused = true;
 		App->logo_scene->Loop = true;

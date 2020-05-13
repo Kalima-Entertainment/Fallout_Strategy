@@ -33,6 +33,7 @@ class j1Transition;
 class LogoScene;
 class FoWManager;
 class j1Video;
+class j1Hud;
 
 
 class j1App
@@ -123,6 +124,7 @@ public:
 	LogoScene*			logo_scene = NULL;
 	FoWManager*			fowManager = NULL;
 	j1Video*			video = NULL;
+	j1Hud*				hud = NULL;
 	bool isPaused;
 	bool quitGame = false;
 	int	 capped_ms = -1;

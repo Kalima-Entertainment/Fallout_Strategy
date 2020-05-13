@@ -15,6 +15,7 @@
 #include "j1Player.h"
 #include "j1Audio.h"
 #include "j1MovementManager.h"
+#include "j1Hud.h"
 
 #include "SDL_mixer\include\SDL_mixer.h"
 
@@ -151,6 +152,7 @@ void j1Transition::Transition()
 		App->scene->Enable();
 		//App->minimap->Enable();
 		App->isPaused = false;
+		App->hud->activateTimer = true;
 	}
 	else if ((fadetimer.Read() > 2500)&&(!App->gui->ingame)) {
 		Mix_ResumeMusic();

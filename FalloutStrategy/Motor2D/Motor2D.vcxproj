@@ -93,6 +93,7 @@
     <ClCompile Include="j1Fonts.cpp" />
     <ClCompile Include="j1Group.cpp" />
     <ClCompile Include="j1Gui.cpp" />
+    <ClCompile Include="j1Hud.cpp" />
     <ClCompile Include="j1Image.cpp" />
     <ClCompile Include="j1Main.cpp" />
     <ClCompile Include="j1App.cpp" />
@@ -137,6 +138,7 @@
     <ClInclude Include="FoWManager.h" />
     <ClInclude Include="Gatherer.h" />
     <ClInclude Include="GenericPlayer.h" />
+    <ClInclude Include="j1Hud.h" />
     <ClInclude Include="theoraplay.h" />
     <ClInclude Include="j1Collision.h" />
     <ClInclude Include="j1Console.h" />

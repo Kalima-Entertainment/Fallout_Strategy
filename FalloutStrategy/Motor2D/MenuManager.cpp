@@ -231,14 +231,13 @@ void MenuManager::CreateMenu(Menu menu) {
 
 		break;
 	case Menu::GUI:
-
+		
 		//Images
 		gui_ingame[0] = (j1Image*)App->gui->CreateImage(0, 0, Image, { 0, 2428, 1290, 730 }, NULL, this);
+		gui_ingame[1] = (UI_Label*)App->gui->CreateLabel(690, 27, Label, ":", NULL, this, NULL, "StackedPixel");
+		timer_item = (UI_Label*)App->gui->CreateLabel(700, 27, Label, "0", NULL, this, NULL, "StackedPixel");
+		timer_minutes = (UI_Label*)App->gui->CreateLabel(652, 27, Label, "0", NULL, this, NULL, "StackedPixel");
 
-		//Labels
-		//settings_menu.fps = (UI_Label*)App->gui->CreateLabel(520, 525, text_fps, "REFRESH RATE", NULL, this, NULL);
-		//settings_menu.fx_volume = (UI_Label*)App->gui->CreateLabel(360, 335, text_fx_volume, "SOUND EFFECTS VOLUME", NULL, this, NULL);
-		//settings_menu.music_volume = (UI_Label*)App->gui->CreateLabel(360, 150, text_music_volume, "MUSIC VOLUME", NULL, this, NULL);
 		last_menu = current_menu;
 		current_menu = Menu::GUI;
 
@@ -250,9 +249,9 @@ void MenuManager::CreateMenu(Menu menu) {
 		food = std::to_string(App->player->food);
 		caps = std::to_string(App->player->caps);
 
-		resources[0] = (UI_Label*)App->gui->CreateLabel(75, 15, Label, food, NULL, this, NULL, "StackedPixelSmall");
-		resources[1] = (UI_Label*)App->gui->CreateLabel(220, 15, Label, water, NULL, this, NULL, "StackedPixelSmall");
-		resources[2] = (UI_Label*)App->gui->CreateLabel(365, 15, Label, caps, NULL, this, NULL, "StackedPixelSmall");
+		resources[0] = (UI_Label*)App->gui->CreateLabel(100, 35, Label, food, NULL, this, NULL, "StackedPixelSmall");
+		resources[1] = (UI_Label*)App->gui->CreateLabel(280, 35, Label, water, NULL, this, NULL, "StackedPixelSmall");
+		resources[2] = (UI_Label*)App->gui->CreateLabel(455, 35, Label, caps, NULL, this, NULL, "StackedPixelSmall");
 
 		/*last_menu = current_menu;
 		current_menu = Menu::RESOURCES;*/
@@ -692,7 +691,9 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->isPaused = false;
 		break;
 	case Menu::GUI:
-		App->gui->DeleteArrayElements(gui_ingame, 1);
+		App->gui->DeleteArrayElements(gui_ingame, 2);
+		App->gui->Delete_Element(timer_item);
+		App->gui->Delete_Element(timer_minutes);
 		break;
 	case Menu::RESOURCES:
 		App->gui->DeleteArrayElements(resources, 3);

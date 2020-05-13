@@ -15,6 +15,7 @@
 #include "StaticEntity.h"
 #include "j1Transition.h"
 #include "j1Minimap.h"
+#include "j1Hud.h"
 
 #include "./brofiler/Brofiler/Brofiler.h"
 #include "SDL_mixer\include\SDL_mixer.h"
