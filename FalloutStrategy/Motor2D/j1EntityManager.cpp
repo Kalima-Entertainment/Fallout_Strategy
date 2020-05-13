@@ -889,17 +889,13 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 			upgrade_speed = iterator.attribute("level_units_speed").as_int();
 		}
 
-
-
 		position.x = iterator.attribute("position_x:").as_float();
 		position.y = iterator.attribute("position_y:").as_float();
 		current_tile.x = iterator.attribute("current_tile_x:").as_int();
 		current_tile.y = iterator.attribute("current_tile_y:").as_int();
-		target_tile.x = iterator.attribute("target_tile_x:").as_int();
-		target_tile.y = iterator.attribute("target_tile_y:").as_int();
+		//target_tile.x = iterator.attribute("target_tile_x:").as_int();
+		//target_tile.y = iterator.attribute("target_tile_y:").as_int();
 		current_health = iterator.attribute("current_health:").as_int();
-
-		LOG("%f %f %i %I", position.x, position.y, current_health,upgrade_gath);
 
 		//if (faction == ANIMALS) {CreateEntity(faction,type, position.x, position.y);}
 		//else {CreateEntity(faction, type, position.x, position.y, App->scene->players[faction]);}
@@ -917,7 +913,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 bool j1EntityManager::Save(pugi::xml_node& data) const
 {
 	
-	/*for (int i = 0; i < entities.size(); i++)
+	for (int i = 0; i < entities.size(); i++)
 	{
 
 		pugi::xml_node entities_pugi = data.append_child("entity");
@@ -938,14 +934,14 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 		else if (entities[i]->faction == MUTANT) { entities_pugi.append_attribute("faction:") = "supermutant"; }
 		else if (entities[i]->faction == VAULT) { entities_pugi.append_attribute("faction:") = "vault"; }
 		else if (entities[i]->faction == GHOUL) { entities_pugi.append_attribute("faction:") = "ghoul"; }
-		else if (entities[i]->faction == ANIMALS) { entities_pugi.append_attribute("faction:") = "no_faction"; }
+		else if (entities[i]->faction == NO_FACTION) { entities_pugi.append_attribute("faction:") = "no_faction"; }
 
 		entities_pugi.append_attribute("position_x:") = entities[i]->position.x;
 		entities_pugi.append_attribute("position_y:") = entities[i]->position.y;
 		entities_pugi.append_attribute("current_tile_x:") = entities[i]->current_tile.x;
 		entities_pugi.append_attribute("current_tile_y:") = entities[i]->current_tile.y;
-		entities_pugi.append_attribute("target_tile_x:") = entities[i]->target_tile.x;
-		entities_pugi.append_attribute("target_tile_x:") = entities[i]->target_tile.y;
+		//entities_pugi.append_attribute("target_tile_x:") = entities[i]->target_tile.x;
+		//entities_pugi.append_attribute("target_tile_x:") = entities[i]->target_tile.y;
 		entities_pugi.append_attribute("current_health:") = entities[i]->current_health;
 
 		
@@ -965,7 +961,7 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 		}
 
 	}
-	LOG("%i", entities.size());*/
+	LOG("%i", entities.size());
 
 	
 

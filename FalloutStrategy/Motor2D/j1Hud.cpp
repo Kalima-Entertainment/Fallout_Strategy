@@ -108,21 +108,24 @@ bool j1Hud::CleanUp()
 	return true;
 }
 
-bool j1Hud::Load(pugi::xml_node& node)
+bool j1Hud::Load(pugi::xml_node& data)
 {
+	timer = data.child("timer").attribute("seconds").as_int();
+	minutes = data.child("timer").attribute("minutes").as_int();
 
 	
 	return true;
 }
 
-bool j1Hud::Save(pugi::xml_node& node) const
+bool j1Hud::Save(pugi::xml_node& data) const
 {
-	
+	pugi::xml_node time = data.append_child("timer");
+
+	time.append_attribute("seconds") = timer;
+	time.append_attribute("minutes") = minutes;
+
 	return true;
 }
-
-
-
 
 
 
