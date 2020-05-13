@@ -268,7 +268,6 @@ bool UI_Button::Update(float dt)
 			}
 			else if (t == button_win_lose_to_main)
 			{
-				App->menu_manager->DestroyMenu(Menu::WIN_LOSE_SCENE);
 				App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 				App->audio->PlayFx(1, App->audio->back_fx, 0);
 				App->gui->ingame = false;
