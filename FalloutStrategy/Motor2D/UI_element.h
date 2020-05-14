@@ -69,6 +69,12 @@ enum UI_Type {
 	Boost_lab_button,
 	Boost_radar_button,
 	summon_mrhandy_button,
+
+	//TUTORIAL
+	control_button,
+	how_to_play_button,
+	info_button,
+	info_button2,
 };
 
 class UI_element 
