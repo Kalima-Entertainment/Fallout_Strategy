@@ -125,80 +125,25 @@ bool j1Minimap::PostUpdate() {
 
 		App->render->Blit(texture, position.x, position.y, NULL, 1.0, 0);
 
+		if (App->render->fog_of_war) {
+			DrawFogOfWar();
+		}
+
 		for (int i = 0; i < App->entities->entities.size(); i++)
 		{
 			SDL_Rect entity_rect = { 0,0,3,3 };
 			iPoint entity_position = App->minimap->WorldToMinimap(App->entities->entities[i]->position.x, App->entities->entities[i]->position.y);
-			entity_rect.x = entity_position.x;
-			entity_rect.y = entity_position.y;
+			entity_rect.x = entity_position.x-1;
+			entity_rect.y = entity_position.y-1;
 
 			Faction entity_faction = App->entities->entities[i]->faction;
 			if (App->player->faction == entity_faction){
 				App->render->DrawQuad(entity_rect, 0, 255, 0, 255, true, false); 
 			}
 			else { 
-				if(radar)
+				if((radar)||(grid[App->entities->entities[i]->current_tile.x][App->entities->entities[i]->current_tile.y] == 0))
 				App->render->DrawQuad(entity_rect, 255, 0, 0, 255, true, false);
 			}
-		}
-
-		if (App->render->fog_of_war) {
-			SDL_Rect fog_of_war_rect = { 0,0,1,1 };
-			iPoint rect_pos;
-			/*
-			fog_of_war_rect.w = ceil(width / 150);
-			fog_of_war_rect.h = ceil(fog_of_war_rect.w * 0.5f);
-
-			for (int y = 0; y < MAP_LENGTH; y++)
-			{
-				for (int x = 0; x < MAP_LENGTH; x++)
-				{
-					rect_pos = MapToMinimap(x, y);
-					fog_of_war_rect.x = rect_pos.x;
-					fog_of_war_rect.y = rect_pos.y;
-
-					if (grid[x][y] != 0)
-						App->render->DrawQuad(fog_of_war_rect, 0, 0, 0, 255, true, false);
-				}
-			}
-			*/
-			
-			int tile_width = width / 150;
-			fog_of_war_rect.h = ceil(tile_width * 0.5f);
-			int y = 0;
-			int j = 0;
-			int counter = 0;
-
-			for (int i = 0; i < 300; i++)
-			{
-				y = i-j;
-
-				if (i >= 149) {
-					j++;
-					y = 149;
-				}
-
-				rect_pos = MapToMinimap(j, y);
-				fog_of_war_rect.x = rect_pos.x;
-				fog_of_war_rect.y = rect_pos.y;
-				counter = 0;
-
-				for (int x = j; x < i + 1, y >= j; x++, y--)
-				{
-					if (grid[x][y] != 0) {
-						counter++;
-					}
-					else {
-						fog_of_war_rect.w = ceil(1.75f * tile_width * counter);
-						App->render->DrawQuad(fog_of_war_rect, 0, 0, 0, 255, true, false);
-						fog_of_war_rect.x += ceil(fog_of_war_rect.w + 1.75f * tile_width);
-						counter = 0;
-					}
-				}
-				fog_of_war_rect.w = ceil(1.75f * tile_width * counter);
-				App->render->DrawQuad(fog_of_war_rect, 0,0,0, 255, true, false);
-			}
-			
 		}
 
 		if (radar) {
@@ -293,4 +238,62 @@ iPoint  j1Minimap::MapToMinimap(int x, int y) {
 void j1Minimap::EnableRadar() {
 	radar = true;
 	radar_timer.Start();
+}
+
+void j1Minimap::DrawFogOfWar() {
+	SDL_Rect fog_of_war_rect = { 0,0,1,1 };
+	iPoint rect_pos;
+	/*
+	fog_of_war_rect.w = ceil(width / 150);
+	fog_of_war_rect.h = ceil(fog_of_war_rect.w * 0.5f);
+
+	for (int y = 0; y < MAP_LENGTH; y++)
+	{
+		for (int x = 0; x < MAP_LENGTH; x++)
+		{
+			rect_pos = MapToMinimap(x, y);
+			fog_of_war_rect.x = rect_pos.x;
+			fog_of_war_rect.y = rect_pos.y;
+
+			if (grid[x][y] != 0)
+				App->render->DrawQuad(fog_of_war_rect, 0, 0, 0, 255, true, false);
+		}
+	}
+	*/
+
+	int tile_width = width / 150;
+	fog_of_war_rect.h = ceil(tile_width * 0.5f);
+	int y = 0;
+	int j = 0;
+	int counter = 0;
+
+	for (int i = 0; i < 300; i++)
+	{
+		y = i - j;
+
+		if (i >= 149) {
+			j++;
+			y = 149;
+		}
+
+		rect_pos = MapToMinimap(j, y);
+		fog_of_war_rect.x = rect_pos.x;
+		fog_of_war_rect.y = rect_pos.y;
+		counter = 0;
+
+		for (int x = j; x < i + 1, y >= j; x++, y--)
+		{
+			if (grid[x][y] != 0) {
+				counter++;
+			}
+			else {
+				fog_of_war_rect.w = round(1.75f * tile_width * counter);
+				App->render->DrawQuad(fog_of_war_rect, 0, 0, 0, 255, true, false);
+				fog_of_war_rect.x += round(fog_of_war_rect.w + 1.75f * tile_width);
+				counter = 0;
+			}
+		}
+		fog_of_war_rect.w = round(1.75f * tile_width * counter);
+		App->render->DrawQuad(fog_of_war_rect, 0, 0, 0, 255, true, false);
+	}
 }
