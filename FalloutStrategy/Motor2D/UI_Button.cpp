@@ -42,10 +42,12 @@ UI_Button::UI_Button(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, 
 	current_state = BUTTON_STATE::NONE;
 
 	inHover = true;
+
 }
 
 bool UI_Button::CleanUp()
 {
+
 	return true;
 }
 
@@ -439,9 +441,12 @@ bool UI_Button::Update(float dt)
 			}
 			
 			else if (t == control_button) {
+				App->gui->DeleteArrayElements(App->menu_manager->tutorial, 6);
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
 			}
+
 			else if (t == how_to_play_button) {
+				App->gui->DeleteArrayElements(App->menu_manager->tutorial, 6);
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
 			}
 

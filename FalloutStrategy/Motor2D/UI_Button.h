@@ -65,7 +65,7 @@ public:
 
 	bool inHover;
 	int counter;
-
+	
 };
 
 

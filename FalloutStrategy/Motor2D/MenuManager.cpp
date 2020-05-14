@@ -264,18 +264,18 @@ void MenuManager::CreateMenu(Menu menu) {
 	case Menu::TUTORIAL:
 
 		//Images
-		tutorial[0] = (j1Image*)App->gui->CreateImage(634, 133, Image, { 0, 140, 654, 355 }, NULL, this);
-		tutorial[1] = (j1Image*)App->gui->CreateImage(840, 200, Image, { 1900,895,244,72 }, NULL, this);
+		tutorial_screen = (j1Image*)App->gui->CreateImage(634, 133, Image, { 0, 140, 654, 355 }, NULL, this);
+		tutorial[0] = (j1Image*)App->gui->CreateImage(840, 200, Image, { 1900,895,244,72 }, NULL, this);
 
 		//Buttons
-		tutorial[2] = (UI_Button*)App->gui->CreateButton(680, 360, control_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-		tutorial[3] = (UI_Button*)App->gui->CreateButton(1000, 360, how_to_play_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-		tutorial[4] = (UI_Button*)App->gui->CreateButton(594, 143, info_button2, { 908,2084,43,46 }, { 908,2135,43,46 }, { 908,2185,43,46 }, NULL, this);
+		tutorial[1] = (UI_Button*)App->gui->CreateButton(680, 360, control_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+		tutorial[2] = (UI_Button*)App->gui->CreateButton(1000, 360, how_to_play_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+		info_button2_element = (UI_Button*)App->gui->CreateButton(594, 143, info_button2, { 908,2084,43,46 }, { 908,2135,43,46 }, { 908,2185,43,46 }, NULL, this);
 
 		//Text
-		tutorial[5] = (UI_Label*)App->gui->CreateLabel(890, 220, Label, "TUTORIAL", NULL, this, NULL);
-		tutorial[6] = (UI_Label*)App->gui->CreateLabel(710, 380, Label, "CONTROLS", NULL, this, NULL);
-		tutorial[7] = (UI_Label*)App->gui->CreateLabel(1020, 380, Label, "HOW TO PLAY", NULL, this, NULL);
+		tutorial[3] = (UI_Label*)App->gui->CreateLabel(890, 220, Label, "TUTORIAL", NULL, this, NULL);
+		tutorial[4] = (UI_Label*)App->gui->CreateLabel(710, 380, Label, "CONTROLS", NULL, this, NULL);
+		tutorial[5] = (UI_Label*)App->gui->CreateLabel(1020, 380, Label, "HOW TO PLAY", NULL, this, NULL);
 
 		break;
 
@@ -694,7 +694,9 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->gui->DeleteArrayElements(resources, 3);
 		break;
 	case Menu::TUTORIAL:
-		App->gui->DeleteArrayElements(tutorial, 8);
+		App->gui->DeleteArrayElements(tutorial, 6);
+		App->gui->Delete_Element(tutorial_screen);
+		App->gui->Delete_Element(info_button2_element);
 
 	default:
 		break;
