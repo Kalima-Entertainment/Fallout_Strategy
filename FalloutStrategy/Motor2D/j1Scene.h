@@ -64,6 +64,7 @@ public:
 	int bottomleft;
 	int bottomright;
 	bool create = false;
+	bool create_tutorial = false;
 	StatesMenu menu_state = StatesMenu::NONE;
 	GenericPlayer* players[4];
 

@@ -420,6 +420,30 @@ bool UI_Button::Update(float dt)
 
 				}
 			}
+			else if (t == info_button) {
+				if (App->scene->create_tutorial == false) {
+					App->menu_manager->CreateMenu(Menu::TUTORIAL);
+					App->audio->PlayFx(1, App->audio->character_fx, 0);
+					App->scene->create_tutorial = true;
+					App->gui->ingame = false;
+				}
+			}
+			
+			else if (t == info_button2) {
+				if (App->scene->create_tutorial == true) {
+					App->menu_manager->DestroyMenu(Menu::TUTORIAL);
+					App->audio->PlayFx(1, App->audio->back_fx, 0);
+					App->scene->create_tutorial = false;
+					App->gui->ingame = true;
+				}
+			}
+			
+			else if (t == control_button) {
+				App->audio->PlayFx(1, App->audio->character_fx, 0);
+			}
+			else if (t == how_to_play_button) {
+				App->audio->PlayFx(1, App->audio->character_fx, 0);
+			}
 
 		}
 
