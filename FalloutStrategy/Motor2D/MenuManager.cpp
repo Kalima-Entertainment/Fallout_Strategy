@@ -239,7 +239,11 @@ void MenuManager::CreateMenu(Menu menu) {
 
 		last_menu = current_menu;
 		current_menu = Menu::GUI;
-
+		
+		//Tutorial
+		gui_ingame[2] = (j1Image*)App->gui->CreateImage(1205, 70, Image, { 1037, 2120, 74, 71 }, NULL, this);
+		gui_ingame[3] = (UI_Button*)App->gui->CreateButton(1160, 70, info_button, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this);
+		
 		break;
 	case Menu::RESOURCES:
 
@@ -254,6 +258,22 @@ void MenuManager::CreateMenu(Menu menu) {
 
 		/*last_menu = current_menu;
 		current_menu = Menu::RESOURCES;*/
+
+		break;
+
+	case Menu::TUTORIAL:
+
+		//Images
+		tutorial[0] = (j1Image*)App->gui->CreateImage(634, 133, Image, { 0, 140, 654, 355 }, NULL, this);
+
+		//Buttons
+		tutorial[1] = (UI_Button*)App->gui->CreateButton(680, 160, control_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+		tutorial[2] = (UI_Button*)App->gui->CreateButton(1000, 160, how_to_play_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+		tutorial[5] = (UI_Button*)App->gui->CreateButton(594, 143, info_button2, { 908,2084,43,46 }, { 908,2135,43,46 }, { 908,2185,43,46 }, NULL, this);
+
+		//Text
+		tutorial[3] = (UI_Label*)App->gui->CreateLabel(720, 178, Label, "CONTROLS", NULL, this, NULL);
+		tutorial[4] = (UI_Label*)App->gui->CreateLabel(1020, 178, Label, "HOW TO PLAY", NULL, this, NULL);
 
 		break;
 
@@ -664,13 +684,15 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->isPaused = false;
 		break;
 	case Menu::GUI:
-		App->gui->DeleteArrayElements(gui_ingame, 2);
+		App->gui->DeleteArrayElements(gui_ingame, 4);
 		App->gui->Delete_Element(timer_item);
 		App->gui->Delete_Element(timer_minutes);
 		break;
 	case Menu::RESOURCES:
 		App->gui->DeleteArrayElements(resources, 3);
 		break;
+	case Menu::TUTORIAL:
+		App->gui->DeleteArrayElements(tutorial, 6);
 
 	default:
 		break;
