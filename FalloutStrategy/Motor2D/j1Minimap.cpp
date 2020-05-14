@@ -102,7 +102,7 @@ bool j1Minimap::Start() {
 	{
 		for (int x = 0; x < 150; x++) 
 		{
-			grid[x][y] = 0;
+			grid[x][y] = 1;
 		}
 	}
 
@@ -145,33 +145,60 @@ bool j1Minimap::PostUpdate() {
 		if (App->render->fog_of_war) {
 			SDL_Rect fog_of_war_rect = { 0,0,1,1 };
 			iPoint rect_pos;
+			/*
+			fog_of_war_rect.w = ceil(width / 150);
+			fog_of_war_rect.h = ceil(fog_of_war_rect.w * 0.5f);
+
+			for (int y = 0; y < MAP_LENGTH; y++)
+			{
+				for (int x = 0; x < MAP_LENGTH; x++)
+				{
+					rect_pos = MapToMinimap(x, y);
+					fog_of_war_rect.x = rect_pos.x;
+					fog_of_war_rect.y = rect_pos.y;
+
+					if (grid[x][y] != 0)
+						App->render->DrawQuad(fog_of_war_rect, 0, 0, 0, 255, true, false);
+				}
+			}
+			*/
+			
 			int tile_width = width / 150;
 			fog_of_war_rect.h = ceil(tile_width * 0.5f);
 			int y = 0;
+			int j = 0;
+			int counter = 0;
 
-			for (int i = 0; i < 150; i++)
+			for (int i = 0; i < 300; i++)
 			{
-				y = i;
-				rect_pos = MapToMinimap(i % 150, y);
+				y = i-j;
+
+				if (i >= 149) {
+					j++;
+					y = 149;
+				}
+
+				rect_pos = MapToMinimap(j, y);
 				fog_of_war_rect.x = rect_pos.x;
 				fog_of_war_rect.y = rect_pos.y;
-				int counter = 0;
-				for (int x = 0; x < i + 1; x++, y--)
+				counter = 0;
+
+				for (int x = j; x < i + 1, y >= j; x++, y--)
 				{
 					if (grid[x][y] != 0) {
 						counter++;
 					}
 					else {
-						fog_of_war_rect.w = tile_width * counter;
-						App->render->DrawQuad(fog_of_war_rect, 100, 100, 100, 255, true, false);
+						fog_of_war_rect.w = ceil(1.75f * tile_width * counter);
+						App->render->DrawQuad(fog_of_war_rect, 0, 0, 0, 255, true, false);
+						fog_of_war_rect.x += ceil(fog_of_war_rect.w + 1.75f * tile_width);
 						counter = 0;
-						fog_of_war_rect.x += tile_width;
 					}
 				}
-				counter++;
-				fog_of_war_rect.w = tile_width * counter;
-				App->render->DrawQuad(fog_of_war_rect, 100, 100, 100, 255, true, false);
+				fog_of_war_rect.w = ceil(1.75f * tile_width * counter);
+				App->render->DrawQuad(fog_of_war_rect, 0,0,0, 255, true, false);
 			}
+			
 		}
 
 		if (radar) {
