@@ -34,7 +34,7 @@ class LogoScene;
 class FoWManager;
 class j1Video;
 class j1Hud;
-
+class j1EasingAndSplines;
 
 class j1App
 {
@@ -127,6 +127,8 @@ public:
 	FoWManager*			fowManager = NULL;
 	j1Video*			video = NULL;
 	j1Hud*				hud = NULL;
+	j1EasingAndSplines*		easing_splines = NULL;
+
 	bool isPaused;
 	bool quitGame = false;
 	int	 capped_ms = -1;

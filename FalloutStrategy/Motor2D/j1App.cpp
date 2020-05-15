@@ -29,6 +29,7 @@
 #include "FoWManager.h"
 #include "j1Video.h"
 #include "j1Hud.h"
+#include "j1EasingAndSplines.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -60,6 +61,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	fowManager = new FoWManager();
 	video = new j1Video();
 	hud = new j1Hud();
+	easing_splines = new j1EasingAndSplines();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -80,6 +82,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(Mmanager);
 	AddModule(fowManager);
+	AddModule(easing_splines);
 
 	// scene last
 	AddModule(menu_manager);
