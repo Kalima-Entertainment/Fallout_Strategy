@@ -102,7 +102,7 @@ bool Troop::Update(float dt) {
 			else if ((target_building) && (target_entity != target_building))
 			{
 				target_entity = target_building;
-				PathfindToPosition(target_building->current_tile);
+				PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
 			}
 		}
         break;

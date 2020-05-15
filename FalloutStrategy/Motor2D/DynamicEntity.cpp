@@ -357,7 +357,7 @@ void DynamicEntity::Move(float dt) {
 					//if we have reached the final node pathfind to target building
 					if (node_path.size() == 0)
 					{
-						if (target_entity != nullptr) {
+						if ((target_entity != nullptr)&&(!target_entity->is_dynamic)) {
 							target_tile = App->entities->ClosestTile(current_tile, ((StaticEntity*)target_entity)->tiles);
 						}
 					}
@@ -464,7 +464,8 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 		target_tile = node_path.back();
 	}
 	else {
-		App->pathfinding->CreatePath(current_tile, destination);
+		if (App->pathfinding->CreatePath(current_tile, destination) == -2)
+			LOG("No");
 	}
 	
 	path_to_target.clear();
