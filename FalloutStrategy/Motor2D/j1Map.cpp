@@ -62,9 +62,9 @@ void j1Map::Draw()
 
 					TileSet* tileset = GetTilesetFromTileId(tile_id);
 					SDL_Rect r = tileset->GetTileRect(tile_id);
-		
+
 					//Only render if there is no fog of war at these coordinates
-					if ((!App->render->fog_of_war)||(App->fowManager->GetFoWTileState({ x, y })->tileFogBits != fow_ALL)) {
+					//if ((App->fowManager->GetFoWTileState({ x, y })->tileFogBits != fow_ALL)||(!App->render->fog_of_war)) {
 						//camera culling
 						if ((pos.x + r.w + tileset->offset_x > -(App->render->camera.x))
 							&& (pos.x < -App->render->camera.x + App->render->camera.w)
@@ -74,7 +74,7 @@ void j1Map::Draw()
 
 							App->render->Blit(tileset->texture, pos.x + tileset->offset_x, pos.y + tileset->offset_y, &r);
 						}
-					}
+					//}
 				}
 			}
 		}
@@ -214,9 +214,9 @@ SDL_Rect TileSet::GetTileRect(int id) const
 // Called before quitting
 bool j1Map::CleanUp()
 {
-	//TODO 
+	//TODO
 	LOG("Unloading map");
-	
+
 	//remove all tilesets
 	for (int i = 0; i < MAX_TILESETS; i++)
 	{
@@ -225,7 +225,7 @@ bool j1Map::CleanUp()
 
 	// Clean up the pugui tree
 	map_file.reset();
-	
+
 	return true;
 }
 
@@ -236,7 +236,7 @@ bool j1Map::Load(std::string modules[4])
 	for (int i = 0; i < 4; i++) {
 		std::string tmp = folder;
 		tmp.append(modules[i].c_str());
-	
+
 		pugi::xml_parse_result result = map_file.load_file(tmp.c_str());
 
 		if(result == NULL)
@@ -245,7 +245,7 @@ bool j1Map::Load(std::string modules[4])
 			ret = false;
 		}
 
-		//Tilesets only load from first map 
+		//Tilesets only load from first map
 		if (i == 0) {
 			// Load general info ----------------------------------------------
 			if (ret == true)
@@ -255,7 +255,7 @@ bool j1Map::Load(std::string modules[4])
 
 			// Load all tilesets info ----------------------------------------------
 			pugi::xml_node tileset = map_file.child("map").child("tileset");
-			
+
 			for (int t = 0; t < MAX_TILESETS && ret; t++)
 			{
 				TileSet* set = new TileSet();
@@ -291,7 +291,7 @@ bool j1Map::Load(std::string modules[4])
 				//Load objectgroup info -------------------------------------
 
 		pugi::xml_node objectgroup;
-		objectgroup = map_file.child("map").child("objectgroup"); 
+		objectgroup = map_file.child("map").child("objectgroup");
 		{
 			if (ret == true)
 			{
@@ -322,7 +322,7 @@ bool j1Map::Load(std::string modules[4])
 				LOG("tile width: %d tile height: %d", data.layers[l].width, data.layers[l].height);
 			}
 
-	
+
 			LOG("ObjectGroup ----");
 			LOG("name: %s", data.objectgroup.name.c_str());
 		}
@@ -412,9 +412,9 @@ bool j1Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 	{
 		set->offset_x = offset.attribute("x").as_int();
 		set->offset_y = offset.attribute("y").as_int();
-	}	   
-	else   
-	{	   
+	}
+	else
+	{
 		set->offset_x = 0;
 		set->offset_y = 0;
 	}
@@ -560,13 +560,13 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 				y /= HALF_TILE;
 
 				int faction_number = (object_node.child("properties").child("property").attribute("value").as_int());
-				Faction building_faction = NO_FACTION;				
+				Faction building_faction = NO_FACTION;
 
 				building_faction = App->entities->FactionByIndex(App->entities->randomFaction[faction_number]);
 
 				//add tiles and adjust render texture position
 				std::string object_type = std::string(object_node.attribute("type").as_string());
-				EntityType type = NO_TYPE;				
+				EntityType type = NO_TYPE;
 				EntityType dynamic_type = NO_TYPE;
 
 				if (object_type == "Base") {
@@ -705,7 +705,7 @@ std::vector<iPoint> j1Map::CalculateArea(iPoint first_tile_position, int width, 
 			//get tile position
 			iPoint tile_position = { first_tile_position.x + i,first_tile_position.y + j };
 			area.push_back(tile_position);
-			
+
 			//set tile as unwalkable
 			App->pathfinding->SetTileAsUnwalkable(tile_position.x, tile_position.y);
 		}
