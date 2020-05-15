@@ -75,6 +75,7 @@ enum UI_Type {
 	how_to_play_button,
 	info_button,
 	info_button2,
+	back_tutorial,
 };
 
 class UI_element 

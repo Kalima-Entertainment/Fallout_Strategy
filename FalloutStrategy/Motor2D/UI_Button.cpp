@@ -441,13 +441,22 @@ bool UI_Button::Update(float dt)
 			}
 			
 			else if (t == control_button) {
-				App->gui->DeleteArrayElements(App->menu_manager->tutorial, 5);
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
+				App->gui->DeleteArrayElements(App->menu_manager->tutorial, 5);
+				App->menu_manager->tutorial[5] = (j1Image*)App->gui->CreateImage(670, 160, Image, { 0, 2028, 605, 275 }, NULL, this);
 			}
 
 			else if (t == how_to_play_button) {
 				App->gui->DeleteArrayElements(App->menu_manager->tutorial, 5);
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
+				App->menu_manager->tutorial[7] = (j1Image*)App->gui->CreateImage(690, 160, Image, { 2869, 1188, 542, 296 }, NULL, this);
+			}
+
+			else if (t == back_tutorial) {
+				App->menu_manager->DestroyMenu(Menu::TUTORIAL);
+				App->audio->PlayFx(1, App->audio->back_fx, 0);
+				App->menu_manager->CreateMenu(Menu::TUTORIAL);
+				App->scene->create_tutorial = true;
 			}
 
 		}
