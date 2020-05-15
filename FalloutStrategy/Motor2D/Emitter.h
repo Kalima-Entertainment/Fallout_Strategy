@@ -4,6 +4,7 @@
 #include "p2Point.h"
 #include "j1Timer.h"
 #include "j1Entity.h"
+#include <math.h>
 
 struct Particle {
 
@@ -22,6 +23,7 @@ class Emitter {
 public:
 
 	Emitter();
+	Emitter(iPoint spawn_point, int lifetime, int max_particles);
 	~Emitter();
 
 	bool PreUpdate();
@@ -36,8 +38,8 @@ private:
 
 	iPoint spawn_point;
 	int lifetime;
-	int min_particles;
 	int max_particles;
+	bool finished;
 
 };
 
