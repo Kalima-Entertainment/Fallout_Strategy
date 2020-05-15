@@ -90,14 +90,6 @@ bool j1Minimap::Start() {
 	radar_line.x1 = minimap_x_center;
 	radar_line.y1 = position.y + height * 0.5f;
 
-	node_map = App->pathfinding->GetNodeMap();
-
-	for (int i = 0; i < node_map.size(); i++)
-	{
-		node_map[i] = App->map->MapToWorld(node_map[i].x, node_map[i].y);
-		node_map[i] = App->minimap->WorldToMinimap(node_map[i].x, node_map[i].y);
-	}
-
 	for (int y = 0; y < 150; y++) 
 	{
 		for (int x = 0; x < 150; x++) 
@@ -156,14 +148,6 @@ bool j1Minimap::PostUpdate() {
 			App->render->DrawLine(radar_line.x1, radar_line.y1, radar_line.x2, radar_line.y2, 0,255,0,255,false);
 		}
 
-		if (App->render->debug && App->pathfinding->show_nodes)
-		{
-			iPoint node_world_position;
-			for (int i = 0; i < node_map.size(); i++)
-			{
-				App->render->DrawQuad({ node_map[i].x, node_map[i].y, 2, 2 }, 0, 0, 255, 255, true, false);
-			}
-		}
 		SDL_Rect rect = { 0,0,0,0 };
 		iPoint rect_position = WorldToMinimap(-App->render->camera.x, -App->render->camera.y);
 		App->render->DrawQuad({ rect_position.x, rect_position.y, (int)(App->render->camera.w * scale),(int)(App->render->camera.h * scale) }, 255, 255, 255, 255, false, false);

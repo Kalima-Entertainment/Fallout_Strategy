@@ -60,6 +60,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 
 DynamicEntity::DynamicEntity() {
 	is_dynamic = true;
+	commanded = false;
 }
 
 DynamicEntity::~DynamicEntity() {
@@ -387,6 +388,7 @@ void DynamicEntity::Move(float dt) {
 				path_to_target.clear();
 				state = IDLE;
 				direction = last_direction;
+				commanded = false;
 			}
 
 			break;
@@ -419,6 +421,7 @@ void DynamicEntity::Move(float dt) {
 		UpdateTile();
 		direction = last_direction;
 		state = IDLE;
+		commanded = false;
 	}
 
 	UpdateTile();

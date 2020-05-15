@@ -251,12 +251,19 @@ void j1Player::MoveEntity(){
 		}
 		else {
 			dynamic_entity->target_entity = nullptr;
-			ResourceBuilding* resource_building;
-			resource_building = App->entities->FindResourceBuildingByTile(selected_spot);
 
-			//assign a resource building to the entity
-			if ((resource_building != nullptr) && (resource_building->quantity > 0) && (dynamic_entity->type == GATHERER)) {
-				((Gatherer*)dynamic_entity)->AssignResourceBuilding(resource_building);
+			if (dynamic_entity->type == GATHERER) {
+				ResourceBuilding* resource_building;
+				resource_building = App->entities->FindResourceBuildingByTile(selected_spot);
+
+				//assign a resource building to the entity
+				if ((resource_building != nullptr) && (resource_building->quantity > 0) && (dynamic_entity->type == GATHERER)) {
+					((Gatherer*)dynamic_entity)->AssignResourceBuilding(resource_building);
+				}
+			}
+			else if (dynamic_entity->is_agressive) {
+				dynamic_entity->target_entity = nullptr;
+				dynamic_entity->commanded = true;
 			}
 		}
 	}

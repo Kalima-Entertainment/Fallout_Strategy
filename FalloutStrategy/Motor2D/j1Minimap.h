@@ -54,7 +54,6 @@ private:
 	Corner corner;
 	SDL_Texture* texture;
 	j1PerfTimer	ptimer;
-	std::vector<iPoint> node_map;
 
 	//radar
 	bool radar;

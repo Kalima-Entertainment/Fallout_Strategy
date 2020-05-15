@@ -67,6 +67,7 @@ public:
 	Direction last_direction;
 
 	bool is_agressive;
+	bool commanded;
 
 	UnitInfo unitinfo;
 	std::vector<iPoint> node_path;
