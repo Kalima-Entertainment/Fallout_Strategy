@@ -73,7 +73,7 @@ public:
 	UI_element* select_faction_photos[4];
 	UI_element* pause_menu[7];
 	UI_element* gui_ingame[4];
-	UI_element* tutorial[6];
+	UI_element* tutorial[5];
 	UI_element* tutorial_screen;
 	UI_element* info_button2_element;
 	UI_Label*	timer_item;

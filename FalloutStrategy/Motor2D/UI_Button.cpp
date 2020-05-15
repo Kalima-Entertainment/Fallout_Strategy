@@ -441,12 +441,12 @@ bool UI_Button::Update(float dt)
 			}
 			
 			else if (t == control_button) {
-				App->gui->DeleteArrayElements(App->menu_manager->tutorial, 6);
+				App->gui->DeleteArrayElements(App->menu_manager->tutorial, 5);
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
 			}
 
 			else if (t == how_to_play_button) {
-				App->gui->DeleteArrayElements(App->menu_manager->tutorial, 6);
+				App->gui->DeleteArrayElements(App->menu_manager->tutorial, 5);
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
 			}
 
