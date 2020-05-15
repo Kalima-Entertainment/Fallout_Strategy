@@ -45209,7 +45209,9 @@
     <property name="faction" type="int" value="1"/>
    </properties>
   </object>
-  <object id="50" name="Animal" type="Bighorner" x="1755.97" y="422.95" width="24.25" height="21.5"/>
-  <object id="51" name="Animal" type="Braham" x="513.777" y="1485.55" width="24.25" height="21.5"/>
+  <object id="50" name="Animal" type="Bighorner" x="1755" y="422" width="24.25" height="21.5"/>
+  <object id="51" name="Animal" type="Braham" x="513" y="1485" width="24.25" height="21.5"/>
+  <object id="52" name="Animal" type="SpawnPoint" x="1755" y="422" width="24.25" height="21.5"/>
+  <object id="53" name="Animal" type="SpawnPoint" x="513" y="1485" width="24.25" height="21.5"/>
  </objectgroup>
 </map>

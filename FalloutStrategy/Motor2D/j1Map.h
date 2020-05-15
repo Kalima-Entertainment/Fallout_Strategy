@@ -163,9 +163,11 @@ private:
 public:
 
 	MapData data;
-
+	iPoint spawnPoint[16];
+	int spawnCoordinates;
 private:
 
+	
 	pugi::xml_document	map_file;
 	std::string			folder;
 	bool				map_loaded;

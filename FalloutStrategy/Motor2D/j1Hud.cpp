@@ -15,6 +15,7 @@
 #include "j1Hud.h"
 #include "j1Fonts.h"
 #include "MenuManager.h"
+#include "j1EntityManager.h"
 
 j1Hud::j1Hud() :j1Module()
 {
@@ -86,9 +87,10 @@ bool j1Hud::Update(float dt)
 
 	}
 
-
-
-
+	if (minutes == 8 && timer == 30)
+	{
+		App->entities->SpawnAnimals();
+	}
 
 
 

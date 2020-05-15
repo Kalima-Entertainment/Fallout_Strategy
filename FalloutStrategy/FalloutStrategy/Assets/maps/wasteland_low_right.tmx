@@ -45162,8 +45162,11 @@
     <property name="faction" type="int" value="2"/>
    </properties>
   </object>
-  <object id="39" name="Animal" type="Bighorner" x="2104.07" y="1164.65" width="24.25" height="21.5"/>
-  <object id="40" name="Animal" type="Braham" x="447.678" y="1741.85" width="24.25" height="21.5"/>
-  <object id="41" name="Animal" type="Bighorner" x="979.875" y="221.25" width="24.25" height="21.5"/>
+  <object id="39" name="Animal" type="Bighorner" x="2104" y="1164" width="24.25" height="21.5"/>
+  <object id="40" name="Animal" type="Braham" x="447" y="1741" width="24.25" height="21.5"/>
+  <object id="41" name="Animal" type="Bighorner" x="979" y="221" width="24.25" height="21.5"/>
+  <object id="42" name="Animal" type="SpawnPoint" x="2104" y="1164" width="24.25" height="21.5"/>
+  <object id="43" name="Animal" type="SpawnPoint" x="447" y="1741" width="24.25" height="21.5"/>
+  <object id="44" name="Animal" type="SpawnPoint" x="979" y="221" width="24.25" height="21.5"/>
  </objectgroup>
 </map>
