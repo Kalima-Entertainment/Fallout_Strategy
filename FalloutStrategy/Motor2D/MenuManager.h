@@ -22,9 +22,10 @@ enum class Menu {
 	PAUSE_MENU,
 	GUI,
 	RESOURCES,
+	TUTORIAL,
+	HOW_TO_PLAY,
 	BUI_BASES,
 	COLLABORATORS_CREDITS,
-	TUTORIAL,
 	NO_MENU,
 };
 
@@ -73,7 +74,8 @@ public:
 	UI_element* select_faction_photos[4];
 	UI_element* pause_menu[7];
 	UI_element* gui_ingame[4];
-	UI_element* tutorial[10];
+	UI_element* tutorial[7];
+	UI_element* how_to_play[6];
 	UI_element* tutorial_screen;
 	UI_element* info_button2_element;
 	UI_Label*	timer_item;
@@ -103,6 +105,8 @@ public:
 
 	Menu current_menu;
 	Menu last_menu;
+
+	int how_to_play_counter = 0;
 
 	std::string water;
 	std::string food;
