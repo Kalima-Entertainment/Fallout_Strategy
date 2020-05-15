@@ -64,7 +64,7 @@ void j1Map::Draw()
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 		
 					//Only render if there is no fog of war at these coordinates
-					if ((App->fowManager->GetFoWTileState({ x, y })->tileFogBits != fow_ALL)||(!App->render->fog_of_war)) {
+					//if ((App->fowManager->GetFoWTileState({ x, y })->tileFogBits != fow_ALL)||(!App->render->fog_of_war)) {
 						//camera culling
 						if ((pos.x + r.w + tileset->offset_x > -(App->render->camera.x))
 							&& (pos.x < -App->render->camera.x + App->render->camera.w)
@@ -74,7 +74,7 @@ void j1Map::Draw()
 
 							App->render->Blit(tileset->texture, pos.x + tileset->offset_x, pos.y + tileset->offset_y, &r);
 						}
-					}
+					//}
 				}
 			}
 		}
