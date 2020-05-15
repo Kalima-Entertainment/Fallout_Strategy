@@ -324,6 +324,12 @@
     <ClInclude Include="j1EasingAndSplines.h">
       <Filter>Desenvolupament  ========\UI</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleManager.h">
+      <Filter>Desenvolupament  ========\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Desenvolupament  ========\Particles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -358,6 +364,9 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\PlayersAndAI">
       <UniqueIdentifier>{ca269e49-9da1-4b13-8c80-abe572f50526}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Particles">
+      <UniqueIdentifier>{36f5dbca-10cc-402e-a781-47d072a4339a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
