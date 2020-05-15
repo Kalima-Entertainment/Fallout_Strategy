@@ -63,7 +63,6 @@ bool Gatherer::Update(float dt) {
 				gathering_timer.Start();
 			}
 		}
-
 		break;
 	case GATHER:
 		if (gathering_timer.ReadSec() > gather_time) {
@@ -110,17 +109,6 @@ bool Gatherer::Update(float dt) {
 
 	return ret;
 }
-
-/*
-bool Gatherer::PostUpdate() {
-	bool ret = true;
-
-	current_animation = &animations[state][direction];
-	App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
-
-	return ret;
-}
-*/
 
 void Gatherer::Gather() {
 	uint resource = resource_building->quantity - (resource_capacity - resource_collected);
