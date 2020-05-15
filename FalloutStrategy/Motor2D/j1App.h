@@ -74,6 +74,8 @@ public:
 	void SaveGame(const char* file) const;
 	void GetSaveGames(std::vector<std::string>& vector_to_fill) const;
 
+	bool IsLoading() { return want_to_load; }
+
 private:
 
 	// Load config file
