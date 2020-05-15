@@ -138,7 +138,7 @@ void MenuManager::CreateMenu(Menu menu) {
 
 		//Images
 		settings_menu[0] = (j1Image*)App->gui->CreateImage(-5, 0, Image, { 1529, 0, 1502, 775 }, NULL, this);
-		settings_menu[1] = (j1Image*)App->gui->CreateImage(310, 125, Image, { 0, 537, 658, 358 }, NULL, this);
+		settings_menu[1] = (j1Image*)App->gui->CreateImage(310, 125, Image, { 0, 142, 658, 358 }, NULL, this);
 		settings_menu[2] = (j1Image*)App->gui->CreateImage(420, 500, Image, { 1017, 352, 455, 190 }, NULL, this);
 		settings_menu[3] = (j1Image*)App->gui->CreateImage(395, 275, Image, { 1674, 981, 20, 36 }, NULL, this);
 		settings_menu[4] = (j1Image*)App->gui->CreateImage(505, 600, Image, { 1599, 1054, 77, 52 }, NULL, this);
