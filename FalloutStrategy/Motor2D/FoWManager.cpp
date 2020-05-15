@@ -293,8 +293,9 @@ void FoWManager::DrawFoWMap()
 			iPoint worldDrawPos;
 			worldDrawPos = App->map->MapToWorld(x, y);
 
+			//Offset for fow camera culling
 			iPoint offset;
-			offset = App->map->MapToWorld(10, 2);
+			offset = App->map->MapToWorld(4, 2);
 
 			if ((worldDrawPos.x + offset.x > -(App->render->camera.x) )
 				&& (worldDrawPos.x < -App->render->camera.x + App->render->camera.w)
@@ -325,9 +326,13 @@ void FoWManager::DrawFoWMap()
 				if (fogId != -1)
 				{
 					SDL_SetTextureAlphaMod(displayFogTexture, 128);//set the alpha of the texture to half to reproduce fog
-					SDL_Rect r = { fogId * 64,0,64,64 }; //this rect crops the desired fog Id texture from the fogTiles spritesheet
-					App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
-
+					SDL_Rect r = { fogId * 64,0,64,64 }; //this rect crops the desired fog Id texture from the fogTiles spritesheet			
+					
+					//Draw up borders [bug fix]
+					//if (y == 0)
+					//	App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y + offset.y, &r);
+					//if (x == 0)
+					//	App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);					
 				}
 				if (shroudId != -1)
 				{
@@ -338,7 +343,7 @@ void FoWManager::DrawFoWMap()
 				}
 			}		
 		}
-	}
+	}	
 }
 
 //TODO 2: Complete this function: given a position and a flag, create a new entity and return a pointer to it (or nullptr if something has gone wrong)
