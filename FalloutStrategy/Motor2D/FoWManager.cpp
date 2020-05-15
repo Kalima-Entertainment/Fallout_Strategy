@@ -286,9 +286,6 @@ void FoWManager::UpdateFoWMap()
 
 void FoWManager::DrawFoWMap()
 {
-	//int minimap_rect_width = App->map->GetWidth() / App->minimap->width;
-	//int minimap_rect_height = minimap_rect_width * 0.5f;
-
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
@@ -296,10 +293,13 @@ void FoWManager::DrawFoWMap()
 			iPoint worldDrawPos;
 			worldDrawPos = App->map->MapToWorld(x, y);
 
-			if ((worldDrawPos.x > -(App->render->camera.x) )
-				&& (worldDrawPos.x < -App->render->camera.x + App->render->camera.w) 
-				&& (worldDrawPos.y > -(App->render->camera.y)) 
-				&& (worldDrawPos.y < (-App->render->camera.y + App->render->camera.h))) 
+			iPoint offset;
+			offset = App->map->MapToWorld(10, 2);
+
+			if ((worldDrawPos.x + offset.x > -(App->render->camera.x) )
+				&& (worldDrawPos.x < -App->render->camera.x + App->render->camera.w)
+				&& (worldDrawPos.y + offset.y > -(App->render->camera.y))
+				&& (worldDrawPos.y < (-App->render->camera.y + App->render->camera.h)))
 			{
 				FoWDataStruct* tileInfo = GetFoWTileState({ x, y });
 				int fogId = -1;
