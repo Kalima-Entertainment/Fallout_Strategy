@@ -305,13 +305,13 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 						case BUILDING_TYPE::BASE:
 
 							//Buttons
-							brotherhood_base[0] = (UI_Button*)App->gui->CreateButton(1050, 585, Brotherhood_ghaterer_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
-							brotherhood_base[1] = (UI_Button*)App->gui->CreateButton(1050, 645, Boost_base_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							brotherhood_base[0] = (UI_Button*)App->gui->CreateButton(1050, 593, Brotherhood_ghaterer_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							brotherhood_base[1] = (UI_Button*)App->gui->CreateButton(1050, 653, Boost_base_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
 
 							//Images
-							brotherhood_base[2] = (j1Image*)App->gui->CreateImage(900, 590, Image, { 118, 1561, 122, 98 }, NULL, this);
-							brotherhood_base[3] = (j1Image*)App->gui->CreateImage(1058, 595, Image, { 138, 1868, 33, 33 }, NULL, this);
-							brotherhood_base[4] = (j1Image*)App->gui->CreateImage(1055, 660, Image, { 926, 1872, 37, 24 }, NULL, this);
+							brotherhood_base[2] = (j1Image*)App->gui->CreateImage(900, 593, Image, { 118, 1561, 122, 98 }, NULL, this);
+							brotherhood_base[3] = (j1Image*)App->gui->CreateImage(1058, 600, Image, { 138, 1868, 33, 33 }, NULL, this);
+							brotherhood_base[4] = (j1Image*)App->gui->CreateImage(1055, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
 
 							//Labels
 							if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
@@ -334,15 +334,15 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 						case BUILDING_TYPE::BARRACK:
 
 							//Buttons
-							brotherhood_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 570, Brotherhood_melee_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
-							brotherhood_barrack[1] = (UI_Button*)App->gui->CreateButton(1115, 570, Brotherhood_ranged_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
-							brotherhood_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_barrack_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+							brotherhood_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 593, Brotherhood_melee_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							brotherhood_barrack[1] = (UI_Button*)App->gui->CreateButton(1110, 593, Brotherhood_ranged_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							brotherhood_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 653, Boost_barrack_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
 
 							//Images
-							brotherhood_barrack[3] = (j1Image*)App->gui->CreateImage(890, 570, Image, { 17, 1560, 69, 115 }, NULL, this);
-							brotherhood_barrack[4] = (j1Image*)App->gui->CreateImage(1060, 575, Image, { 28, 1869, 35, 33 }, NULL, this);
-							brotherhood_barrack[5] = (j1Image*)App->gui->CreateImage(1120, 574, Image, { 83, 1866, 35, 36 }, NULL, this);
-							brotherhood_barrack[6] = (j1Image*)App->gui->CreateImage(1060, 630, Image, { 823, 1872, 32, 22 }, NULL, this);
+							brotherhood_barrack[3] = (j1Image*)App->gui->CreateImage(890, 600, Image, { 17, 1560, 69, 115 }, NULL, this);
+							brotherhood_barrack[4] = (j1Image*)App->gui->CreateImage(1060, 600, Image, { 28, 1869, 35, 33 }, NULL, this);
+							brotherhood_barrack[5] = (j1Image*)App->gui->CreateImage(1120, 600, Image, { 83, 1866, 35, 36 }, NULL, this);
+							brotherhood_barrack[6] = (j1Image*)App->gui->CreateImage(1060, 665, Image, { 823, 1872, 32, 22 }, NULL, this);
 
 							//Labels
 							if (App->entities->units_damage[App->player->faction].upgrade_num < 4) {
@@ -359,24 +359,24 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 						case BUILDING_TYPE::LAB:
 
 							//Buttons
-							brotherhood_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_lab_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
-							brotherhood_lab[4] = (UI_Button*)App->gui->CreateButton(1050, 570, Boost_radar_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
-							brotherhood_lab[6] = (UI_Button*)App->gui->CreateButton(1050, 670, summon_mrhandy_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
-						
+							brotherhood_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 593, Boost_lab_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							brotherhood_lab[1] = (UI_Button*)App->gui->CreateButton(1110, 593, Boost_radar_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							brotherhood_lab[2] = (UI_Button*)App->gui->CreateButton(1050, 653, summon_mrhandy_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+
 							//Images
-							brotherhood_lab[1] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 663, 1567, 108, 104 }, NULL, this);
-							brotherhood_lab[2] = (j1Image*)App->gui->CreateImage(1060, 630, Image, { 877, 1874, 33, 20 }, NULL, this);
-							
-							brotherhood_lab[5] = (j1Image*)App->gui->CreateImage(1060, 575, Image, { 982, 1869, 31, 33 }, NULL, this);
-							brotherhood_lab[7] = (j1Image*)App->gui->CreateImage(1060, 675, Image, { 1034, 1869, 35, 33 }, NULL, this);
+							brotherhood_lab[3] = (j1Image*)App->gui->CreateImage(885, 600, Image, { 663, 1567, 108, 104 }, NULL, this);
+							brotherhood_lab[4] = (j1Image*)App->gui->CreateImage(1058, 610, Image, { 877, 1874, 33, 20 }, NULL, this);//boost
+
+							brotherhood_lab[5] = (j1Image*)App->gui->CreateImage(1121, 602, Image, { 982, 1869, 31, 33 }, NULL, this);//radar
+							brotherhood_lab[6] = (j1Image*)App->gui->CreateImage(1060, 662, Image, { 1034, 1869, 35, 33 }, NULL, this);//misterhandy
 
 							//Labels
 							if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
 								int cost = App->entities->units_creation_time[App->player->faction].first_price + App->entities->units_creation_time[App->player->faction].price_increment * App->entities->units_creation_time[App->player->faction].upgrade_num;
-								brotherhood_lab[3] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelSmall");
+								brotherhood_lab[7] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelSmall");
 							}
 							else
-								brotherhood_lab[3] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");
+								brotherhood_lab[7] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");
 
 							
 							last_menu = current_menu;
@@ -395,13 +395,13 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 						case BUILDING_TYPE::BASE:
 							
 							//Buttons
-							supermutant_base[0] = (UI_Button*)App->gui->CreateButton(1050, 585, Supermutant_ghaterer_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
-							supermutant_base[1] = (UI_Button*)App->gui->CreateButton(1050, 645, Boost_base_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							supermutant_base[0] = (UI_Button*)App->gui->CreateButton(1050, 593, Supermutant_ghaterer_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							supermutant_base[1] = (UI_Button*)App->gui->CreateButton(1050, 653, Boost_base_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
 
 							//Images
-							supermutant_base[2] = (j1Image*)App->gui->CreateImage(900, 590, Image, { 934, 1577, 129, 91 }, NULL, this);
-							supermutant_base[3] = (j1Image*)App->gui->CreateImage(1060, 595, Image, { 191, 1868, 34, 32 }, NULL, this);
-							supermutant_base[4] = (j1Image*)App->gui->CreateImage(1055, 660, Image, { 926, 1872, 37, 24 }, NULL, this);
+							supermutant_base[2] = (j1Image*)App->gui->CreateImage(900, 593, Image, { 934, 1577, 129, 91 }, NULL, this);
+							supermutant_base[3] = (j1Image*)App->gui->CreateImage(1060, 600, Image, { 191, 1868, 34, 32 }, NULL, this);
+							supermutant_base[4] = (j1Image*)App->gui->CreateImage(1055, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
 
 							//Labels
 							if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
@@ -418,15 +418,15 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 						case BUILDING_TYPE::BARRACK:
 
 							//Buttons
-							supermutant_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 585, Supermutant_melee_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
-							supermutant_barrack[1] = (UI_Button*)App->gui->CreateButton(1110, 585, Supermutant_ranged_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
-							supermutant_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 645, Boost_barrack_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							supermutant_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 593, Supermutant_melee_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							supermutant_barrack[1] = (UI_Button*)App->gui->CreateButton(1110, 593, Supermutant_ranged_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							supermutant_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 653, Boost_barrack_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
 
 							//Images
-							supermutant_barrack[3] = (j1Image*)App->gui->CreateImage(890, 590, Image, { 801, 1549, 102, 119 }, NULL, this);
-							supermutant_barrack[4] = (j1Image*)App->gui->CreateImage(1062, 595, Image, { 246, 1869, 34, 33 }, NULL, this);
-							supermutant_barrack[5] = (j1Image*)App->gui->CreateImage(1117, 595, Image, { 301, 1865, 34, 35 }, NULL, this);
-							supermutant_barrack[6] = (j1Image*)App->gui->CreateImage(1055, 660, Image, { 823, 1872, 32, 22 }, NULL, this);
+							supermutant_barrack[3] = (j1Image*)App->gui->CreateImage(890, 600, Image, { 801, 1549, 102, 119 }, NULL, this);
+							supermutant_barrack[4] = (j1Image*)App->gui->CreateImage(1062, 600, Image, { 246, 1869, 34, 33 }, NULL, this);
+							supermutant_barrack[5] = (j1Image*)App->gui->CreateImage(1120, 600, Image, { 301, 1865, 34, 35 }, NULL, this);
+							supermutant_barrack[6] = (j1Image*)App->gui->CreateImage(1055, 665, Image, { 823, 1872, 32, 22 }, NULL, this);
 
 							//Labels
 							if (App->entities->units_damage[App->player->faction].upgrade_num < 4) {
@@ -444,25 +444,25 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 
 							//Buttons
 		
-							supermutant_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_lab_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
-							supermutant_lab[4] = (UI_Button*)App->gui->CreateButton(1050, 570, Boost_radar_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
-							supermutant_lab[6] = (UI_Button*)App->gui->CreateButton(1050, 670, summon_mrhandy_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+							supermutant_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 593, Boost_lab_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							supermutant_lab[1] = (UI_Button*)App->gui->CreateButton(1110, 593, Boost_radar_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							supermutant_lab[2] = (UI_Button*)App->gui->CreateButton(1050, 653, summon_mrhandy_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
 							
 
 							//Images
-							supermutant_lab[1] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 663, 1567, 108, 104 }, NULL, this);
-							supermutant_lab[2] = (j1Image*)App->gui->CreateImage(1060, 630, Image, { 877, 1874, 33, 20 }, NULL, this);
+							supermutant_lab[3] = (j1Image*)App->gui->CreateImage(885, 600, Image, { 663, 1567, 108, 104 }, NULL, this);
+							supermutant_lab[4] = (j1Image*)App->gui->CreateImage(1058, 610, Image, { 877, 1874, 33, 20 }, NULL, this);
 							
-							supermutant_lab[5] = (j1Image*)App->gui->CreateImage(1060, 575, Image, { 982, 1869, 31, 33 }, NULL, this);
-							supermutant_lab[7] = (j1Image*)App->gui->CreateImage(1060, 675, Image, { 1034, 1869, 35, 33 }, NULL, this);
+							supermutant_lab[5] = (j1Image*)App->gui->CreateImage(1121, 602, Image, { 982, 1869, 31, 33 }, NULL, this);
+							supermutant_lab[6] = (j1Image*)App->gui->CreateImage(1060, 662, Image, { 1034, 1869, 35, 33 }, NULL, this);
 
 							//Labels
 							if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
 								int cost = App->entities->units_creation_time[App->player->faction].first_price + App->entities->units_creation_time[App->player->faction].price_increment * App->entities->units_creation_time[App->player->faction].upgrade_num;
-								supermutant_lab[3] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelSmall");
+								supermutant_lab[7] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelSmall");
 							}
 							else
-								supermutant_lab[3] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");
+								supermutant_lab[7] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");
 
 							last_menu = current_menu;
 							current_menu = Menu::BUI_BASES;
@@ -480,14 +480,14 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 						case BUILDING_TYPE::BASE:
 
 							//Buttons
-							ghoul_base[0] = (UI_Button*)App->gui->CreateButton(1050, 585, Ghouls_ghaterer_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
-							ghoul_base[1] = (UI_Button*)App->gui->CreateButton(1050, 645, Boost_base_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							ghoul_base[0] = (UI_Button*)App->gui->CreateButton(1050, 593, Ghouls_ghaterer_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							ghoul_base[1] = (UI_Button*)App->gui->CreateButton(1050, 653, Boost_base_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
 							
 
 							//Images
-							ghoul_base[2] = (j1Image*)App->gui->CreateImage(900, 590, Image, { 398, 1564, 99, 108 }, NULL, this);
-							ghoul_base[3] = (j1Image*)App->gui->CreateImage(1064, 595, Image, { 624, 1866, 24, 34 }, NULL, this);
-							ghoul_base[4] = (j1Image*)App->gui->CreateImage(1055, 660, Image, { 926, 1872, 37, 24 }, NULL, this);
+							ghoul_base[2] = (j1Image*)App->gui->CreateImage(900, 593, Image, { 398, 1564, 99, 108 }, NULL, this);
+							ghoul_base[3] = (j1Image*)App->gui->CreateImage(1064, 600, Image, { 624, 1866, 24, 34 }, NULL, this);
+							ghoul_base[4] = (j1Image*)App->gui->CreateImage(1055, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
 
 							//Labels
 							if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
@@ -504,15 +504,15 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 						case BUILDING_TYPE::BARRACK:
 
 							//Buttons
-							ghoul_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 570, Ghouls_melee_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
-							ghoul_barrack[1] = (UI_Button*)App->gui->CreateButton(1115, 570, Ghouls_ranged_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
-							ghoul_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_barrack_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+							ghoul_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 593, Ghouls_melee_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							ghoul_barrack[1] = (UI_Button*)App->gui->CreateButton(1110, 593, Ghouls_ranged_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							ghoul_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 653, Boost_barrack_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
 
 							//Images
-							ghoul_barrack[3] = (j1Image*)App->gui->CreateImage(900, 570, Image, { 527, 1563, 105, 105 }, NULL, this);
-							ghoul_barrack[4] = (j1Image*)App->gui->CreateImage(1055, 575, Image, { 513, 1865, 33, 34 }, NULL, this);
-							ghoul_barrack[5] = (j1Image*)App->gui->CreateImage(1110, 575, Image, { 571, 1866, 28, 33 }, NULL, this);
-							ghoul_barrack[6] = (j1Image*)App->gui->CreateImage(1060, 630, Image, { 823, 1872, 32, 22 }, NULL, this);
+							ghoul_barrack[3] = (j1Image*)App->gui->CreateImage(885, 600, Image, { 527, 1563, 105, 105 }, NULL, this);
+							ghoul_barrack[4] = (j1Image*)App->gui->CreateImage(1060, 600, Image, { 513, 1865, 33, 34 }, NULL, this);
+							ghoul_barrack[5] = (j1Image*)App->gui->CreateImage(1120, 600, Image, { 571, 1866, 28, 33 }, NULL, this);
+							ghoul_barrack[6] = (j1Image*)App->gui->CreateImage(1060, 665, Image, { 823, 1872, 32, 22 }, NULL, this);
 
 							//Labels
 							if (App->entities->units_damage[App->player->faction].upgrade_num < 4) {
@@ -529,25 +529,25 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 						case BUILDING_TYPE::LAB:
 
 							//Buttons
-							ghoul_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_lab_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
-							ghoul_lab[4] = (UI_Button*)App->gui->CreateButton(1050, 570, Boost_radar_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
-							ghoul_lab[6] = (UI_Button*)App->gui->CreateButton(1050, 670, summon_mrhandy_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+							ghoul_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 593, Boost_lab_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							ghoul_lab[1] = (UI_Button*)App->gui->CreateButton(1110, 593, Boost_radar_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							ghoul_lab[2] = (UI_Button*)App->gui->CreateButton(1050, 653, summon_mrhandy_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
 							
 
 							//Images
-							ghoul_lab[1] = (j1Image*)App->gui->CreateImage(900, 590, Image, { 536, 1741, 101, 73 }, NULL, this);
-							ghoul_lab[2] = (j1Image*)App->gui->CreateImage(1060, 630, Image, { 877, 1874, 33, 20 }, NULL, this);
+							ghoul_lab[3] = (j1Image*)App->gui->CreateImage(885, 600, Image, { 536, 1741, 101, 73 }, NULL, this);
+							ghoul_lab[4] = (j1Image*)App->gui->CreateImage(1058, 610, Image, { 877, 1874, 33, 20 }, NULL, this);
 							
-							ghoul_lab[5] = (j1Image*)App->gui->CreateImage(1060, 575, Image, { 982, 1869, 31, 33 }, NULL, this);
-							ghoul_lab[7] = (j1Image*)App->gui->CreateImage(1060, 675, Image, { 1034, 1869, 35, 33 }, NULL, this);
+							ghoul_lab[5] = (j1Image*)App->gui->CreateImage(1122, 602, Image, { 982, 1869, 31, 33 }, NULL, this);
+							ghoul_lab[6] = (j1Image*)App->gui->CreateImage(1060, 662, Image, { 1034, 1869, 35, 33 }, NULL, this);
 
 							//Labels
 							if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
 								int cost = App->entities->units_creation_time[App->player->faction].first_price + App->entities->units_creation_time[App->player->faction].price_increment * App->entities->units_creation_time[App->player->faction].upgrade_num;
-								ghoul_lab[3] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelSmall");
+								ghoul_lab[7] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelSmall");
 							}
 							else
-								ghoul_lab[3] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");
+								ghoul_lab[7] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");
 
 							last_menu = current_menu;
 							current_menu = Menu::BUI_BASES;
@@ -564,13 +564,13 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 						case BUILDING_TYPE::BASE:
 
 							//Buttons
-							vault_base[0] = (UI_Button*)App->gui->CreateButton(1050, 585, Vault_ghaterer_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
-							vault_base[1] = (UI_Button*)App->gui->CreateButton(1050, 645, Boost_base_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							vault_base[0] = (UI_Button*)App->gui->CreateButton(1050, 593, Vault_ghaterer_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							vault_base[1] = (UI_Button*)App->gui->CreateButton(1050, 653, Boost_base_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
 
 							//Images
-							vault_base[2] = (j1Image*)App->gui->CreateImage(900, 590, Image, { 319, 1710, 49, 113 }, NULL, this);
-							vault_base[3] = (j1Image*)App->gui->CreateImage(1064, 595, Image, { 463, 1871, 25, 29 }, NULL, this);
-							vault_base[4] = (j1Image*)App->gui->CreateImage(1055, 660, Image, { 926, 1872, 37, 24 }, NULL, this);
+							vault_base[2] = (j1Image*)App->gui->CreateImage(900, 593, Image, { 319, 1710, 49, 113 }, NULL, this);
+							vault_base[3] = (j1Image*)App->gui->CreateImage(1064, 600, Image, { 463, 1871, 25, 29 }, NULL, this);
+							vault_base[4] = (j1Image*)App->gui->CreateImage(1055, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
 
 							//Labels
 							if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
@@ -587,15 +587,15 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 						case BUILDING_TYPE::BARRACK:
 
 							//Buttons
-							vault_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 570, Vault_melee_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
-							vault_barrack[1] = (UI_Button*)App->gui->CreateButton(1115, 570, Vault_ranged_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
-							vault_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_barrack_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+							vault_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 593, Vault_melee_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							vault_barrack[1] = (UI_Button*)App->gui->CreateButton(1110, 593, Vault_ranged_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							vault_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 653, Boost_barrack_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
 
 							//Images
-							vault_barrack[3] = (j1Image*)App->gui->CreateImage(885, 570, Image, { 148, 1731, 122, 91 }, NULL, this);
-							vault_barrack[4] = (j1Image*)App->gui->CreateImage(1055, 575, Image, { 406, 1866, 32, 34 }, NULL, this);
-							vault_barrack[5] = (j1Image*)App->gui->CreateImage(1110, 575, Image, { 355, 1866, 30, 34 }, NULL, this);
-							vault_barrack[6] = (j1Image*)App->gui->CreateImage(1060, 630, Image, { 823, 1872, 32, 22 }, NULL, this);
+							vault_barrack[3] = (j1Image*)App->gui->CreateImage(885, 600, Image, { 148, 1731, 122, 91 }, NULL, this);
+							vault_barrack[4] = (j1Image*)App->gui->CreateImage(1060, 600, Image, { 406, 1866, 32, 34 }, NULL, this);
+							vault_barrack[5] = (j1Image*)App->gui->CreateImage(1120, 600, Image, { 355, 1866, 30, 34 }, NULL, this);
+							vault_barrack[6] = (j1Image*)App->gui->CreateImage(1060, 665, Image, { 823, 1872, 32, 22 }, NULL, this);
 
 
 							//Labels
@@ -614,25 +614,25 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 						case BUILDING_TYPE::LAB:
 
 							//Buttons
-							vault_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 620, Boost_lab_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
-							vault_lab[4] = (UI_Button*)App->gui->CreateButton(1050, 570, Boost_radar_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
-							vault_lab[6] = (UI_Button*)App->gui->CreateButton(1050, 670, summon_mrhandy_button, { 1418,2028,153,41 }, { 1418,2112,153,41 }, { 1418,2197,153,41 }, NULL, this);
+							vault_lab[0] = (UI_Button*)App->gui->CreateButton(1050, 593, Boost_lab_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							vault_lab[1] = (UI_Button*)App->gui->CreateButton(1110, 593, Boost_radar_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							vault_lab[2] = (UI_Button*)App->gui->CreateButton(1050, 653, summon_mrhandy_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
 							
 							
 							//Images
-							vault_lab[1] = (j1Image*)App->gui->CreateImage(920, 570, Image, { 426, 1726, 72, 96 }, NULL, this);
-							vault_lab[2] = (j1Image*)App->gui->CreateImage(1060, 630, Image, { 877, 1874, 33, 20 }, NULL, this);
+							vault_lab[3] = (j1Image*)App->gui->CreateImage(885, 600, Image, { 426, 1726, 72, 96 }, NULL, this);
+							vault_lab[4] = (j1Image*)App->gui->CreateImage(1058, 610, Image, { 877, 1874, 33, 20 }, NULL, this);
 							
-							vault_lab[5] = (j1Image*)App->gui->CreateImage(1060, 575, Image, { 982, 1869, 31, 33 }, NULL, this);
-							vault_lab[7] = (j1Image*)App->gui->CreateImage(1060, 675, Image, { 1034, 1869, 35, 33 }, NULL, this);
+							vault_lab[5] = (j1Image*)App->gui->CreateImage(1122, 602, Image, { 982, 1869, 31, 33 }, NULL, this);
+							vault_lab[6] = (j1Image*)App->gui->CreateImage(1060, 662, Image, { 1034, 1869, 35, 33 }, NULL, this);
 
 							//Labels
 							if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
 								int cost = App->entities->units_creation_time[App->player->faction].first_price + App->entities->units_creation_time[App->player->faction].price_increment * App->entities->units_creation_time[App->player->faction].upgrade_num;
-								vault_lab[3] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelSmall");
+								vault_lab[7] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelSmall");
 							}
 							else
-								vault_lab[3] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");
+								vault_lab[7] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");
 							
 							last_menu = current_menu;
 							current_menu = Menu::BUI_BASES;

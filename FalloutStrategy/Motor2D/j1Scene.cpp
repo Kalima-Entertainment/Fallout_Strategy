@@ -379,6 +379,8 @@ bool j1Scene::Load(pugi::xml_node& data)
 		i++;
 	}
 
+	App->pathfinding->SetMap();
+
 	if (App->map->Load(modules) == true)
 	{
 		App->map->CreateWalkabilityMap();
