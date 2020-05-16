@@ -330,27 +330,24 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 						case BUILDING_TYPE::BASE:
 
 							//Buttons
-							brotherhood_base[0] = (UI_Button*)App->gui->CreateButton(1050, 593, Brotherhood_ghaterer_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
-							brotherhood_base[1] = (UI_Button*)App->gui->CreateButton(1050, 653, Boost_base_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							brotherhood_base[0] = (UI_Button*)App->gui->CreateButton(690, 593, Brotherhood_ghaterer_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							brotherhood_base[1] = (UI_Button*)App->gui->CreateButton(690, 653, Boost_base_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
 
 							//Images
-							brotherhood_base[2] = (j1Image*)App->gui->CreateImage(900, 593, Image, { 118, 1561, 122, 98 }, NULL, this);
-							brotherhood_base[3] = (j1Image*)App->gui->CreateImage(1058, 600, Image, { 138, 1868, 33, 33 }, NULL, this);
-							brotherhood_base[4] = (j1Image*)App->gui->CreateImage(1055, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
+							brotherhood_base[2] = (j1Image*)App->gui->CreateImage(530, 589, Image, { 118, 1561, 122, 98 }, NULL, this);
+							brotherhood_base[3] = (j1Image*)App->gui->CreateImage(698, 600, Image, { 138, 1868, 33, 33 }, NULL, this);
+							brotherhood_base[4] = (j1Image*)App->gui->CreateImage(698, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
 
 							//Labels
 							if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
 								int cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
-								brotherhood_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelSmall");
+								brotherhood_base[5] = (UI_Label*)App->gui->CreateLabel(760, 668, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelMedium");
 							}
 							else
-								brotherhood_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX.", NULL, this, NULL, "StackedPixelSmall");
+								brotherhood_base[5] = (UI_Label*)App->gui->CreateLabel(760, 668, Label, "MAX.", NULL, this, NULL, "StackedPixelMedium");
 
 
-							//Labels
-							//p2SString hh("%i", App->entities->); VIDA EDIFICIO
-							//gui_ingame.meat_count = (UI_Label*)App->gui->CreateLabel(95, 10, Meat, hh, NULL, this, NULL);
-							//gui_ingame.meat_count = (UI_Label*)App->gui->CreateLabel(95, 10, Meat, "Brotherhood Base", NULL, this, NULL);
+							brotherhood_base[6] = (UI_Label*)App->gui->CreateLabel(760, 603, Label, "50", NULL, this, NULL, "StackedPixelMedium");
 
 							last_menu = current_menu;
 							current_menu = Menu::BUI_BASES;
@@ -746,7 +743,7 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 			{
 
 			case BUILDING_TYPE::ALL:
-				App->gui->DeleteArrayElements(brotherhood_base, 6);
+				App->gui->DeleteArrayElements(brotherhood_base, 7);
 				App->gui->DeleteArrayElements(brotherhood_barrack, 8);
 				App->gui->DeleteArrayElements(brotherhood_lab, 8);
 				App->gui->DeleteArrayElements(supermutant_base, 6);
@@ -770,7 +767,7 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 			switch (type)
 			{
 			case BUILDING_TYPE::BASE:
-				App->gui->DeleteArrayElements(brotherhood_base, 6);
+				App->gui->DeleteArrayElements(brotherhood_base, 7);
 				break;
 			case BUILDING_TYPE::BARRACK:
 				App->gui->DeleteArrayElements(brotherhood_barrack, 8);

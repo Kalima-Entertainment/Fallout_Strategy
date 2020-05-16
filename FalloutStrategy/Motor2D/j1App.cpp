@@ -89,12 +89,12 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	// scene last
 	AddModule(menu_manager);
 	AddModule(gui);
-	AddModule(hud);
 	AddModule(minimap);
 	AddModule(dialog_manager);
 	AddModule(console);
 	AddModule(logo_scene);
 	AddModule(transition);	
+	AddModule(hud);
 	// render last to swap buffer
 	AddModule(render);
 
