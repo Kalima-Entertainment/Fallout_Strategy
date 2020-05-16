@@ -30,6 +30,7 @@
 #include "LogoScene.h"
 #include "j1Console.h"
 #include "FoWManager.h"
+#include "j1Hud.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -147,12 +148,14 @@ bool j1Scene::Update(float dt)
 			App->isPaused = false;
 			create = false;
 			Mix_PauseMusic();
+			App->hud->activateTimer = true;
 		}
 
 		else if (create == false) {
 
 			App->menu_manager->CreateMenu(Menu::PAUSE_MENU);
 			App->isPaused = true;
+			App->hud->activateTimer = false;
 			create = true;
 			if (Mix_PlayingMusic() == 1) {
 				Mix_ResumeMusic();

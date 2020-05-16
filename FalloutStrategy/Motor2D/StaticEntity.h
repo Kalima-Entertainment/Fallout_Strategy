@@ -47,6 +47,8 @@ public:
 	
 public:
 	std::vector<iPoint> tiles;
+	float time_left;
+	Spawn_Stack spawn_stack[10];
 
 private:
 	int gen_speed;
@@ -55,7 +57,7 @@ private:
 
 	int max_capacity;
 
-	Spawn_Stack spawn_stack[10];
+	
 	Upgrade_Stack upgrade_stack;
 
 	j1Timer chrono_spawn;
@@ -63,7 +65,7 @@ private:
 	bool spawning;
 	bool upgrading;
 	bool want_to_upgrade;
-	float time_left;
+	
 };
 
 #endif // !_STATIC_ENTITY_H
