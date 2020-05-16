@@ -45114,11 +45114,8 @@
   <object id="13" name="Animal" type="Braham" x="425" y="557" width="24.25" height="21.5"/>
   <object id="14" name="Animal" type="Bighorner" x="2107" y="632" width="24.25" height="21.5"/>
   <object id="15" name="Animal" type="Bighorner" x="1586" y="2051" width="24.25" height="21.5"/>
-  <object id="16" name="Animal" type="SpawnPoint" x="1429" y="1027" width="24.25" height="21.5"/>
-  <object id="17" name="Animal" type="SpawnPoint" x="594" y="316" width="24.25" height="21.5"/>
-  <object id="18" name="Animal" type="SpawnPoint" x="425" y="557" width="24.25" height="21.5"/>
-  <object id="19" name="Animal" type="SpawnPoint" x="2107" y="632" width="24.25" height="21.5"/>
-  <object id="20" name="Animal" type="SpawnPoint" x="1586" y="2051" width="24.25" height="21.5"/>
-  <object id="21" name="Animal" type="SpawnPoint" x="1429" y="1027" width="24.25" height="21.5"/>
+  <object id="16" name="Animal" type="SpawnPoint" x="594" y="316" width="24.25" height="21.5"/>
+  <object id="17" name="Animal" type="SpawnPoint" x="425" y="557" width="24.25" height="21.5"/>
+  <object id="18" name="Animal" type="SpawnPoint" x="2107" y="632" width="24.25" height="21.5"/>
  </objectgroup>
 </map>
