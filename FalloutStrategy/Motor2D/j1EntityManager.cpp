@@ -26,6 +26,9 @@
 #include <cstdlib>
 #include <ctime>
 #include <string>
+#include <stdlib.h>
+#include <time.h>
+#include <stdio.h>
 
 j1EntityManager::j1EntityManager(){
 
@@ -1053,4 +1056,32 @@ int j1EntityManager::GetReferenceEntityID(Faction faction, EntityType type) {
 	default:
 		break;
 	}
+}
+
+void j1EntityManager::SpawnAnimals() {
+	
+	int randomAnimal = 0;
+
+	for (int i = 0; i < App->map->spawnCoordinates; i++)
+	{
+		srand(time(NULL)+i);
+		randomAnimal = rand() % 2;
+
+		if(randomAnimal == 1)
+		{
+			if(FindEntityByTile(App->map->spawnPoint[i]) == nullptr)
+			{
+				CreateEntity(NO_FACTION, BIGHORNER, App->map->spawnPoint[i].x, App->map->spawnPoint[i].y);
+			}
+			
+		}
+		else
+		{
+			if (FindEntityByTile(App->map->spawnPoint[i]) == nullptr)
+			{
+				CreateEntity(NO_FACTION, BRAHAM, App->map->spawnPoint[i].x, App->map->spawnPoint[i].y);
+			}
+		}
+	}
+
 }
