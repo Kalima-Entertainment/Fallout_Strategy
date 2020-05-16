@@ -30,6 +30,7 @@
 #include "j1Video.h"
 #include "j1Hud.h"
 #include "j1EasingAndSplines.h"
+#include "DialogManager.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -62,6 +63,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	video = new j1Video();
 	hud = new j1Hud();
 	easing_splines = new j1EasingAndSplines();
+	dialog_manager = new DialogManager();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -89,6 +91,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(gui);
 	AddModule(hud);
 	AddModule(minimap);
+	AddModule(dialog_manager);
 	AddModule(console);
 	AddModule(logo_scene);
 	AddModule(transition);	
@@ -263,7 +266,7 @@ void j1App::FinishUpdate()
 		prev_last_sec_frame_count, dt, App->render->camera.x, App->render->camera.y);
 	App->win->SetTitle(title);
 	*/
-	sprintf_s(title, 256, " Fallout Strategy 0.5 - Kalima Entertainment | FPS: %d",
+	sprintf_s(title, 256, " Fallout Strategy 0.7 - Kalima Entertainment | FPS: %d",
 		prev_last_sec_frame_count);
 	App->win->SetTitle(title);
 

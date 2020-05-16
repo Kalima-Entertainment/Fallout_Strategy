@@ -148,6 +148,9 @@
     <ClCompile Include="j1EasingAndSplines.cpp">
       <Filter>Desenvolupament  ========\UI</Filter>
     </ClCompile>
+    <ClCompile Include="DialogManager.cpp">
+      <Filter>Desenvolupament  ========\DialogSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -324,6 +327,9 @@
     <ClInclude Include="j1EasingAndSplines.h">
       <Filter>Desenvolupament  ========\UI</Filter>
     </ClInclude>
+    <ClInclude Include="DialogManager.h">
+      <Filter>Desenvolupament  ========\DialogSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -358,6 +364,9 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\PlayersAndAI">
       <UniqueIdentifier>{ca269e49-9da1-4b13-8c80-abe572f50526}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\DialogSystem">
+      <UniqueIdentifier>{44be503a-eec1-4e0f-9136-b657787fec91}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

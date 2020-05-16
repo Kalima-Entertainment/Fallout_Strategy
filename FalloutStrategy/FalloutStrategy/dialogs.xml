@@ -1,0 +1,23 @@
+<!-- Entities file for the game -->
+<dialogs>
+ <statement text="statement 1">
+  <option text="option 1a" response="response 1a"/>
+  <option text="option 1b" response="response 2b"/>
+  <option text="option 1c" response="response 3c"/>
+ </statement>
+ <statement text="statement 2">
+  <option text="option 2a" response="response 2a"/>
+  <option text="option 2b" response="response 2b"/>
+  <option text="option 2c" response="response 2c"/>
+ </statement>
+ <statement text="statement 3">
+  <option text="option 3a" response="response 3a"/>
+  <option text="option 3b" response="response 3b"/>
+  <option text="option 3c" response="response 3c"/>
+ </statement>
+ <statement text="statement 4">
+  <option text="option 4a" response="response 4a"/>
+  <option text="option 4b" response="response 4b"/>
+  <option text="option 4c" response="response 4c"/>
+ </statement>
+</dialogs>
