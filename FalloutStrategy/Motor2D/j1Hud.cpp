@@ -151,15 +151,15 @@ bool j1Hud::PostUpdate()
 				background_bar = { 530, 698, 122, 4 };
 				foreground_bar = { 531, 699, static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
-				App->render->DrawQuad(background_bar, 0, 0, 0, 255, true, 0.0f);
+				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, 0.0f);
 				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, 0.0f);
 
 				//Spawn bar
-				
-				/*SDL_Rect spawn_bar_background = { 630, 675, 80, 4 };
-				SDL_Rect spawn_bar_foreground = { 630, 675, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 4 };
-				App->render->DrawQuad(spawn_bar_background, 150, 150, 150, 255);
-				App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255);*/
+			
+				SDL_Rect spawn_bar_background = { 900, 678, 170, 8 };
+				SDL_Rect spawn_bar_foreground = { 901, 679, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 8 };
+				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255, true, 0.0f);
 
 
 			}
