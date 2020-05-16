@@ -81,7 +81,7 @@ public:
 	void DestroyEntity(j1Entity* delete_entity);
 	void DestroyAllEntities();
 	iPoint FindSpawnPoint(int position_x, int position_y);
-
+	void SpawnAnimals();
 	ResourceBuilding* CreateResourceSpot(int position_x, int position_y, Resource resource_type, int resource_quantity);
 	void DestroyResourceSpot(ResourceBuilding* resource_spot);
 

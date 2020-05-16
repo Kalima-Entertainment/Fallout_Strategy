@@ -270,11 +270,37 @@ void MenuManager::CreateMenu(Menu menu) {
 		tutorial[0] = (UI_Button*)App->gui->CreateButton(680, 360, control_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
 		tutorial[1] = (UI_Button*)App->gui->CreateButton(1000, 360, how_to_play_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
 		info_button2_element = (UI_Button*)App->gui->CreateButton(594, 143, info_button2, { 908,2084,43,46 }, { 908,2135,43,46 }, { 908,2185,43,46 }, NULL, this);
+		tutorial[6] = (UI_Button*)App->gui->CreateButton(640, 435, back_tutorial, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this);
 
 		//Text
 		tutorial[2] = (UI_Label*)App->gui->CreateLabel(890, 220, Label, "TUTORIAL", NULL, this, NULL);
 		tutorial[3] = (UI_Label*)App->gui->CreateLabel(710, 380, Label, "CONTROLS", NULL, this, NULL);
 		tutorial[4] = (UI_Label*)App->gui->CreateLabel(1020, 380, Label, "HOW TO PLAY", NULL, this, NULL);
+
+		last_menu = current_menu;
+		current_menu = Menu::PAUSE_MENU;
+
+		break;
+
+	case Menu::HOW_TO_PLAY:
+		how_to_play[0] = (UI_Button*)App->gui->CreateButton(920, 470, how_to_play_previous, { 1671,880,26,26 }, { 1738,880,26,26 }, { 1671,880,26,26 }, NULL, this);
+		how_to_play[1] = (UI_Button*)App->gui->CreateButton(970, 470, how_to_play_next, { 1703,880,26,26 }, { 1770,880,26,26 }, { 1703,880,26,26 }, NULL, this);
+
+		if (how_to_play_counter == 0) {
+			how_to_play[2] = (j1Image*)App->gui->CreateImage(690, 160, Image, { 2869, 1188, 542, 296 }, NULL, this);
+		}
+		if (how_to_play_counter == 1) {
+			how_to_play[3] = (j1Image*)App->gui->CreateImage(700, 165, Image, { 2231, 1152, 470, 286 }, NULL, this);
+		}
+		if (how_to_play_counter == 2) {
+			how_to_play[4] = (j1Image*)App->gui->CreateImage(690, 180, Image, { 1257, 1195, 553, 241 }, NULL, this);
+		}
+		if (how_to_play_counter == 3) {
+			how_to_play[5] = (j1Image*)App->gui->CreateImage(690, 165, Image, { 971, 35, 535, 287 }, NULL, this);
+		}
+		
+		last_menu = current_menu;
+		current_menu = Menu::PAUSE_MENU;
 
 		break;
 
@@ -693,9 +719,12 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->gui->DeleteArrayElements(resources, 3);
 		break;
 	case Menu::TUTORIAL:
-		App->gui->DeleteArrayElements(tutorial, 5);
+		App->gui->DeleteArrayElements(tutorial, 7);
 		App->gui->Delete_Element(tutorial_screen);
 		App->gui->Delete_Element(info_button2_element);
+	case Menu::HOW_TO_PLAY:
+		App->gui->DeleteArrayElements(how_to_play, 6);
+
 
 	default:
 		break;

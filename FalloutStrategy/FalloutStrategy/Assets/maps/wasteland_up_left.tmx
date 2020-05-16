@@ -45145,9 +45145,13 @@
     <property name="faction" type="int" value="3"/>
    </properties>
   </object>
-  <object id="37" name="Animal" type="Braham" x="194.625" y="421.625" width="24.25" height="21.5"/>
-  <object id="38" name="Animal" type="Bighorner" x="1183.02" y="304.435" width="24.25" height="21.5"/>
-  <object id="39" name="Animal" type="Bighorner" x="1145.5" y="1518.02" width="24.25" height="21.5"/>
-  <object id="40" name="Animal" type="Braham" x="1167.16" y="1825.88" width="24.25" height="21.5"/>
+  <object id="37" name="Animal" type="Braham" x="194" y="421" width="24.25" height="21.5"/>
+  <object id="38" name="Animal" type="Bighorner" x="1183" y="304" width="24.25" height="21.5"/>
+  <object id="39" name="Animal" type="Bighorner" x="1145" y="1518" width="24.25" height="21.5"/>
+  <object id="40" name="Animal" type="Braham" x="1167" y="1825" width="24.25" height="21.5"/>
+  <object id="41" name="Animal" type="SpawnPoint" x="194" y="421" width="24.25" height="21.5"/>
+  <object id="42" name="Animal" type="SpawnPoint" x="1183" y="304" width="24.25" height="21.5"/>
+  <object id="43" name="Animal" type="SpawnPoint" x="1145" y="1518" width="24.25" height="21.5"/>
+  <object id="44" name="Animal" type="SpawnPoint" x="1167" y="1825" width="24.25" height="21.5"/>
  </objectgroup>
 </map>

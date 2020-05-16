@@ -21,6 +21,7 @@
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
 	name = ("map");
+	spawnCoordinates = 0;
 }
 
 // Destructor
@@ -633,6 +634,14 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 				position = App->map->IsometricWorldToMap(x, y);
 				if (object_type == "Braham") App->entities->CreateEntity(NO_FACTION, BRAHAM, position.x, position.y);
 				else if (object_type == "Bighorner") App->entities->CreateEntity(NO_FACTION, BIGHORNER, position.x, position.y);
+				else if (object_type == "SpawnPoint")
+				{
+					spawnPoint[spawnCoordinates].x = object_node.attribute("x").as_int() + offset[module_number].x;
+					spawnPoint[spawnCoordinates].y = object_node.attribute("y").as_int() + offset[module_number].y;
+					spawnPoint[spawnCoordinates] = App->map->IsometricWorldToMap(spawnPoint[spawnCoordinates].x, spawnPoint[spawnCoordinates].y);
+					LOG("spawnCoordinates = %i / SpawnPoints x = %i y = %i", spawnCoordinates, spawnPoint[spawnCoordinates].x, spawnPoint[spawnCoordinates].y);
+					spawnCoordinates++;
+				}
 			}
 
 			object_node = object_node.next_sibling();
