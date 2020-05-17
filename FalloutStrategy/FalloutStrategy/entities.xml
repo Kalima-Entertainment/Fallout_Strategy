@@ -56,24 +56,84 @@
  </dynamic> 
  <static>
    <vault>
-    <base health="8000"/>
-    <barrack health="6000"/>
-    <laboratory health="7000"/>    
+    <base health="8000">
+     <upgrade level="1" x="93" y="170" rect_x="2992" rect_y="901" rect_w="30" rect_h="33"/>
+     <upgrade level="2" x="125" y="177" rect_x="3051" rect_y="898" rect_w="42" rect_h="39"/>
+     <upgrade level="3" x="125 " y="107" rect_x="3122" rect_y="871" rect_w="49" rect_h="84"/>
+     <upgrade level="4" x="131" y="105" rect_x="3186" rect_y="917" rect_w="14" rect_h="17"/>
+    </base>
+    <barrack health="6000">
+     <upgrade level="1" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="2" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="3" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="4" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+    </barrack>
+    <laboratory health="7000"> 
+     <upgrade level="1" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="2" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="3" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="4" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+    </laboratory>   
    </vault>
    <brotherhood>
-    <base health="8000"/>
-    <barrack health="6000"/>
-    <laboratory health="7000"/>
+    <base health="8000">
+     <upgrade level="1" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="2" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="3" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="4" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+    </base>
+    <barrack health="6000">
+     <upgrade level="1" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="2" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="3" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="4" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+    </barrack>
+    <laboratory health="7000"> 
+     <upgrade level="1" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="2" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="3" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="4" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+    </laboratory>   
    </brotherhood>
    <mutants>
-    <base health="8000"/>
-    <barrack health="6000"/>
-    <laboratory health="7000"/>
+    <base health="8000">
+     <upgrade level="1" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="2" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="3" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="4" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+    </base>
+    <barrack health="6000">
+     <upgrade level="1" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="2" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="3" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="4" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+    </barrack>
+    <laboratory health="7000"> 
+     <upgrade level="1" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="2" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="3" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="4" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+    </laboratory>   
    </mutants>
    <ghouls>
-    <base health="8000"/>
-    <barrack health="6000"/>
-    <laboratory health="7000"/>
+    <base health="8000">
+     <upgrade level="1" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="2" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="3" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="4" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+    </base>
+    <barrack health="6000">
+     <upgrade level="1" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="2" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="3" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="4" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+    </barrack>
+    <laboratory health="7000"> 
+     <upgrade level="1" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="2" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="3" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+     <upgrade level="4" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
+    </laboratory>   
   </ghouls>
  </static>
 </entities>

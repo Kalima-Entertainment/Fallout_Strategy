@@ -851,7 +851,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 	int current_health;
 	int upgrade_gath;
 	int upgrade_base;
-	int upgrade_heal;
+	int upgrade_health;
 	int upgrade_creat;
 	int upgrade_dama;
 	int upgrade_speed;
@@ -878,14 +878,13 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		else if (iterator.attribute("faction:").as_string() == "ghoul") { faction = GHOUL; }
 		else if (iterator.attribute("faction:").as_string() == "no_faction") { faction = NO_FACTION; }
 
-
 		
 		if (iterator.attribute("type:").as_string() == "base") { 
-			upgrade_gath=iterator.attribute("level_gatherer_resource_limit").as_int();
+			upgrade_gath =iterator.attribute("level_gatherer_resource_limit").as_int();
 			upgrade_base = iterator.attribute("level_base_resource_limit").as_int();
 		}
 		if (iterator.attribute("type:").as_string() == "laboratory") {
-			upgrade_heal = iterator.attribute("level_units_health").as_int();
+			upgrade_health = iterator.attribute("level_units_health").as_int();
 			upgrade_creat = iterator.attribute("level_units_creation_time").as_int();
 		}
 		if (iterator.attribute("type:").as_string() == "barrack") {
@@ -966,11 +965,6 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 
 	}
 	LOG("%i", entities.size());
-
-	
-
-	
-	
 
 	return true;
 }

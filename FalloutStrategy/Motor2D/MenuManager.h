@@ -26,6 +26,7 @@ enum class Menu {
 	HOW_TO_PLAY,
 	BUI_BASES,
 	COLLABORATORS_CREDITS,
+	DIALOG,
 	NO_MENU,
 };
 
@@ -99,6 +100,8 @@ public:
 	UI_element* supermutant_lab[8];
 
 	UI_element* win_scene[5];
+
+	UI_element* dialogs[7];
 
 	UI_Label* cap_label = nullptr;
 	UI_Label* fullscreen_label = nullptr;

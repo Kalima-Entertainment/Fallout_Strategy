@@ -78,6 +78,11 @@ enum UI_Type {
 	back_tutorial,
 	how_to_play_next,
 	how_to_play_previous,
+
+	//Dialogs
+	OPTION_A,
+	OPTION_B,
+	OPTION_C
 };
 
 class UI_element 

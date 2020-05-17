@@ -5,6 +5,8 @@
 #include <vector>
 #include "SDL_image/include/SDL_image.h"
 
+class UI_Button;
+
 struct Dialog {
 	std::string statement;
 	std::string options[3];
@@ -17,6 +19,7 @@ public:
 	DialogManager();
 	~DialogManager();
 
+	bool Start();
 	bool Awake(pugi::xml_node&);
 	bool Update(float dt);
 	bool PostUpdate();
@@ -24,7 +27,7 @@ public:
 private:
 	bool LoadDialogs();
 
-private:
+public:
 	std::vector<Dialog*> dialogs;
 	SDL_Rect background_box;
 	SDL_Rect statement_box;

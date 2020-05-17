@@ -22,6 +22,7 @@ j1Map::j1Map() : j1Module(), map_loaded(false)
 {
 	name = ("map");
 	spawnCoordinates = 0;
+	data.type = MAPTYPE_ISOMETRIC;
 }
 
 // Destructor
@@ -126,7 +127,8 @@ iPoint j1Map::MapToWorld(int x, int y) const
 	else
 	{
 //		LOG("Unknown map type");
-		ret.x = x; ret.y = y;
+		ret.x = x; 
+		ret.y = y;
 	}
 
 	return ret;
@@ -161,7 +163,7 @@ iPoint j1Map::WorldToMap(int x, int y) const
 	}
 	else
 	{
-		//LOG("Unknown map type");
+		LOG("Unknown map type");
 		ret.x = x; ret.y = y;
 	}
 

@@ -2,13 +2,15 @@
 #include "p2Log.h"
 #include "j1Render.h"
 #include "j1App.h"
+#include "j1Gui.h"
+#include "UI_element.h"
 
 DialogManager::DialogManager() : j1Module() {
 	background_box = { 60, 355, 1170, 340};
 	borders[0] =	 { 58, 355, 1172, 344 };
 
-	statement_box =  { 80, 370, 1135, 90};
-	borders[1] =     { 78, 368, 1139, 94 };
+	statement_box =  { 80, 370, 1135, 85};
+	borders[1] =     { 78, 368, 1139, 89 };
 
 	option_box[0] =  { 80, 470, 1135, 65};
 	borders[2] =     { 78, 468, 1139, 69 };
@@ -30,6 +32,14 @@ bool DialogManager::Awake(pugi::xml_node&) {
 	return ret;
 }
 
+bool DialogManager::Start() {
+	bool ret = true;
+	
+
+
+	return ret;
+}
+
 bool DialogManager::Update(float dt) {
 	bool ret = true;
 	return ret;
@@ -38,7 +48,6 @@ bool DialogManager::Update(float dt) {
 bool DialogManager::PostUpdate() {
 	bool ret = true;
 
-	/*
 	App->render->DrawQuad(background_box, 0, 0, 00, 150, true, false);
 	App->render->DrawQuad(statement_box, 0, 60, 30, 200, true, false);
 	App->render->DrawQuad(option_box[0], 0, 60, 30, 200, true, false);
@@ -49,7 +58,6 @@ bool DialogManager::PostUpdate() {
 	App->render->DrawQuad(borders[2], 100, 255, 100, 220, false, false);
 	App->render->DrawQuad(borders[3], 100, 255, 100, 220, false, false);
 	App->render->DrawQuad(borders[4], 100, 255, 100, 220, false, false);
-	*/
 
 	return ret;
 }

@@ -383,6 +383,7 @@ bool UI_Button::Update(float dt)
 				}
 				static_entity->Upgrade(App->entities->base_resource_limit[static_entity->faction]);
 				static_entity->Upgrade(App->entities->gatherer_resource_limit[static_entity->faction]);
+				static_entity->level++;
 			}
 			else if (t == Boost_barrack_button)
 			{
@@ -395,6 +396,7 @@ bool UI_Button::Update(float dt)
 				}
 				static_entity->Upgrade(App->entities->units_damage[static_entity->faction]);
 				static_entity->Upgrade(App->entities->units_speed[static_entity->faction]);
+				static_entity->level++;
 			}
 			if (t == Boost_lab_button)
 			{
@@ -407,6 +409,7 @@ bool UI_Button::Update(float dt)
 				}
 				static_entity->Upgrade(App->entities->units_health[static_entity->faction]);
 				static_entity->Upgrade(App->entities->units_creation_time[static_entity->faction]);
+				static_entity->level++;
 			}
 			else if (t == Boost_radar_button) {
 				if (App->player->caps >= App->entities->radar_cost) {

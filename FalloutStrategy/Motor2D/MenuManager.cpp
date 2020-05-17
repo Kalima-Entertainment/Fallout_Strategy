@@ -22,6 +22,7 @@
 #include "j1Player.h"
 #include "p2Defs.h"
 #include "UI_InputText.h"
+#include "DialogManager.h"
 #include "brofiler/Brofiler/Brofiler.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
@@ -60,14 +61,13 @@ void MenuManager::CreateMenu(Menu menu) {
 		main_menu[9] = (UI_Label*)App->gui->CreateLabel(415, 635, Label, "CREDITS", NULL, this, NULL, "StackedPixelSmall");
 		main_menu[10] = (UI_Label*)App->gui->CreateLabel(630, 635, Label, "EXIT", NULL, this, NULL, "StackedPixelSmall");
 
-
-
 		App->render->camera.x = 0;
 		App->render->camera.y = 0;
 
 		last_menu = current_menu;
 		current_menu = Menu::MAIN_MENU;
 		break;
+
 	case Menu::CREDITS:
 
 		//Images
@@ -307,6 +307,11 @@ void MenuManager::CreateMenu(Menu menu) {
 	case Menu::BUI_BASES:
 		break;
 	case Menu::COLLABORATORS_CREDITS:
+		break;
+	case Menu::DIALOG:
+		//dialogs[0] = App->gui->CreateLabel(App->dialog_manager->statement_box.x, App->dialog_manager->statement_box.y, Label, App->dialog_manager->dialogs[0]->statement, NULL, this, NULL);
+		//dialogs[1] = App->gui->CreateLabel(App->dialog_manager->option_box[0].x, App->dialog_manager->option_box[0].y, Label, App->dialog_manager->dialogs[0]->options[0], NULL, this, NULL);
+		//dialogs[2] = App->gui->CreateLabel(App->dialog_manager->option_box[0].x, App->dialog_manager->option_box[0].y, Label, App->dialog_manager->dialogs[0]->options[0], NULL, this, NULL);
 		break;
 	case Menu::NO_MENU:
 		break;

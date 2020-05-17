@@ -131,6 +131,11 @@ bool StaticEntity::PostUpdate() {
 
 	App->render->Blit(reference_entity->texture, render_texture_pos.x, render_texture_pos.y, &current_animation->GetCurrentFrame(last_dt));
 
+	for (int i = 0; i < level; i++)
+	{
+		App->render->Blit(reference_entity->texture, render_texture_pos.x + upgrade_sprite[i].position.x, render_texture_pos.y + upgrade_sprite[i].position.y, &upgrade_sprite[i].rect);
+	}
+
 	if (App->render->debug)
 		App->render->DrawQuad({ (int)render_position.x, render_position.y, 4,4 }, 255, 0, 0, 255);
 
@@ -161,7 +166,12 @@ bool StaticEntity::LoadDataFromReference() {
 	{
 		animations[i] = static_reference->animations[i];
 	}
-
+	
+	for (int i = 0; i < 4; i++)
+	{
+		upgrade_sprite[i] = static_reference->upgrade_sprite[i];
+	}
+	
 	//load property data
 	current_health = max_health = reference_entity->max_health;
 	sprite_size = reference_entity->sprite_size;
@@ -173,6 +183,18 @@ bool StaticEntity::LoadReferenceData(pugi::xml_node& node) {
 	bool ret = true;
 
 	max_health = node.attribute("health").as_int();
+	pugi::xml_node upgrade_node = node.child("upgrade");
+
+	for (int i = 0; i < 4; i++)
+	{
+		upgrade_sprite[i].position.x = upgrade_node.attribute("x").as_int();
+		upgrade_sprite[i].position.y = upgrade_node.attribute("y").as_int();
+		upgrade_sprite[i].rect.x = upgrade_node.attribute("rect_x").as_int();
+		upgrade_sprite[i].rect.y = upgrade_node.attribute("rect_y").as_int();
+		upgrade_sprite[i].rect.w = upgrade_node.attribute("rect_w").as_int();
+		upgrade_sprite[i].rect.h = upgrade_node.attribute("rect_h").as_int();
+		upgrade_node = upgrade_node.next_sibling();
+	}
 
 	return ret;
 }

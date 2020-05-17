@@ -86,7 +86,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fowManager);
 	AddModule(easing_splines);
 
-	AddModule(dialog_manager);
+	//AddModule(dialog_manager);
 	AddModule(menu_manager);
 	AddModule(gui);
 	AddModule(minimap);
