@@ -20,4 +20,5 @@
   <option text="option 4b" response="response 4b"/>
   <option text="option 4c" response="response 4c"/>
  </dialog>
+ <dialog statement="finishing line"/>
 </dialogs>

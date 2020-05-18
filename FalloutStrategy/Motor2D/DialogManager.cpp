@@ -105,7 +105,7 @@ bool DialogManager::LoadDialogs() {
 void DialogManager::Callback(UI_element* button) {
 	UI_Label* label = (UI_Label*)App->menu_manager->dialogs[0];
 
-	if (dialog_level < 4)
+	if (dialog_level < dialogs.size()-1)
 	{
 		switch (button->GetType())
 		{
@@ -156,7 +156,12 @@ void DialogManager::Callback(UI_element* button) {
 	else
 	{
 		label = (UI_Label*)App->menu_manager->dialogs[0];
-		label->SetLabelText("Dialogs finished", "StackedPixelSmall");
+		label->SetLabelText(dialogs.back()->statement.c_str(), "StackedPixelSmall");
+		for (int i = 1; i < 4; i++)
+		{
+			label = (UI_Label*)App->menu_manager->dialogs[i];
+			label->SetLabelText(" ", "StackedPixelSmall");
+		}
 	}
 	
 }
