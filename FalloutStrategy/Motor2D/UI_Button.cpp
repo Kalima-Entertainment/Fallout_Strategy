@@ -119,6 +119,9 @@ bool UI_Button::Update(float dt)
 				inHover = !inHover;
 			}
 		}
+		else if ((t == OPTION_A) || (t == OPTION_B) || (t == OPTION_C)) {
+			//observer->Callback(this);
+		}
 
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT)==KEY_DOWN) {
 
@@ -484,7 +487,12 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->CreateMenu(Menu::HOW_TO_PLAY);
 				App->gui->ingame = false;
 			}
-
+			
+			/*
+			else if ((t == OPTION_A) || (t == OPTION_B) || (t == OPTION_C)) {
+				//observer->Callback(this);
+			}
+			*/
 		}
 
 		else {
@@ -515,4 +523,8 @@ bool UI_Button::Update(float dt)
 void UI_Button::DoNotShowElement(UI_element* element)
 {
 	element->drawable = false;
+}
+
+UI_Type UI_Button::GetType() {
+	return t;
 }

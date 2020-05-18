@@ -36,6 +36,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	UI_Type GetType();
 
 public:
 

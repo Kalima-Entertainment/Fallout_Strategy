@@ -82,7 +82,10 @@ enum UI_Type {
 	//Dialogs
 	OPTION_A,
 	OPTION_B,
-	OPTION_C
+	OPTION_C,
+	ADVANCE_DIALOGS,
+
+	UI_NONE
 };
 
 class UI_element 
@@ -105,6 +108,7 @@ public:
 
 	bool IsIntersection();
 
+	virtual UI_Type GetType() { return UI_NONE; };
 
 public:
 

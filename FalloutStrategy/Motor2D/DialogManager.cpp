@@ -4,6 +4,8 @@
 #include "j1App.h"
 #include "j1Gui.h"
 #include "UI_element.h"
+#include "MenuManager.h"
+#include "UI_Label.h"
 
 DialogManager::DialogManager() : j1Module() {
 	background_box = { 60, 355, 1170, 340};
@@ -18,6 +20,9 @@ DialogManager::DialogManager() : j1Module() {
 	borders[3] =     { 78, 543, 1139, 69 };
 	option_box[2] =  { 80, 620, 1135, 65 };
 	borders[4] =     { 78, 618, 1139, 69 };
+
+	dialog_level = 0;
+
 }
 
 DialogManager::~DialogManager() {
@@ -35,8 +40,6 @@ bool DialogManager::Awake(pugi::xml_node&) {
 bool DialogManager::Start() {
 	bool ret = true;
 	
-
-
 	return ret;
 }
 
@@ -97,4 +100,63 @@ bool DialogManager::LoadDialogs() {
 	}
 
 	return ret;
+}
+
+void DialogManager::Callback(UI_element* button) {
+	UI_Label* label = (UI_Label*)App->menu_manager->dialogs[0];
+
+	if (dialog_level < 4)
+	{
+		switch (button->GetType())
+		{
+		case UI_Type::OPTION_A:
+			LOG("Option A");
+			label->SetLabelText(dialogs[dialog_level]->response[0].c_str(), "StackedPixelSmall");
+			for (int i = 1; i < 4; i++)
+			{
+				label = (UI_Label*)App->menu_manager->dialogs[i];
+				label->SetLabelText(" ", "StackedPixelSmall");
+			}
+			dialog_level++;
+			break;
+		case UI_Type::OPTION_B:
+			LOG("Option B");
+			label->SetLabelText(dialogs[dialog_level]->response[1].c_str(), "StackedPixelSmall");
+			for (int i = 1; i < 4; i++)
+			{
+				label = (UI_Label*)App->menu_manager->dialogs[i];
+				label->SetLabelText(" ", "StackedPixelSmall");
+			}
+			dialog_level++;
+			break;
+		case UI_Type::OPTION_C:
+			LOG("Option C");
+			label->SetLabelText(dialogs[dialog_level]->response[2].c_str(), "StackedPixelSmall");
+			for (int i = 1; i < 4; i++)
+			{
+				label = (UI_Label*)App->menu_manager->dialogs[i];
+				label->SetLabelText(" ", "StackedPixelSmall");
+			}
+			dialog_level++;
+			break;
+		case UI_Type::ADVANCE_DIALOGS:
+			label = (UI_Label*)App->menu_manager->dialogs[0];
+			label->SetLabelText(dialogs[dialog_level]->statement.c_str(), "StackedPixelSmall");
+
+			for (int i = 1; i < 4; i++)
+			{
+				label = (UI_Label*)App->menu_manager->dialogs[i];
+				label->SetLabelText(dialogs[dialog_level]->options[i-1].c_str(), "StackedPixelSmall");
+			}
+			break;
+		default:
+			break;
+		}
+	}
+	else
+	{
+		label = (UI_Label*)App->menu_manager->dialogs[0];
+		label->SetLabelText("Dialogs finished", "StackedPixelSmall");
+	}
+	
 }

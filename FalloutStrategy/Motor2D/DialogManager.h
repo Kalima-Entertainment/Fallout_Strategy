@@ -24,8 +24,11 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 
+	void Callback(UI_element* button);
+
 private:
 	bool LoadDialogs();
+	int dialog_level;
 
 public:
 	std::vector<Dialog*> dialogs;
