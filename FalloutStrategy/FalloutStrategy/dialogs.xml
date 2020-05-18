@@ -2,8 +2,8 @@
 <dialogs>
  <dialog statement="statement 1">
   <option text="option 1a" response="response 1a"/>
-  <option text="option 1b" response="response 2b"/>
-  <option text="option 1c" response="response 3c"/>
+  <option text="option 1b" response="response 1b"/>
+  <option text="option 1c" response="response 1c"/>
  </dialog>
  <dialog statement="statement 2">
   <option text="option 2a" response="response 2a"/>
