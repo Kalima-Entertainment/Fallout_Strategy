@@ -789,25 +789,27 @@ void j1EntityManager::LoadUnitCosts() {
 			else if (faction_string == "brotherhood") faction = BROTHERHOOD;
 			else if (faction_string == "mutants") faction = MUTANT;
 			else if (faction_string == "ghouls") faction = GHOUL;
+			else if (faction_string == "no_faction") faction = NO_FACTION;
 
 			pugi::xml_node entity_node = faction_node.first_child();
 			while (entity_node != nullptr)
 			{
 				std::string type_string = std::string(entity_node.name());
 
+				if (faction != NO_FACTION) { //Load costs only for players					
 				//check type
-				if (type_string == "melee") type = MELEE;
-				else if (type_string == "ranged") type = RANGED;
-				else if (type_string == "gatherer") type = GATHERER;
+					if (type_string == "melee") type = MELEE;
+					else if (type_string == "ranged") type = RANGED;
+					else if (type_string == "gatherer") type = GATHERER;
+					//load attributes
+					int food = entity_node.child("cost").attribute("food").as_int();
+					int water = entity_node.child("cost").attribute("water").as_int();
+					int time = entity_node.child("cost").attribute("time").as_int();
 
-				//load attributes
-				int food = entity_node.child("cost").attribute("food").as_int();
-				int water = entity_node.child("cost").attribute("water").as_int();
-				int time = entity_node.child("cost").attribute("time").as_int();
-
-				//load into unit_data
-				unit_data[faction][type] = { water, food, time };
-
+					if (time != 0) //Bug fix
+						unit_data[faction][type] = { water, food, time }; //load into unit_data
+				}
+				
 				entity_node = entity_node.next_sibling();
 			}
 			faction_node = faction_node.next_sibling();
