@@ -16,6 +16,7 @@
 #include "j1Transition.h"
 #include "j1Minimap.h"
 #include "j1Hud.h"
+#include "DialogManager.h"
 
 #include "./brofiler/Brofiler/Brofiler.h"
 #include "SDL_mixer\include\SDL_mixer.h"
@@ -47,7 +48,6 @@ UI_Button::UI_Button(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, 
 
 bool UI_Button::CleanUp()
 {
-
 	return true;
 }
 
@@ -120,7 +120,9 @@ bool UI_Button::Update(float dt)
 			}
 		}
 		else if ((t == OPTION_A) || (t == OPTION_B) || (t == OPTION_C)) {
-			//observer->Callback(this);
+			if (inHover) {
+				App->render->DrawQuad({ pos.x, pos.y, 1135, 65 }, 255, 255, 255, 255, true, false);
+			}
 		}
 
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT)==KEY_DOWN) {
@@ -487,12 +489,6 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->CreateMenu(Menu::HOW_TO_PLAY);
 				App->gui->ingame = false;
 			}
-			
-			/*
-			else if ((t == OPTION_A) || (t == OPTION_B) || (t == OPTION_C)) {
-				//observer->Callback(this);
-			}
-			*/
 		}
 
 		else {

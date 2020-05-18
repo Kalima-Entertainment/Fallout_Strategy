@@ -38,7 +38,7 @@ bool MainMenu::Awake(pugi::xml_node& config)
 
 bool MainMenu::Start()
 {
-	App->menu_manager->CreateMenu(Menu::MAIN_MENU);
+	App->menu_manager->CreateMenu(Menu::DIALOG);
 	//App->menu_manager->CreateGUI();
 
 	return true;
