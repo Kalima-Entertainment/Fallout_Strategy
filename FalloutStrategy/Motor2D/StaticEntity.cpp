@@ -681,35 +681,35 @@ void StaticEntity::CalculateRenderAndSpawnPositions() {
 	{
 	case VAULT:
 		if (type == BASE)
-			render_position += App->map->MapToWorld(9, 5);
+			render_position += App->map->MapToWorld(1, 1);
 		else if (type == BARRACK)
-			render_position += App->map->MapToWorld(8, 5);
-		else if (type == LABORATORY)
-			render_position += App->map->MapToWorld(7, 3);
+			render_position += App->map->MapToWorld(0, 1);
+		//else if (type == LABORATORY)
+			//render_position += App->map->MapToWorld(0, 0);
 		break;
 	case BROTHERHOOD:
 		if (type == BASE)
-			render_position += App->map->MapToWorld(10, 6);
+			render_position += App->map->MapToWorld(2, 2);
 		else if (type == BARRACK)
-			render_position += App->map->MapToWorld(10, 7);
+			render_position += App->map->MapToWorld(2, 3);
 		else if (type == LABORATORY)
-			render_position += App->map->MapToWorld(10, 6);
+			render_position += App->map->MapToWorld(2, 2);
 		break;
 	case MUTANT:
 		if (type == BASE)
-			render_position += App->map->MapToWorld(10, 6);
+			render_position += App->map->MapToWorld(2, 2);
 		else if (type == BARRACK)
-			render_position += App->map->MapToWorld(9, 7);
+			render_position += App->map->MapToWorld(1, 3);
 		else if (type == LABORATORY)
-			render_position += App->map->MapToWorld(9, 6);
+			render_position += App->map->MapToWorld(1, 2);
 		break;
 	case GHOUL:
 		if (type == BASE)
-			render_position += App->map->MapToWorld(20, 12);
+			render_position += App->map->MapToWorld(2, 2);
 		else if (type == BARRACK)
-			render_position += App->map->MapToWorld(20, 13);
+			render_position += App->map->MapToWorld(1, 3);
 		else if (type == LABORATORY)
-			render_position += App->map->MapToWorld(20, 11);
+			render_position += App->map->MapToWorld(2, 3);
 		break;
 	default:
 		break;
