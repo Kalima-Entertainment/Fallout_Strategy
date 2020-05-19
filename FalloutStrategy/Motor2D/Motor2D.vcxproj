@@ -82,6 +82,7 @@
     <ClCompile Include="Animal.cpp" />
     <ClCompile Include="Deathclaw.cpp" />
     <ClCompile Include="DynamicEntity.cpp" />
+    <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="FowEntity.cpp" />
     <ClCompile Include="FoWManager.cpp" />
     <ClCompile Include="Gatherer.cpp" />
@@ -141,7 +142,7 @@
     <ClInclude Include="GenericPlayer.h" />
     <ClInclude Include="j1EasingAndSplines.h" />
     <ClInclude Include="j1Hud.h" />
-    <ClInclude Include="Particle.h" />
+    <ClInclude Include="Emitter.h" />
     <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="theoraplay.h" />
     <ClInclude Include="j1Collision.h" />

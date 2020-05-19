@@ -15,7 +15,9 @@ struct Particle {
 	/*int rotation;
 	float rotation_speed*/
 
+	bool PreUpdate();
 	bool Update(float dt);
+	bool PostUpdate();
 };
 
 class Emitter {
@@ -40,6 +42,7 @@ private:
 	int lifetime;
 	int max_particles;
 	bool finished;
+	Particle* current_particle;
 
 };
 
