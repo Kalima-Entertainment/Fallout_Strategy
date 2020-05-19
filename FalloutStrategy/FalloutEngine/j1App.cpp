@@ -76,7 +76,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(ai_manager);
 	AddModule(map);
 	//AddModule(collision);
-	AddModule(dialog_manager);
+	//AddModule(dialog_manager);
 	AddModule(player);
 	AddModule(pathfinding);
 	AddModule(main_menu);
