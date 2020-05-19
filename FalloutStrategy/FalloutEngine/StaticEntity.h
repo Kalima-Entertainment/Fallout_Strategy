@@ -54,6 +54,7 @@ public:
 	std::vector<iPoint> tiles;
 	float time_left;
 	Spawn_Stack spawn_stack[10];
+	bool spawning;
 	int level;
 
 private:
@@ -67,7 +68,7 @@ private:
 
 	j1Timer chrono_spawn;
 	j1Timer chrono_upgrade;
-	bool spawning;
+	
 	bool upgrading;
 	bool want_to_upgrade;
 	

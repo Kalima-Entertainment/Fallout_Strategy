@@ -32,7 +32,7 @@ DialogManager::~DialogManager() {
 bool DialogManager::Awake(pugi::xml_node&) {
 	bool ret = true;
 
-	LoadDialogs();
+	//LoadDialogs();
 
 	return ret;
 }
