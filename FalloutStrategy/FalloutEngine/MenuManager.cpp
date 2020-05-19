@@ -385,15 +385,15 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 						case BUILDING_TYPE::BARRACK:
 
 							//Buttons
-							brotherhood_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 593, Brotherhood_melee_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
-							brotherhood_barrack[1] = (UI_Button*)App->gui->CreateButton(1110, 593, Brotherhood_ranged_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
-							brotherhood_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 653, Boost_barrack_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							brotherhood_barrack[0] = (UI_Button*)App->gui->CreateButton(670, 593, Brotherhood_melee_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							brotherhood_barrack[1] = (UI_Button*)App->gui->CreateButton(830, 593, Brotherhood_ranged_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							brotherhood_barrack[2] = (UI_Button*)App->gui->CreateButton(670, 653, Boost_barrack_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
 
 							//Images
-							brotherhood_barrack[3] = (j1Image*)App->gui->CreateImage(890, 600, Image, { 17, 1560, 69, 115 }, NULL, this);
-							brotherhood_barrack[4] = (j1Image*)App->gui->CreateImage(1060, 600, Image, { 28, 1869, 35, 33 }, NULL, this);
-							brotherhood_barrack[5] = (j1Image*)App->gui->CreateImage(1120, 600, Image, { 83, 1866, 35, 36 }, NULL, this);
-							brotherhood_barrack[6] = (j1Image*)App->gui->CreateImage(1060, 665, Image, { 823, 1872, 32, 22 }, NULL, this);
+							brotherhood_barrack[3] = (j1Image*)App->gui->CreateImage(555, 590, Image, { 17, 1560, 69, 115 }, NULL, this);
+							brotherhood_barrack[4] = (j1Image*)App->gui->CreateImage(682, 600, Image, { 28, 1869, 35, 33 }, NULL, this);
+							brotherhood_barrack[5] = (j1Image*)App->gui->CreateImage(840, 600, Image, { 83, 1866, 35, 36 }, NULL, this);
+							brotherhood_barrack[6] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 823, 1872, 32, 22 }, NULL, this);
 
 							//Labels
 							if (App->entities->units_damage[App->player->faction].upgrade_num < 4) {
@@ -402,6 +402,11 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							}
 							else
 								brotherhood_barrack[7] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");
+
+							//Carta
+							brotherhood_barrack[8] = (j1Image*)App->gui->CreateImage(1010, 600, Image, { 147, 1930, 41, 72 }, NULL, this);
+							brotherhood_barrack[9] = (j1Image*)App->gui->CreateImage(1110, 600, Image, { 194, 1930, 40, 73 }, NULL, this);
+							brotherhood_barrack[10] = (j1Image*)App->gui->CreateImage(1200, 610, Image, { 0, 2338, 41, 46 }, NULL, this);
 
 							last_menu = current_menu;
 							current_menu = Menu::BUI_BASES;
@@ -560,15 +565,15 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 						case BUILDING_TYPE::BARRACK:
 
 							//Buttons
-							ghoul_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 593, Ghouls_melee_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
-							ghoul_barrack[1] = (UI_Button*)App->gui->CreateButton(1110, 593, Ghouls_ranged_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
-							ghoul_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 653, Boost_barrack_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							ghoul_barrack[0] = (UI_Button*)App->gui->CreateButton(670, 593, Ghouls_melee_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							ghoul_barrack[1] = (UI_Button*)App->gui->CreateButton(830, 593, Ghouls_ranged_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							ghoul_barrack[2] = (UI_Button*)App->gui->CreateButton(670, 653, Boost_barrack_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
 
 							//Images
-							ghoul_barrack[3] = (j1Image*)App->gui->CreateImage(885, 600, Image, { 527, 1563, 105, 105 }, NULL, this);
-							ghoul_barrack[4] = (j1Image*)App->gui->CreateImage(1060, 600, Image, { 513, 1865, 33, 34 }, NULL, this);
-							ghoul_barrack[5] = (j1Image*)App->gui->CreateImage(1120, 600, Image, { 571, 1866, 28, 33 }, NULL, this);
-							ghoul_barrack[6] = (j1Image*)App->gui->CreateImage(1060, 665, Image, { 823, 1872, 32, 22 }, NULL, this);
+							ghoul_barrack[3] = (j1Image*)App->gui->CreateImage(540, 590, Image, { 527, 1563, 105, 105 }, NULL, this);
+							ghoul_barrack[4] = (j1Image*)App->gui->CreateImage(680, 600, Image, { 513, 1865, 33, 34 }, NULL, this);
+							ghoul_barrack[5] = (j1Image*)App->gui->CreateImage(840, 600, Image, { 571, 1866, 28, 33 }, NULL, this);
+							ghoul_barrack[6] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 823, 1872, 32, 22 }, NULL, this);
 
 							//Labels
 							if (App->entities->units_damage[App->player->faction].upgrade_num < 4) {
@@ -577,6 +582,10 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							}
 							else
 								ghoul_barrack[7] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");
+
+							ghoul_barrack[8] = (j1Image*)App->gui->CreateImage(1020, 605, Image, { 486, 1930, 22, 67 }, NULL, this);
+							ghoul_barrack[9] = (j1Image*)App->gui->CreateImage(1110, 605, Image, { 442, 1930, 42, 60 }, NULL, this);
+							ghoul_barrack[10] = (j1Image*)App->gui->CreateImage(1200, 610, Image, { 0, 2338, 41, 46 }, NULL, this);
 
 							last_menu = current_menu;
 							current_menu = Menu::BUI_BASES;
@@ -782,13 +791,13 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 
 			case BUILDING_TYPE::ALL:
 				App->gui->DeleteArrayElements(brotherhood_base, 14);
-				App->gui->DeleteArrayElements(brotherhood_barrack, 8);
+				App->gui->DeleteArrayElements(brotherhood_barrack, 11);
 				App->gui->DeleteArrayElements(brotherhood_lab, 8);
 				App->gui->DeleteArrayElements(supermutant_base, 6);
 				App->gui->DeleteArrayElements(supermutant_barrack, 11);
 				App->gui->DeleteArrayElements(supermutant_lab, 8);
 				App->gui->DeleteArrayElements(ghoul_base, 6);
-				App->gui->DeleteArrayElements(ghoul_barrack, 8);
+				App->gui->DeleteArrayElements(ghoul_barrack, 11);
 				App->gui->DeleteArrayElements(ghoul_lab, 8);
 				App->gui->DeleteArrayElements(vault_base, 6);
 				App->gui->DeleteArrayElements(vault_barrack, 11);
@@ -808,7 +817,7 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 				App->gui->DeleteArrayElements(brotherhood_base, 14);
 				break;
 			case BUILDING_TYPE::BARRACK:
-				App->gui->DeleteArrayElements(brotherhood_barrack, 8);
+				App->gui->DeleteArrayElements(brotherhood_barrack, 11);
 				break;
 			case BUILDING_TYPE::LAB:
 				App->gui->DeleteArrayElements(brotherhood_lab, 8);
@@ -856,7 +865,7 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 				App->gui->DeleteArrayElements(ghoul_base, 6);
 				break;
 			case BUILDING_TYPE::BARRACK:
-				App->gui->DeleteArrayElements(ghoul_barrack, 8);
+				App->gui->DeleteArrayElements(ghoul_barrack, 11);
 				break;
 			case BUILDING_TYPE::LAB:
 				App->gui->DeleteArrayElements(ghoul_lab, 8);
