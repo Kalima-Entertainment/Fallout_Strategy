@@ -469,15 +469,15 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 						case BUILDING_TYPE::BARRACK:
 
 							//Buttons
-							supermutant_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 593, Supermutant_melee_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
-							supermutant_barrack[1] = (UI_Button*)App->gui->CreateButton(1110, 593, Supermutant_ranged_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
-							supermutant_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 653, Boost_barrack_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							supermutant_barrack[0] = (UI_Button*)App->gui->CreateButton(670, 593, Supermutant_melee_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							supermutant_barrack[1] = (UI_Button*)App->gui->CreateButton(830, 593, Supermutant_ranged_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							supermutant_barrack[2] = (UI_Button*)App->gui->CreateButton(670, 653, Boost_barrack_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
 
 							//Images
-							supermutant_barrack[3] = (j1Image*)App->gui->CreateImage(890, 600, Image, { 801, 1549, 102, 119 }, NULL, this);
-							supermutant_barrack[4] = (j1Image*)App->gui->CreateImage(1062, 600, Image, { 246, 1869, 34, 33 }, NULL, this);
-							supermutant_barrack[5] = (j1Image*)App->gui->CreateImage(1120, 600, Image, { 301, 1865, 34, 35 }, NULL, this);
-							supermutant_barrack[6] = (j1Image*)App->gui->CreateImage(1055, 665, Image, { 823, 1872, 32, 22 }, NULL, this);
+							supermutant_barrack[3] = (j1Image*)App->gui->CreateImage(530, 590, Image, { 801, 1549, 102, 119 }, NULL, this);
+							supermutant_barrack[4] = (j1Image*)App->gui->CreateImage(682, 600, Image, { 246, 1869, 34, 33 }, NULL, this);
+							supermutant_barrack[5] = (j1Image*)App->gui->CreateImage(840, 600, Image, { 301, 1865, 34, 35 }, NULL, this);
+							supermutant_barrack[6] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 823, 1872, 32, 22 }, NULL, this);
 
 							//Labels
 							if (App->entities->units_damage[App->player->faction].upgrade_num < 4) {
@@ -486,6 +486,11 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							}
 							else
 								supermutant_barrack[7] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");
+
+							//Carta
+							supermutant_barrack[8] = (j1Image*)App->gui->CreateImage(1010, 600, Image, { 47, 1930, 44, 80 }, NULL, this);
+							supermutant_barrack[9] = (j1Image*)App->gui->CreateImage(1110, 600, Image, { 0, 1930, 44, 80 }, NULL, this);
+							supermutant_barrack[10] = (j1Image*)App->gui->CreateImage(1200, 610, Image, { 0, 2338, 41, 46 }, NULL, this);
 
 							last_menu = current_menu;
 							current_menu = Menu::BUI_BASES;
@@ -776,7 +781,7 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 				App->gui->DeleteArrayElements(brotherhood_barrack, 8);
 				App->gui->DeleteArrayElements(brotherhood_lab, 8);
 				App->gui->DeleteArrayElements(supermutant_base, 6);
-				App->gui->DeleteArrayElements(supermutant_barrack, 8);
+				App->gui->DeleteArrayElements(supermutant_barrack, 11);
 				App->gui->DeleteArrayElements(supermutant_lab, 8);
 				App->gui->DeleteArrayElements(ghoul_base, 6);
 				App->gui->DeleteArrayElements(ghoul_barrack, 8);
@@ -824,7 +829,7 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 				App->gui->DeleteArrayElements(supermutant_base, 6);
 				break;
 			case BUILDING_TYPE::BARRACK:
-				App->gui->DeleteArrayElements(supermutant_barrack, 8);
+				App->gui->DeleteArrayElements(supermutant_barrack, 11);
 				break;
 			case BUILDING_TYPE::LAB:
 				App->gui->DeleteArrayElements(supermutant_lab, 8);
