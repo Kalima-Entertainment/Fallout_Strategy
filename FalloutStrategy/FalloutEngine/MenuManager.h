@@ -92,7 +92,7 @@ public:
 	UI_element* ghoul_lab[8];
 
 	UI_element* vault_base[6];
-	UI_element* vault_barrack[8];
+	UI_element* vault_barrack[11];
 	UI_element* vault_lab[8];
 
 	UI_element* supermutant_base[6];

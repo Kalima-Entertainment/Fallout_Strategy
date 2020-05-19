@@ -643,16 +643,15 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 						case BUILDING_TYPE::BARRACK:
 
 							//Buttons
-							vault_barrack[0] = (UI_Button*)App->gui->CreateButton(1050, 593, Vault_melee_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
-							vault_barrack[1] = (UI_Button*)App->gui->CreateButton(1110, 593, Vault_ranged_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
-							vault_barrack[2] = (UI_Button*)App->gui->CreateButton(1050, 653, Boost_barrack_button, { 1355,2028,53,52 }, { 1355,2112,53,52 }, { 1355,2196,53,52 }, NULL, this);
+							vault_barrack[0] = (UI_Button*)App->gui->CreateButton(670, 593, Vault_melee_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							vault_barrack[1] = (UI_Button*)App->gui->CreateButton(830, 593, Vault_ranged_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							vault_barrack[2] = (UI_Button*)App->gui->CreateButton(670, 653, Boost_barrack_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
 
 							//Images
-							vault_barrack[3] = (j1Image*)App->gui->CreateImage(885, 600, Image, { 148, 1731, 122, 91 }, NULL, this);
-							vault_barrack[4] = (j1Image*)App->gui->CreateImage(1060, 600, Image, { 406, 1866, 32, 34 }, NULL, this);
-							vault_barrack[5] = (j1Image*)App->gui->CreateImage(1120, 600, Image, { 355, 1866, 30, 34 }, NULL, this);
-							vault_barrack[6] = (j1Image*)App->gui->CreateImage(1060, 665, Image, { 823, 1872, 32, 22 }, NULL, this);
-
+							vault_barrack[3] = (j1Image*)App->gui->CreateImage(530, 590, Image, { 148, 1731, 122, 91 }, NULL, this);
+							vault_barrack[4] = (j1Image*)App->gui->CreateImage(680, 600, Image, { 406, 1866, 32, 34 }, NULL, this);
+							vault_barrack[5] = (j1Image*)App->gui->CreateImage(840, 600, Image, { 355, 1866, 30, 34 }, NULL, this);
+							vault_barrack[6] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 823, 1872, 32, 22 }, NULL, this);
 
 							//Labels
 							if (App->entities->units_damage[App->player->faction].upgrade_num < 4) {
@@ -662,6 +661,11 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							}
 							else
 								vault_barrack[7] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");
+
+							//Carta
+							vault_barrack[8] = (j1Image*)App->gui->CreateImage(1010, 600, Image, { 296, 1930, 44, 61 }, NULL, this);
+							vault_barrack[9] = (j1Image*)App->gui->CreateImage(1110, 600, Image, { 340, 1930, 34, 65 }, NULL, this);
+							vault_barrack[10] = (j1Image*)App->gui->CreateImage(1200, 610, Image, { 0, 2338, 41, 46 }, NULL, this);
 
 							last_menu = current_menu;
 							current_menu = Menu::BUI_BASES;
@@ -787,7 +791,7 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 				App->gui->DeleteArrayElements(ghoul_barrack, 8);
 				App->gui->DeleteArrayElements(ghoul_lab, 8);
 				App->gui->DeleteArrayElements(vault_base, 6);
-				App->gui->DeleteArrayElements(vault_barrack, 8);
+				App->gui->DeleteArrayElements(vault_barrack, 11);
 				App->gui->DeleteArrayElements(vault_lab, 8);
 				break;
 			case BUILDING_TYPE::NONE:
@@ -874,7 +878,7 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 				App->gui->DeleteArrayElements(vault_base, 6);
 				break;
 			case BUILDING_TYPE::BARRACK:
-				App->gui->DeleteArrayElements(vault_barrack, 8);
+				App->gui->DeleteArrayElements(vault_barrack, 11);
 				break;
 			case BUILDING_TYPE::LAB:
 				App->gui->DeleteArrayElements(vault_lab, 8);
