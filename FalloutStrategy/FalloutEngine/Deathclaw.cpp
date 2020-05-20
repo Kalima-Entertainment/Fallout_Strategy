@@ -107,6 +107,7 @@ bool Deathclaw::LoadDataFromReference() {
 	damage = reference_deathclaw->damage;
 	speed = reference_deathclaw->speed;
 	sprite_size = reference_entity->sprite_size;
+	texture = reference_entity->texture;
 
 	return ret;
 }

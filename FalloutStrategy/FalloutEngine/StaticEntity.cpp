@@ -34,6 +34,7 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 	want_to_upgrade = false;
 
 	time_left = 0;
+	level = 0;
 
 	CalculateRenderAndSpawnPositions();
 

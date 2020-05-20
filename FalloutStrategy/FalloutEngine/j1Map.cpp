@@ -302,6 +302,7 @@ bool j1Map::Load(std::string modules[4])
 			}
 		}
 
+		/*
 		if (ret == true)
 		{
 			LOG("Successfully parsed map XML file: %s", modules[i].c_str());
@@ -324,11 +325,12 @@ bool j1Map::Load(std::string modules[4])
 				LOG("name: %s", data.layers[l].name.c_str());
 				LOG("tile width: %d tile height: %d", data.layers[l].width, data.layers[l].height);
 			}
-
+			
 
 			LOG("ObjectGroup ----");
 			LOG("name: %s", data.objectgroup.name.c_str());
 		}
+		*/
 	}
 	map_loaded = ret;
 	return ret;

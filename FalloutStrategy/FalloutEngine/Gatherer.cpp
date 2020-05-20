@@ -45,6 +45,7 @@ Gatherer::~Gatherer() {
 
 bool Gatherer::Update(float dt) {
 	bool ret = true;
+	current_animation = &animations[state][direction];
 
 	switch (state)
 	{
@@ -97,9 +98,26 @@ bool Gatherer::Update(float dt) {
 		}
 		break;
 	case HIT:
+		if (current_animation->Finished()) {
+			current_animation->Reset();
+			state = IDLE;
+		}
 		break;
 	case DIE:
 		direction = TOP_LEFT;
+		if (!delete_timer.Started()) {
+			delete_timer.Start();
+			direction = TOP_LEFT;
+			if (attacking_entity) {
+				attacking_entity->target_entity = nullptr;
+				attacking_entity->state = IDLE;
+			}
+		}
+
+		if (delete_timer.ReadSec() > 4) {
+			to_delete = true;
+			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
+		}
 		break;
 	default:
 		break;

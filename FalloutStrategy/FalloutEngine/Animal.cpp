@@ -57,7 +57,7 @@ bool Animal::Update(float dt) {
 			current_tile = { -1,-1 };
 			next_tile = { -1,-1 };
 
-			if (attacking_entity->owner->is_ai) {
+			if ((attacking_entity != nullptr)&&(attacking_entity->owner->is_ai)) {
 				((AI_Player*)attacking_entity->owner)->GatherFood(resource_spot);
 				attacking_entity = nullptr;
 			}
@@ -96,7 +96,7 @@ bool Animal::LoadDataFromReference() {
 	food_quantity = reference_animal->food_quantity;
 	speed = reference_animal->speed;
 	sprite_size = reference_entity->sprite_size;
-	texture = reference_entity->texture;
+	texture = reference_animal->texture;
 
 	return ret;
 }

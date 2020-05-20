@@ -18,6 +18,23 @@
     <frame tileid="8" duration="100"/>
    </animation>
   </tile>
+  <tile id="10">
+   <properties>
+    <property name="die" value="top_left"/>
+   </properties>
+   <animation>
+    <frame tileid="10" duration="100"/>
+    <frame tileid="11" duration="100"/>
+    <frame tileid="12" duration="100"/>
+    <frame tileid="13" duration="100"/>
+    <frame tileid="14" duration="100"/>
+    <frame tileid="15" duration="100"/>
+    <frame tileid="26" duration="100"/>
+    <frame tileid="27" duration="100"/>
+    <frame tileid="28" duration="100"/>
+    <frame tileid="29" duration="100"/>
+   </animation>
+  </tile>
   <tile id="16">
    <properties>
     <property name="idle" value="bottom_right"/>
@@ -281,7 +298,7 @@
    <tile gid="209"/>
    <tile gid="225"/>
    <tile gid="241"/>
-   <tile gid="0"/>
+   <tile gid="11"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>

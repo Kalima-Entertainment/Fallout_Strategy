@@ -57,6 +57,7 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 		texture_folders[i].append(file_node.attribute("folder").as_string());
 		tmx_files[i] = file_node.attribute("tmx").as_string();
 		file_node = file_node.next_sibling();
+		reference_entities[i] = nullptr;
 	}
 
 	RandomFactions();

@@ -47,6 +47,8 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 DynamicEntity::DynamicEntity() {
 	is_dynamic = true;
 	commanded = false;
+	state = IDLE;
+	direction = TOP_LEFT;
 }
 
 DynamicEntity::~DynamicEntity() {

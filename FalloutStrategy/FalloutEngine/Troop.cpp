@@ -19,6 +19,8 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 	position.x += HALF_TILE;
 	position.y += HALF_TILE;
 
+	target_building = nullptr;
+
 	switch (type)
 	{
 	case MELEE:
