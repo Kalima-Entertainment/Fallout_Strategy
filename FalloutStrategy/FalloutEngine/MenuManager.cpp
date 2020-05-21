@@ -243,8 +243,8 @@ void MenuManager::CreateMenu(Menu menu) {
 		//Tutorial
 		gui_ingame[2] = (j1Image*)App->gui->CreateImage(1205, 70, Image, { 1037, 2120, 74, 71 }, NULL, this);
 		gui_ingame[3] = (UI_Button*)App->gui->CreateButton(1160, 70, info_button, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this);
-		
 		break;
+
 	case Menu::RESOURCES:
 
 
@@ -325,8 +325,11 @@ void MenuManager::CreateMenu(Menu menu) {
 
 		dialogs[7] = App->gui->CreateButton(1210, 325, ADVANCE_DIALOGS, { 908, 2185, 44, 42 }, { 908, 2135, 44, 42 }, { 908, 2084, 44, 42 }, nullptr, App->dialog_manager);
 
+		dialogs[8] = App->gui->CreateButton(50, 325, FINISH_DIALOGS, { 1671, 921,24,27 }, { 1712, 921,24,27 }, { 1712, 921,24,27 }, nullptr, App->dialog_manager);
+
 		last_menu = current_menu;
 		current_menu = Menu::DIALOG;
+
 		break;
 	case Menu::NO_MENU:
 		break;
@@ -786,9 +789,13 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->gui->DeleteArrayElements(tutorial, 7);
 		App->gui->Delete_Element(tutorial_screen);
 		App->gui->Delete_Element(info_button2_element);
+		break;
 	case Menu::HOW_TO_PLAY:
 		App->gui->DeleteArrayElements(how_to_play, 6);
-
+		break;
+	case Menu::DIALOG:
+		App->gui->DeleteArrayElements(dialogs, 9);
+		break;
 
 	default:
 		break;

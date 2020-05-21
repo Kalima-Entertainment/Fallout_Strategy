@@ -35,8 +35,7 @@ bool j1Hud::Awake(pugi::xml_node& node)
 
 bool j1Hud::Start()
 {
-
-	activateTimer = false;
+	//activateTimer = false;
 	
 	return true;
 }
@@ -94,9 +93,6 @@ bool j1Hud::Update(float dt)
 	{
 		App->entities->SpawnAnimals();
 	}
-
-	
-
 
 	return true;
 }
@@ -423,7 +419,6 @@ bool j1Hud::PostUpdate()
 
 bool j1Hud::CleanUp()
 {
-	
 	return true;
 }
 

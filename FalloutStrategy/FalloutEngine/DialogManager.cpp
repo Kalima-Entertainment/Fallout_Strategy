@@ -6,6 +6,7 @@
 #include "UI_element.h"
 #include "MenuManager.h"
 #include "UI_Label.h"
+#include "j1Hud.h"
 
 DialogManager::DialogManager() : j1Module() {
 	background_box = { 60, 355, 1170, 340};
@@ -32,21 +33,17 @@ DialogManager::~DialogManager() {
 bool DialogManager::Awake(pugi::xml_node&) {
 	bool ret = true;
 
-	//LoadDialogs();
+	LoadDialogs();
 
 	return ret;
 }
 
 bool DialogManager::Start() {
 	bool ret = true;
-	
+		
 	return ret;
 }
 
-bool DialogManager::Update(float dt) {
-	bool ret = true;
-	return ret;
-}
 
 bool DialogManager::PostUpdate() {
 	bool ret = true;
@@ -62,6 +59,17 @@ bool DialogManager::PostUpdate() {
 	App->render->DrawQuad(borders[3], 100, 255, 100, 220, false, false);
 	App->render->DrawQuad(borders[4], 100, 255, 100, 220, false, false);
 
+	return ret;
+}
+
+bool DialogManager::CleanUp() {
+	bool ret = true;
+	dialogs.clear();
+	App->menu_manager->DestroyMenu(Menu::DIALOG);
+	App->menu_manager->CreateMenu(Menu::GUI);
+	App->menu_manager->CreateMenu(Menu::RESOURCES);
+	App->isPaused = false;
+	App->hud->activateTimer = true;
 	return ret;
 }
 
@@ -104,40 +112,47 @@ bool DialogManager::LoadDialogs() {
 
 void DialogManager::Callback(UI_element* button) {
 	UI_Label* label = (UI_Label*)App->menu_manager->dialogs[0];
+	UI_Label* option = (UI_Label*)App->menu_manager->dialogs[1];
 
-	if (dialog_level < dialogs.size()-1)
+	if (dialog_level < dialogs.size() -1)
 	{
 		switch (button->GetType())
 		{
 		case UI_Type::OPTION_A:
-			LOG("Option A");
-			label->SetLabelText(dialogs[dialog_level]->response[0].c_str(), "StackedPixelSmall");
-			for (int i = 1; i < 4; i++)
-			{
-				label = (UI_Label*)App->menu_manager->dialogs[i];
-				label->SetLabelText(" ", "StackedPixelSmall");
+			if (option->text != " ") {
+				LOG("Option A");
+				label->SetLabelText(dialogs[dialog_level]->response[0].c_str(), "StackedPixelSmall");
+				for (int i = 1; i < 4; i++)
+				{
+					label = (UI_Label*)App->menu_manager->dialogs[i];
+					label->SetLabelText(" ", "StackedPixelSmall");
+				}
+				dialog_level++;
 			}
-			dialog_level++;
 			break;
 		case UI_Type::OPTION_B:
-			LOG("Option B");
-			label->SetLabelText(dialogs[dialog_level]->response[1].c_str(), "StackedPixelSmall");
-			for (int i = 1; i < 4; i++)
-			{
-				label = (UI_Label*)App->menu_manager->dialogs[i];
-				label->SetLabelText(" ", "StackedPixelSmall");
+			if (option->text != " ") {
+				LOG("Option B");
+				label->SetLabelText(dialogs[dialog_level]->response[1].c_str(), "StackedPixelSmall");
+				for (int i = 1; i < 4; i++)
+				{
+					label = (UI_Label*)App->menu_manager->dialogs[i];
+					label->SetLabelText(" ", "StackedPixelSmall");
+				}
+				dialog_level++;
 			}
-			dialog_level++;
 			break;
 		case UI_Type::OPTION_C:
-			LOG("Option C");
-			label->SetLabelText(dialogs[dialog_level]->response[2].c_str(), "StackedPixelSmall");
-			for (int i = 1; i < 4; i++)
-			{
-				label = (UI_Label*)App->menu_manager->dialogs[i];
-				label->SetLabelText(" ", "StackedPixelSmall");
+			if (option->text != " ") {
+				LOG("Option C");
+				label->SetLabelText(dialogs[dialog_level]->response[2].c_str(), "StackedPixelSmall");
+				for (int i = 1; i < 4; i++)
+				{
+					label = (UI_Label*)App->menu_manager->dialogs[i];
+					label->SetLabelText(" ", "StackedPixelSmall");
+				}
+				dialog_level++;
 			}
-			dialog_level++;
 			break;
 		case UI_Type::ADVANCE_DIALOGS:
 			label = (UI_Label*)App->menu_manager->dialogs[0];
@@ -149,19 +164,16 @@ void DialogManager::Callback(UI_element* button) {
 				label->SetLabelText(dialogs[dialog_level]->options[i-1].c_str(), "StackedPixelSmall");
 			}
 			break;
+		case UI_Type::FINISH_DIALOGS:
+			Disable();
+			break;
 		default:
 			break;
 		}
 	}
 	else
 	{
-		label = (UI_Label*)App->menu_manager->dialogs[0];
-		label->SetLabelText(dialogs.back()->statement.c_str(), "StackedPixelSmall");
-		for (int i = 1; i < 4; i++)
-		{
-			label = (UI_Label*)App->menu_manager->dialogs[i];
-			label->SetLabelText(" ", "StackedPixelSmall");
-		}
+		Disable();
 	}
 	
 }

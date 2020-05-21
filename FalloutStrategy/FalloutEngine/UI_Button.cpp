@@ -328,8 +328,8 @@ bool UI_Button::Update(float dt)
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
 				App->gui->count = 0;
 				App->gui->ingame = true;
-				App->menu_manager->CreateMenu(Menu::GUI);
-				App->menu_manager->CreateMenu(Menu::RESOURCES);
+				//App->menu_manager->CreateMenu(Menu::GUI);
+				//App->menu_manager->CreateMenu(Menu::RESOURCES);
 				App->transition->fadetimer.Start();
 				App->transition->transition = true;
 				App->entities->Enable();
@@ -343,8 +343,8 @@ bool UI_Button::Update(float dt)
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
 				App->gui->count = 0;
 				App->gui->ingame = true;
-				App->menu_manager->CreateMenu(Menu::GUI);
-				App->menu_manager->CreateMenu(Menu::RESOURCES);
+				//App->menu_manager->CreateMenu(Menu::GUI);
+				//App->menu_manager->CreateMenu(Menu::RESOURCES);
 				App->transition->fadetimer.Start();
 				App->transition->transition = true;
 				App->entities->Enable();
@@ -357,8 +357,8 @@ bool UI_Button::Update(float dt)
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
 				App->gui->count = 0;
 				App->gui->ingame = true;
-				App->menu_manager->CreateMenu(Menu::GUI);
-				App->menu_manager->CreateMenu(Menu::RESOURCES);
+				//App->menu_manager->CreateMenu(Menu::GUI);
+				//App->menu_manager->CreateMenu(Menu::RESOURCES);
 				App->transition->fadetimer.Start();
 				App->transition->transition = true;				
 				App->entities->Enable();
@@ -371,8 +371,8 @@ bool UI_Button::Update(float dt)
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
 				App->gui->count = 0;
 				App->gui->ingame = true;
-				App->menu_manager->CreateMenu(Menu::GUI);
-				App->menu_manager->CreateMenu(Menu::RESOURCES);
+				//App->menu_manager->CreateMenu(Menu::GUI);
+				//App->menu_manager->CreateMenu(Menu::RESOURCES);
 				App->transition->fadetimer.Start();
 				App->transition->transition = true;
 				App->entities->Enable();

@@ -21,8 +21,8 @@ public:
 
 	bool Start();
 	bool Awake(pugi::xml_node&);
-	bool Update(float dt);
 	bool PostUpdate();
+	bool CleanUp();
 
 	void Callback(UI_element* button);
 

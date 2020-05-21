@@ -76,11 +76,11 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(ai_manager);
 	AddModule(map);
 	//AddModule(collision);
-	//AddModule(dialog_manager);
 	AddModule(player);
 	AddModule(pathfinding);
 	AddModule(main_menu);
 	AddModule(entities);
+	AddModule(dialog_manager);
 	AddModule(font);
 	AddModule(scene);
 	AddModule(Mmanager);
@@ -94,7 +94,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(logo_scene);
 	AddModule(transition);	
 	AddModule(hud);
-	//AddModule(dialog_manager);
 	// render last to swap buffer
 	AddModule(render);
 
@@ -175,6 +174,7 @@ bool j1App::Start()
 	ai_manager->active = false;
 	scene->active = false;
 	minimap->active = false;
+	dialog_manager->active = false;
 
 	for (int i = 0; i < modules.size() && ret == true; i++)
 	{
@@ -278,7 +278,7 @@ void j1App::FinishUpdate()
 
 	//Warning if FPS < 10
 	if (last_frame_ms > 100) {
-		LOG("FPS drop");
+		//LOG("FPS drop");
 		App->render->DrawQuad({1100, 200, 10,10}, 255,250,0,255, true,false);
 	}
 }

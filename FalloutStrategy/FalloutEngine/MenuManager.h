@@ -101,7 +101,7 @@ public:
 
 	UI_element* win_scene[5];
 
-	UI_element* dialogs[7];
+	UI_element* dialogs[9];
 
 	UI_Label* cap_label = nullptr;
 	UI_Label* fullscreen_label = nullptr;
