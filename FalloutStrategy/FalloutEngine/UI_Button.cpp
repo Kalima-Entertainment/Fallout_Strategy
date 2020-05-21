@@ -272,6 +272,8 @@ bool UI_Button::Update(float dt)
 					App->menu_manager->fullscreen_label = (UI_Label*)App->gui->CreateLabel(763, 613, Label, "NO", NULL, this, NULL, "StackedPixelMedium");
 				}
 
+				App->minimap->CleanUp();
+				App->minimap->Start();
 			}
 			else if (t == button_win_lose_to_main)
 			{

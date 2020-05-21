@@ -60,7 +60,6 @@ public:
 private:
 	int gen_speed;
 	Animation animations[3];
-	iPoint render_texture_pos;
 
 	int max_capacity;
 

@@ -1080,5 +1080,4 @@ void j1EntityManager::SpawnAnimals() {
 			}
 		}
 	}
-
 }

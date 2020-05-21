@@ -16,9 +16,8 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 	faction = g_faction;
 	owner = g_owner;
 
-	current_tile = g_current_tile;
-	render_texture_pos = { 0,0 };
-	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
+	//current_tile = g_current_tile;
+	//position = App->map->fMapToWorld(current_tile.x, current_tile.y);
 
 	state = IDLE;
 	storage_capacity = 1000;
@@ -35,6 +34,8 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 
 	time_left = 0;
 	level = 0;
+
+	spawnPosition = {-1,-1};
 
 	CalculateRenderAndSpawnPositions();
 
@@ -127,18 +128,15 @@ bool StaticEntity::PostUpdate() {
 		}
 	}
 
-	//Render building
-	render_texture_pos = {(int)(position.x - 0.5f * sprite_size),(int)(position.y - sprite_size * 0.75)};
-
-	App->render->Blit(reference_entity->texture, render_texture_pos.x, render_texture_pos.y, &current_animation->GetCurrentFrame(last_dt));
+	App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
 	for (int i = 0; i < level; i++)
 	{
-		App->render->Blit(reference_entity->texture, render_texture_pos.x + upgrade_sprite[i].position.x, render_texture_pos.y + upgrade_sprite[i].position.y, &upgrade_sprite[i].rect);
+		App->render->Blit(texture, render_position.x + upgrade_sprite[i].position.x, render_position.y + upgrade_sprite[i].position.y, &upgrade_sprite[i].rect);
 	}
 
 	if (App->render->debug)
-		App->render->DrawQuad({ (int)render_position.x, render_position.y, 4,4 }, 255, 0, 0, 255);
+		App->render->DrawQuad({ (int)position.x, (int)position.y, 4,4 }, 255, 0, 0, 255);
 
 	//Health bar stats
 	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 80, 4 };
@@ -176,6 +174,8 @@ bool StaticEntity::LoadDataFromReference() {
 	//load property data
 	current_health = max_health = reference_entity->max_health;
 	sprite_size = reference_entity->sprite_size;
+	texture = reference_entity->texture;
+
 	return ret;
 }
 
@@ -676,46 +676,50 @@ bool StaticEntity::Save(pugi::xml_node& data) const
 
 void StaticEntity::CalculateRenderAndSpawnPositions() {
 
-	render_position = { (int)(position.x - 0.5f * sprite_size),(int)(position.y - sprite_size * 0.75) };
+	if (tiles.size() > 0) {
+		current_tile = tiles.front();
+		position = App->map->fMapToWorld(current_tile.x, current_tile.y);
+		render_position = { (int)(position.x - 0.5f * sprite_size),(int)(position.y - sprite_size * 0.75) };
 
-	switch (faction)
-	{
-	case VAULT:
-		if (type == BASE)
-			render_position += App->map->MapToWorld(1, 1);
-		else if (type == BARRACK)
-			render_position += App->map->MapToWorld(0, 1);
-		//else if (type == LABORATORY)
-			//render_position += App->map->MapToWorld(0, 0);
-		break;
-	case BROTHERHOOD:
-		if (type == BASE)
-			render_position += App->map->MapToWorld(2, 2);
-		else if (type == BARRACK)
-			render_position += App->map->MapToWorld(2, 3);
-		else if (type == LABORATORY)
-			render_position += App->map->MapToWorld(2, 2);
-		break;
-	case MUTANT:
-		if (type == BASE)
-			render_position += App->map->MapToWorld(2, 2);
-		else if (type == BARRACK)
-			render_position += App->map->MapToWorld(1, 3);
-		else if (type == LABORATORY)
-			render_position += App->map->MapToWorld(1, 2);
-		break;
-	case GHOUL:
-		if (type == BASE)
-			render_position += App->map->MapToWorld(2, 2);
-		else if (type == BARRACK)
-			render_position += App->map->MapToWorld(1, 3);
-		else if (type == LABORATORY)
-			render_position += App->map->MapToWorld(2, 3);
-		break;
-	default:
-		break;
+		switch (faction)
+		{
+		case VAULT:
+			if (type == BASE)
+				render_position += App->map->MapToWorld(4, 3);
+			else if (type == BARRACK)
+				render_position += App->map->MapToWorld(3, 2);
+			else if (type == LABORATORY)
+				render_position += App->map->MapToWorld(4, 4);
+			break;
+		case BROTHERHOOD:
+			if (type == BASE)
+				render_position += App->map->MapToWorld(2, 2);
+			else if (type == BARRACK)
+				render_position += App->map->MapToWorld(2, 3);
+			else if (type == LABORATORY)
+				render_position += App->map->MapToWorld(2, 2);
+			break;
+		case MUTANT:
+			if (type == BASE)
+				render_position += App->map->MapToWorld(2, 2);
+			else if (type == BARRACK)
+				render_position += App->map->MapToWorld(1, 3);
+			else if (type == LABORATORY)
+				render_position += App->map->MapToWorld(1, 2);
+			break;
+		case GHOUL:
+			if (type == BASE)
+				render_position += App->map->MapToWorld(2, 2);
+			else if (type == BARRACK)
+				render_position += App->map->MapToWorld(1, 3);
+			else if (type == LABORATORY)
+				render_position += App->map->MapToWorld(2, 3);
+			break;
+		default:
+			break;
+		}
+
+		//Spawn position is just below render position
+		spawnPosition = { App->map->WorldToMap(render_position.x, render_position.y) };
 	}
-
-	//Spawn position is just below render position
-	spawnPosition = { App->map->WorldToMap(render_position.x, render_position.y) };
 }
