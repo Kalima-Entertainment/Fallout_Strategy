@@ -57,10 +57,10 @@
  <static>
    <vault>
     <base health="8000">
-     <upgrade level="1" x="93" y="170" rect_x="2992" rect_y="901" rect_w="30" rect_h="33"/>
-     <upgrade level="2" x="125" y="177" rect_x="3051" rect_y="898" rect_w="42" rect_h="39"/>
-     <upgrade level="3" x="125 " y="107" rect_x="3122" rect_y="871" rect_w="49" rect_h="84"/>
-     <upgrade level="4" x="131" y="105" rect_x="3186" rect_y="917" rect_w="14" rect_h="17"/>
+     <upgrade level="1" x="132" y="159" rect_x="2867" rect_y="985" rect_w="41" rect_h="39"/>
+     <upgrade level="2" x="171" y="126" rect_x="2988" rect_y="942" rect_w="42" rect_h="82 "/>
+     <upgrade level="3" x="64" y="143" rect_x="3105" rect_y="927" rect_w="61" rect_h="97"/>
+     <upgrade level="4" x="128" y="192" rect_x="3240" rect_y="975" rect_w="62" rect_h="49"/>
     </base>
     <barrack health="6000">
      <upgrade level="1" x="0" y="0" rect_x="0" rect_y="0" rect_w="0" rect_h="0"/>
