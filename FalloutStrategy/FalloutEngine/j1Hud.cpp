@@ -19,6 +19,7 @@
 #include "j1Player.h"
 #include "StaticEntity.h"
 #include "j1Entity.h"
+#include "GenericPlayer.h"
 
 j1Hud::j1Hud() :j1Module()
 {
@@ -30,7 +31,10 @@ bool j1Hud::Awake(pugi::xml_node& node)
 	timer = 59;
 	minutes = 14;
 	draw_health = false;
-	finish = false;
+	finish_base = false;
+	finish_barrack = false;
+	finish_lab = false;
+	entity = 0;
 	return true;
 }
 
@@ -130,14 +134,14 @@ bool j1Hud::PostUpdate()
 
 					}
 
-					finish = true;
+					finish_base = true;
 
 				}
-				else if (static_entity->spawning == false && finish == true) {
+				else if (static_entity->spawning == false && finish_base == true) {
 					gatherer_amount++;
 					App->menu_manager->DestroyMenu(Menu::GATHERER_QUANTITY);
 					App->menu_manager->CreateMenu(Menu::GATHERER_QUANTITY);
-					finish = false;
+					finish_base = false;
 				}
 
 
@@ -223,14 +227,14 @@ bool j1Hud::PostUpdate()
 						
 					}
 
-					finish = true;
+					finish_base = true;
 
 				}
-				else if (static_entity->spawning == false && finish == true) {
+				else if (static_entity->spawning == false && finish_base == true) {
 					gatherer_amount++;
 					App->menu_manager->DestroyMenu(Menu::GATHERER_QUANTITY);
 					App->menu_manager->CreateMenu(Menu::GATHERER_QUANTITY);
-					finish = false;
+					finish_base = false;
 				}
 
 
@@ -322,14 +326,14 @@ bool j1Hud::PostUpdate()
 
 					}
 
-					finish = true;
+					finish_base = true;
 
 				}
-				else if (static_entity->spawning == false && finish == true) {
+				else if (static_entity->spawning == false && finish_base == true) {
 					gatherer_amount++;
 					App->menu_manager->DestroyMenu(Menu::GATHERER_QUANTITY);
 					App->menu_manager->CreateMenu(Menu::GATHERER_QUANTITY);
-					finish = false;
+					finish_base = false;
 				}
 
 			}
@@ -419,19 +423,19 @@ bool j1Hud::PostUpdate()
 
 					}
 
-					finish = true;
+					finish_base = true;
 
 				}
-				else if (static_entity->spawning == false && finish == true) {
+				else if (static_entity->spawning == false && finish_base == true) {
 					gatherer_amount++;
 					App->menu_manager->DestroyMenu(Menu::GATHERER_QUANTITY);
 					App->menu_manager->CreateMenu(Menu::GATHERER_QUANTITY);
-					finish = false;
+					finish_base = false;
 				}
 
 
 			}
-			if (static_entity->type == BARRACK) {
+			else if (static_entity->type == BARRACK) {
 
 				//Health bar stats
 				background_bar = { 530, 698, 122, 4 };
@@ -448,8 +452,6 @@ bool j1Hud::PostUpdate()
 				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
 				App->render->DrawQuad(spawn_bar_background2, 255, 255, 255, 255, true, 0.0f);
 
-				int entity = 0;
-
 				if (static_entity->spawning) {
 
 					if(static_entity->spawn_stack[0].type ==MELEE){
@@ -464,34 +466,31 @@ bool j1Hud::PostUpdate()
 					entity = 2;
 					}
 
-					finish = true;
+					finish_barrack = true;
 				}
 
-				else if (static_entity->spawning == false && finish == true) {
+				if (static_entity->spawning == false && finish_barrack == true) {
 					
 						if (entity == 1) {
 							melee_amount++;
 							App->menu_manager->DestroyMenu(Menu::MELEE_QUANTITY);
 							App->menu_manager->CreateMenu(Menu::MELEE_QUANTITY);
-							finish = false;
+							finish_barrack = false;
 							entity = 0;
 						}
 						else if (entity == 2) {
 							ranged_amount++;
 							App->menu_manager->DestroyMenu(Menu::RANGED_QUANTITY);
 							App->menu_manager->CreateMenu(Menu::RANGED_QUANTITY);
-							finish = false;
+							finish_barrack = false;
 							entity = 0;
 						}
 					
 				}
 
-				
-				
-
 
 			}
-			if (static_entity->type == LABORATORY) {
+			else if (static_entity->type == LABORATORY) {
 
 				//Health bar stats
 				background_bar = { 530, 698, 122, 4 };

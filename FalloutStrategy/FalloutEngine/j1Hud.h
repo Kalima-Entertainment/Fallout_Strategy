@@ -55,7 +55,10 @@ public:
 	int melee_amount = 1;
 	int ranged_amount = 1;
 	
-	bool finish;
+	bool finish_base;
+	bool finish_barrack;
+	bool finish_lab;
+	int entity;
 	
 };
 
