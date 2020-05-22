@@ -99,7 +99,7 @@ public:
 	UI_element* vault_lab[11];
 
 	UI_element* supermutant_base[7];
-	UI_element* supermutant_barrack[11];
+	UI_element* supermutant_barrack[13];
 	UI_element* supermutant_lab[11];
 
 	UI_element* win_scene[5];

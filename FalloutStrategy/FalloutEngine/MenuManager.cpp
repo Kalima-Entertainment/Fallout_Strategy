@@ -276,7 +276,7 @@ void MenuManager::CreateMenu(Menu menu) {
 
 		ranged_quantity = std::to_string(App->hud->ranged_amount);
 
-		ranged_label = (UI_Label*)App->gui->CreateLabel(865, 668, Label, ranged_quantity, NULL, this, NULL, "StackedPixelSmall");
+		ranged_label = (UI_Label*)App->gui->CreateLabel(965, 668, Label, ranged_quantity, NULL, this, NULL, "StackedPixelSmall");
 
 		break;
 
@@ -530,6 +530,13 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							supermutant_barrack[8] = (j1Image*)App->gui->CreateImage(1010, 600, Image, { 47, 1930, 44, 80 }, NULL, this);
 							supermutant_barrack[9] = (j1Image*)App->gui->CreateImage(1110, 600, Image, { 0, 1930, 44, 80 }, NULL, this);
 							supermutant_barrack[10] = (j1Image*)App->gui->CreateImage(1200, 610, Image, { 0, 2338, 41, 46 }, NULL, this);
+
+							supermutant_barrack[11] = (UI_Label*)App->gui->CreateLabel(850, 668, Label, "x", NULL, this, NULL, "StackedPixelSmall");
+							supermutant_barrack[12] = (UI_Label*)App->gui->CreateLabel(950, 668, Label, "x", NULL, this, NULL, "StackedPixelSmall");
+
+							//Draw initial quantity
+							CreateMenu(Menu::RANGED_QUANTITY);
+							CreateMenu(Menu::MELEE_QUANTITY);
 
 							last_menu = current_menu;
 							current_menu = Menu::BUI_BASES;
@@ -858,7 +865,7 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 				App->gui->DeleteArrayElements(brotherhood_lab, 11);
 				
 				App->gui->DeleteArrayElements(supermutant_base, 7);
-				App->gui->DeleteArrayElements(supermutant_barrack, 11);
+				App->gui->DeleteArrayElements(supermutant_barrack, 13);
 				App->gui->DeleteArrayElements(supermutant_lab, 11);
 				
 				App->gui->DeleteArrayElements(ghoul_base, 6);
@@ -918,7 +925,7 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 				App->gui->Delete_Element(gatherer_label);
 				break;
 			case BUILDING_TYPE::BARRACK:
-				App->gui->DeleteArrayElements(supermutant_barrack, 11);
+				App->gui->DeleteArrayElements(supermutant_barrack, 13);
 				App->gui->Delete_Element(melee_label);
 				App->gui->Delete_Element(ranged_label);
 				break;

@@ -431,7 +431,7 @@ bool j1Hud::PostUpdate()
 
 
 			}
-			else if (static_entity->type == BARRACK) {
+			if (static_entity->type == BARRACK) {
 
 				//Health bar stats
 				background_bar = { 530, 698, 122, 4 };
@@ -448,16 +448,42 @@ bool j1Hud::PostUpdate()
 				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
 				App->render->DrawQuad(spawn_bar_background2, 255, 255, 255, 255, true, 0.0f);
 
+				int entity = 0;
+
 				if (static_entity->spawning) {
 
 					if(static_entity->spawn_stack[0].type ==MELEE){
 					SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
 					App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
+					entity = 1;
 					}
+					
 					else if (static_entity->spawn_stack[0].type == RANGED) {
 					SDL_Rect spawn_bar_foreground = { 1092, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background2.w, 6 };
 					App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
+					entity = 2;
 					}
+
+					finish = true;
+				}
+
+				else if (static_entity->spawning == false && finish == true) {
+					
+						if (entity == 1) {
+							melee_amount++;
+							App->menu_manager->DestroyMenu(Menu::MELEE_QUANTITY);
+							App->menu_manager->CreateMenu(Menu::MELEE_QUANTITY);
+							finish = false;
+							entity = 0;
+						}
+						else if (entity == 2) {
+							ranged_amount++;
+							App->menu_manager->DestroyMenu(Menu::RANGED_QUANTITY);
+							App->menu_manager->CreateMenu(Menu::RANGED_QUANTITY);
+							finish = false;
+							entity = 0;
+						}
+					
 				}
 
 				
@@ -465,7 +491,7 @@ bool j1Hud::PostUpdate()
 
 
 			}
-			else if (static_entity->type == LABORATORY) {
+			if (static_entity->type == LABORATORY) {
 
 				//Health bar stats
 				background_bar = { 530, 698, 122, 4 };
