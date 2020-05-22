@@ -35,7 +35,6 @@ bool j1Hud::Awake(pugi::xml_node& node)
 	finish_barrack = false;
 	finish_lab = false;
 	entity = 0;
-
 	return true;
 }
 
