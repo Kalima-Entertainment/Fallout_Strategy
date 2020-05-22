@@ -687,7 +687,7 @@ void StaticEntity::CalculateRenderAndSpawnPositions() {
 			if (type == BASE)
 				render_position += App->map->MapToWorld(4, 3);
 			else if (type == BARRACK)
-				render_position += App->map->MapToWorld(3, 2);
+				render_position += App->map->MapToWorld(3, 3);
 			else if (type == LABORATORY)
 				render_position += App->map->MapToWorld(4, 4);
 			break;
@@ -720,6 +720,7 @@ void StaticEntity::CalculateRenderAndSpawnPositions() {
 		}
 
 		//Spawn position is just below render position
-		spawnPosition = { App->map->WorldToMap(render_position.x, render_position.y) };
+		spawnPosition = { App->map->WorldToMap(render_position.x + sprite_size * 0.5f, render_position.y + sprite_size) };
+		
 	}
 }
