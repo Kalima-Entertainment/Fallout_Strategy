@@ -51,9 +51,11 @@ public:
 	char timer_text[10];
 	char minutes_text[15];
 	
-
+	int gatherer_amount = 1;
+	int melee_amount = 1;
+	int ranged_amount = 1;
 	
-
+	bool finish;
 	
 };
 

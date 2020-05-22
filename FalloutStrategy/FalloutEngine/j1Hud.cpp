@@ -30,6 +30,7 @@ bool j1Hud::Awake(pugi::xml_node& node)
 	timer = 59;
 	minutes = 14;
 	draw_health = false;
+	finish = false;
 	return true;
 }
 
@@ -111,8 +112,33 @@ bool j1Hud::PostUpdate()
 				background_bar = { 530, 698, 122, 4 };
 				foreground_bar = { 531, 699, static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
-				App->render->DrawQuad(background_bar, 0, 0, 0, 255, true, 0.0f);
+				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, 0.0f);
 				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, 0.0f);
+
+				//Spawn bar
+
+				SDL_Rect spawn_bar_background = { 995, 692, 75, 6 };
+
+				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
+
+				if (static_entity->spawning) {
+
+					if (static_entity->spawn_stack[0].type == GATHERER) {
+
+						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
+
+					}
+
+					finish = true;
+
+				}
+				else if (static_entity->spawning == false && finish == true) {
+					gatherer_amount++;
+					App->menu_manager->DestroyMenu(Menu::GATHERER_QUANTITY);
+					App->menu_manager->CreateMenu(Menu::GATHERER_QUANTITY);
+					finish = false;
+				}
 
 
 			}
@@ -137,11 +163,11 @@ bool j1Hud::PostUpdate()
 
 					if (static_entity->spawn_stack[0].type == MELEE) {
 						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
 					else if (static_entity->spawn_stack[0].type == RANGED) {
 						SDL_Rect spawn_bar_foreground = { 1092, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background2.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
 				}
 			}
@@ -163,14 +189,11 @@ bool j1Hud::PostUpdate()
 
 				if (static_entity->spawning) {
 
-					if (static_entity->spawn_stack[0].type == MELEE) {
+					if (static_entity->spawn_stack[0].type == MR_HANDY) {
 						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
-					else if (static_entity->spawn_stack[0].type == RANGED) {
-						SDL_Rect spawn_bar_foreground = { 1092, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background2.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255, true, 0.0f);
-					}
+			
 				}
 			}
 			break;
@@ -186,11 +209,29 @@ bool j1Hud::PostUpdate()
 				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, 0.0f);
 
 				//Spawn bar
-			
-				SDL_Rect spawn_bar_background = { 900, 678, 170, 8 };
-				SDL_Rect spawn_bar_foreground = { 901, 679, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 8 };
+
+				SDL_Rect spawn_bar_background = { 995, 692, 75, 6 };
+
 				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
-				App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255, true, 0.0f);
+
+				if (static_entity->spawning) {
+
+					if (static_entity->spawn_stack[0].type == GATHERER) {
+						
+						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
+						
+					}
+
+					finish = true;
+
+				}
+				else if (static_entity->spawning == false && finish == true) {
+					gatherer_amount++;
+					App->menu_manager->DestroyMenu(Menu::GATHERER_QUANTITY);
+					App->menu_manager->CreateMenu(Menu::GATHERER_QUANTITY);
+					finish = false;
+				}
 
 
 			}
@@ -215,11 +256,11 @@ bool j1Hud::PostUpdate()
 
 					if (static_entity->spawn_stack[0].type == MELEE) {
 						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
 					else if (static_entity->spawn_stack[0].type == RANGED) {
 						SDL_Rect spawn_bar_foreground = { 1092, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background2.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
 				}
 
@@ -245,11 +286,11 @@ bool j1Hud::PostUpdate()
 
 					if (static_entity->spawn_stack[0].type == MELEE) {
 						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
 					else if (static_entity->spawn_stack[0].type == RANGED) {
 						SDL_Rect spawn_bar_foreground = { 1092, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background2.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
 				}
 			}
@@ -263,8 +304,33 @@ bool j1Hud::PostUpdate()
 				background_bar = { 530, 698, 122, 4 };
 				foreground_bar = { 531, 699, static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
-				App->render->DrawQuad(background_bar, 0, 0, 0, 255, true, 0.0f);
+				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, 0.0f);
 				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, 0.0f);
+
+				//Spawn bar
+
+				SDL_Rect spawn_bar_background = { 995, 692, 75, 6 };
+
+				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
+
+				if (static_entity->spawning) {
+
+					if (static_entity->spawn_stack[0].type == GATHERER) {
+
+						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
+
+					}
+
+					finish = true;
+
+				}
+				else if (static_entity->spawning == false && finish == true) {
+					gatherer_amount++;
+					App->menu_manager->DestroyMenu(Menu::GATHERER_QUANTITY);
+					App->menu_manager->CreateMenu(Menu::GATHERER_QUANTITY);
+					finish = false;
+				}
 
 			}
 			else if (static_entity->type == BARRACK) {
@@ -288,11 +354,11 @@ bool j1Hud::PostUpdate()
 
 					if (static_entity->spawn_stack[0].type == MELEE) {
 						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
 					else if (static_entity->spawn_stack[0].type == RANGED) {
 						SDL_Rect spawn_bar_foreground = { 1092, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background2.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
 				}
 
@@ -318,11 +384,11 @@ bool j1Hud::PostUpdate()
 
 					if (static_entity->spawn_stack[0].type == MELEE) {
 						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
 					else if (static_entity->spawn_stack[0].type == RANGED) {
 						SDL_Rect spawn_bar_foreground = { 1092, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background2.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
 				}
 
@@ -335,8 +401,33 @@ bool j1Hud::PostUpdate()
 				background_bar = { 530, 698, 122, 4 };
 				foreground_bar = { 531, 699, static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
-				App->render->DrawQuad(background_bar, 0, 0, 0, 255, true, 0.0f);
+				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, 0.0f);
 				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, 0.0f);
+
+				//Spawn bar
+
+				SDL_Rect spawn_bar_background = { 995, 692, 75, 6 };
+
+				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
+
+				if (static_entity->spawning) {
+
+					if (static_entity->spawn_stack[0].type == GATHERER) {
+
+						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
+
+					}
+
+					finish = true;
+
+				}
+				else if (static_entity->spawning == false && finish == true) {
+					gatherer_amount++;
+					App->menu_manager->DestroyMenu(Menu::GATHERER_QUANTITY);
+					App->menu_manager->CreateMenu(Menu::GATHERER_QUANTITY);
+					finish = false;
+				}
 
 
 			}
@@ -361,11 +452,11 @@ bool j1Hud::PostUpdate()
 
 					if(static_entity->spawn_stack[0].type ==MELEE){
 					SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
-					App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255, true, 0.0f);
+					App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
 					else if (static_entity->spawn_stack[0].type == RANGED) {
 					SDL_Rect spawn_bar_foreground = { 1092, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background2.w, 6 };
-					App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255, true, 0.0f);
+					App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
 				}
 
@@ -395,11 +486,11 @@ bool j1Hud::PostUpdate()
 
 					if (static_entity->spawn_stack[0].type == MELEE) {
 						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
 					else if (static_entity->spawn_stack[0].type == RANGED) {
 						SDL_Rect spawn_bar_foreground = { 1092, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background2.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
 				}
 			}

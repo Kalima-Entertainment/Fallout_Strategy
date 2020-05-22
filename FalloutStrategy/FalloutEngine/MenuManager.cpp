@@ -23,6 +23,7 @@
 #include "p2Defs.h"
 #include "UI_InputText.h"
 #include "DialogManager.h"
+#include "j1Hud.h"
 #include "brofiler/Brofiler/Brofiler.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
@@ -261,6 +262,33 @@ void MenuManager::CreateMenu(Menu menu) {
 
 		break;
 
+	case Menu::GATHERER_QUANTITY:
+
+
+		gatherer_quantity = std::to_string(App->hud->gatherer_amount);
+
+		gatherer_label = (UI_Label*)App->gui->CreateLabel(865, 668, Label, gatherer_quantity, NULL, this, NULL, "StackedPixelSmall");
+
+		break;
+
+	case Menu::RANGED_QUANTITY:
+
+
+		ranged_quantity = std::to_string(App->hud->ranged_amount);
+
+		ranged_label = (UI_Label*)App->gui->CreateLabel(865, 668, Label, ranged_quantity, NULL, this, NULL, "StackedPixelSmall");
+
+		break;
+
+	case Menu::MELEE_QUANTITY:
+
+
+		melee_quantity = std::to_string(App->hud->melee_amount);
+
+		melee_label = (UI_Label*)App->gui->CreateLabel(865, 668, Label, melee_quantity, NULL, this, NULL, "StackedPixelSmall");
+
+		break;
+
 	case Menu::TUTORIAL:
 
 		//Images
@@ -353,33 +381,26 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 						case BUILDING_TYPE::BASE:
 
 							//Buttons
-							brotherhood_base[0] = (UI_Button*)App->gui->CreateButton(740, 593, Brotherhood_ghaterer_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-							brotherhood_base[1] = (UI_Button*)App->gui->CreateButton(740, 653, Boost_base_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							brotherhood_base[0] = (UI_Button*)App->gui->CreateButton(670, 593, Brotherhood_ghaterer_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							brotherhood_base[1] = (UI_Button*)App->gui->CreateButton(670, 653, Boost_base_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
 
 							//Images
 							brotherhood_base[2] = (j1Image*)App->gui->CreateImage(530, 589, Image, { 118, 1561, 122, 98 }, NULL, this);
-							brotherhood_base[3] = (j1Image*)App->gui->CreateImage(748, 600, Image, { 138, 1868, 33, 33 }, NULL, this);
-							brotherhood_base[4] = (j1Image*)App->gui->CreateImage(748, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
+							brotherhood_base[3] = (j1Image*)App->gui->CreateImage(682, 600, Image, { 138, 1868, 33, 33 }, NULL, this);
+							brotherhood_base[4] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
 
-							brotherhood_base[13] = (j1Image*)App->gui->CreateImage(960, 630, Image, { 138, 1868, 33, 33 }, NULL, this);
-
-							//Labels
+							/*//Labels
 							if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
 								int cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
-								brotherhood_base[5] = (UI_Label*)App->gui->CreateLabel(810, 668, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelMedium");
+								brotherhood_base[5] = (UI_Label*)App->gui->CreateLabel(810, 668, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelSmall");
 							}
 							else
-								brotherhood_base[5] = (UI_Label*)App->gui->CreateLabel(810, 668, Label, "MAX.", NULL, this, NULL, "StackedPixelMedium");
+								brotherhood_base[5] = (UI_Label*)App->gui->CreateLabel(810, 668, Label, "MAX.", NULL, this, NULL, "StackedPixelSmall");*/
 
-
-							brotherhood_base[6] = (UI_Label*)App->gui->CreateLabel(810, 603, Label, "50", NULL, this, NULL, "StackedPixelMedium");
-							brotherhood_base[7] = (UI_Label*)App->gui->CreateLabel(900, 590, Label, "Spawn Gatherer", NULL, this, NULL, "StackedPixelSmall");
-							brotherhood_base[8] = (UI_Label*)App->gui->CreateLabel(1100, 590, Label, "Storage Boost", NULL, this, NULL, "StackedPixelSmall");
-
-							brotherhood_base[9] = (UI_Label*)App->gui->CreateLabel(660, 607, Label, "X", NULL, this, NULL, "StackedPixelMedium");
-							brotherhood_base[10] = (UI_Label*)App->gui->CreateLabel(660, 667, Label, "x", NULL, this, NULL, "StackedPixelMedium");
-							brotherhood_base[11] = (UI_Label*)App->gui->CreateLabel(680, 607, Label, "1", NULL, this, NULL, "StackedPixelMedium");
-							brotherhood_base[12] = (UI_Label*)App->gui->CreateLabel(680, 667, Label, "000", NULL, this, NULL, "StackedPixelMedium");
+							brotherhood_base[6] = (UI_Label*)App->gui->CreateLabel(850, 668, Label, "x", NULL, this, NULL, "StackedPixelSmall");
+							
+							//Draw initial quantity
+							CreateMenu(Menu::GATHERER_QUANTITY);
 
 							last_menu = current_menu;
 							current_menu = Menu::BUI_BASES;
@@ -458,24 +479,30 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 						case BUILDING_TYPE::BASE:
 							
 							//Buttons
-							supermutant_base[0] = (UI_Button*)App->gui->CreateButton(1050, 593, Supermutant_ghaterer_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-							supermutant_base[1] = (UI_Button*)App->gui->CreateButton(1050, 653, Boost_base_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							supermutant_base[0] = (UI_Button*)App->gui->CreateButton(670, 593, Supermutant_ghaterer_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							supermutant_base[1] = (UI_Button*)App->gui->CreateButton(670, 653, Boost_base_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
 
 							//Images
-							supermutant_base[2] = (j1Image*)App->gui->CreateImage(900, 593, Image, { 934, 1577, 129, 91 }, NULL, this);
-							supermutant_base[3] = (j1Image*)App->gui->CreateImage(1060, 600, Image, { 191, 1868, 34, 32 }, NULL, this);
-							supermutant_base[4] = (j1Image*)App->gui->CreateImage(1055, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
+							supermutant_base[2] = (j1Image*)App->gui->CreateImage(530, 589, Image, { 934, 1577, 129, 91 }, NULL, this);
+							supermutant_base[3] = (j1Image*)App->gui->CreateImage(682, 600, Image, { 191, 1868, 34, 32 }, NULL, this);
+							supermutant_base[4] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
 
-							//Labels
+							/*//Labels
 							if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
 								int cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
 								supermutant_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelSmall");
 							}
 							else
-								supermutant_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");
+								supermutant_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");*/
 
+							supermutant_base[6] = (UI_Label*)App->gui->CreateLabel(850, 668, Label, "x", NULL, this, NULL, "StackedPixelSmall");
+
+							//Draw initial quantity
+							CreateMenu(Menu::GATHERER_QUANTITY);
+							
 							last_menu = current_menu;
 							current_menu = Menu::BUI_BASES;
+
 
 							break;
 						case BUILDING_TYPE::BARRACK:
@@ -785,6 +812,15 @@ void MenuManager::DestroyMenu(Menu menu) {
 	case Menu::RESOURCES:
 		App->gui->DeleteArrayElements(resources, 3);
 		break;
+	case Menu::RANGED_QUANTITY:
+		App->gui->Delete_Element(ranged_label);
+		break;
+	case Menu::GATHERER_QUANTITY:
+		App->gui->Delete_Element(gatherer_label);
+		break;
+	case Menu::MELEE_QUANTITY:
+		App->gui->Delete_Element(melee_label);
+		break;
 	case Menu::TUTORIAL:
 		App->gui->DeleteArrayElements(tutorial, 7);
 		App->gui->Delete_Element(tutorial_screen);
@@ -817,12 +853,11 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 			{
 
 			case BUILDING_TYPE::ALL:
-				App->gui->DeleteArrayElements(brotherhood_base, 14);
+				App->gui->DeleteArrayElements(brotherhood_base, 7);
 				App->gui->DeleteArrayElements(brotherhood_barrack, 11);
 				App->gui->DeleteArrayElements(brotherhood_lab, 11);
-
-
-				App->gui->DeleteArrayElements(supermutant_base, 6);
+				
+				App->gui->DeleteArrayElements(supermutant_base, 7);
 				App->gui->DeleteArrayElements(supermutant_barrack, 11);
 				App->gui->DeleteArrayElements(supermutant_lab, 11);
 				
@@ -833,6 +868,11 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 				App->gui->DeleteArrayElements(vault_base, 6);
 				App->gui->DeleteArrayElements(vault_barrack, 11);
 				App->gui->DeleteArrayElements(vault_lab, 11);
+
+				App->gui->Delete_Element(gatherer_label);
+				App->gui->Delete_Element(melee_label);
+				App->gui->Delete_Element(ranged_label);
+
 				break;
 			case BUILDING_TYPE::NONE:
 				break;
@@ -845,10 +885,14 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 			switch (type)
 			{
 			case BUILDING_TYPE::BASE:
-				App->gui->DeleteArrayElements(brotherhood_base, 14);
+				App->gui->DeleteArrayElements(brotherhood_base, 7);
+				App->gui->Delete_Element(gatherer_label);
+			
 				break;
 			case BUILDING_TYPE::BARRACK:
 				App->gui->DeleteArrayElements(brotherhood_barrack, 11);
+				App->gui->Delete_Element(melee_label);
+				App->gui->Delete_Element(ranged_label);
 				break;
 			case BUILDING_TYPE::LAB:
 				App->gui->DeleteArrayElements(brotherhood_lab, 11);
@@ -870,10 +914,13 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 			{
 
 			case BUILDING_TYPE::BASE:
-				App->gui->DeleteArrayElements(supermutant_base, 6);
+				App->gui->DeleteArrayElements(supermutant_base, 7);
+				App->gui->Delete_Element(gatherer_label);
 				break;
 			case BUILDING_TYPE::BARRACK:
 				App->gui->DeleteArrayElements(supermutant_barrack, 11);
+				App->gui->Delete_Element(melee_label);
+				App->gui->Delete_Element(ranged_label);
 				break;
 			case BUILDING_TYPE::LAB:
 				App->gui->DeleteArrayElements(supermutant_lab, 11);

@@ -27,6 +27,9 @@ enum class Menu {
 	BUI_BASES,
 	COLLABORATORS_CREDITS,
 	DIALOG,
+	GATHERER_QUANTITY,
+	MELEE_QUANTITY,
+	RANGED_QUANTITY,
 	NO_MENU,
 };
 
@@ -83,7 +86,7 @@ public:
 	UI_Label*	timer_minutes;
 	UI_element* resources[3];
 
-	UI_element* brotherhood_base[14];
+	UI_element* brotherhood_base[7];
 	UI_element* brotherhood_barrack[11];
 	UI_element* brotherhood_lab[11];
 
@@ -95,7 +98,7 @@ public:
 	UI_element* vault_barrack[11];
 	UI_element* vault_lab[11];
 
-	UI_element* supermutant_base[6];
+	UI_element* supermutant_base[7];
 	UI_element* supermutant_barrack[11];
 	UI_element* supermutant_lab[11];
 
@@ -105,6 +108,10 @@ public:
 
 	UI_Label* cap_label = nullptr;
 	UI_Label* fullscreen_label = nullptr;
+	
+	UI_Label* gatherer_label = nullptr;
+	UI_Label* melee_label = nullptr;
+	UI_Label* ranged_label = nullptr;
 
 	Menu current_menu;
 	Menu last_menu;
@@ -114,6 +121,10 @@ public:
 	std::string water;
 	std::string food;
 	std::string caps;
+
+	std::string gatherer_quantity;
+	std::string melee_quantity;
+	std::string ranged_quantity;
 
 };
 
