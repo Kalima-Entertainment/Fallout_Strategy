@@ -309,10 +309,10 @@ void MenuManager::CreateMenu(Menu menu) {
 	case Menu::COLLABORATORS_CREDITS:
 		break;
 	case Menu::DIALOG:
-		dialogs[0] = App->gui->CreateLabel(App->dialog_manager->statement_box.x + 10, App->dialog_manager->statement_box.y + 10, Label, App->dialog_manager->dialogs[0]->statement, NULL, this, NULL, "StackedPixelSmall");
-		dialogs[1] = App->gui->CreateLabel(App->dialog_manager->option_box[0].x + 10, App->dialog_manager->option_box[0].y + 10, Label, App->dialog_manager->dialogs[0]->options[0], NULL, this, NULL, "StackedPixelSmall");
-		dialogs[2] = App->gui->CreateLabel(App->dialog_manager->option_box[1].x + 10, App->dialog_manager->option_box[1].y + 10, Label, App->dialog_manager->dialogs[1]->options[1], NULL, this, NULL, "StackedPixelSmall");
-		dialogs[3] = App->gui->CreateLabel(App->dialog_manager->option_box[2].x + 10, App->dialog_manager->option_box[2].y + 10, Label, App->dialog_manager->dialogs[2]->options[2], NULL, this, NULL, "StackedPixelSmall");
+		dialogs[0] = App->gui->CreateLabel(App->dialog_manager->statement_box.x + 10, App->dialog_manager->statement_box.y + 20, Label, App->dialog_manager->dialogs[0]->statement, NULL, this, NULL, "StackedPixelSmall");
+		dialogs[1] = App->gui->CreateLabel(App->dialog_manager->option_box[0].x + 10, App->dialog_manager->option_box[0].y + 20, Label, App->dialog_manager->dialogs[0]->options[0], NULL, this, NULL, "StackedPixelSmall");
+		dialogs[2] = App->gui->CreateLabel(App->dialog_manager->option_box[1].x + 10, App->dialog_manager->option_box[1].y + 20, Label, App->dialog_manager->dialogs[0]->options[1], NULL, this, NULL, "StackedPixelSmall");
+		dialogs[3] = App->gui->CreateLabel(App->dialog_manager->option_box[2].x + 10, App->dialog_manager->option_box[2].y + 20, Label, App->dialog_manager->dialogs[0]->options[2], NULL, this, NULL, "StackedPixelSmall");
 
 		dialogs[4] = App->gui->CreateButton(App->dialog_manager->option_box[0].x, App->dialog_manager->option_box[0].y, OPTION_A, { 0,540,App->dialog_manager->option_box[0].w,App->dialog_manager->option_box[0].h },
 			{ 0,540,App->dialog_manager->option_box[0].w,App->dialog_manager->option_box[0].h }, { 0,540,App->dialog_manager->option_box[0].w,App->dialog_manager->option_box[0].h }, NULL, App->dialog_manager);
@@ -325,7 +325,7 @@ void MenuManager::CreateMenu(Menu menu) {
 
 		dialogs[7] = App->gui->CreateButton(1210, 325, ADVANCE_DIALOGS, { 908, 2185, 44, 42 }, { 908, 2135, 44, 42 }, { 908, 2084, 44, 42 }, nullptr, App->dialog_manager);
 
-		dialogs[8] = App->gui->CreateButton(50, 325, FINISH_DIALOGS, { 1671, 921,24,27 }, { 1712, 921,24,27 }, { 1712, 921,24,27 }, nullptr, App->dialog_manager);
+		dialogs[8] = App->gui->CreateButton(10, 325, FINISH_DIALOGS, { 2441, 842,71,76 }, { 2441, 922,71,76 }, { 2441, 1004,71,76 }, nullptr, App->dialog_manager);
 
 		last_menu = current_menu;
 		current_menu = Menu::DIALOG;

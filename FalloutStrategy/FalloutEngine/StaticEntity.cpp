@@ -689,31 +689,31 @@ void StaticEntity::CalculateRenderAndSpawnPositions() {
 			else if (type == BARRACK)
 				render_position += App->map->MapToWorld(3, 3);
 			else if (type == LABORATORY)
-				render_position += App->map->MapToWorld(4, 4);
+				render_position += App->map->MapToWorld(5, 4);
 			break;
 		case BROTHERHOOD:
 			if (type == BASE)
-				render_position += App->map->MapToWorld(2, 2);
+				render_position += App->map->MapToWorld(3, 2);
 			else if (type == BARRACK)
-				render_position += App->map->MapToWorld(2, 3);
+				render_position += App->map->MapToWorld(1, 1);
 			else if (type == LABORATORY)
-				render_position += App->map->MapToWorld(2, 2);
+				render_position += App->map->MapToWorld(2, 1);
 			break;
 		case MUTANT:
 			if (type == BASE)
-				render_position += App->map->MapToWorld(2, 2);
+				render_position += App->map->MapToWorld(3, 2);
 			else if (type == BARRACK)
-				render_position += App->map->MapToWorld(1, 3);
+				render_position += App->map->MapToWorld(2, 2);
 			else if (type == LABORATORY)
-				render_position += App->map->MapToWorld(1, 2);
+				render_position += App->map->MapToWorld(2, 2);
 			break;
 		case GHOUL:
 			if (type == BASE)
-				render_position += App->map->MapToWorld(2, 2);
+				render_position += App->map->MapToWorld(3, 2);
 			else if (type == BARRACK)
-				render_position += App->map->MapToWorld(1, 3);
+				render_position += App->map->MapToWorld(2, 1);
 			else if (type == LABORATORY)
-				render_position += App->map->MapToWorld(2, 3);
+				render_position += App->map->MapToWorld(2, 0);
 			break;
 		default:
 			break;

@@ -376,5 +376,8 @@
     <Xml Include="..\FalloutStrategy\entities.xml">
       <Filter>Desenvolupament  ========\Tools</Filter>
     </Xml>
+    <Xml Include="..\FalloutStrategy\dialogs.xml">
+      <Filter>Desenvolupament  ========\Tools</Filter>
+    </Xml>
   </ItemGroup>
 </Project>
