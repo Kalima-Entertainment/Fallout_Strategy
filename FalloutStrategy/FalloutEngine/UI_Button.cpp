@@ -444,6 +444,7 @@ bool UI_Button::Update(float dt)
 			else if (t == info_button2) {
 				if (App->scene->create_tutorial == true) {
 					App->menu_manager->DestroyMenu(Menu::TUTORIAL);
+					App->menu_manager->DestroyMenu(Menu::HOW_TO_PLAY);
 					App->audio->PlayFx(1, App->audio->back_fx, 0);
 					App->scene->create_tutorial = false;
 					App->gui->ingame = true;
