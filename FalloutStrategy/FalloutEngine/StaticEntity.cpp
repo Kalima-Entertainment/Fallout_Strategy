@@ -73,6 +73,8 @@ bool StaticEntity::Update(float dt) {
 		if (!delete_timer.Started())
 			delete_timer.Start();
 
+		visionEntity->SetNewPosition(App->map->MapToWorld(-10, -10));
+
 		if ((delete_timer.ReadSec() > 5)||(current_animation->Finished()))
 			to_delete = true;
 

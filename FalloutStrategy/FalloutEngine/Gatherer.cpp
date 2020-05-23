@@ -109,6 +109,7 @@ bool Gatherer::Update(float dt) {
 				attacking_entity->state = IDLE;
 			}
 		}
+		visionEntity->SetNewPosition(App->map->MapToWorld(-10, -10));
 
 		if (delete_timer.ReadSec() > 4) {
 			to_delete = true;
