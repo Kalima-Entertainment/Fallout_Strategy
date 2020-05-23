@@ -45152,6 +45152,5 @@
   <object id="41" name="Animal" type="SpawnPoint" x="194" y="421" width="24.25" height="21.5"/>
   <object id="42" name="Animal" type="SpawnPoint" x="1183" y="304" width="24.25" height="21.5"/>
   <object id="43" name="Animal" type="SpawnPoint" x="1145" y="1518" width="24.25" height="21.5"/>
-  <object id="44" name="Animal" type="SpawnPoint" x="1167" y="1825" width="24.25" height="21.5"/>
  </objectgroup>
 </map>

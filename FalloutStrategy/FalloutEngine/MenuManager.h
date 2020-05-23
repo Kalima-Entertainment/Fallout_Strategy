@@ -91,13 +91,13 @@ public:
 	UI_element* brotherhood_lab[11];
 
 
-	UI_element* ghoul_base[12];
-	UI_element* ghoul_barrack[13];
-	UI_element* ghoul_lab[11];
+	UI_element* ghoul_base[15];
+	UI_element* ghoul_barrack[22];
+	UI_element* ghoul_lab[20];
 
-	UI_element* vault_base[9];
-	UI_element* vault_barrack[13];
-	UI_element* vault_lab[11];
+	UI_element* vault_base[15];
+	UI_element* vault_barrack[22];
+	UI_element* vault_lab[20];
 
 	UI_element* supermutant_base[9];
 	UI_element* supermutant_barrack[13];

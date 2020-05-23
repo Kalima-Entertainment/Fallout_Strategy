@@ -253,9 +253,9 @@ void MenuManager::CreateMenu(Menu menu) {
 		food = std::to_string(App->player->food);
 		caps = std::to_string(App->player->caps);
 
-		resources[0] = (UI_Label*)App->gui->CreateLabel(90, 17, Label, food, NULL, this, NULL, "StackedPixelSmall");
-		resources[1] = (UI_Label*)App->gui->CreateLabel(260, 17, Label, water, NULL, this, NULL, "StackedPixelSmall");
-		resources[2] = (UI_Label*)App->gui->CreateLabel(435, 17, Label, caps, NULL, this, NULL, "StackedPixelSmall");
+		resources[0] = (UI_Label*)App->gui->CreateLabel(80, 15, Label, food, NULL, this, NULL, "StackedPixelSmall");
+		resources[1] = (UI_Label*)App->gui->CreateLabel(250, 15, Label, water, NULL, this, NULL, "StackedPixelSmall");
+		resources[2] = (UI_Label*)App->gui->CreateLabel(420, 15, Label, caps, NULL, this, NULL, "StackedPixelSmall");
 
 		/*last_menu = current_menu;
 		current_menu = Menu::RESOURCES;*/
@@ -389,13 +389,13 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							brotherhood_base[3] = (j1Image*)App->gui->CreateImage(682, 600, Image, { 138, 1868, 33, 33 }, NULL, this);
 							brotherhood_base[4] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
 
-							/*//Labels
+							//Labels
 							if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
 								int cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
 								brotherhood_base[5] = (UI_Label*)App->gui->CreateLabel(810, 668, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelSmall");
 							}
 							else
-								brotherhood_base[5] = (UI_Label*)App->gui->CreateLabel(810, 668, Label, "MAX.", NULL, this, NULL, "StackedPixelSmall");*/
+								brotherhood_base[5] = (UI_Label*)App->gui->CreateLabel(810, 668, Label, "MAX.", NULL, this, NULL, "StackedPixelSmall");
 
 							brotherhood_base[6] = (UI_Label*)App->gui->CreateLabel(995, 668, Label, "x", NULL, this, NULL, "StackedPixelSmall");
 							
@@ -499,13 +499,13 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							supermutant_base[3] = (j1Image*)App->gui->CreateImage(682, 600, Image, { 191, 1868, 34, 32 }, NULL, this);
 							supermutant_base[4] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
 
-							/*//Labels
+							//Labels
 							if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
 								int cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
 								supermutant_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelSmall");
 							}
 							else
-								supermutant_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");*/
+								supermutant_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");
 
 							supermutant_base[6] = (UI_Label*)App->gui->CreateLabel(995, 668, Label, "x", NULL, this, NULL, "StackedPixelSmall");
 							
@@ -611,26 +611,30 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 
 							//Images
 							ghoul_base[2] = (j1Image*)App->gui->CreateImage(540, 590, Image, { 398, 1564, 99, 108 }, NULL, this);
-							ghoul_base[3] = (j1Image*)App->gui->CreateImage(680, 600, Image, { 624, 1866, 24, 34 }, NULL, this);
+							ghoul_base[3] = (j1Image*)App->gui->CreateImage(685, 600, Image, { 624, 1866, 24, 34 }, NULL, this);
 							ghoul_base[4] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
 
 							//Labels
-							/*if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
+							if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
 								int cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
 								ghoul_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelSmall");
 							}
 							else
 								ghoul_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");
-							*/
+							
 
-							ghoul_base[6] = (j1Image*)App->gui->CreateImage(1008, 609, Image, { 412, 1930, 28, 62 }, NULL, this);
-							ghoul_base[7] = (j1Image*)App->gui->CreateImage(1102, 610, Image, { 104, 2338, 49, 55 }, NULL, this);
+							ghoul_base[6] = (j1Image*)App->gui->CreateImage(1019, 600, Image, { 412, 1930, 28, 62 }, NULL, this);
+							ghoul_base[7] = (j1Image*)App->gui->CreateImage(1102, 600, Image, { 104, 2338, 49, 55 }, NULL, this);
 
 							ghoul_base[8] = (UI_Label*)App->gui->CreateLabel(995, 668, Label, "x", NULL, this, NULL, "StackedPixelSmall");
 
 							ghoul_base[9] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, "0", NULL, this, NULL, "StackedPixelXS");
-							ghoul_base[10] = (UI_Label*)App->gui->CreateLabel(750, 614, Label, "40", NULL, this, NULL, "StackedPixelXS");
+							ghoul_base[10] = (UI_Label*)App->gui->CreateLabel(750, 613, Label, "40", NULL, this, NULL, "StackedPixelXS");
 							ghoul_base[11] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "0", NULL, this, NULL, "StackedPixelXS");
+
+							ghoul_base[12] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "250", NULL, this, NULL, "StackedPixelXS");
+							ghoul_base[13] = (UI_Label*)App->gui->CreateLabel(750, 673, Label, "0", NULL, this, NULL, "StackedPixelXS");
+							ghoul_base[14] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, NULL, "StackedPixelXS");
 
 							//Draw initial quantity
 							CreateMenu(Menu::GATHERER_QUANTITY);
@@ -660,12 +664,24 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							else
 								ghoul_barrack[7] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");
 
-							ghoul_barrack[8] = (j1Image*)App->gui->CreateImage(1020, 605, Image, { 486, 1930, 22, 67 }, NULL, this);
-							ghoul_barrack[9] = (j1Image*)App->gui->CreateImage(1110, 605, Image, { 442, 1930, 42, 60 }, NULL, this);
+							ghoul_barrack[8] = (j1Image*)App->gui->CreateImage(1020, 600, Image, { 486, 1930, 22, 67 }, NULL, this);
+							ghoul_barrack[9] = (j1Image*)App->gui->CreateImage(1110, 600, Image, { 442, 1930, 42, 60 }, NULL, this);
 							ghoul_barrack[10] = (j1Image*)App->gui->CreateImage(1200, 610, Image, { 0, 2338, 41, 46 }, NULL, this);
 
 							ghoul_barrack[11] = (UI_Label*)App->gui->CreateLabel(995, 668, Label, "x", NULL, this, NULL, "StackedPixelSmall");
 							ghoul_barrack[12] = (UI_Label*)App->gui->CreateLabel(1092, 668, Label, "x", NULL, this, NULL, "StackedPixelSmall");
+
+							ghoul_barrack[13] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, "100", NULL, this, NULL, "StackedPixelXS");
+							ghoul_barrack[14] = (UI_Label*)App->gui->CreateLabel(750, 613, Label, "15", NULL, this, NULL, "StackedPixelXS");
+							ghoul_barrack[15] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "120", NULL, this, NULL, "StackedPixelXS");
+
+							ghoul_barrack[16] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "350", NULL, this, NULL, "StackedPixelXS");
+							ghoul_barrack[17] = (UI_Label*)App->gui->CreateLabel(750, 673, Label, "0", NULL, this, NULL, "StackedPixelXS");
+							ghoul_barrack[18] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, NULL, "StackedPixelXS");
+
+							ghoul_barrack[19] = (UI_Label*)App->gui->CreateLabel(910, 596, Label, "100", NULL, this, NULL, "StackedPixelXS");
+							ghoul_barrack[20] = (UI_Label*)App->gui->CreateLabel(910, 613, Label, "30", NULL, this, NULL, "StackedPixelXS");
+							ghoul_barrack[21] = (UI_Label*)App->gui->CreateLabel(910, 629, Label, "120", NULL, this, NULL, "StackedPixelXS");
 
 							//Draw initial quantity
 							CreateMenu(Menu::RANGED_QUANTITY);
@@ -684,11 +700,11 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							
 
 							//Images
-							ghoul_lab[3] = (j1Image*)App->gui->CreateImage(530, 590, Image, { 536, 1741, 101, 73 }, NULL, this);
-							ghoul_lab[4] = (j1Image*)App->gui->CreateImage(687, 600, Image, { 877, 1874, 33, 20 }, NULL, this);
+							ghoul_lab[3] = (j1Image*)App->gui->CreateImage(540, 615, Image, { 536, 1741, 101, 73 }, NULL, this);
+							ghoul_lab[4] = (j1Image*)App->gui->CreateImage(677, 607, Image, { 877, 1874, 33, 20 }, NULL, this);
 							
 							ghoul_lab[5] = (j1Image*)App->gui->CreateImage(840, 600, Image, { 982, 1869, 31, 33 }, NULL, this);
-							ghoul_lab[6] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 1034, 1869, 35, 33 }, NULL, this);
+							ghoul_lab[6] = (j1Image*)App->gui->CreateImage(680, 660, Image, { 1034, 1869, 35, 33 }, NULL, this);
 
 							//Labels
 							if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
@@ -702,6 +718,18 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							ghoul_lab[8] = (j1Image*)App->gui->CreateImage(995, 590, Image, { 228, 2328, 73, 90 }, NULL, this);
 							ghoul_lab[9] = (j1Image*)App->gui->CreateImage(1102, 600, Image, { 164, 2336, 55, 58 }, NULL, this);
 							ghoul_lab[10] = (j1Image*)App->gui->CreateImage(1205, 600, Image, { 52, 2338, 45, 51 }, NULL, this);
+
+							ghoul_lab[11] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, "150", NULL, this, NULL, "StackedPixelXS");
+							ghoul_lab[12] = (UI_Label*)App->gui->CreateLabel(750, 613, Label, "0", NULL, this, NULL, "StackedPixelXS");
+							ghoul_lab[13] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "0", NULL, this, NULL, "StackedPixelXS");
+						
+							ghoul_lab[14] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "100", NULL, this, NULL, "StackedPixelXS");
+							ghoul_lab[15] = (UI_Label*)App->gui->CreateLabel(750, 673, Label, "0", NULL, this, NULL, "StackedPixelXS");
+							ghoul_lab[16] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, NULL, "StackedPixelXS");
+							
+							ghoul_lab[17] = (UI_Label*)App->gui->CreateLabel(910, 596, Label, "100", NULL, this, NULL, "StackedPixelXS");
+							ghoul_lab[18] = (UI_Label*)App->gui->CreateLabel(910, 613, Label, "0", NULL, this, NULL, "StackedPixelXS");
+							ghoul_lab[19] = (UI_Label*)App->gui->CreateLabel(910, 629, Label, "0", NULL, this, NULL, "StackedPixelXS");
 
 							last_menu = current_menu;
 							current_menu = Menu::BUI_BASES;
@@ -722,8 +750,8 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							vault_base[1] = (UI_Button*)App->gui->CreateButton(670, 653, Boost_base_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
 
 							//Images
-							vault_base[2] = (j1Image*)App->gui->CreateImage(540, 590, Image, { 319, 1710, 49, 113 }, NULL, this);
-							vault_base[3] = (j1Image*)App->gui->CreateImage(680, 600, Image, { 463, 1871, 25, 29 }, NULL, this);
+							vault_base[2] = (j1Image*)App->gui->CreateImage(563, 590, Image, { 319, 1710, 49, 113 }, NULL, this);
+							vault_base[3] = (j1Image*)App->gui->CreateImage(685, 600, Image, { 463, 1871, 25, 29 }, NULL, this);
 							vault_base[4] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
 
 							//Labels
@@ -734,10 +762,18 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							else
 								vault_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");
 
-							vault_base[6] = (j1Image*)App->gui->CreateImage(1008, 609, Image, { 382, 1930, 21, 57 }, NULL, this);
-							vault_base[7] = (j1Image*)App->gui->CreateImage(1102, 610, Image, { 104, 2338, 49, 55 }, NULL, this);
+							vault_base[6] = (j1Image*)App->gui->CreateImage(1020, 600, Image, { 382, 1930, 21, 57 }, NULL, this);
+							vault_base[7] = (j1Image*)App->gui->CreateImage(1102, 600, Image, { 104, 2338, 49, 55 }, NULL, this);
 							
 							vault_base[8] = (UI_Label*)App->gui->CreateLabel(995, 668, Label, "x", NULL, this, NULL, "StackedPixelSmall");
+
+							vault_base[9] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, "0", NULL, this, NULL, "StackedPixelXS");
+							vault_base[10] = (UI_Label*)App->gui->CreateLabel(750, 614, Label, "40", NULL, this, NULL, "StackedPixelXS");
+							vault_base[11] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "0", NULL, this, NULL, "StackedPixelXS");
+
+							vault_base[12] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "250", NULL, this, NULL, "StackedPixelXS");
+							vault_base[13] = (UI_Label*)App->gui->CreateLabel(750, 674, Label, "0", NULL, this, NULL, "StackedPixelXS");
+							vault_base[14] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, NULL, "StackedPixelXS");
 
 							//Draw initial quantity
 							CreateMenu(Menu::GATHERER_QUANTITY);
@@ -754,7 +790,7 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							vault_barrack[2] = (UI_Button*)App->gui->CreateButton(670, 653, Boost_barrack_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
 
 							//Images
-							vault_barrack[3] = (j1Image*)App->gui->CreateImage(530, 590, Image, { 148, 1731, 122, 91 }, NULL, this);
+							vault_barrack[3] = (j1Image*)App->gui->CreateImage(530, 600, Image, { 148, 1731, 122, 91 }, NULL, this);
 							vault_barrack[4] = (j1Image*)App->gui->CreateImage(680, 600, Image, { 406, 1866, 32, 34 }, NULL, this);
 							vault_barrack[5] = (j1Image*)App->gui->CreateImage(840, 600, Image, { 355, 1866, 30, 34 }, NULL, this);
 							vault_barrack[6] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 823, 1872, 32, 22 }, NULL, this);
@@ -776,6 +812,18 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							vault_barrack[11] = (UI_Label*)App->gui->CreateLabel(995, 668, Label, "x", NULL, this, NULL, "StackedPixelSmall");
 							vault_barrack[12] = (UI_Label*)App->gui->CreateLabel(1092, 668, Label, "x", NULL, this, NULL, "StackedPixelSmall");
 
+							vault_barrack[13] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, "0", NULL, this, NULL, "StackedPixelXS");
+							vault_barrack[14] = (UI_Label*)App->gui->CreateLabel(750, 613, Label, "60", NULL, this, NULL, "StackedPixelXS");
+							vault_barrack[15] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "60", NULL, this, NULL, "StackedPixelXS");
+
+							vault_barrack[16] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "350", NULL, this, NULL, "StackedPixelXS");
+							vault_barrack[17] = (UI_Label*)App->gui->CreateLabel(750, 673, Label, "0", NULL, this, NULL, "StackedPixelXS");
+							vault_barrack[18] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, NULL, "StackedPixelXS");
+
+							vault_barrack[19] = (UI_Label*)App->gui->CreateLabel(910, 596, Label, "0", NULL, this, NULL, "StackedPixelXS");
+							vault_barrack[20] = (UI_Label*)App->gui->CreateLabel(910, 613, Label, "80", NULL, this, NULL, "StackedPixelXS");
+							vault_barrack[21] = (UI_Label*)App->gui->CreateLabel(910, 629, Label, "80", NULL, this, NULL, "StackedPixelXS");
+
 							//Draw initial quantity
 							CreateMenu(Menu::RANGED_QUANTITY);
 							CreateMenu(Menu::MELEE_QUANTITY);
@@ -791,13 +839,12 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							vault_lab[1] = (UI_Button*)App->gui->CreateButton(830, 593, Boost_radar_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
 							vault_lab[2] = (UI_Button*)App->gui->CreateButton(670, 653, summon_mrhandy_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
 							
-							
 							//Images
-							vault_lab[3] = (j1Image*)App->gui->CreateImage(530, 590, Image, { 426, 1726, 72, 96 }, NULL, this);
-							vault_lab[4] = (j1Image*)App->gui->CreateImage(687, 600, Image, { 877, 1874, 33, 20 }, NULL, this);
+							vault_lab[3] = (j1Image*)App->gui->CreateImage(555, 600, Image, { 426, 1726, 72, 96 }, NULL, this);
+							vault_lab[4] = (j1Image*)App->gui->CreateImage(677, 607, Image, { 877, 1874, 33, 20 }, NULL, this);
 							
 							vault_lab[5] = (j1Image*)App->gui->CreateImage(840, 600, Image, { 982, 1869, 31, 33 }, NULL, this);
-							vault_lab[6] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 1034, 1869, 35, 33 }, NULL, this);
+							vault_lab[6] = (j1Image*)App->gui->CreateImage(680, 660, Image, { 1034, 1869, 35, 33 }, NULL, this);
 
 							//Labels
 							if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
@@ -806,12 +853,23 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							}
 							else
 								vault_lab[7] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");
-							
 
 							//Carta
 							vault_lab[8] = (j1Image*)App->gui->CreateImage(995, 590, Image, { 228, 2328, 73, 90 }, NULL, this);
 							vault_lab[9] = (j1Image*)App->gui->CreateImage(1102, 600, Image, { 164, 2336, 55, 58 }, NULL, this);
 							vault_lab[10] = (j1Image*)App->gui->CreateImage(1205, 600, Image, { 52, 2338, 45, 51 }, NULL, this);
+
+							vault_lab[11] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, "150", NULL, this, NULL, "StackedPixelXS");
+							vault_lab[12] = (UI_Label*)App->gui->CreateLabel(750, 613, Label, "0", NULL, this, NULL, "StackedPixelXS");
+							vault_lab[13] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "0", NULL, this, NULL, "StackedPixelXS");
+
+							vault_lab[14] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "100", NULL, this, NULL, "StackedPixelXS");
+							vault_lab[15] = (UI_Label*)App->gui->CreateLabel(750, 673, Label, "0", NULL, this, NULL, "StackedPixelXS");
+							vault_lab[16] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, NULL, "StackedPixelXS");
+
+							vault_lab[17] = (UI_Label*)App->gui->CreateLabel(910, 596, Label, "100", NULL, this, NULL, "StackedPixelXS");
+							vault_lab[18] = (UI_Label*)App->gui->CreateLabel(910, 613, Label, "0", NULL, this, NULL, "StackedPixelXS");
+							vault_lab[19] = (UI_Label*)App->gui->CreateLabel(910, 629, Label, "0", NULL, this, NULL, "StackedPixelXS");
 
 							last_menu = current_menu;
 							current_menu = Menu::BUI_BASES;
@@ -921,13 +979,13 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 				App->gui->DeleteArrayElements(supermutant_barrack, 13);
 				App->gui->DeleteArrayElements(supermutant_lab, 11);
 			
-				App->gui->DeleteArrayElements(ghoul_base, 12);
-				App->gui->DeleteArrayElements(ghoul_barrack, 13);
-				App->gui->DeleteArrayElements(ghoul_lab, 11);
+				App->gui->DeleteArrayElements(ghoul_base, 15);
+				App->gui->DeleteArrayElements(ghoul_barrack, 22);
+				App->gui->DeleteArrayElements(ghoul_lab, 20);
 
-				App->gui->DeleteArrayElements(vault_base, 9);
-				App->gui->DeleteArrayElements(vault_barrack, 13);
-				App->gui->DeleteArrayElements(vault_lab, 11);
+				App->gui->DeleteArrayElements(vault_base, 15);
+				App->gui->DeleteArrayElements(vault_barrack, 22);
+				App->gui->DeleteArrayElements(vault_lab, 20);
 
 				App->gui->Delete_Element(gatherer_label);
 				App->gui->Delete_Element(melee_label);
@@ -1000,13 +1058,13 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 			{
 
 			case BUILDING_TYPE::BASE:
-				App->gui->DeleteArrayElements(ghoul_base, 12);
+				App->gui->DeleteArrayElements(ghoul_base, 15);
 				break;
 			case BUILDING_TYPE::BARRACK:
-				App->gui->DeleteArrayElements(ghoul_barrack, 11);
+				App->gui->DeleteArrayElements(ghoul_barrack, 22);
 				break;
 			case BUILDING_TYPE::LAB:
-				App->gui->DeleteArrayElements(ghoul_lab, 11);
+				App->gui->DeleteArrayElements(ghoul_lab, 20);
 				break;
 			case BUILDING_TYPE::NONE:
 				App->gui->Delete_Element(select_faction_photos[1]);
@@ -1022,13 +1080,13 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 			switch (type)
 			{
 			case BUILDING_TYPE::BASE:
-				App->gui->DeleteArrayElements(vault_base, 9);
+				App->gui->DeleteArrayElements(vault_base, 15);
 				break;
 			case BUILDING_TYPE::BARRACK:
-				App->gui->DeleteArrayElements(vault_barrack, 11);
+				App->gui->DeleteArrayElements(vault_barrack, 22);
 				break;
 			case BUILDING_TYPE::LAB:
-				App->gui->DeleteArrayElements(vault_lab, 11);
+				App->gui->DeleteArrayElements(vault_lab, 20);
 				break;
 			case BUILDING_TYPE::NONE:
 				App->gui->Delete_Element(select_faction_photos[0]);
