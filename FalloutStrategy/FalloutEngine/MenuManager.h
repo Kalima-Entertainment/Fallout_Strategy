@@ -86,7 +86,7 @@ public:
 	UI_Label*	timer_minutes;
 	UI_element* resources[3];
 
-	UI_element* brotherhood_base[9];
+	UI_element* brotherhood_base[15];
 	UI_element* brotherhood_barrack[13];
 	UI_element* brotherhood_lab[11];
 
@@ -99,7 +99,7 @@ public:
 	UI_element* vault_barrack[13];
 	UI_element* vault_lab[11];
 
-	UI_element* supermutant_base[9];
+	UI_element* supermutant_base[15];
 	UI_element* supermutant_barrack[13];
 	UI_element* supermutant_lab[11];
 

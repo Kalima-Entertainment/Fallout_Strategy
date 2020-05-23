@@ -406,6 +406,15 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							brotherhood_base[7] = (j1Image*)App->gui->CreateImage(1008, 609, Image, { 242, 1929, 45, 75 }, NULL, this);
 							brotherhood_base[8] = (j1Image*)App->gui->CreateImage(1102, 610, Image, { 104, 2338, 49, 55 }, NULL, this);
 
+							//Cost
+							brotherhood_base[9] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, "0", NULL, this, NULL, "StackedPixelXS");   //Nukas
+							brotherhood_base[10] = (UI_Label*)App->gui->CreateLabel(750, 614, Label, "50", NULL, this, NULL, "StackedPixelXS"); //Water
+							brotherhood_base[11] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "0", NULL, this, NULL, "StackedPixelXS");  //Food
+							
+							brotherhood_base[12] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "250", NULL, this, NULL, "StackedPixelXS");  //Nukas
+							brotherhood_base[13] = (UI_Label*)App->gui->CreateLabel(750, 674, Label, "0", NULL, this, NULL, "StackedPixelXS"); //Water
+							brotherhood_base[14] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, NULL, "StackedPixelXS");  //Food
+
 
 							last_menu = current_menu;
 							current_menu = Menu::BUI_BASES;
@@ -502,7 +511,7 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							/*//Labels
 							if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
 								int cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
-								supermutant_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelSmall");
+								supermutant_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelXS");
 							}
 							else
 								supermutant_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");*/
@@ -513,6 +522,15 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							//Carts
 							supermutant_base[7] = (j1Image*)App->gui->CreateImage(1008, 609, Image, { 92, 1956, 53, 47 }, NULL, this);
 							supermutant_base[8] = (j1Image*)App->gui->CreateImage(1102, 610, Image, { 104, 2338, 49, 55 }, NULL, this);
+
+							//Cost
+							supermutant_base[9] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, "0", NULL, this, NULL, "StackedPixelXS");   //Nukas
+							supermutant_base[10] = (UI_Label*)App->gui->CreateLabel(750, 614, Label, "50", NULL, this, NULL, "StackedPixelXS"); //Water
+							supermutant_base[11] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "0", NULL, this, NULL, "StackedPixelXS");  //Food
+							
+							supermutant_base[12] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "250", NULL, this, NULL, "StackedPixelXS");  //Nukas
+							supermutant_base[13] = (UI_Label*)App->gui->CreateLabel(750, 674, Label, "0", NULL, this, NULL, "StackedPixelXS"); //Water
+							supermutant_base[14] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, NULL, "StackedPixelXS");  //Food
 
 
 							//Draw initial quantity
@@ -913,11 +931,11 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 			{
 
 			case BUILDING_TYPE::ALL:
-				App->gui->DeleteArrayElements(brotherhood_base, 9);
+				App->gui->DeleteArrayElements(brotherhood_base, 15);
 				App->gui->DeleteArrayElements(brotherhood_barrack, 13);
 				App->gui->DeleteArrayElements(brotherhood_lab, 11);
 				
-				App->gui->DeleteArrayElements(supermutant_base, 9);
+				App->gui->DeleteArrayElements(supermutant_base, 15);
 				App->gui->DeleteArrayElements(supermutant_barrack, 13);
 				App->gui->DeleteArrayElements(supermutant_lab, 11);
 			
@@ -945,7 +963,7 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 			switch (type)
 			{
 			case BUILDING_TYPE::BASE:
-				App->gui->DeleteArrayElements(brotherhood_base, 9);
+				App->gui->DeleteArrayElements(brotherhood_base, 15);
 				App->gui->Delete_Element(gatherer_label);
 			
 				break;
@@ -974,7 +992,7 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 			{
 
 			case BUILDING_TYPE::BASE:
-				App->gui->DeleteArrayElements(supermutant_base, 9);
+				App->gui->DeleteArrayElements(supermutant_base, 15);
 				App->gui->Delete_Element(gatherer_label);
 				break;
 			case BUILDING_TYPE::BARRACK:
