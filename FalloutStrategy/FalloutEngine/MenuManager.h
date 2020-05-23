@@ -90,7 +90,7 @@ public:
 	UI_element* brotherhood_barrack[11];
 	UI_element* brotherhood_lab[11];
 
-	UI_element* ghoul_base[9];
+	UI_element* ghoul_base[12];
 	UI_element* ghoul_barrack[11];
 	UI_element* ghoul_lab[11];
 

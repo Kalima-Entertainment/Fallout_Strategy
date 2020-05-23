@@ -34,6 +34,7 @@
    <font name="StackedPixel" folder="stacked" size="38"/>
     <font name="StackedPixelMedium" folder="stacked" size="32"/>
     <font name="StackedPixelSmall" folder="stacked" size="22"/>
+    <font name="StackedPixelXS" folder="stacked" size="17"/>
   </fonts>
 
   <entities>

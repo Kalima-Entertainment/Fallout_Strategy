@@ -609,6 +609,10 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							ghoul_base[7] = (j1Image*)App->gui->CreateImage(1102, 610, Image, { 104, 2338, 49, 55 }, NULL, this);
 							ghoul_base[8] = (UI_Label*)App->gui->CreateLabel(1042, 602, Label, "x", NULL, this, NULL, "StackedPixelSmall");
 
+							ghoul_base[9] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, "0", NULL, this, NULL, "StackedPixelXS");
+							ghoul_base[10] = (UI_Label*)App->gui->CreateLabel(750, 614, Label, "40", NULL, this, NULL, "StackedPixelXS");
+							ghoul_base[11] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "0", NULL, this, NULL, "StackedPixelXS");
+
 							//Draw initial quantity
 							CreateMenu(Menu::GATHERER_QUANTITY);
 
@@ -883,7 +887,7 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 				App->gui->DeleteArrayElements(supermutant_barrack, 13);
 				App->gui->DeleteArrayElements(supermutant_lab, 11);
 				
-				App->gui->DeleteArrayElements(ghoul_base, 9);
+				App->gui->DeleteArrayElements(ghoul_base, 12);
 				App->gui->DeleteArrayElements(ghoul_barrack, 11);
 				App->gui->DeleteArrayElements(ghoul_lab, 11);
 
@@ -962,7 +966,7 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 			{
 
 			case BUILDING_TYPE::BASE:
-				App->gui->DeleteArrayElements(ghoul_base, 9);
+				App->gui->DeleteArrayElements(ghoul_base, 12);
 				break;
 			case BUILDING_TYPE::BARRACK:
 				App->gui->DeleteArrayElements(ghoul_barrack, 11);
