@@ -327,6 +327,8 @@ void FoWManager::DrawFoWMap()
 					}
 					else displayFogTexture = smoothFoWtexture;
 
+					App->minimap->grid[x][y] = tileInfo->tileShroudBits;
+
 					//draw fog
 					if (fogId != -1)
 					{

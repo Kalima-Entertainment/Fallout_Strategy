@@ -212,7 +212,7 @@ j1Entity* j1Player::SelectEntity() {
 	j1Entity* target = App->entities->FindEntityByTile(selected_spot);
 
 	if (target != nullptr) {
-		if ((god_mode) || (target->faction == faction)) {
+		if (((god_mode) || (target->faction == faction))&&(target->state != DIE)) {
 			return target;
 		}
 	}

@@ -80,11 +80,11 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(pathfinding);
 	AddModule(main_menu);
 	AddModule(entities);
-	AddModule(dialog_manager);
 	AddModule(font);
 	AddModule(scene);
 	AddModule(Mmanager);
 	AddModule(fowManager);
+	AddModule(dialog_manager);
 	AddModule(easing_splines);
 
 	AddModule(menu_manager);
