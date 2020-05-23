@@ -86,7 +86,8 @@ bool Troop::Update(float dt) {
 				path_to_target.clear();
 				if (target_entity->faction != faction) {
 					state = ATTACK;
-					Attack();
+					//Attack();
+					//attack_timer.Start();
 				}
 				else {
 					state = IDLE;

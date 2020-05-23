@@ -157,9 +157,11 @@ void j1Video::DestroyVideo(int video)
 	j1Video* vid = (j1Video*)video;
 
 	//TODO 4: Just free everything the texture, video, audio and decoder:
-	SDL_DestroyTexture(vid->texture);
-	THEORAPLAY_freeVideo(vid->video);
-	THEORAPLAY_stopDecode(vid->decoder);
+	if (vid != nullptr) {
+		SDL_DestroyTexture(vid->texture);
+		THEORAPLAY_freeVideo(vid->video);
+		THEORAPLAY_stopDecode(vid->decoder);
+	}
 }
 
 int j1Video::IsPlaying(int video)
