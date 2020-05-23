@@ -75,20 +75,17 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 	detection_timer.Start();	
 
 	//Fog Of War
-	if (App->render->fog_of_war) {
-		if (this->faction == App->player->faction) {
-			//Player
-			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, true);
-			visionEntity->SetNewVisionRadius(3);
-		}
-		else {
-			//Enemy
-			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
-			visionEntity->SetNewVisionRadius(3);
-		}
-		visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
-	}	
-	
+	if (this->faction == App->player->faction) {
+		//Player
+		visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, true);
+		visionEntity->SetNewVisionRadius(3);
+	}
+	else {
+		//Enemy
+		visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
+		visionEntity->SetNewVisionRadius(3);
+	}
+	visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
 }
 
 DynamicEntity::~DynamicEntity() {
@@ -525,8 +522,7 @@ void DynamicEntity::Move(float dt) {
 			break;
 		}
 
-		if(App->render->fog_of_war)
-			visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
+		visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
 	}
 	else
 	{

@@ -35,17 +35,15 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 	time_left = 0;
 
 	//Fog Of War
-	if (App->render->fog_of_war) {
-		if (this->faction == App->player->faction) {
-			//Player
-			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, true);
-			visionEntity->SetNewVisionRadius(3);
-		}
-		else {
-			//Enemy
-			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
-			visionEntity->SetNewVisionRadius(3);
-		}
+	if (this->faction == App->player->faction) {
+		//Player
+		visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, true);
+		visionEntity->SetNewVisionRadius(3);
+	}
+	else {
+		//Enemy
+		visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
+		visionEntity->SetNewVisionRadius(3);
 	}
 }
 
@@ -90,8 +88,7 @@ bool StaticEntity::Update(float dt) {
 	//Select a building and press 1, 2, 3 or 4 to spawn or investigate
 	DebugSpawnsUpgrades();
 
-	if (App->render->fog_of_war)
-		visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
+	visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
 
 	last_dt = dt;
 
