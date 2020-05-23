@@ -23,7 +23,6 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 	if (owner)
 		base = owner->base;
 
-	//Fog Of War
 	if (App->render->fog_of_war) {
 		if (this->faction == App->player->faction) {
 			//Player
@@ -34,7 +33,6 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 			//Enemy
 			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
 		}
-		visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
 	}
 }
 
@@ -53,8 +51,6 @@ bool Gatherer::Update(float dt) {
 		break;
 	case WALK:
 		Move(dt);
-		if (App->render->fog_of_war)
-			visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
 
 		if (next_tile == target_tile) {
 			//gather
