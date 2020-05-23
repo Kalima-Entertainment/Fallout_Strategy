@@ -290,60 +290,60 @@ void FoWManager::DrawFoWMap()
 	{
 		for (int x = 0; x < width; x++)
 		{
-			iPoint worldDrawPos;
-			worldDrawPos = App->map->MapToWorld(x, y);
+			FoWDataStruct* tileInfo = GetFoWTileState({ x, y });
+			int fogId = -1;
+			int shroudId = -1;
 
-			//Offset for fow camera culling
-			iPoint offset;
-			offset = App->map->MapToWorld(4, 2);
-
-			if ((worldDrawPos.x + offset.x > -(App->render->camera.x) )
-				&& (worldDrawPos.x < -App->render->camera.x + App->render->camera.w)
-				&& (worldDrawPos.y + offset.y > -(App->render->camera.y))
-				&& (worldDrawPos.y < (-App->render->camera.y + App->render->camera.h)))
+			if (tileInfo != nullptr)
 			{
-				FoWDataStruct* tileInfo = GetFoWTileState({ x, y });
-				int fogId = -1;
-				int shroudId = -1;
+				iPoint worldDrawPos;
+				worldDrawPos = App->map->MapToWorld(worldDrawPos.x, worldDrawPos.y);
+				worldDrawPos = App->map->MapToWorld(x, y);
 
-				if (tileInfo != nullptr)
+				//Offset for fow camera culling
+				iPoint offset;
+				offset = App->map->MapToWorld(4, 2);
+
+				//Camera Culling -> Draw only what is on screen
+				if ((worldDrawPos.x + offset.x > -(App->render->camera.x))
+					&& (worldDrawPos.x < -App->render->camera.x + App->render->camera.w)
+					&& (worldDrawPos.y + offset.y > -(App->render->camera.y))
+					&& (worldDrawPos.y < (-App->render->camera.y + App->render->camera.h)))
 				{
-					if (bitToTextureTable.find(tileInfo->tileFogBits) != bitToTextureTable.end())					
-						fogId = bitToTextureTable[tileInfo->tileFogBits];					
+					if (bitToTextureTable.find(tileInfo->tileFogBits) != bitToTextureTable.end())
+					{
+						fogId = bitToTextureTable[tileInfo->tileFogBits];
+					}
 
-					if (bitToTextureTable.find(tileInfo->tileShroudBits) != bitToTextureTable.end())					
-						shroudId = bitToTextureTable[tileInfo->tileShroudBits];	
-				}
+					if (bitToTextureTable.find(tileInfo->tileShroudBits) != bitToTextureTable.end())
+					{
+						shroudId = bitToTextureTable[tileInfo->tileShroudBits];
+					}
 
-				SDL_Texture* displayFogTexture = nullptr;
+					SDL_Texture* displayFogTexture = nullptr;
+					if (debugMode)
+					{
+						displayFogTexture = debugFoWtexture;
+					}
+					else displayFogTexture = smoothFoWtexture;
 
-				if (debugMode) displayFogTexture = debugFoWtexture;				
-				else displayFogTexture = smoothFoWtexture;
-
-				App->minimap->grid[x][y] = tileInfo->tileShroudBits;
-
-				//draw fog
-				if (fogId != -1)
-				{
-					SDL_SetTextureAlphaMod(displayFogTexture, 128);//set the alpha of the texture to half to reproduce fog
-					SDL_Rect r = { fogId * 64,0,64,64 }; //this rect crops the desired fog Id texture from the fogTiles spritesheet			
-					
-					//Draw up borders [bug fix]
-					//if (y == 0)
-					//	App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y + offset.y, &r);
-					//if (x == 0)
-					//	App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);					
-				}
-				if (shroudId != -1)
-				{
-					SDL_SetTextureAlphaMod(displayFogTexture, 255);//set the alpha to white again
-					SDL_Rect r = { shroudId * 64,0,64,64 }; //this rect crops the desired fog Id texture from the fogTiles spritesheet
-					App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
-					//App->minimap->grid[x][y] = 2;
-				}
-			}		
+					//draw fog
+					if (fogId != -1)
+					{
+						SDL_SetTextureAlphaMod(displayFogTexture, 128);//set the alpha of the texture to half to reproduce fog
+						SDL_Rect r = { fogId * 64,0,64,64 }; //this rect crops the desired fog Id texture from the fogTiles spritesheet
+						App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
+					}
+					if (shroudId != -1)
+					{
+						SDL_SetTextureAlphaMod(displayFogTexture, 255);//set the alpha to white again
+						SDL_Rect r = { shroudId * 64,0,64,64 }; //this rect crops the desired fog Id texture from the fogTiles spritesheet
+						App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
+					}
+				}	
+			}
 		}
-	}	
+	}
 }
 
 //TODO 2: Complete this function: given a position and a flag, create a new entity and return a pointer to it (or nullptr if something has gone wrong)
@@ -352,11 +352,13 @@ FoWEntity* FoWManager::CreateFoWEntity(iPoint pos, bool providesVisibility)
 {
 	FoWEntity* entity = nullptr;
 
+	pos = App->map->MapToWorld(pos.x, pos.y);
+
 	entity = new FoWEntity(pos, providesVisibility);
 
-	if (entity != nullptr) 
+	if (entity != nullptr) {
 		fowEntities.push_back(entity);
-	
+	}
 
 	return entity;
 }
@@ -375,6 +377,7 @@ bool FoWManager::CheckTileVisibility(iPoint mapPos)const
 
 	if (tileState != nullptr)
 	{
+
 		//Entity will only be visible in visible areas (no fog nor shroud)
 		//Think about what happens with the smooth borders, are the considered visble or fogged?
 		//Also, do you need to check both the fog and shroud states?

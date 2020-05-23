@@ -335,6 +335,8 @@ void DynamicEntity::Move(float dt) {
 		last_direction = direction;
 		direction = GetDirectionToGo(next_tile_rect);
 
+		fPoint auxPos = position; //We use that variable to optimize Fog Of War code 
+
 		switch (direction)
 		{
 		case NO_DIRECTION:
@@ -400,6 +402,10 @@ void DynamicEntity::Move(float dt) {
 		default:
 			break;
 		}
+
+		//Update Fog Of War Position
+		if (auxPos != position && visionEntity != NULL)
+			visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
 	}
 	else
 	{

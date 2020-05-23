@@ -7,8 +7,8 @@
 #include "j1Player.h"
 #include "j1Input.h"
 #include "j1Scene.h"
-#include "FoWManager.h"
 #include "SDL_mixer/include/SDL_mixer.h"
+#include "FoWManager.h"
 
 StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile,  GenericPlayer* g_owner) {
 
@@ -16,7 +16,7 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 	faction = g_faction;
 	owner = g_owner;
 
-	//current_tile = g_current_tile;
+	current_tile = g_current_tile;
 	//position = App->map->fMapToWorld(current_tile.x, current_tile.y);
 
 	state = IDLE;
@@ -38,12 +38,11 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 	spawnPosition = {-1,-1};
 
 	CalculateRenderAndSpawnPositions();
-
-	//Fog Of War
+	
 	if (App->render->fog_of_war) {
 		if (this->faction == App->player->faction) {
 			//Player
-			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y}, true);
+			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, true);
 			visionEntity->SetNewVisionRadius(7);
 		}
 		else {
@@ -74,6 +73,8 @@ bool StaticEntity::Update(float dt) {
 		if (!delete_timer.Started())
 			delete_timer.Start();
 
+		visionEntity->SetNewPosition(App->map->MapToWorld(-10, -10));
+
 		if ((delete_timer.ReadSec() > 5)||(current_animation->Finished()))
 			to_delete = true;
 
@@ -92,9 +93,6 @@ bool StaticEntity::Update(float dt) {
 	//Interact with the building to spawn units or investigate upgrades
 	//Select a building and press 1, 2, 3 or 4 to spawn or investigate
 	DebugSpawnsUpgrades();
-
-	if (App->render->fog_of_war)
-		visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
 
 	last_dt = dt;
 

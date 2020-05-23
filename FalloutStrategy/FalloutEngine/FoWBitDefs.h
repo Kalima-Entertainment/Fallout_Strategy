@@ -47,4 +47,3 @@
 #define fow_MAX_CIRCLE_LENGTH ((fow_MAX_CIRCLE_RADIUS*2)+1)
 
 #endif // !__FOW_BIT_DEFS__
-

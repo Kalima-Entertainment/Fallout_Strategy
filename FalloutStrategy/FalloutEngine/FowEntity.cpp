@@ -83,14 +83,12 @@ void FoWEntity::ApplyMaskToTiles(std::vector<iPoint>tilesAffected)
 		//the operation result will be stored in the variable on the left side. 
 		//In this case you want to modify the fog and shroud values that you have requested above
 
-		if (tileValue != nullptr)
-		{
+		if (tileValue != nullptr) {
 			tileValue->tileShroudBits &= *precMask;
 			tileValue->tileFogBits &= *precMask;
 		}
 		precMask++;
 	}
-
 }
 
 //Applies the Mask to all tiles inside the radius
