@@ -45,6 +45,20 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
+	int Animal_walk;
+	int Animal_hit;
+	int Animal_die;
+
+	int Deathclaw_walk;
+	int Deathclaw_hit;
+	int Deathclaw_attack;
+	int Deathclaw_die;
+
+	int Mr_Handy_walk;
+	int Mr_Handy_hit;
+	int Mr_Handy_attack;
+	int Mr_Handy_die;
+
 	int Brotherhood_walk;
 	int Brotherhood_die;
 	int Brotherhood_hit;

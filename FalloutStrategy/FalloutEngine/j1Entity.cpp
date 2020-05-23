@@ -60,6 +60,21 @@ void j1Entity::SpatialAudio(int positionx, int positiony, Faction faction, State
 		else if (faction == MUTANT) channel = 2;
 		else if (faction == GHOUL) channel = 19;
 		fx = App->audio->Brotherhood_walk;
+
+		if (type == MR_HANDY) {
+			channel = 24;
+			fx = App->audio->Mr_Handy_walk;
+		}
+
+		if (type == DEATHCLAW) {
+			channel = 28;
+			fx = App->audio->Deathclaw_walk;
+		}
+
+		if (type == BIGHORNER || type == BRAHAM) {
+			channel = 21;
+			fx = App->audio->Animal_walk;
+		}
 		break;
 	case ATTACK:
 		if (faction == VAULT) {
@@ -102,6 +117,15 @@ void j1Entity::SpatialAudio(int positionx, int positiony, Faction faction, State
 				fx = App->audio->Ghoul_attack;
 			}
 		}
+		if (type == MR_HANDY) {
+			channel = 25;
+			fx = App->audio->Mr_Handy_attack;
+		}
+		if (type == DEATHCLAW) {
+			channel = 29;
+			fx = App->audio->Deathclaw_attack;
+		}
+
 		break;
 	case HIT:
 		if (faction == MUTANT) {
@@ -120,6 +144,21 @@ void j1Entity::SpatialAudio(int positionx, int positiony, Faction faction, State
 			channel = 10;
 			fx = App->audio->Ghoul_hit;
 		}
+
+		if (type == MR_HANDY) {
+			channel = 26;
+			fx = App->audio->Mr_Handy_hit;
+		}
+
+		if (type == DEATHCLAW) {
+			channel = 30;
+			fx = App->audio->Deathclaw_hit;
+		}
+
+		if (type == BIGHORNER || type == BRAHAM) {
+			channel = 22;
+			fx = App->audio->Animal_hit;
+		}
 		break;
 	case DIE:
 		if (faction == MUTANT) {
@@ -137,6 +176,21 @@ void j1Entity::SpatialAudio(int positionx, int positiony, Faction faction, State
 		else if (faction == GHOUL) {
 			channel = 14;
 			fx = App->audio->Ghoul_die;
+		}
+
+		if (type == MR_HANDY) {
+			channel = 27;
+			fx = App->audio->Mr_Handy_die;
+		}
+
+		if (type == DEATHCLAW) {
+			channel = 31;
+			fx = App->audio->Deathclaw_die;
+		}
+
+		if (type == BIGHORNER || type == BRAHAM) {
+			channel = 23;
+			fx = App->audio->Animal_die;
 		}
 		break;
 	case NO_STATE:

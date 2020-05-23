@@ -2,6 +2,7 @@
 #include "GenericPlayer.h"
 #include "AI_Player.h"
 #include "j1Map.h"
+#include "SDL_mixer/include/SDL_mixer.h"
 
 Animal::Animal(EntityType g_type, iPoint g_current_tile) : DynamicEntity() {
 	type = g_type;
@@ -23,6 +24,8 @@ bool Animal::Update(float dt) {
 	bool ret = true;
 	current_animation = &animations[state][direction];
 
+	Mix_AllocateChannels(35);
+
 	switch (state)
 	{
     case IDLE:
@@ -33,6 +36,7 @@ bool Animal::Update(float dt) {
         break;
     case WALK:
         Move(dt);
+		SpatialAudio(position.x, position.y, faction, state, type);
 
         break;
     case HIT:
@@ -43,6 +47,7 @@ bool Animal::Update(float dt) {
 			else
 				state = IDLE;
 		}
+		SpatialAudio(position.x, position.y, faction, state, type);
         break;
 
     case DIE:
@@ -66,6 +71,7 @@ bool Animal::Update(float dt) {
 			App->entities->DestroyResourceSpot(resource_spot);
 			to_delete = true;
 		}
+		SpatialAudio(position.x, position.y, faction, state, type);
 
         break;
 

@@ -1,6 +1,7 @@
 #include "Deathclaw.h"
 #include "j1Player.h"
 #include "j1Map.h"
+#include "SDL_mixer/include/SDL_mixer.h"
 
 Deathclaw::Deathclaw(iPoint g_current_tile) : DynamicEntity() {
 	current_tile = g_current_tile;
@@ -17,20 +18,26 @@ Deathclaw::~Deathclaw() {
 bool Deathclaw::Update(float dt) {
 	bool ret = true;
 
+	Mix_AllocateChannels(35);
+
 	switch (state)
 	{
     case IDLE:
-        break;
+		break;
     case WALK:
+		SpatialAudio(position.x, position.y, faction, state, type);
         break;
     case ATTACK:
 		if (attack_timer.Read() > attack_time) {
 			Attack();
 		}
+		SpatialAudio(position.x, position.y, faction, state, type);
         break;
     case HIT:
+		SpatialAudio(position.x, position.y, faction, state, type);
         break;
     case DIE:
+		SpatialAudio(position.x, position.y, faction, state, type);
         break;
     default:
         break;

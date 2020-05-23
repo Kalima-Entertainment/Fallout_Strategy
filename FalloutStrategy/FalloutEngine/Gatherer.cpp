@@ -7,6 +7,7 @@
 #include "j1Map.h"
 #include "j1Render.h"
 #include "FoWManager.h"
+#include "SDL_mixer/include/SDL_mixer.h"
 
 Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_owner) : DynamicEntity(), resource_collected(0) {
 	type = GATHERER;
@@ -45,6 +46,8 @@ bool Gatherer::Update(float dt) {
 	bool ret = true;
 	current_animation = &animations[state][direction];
 
+	Mix_AllocateChannels(35);
+
 	switch (state)
 	{
 	case IDLE:
@@ -60,6 +63,7 @@ bool Gatherer::Update(float dt) {
 				gathering_timer.Start();
 			}
 		}
+		//SpatialAudio(position.x, position.y, faction, state, type);
 		break;
 	case GATHER:
 		if (gathering_timer.ReadSec() > gather_time) {
@@ -98,6 +102,7 @@ bool Gatherer::Update(float dt) {
 			current_animation->Reset();
 			state = IDLE;
 		}
+		SpatialAudio(position.x, position.y, faction, state, type);
 		break;
 	case DIE:
 		direction = TOP_LEFT;
@@ -115,6 +120,7 @@ bool Gatherer::Update(float dt) {
 			to_delete = true;
 			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
 		}
+		SpatialAudio(position.x, position.y, faction, state, type);
 		break;
 	default:
 		break;
