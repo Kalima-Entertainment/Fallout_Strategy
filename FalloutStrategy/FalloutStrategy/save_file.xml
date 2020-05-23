@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<game_state>
+	<input />
+	<window>
+		<fullscreen is="false" />
+	</window>
+	<textures />
+	<audio>
+		<volume music="4.88599923e+32" fx="2.80259693e-45" />
+	</audio>
+	<:anonymous />
+	<AI />
+	<map />
+	<Player>
+		<resource caps="10000" food="100" water="100" />
+	</Player>
+	<pathfinding />
+	<main_menu />
+	<entities>
+		<entity number="0" type:="base" faction:="supermutant" position_x:="0" position_y:="256" current_tile_x:="8" current_tile_y:="8" current_health:="8000" level_gatherer_resource_limit="0" level_base_resource_limit="0" />
+		<entity number="1" type:="barrack" faction:="supermutant" position_x:="352" position_y:="304" current_tile_x:="15" current_tile_y:="4" current_health:="6000" level_units_damage="0" level_units_speed="0" />
+		<entity number="2" type:="gatherer" faction:="supermutant" position_x:="-100.000031" position_y:="385.999481" current_tile_x:="9" current_tile_y:="13" current_health:="120" />
+		<entity number="3" type:="melee" faction:="supermutant" position_x:="384" position_y:="368" current_tile_x:="16" current_tile_y:="5" current_health:="150" />
+		<entity number="4" type:="laboratory" faction:="supermutant" position_x:="-192" position_y:="384" current_tile_x:="9" current_tile_y:="15" current_health:="7000" level_units_health="0" level_units_creation_time="0" />
+		<entity number="5" type:="barrack" faction:="supermutant" position_x:="576" position_y:="416" current_tile_x:="22" current_tile_y:="4" current_health:="6000" level_units_damage="0" level_units_speed="0" />
+		<entity number="6" type:="braham" faction:="no_faction" position_x:="32" position_y:="448" current_tile_x:="13" current_tile_y:="13" current_health:="660" />
+		<entity number="7" type:="ranged" faction:="supermutant" position_x:="-110.800003" position_y:="472.600098" current_tile_x:="12" current_tile_y:="16" current_health:="150" />
+		<entity number="8" type:="melee" faction:="supermutant" position_x:="608" position_y:="480" current_tile_x:="23" current_tile_y:="5" current_health:="150" />
+		<entity number="9" type:="melee" faction:="vault" position_x:="32" position_y:="672" current_tile_x:="20" current_tile_y:="20" current_health:="150" />
+		<entity number="10" type:="bighorner" faction:="no_faction" position_x:="-1088" position_y:="912" current_tile_x:="10" current_tile_y:="45" current_health:="1500" />
+		<entity number="11" type:="braham" faction:="no_faction" position_x:="1472" position_y:="1520" current_tile_x:="69" current_tile_y:="24" current_health:="700" />
+		<entity number="12" type:="bighorner" faction:="no_faction" position_x:="-448" position_y:="1712" current_tile_x:="45" current_tile_y:="60" current_health:="1500" />
+		<entity number="13" type:="barrack" faction:="brotherhood" position_x:="3680" position_y:="2160" current_tile_x:="125" current_tile_y:="10" current_health:="6000" level_units_damage="0" level_units_speed="0" />
+		<entity number="14" type:="laboratory" faction:="vault" position_x:="-3904" position_y:="2208" current_tile_x:="8" current_tile_y:="130" current_health:="7000" level_units_health="0" level_units_creation_time="0" />
+		<entity number="15" type:="melee" faction:="brotherhood" position_x:="3712" position_y:="2224" current_tile_x:="126" current_tile_y:="11" current_health:="200" />
+		<entity number="16" type:="braham" faction:="no_faction" position_x:="-3328" position_y:="2224" current_tile_x:="16" current_tile_y:="121" current_health:="700" />
+		<entity number="17" type:="ranged" faction:="vault" position_x:="-3872" position_y:="2272" current_tile_x:="9" current_tile_y:="131" current_health:="150" />
+		<entity number="18" type:="barrack" faction:="brotherhood" position_x:="3968" position_y:="2304" current_tile_x:="134" current_tile_y:="10" current_health:="6000" level_units_damage="0" level_units_speed="0" />
+		<entity number="19" type:="bighorner" faction:="no_faction" position_x:="-1056" position_y:="2304" current_tile_x:="54" current_tile_y:="88" current_health:="1500" />
+		<entity number="20" type:="base" faction:="vault" position_x:="-4128" position_y:="2352" current_tile_x:="9" current_tile_y:="138" current_health:="8000" level_gatherer_resource_limit="0" level_base_resource_limit="0" />
+		<entity number="21" type:="melee" faction:="brotherhood" position_x:="4000" position_y:="2368" current_tile_x:="135" current_tile_y:="11" current_health:="200" />
+		<entity number="22" type:="gatherer" faction:="vault" position_x:="-3983.60059" position_y:="2359.7959" current_tile_x:="10" current_tile_y:="135" current_health:="120" />
+		<entity number="23" type:="base" faction:="brotherhood" position_x:="4128" position_y:="2416" current_tile_x:="140" current_tile_y:="11" current_health:="8000" level_gatherer_resource_limit="0" level_base_resource_limit="0" />
+		<entity number="24" type:="melee" faction:="vault" position_x:="3552" position_y:="2432" current_tile_x:="130" current_tile_y:="20" current_health:="150" />
+		<entity number="25" type:="melee" faction:="vault" position_x:="-3488" position_y:="2432" current_tile_x:="20" current_tile_y:="130" current_health:="150" />
+		<entity number="26" type:="gatherer" faction:="brotherhood" position_x:="4160" position_y:="2480" current_tile_x:="141" current_tile_y:="12" current_health:="180" />
+		<entity number="27" type:="barrack" faction:="vault" position_x:="-3904" position_y:="2528" current_tile_x:="18" current_tile_y:="140" current_health:="6000" level_units_damage="0" level_units_speed="0" />
+		<entity number="28" type:="laboratory" faction:="brotherhood" position_x:="3744" position_y:="2576" current_tile_x:="139" current_tile_y:="22" current_health:="7000" level_units_health="0" level_units_creation_time="0" />
+		<entity number="29" type:="melee" faction:="vault" position_x:="-3872" position_y:="2592" current_tile_x:="19" current_tile_y:="141" current_health:="150" />
+		<entity number="30" type:="ranged" faction:="brotherhood" position_x:="3776" position_y:="2640" current_tile_x:="140" current_tile_y:="23" current_health:="200" />
+		<entity number="31" type:="barrack" faction:="vault" position_x:="-3680" position_y:="2672" current_tile_x:="26" current_tile_y:="141" current_health:="6000" level_units_damage="0" level_units_speed="0" />
+		<entity number="32" type:="braham" faction:="no_faction" position_x:="2624" position_y:="2704" current_tile_x:="124" current_tile_y:="43" current_health:="700" />
+		<entity number="33" type:="bighorner" faction:="no_faction" position_x:="1536" position_y:="2736" current_tile_x:="108" current_tile_y:="61" current_health:="1500" />
+		<entity number="34" type:="melee" faction:="vault" position_x:="-3648" position_y:="2736" current_tile_x:="27" current_tile_y:="142" current_health:="150" />
+		<entity number="35" type:="bighorner" faction:="no_faction" position_x:="800" position_y:="3008" current_tile_x:="105" current_tile_y:="81" current_health:="1500" />
+		<entity number="36" type:="braham" faction:="no_faction" position_x:="-1280" position_y:="3504" current_tile_x:="88" current_tile_y:="129" current_health:="700" />
+		<entity number="37" type:="melee" faction:="vault" position_x:="672" position_y:="3872" current_tile_x:="130" current_tile_y:="110" current_health:="150" />
+		<entity number="38" type:="laboratory" faction:="ghoul" position_x:="480" position_y:="4016" current_tile_x:="133" current_tile_y:="118" current_health:="7000" level_units_health="0" level_units_creation_time="0" />
+		<entity number="39" type:="bighorner" faction:="no_faction" position_x:="960" position_y:="4048" current_tile_x:="140" current_tile_y:="111" current_health:="1500" />
+		<entity number="40" type:="ranged" faction:="ghoul" position_x:="512" position_y:="4080" current_tile_x:="134" current_tile_y:="119" current_health:="100" />
+		<entity number="41" type:="barrack" faction:="ghoul" position_x:="-448" position_y:="4096" current_tile_x:="121" current_tile_y:="135" current_health:="6000" level_units_damage="0" level_units_speed="0" />
+		<entity number="42" type:="melee" faction:="ghoul" position_x:="-416" position_y:="4160" current_tile_x:="122" current_tile_y:="136" current_health:="100" />
+		<entity number="43" type:="barrack" faction:="ghoul" position_x:="-192" position_y:="4224" current_tile_x:="129" current_tile_y:="135" current_health:="6000" level_units_damage="0" level_units_speed="0" />
+		<entity number="44" type:="base" faction:="ghoul" position_x:="128" position_y:="4288" current_tile_x:="136" current_tile_y:="132" current_health:="8000" level_gatherer_resource_limit="0" level_base_resource_limit="0" />
+		<entity number="45" type:="melee" faction:="ghoul" position_x:="-160" position_y:="4288" current_tile_x:="130" current_tile_y:="136" current_health:="100" />
+		<entity number="46" type:="gatherer" faction:="ghoul" position_x:="5.86003876" position_y:="4309.23145" current_tile_x:="133" current_tile_y:="134" current_health:="90" />
+	</entities>
+	<fonts />
+	<scene>
+		<modules map="oldstone_up_left.tmx" />
+		<modules map="oldstone_up_right.tmx" />
+		<modules map="wasteland_low_left.tmx" />
+		<modules map="wasteland_low_right.tmx" />
+	</scene>
+	<MovementManager />
+	<:anonymous />
+	<easing_splines />
+	<menu_manager />
+	<gui />
+	<minimap />
+	<:anonymous />
+	<console />
+	<logo_scene />
+	<transition />
+	<hud>
+		<timer seconds="57" minutes="14" />
+	</hud>
+	<renderer>
+		<camera x="-3328" y="-2016" />
+	</renderer>
+</game_state>

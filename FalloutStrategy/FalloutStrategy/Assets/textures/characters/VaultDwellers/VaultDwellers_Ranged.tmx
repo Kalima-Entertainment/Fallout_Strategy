@@ -233,6 +233,9 @@
    </animation>
   </tile>
   <tile id="128">
+   <properties>
+    <property name="hit" value="top_right"/>
+   </properties>
    <animation>
     <frame tileid="128" duration="100"/>
     <frame tileid="129" duration="100"/>
@@ -245,6 +248,9 @@
    </animation>
   </tile>
   <tile id="136">
+   <properties>
+    <property name="hit" value="bottom_left"/>
+   </properties>
    <animation>
     <frame tileid="136" duration="100"/>
     <frame tileid="137" duration="100"/>
@@ -257,6 +263,9 @@
    </animation>
   </tile>
   <tile id="144">
+   <properties>
+    <property name="hit" value="bottom_right"/>
+   </properties>
    <animation>
     <frame tileid="144" duration="100"/>
     <frame tileid="145" duration="100"/>
@@ -269,6 +278,9 @@
    </animation>
   </tile>
   <tile id="152">
+   <properties>
+    <property name="hit" value="top_left"/>
+   </properties>
    <animation>
     <frame tileid="152" duration="100"/>
     <frame tileid="153" duration="100"/>
