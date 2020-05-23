@@ -267,7 +267,7 @@ void MenuManager::CreateMenu(Menu menu) {
 
 		gatherer_quantity = std::to_string(App->hud->gatherer_amount);
 
-		gatherer_label = (UI_Label*)App->gui->CreateLabel(865, 668, Label, gatherer_quantity, NULL, this, NULL, "StackedPixelSmall");
+		gatherer_label = (UI_Label*)App->gui->CreateLabel(1055, 602, Label, gatherer_quantity, NULL, this, NULL, "StackedPixelSmall");
 
 		break;
 
@@ -587,22 +587,30 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 						case BUILDING_TYPE::BASE:
 
 							//Buttons
-							ghoul_base[0] = (UI_Button*)App->gui->CreateButton(1050, 593, Ghouls_ghaterer_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-							ghoul_base[1] = (UI_Button*)App->gui->CreateButton(1050, 653, Boost_base_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							ghoul_base[0] = (UI_Button*)App->gui->CreateButton(670, 593, Ghouls_ghaterer_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							ghoul_base[1] = (UI_Button*)App->gui->CreateButton(670, 653, Boost_base_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
 							
 
 							//Images
-							ghoul_base[2] = (j1Image*)App->gui->CreateImage(900, 593, Image, { 398, 1564, 99, 108 }, NULL, this);
-							ghoul_base[3] = (j1Image*)App->gui->CreateImage(1064, 600, Image, { 624, 1866, 24, 34 }, NULL, this);
-							ghoul_base[4] = (j1Image*)App->gui->CreateImage(1055, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
+							ghoul_base[2] = (j1Image*)App->gui->CreateImage(540, 590, Image, { 398, 1564, 99, 108 }, NULL, this);
+							ghoul_base[3] = (j1Image*)App->gui->CreateImage(680, 600, Image, { 624, 1866, 24, 34 }, NULL, this);
+							ghoul_base[4] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
 
 							//Labels
-							if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
+							/*if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
 								int cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
 								ghoul_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelSmall");
 							}
 							else
 								ghoul_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");
+							*/
+
+							ghoul_base[6] = (j1Image*)App->gui->CreateImage(1008, 609, Image, { 412, 1930, 28, 62 }, NULL, this);
+							ghoul_base[7] = (j1Image*)App->gui->CreateImage(1102, 610, Image, { 104, 2338, 49, 55 }, NULL, this);
+							ghoul_base[8] = (UI_Label*)App->gui->CreateLabel(1042, 602, Label, "x", NULL, this, NULL, "StackedPixelSmall");
+
+							//Draw initial quantity
+							CreateMenu(Menu::GATHERER_QUANTITY);
 
 							last_menu = current_menu;
 							current_menu = Menu::BUI_BASES;
@@ -680,13 +688,13 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 						case BUILDING_TYPE::BASE:
 
 							//Buttons
-							vault_base[0] = (UI_Button*)App->gui->CreateButton(1050, 593, Vault_ghaterer_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-							vault_base[1] = (UI_Button*)App->gui->CreateButton(1050, 653, Boost_base_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							vault_base[0] = (UI_Button*)App->gui->CreateButton(670, 593, Vault_ghaterer_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							vault_base[1] = (UI_Button*)App->gui->CreateButton(670, 653, Boost_base_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
 
 							//Images
-							vault_base[2] = (j1Image*)App->gui->CreateImage(900, 593, Image, { 319, 1710, 49, 113 }, NULL, this);
-							vault_base[3] = (j1Image*)App->gui->CreateImage(1064, 600, Image, { 463, 1871, 25, 29 }, NULL, this);
-							vault_base[4] = (j1Image*)App->gui->CreateImage(1055, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
+							vault_base[2] = (j1Image*)App->gui->CreateImage(540, 590, Image, { 319, 1710, 49, 113 }, NULL, this);
+							vault_base[3] = (j1Image*)App->gui->CreateImage(680, 600, Image, { 463, 1871, 25, 29 }, NULL, this);
+							vault_base[4] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
 
 							//Labels
 							if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
@@ -695,6 +703,13 @@ void MenuManager::CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE ty
 							}
 							else
 								vault_base[5] = (UI_Label*)App->gui->CreateLabel(1120, 630, Label, "MAX", NULL, this, NULL, "StackedPixelSmall");
+
+							vault_base[6] = (j1Image*)App->gui->CreateImage(1008, 609, Image, { 382, 1930, 21, 57 }, NULL, this);
+							vault_base[7] = (j1Image*)App->gui->CreateImage(1102, 610, Image, { 104, 2338, 49, 55 }, NULL, this);
+							vault_base[8] = (UI_Label*)App->gui->CreateLabel(1042, 602, Label, "x", NULL, this, NULL, "StackedPixelSmall");
+
+							//Draw initial quantity
+							CreateMenu(Menu::GATHERER_QUANTITY);
 
 							last_menu = current_menu;
 							current_menu = Menu::BUI_BASES;
@@ -868,11 +883,11 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 				App->gui->DeleteArrayElements(supermutant_barrack, 13);
 				App->gui->DeleteArrayElements(supermutant_lab, 11);
 				
-				App->gui->DeleteArrayElements(ghoul_base, 6);
+				App->gui->DeleteArrayElements(ghoul_base, 9);
 				App->gui->DeleteArrayElements(ghoul_barrack, 11);
 				App->gui->DeleteArrayElements(ghoul_lab, 11);
 
-				App->gui->DeleteArrayElements(vault_base, 6);
+				App->gui->DeleteArrayElements(vault_base, 9);
 				App->gui->DeleteArrayElements(vault_barrack, 11);
 				App->gui->DeleteArrayElements(vault_lab, 11);
 
@@ -947,7 +962,7 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 			{
 
 			case BUILDING_TYPE::BASE:
-				App->gui->DeleteArrayElements(ghoul_base, 6);
+				App->gui->DeleteArrayElements(ghoul_base, 9);
 				break;
 			case BUILDING_TYPE::BARRACK:
 				App->gui->DeleteArrayElements(ghoul_barrack, 11);
@@ -969,7 +984,7 @@ void MenuManager::DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type)
 			switch (type)
 			{
 			case BUILDING_TYPE::BASE:
-				App->gui->DeleteArrayElements(vault_base, 6);
+				App->gui->DeleteArrayElements(vault_base, 9);
 				break;
 			case BUILDING_TYPE::BARRACK:
 				App->gui->DeleteArrayElements(vault_barrack, 11);

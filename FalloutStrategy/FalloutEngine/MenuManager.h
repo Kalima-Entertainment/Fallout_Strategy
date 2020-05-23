@@ -90,11 +90,11 @@ public:
 	UI_element* brotherhood_barrack[11];
 	UI_element* brotherhood_lab[11];
 
-	UI_element* ghoul_base[6];
+	UI_element* ghoul_base[9];
 	UI_element* ghoul_barrack[11];
 	UI_element* ghoul_lab[11];
 
-	UI_element* vault_base[6];
+	UI_element* vault_base[9];
 	UI_element* vault_barrack[11];
 	UI_element* vault_lab[11];
 
