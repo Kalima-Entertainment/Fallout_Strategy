@@ -93,7 +93,6 @@ bool j1Hud::Update(float dt)
 		}
 
 	}
-
 	if (minutes == 8 && timer == 30)
 	{
 		App->entities->SpawnAnimals();
@@ -186,10 +185,7 @@ bool j1Hud::PostUpdate()
 				//Spawn bar
 
 				SDL_Rect spawn_bar_background = { 995, 692, 75, 6 };
-				SDL_Rect spawn_bar_background2 = { 1092, 692, 75, 6 };
-
 				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
-				App->render->DrawQuad(spawn_bar_background2, 255, 255, 255, 255, true, 0.0f);
 
 				if (static_entity->spawning) {
 
@@ -281,21 +277,15 @@ bool j1Hud::PostUpdate()
 				//Spawn bar
 
 				SDL_Rect spawn_bar_background = { 995, 692, 75, 6 };
-				SDL_Rect spawn_bar_background2 = { 1092, 692, 75, 6 };
-
 				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
-				App->render->DrawQuad(spawn_bar_background2, 255, 255, 255, 255, true, 0.0f);
 
 				if (static_entity->spawning) {
 
-					if (static_entity->spawn_stack[0].type == MELEE) {
+					if (static_entity->spawn_stack[0].type == MR_HANDY) {
 						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
 						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
-					else if (static_entity->spawn_stack[0].type == RANGED) {
-						SDL_Rect spawn_bar_foreground = { 1092, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background2.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
-					}
+
 				}
 			}
 			break;
@@ -379,21 +369,15 @@ bool j1Hud::PostUpdate()
 				//Spawn bar
 
 				SDL_Rect spawn_bar_background = { 995, 692, 75, 6 };
-				SDL_Rect spawn_bar_background2 = { 1092, 692, 75, 6 };
-
 				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
-				App->render->DrawQuad(spawn_bar_background2, 255, 255, 255, 255, true, 0.0f);
 
 				if (static_entity->spawning) {
 
-					if (static_entity->spawn_stack[0].type == MELEE) {
+					if (static_entity->spawn_stack[0].type == MR_HANDY) {
 						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
 						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
-					else if (static_entity->spawn_stack[0].type == RANGED) {
-						SDL_Rect spawn_bar_foreground = { 1092, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background2.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
-					}
+
 				}
 
 			}
@@ -498,25 +482,18 @@ bool j1Hud::PostUpdate()
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
 				App->render->DrawQuad(background_bar, 0, 0, 0, 255, true, 0.0f);
 				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, 0.0f);
-
 				//Spawn bar
 
 				SDL_Rect spawn_bar_background = { 995, 692, 75, 6 };
-				SDL_Rect spawn_bar_background2 = { 1092, 692, 75, 6 };
-
 				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
-				App->render->DrawQuad(spawn_bar_background2, 255, 255, 255, 255, true, 0.0f);
 
 				if (static_entity->spawning) {
 
-					if (static_entity->spawn_stack[0].type == MELEE) {
+					if (static_entity->spawn_stack[0].type == MR_HANDY) {
 						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
 						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
-					else if (static_entity->spawn_stack[0].type == RANGED) {
-						SDL_Rect spawn_bar_foreground = { 1092, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background2.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
-					}
+
 				}
 			}
 			break;
