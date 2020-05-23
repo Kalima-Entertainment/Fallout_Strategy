@@ -137,16 +137,18 @@ bool StaticEntity::PostUpdate() {
 		App->render->DrawQuad({ (int)position.x, (int)position.y, 4,4 }, 255, 0, 0, 255);
 
 	//Health bar stats
-	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 80, 4 };
-	SDL_Rect foreground_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, (float)current_health / max_health * background_bar.w, 4 };
+	SDL_Rect background_bar = { render_position.x + sprite_size * 0.5f - 40, render_position.y, 80, 4 };
+	SDL_Rect foreground_bar = { render_position.x + sprite_size * 0.5f - 40, render_position.y, (float)current_health / max_health * background_bar.w, 4 };
+	SDL_Rect frame = { render_position.x + sprite_size * 0.5f - 41, render_position.y - 1, 82, 6 };
 	if (foreground_bar.w < 0) foreground_bar.w = 0;
-	App->render->DrawQuad(background_bar, 255, 255, 255, 255);
-	App->render->DrawQuad(foreground_bar, 230, 165, 30, 255);
+	App->render->DrawQuad(background_bar, 50, 50, 50, 255);
+	App->render->DrawQuad(foreground_bar, 20, 255, 20, 255);
+	App->render->DrawQuad(frame, 200, 200, 200, 200, false);
 
 	//Spawn bar
 	if (spawning) {
-		SDL_Rect spawn_bar_background = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.25f, 80, 4 };
-		SDL_Rect spawn_bar_foreground = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.25f, (float)time_left / spawn_stack[0].spawn_seconds * spawn_bar_background.w, 4 };
+		SDL_Rect spawn_bar_background = { render_position.x + sprite_size * 0.5f - 40, render_position.y +20, 80, 4 };
+		SDL_Rect spawn_bar_foreground = { render_position.x + sprite_size * 0.5f - 40, render_position.y+20, (float)time_left / spawn_stack[0].spawn_seconds * spawn_bar_background.w, 4 };
 		App->render->DrawQuad(spawn_bar_background, 150, 150, 150, 255);
 		App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255);
 	}
