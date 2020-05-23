@@ -50,6 +50,20 @@ bool j1Audio::Awake(pugi::xml_node& config)
 		ret = true;
 	}
 
+	Animal_walk = LoadFx("Assets/audio/fx/CharactersSounds/Animals/Brahmin/Walk.wav");
+	Animal_hit = LoadFx("Assets/audio/fx/CharactersSounds/Animals/Brahmin/Hit1.wav");
+	Animal_die = LoadFx("Assets/audio/fx/CharactersSounds/Animals/Brahmin/Death1.wav");
+
+	Deathclaw_walk = LoadFx("Assets/audio/fx/CharactersSounds/Deathclaw/babWalk.wav");
+	Deathclaw_hit = LoadFx("Assets/audio/fx/CharactersSounds/Deathclaw/babHit2.wav");
+	Deathclaw_attack = LoadFx("Assets/audio/fx/CharactersSounds/Deathclaw/Attack2.wav");
+	Deathclaw_die = LoadFx("Assets/audio/fx/CharactersSounds/Deathclaw/babDeath1.wav");
+
+	Mr_Handy_walk = LoadFx("Assets/audio/fx/CharactersSounds/Mr_Handy/Mr_Handy_walk.wav");
+	Mr_Handy_hit = LoadFx("Assets/audio/fx/CharactersSounds/Mr_Handy/Mr_Handy_hit.wav");
+	Mr_Handy_attack = LoadFx("Assets/audio/fx/CharactersSounds/Mr_Handy/Mr_Handy_attack.wav");
+	Mr_Handy_die = LoadFx("Assets/audio/fx/CharactersSounds/Mr_Handy/Mr_Handy_die.wav");
+
 	Brotherhood_walk = LoadFx("Assets/audio/fx/CharactersSounds/Brotherhood/Brotherhood_Walk.wav");
 	Brotherhood_die = LoadFx("Assets/audio/fx/CharactersSounds/Brotherhood/Brotherhood_Die.wav");
 	Brotherhood_hit = LoadFx("Assets/audio/fx/CharactersSounds/Brotherhood/Brotherhood_Hit.wav");

@@ -4,6 +4,7 @@
 #include "StaticEntity.h"
 #include "j1Render.h"
 #include "FoWManager.h"
+#include "SDL_mixer/include/SDL_mixer.h"
 
 Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, GenericPlayer* g_owner) : DynamicEntity() {
 	type = g_type;
@@ -58,6 +59,8 @@ bool Troop::Update(float dt) {
 	j1Entity* enemy_in_range = nullptr;
 	current_animation = &animations[state][direction];
 
+	Mix_AllocateChannels(35);
+
 	switch (state)
 	{
     case IDLE:
@@ -104,6 +107,8 @@ bool Troop::Update(float dt) {
 				PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
 			}
 		}
+
+		SpatialAudio(position.x, position.y, faction, state, type);
         break;
 
     case ATTACK:
@@ -120,6 +125,8 @@ bool Troop::Update(float dt) {
 				animations[ATTACK][direction].Reset();
 			}
 		}
+		SpatialAudio(position.x, position.y, faction, state, type);
+
         break;
 
     case HIT:
@@ -132,6 +139,8 @@ bool Troop::Update(float dt) {
 			else
 				state = IDLE;
 		}
+
+		SpatialAudio(position.x, position.y, faction, state, type);
         break;
 
     case DIE:
@@ -150,6 +159,7 @@ bool Troop::Update(float dt) {
 			to_delete = true;
 			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
 		}
+		SpatialAudio(position.x, position.y, faction, state, type);
         break;
 
     default:
