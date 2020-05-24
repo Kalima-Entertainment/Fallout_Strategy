@@ -114,7 +114,7 @@ void DialogManager::Callback(UI_element* button) {
 	UI_Label* label = (UI_Label*)App->menu_manager->dialogs[0];
 	UI_Label* option = (UI_Label*)App->menu_manager->dialogs[1];
 
-	if (dialog_level < dialogs.size() -1)
+	if (dialog_level < dialogs.size())
 	{
 		switch (button->GetType())
 		{
@@ -163,7 +163,12 @@ void DialogManager::Callback(UI_element* button) {
 				label = (UI_Label*)App->menu_manager->dialogs[i];
 				label->SetLabelText(dialogs[dialog_level]->options[i-1].c_str(), "StackedPixelSmall");
 			}
+
+			if (dialog_level == dialogs.size() -1) {
+				dialog_level++;
+			}
 			break;
+
 		case UI_Type::FINISH_DIALOGS:
 			Disable();
 			App->menu_manager->CreateMenu(Menu::QUEST);

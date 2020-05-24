@@ -644,7 +644,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 					spawnPoint[spawnCoordinates].x = object_node.attribute("x").as_int() + offset[module_number].x;
 					spawnPoint[spawnCoordinates].y = object_node.attribute("y").as_int() + offset[module_number].y;
 					spawnPoint[spawnCoordinates] = App->map->IsometricWorldToMap(spawnPoint[spawnCoordinates].x, spawnPoint[spawnCoordinates].y);
-					LOG("spawnCoordinates = %i / SpawnPoints x = %i y = %i", spawnCoordinates, spawnPoint[spawnCoordinates].x, spawnPoint[spawnCoordinates].y);
+				//	LOG("spawnCoordinates = %i / SpawnPoints x = %i y = %i", spawnCoordinates, spawnPoint[spawnCoordinates].x, spawnPoint[spawnCoordinates].y);
 					spawnCoordinates++;
 				}
 			}

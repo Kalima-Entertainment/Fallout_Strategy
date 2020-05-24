@@ -553,7 +553,7 @@ void StaticEntity::SpawnUnit(EntityType type, bool no_cost) {
 
 				spawn_stack[i].type = type;
 				spawn_stack[i].spawn_seconds = spawn_seconds;
-				LOG("Unit in queue. Waiting %i seconds to spawn", spawn_seconds);
+			//	LOG("Unit in queue. Waiting %i seconds to spawn", spawn_seconds);
 				break;
 			}
 		}

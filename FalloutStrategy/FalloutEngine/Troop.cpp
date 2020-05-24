@@ -37,7 +37,7 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 		break;
 	}
 
-	if (App->render->fog_of_war) {
+	//if (App->render->fog_of_war) {
 		if (this->faction == App->player->faction) {
 			//Player
 			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, true);
@@ -47,7 +47,7 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 			//Enemy
 			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
 		}
-	}
+	//}
 }
 
 Troop::~Troop() {
@@ -114,7 +114,7 @@ bool Troop::Update(float dt) {
     case ATTACK:
 		if (attack_timer.ReadSec() > attack_time) {
 			current_animation->Reset();
-			if (current_tile.DistanceNoSqrt(target_entity->current_tile) > range) {
+			if ((current_tile.DistanceNoSqrt(target_entity->current_tile) > range)&&(target_entity->is_dynamic)) {
 				PathfindToPosition(target_entity->current_tile);
 			}
 			else

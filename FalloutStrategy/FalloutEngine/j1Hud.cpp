@@ -68,8 +68,8 @@ bool j1Hud::Update(float dt)
 			minutes -= 1;
 		}
 
-		sprintf_s(timer_text, 10, "%d", timer);
-		sprintf_s(minutes_text, 10, "%d", minutes);
+		sprintf_s(timer_text, 10, "%i", timer);
+		sprintf_s(minutes_text, 10, "%i", minutes);
 
 		if (timer < 10)
 		{
@@ -106,6 +106,7 @@ bool j1Hud::PostUpdate()
 	if (App->player->selected_entity != nullptr)
 	{
 		StaticEntity* static_entity = (StaticEntity*)App->player->selected_entity;
+
 		//Create HUD for the building
 		switch (static_entity->faction) {
 		case GHOUL:

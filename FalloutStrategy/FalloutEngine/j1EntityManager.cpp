@@ -227,19 +227,18 @@ bool j1EntityManager::PostUpdate()
 			StaticEntity* static_entity = (StaticEntity*)App->player->selected_entity;
 			//Create HUD for the building
 			switch (static_entity->faction) {
-			case GHOUL:
+			case VAULT:
 				if (static_entity->type == BASE) {
 
 					if (!showing_building_menu) {
-						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, FACTION::GHOUL, BUILDING_TYPE::BASE);
+						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, VAULT, BASE);
 						showing_building_menu = true;
 					}
-
 				}
 				else if (static_entity->type == BARRACK) {
 
 					if (!showing_building_menu) {
-						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, FACTION::GHOUL, BUILDING_TYPE::BARRACK);
+						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, VAULT, BARRACK);
 						showing_building_menu = true;
 					}
 
@@ -247,7 +246,7 @@ bool j1EntityManager::PostUpdate()
 				else if (static_entity->type == LABORATORY) {
 
 					if (!showing_building_menu) {
-						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, FACTION::GHOUL, BUILDING_TYPE::LAB);
+						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, VAULT, LABORATORY);
 						showing_building_menu = true;
 					}
 
@@ -257,14 +256,14 @@ bool j1EntityManager::PostUpdate()
 				if (static_entity->type == BASE) {
 
 					if (!showing_building_menu) {
-						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, FACTION::BROTHERHOOD, BUILDING_TYPE::BASE);
+						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, BROTHERHOOD, BASE);
 						showing_building_menu = true;
 					}
 				}
 				else if (static_entity->type == BARRACK) {
 
 					if (!showing_building_menu) {
-						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, FACTION::BROTHERHOOD, BUILDING_TYPE::BARRACK);
+						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, BROTHERHOOD, BARRACK);
 						showing_building_menu = true;
 
 					}
@@ -272,43 +271,17 @@ bool j1EntityManager::PostUpdate()
 				else if (static_entity->type == LABORATORY) {
 
 					if (!showing_building_menu) {
-						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, FACTION::BROTHERHOOD, BUILDING_TYPE::LAB);
+						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, BROTHERHOOD, LABORATORY);
 						showing_building_menu = true;
 					}
 				}
 				break;
 
-			case VAULT:
-
-				if (static_entity->type == BASE) {
-
-					if (!showing_building_menu) {
-						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, FACTION::VAULT, BUILDING_TYPE::BASE);
-						showing_building_menu = true;
-					}
-				}
-				else if (static_entity->type == BARRACK) {
-
-					if (!showing_building_menu) {
-						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, FACTION::VAULT, BUILDING_TYPE::BARRACK);
-						showing_building_menu = true;
-					}
-
-				}
-				else if (static_entity->type == LABORATORY) {
-
-					if (!showing_building_menu) {
-						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, FACTION::VAULT, BUILDING_TYPE::LAB);
-						showing_building_menu = true;
-					}
-
-				}
-				break;
 			case MUTANT:
 				if (static_entity->type == BASE) {
 
 					if (!showing_building_menu) {
-						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, FACTION::SUPERMUTANT, BUILDING_TYPE::BASE);
+						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, MUTANT, BASE);
 						showing_building_menu = true;
 					}
 
@@ -316,16 +289,43 @@ bool j1EntityManager::PostUpdate()
 				else if (static_entity->type == BARRACK) {
 
 					if (!showing_building_menu) {
-						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, FACTION::SUPERMUTANT, BUILDING_TYPE::BARRACK);
+						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, MUTANT, BARRACK);
 						showing_building_menu = true;
 					}
 
 				}
 				else if (static_entity->type == LABORATORY) {
 					if (!showing_building_menu) {
-						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, FACTION::SUPERMUTANT, BUILDING_TYPE::LAB);
+						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, MUTANT, LABORATORY);
 						showing_building_menu = true;
 					}
+				}
+				break;
+
+			case GHOUL:
+				if (static_entity->type == BASE) {
+
+					if (!showing_building_menu) {
+						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, GHOUL, BASE);
+						showing_building_menu = true;
+					}
+
+				}
+				else if (static_entity->type == BARRACK) {
+
+					if (!showing_building_menu) {
+						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, GHOUL, BARRACK);
+						showing_building_menu = true;
+					}
+
+				}
+				else if (static_entity->type == LABORATORY) {
+
+					if (!showing_building_menu) {
+						App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, GHOUL, LABORATORY);
+						showing_building_menu = true;
+					}
+
 				}
 				break;
 			}

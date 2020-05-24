@@ -9,6 +9,8 @@ class j1Image;
 class UI_Slider;
 class UI_Button;
 class UI_Label;
+enum Faction;
+enum EntityType;
 
 #define MAX_UI_ELEMENTS 60
 
@@ -34,26 +36,6 @@ enum class Menu {
 	NO_MENU,
 };
 
-enum class FACTION {
-
-	BROTHERHOOD,
-	SUPERMUTANT,
-	GHOUL,
-	VAULT,
-	ALL,
-	NONE,
-};
-
-enum class BUILDING_TYPE {
-
-	BASE,
-	BARRACK,
-	LAB,
-	ALL,
-	NONE,
-};
-
-
 class MenuManager :public j1Module {
 
 public:
@@ -65,9 +47,9 @@ public:
 public:
 
 	void CreateMenu(Menu menu);
-	void CreateMenuFaction(Menu menu, FACTION faction, BUILDING_TYPE type);
+	void CreateMenuFaction(Menu menu, Faction faction, EntityType type);
 	void DestroyMenu(Menu menu);
-	void DestroyFaction(Menu menu, FACTION faction, BUILDING_TYPE type);
+	void DestroyFaction(Menu menu, Faction faction, EntityType type);
 
 public:
 
@@ -118,6 +100,9 @@ public:
 
 	Menu current_menu;
 	Menu last_menu;
+
+	Faction current_building_faction;
+	EntityType current_building_type;
 
 	int how_to_play_counter = 0;
 

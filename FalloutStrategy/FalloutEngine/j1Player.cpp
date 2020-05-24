@@ -107,9 +107,19 @@ bool j1Player::PreUpdate() {
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
 			selected_entity = SelectEntity();
 
-			if (App->entities->showing_building_menu && selected_entity == nullptr) {
-				App->menu_manager->DestroyFaction(Menu::BUI_BASES, FACTION::ALL, BUILDING_TYPE::ALL);
-				App->entities->showing_building_menu = false;
+			if (App->entities->showing_building_menu) {
+				if (selected_entity == nullptr) {
+					App->menu_manager->DestroyFaction(Menu::BUI_BASES, App->menu_manager->current_building_faction, App->menu_manager->current_building_type);
+					App->entities->showing_building_menu = false;
+				}
+				else
+				{
+					if ((App->entities->showing_building_menu) && (last_selected_entity != selected_entity)) {
+					App->menu_manager->DestroyFaction(Menu::BUI_BASES, App->menu_manager->current_building_faction, App->menu_manager->current_building_type);
+					App->menu_manager->CreateMenuFaction(Menu::BUI_BASES, selected_entity->faction, selected_entity->type);
+					}
+				}
+				last_selected_entity = selected_entity;
 			}
 		}
 
@@ -241,10 +251,6 @@ j1Entity* j1Player::SelectEntity() {
 		if (((god_mode) || (target->faction == faction))&&(target->state != DIE)) {
 			return target;
 		}
-	}
-
-	if (selected_entity != nullptr) {
-		last_selected_entity = selected_entity;
 	}
 
 	return nullptr;
