@@ -12,6 +12,7 @@
 #include "UI_Label.h"
 #include "j1Gui.h"
 #include "j1Minimap.h"
+#include "j1Image.h"
 #include "MenuManager.h"
 #include "j1Scene.h"
 #include "j1Console.h"
@@ -28,11 +29,14 @@ j1Player::j1Player() : GenericPlayer() {
 	base = barrack[0] = barrack[1] = laboratory = nullptr;
 
 	caps = 10000;
-	food = 10000;
-	water = 10000;
+	food = 999;
+	water = 999;
 
 	god_mode = false;
 
+	qcaps = false;
+	qwater = false;
+	qfood = false;
 	//faction = VAULT;
 	defeated = false;
 	is_ai = false;
@@ -165,8 +169,30 @@ bool j1Player::Update(float dt) {
 
 	// --- We get the map coords of the mouse ---
 	Map_mouseposition = App->map->WorldToMap((int)App->scene->mouse_pos.x, (int)App->scene->mouse_pos.y);
+	if (qcaps == false) {
+		
+		if (caps == 1000) {
+			LOG("SILVINO TONTO");
+			qcaps = true;
+		}
+	}
 
-	
+	if (qwater == false) {
+
+		if (water == 1000) {
+			App->menu_manager->quest[4] = (j1Image*)App->gui->CreateImage(33, 120, Image, { 3061, 619, 30, 27 }, NULL, this);
+			qwater = true;
+		}
+	}
+
+	if (qfood == false) {
+
+		if (food == 400) {
+			LOG("SILVINO TONTO");
+			qfood = true;
+		}
+	}
+
 
 	/*
 	//Zoom in, zoom out

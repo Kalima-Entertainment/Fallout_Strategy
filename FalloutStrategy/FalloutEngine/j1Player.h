@@ -30,6 +30,9 @@ public:
 	j1Entity* last_selected_entity;
 	bool god_mode;
 	iPoint Map_mouseposition;
+	bool qcaps;
+	bool qfood;
+	bool qwater;
 private:
 	float mouse_speed_multiplier;
 	bool border_scroll;
