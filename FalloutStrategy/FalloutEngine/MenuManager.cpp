@@ -1120,9 +1120,12 @@ void MenuManager::DestroyFaction(Menu menu, Faction faction, EntityType type) {
 			switch (type){
 			case BASE:
 				App->gui->DeleteArrayElements(ghoul_base, 15);
+				App->gui->Delete_Element(gatherer_label);
 				break;
 			case BARRACK:
 				App->gui->DeleteArrayElements(ghoul_barrack, 22);
+				App->gui->Delete_Element(melee_label);
+				App->gui->Delete_Element(ranged_label);
 				break;
 			case LABORATORY:
 				App->gui->DeleteArrayElements(ghoul_lab, 20);
@@ -1144,9 +1147,12 @@ void MenuManager::DestroyFaction(Menu menu, Faction faction, EntityType type) {
 			{
 			case BASE:
 				App->gui->DeleteArrayElements(vault_base, 15);
+				App->gui->Delete_Element(gatherer_label);
 				break;
 			case BARRACK:
 				App->gui->DeleteArrayElements(vault_barrack, 22);
+				App->gui->Delete_Element(melee_label);
+				App->gui->Delete_Element(ranged_label);
 				break;
 			case LABORATORY:
 				App->gui->DeleteArrayElements(vault_lab, 20);
