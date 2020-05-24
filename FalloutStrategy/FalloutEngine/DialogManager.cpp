@@ -122,7 +122,7 @@ void DialogManager::Callback(UI_element* button) {
 		case UI_Type::OPTION_A:
 			App->audio->PlayFx(1, App->audio->character_fx, 0);
 			if (option->text != " ") {
-				LOG("Option A");
+				//LOG("Option A");
 				label->SetLabelText(dialogs[dialog_level]->response[0].c_str(), "StackedPixelSmall");
 				for (int i = 1; i < 4; i++)
 				{
@@ -135,7 +135,7 @@ void DialogManager::Callback(UI_element* button) {
 		case UI_Type::OPTION_B:
 			App->audio->PlayFx(1, App->audio->character_fx, 0);
 			if (option->text != " ") {
-				LOG("Option B");
+				//LOG("Option B");
 				label->SetLabelText(dialogs[dialog_level]->response[1].c_str(), "StackedPixelSmall");
 				for (int i = 1; i < 4; i++)
 				{
@@ -148,7 +148,7 @@ void DialogManager::Callback(UI_element* button) {
 		case UI_Type::OPTION_C:
 			App->audio->PlayFx(1, App->audio->character_fx, 0);
 			if (option->text != " ") {
-				LOG("Option C");
+				//LOG("Option C");
 				label->SetLabelText(dialogs[dialog_level]->response[2].c_str(), "StackedPixelSmall");
 				for (int i = 1; i < 4; i++)
 				{

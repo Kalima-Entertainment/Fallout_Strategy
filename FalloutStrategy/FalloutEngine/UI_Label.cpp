@@ -82,7 +82,6 @@ bool UI_Label::SetLabelText(std::string text_input, std::string font)
 
 void UI_Label::SetTextTimer(const char* text)
 {
-
 	App->tex->UnLoad(texture);
 	texture = App->font->Print(text, { 255,255,255,255 }, "StackedPixel");
 	App->font->CalcSize(text, dimensions.w, dimensions.h);

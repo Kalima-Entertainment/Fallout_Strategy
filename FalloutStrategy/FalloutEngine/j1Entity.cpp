@@ -52,6 +52,7 @@ int j1Entity::GetPositionScore() const {
 void j1Entity::SpatialAudio(int positionx, int positiony, Faction faction, State state, EntityType type) {
 	int channel = 0;
 	int fx = 0;
+
 	switch (state)
 	{
 	case WALK:

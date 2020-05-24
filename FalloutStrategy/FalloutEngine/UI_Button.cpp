@@ -7,6 +7,7 @@
 #include "j1EntityManager.h"
 #include "j1Entity.h"
 #include "j1Pathfinding.h"
+#include "j1EasingAndSplines.h"
 #include "MenuManager.h"
 #include "j1Player.h"
 #include "j1Scene.h"
@@ -438,17 +439,29 @@ bool UI_Button::Update(float dt)
 					App->audio->PlayFx(1, App->audio->character_fx, 0);
 					App->scene->create_tutorial = true;
 					App->gui->ingame = false;
+					App->easing_splines->CreateSpline(&App->menu_manager->tutorial_screen->pos.x, App->menu_manager->tutorial_screen->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[0]->pos.x, App->menu_manager->tutorial[0]->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[1]->pos.x, App->menu_manager->tutorial[1]->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[2]->pos.x, App->menu_manager->tutorial[2]->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[3]->pos.x, App->menu_manager->tutorial[3]->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[4]->pos.x, App->menu_manager->tutorial[4]->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[6]->pos.x, App->menu_manager->tutorial[6]->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->info_button2_element->pos.x, App->menu_manager->info_button2_element->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+
 				}
 			}
 			
 			else if (t == info_button2) {
 				if (App->scene->create_tutorial == true) {
+
 					App->menu_manager->DestroyMenu(Menu::TUTORIAL);
 					App->menu_manager->DestroyMenu(Menu::HOW_TO_PLAY);
 					App->audio->PlayFx(1, App->audio->back_fx, 0);
 					App->scene->create_tutorial = false;
 					App->gui->ingame = true;
+
 				}
+
 			}
 			
 			else if (t == control_button) {

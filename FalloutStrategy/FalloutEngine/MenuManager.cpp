@@ -239,6 +239,8 @@ void MenuManager::CreateMenu(Menu menu) {
 		timer_item = (UI_Label*)App->gui->CreateLabel(700, 7, Label, "0", NULL, this, NULL, "StackedPixel");
 		timer_minutes = (UI_Label*)App->gui->CreateLabel(652, 7, Label, "0", NULL, this, NULL, "StackedPixel");
 		
+		
+
 		last_menu = current_menu;
 		current_menu = Menu::GUI;
 		
@@ -289,18 +291,18 @@ void MenuManager::CreateMenu(Menu menu) {
 	case Menu::TUTORIAL:
 
 		//Images
-		tutorial_screen = (j1Image*)App->gui->CreateImage(634, 133, Image, { 0, 140, 654, 355 }, NULL, this);
+		tutorial_screen = (j1Image*)App->gui->CreateImage(1334, 133, Image, { 0, 140, 654, 355 }, NULL, this);
 		
 		//Buttons
-		tutorial[0] = (UI_Button*)App->gui->CreateButton(680, 360, control_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-		tutorial[1] = (UI_Button*)App->gui->CreateButton(1000, 360, how_to_play_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-		info_button2_element = (UI_Button*)App->gui->CreateButton(594, 143, info_button2, { 908,2084,43,46 }, { 908,2135,43,46 }, { 908,2185,43,46 }, NULL, this);
-		tutorial[6] = (UI_Button*)App->gui->CreateButton(640, 435, back_tutorial, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this);
+		tutorial[0] = (UI_Button*)App->gui->CreateButton(1380, 360, control_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+		tutorial[1] = (UI_Button*)App->gui->CreateButton(1700, 360, how_to_play_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+		info_button2_element = (UI_Button*)App->gui->CreateButton(1294, 143, info_button2, { 908,2084,43,46 }, { 908,2135,43,46 }, { 908,2185,43,46 }, NULL, this);
+		tutorial[6] = (UI_Button*)App->gui->CreateButton(1340, 435, back_tutorial, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this);
 
 		//Text
-		tutorial[2] = (UI_Label*)App->gui->CreateLabel(890, 220, Label, "TUTORIAL", NULL, this, NULL);
-		tutorial[3] = (UI_Label*)App->gui->CreateLabel(710, 380, Label, "CONTROLS", NULL, this, NULL);
-		tutorial[4] = (UI_Label*)App->gui->CreateLabel(1020, 380, Label, "HOW TO PLAY", NULL, this, NULL);
+		tutorial[2] = (UI_Label*)App->gui->CreateLabel(1590, 220, Label, "TUTORIAL", NULL, this, NULL);
+		tutorial[3] = (UI_Label*)App->gui->CreateLabel(1410, 380, Label, "CONTROLS", NULL, this, NULL);
+		tutorial[4] = (UI_Label*)App->gui->CreateLabel(1720, 380, Label, "HOW TO PLAY", NULL, this, NULL);
 
 		last_menu = current_menu;
 		current_menu = Menu::PAUSE_MENU;
@@ -1055,7 +1057,6 @@ void MenuManager::DestroyFaction(Menu menu, Faction faction, EntityType type) {
 
 	switch (menu)
 	{
-
 	case Menu::BUI_BASES:
 
 		switch (faction)
@@ -1076,13 +1077,6 @@ void MenuManager::DestroyFaction(Menu menu, Faction faction, EntityType type) {
 			case LABORATORY:
 				App->gui->DeleteArrayElements(brotherhood_lab, 20);
 				break;
-				/*
-			case BUILDING_TYPE::NONE:
-				App->gui->Delete_Element(select_faction_photos[0]);
-				App->gui->Delete_Element(select_faction_photos[1]);
-				App->gui->Delete_Element(select_faction_photos[3]);
-				break;
-				*/
 			default:
 				break;
 			}
@@ -1091,7 +1085,6 @@ void MenuManager::DestroyFaction(Menu menu, Faction faction, EntityType type) {
 		case MUTANT:
 			switch (type)
 			{
-
 			case BASE:
 				App->gui->DeleteArrayElements(supermutant_base, 15);
 				App->gui->Delete_Element(gatherer_label);
@@ -1104,13 +1097,6 @@ void MenuManager::DestroyFaction(Menu menu, Faction faction, EntityType type) {
 			case LABORATORY:
 				App->gui->DeleteArrayElements(supermutant_lab, 20);
 				break;
-				/*
-			case BUILDING_TYPE::NONE:
-				App->gui->Delete_Element(select_faction_photos[0]);
-				App->gui->Delete_Element(select_faction_photos[1]);
-				App->gui->Delete_Element(select_faction_photos[2]);
-				break;
-				*/
 			default:
 				break;
 			}
@@ -1130,13 +1116,6 @@ void MenuManager::DestroyFaction(Menu menu, Faction faction, EntityType type) {
 			case LABORATORY:
 				App->gui->DeleteArrayElements(ghoul_lab, 20);
 				break;
-				/*
-			case BUILDING_TYPE::NONE:
-				App->gui->Delete_Element(select_faction_photos[1]);
-				App->gui->Delete_Element(select_faction_photos[2]);
-				App->gui->Delete_Element(select_faction_photos[3]);
-				break;
-				*/
 			default:
 				break;
 			}
@@ -1157,13 +1136,6 @@ void MenuManager::DestroyFaction(Menu menu, Faction faction, EntityType type) {
 			case LABORATORY:
 				App->gui->DeleteArrayElements(vault_lab, 20);
 				break;
-				/*
-			case BUILDING_TYPE::NONE:
-				App->gui->Delete_Element(select_faction_photos[0]);
-				App->gui->Delete_Element(select_faction_photos[2]);
-				App->gui->Delete_Element(select_faction_photos[3]);
-				break;
-				*/
 			default:
 				break;
 			}
