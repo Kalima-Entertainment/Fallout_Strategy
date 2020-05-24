@@ -5,6 +5,7 @@
 #include "j1Gui.h"
 #include "UI_element.h"
 #include "MenuManager.h"
+#include "j1Audio.h"
 #include "UI_Label.h"
 #include "j1Hud.h"
 
@@ -114,11 +115,12 @@ void DialogManager::Callback(UI_element* button) {
 	UI_Label* label = (UI_Label*)App->menu_manager->dialogs[0];
 	UI_Label* option = (UI_Label*)App->menu_manager->dialogs[1];
 
-	if (dialog_level < dialogs.size() -1)
+	if (dialog_level < dialogs.size())
 	{
 		switch (button->GetType())
 		{
 		case UI_Type::OPTION_A:
+			App->audio->PlayFx(1, App->audio->character_fx, 0);
 			if (option->text != " ") {
 				LOG("Option A");
 				label->SetLabelText(dialogs[dialog_level]->response[0].c_str(), "StackedPixelSmall");
@@ -131,6 +133,7 @@ void DialogManager::Callback(UI_element* button) {
 			}
 			break;
 		case UI_Type::OPTION_B:
+			App->audio->PlayFx(1, App->audio->character_fx, 0);
 			if (option->text != " ") {
 				LOG("Option B");
 				label->SetLabelText(dialogs[dialog_level]->response[1].c_str(), "StackedPixelSmall");
@@ -143,6 +146,7 @@ void DialogManager::Callback(UI_element* button) {
 			}
 			break;
 		case UI_Type::OPTION_C:
+			App->audio->PlayFx(1, App->audio->character_fx, 0);
 			if (option->text != " ") {
 				LOG("Option C");
 				label->SetLabelText(dialogs[dialog_level]->response[2].c_str(), "StackedPixelSmall");
@@ -155,6 +159,7 @@ void DialogManager::Callback(UI_element* button) {
 			}
 			break;
 		case UI_Type::ADVANCE_DIALOGS:
+			App->audio->PlayFx(1, App->audio->click_fx, 0);
 			label = (UI_Label*)App->menu_manager->dialogs[0];
 			label->SetLabelText(dialogs[dialog_level]->statement.c_str(), "StackedPixelSmall");
 
@@ -163,8 +168,14 @@ void DialogManager::Callback(UI_element* button) {
 				label = (UI_Label*)App->menu_manager->dialogs[i];
 				label->SetLabelText(dialogs[dialog_level]->options[i-1].c_str(), "StackedPixelSmall");
 			}
+
+			if (dialog_level == dialogs.size() -1) {
+				dialog_level++;
+			}
 			break;
+
 		case UI_Type::FINISH_DIALOGS:
+			App->audio->PlayFx(1, App->audio->back_fx, 0);
 			Disable();
 			App->menu_manager->CreateMenu(Menu::QUEST);
 			break;

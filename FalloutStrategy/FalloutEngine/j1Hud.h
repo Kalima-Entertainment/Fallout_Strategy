@@ -35,8 +35,7 @@ public:
 
 public:
 
-	SDL_Rect background_bar;
-	SDL_Rect foreground_bar;
+
 	bool draw_health;
 	j1Timer	timer_game;
 	int lifesCounter = 3;

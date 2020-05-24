@@ -396,7 +396,6 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	}
 
 	path_timer.Start();
-	LOG("Impossible path");
 
 	return -2;
 }
