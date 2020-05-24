@@ -25,6 +25,7 @@
 #include "DialogManager.h"
 #include "j1Hud.h"
 #include "j1Minimap.h"
+#include "GenericPlayer.h"
 
 #include "brofiler/Brofiler/Brofiler.h"
 #include "SDL_mixer/include/SDL_mixer.h"
@@ -263,7 +264,7 @@ void MenuManager::CreateMenu(Menu menu) {
 
 	case Menu::GATHERER_QUANTITY:
 
-		gatherer_quantity = std::to_string(App->hud->gatherer_amount);
+		gatherer_quantity = std::to_string(App->scene->players[App->player->selected_entity->faction]->gatherers);
 
 		gatherer_label = (UI_Label*)App->gui->CreateLabel(1010, 668, Label, gatherer_quantity, NULL, this, NULL, "StackedPixelSmall");
 
@@ -271,7 +272,7 @@ void MenuManager::CreateMenu(Menu menu) {
 
 	case Menu::RANGED_QUANTITY:
 
-		ranged_quantity = std::to_string(App->hud->ranged_amount);
+		ranged_quantity = std::to_string(App->scene->players[App->player->selected_entity->faction]->rangeds);
 
 		ranged_label = (UI_Label*)App->gui->CreateLabel(1107, 668, Label, ranged_quantity, NULL, this, NULL, "StackedPixelSmall");
 
@@ -279,7 +280,7 @@ void MenuManager::CreateMenu(Menu menu) {
 
 	case Menu::MELEE_QUANTITY:
 
-		melee_quantity = std::to_string(App->hud->melee_amount);
+		melee_quantity = std::to_string(App->scene->players[App->player->selected_entity->faction]->melees);
 
 		melee_label = (UI_Label*)App->gui->CreateLabel(1010, 668, Label, melee_quantity, NULL, this, NULL, "StackedPixelSmall");
 
