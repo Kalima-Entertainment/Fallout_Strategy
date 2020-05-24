@@ -25,6 +25,7 @@
 #include "DialogManager.h"
 #include "j1Hud.h"
 #include "j1Minimap.h"
+#include "GenericPlayer.h"
 
 #include "brofiler/Brofiler/Brofiler.h"
 #include "SDL_mixer/include/SDL_mixer.h"
@@ -263,7 +264,7 @@ void MenuManager::CreateMenu(Menu menu) {
 
 	case Menu::GATHERER_QUANTITY:
 
-		gatherer_quantity = std::to_string(App->hud->gatherer_amount);
+		gatherer_quantity = std::to_string(App->scene->players[App->player->selected_entity->faction]->gatherers);
 
 		gatherer_label = (UI_Label*)App->gui->CreateLabel(1010, 668, Label, gatherer_quantity, NULL, this, NULL, "StackedPixelSmall");
 
@@ -271,7 +272,7 @@ void MenuManager::CreateMenu(Menu menu) {
 
 	case Menu::RANGED_QUANTITY:
 
-		ranged_quantity = std::to_string(App->hud->ranged_amount);
+		ranged_quantity = std::to_string(App->scene->players[App->player->selected_entity->faction]->rangeds);
 
 		ranged_label = (UI_Label*)App->gui->CreateLabel(1107, 668, Label, ranged_quantity, NULL, this, NULL, "StackedPixelSmall");
 
@@ -279,7 +280,7 @@ void MenuManager::CreateMenu(Menu menu) {
 
 	case Menu::MELEE_QUANTITY:
 
-		melee_quantity = std::to_string(App->hud->melee_amount);
+		melee_quantity = std::to_string(App->scene->players[App->player->selected_entity->faction]->melees);
 
 		melee_label = (UI_Label*)App->gui->CreateLabel(1010, 668, Label, melee_quantity, NULL, this, NULL, "StackedPixelSmall");
 
@@ -1103,9 +1104,12 @@ void MenuManager::DestroyFaction(Menu menu, Faction faction, EntityType type) {
 			switch (type){
 			case BASE:
 				App->gui->DeleteArrayElements(ghoul_base, 15);
+				App->gui->Delete_Element(gatherer_label);
 				break;
 			case BARRACK:
 				App->gui->DeleteArrayElements(ghoul_barrack, 22);
+				App->gui->Delete_Element(melee_label);
+				App->gui->Delete_Element(ranged_label);
 				break;
 			case LABORATORY:
 				App->gui->DeleteArrayElements(ghoul_lab, 20);
@@ -1120,9 +1124,12 @@ void MenuManager::DestroyFaction(Menu menu, Faction faction, EntityType type) {
 			{
 			case BASE:
 				App->gui->DeleteArrayElements(vault_base, 15);
+				App->gui->Delete_Element(gatherer_label);
 				break;
 			case BARRACK:
 				App->gui->DeleteArrayElements(vault_barrack, 22);
+				App->gui->Delete_Element(melee_label);
+				App->gui->Delete_Element(ranged_label);
 				break;
 			case LABORATORY:
 				App->gui->DeleteArrayElements(vault_lab, 20);
