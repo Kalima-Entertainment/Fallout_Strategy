@@ -28,8 +28,8 @@ j1Player::j1Player() : GenericPlayer() {
 
 	base = barrack[0] = barrack[1] = laboratory = nullptr;
 
-	caps = 10000;
-	food = 999;
+	caps = 999;
+	food = 399;
 	water = 999;
 
 	god_mode = false;
@@ -171,28 +171,34 @@ bool j1Player::Update(float dt) {
 	Map_mouseposition = App->map->WorldToMap((int)App->scene->mouse_pos.x, (int)App->scene->mouse_pos.y);
 	if (qcaps == false) {
 		
-		if (caps == 1000) {
-			LOG("SILVINO TONTO");
+		if (caps >= 1000) {
+			App->menu_manager->quest[6] = (j1Image*)App->gui->CreateImage(33, 200, Image, { 3061, 619, 30, 27 }, NULL, this);
+			reward++;
 			qcaps = true;
 		}
 	}
 
 	if (qwater == false) {
 
-		if (water == 1000) {
+		if (water >= 1000) {
 			App->menu_manager->quest[4] = (j1Image*)App->gui->CreateImage(33, 120, Image, { 3061, 619, 30, 27 }, NULL, this);
+			reward++;
 			qwater = true;
 		}
 	}
 
 	if (qfood == false) {
 
-		if (food == 400) {
-			LOG("SILVINO TONTO");
+		if (food >= 400) {
+			App->menu_manager->quest[5] = (j1Image*)App->gui->CreateImage(33, 160, Image, { 3061, 619, 30, 27 }, NULL, this);
+			reward++;
 			qfood = true;
 		}
 	}
 
+	if(reward == 1) App->menu_manager->quest[1] = (j1Image*)App->gui->CreateImage(50, 261, Image, { 3155, 809, 60, 17 }, NULL, this);
+	else if(reward == 2) App->menu_manager->quest[2] = (j1Image*)App->gui->CreateImage(114, 261, Image, { 3219, 809, 63, 17 }, NULL, this);
+	else if(reward == 3) App->menu_manager->quest[3] = (j1Image*)App->gui->CreateImage(181, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
 
 	/*
 	//Zoom in, zoom out
