@@ -277,39 +277,42 @@ void j1Player::MoveEntity(){
 	j1Entity* target = App->entities->FindEntityByTile(selected_spot);
 
 	//dynamic entities
-	if (selected_entity->is_dynamic)
+	if (selected_entity->state != DIE) 
 	{
-		DynamicEntity* dynamic_entity;
-		dynamic_entity = (DynamicEntity*)selected_entity;
-		dynamic_entity->PathfindToPosition(selected_spot);
-		dynamic_entity->state = WALK;
+		if (selected_entity->is_dynamic)
+		{
+			DynamicEntity* dynamic_entity;
+			dynamic_entity = (DynamicEntity*)selected_entity;
+			dynamic_entity->PathfindToPosition(selected_spot);
+			dynamic_entity->state = WALK;
 
-		if (target != nullptr) {
-			dynamic_entity->target_entity = target;
-		}
-		else {
-			dynamic_entity->target_entity = nullptr;
+			if (target != nullptr) {
+				dynamic_entity->target_entity = target;
+			}
+			else {
+				dynamic_entity->target_entity = nullptr;
 
-			if (dynamic_entity->type == GATHERER) {
-				ResourceBuilding* resource_building;
-				resource_building = App->entities->FindResourceBuildingByTile(selected_spot);
+				if (dynamic_entity->type == GATHERER) {
+					ResourceBuilding* resource_building;
+					resource_building = App->entities->FindResourceBuildingByTile(selected_spot);
 
-				//assign a resource building to the entity
-				if ((resource_building != nullptr) && (resource_building->quantity > 0) && (dynamic_entity->type == GATHERER)) {
-					((Gatherer*)dynamic_entity)->AssignResourceBuilding(resource_building);
+					//assign a resource building to the entity
+					if ((resource_building != nullptr) && (resource_building->quantity > 0) && (dynamic_entity->type == GATHERER)) {
+						((Gatherer*)dynamic_entity)->AssignResourceBuilding(resource_building);
+					}
+				}
+				else if (dynamic_entity->is_agressive) {
+					dynamic_entity->target_entity = nullptr;
+					dynamic_entity->commanded = true;
 				}
 			}
-			else if (dynamic_entity->is_agressive) {
-				dynamic_entity->target_entity = nullptr;
-				dynamic_entity->commanded = true;
-			}
 		}
-	}
-	//static entities
-	else
-	{
-		StaticEntity* static_entity;
-		static_entity = (StaticEntity*)selected_entity;
+		//static entities
+		else
+		{
+			StaticEntity* static_entity;
+			static_entity = (StaticEntity*)selected_entity;
+		}
 	}
 }
 

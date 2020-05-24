@@ -81,16 +81,29 @@ bool Troop::Update(float dt) {
 		Move(dt);
 
 		if (target_entity) {
-			if (current_tile.DistanceManhattan(target_entity->current_tile) <= range) {
-				UpdateTile();
-				path_to_target.clear();
-				if (target_entity->faction != faction) {
-					state = ATTACK;
-					//Attack();
-					//attack_timer.Start();
+			if (target_entity->is_dynamic) {
+				if (current_tile.DistanceManhattan(target_entity->current_tile) <= range) {
+					UpdateTile();
+					path_to_target.clear();
+					if (target_entity->faction != faction) {
+						state = ATTACK;
+					}
+					else {
+						state = IDLE;
+					}
 				}
-				else {
-					state = IDLE;
+			}
+			else {
+				StaticEntity* static_entity = (StaticEntity*)target_entity;
+				if (current_tile.DistanceManhattan(App->entities->ClosestTile(current_tile, static_entity->tiles)) <= range) {
+					UpdateTile();
+					path_to_target.clear();
+					if (target_entity->faction != faction) {
+						state = ATTACK;
+					}
+					else {
+						state = IDLE;
+					}
 				}
 			}
 		}

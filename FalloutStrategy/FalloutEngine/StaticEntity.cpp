@@ -34,6 +34,7 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 
 	time_left = 0;
 	level = 0;
+	reference_entity = nullptr;
 	texture = nullptr;
 	spawnPosition = {-1,-1};
 
@@ -137,6 +138,7 @@ bool StaticEntity::PostUpdate() {
 		App->render->DrawQuad({ (int)position.x, (int)position.y, 4,4 }, 255, 0, 0, 255);
 
 	//Health bar stats
+	/*
 	SDL_Rect background_bar = { render_position.x + sprite_size * 0.5f - 40, render_position.y, 80, 4 };
 	SDL_Rect foreground_bar = { render_position.x + sprite_size * 0.5f - 40, render_position.y, (float)current_health / max_health * background_bar.w, 4 };
 	SDL_Rect frame = { render_position.x + sprite_size * 0.5f - 41, render_position.y - 1, 82, 6 };
@@ -144,6 +146,7 @@ bool StaticEntity::PostUpdate() {
 	App->render->DrawQuad(background_bar, 50, 50, 50, 255);
 	App->render->DrawQuad(foreground_bar, 20, 255, 20, 255);
 	App->render->DrawQuad(frame, 200, 200, 200, 200, false);
+	*/
 
 	//Spawn bar
 	if (spawning) {
@@ -158,10 +161,11 @@ bool StaticEntity::PostUpdate() {
 
 bool StaticEntity::LoadDataFromReference() {
 	bool ret = true;
+
 	StaticEntity* static_reference = (StaticEntity*)reference_entity;
 
 	//load animations
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		animations[i] = static_reference->animations[i];
 	}
@@ -251,7 +255,7 @@ bool StaticEntity::LoadAnimations(const char* folder, const char* file_name) {
 		std::string building_type = std::string(animation.child("properties").child("property").attribute("name").as_string());
 		std::string animation_name = std::string(animation.child("properties").child("property").attribute("value").as_string());
 		State state = NO_STATE;
-		EntityType entity_type = BASE;
+		EntityType entity_type = NO_TYPE;
 		bool loop = true;
 
 		//building type
@@ -270,12 +274,18 @@ bool StaticEntity::LoadAnimations(const char* folder, const char* file_name) {
 			state = DIE;
 			loop = false;
 		}
-		else goto CHANGE_ANIMATION;
+		else { 
+			//goto CHANGE_ANIMATION; 
+			animation = animation.next_sibling();
+			break;
+		}
 
 		id = animation.attribute("id").as_int();
 
 		if (type == entity_type)
 		{
+			frame = animation.child("animation").child("frame");
+
 			while (frame != nullptr) {
 				tile_id = frame.attribute("tileid").as_int();
 				speed = frame.attribute("duration").as_int() * speed_multiplier;
@@ -287,8 +297,8 @@ bool StaticEntity::LoadAnimations(const char* folder, const char* file_name) {
 			animations[state].loop = loop;
 		}
 
-	CHANGE_ANIMATION: animation = animation.next_sibling();
-		frame = animation.child("animation").child("frame");
+	//CHANGE_ANIMATION: animation = animation.next_sibling();
+	animation = animation.next_sibling();
 	}
 
 	return ret;

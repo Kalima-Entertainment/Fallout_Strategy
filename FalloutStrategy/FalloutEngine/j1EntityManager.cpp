@@ -51,7 +51,7 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 	std::string base_folder = animation_node.attribute("base_folder").as_string();
 	pugi::xml_node file_node = animation_node.child("file");
 
-	for (int i = 0; i < REFERENCE_ENTITIES && file_node; i++)
+	for (int i = 0; i < REFERENCE_ENTITIES; i++)
 	{
 		texture_folders[i] = base_folder;
 		texture_folders[i].append(file_node.attribute("folder").as_string());
@@ -372,7 +372,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 
 		//if (!owner) owner = App->scene->players[faction];
 
-		j1Entity* entity = nullptr;
+	j1Entity* entity = nullptr;
 	iPoint available_tile;
 
 	switch (type)

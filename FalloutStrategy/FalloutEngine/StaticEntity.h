@@ -59,7 +59,7 @@ public:
 
 private:
 	int gen_speed;
-	Animation animations[3];
+	Animation animations[2];
 
 	int max_capacity;
 

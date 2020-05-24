@@ -3,8 +3,6 @@
 #include <vector>
 
 GenericPlayer::GenericPlayer() : j1Module() {
-
-
 	name.assign("GenericPlayer");
 	melees = 0;
 	rangeds = 0;
