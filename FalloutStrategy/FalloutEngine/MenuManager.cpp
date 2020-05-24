@@ -1054,7 +1054,6 @@ void MenuManager::DestroyFaction(Menu menu, Faction faction, EntityType type) {
 
 	switch (menu)
 	{
-
 	case Menu::BUI_BASES:
 
 		switch (faction)
@@ -1075,13 +1074,6 @@ void MenuManager::DestroyFaction(Menu menu, Faction faction, EntityType type) {
 			case LABORATORY:
 				App->gui->DeleteArrayElements(brotherhood_lab, 20);
 				break;
-				/*
-			case BUILDING_TYPE::NONE:
-				App->gui->Delete_Element(select_faction_photos[0]);
-				App->gui->Delete_Element(select_faction_photos[1]);
-				App->gui->Delete_Element(select_faction_photos[3]);
-				break;
-				*/
 			default:
 				break;
 			}
@@ -1090,7 +1082,6 @@ void MenuManager::DestroyFaction(Menu menu, Faction faction, EntityType type) {
 		case MUTANT:
 			switch (type)
 			{
-
 			case BASE:
 				App->gui->DeleteArrayElements(supermutant_base, 15);
 				App->gui->Delete_Element(gatherer_label);
@@ -1103,13 +1094,6 @@ void MenuManager::DestroyFaction(Menu menu, Faction faction, EntityType type) {
 			case LABORATORY:
 				App->gui->DeleteArrayElements(supermutant_lab, 20);
 				break;
-				/*
-			case BUILDING_TYPE::NONE:
-				App->gui->Delete_Element(select_faction_photos[0]);
-				App->gui->Delete_Element(select_faction_photos[1]);
-				App->gui->Delete_Element(select_faction_photos[2]);
-				break;
-				*/
 			default:
 				break;
 			}
@@ -1126,13 +1110,6 @@ void MenuManager::DestroyFaction(Menu menu, Faction faction, EntityType type) {
 			case LABORATORY:
 				App->gui->DeleteArrayElements(ghoul_lab, 20);
 				break;
-				/*
-			case BUILDING_TYPE::NONE:
-				App->gui->Delete_Element(select_faction_photos[1]);
-				App->gui->Delete_Element(select_faction_photos[2]);
-				App->gui->Delete_Element(select_faction_photos[3]);
-				break;
-				*/
 			default:
 				break;
 			}
@@ -1150,13 +1127,6 @@ void MenuManager::DestroyFaction(Menu menu, Faction faction, EntityType type) {
 			case LABORATORY:
 				App->gui->DeleteArrayElements(vault_lab, 20);
 				break;
-				/*
-			case BUILDING_TYPE::NONE:
-				App->gui->Delete_Element(select_faction_photos[0]);
-				App->gui->Delete_Element(select_faction_photos[2]);
-				App->gui->Delete_Element(select_faction_photos[3]);
-				break;
-				*/
 			default:
 				break;
 			}
