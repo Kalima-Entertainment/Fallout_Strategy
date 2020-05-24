@@ -151,6 +151,15 @@
     <ClCompile Include="DialogManager.cpp">
       <Filter>Desenvolupament  ========\DialogSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Emiter.cpp">
+      <Filter>Desenvolupament  ========\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Desenvolupament  ========\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Desenvolupament  ========\Particles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -330,6 +339,15 @@
     <ClInclude Include="DialogManager.h">
       <Filter>Desenvolupament  ========\DialogSystem</Filter>
     </ClInclude>
+    <ClInclude Include="Emiter.h">
+      <Filter>Desenvolupament  ========\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Desenvolupament  ========\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Desenvolupament  ========\Particles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -367,6 +385,9 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\DialogSystem">
       <UniqueIdentifier>{44be503a-eec1-4e0f-9136-b657787fec91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Particles">
+      <UniqueIdentifier>{470f9095-0df1-4a46-9a4c-0a2f35b5276e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

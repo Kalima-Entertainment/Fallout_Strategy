@@ -9,6 +9,9 @@
 #include "FoWManager.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
+#include "ParticleSystem.h"
+#include "Emiter.h"
+
 Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_owner) : DynamicEntity(), resource_collected(0) {
 	type = GATHERER;
 	faction = g_faction;
@@ -35,6 +38,14 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
 		}
 	}
+
+	particle = App->entities->CreateParticle(position);
+	Animation anim;
+	anim.PushBack(SDL_Rect{ 0, 0 , 30, 30 }, 1);
+	anim.Reset();
+	Emiter emitter(position.x, position.y, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 2, nullptr, App->entities->blood, anim, true);
+	particle->PushEmiter(emitter);
+	particle->Desactivate();
 }
 
 Gatherer::~Gatherer() {
@@ -125,6 +136,20 @@ bool Gatherer::Update(float dt) {
 	default:
 		break;
 	}
+
+
+	// -- Particle Test //
+	
+	particle->Activate();	//By default disabled, need to be actived for example if current state = HIT/DIE
+
+	if (particle != nullptr) {
+		particle->Move(position.x, position.y);
+		LOG("Particle theoretically working");
+	}
+
+	particle->Update(dt);
+
+	// Finished test :D --//
 
 	last_dt = dt;
 

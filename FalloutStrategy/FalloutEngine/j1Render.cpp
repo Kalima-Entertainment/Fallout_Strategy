@@ -160,7 +160,7 @@ fPoint j1Render::fWorldToScreen(int x, int y) const
 }
 
 // Blit to screen
-bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale, float speed, double angle, int pivot_x, int pivot_y) const
+bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale, float speed, double angle, int pivot_x, int pivot_y, Uint8 alpha) const
 {
 	bool ret = true;
 	//float scale = App->win->GetScale();
@@ -168,6 +168,9 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	SDL_Rect rect;
 	rect.x = round((int)(camera.x * speed) + x * scale);
 	rect.y = round((int)(camera.y * speed) + y * scale);
+
+	if (alpha != 255)
+		SDL_SetTextureAlphaMod(texture,alpha);
 
 	if (section != NULL)
 	{

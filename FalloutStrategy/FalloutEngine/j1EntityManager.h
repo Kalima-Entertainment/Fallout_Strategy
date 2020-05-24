@@ -18,6 +18,9 @@ class StaticEntity;
 enum EntityType;
 class GenericPlayer;
 
+class ParticleSystem;
+class Emiter;
+
 #define REFERENCE_ENTITIES 28
 
 enum class Resource {
@@ -109,8 +112,12 @@ public:
 
 	int GetReferenceEntityID(Faction faction, EntityType type);
 
+	ParticleSystem* CreateParticle(fPoint);
+	void DeleteParticle();
+
 public:
 	std::vector<j1Entity*> entities;
+	std::vector<j1Entity*> particles;
 	std::vector<ResourceBuilding*> resource_buildings;
 	pugi::xml_node config_data;
 
@@ -134,6 +141,9 @@ public:
 	Upgrades_Data units_creation_time[4];
 	int radar_cost;
 	int mr_handy_cost;
+
+	// -- Particle textures
+	SDL_Texture* blood;
 
 private:
 	int loading_faction;

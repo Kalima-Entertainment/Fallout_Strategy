@@ -30,12 +30,15 @@
 #include <time.h>
 #include <stdio.h>
 
+#include "ParticleSystem.h"
+#include "Emiter.h"
+
 j1EntityManager::j1EntityManager(){
 
 	name.assign("entities");
 
 	blocked_movement = false;
-
+	blood = nullptr;
 }
 
 j1EntityManager::~j1EntityManager(){}
@@ -108,6 +111,9 @@ bool j1EntityManager::Start() {
 
 	sort_timer.Start();
 	load_timer.Start();
+
+	// -- Loading Particle textures
+	blood = App->tex->Load("Assets/textures/particles/blood.png");
 
 	return ret;
 }
@@ -1080,4 +1086,14 @@ void j1EntityManager::SpawnAnimals() {
 			}
 		}
 	}
+}
+
+ParticleSystem* j1EntityManager::CreateParticle(fPoint pos) {
+	ParticleSystem* particleSystem = new ParticleSystem(pos.x, pos.y);
+
+	j1Entity* ret = dynamic_cast<j1Entity*>(particleSystem);
+	ret->to_delete = false;
+	particles.push_back(ret);
+
+	return particleSystem;
 }
