@@ -237,7 +237,7 @@ void MenuManager::CreateMenu(Menu menu) {
 		gui_ingame[1] = (UI_Label*)App->gui->CreateLabel(690, 7, Label, ":", NULL, this, NULL, "StackedPixel");
 		timer_item = (UI_Label*)App->gui->CreateLabel(700, 7, Label, "0", NULL, this, NULL, "StackedPixel");
 		timer_minutes = (UI_Label*)App->gui->CreateLabel(652, 7, Label, "0", NULL, this, NULL, "StackedPixel");
-
+		
 		last_menu = current_menu;
 		current_menu = Menu::GUI;
 		
@@ -357,6 +357,17 @@ void MenuManager::CreateMenu(Menu menu) {
 
 		last_menu = current_menu;
 		current_menu = Menu::DIALOG;
+
+		break;
+
+	case Menu::QUEST:
+		quest[0] = (j1Image*)App->gui->CreateImage(0, 100, Image, { 3105, 597, 307, 199 }, NULL, this);
+		//quest[1] = (j1Image*)App->gui->CreateImage(50, 261, Image, { 3155, 809, 60, 17 }, NULL, this);
+		//quest[2] = (j1Image*)App->gui->CreateImage(114, 261, Image, { 3219, 809, 63, 17 }, NULL, this);
+		//quest[3] = (j1Image*)App->gui->CreateImage(181, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
+		
+		last_menu = current_menu;
+		current_menu = Menu::QUEST;
 
 		break;
 	case Menu::NO_MENU:
@@ -1023,6 +1034,9 @@ void MenuManager::DestroyMenu(Menu menu) {
 		break;
 	case Menu::DIALOG:
 		App->gui->DeleteArrayElements(dialogs, 9);
+		break;
+	case Menu::QUEST:
+		App->gui->DeleteArrayElements(quest, 4);
 		break;
 
 	default:

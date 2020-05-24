@@ -166,6 +166,7 @@ void DialogManager::Callback(UI_element* button) {
 			break;
 		case UI_Type::FINISH_DIALOGS:
 			Disable();
+			App->menu_manager->CreateMenu(Menu::QUEST);
 			break;
 		default:
 			break;
@@ -174,6 +175,7 @@ void DialogManager::Callback(UI_element* button) {
 	else
 	{
 		Disable();
+		App->menu_manager->CreateMenu(Menu::QUEST);
 	}
 	
 }
