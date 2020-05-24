@@ -34,7 +34,7 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 
 	time_left = 0;
 	level = 0;
-
+	texture = nullptr;
 	spawnPosition = {-1,-1};
 
 	CalculateRenderAndSpawnPositions();
@@ -175,6 +175,9 @@ bool StaticEntity::LoadDataFromReference() {
 	current_health = max_health = reference_entity->max_health;
 	sprite_size = reference_entity->sprite_size;
 	texture = reference_entity->texture;
+
+	if (texture == nullptr)
+		LOG("Null texture");
 
 	return ret;
 }

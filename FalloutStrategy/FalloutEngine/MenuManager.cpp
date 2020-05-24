@@ -24,6 +24,8 @@
 #include "UI_InputText.h"
 #include "DialogManager.h"
 #include "j1Hud.h"
+#include "j1Minimap.h"
+
 #include "brofiler/Brofiler/Brofiler.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
@@ -184,10 +186,11 @@ void MenuManager::CreateMenu(Menu menu) {
 		last_menu = current_menu;
 		current_menu = Menu::PAUSE_SETTINGS;
 
+		App->minimap->Hide();
+
 		break;
 
 	case Menu::SELECT_FACTION:
-
 		//Images
 		select_faction_menu[0] = (j1Image*)App->gui->CreateImage(-5, 0, Image, { 1900, 1531, 1290, 842 }, NULL, this);
 
@@ -211,10 +214,8 @@ void MenuManager::CreateMenu(Menu menu) {
 
 		break;
 	case Menu::PAUSE_MENU:
-
 		//Images
 		pause_menu[0] = (j1Image*)App->gui->CreateImage(434, 183, Image, { 3079, 41, 334, 313 }, NULL, this);
-
 
 		//Buttons
 		pause_menu[1] = (UI_Button*)App->gui->CreateButton(480, 210, resume_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
@@ -231,7 +232,6 @@ void MenuManager::CreateMenu(Menu menu) {
 
 		break;
 	case Menu::GUI:
-		
 		//Images
 		gui_ingame[0] = (j1Image*)App->gui->CreateImage(0, 0, Image, { 0, 2428, 1290, 730 }, NULL, this);
 		gui_ingame[1] = (UI_Label*)App->gui->CreateLabel(690, 7, Label, ":", NULL, this, NULL, "StackedPixel");
@@ -248,7 +248,6 @@ void MenuManager::CreateMenu(Menu menu) {
 
 	case Menu::RESOURCES:
 
-
 		water = std::to_string(App->player->water);
 		food = std::to_string(App->player->food);
 		caps = std::to_string(App->player->caps);
@@ -264,7 +263,6 @@ void MenuManager::CreateMenu(Menu menu) {
 
 	case Menu::GATHERER_QUANTITY:
 
-
 		gatherer_quantity = std::to_string(App->hud->gatherer_amount);
 
 		gatherer_label = (UI_Label*)App->gui->CreateLabel(1010, 668, Label, gatherer_quantity, NULL, this, NULL, "StackedPixelSmall");
@@ -273,7 +271,6 @@ void MenuManager::CreateMenu(Menu menu) {
 
 	case Menu::RANGED_QUANTITY:
 
-
 		ranged_quantity = std::to_string(App->hud->ranged_amount);
 
 		ranged_label = (UI_Label*)App->gui->CreateLabel(1107, 668, Label, ranged_quantity, NULL, this, NULL, "StackedPixelSmall");
@@ -281,7 +278,6 @@ void MenuManager::CreateMenu(Menu menu) {
 		break;
 
 	case Menu::MELEE_QUANTITY:
-
 
 		melee_quantity = std::to_string(App->hud->melee_amount);
 
@@ -355,6 +351,13 @@ void MenuManager::CreateMenu(Menu menu) {
 
 		dialogs[8] = App->gui->CreateButton(25, 315, FINISH_DIALOGS, { 2441, 842,71,76 }, { 2441, 922,71,76 }, { 2441, 1004,71,76 }, nullptr, App->dialog_manager);
 
+		dialogs[9] = App->gui->CreateImage(470, 20, Image, { 3078,42, 335, 312 }, nullptr, nullptr);
+
+		if (App->player->faction == VAULT) dialogs[10] = App->gui->CreateImage(480, 110, Image, { 2948, 2909, 310, 134 }, nullptr, nullptr);
+		else if (App->player->faction == BROTHERHOOD) dialogs[10] = App->gui->CreateImage(560, 90, Image, { 3025, 2352, 155, 181 }, nullptr, nullptr);
+		else if (App->player->faction == MUTANT) dialogs[10] = App->gui->CreateImage(555, 105, Image, { 3023, 2658, 158, 158 }, nullptr, nullptr);
+		else if (App->player->faction == GHOUL) dialogs[10] = App->gui->CreateImage(550, 100, Image, { 3027, 845, 167, 166 }, nullptr, nullptr);
+
 		last_menu = current_menu;
 		current_menu = Menu::DIALOG;
 
@@ -371,8 +374,8 @@ void MenuManager::CreateMenu(Menu menu) {
 		//quest[5] = (j1Image*)App->gui->CreateImage(33, 160, Image, { 3061, 619, 30, 27 }, NULL, this);
 		//quest[6] = (j1Image*)App->gui->CreateImage(33, 200, Image, { 3061, 619, 30, 27 }, NULL, this);
 		
-		last_menu = current_menu;
-		current_menu = Menu::QUEST;
+		//last_menu = current_menu;
+		//current_menu = Menu::QUEST;
 
 		break;
 	case Menu::NO_MENU:
@@ -1001,6 +1004,7 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->gui->DeleteArrayElements(settings_menu, 23);
 		App->gui->Delete_Element(cap_label);
 		App->gui->Delete_Element(fullscreen_label);
+		App->minimap->Show();
 		break;
 	case Menu::CREDITS:
 		App->gui->DeleteArrayElements(credits_menu, 5);
@@ -1038,7 +1042,8 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->gui->DeleteArrayElements(how_to_play, 6);
 		break;
 	case Menu::DIALOG:
-		App->gui->DeleteArrayElements(dialogs, 9);
+		App->gui->DeleteArrayElements(dialogs, 11);
+		App->minimap->Show();
 		break;
 	case Menu::QUEST:
 		App->gui->DeleteArrayElements(quest, 7);

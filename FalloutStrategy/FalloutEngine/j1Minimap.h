@@ -39,6 +39,10 @@ public:
 	void EnableRadar();
 	void DrawFogOfWar();
 
+	void Show();
+	void Hide();
+	bool IsVisible();
+
 public:
 	iPoint position;
 	int width;
@@ -61,6 +65,7 @@ private:
 	int radar_time;
 	Line radar_line;
 	float minimap_x_center;
+	bool visible;
 };
 
 #endif // !_j1MINIMAP_H

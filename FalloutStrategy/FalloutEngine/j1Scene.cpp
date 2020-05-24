@@ -111,9 +111,8 @@ bool j1Scene::Start()
 	App->entities->CreateEntity(VAULT, MELEE, 130,110, App->player);
 
 	//Set camera to player's base position
-	iPoint camera_pos = App->map->MapToWorld(App->player->base->current_tile.x - 25, App->player->base->current_tile.y);
-	App->render->camera.x = -camera_pos.x;
-	App->render->camera.y = -camera_pos.y;
+	App->render->camera.x -= App->player->base->position.x - App->render->camera.w * 0.5f;
+	App->render->camera.y -= App->player->base->position.y - App->render->camera.h * 0.5f;
 
 	//App->render->camera.x = 2000;
 	//App->render->camera.y = 0;

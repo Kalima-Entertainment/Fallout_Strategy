@@ -128,7 +128,7 @@ bool j1Player::PreUpdate() {
 
 		//move camera through minimap
 		int mouse_x, mouse_y;
-		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT))
+		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) && (App->minimap->IsVisible()))
 		{
 			App->input->GetMousePosition(mouse_x, mouse_y);
 			SDL_Rect minimap = { App->minimap->position.x, App->minimap->position.y, App->minimap->width, App->minimap->height };

@@ -24,6 +24,7 @@ j1Minimap::j1Minimap() : j1Module(), texture(nullptr) {
 	corner = Corner::TOP_LEFT;
 	radar_time = 5;
 	radar = false;
+	visible = false;
 }
 
 j1Minimap::~j1Minimap() {
@@ -113,7 +114,7 @@ bool j1Minimap::CleanUp() {
 bool j1Minimap::PostUpdate() {
 	BROFILER_CATEGORY("Minimap draw", Profiler::Color::DarkGoldenRod)
 
- 	if ((App->menu_manager->current_menu == Menu::NO_MENU)||(App->menu_manager->current_menu == Menu::PAUSE_MENU) || (App->menu_manager->current_menu == Menu::GUI) || (App->menu_manager->current_menu == Menu::BUI_BASES)) {
+ 	if (visible) {
 
 		App->render->Blit(texture, position.x, position.y, NULL, 1.0, 0);
 
@@ -280,4 +281,16 @@ void j1Minimap::DrawFogOfWar() {
 		fog_of_war_rect.w = round(1.75f * tile_width * counter);
 		App->render->DrawQuad(fog_of_war_rect, 0, 0, 0, 255, true, false);
 	}
+}
+
+void j1Minimap::Show() {
+	visible = true;
+}
+
+void j1Minimap::Hide() {
+	visible = false;
+}
+
+bool j1Minimap::IsVisible() {
+	return visible;
 }
