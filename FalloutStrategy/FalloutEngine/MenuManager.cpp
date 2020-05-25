@@ -26,6 +26,7 @@
 #include "j1Hud.h"
 #include "j1Minimap.h"
 #include "GenericPlayer.h"
+#include "StaticEntity.h"
 
 #include "brofiler/Brofiler/Brofiler.h"
 #include "SDL_mixer/include/SDL_mixer.h"
@@ -274,17 +275,31 @@ void MenuManager::CreateMenu(Menu menu) {
 
 	case Menu::RANGED_QUANTITY:
 
-		ranged_quantity = std::to_string(App->hud->ranged_amount);
+		if (App->player->selected_entity != nullptr)
+		{
 
-		ranged_label = (UI_Label*)App->gui->CreateLabel(1107, 668, Label, ranged_quantity, NULL, this, NULL, "StackedPixelSmall");
+			StaticEntity* static_entity_ranged = (StaticEntity*)App->player->selected_entity;
+
+			ranged_quantity = std::to_string(static_entity_ranged->GetUnitsInStack(RANGED));
+
+			ranged_label = (UI_Label*)App->gui->CreateLabel(1107, 668, Label, ranged_quantity, NULL, this, NULL, "StackedPixelSmall");
+
+		}
 
 		break;
 
 	case Menu::MELEE_QUANTITY:
 
-		melee_quantity = std::to_string(App->);
-		
-		melee_label = (UI_Label*)App->gui->CreateLabel(1010, 668, Label, melee_quantity, NULL, this, NULL, "StackedPixelSmall");
+		if (App->player->selected_entity != nullptr)
+		{
+
+			StaticEntity* static_entity_melee = (StaticEntity*)App->player->selected_entity;
+
+			melee_quantity = std::to_string(static_entity_melee->GetUnitsInStack(MELEE));
+
+			melee_label = (UI_Label*)App->gui->CreateLabel(1010, 668, Label, melee_quantity, NULL, this, NULL, "StackedPixelSmall");
+
+		}
 
 		break;
 

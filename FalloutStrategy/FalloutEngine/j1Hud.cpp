@@ -463,14 +463,14 @@ bool j1Hud::PostUpdate()
 				if (static_entity->spawning == false && finish_barrack == true) {
 					
 						if (entity == 1) {
-							melee_amount--;
+							
 							App->menu_manager->DestroyMenu(Menu::MELEE_QUANTITY);
 							App->menu_manager->CreateMenu(Menu::MELEE_QUANTITY);
 							finish_barrack = false;
 							entity = 0;
 						}
 						else if (entity == 2) {
-							ranged_amount--;
+						
 							App->menu_manager->DestroyMenu(Menu::RANGED_QUANTITY);
 							App->menu_manager->CreateMenu(Menu::RANGED_QUANTITY);
 							finish_barrack = false;

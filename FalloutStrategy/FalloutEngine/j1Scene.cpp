@@ -154,7 +154,8 @@ bool j1Scene::Update(float dt)
 			}
 			App->audio->PlayMusic("Assets/audio/music/Fallout4TitleScreenwithThemeMusic.ogg", 0.0F);
 		}
-		else if (create == true) {
+		else if (create == true && App->menu_manager->current_menu != Menu::PAUSE_SETTINGS) {
+			
 			App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
 			App->isPaused = false;
 			create = false;
