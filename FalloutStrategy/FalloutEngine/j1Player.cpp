@@ -182,7 +182,7 @@ bool j1Player::Update(float dt) {
 	if (qcaps == false) {
 		
 		if (caps >= 1000) {
-			App->menu_manager->quest[6] = (j1Image*)App->gui->CreateImage(33, 200, Image, { 3061, 619, 30, 27 }, NULL, this);
+			App->menu_manager->quest[6] = (j1Image*)App->gui->CreateImage(33, 271, Image, { 3061, 619, 30, 27 }, NULL, this);
 			reward++;
 			qcaps = true;
 		}
@@ -191,7 +191,7 @@ bool j1Player::Update(float dt) {
 	if (qwater == false) {
 
 		if (water >= 1000) {
-			App->menu_manager->quest[4] = (j1Image*)App->gui->CreateImage(33, 120, Image, { 3061, 619, 30, 27 }, NULL, this);
+			App->menu_manager->quest[4] = (j1Image*)App->gui->CreateImage(33, 191, Image, { 3061, 619, 30, 27 }, NULL, this);
 			reward++;
 			qwater = true;
 		}
@@ -200,16 +200,16 @@ bool j1Player::Update(float dt) {
 	if (qfood == false) {
 
 		if (food >= 400) {
-			App->menu_manager->quest[5] = (j1Image*)App->gui->CreateImage(33, 160, Image, { 3061, 619, 30, 27 }, NULL, this);
+			App->menu_manager->quest[5] = (j1Image*)App->gui->CreateImage(33, 231, Image, { 3061, 619, 30, 27 }, NULL, this);
 			reward++;
 			qfood = true;
 		}
 	}
 
-	if(reward == 1) App->menu_manager->quest[1] = (j1Image*)App->gui->CreateImage(50, 261, Image, { 3155, 809, 60, 17 }, NULL, this);
-	else if(reward == 2) App->menu_manager->quest[2] = (j1Image*)App->gui->CreateImage(114, 261, Image, { 3219, 809, 63, 17 }, NULL, this);
+	if(reward == 1) App->menu_manager->quest[1] = (j1Image*)App->gui->CreateImage(50, 332, Image, { 3155, 809, 60, 17 }, NULL, this);
+	else if(reward == 2) App->menu_manager->quest[2] = (j1Image*)App->gui->CreateImage(114, 332, Image, { 3219, 809, 63, 17 }, NULL, this);
 	else if (reward == 3) { 
-		App->menu_manager->quest[3] = (j1Image*)App->gui->CreateImage(181, 261, Image, { 3286, 809, 51, 17 }, NULL, this); 
+		App->menu_manager->quest[3] = (j1Image*)App->gui->CreateImage(181, 332, Image, { 3286, 809, 51, 17 }, NULL, this); 
 		
 	}
 
