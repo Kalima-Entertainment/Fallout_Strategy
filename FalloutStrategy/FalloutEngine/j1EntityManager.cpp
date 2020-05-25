@@ -849,66 +849,70 @@ void j1EntityManager::DestroyResourceSpot(ResourceBuilding* resource_spot) {
 bool j1EntityManager::Load(pugi::xml_node& data)
 {
 
-	//DestroyAllEntities();
+	DestroyAllEntities();
+	App->ai_manager->CleanUp();
+	App->ai_manager->Start();
 
-	Faction faction;
-	EntityType type;
-	fPoint position;
-	iPoint current_tile, target_tile;
-	int current_health;
-	int upgrade_gath;
-	int upgrade_base;
-	int upgrade_health;
-	int upgrade_creat;
-	int upgrade_dama;
-	int upgrade_speed;
+	Faction faction = NO_FACTION;
+	std::string type_name = "NO_TYPE";
+	std::string faction_name = "NO_FACTION";
+	EntityType type = NO_TYPE;
+	fPoint position = { -1.0f,-1.0f };
+	iPoint current_tile = { 0,0 }, target_tile = { 0,0 };
+	int current_health = 0;
+	int upgrade_gath = 0;
+	int upgrade_base = 0;
+	int upgrade_health = 0;
+	int upgrade_creat = 0;
+	int upgrade_dama = 0;
+	int upgrade_speed = 0;
+
 	pugi::xml_node iterator = data.first_child();
 
 	while (iterator)
 	{
+		type_name = iterator.attribute("type").as_string();
+		faction_name = iterator.attribute("faction").as_string();
 
+		if (type_name == "melee") { type = MELEE; }
+		else if (type_name == "ranged") { type = RANGED; }
+		else if (type_name == "gatherer") { type = GATHERER; }
+		else if (type_name == "base") { type = BASE; }
+		else if (type_name == "laboratory") { type = LABORATORY; }
+		else if (type_name == "barrack") { type = BARRACK; }
+		else if (type_name == "bighorner") { type = BIGHORNER; }
+		else if (type_name == "braham") { type = BRAHAM; }
+		else if (type_name == "deathclaw") { type = DEATHCLAW; }
+		else if (type_name == "mr_handy") { type = MR_HANDY; }
 
-		if (iterator.attribute("type:").as_string() == "melee") { type = MELEE; }
-		else if (iterator.attribute("type:").as_string() == "ranged") { type = RANGED; }
-		else if (iterator.attribute("type:").as_string() == "gatherer") { type = GATHERER; }
-		else if (iterator.attribute("type:").as_string() == "base") { type = BASE; }
-		else if (iterator.attribute("type:").as_string() == "laboratory") { type = LABORATORY; }
-		else if (iterator.attribute("type:").as_string() == "barrack") { type = BARRACK; }
-		else if (iterator.attribute("type:").as_string() == "bighorner") { type = BIGHORNER; }
-		else if (iterator.attribute("type:").as_string() == "braham") { type = BRAHAM; }
-		else if (iterator.attribute("type:").as_string() == "deathclaw") { type = DEATHCLAW; }
-		else if (iterator.attribute("type:").as_string() == "mr_handy") { type = MR_HANDY; }
-
-		if (iterator.attribute("faction:").as_string() == "brotherhood") { faction = BROTHERHOOD; }
-		else if (iterator.attribute("faction:").as_string() == "supermutant"){ faction = MUTANT; }
-		else if (iterator.attribute("faction:").as_string() == "vault"){ faction = VAULT; }
-		else if (iterator.attribute("faction:").as_string() == "ghoul") { faction = GHOUL; }
-		else if (iterator.attribute("faction:").as_string() == "no_faction") { faction = NO_FACTION; }
+		if (faction_name == "brotherhood") { faction = BROTHERHOOD; }
+		else if (faction_name == "supermutant"){ faction = MUTANT; }
+		else if (faction_name == "vault"){ faction = VAULT; }
+		else if (faction_name == "ghoul") { faction = GHOUL; }
+		else if (faction_name == "no_faction") { faction = NO_FACTION; }
 
 		
-		if (iterator.attribute("type:").as_string() == "base") { 
+		if (iterator.attribute("type").as_string() == "base") { 
 			upgrade_gath =iterator.attribute("level_gatherer_resource_limit").as_int();
 			upgrade_base = iterator.attribute("level_base_resource_limit").as_int();
 		}
-		if (iterator.attribute("type:").as_string() == "laboratory") {
+		if (iterator.attribute("type").as_string() == "laboratory") {
 			upgrade_health = iterator.attribute("level_units_health").as_int();
 			upgrade_creat = iterator.attribute("level_units_creation_time").as_int();
 		}
-		if (iterator.attribute("type:").as_string() == "barrack") {
+		if (iterator.attribute("type").as_string() == "barrack") {
 			upgrade_dama = iterator.attribute("level_units_damage").as_int();
 			upgrade_speed = iterator.attribute("level_units_speed").as_int();
 		}
 
-		position.x = iterator.attribute("position_x:").as_float();
-		position.y = iterator.attribute("position_y:").as_float();
-		current_tile.x = iterator.attribute("current_tile_x:").as_int();
-		current_tile.y = iterator.attribute("current_tile_y:").as_int();
-		//target_tile.x = iterator.attribute("target_tile_x:").as_int();
-		//target_tile.y = iterator.attribute("target_tile_y:").as_int();
-		current_health = iterator.attribute("current_health:").as_int();
+		position.x = iterator.attribute("position_x").as_float();
+		position.y = iterator.attribute("position_y").as_float();
+		current_tile.x = iterator.attribute("current_tile_x").as_int();
+		current_tile.y = iterator.attribute("current_tile_y").as_int();
+		current_health = iterator.attribute("current_health").as_int();
 
-		//if (faction == ANIMALS) {CreateEntity(faction,type, position.x, position.y);}
-		//else {CreateEntity(faction, type, position.x, position.y, App->scene->players[faction]);}
+		if (faction == NO_FACTION) {CreateEntity(faction,type, position.x, position.y);}
+		else {CreateEntity(faction, type, position.x, position.y, App->scene->players[faction]);}
 
 		iterator = iterator.next_sibling();
 
@@ -929,30 +933,30 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 		pugi::xml_node entities_pugi = data.append_child("entity");
 		entities_pugi.append_attribute("number") = i;
 
-		if (entities[i]->type == MELEE) { entities_pugi.append_attribute("type:") = "melee"; }
-		else if (entities[i]->type == RANGED) { entities_pugi.append_attribute("type:") = "ranged"; }
-		else if (entities[i]->type == GATHERER) { entities_pugi.append_attribute("type:") = "gatherer"; }
-		else if (entities[i]->type == BASE) { entities_pugi.append_attribute("type:") = "base"; }
-		else if (entities[i]->type == LABORATORY) { entities_pugi.append_attribute("type:") = "laboratory"; }
-		else if (entities[i]->type == BARRACK) { entities_pugi.append_attribute("type:") = "barrack"; }
-		else if (entities[i]->type == BIGHORNER) { entities_pugi.append_attribute("type:") = "bighorner"; }
-		else if (entities[i]->type == BRAHAM) { entities_pugi.append_attribute("type:") = "braham"; }
-		else if (entities[i]->type == DEATHCLAW) { entities_pugi.append_attribute("type:") = "deathclaw"; }
-		else if (entities[i]->type == MR_HANDY) { entities_pugi.append_attribute("type:") = "mr_handy"; }
+		if (entities[i]->type == MELEE) { entities_pugi.append_attribute("type") = "melee"; }
+		else if (entities[i]->type == RANGED) { entities_pugi.append_attribute("type") = "ranged"; }
+		else if (entities[i]->type == GATHERER) { entities_pugi.append_attribute("type") = "gatherer"; }
+		else if (entities[i]->type == BASE) { entities_pugi.append_attribute("type") = "base"; }
+		else if (entities[i]->type == LABORATORY) { entities_pugi.append_attribute("type") = "laboratory"; }
+		else if (entities[i]->type == BARRACK) { entities_pugi.append_attribute("type") = "barrack"; }
+		else if (entities[i]->type == BIGHORNER) { entities_pugi.append_attribute("type") = "bighorner"; }
+		else if (entities[i]->type == BRAHAM) { entities_pugi.append_attribute("type") = "braham"; }
+		else if (entities[i]->type == DEATHCLAW) { entities_pugi.append_attribute("type") = "deathclaw"; }
+		else if (entities[i]->type == MR_HANDY) { entities_pugi.append_attribute("type") = "mr_handy"; }
 
-		if (entities[i]->faction == BROTHERHOOD) { entities_pugi.append_attribute("faction:") = "brotherhood"; }
-		else if (entities[i]->faction == MUTANT) { entities_pugi.append_attribute("faction:") = "supermutant"; }
-		else if (entities[i]->faction == VAULT) { entities_pugi.append_attribute("faction:") = "vault"; }
-		else if (entities[i]->faction == GHOUL) { entities_pugi.append_attribute("faction:") = "ghoul"; }
-		else if (entities[i]->faction == NO_FACTION) { entities_pugi.append_attribute("faction:") = "no_faction"; }
+		if (entities[i]->faction == BROTHERHOOD) { entities_pugi.append_attribute("faction") = "brotherhood"; }
+		else if (entities[i]->faction == MUTANT) { entities_pugi.append_attribute("faction") = "supermutant"; }
+		else if (entities[i]->faction == VAULT) { entities_pugi.append_attribute("faction") = "vault"; }
+		else if (entities[i]->faction == GHOUL) { entities_pugi.append_attribute("faction") = "ghoul"; }
+		else if (entities[i]->faction == NO_FACTION) { entities_pugi.append_attribute("faction") = "no_faction"; }
 
-		entities_pugi.append_attribute("position_x:") = entities[i]->position.x;
-		entities_pugi.append_attribute("position_y:") = entities[i]->position.y;
-		entities_pugi.append_attribute("current_tile_x:") = entities[i]->current_tile.x;
-		entities_pugi.append_attribute("current_tile_y:") = entities[i]->current_tile.y;
+		entities_pugi.append_attribute("position_x") = entities[i]->position.x;
+		entities_pugi.append_attribute("position_y") = entities[i]->position.y;
+		entities_pugi.append_attribute("current_tile_x") = entities[i]->current_tile.x;
+		entities_pugi.append_attribute("current_tile_y") = entities[i]->current_tile.y;
 		//entities_pugi.append_attribute("target_tile_x:") = entities[i]->target_tile.x;
 		//entities_pugi.append_attribute("target_tile_x:") = entities[i]->target_tile.y;
-		entities_pugi.append_attribute("current_health:") = entities[i]->current_health;
+		entities_pugi.append_attribute("current_health") = entities[i]->current_health;
 
 		
 		if (entities[i]->type == BASE) {
