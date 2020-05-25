@@ -282,7 +282,7 @@ void MenuManager::CreateMenu(Menu menu) {
 
 	case Menu::MELEE_QUANTITY:
 
-		melee_quantity = std::to_string(App->);
+		//melee_quantity = std::to_string(App->);
 		
 		melee_label = (UI_Label*)App->gui->CreateLabel(1010, 668, Label, melee_quantity, NULL, this, NULL, "StackedPixelSmall");
 
@@ -1046,7 +1046,7 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->minimap->Show();
 		break;
 	case Menu::QUEST:
-		App->gui->DeleteArrayElements(quest, 10);
+		App->gui->DeleteArrayElements(quest, 12);
 		break;
 
 	default:

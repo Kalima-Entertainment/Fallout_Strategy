@@ -90,6 +90,7 @@ enum UI_Type {
 	//Quests
 	quest_button,
 	quest_button2,
+	continue_button,
 
 	UI_NONE
 };

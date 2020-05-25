@@ -600,6 +600,10 @@ bool UI_Button::Update(float dt)
 				App->gui->Delete_Element(App->menu_manager->quest[8]);
 				App->menu_manager->quest[7] = (UI_Button*)App->gui->CreateButton(307, 100, quest_button, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this);
 			}
+
+			else if (t == continue_button) {
+				App->gui->DeleteArrayElements(App->menu_manager->quest, 12);
+			}
 		}
 
 		else {
