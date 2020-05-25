@@ -208,7 +208,10 @@ bool j1Player::Update(float dt) {
 
 	if(reward == 1) App->menu_manager->quest[1] = (j1Image*)App->gui->CreateImage(50, 261, Image, { 3155, 809, 60, 17 }, NULL, this);
 	else if(reward == 2) App->menu_manager->quest[2] = (j1Image*)App->gui->CreateImage(114, 261, Image, { 3219, 809, 63, 17 }, NULL, this);
-	else if(reward == 3) App->menu_manager->quest[3] = (j1Image*)App->gui->CreateImage(181, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
+	else if (reward == 3) { 
+		App->menu_manager->quest[3] = (j1Image*)App->gui->CreateImage(181, 261, Image, { 3286, 809, 51, 17 }, NULL, this); 
+		
+	}
 
 	/*
 	//Zoom in, zoom out
