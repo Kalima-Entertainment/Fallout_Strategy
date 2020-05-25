@@ -114,6 +114,7 @@ public:
 
 	ParticleSystem* CreateParticle(fPoint);
 	void DeleteParticle();
+	void RestartOccupiedTiles();
 
 public:
 	std::vector<j1Entity*> entities;

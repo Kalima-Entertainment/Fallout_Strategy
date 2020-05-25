@@ -19,7 +19,7 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 	owner = g_owner;
 	is_agressive = false;
 	gather_time = 2;
-	
+
 	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
 	position.x += HALF_TILE;
 	position.y += HALF_TILE;

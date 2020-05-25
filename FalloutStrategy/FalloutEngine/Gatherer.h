@@ -30,7 +30,7 @@ private:
 	int gather_time;
 	StaticEntity* base;
 
-	ParticleSystem* particle = nullptr;
+	ParticleSystem* particle;
 };
 
 

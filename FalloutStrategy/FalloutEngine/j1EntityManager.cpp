@@ -852,6 +852,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 	DestroyAllEntities();
 	App->ai_manager->CleanUp();
 	App->ai_manager->Start();
+	RestartOccupiedTiles();
 
 	Faction faction = NO_FACTION;
 	std::string type_name = "NO_TYPE";
@@ -892,15 +893,15 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		else if (faction_name == "no_faction") { faction = NO_FACTION; }
 
 		
-		if (iterator.attribute("type").as_string() == "base") { 
+		if (type_name == "base") { 
 			upgrade_gath =iterator.attribute("level_gatherer_resource_limit").as_int();
 			upgrade_base = iterator.attribute("level_base_resource_limit").as_int();
 		}
-		if (iterator.attribute("type").as_string() == "laboratory") {
+		else if (type_name == "laboratory") {
 			upgrade_health = iterator.attribute("level_units_health").as_int();
 			upgrade_creat = iterator.attribute("level_units_creation_time").as_int();
 		}
-		if (iterator.attribute("type").as_string() == "barrack") {
+		else if (type_name == "barrack") {
 			upgrade_dama = iterator.attribute("level_units_damage").as_int();
 			upgrade_speed = iterator.attribute("level_units_speed").as_int();
 		}
@@ -911,8 +912,12 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		current_tile.y = iterator.attribute("current_tile_y").as_int();
 		current_health = iterator.attribute("current_health").as_int();
 
-		if (faction == NO_FACTION) {CreateEntity(faction,type, position.x, position.y);}
-		else {CreateEntity(faction, type, position.x, position.y, App->scene->players[faction]);}
+		if (faction == NO_FACTION) {
+			CreateEntity(faction,type, position.x, position.y);
+		}
+		else {
+			CreateEntity(faction, type, position.x, position.y, App->scene->players[faction]);
+		}
 
 		iterator = iterator.next_sibling();
 
@@ -1098,4 +1103,14 @@ ParticleSystem* j1EntityManager::CreateParticle(fPoint pos) {
 	particles.push_back(ret);
 
 	return particleSystem;
+}
+
+void j1EntityManager::RestartOccupiedTiles() {
+	for (int y = 0; y < 150; y++)
+	{
+		for (int x = 0; x < 150; x++)
+		{
+			occupied_tiles[x][y] = false;
+		}
+	}
 }
