@@ -220,6 +220,7 @@ bool UI_Button::Update(float dt)
 				App->scene->create = !App->scene->create;
 				App->audio->PlayFx(1, App->audio->back_fx, 0);
 				Mix_PauseMusic();
+				App->isPaused = false;
 			}
 			else if (t == button_back_to_menu)
 			{

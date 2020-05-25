@@ -144,7 +144,7 @@ bool Gatherer::Update(float dt) {
 
 	if (particle != nullptr) {
 		particle->Move(position.x, position.y);
-		LOG("Particle theoretically working");
+//		LOG("Particle theoretically working");
 	}
 
 	particle->Update(dt);
