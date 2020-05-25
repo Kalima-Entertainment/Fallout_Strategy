@@ -44,10 +44,6 @@ public:
 	Direction GetDirectionToGo(SDL_Rect next_tile_rect) const;
 	void UpdateTile();
 
-	// Load / Save
-	bool Load(pugi::xml_node&);
-	bool Save(pugi::xml_node&) const;
-
 	bool LoadAnimations(const char* folder, const char* file_name);
 
 protected:

@@ -65,6 +65,11 @@ bool DialogManager::PostUpdate() {
 
 bool DialogManager::CleanUp() {
 	bool ret = true;
+	for (int i = 0; i < dialogs.size(); i++)
+	{
+		delete dialogs[i];
+		dialogs[i] = nullptr;
+	}
 	dialogs.clear();
 	App->menu_manager->DestroyMenu(Menu::DIALOG);
 	App->menu_manager->CreateMenu(Menu::GUI);
