@@ -35,6 +35,10 @@ bool j1Hud::Awake(pugi::xml_node& node)
 	finish_barrack = false;
 	finish_lab = false;
 	entity = 0;
+	gatherer_amount = 0;
+	melee_amount = 0;
+	ranged_amount = 0;
+
 	return true;
 }
 
@@ -128,17 +132,17 @@ bool j1Hud::PostUpdate()
 				if (static_entity->spawning) {
 
 					if (static_entity->spawn_stack[0].type == GATHERER) {
-
+						
 						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
 						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
-
+						
 					}
 
 					finish_base = true;
 
 				}
 				else if (static_entity->spawning == false && finish_base == true) {
-					gatherer_amount++;
+					gatherer_amount--;
 					App->menu_manager->DestroyMenu(Menu::GATHERER_QUANTITY);
 					App->menu_manager->CreateMenu(Menu::GATHERER_QUANTITY);
 					finish_base = false;
@@ -174,6 +178,7 @@ bool j1Hud::PostUpdate()
 						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
 				}
+
 			}
 			else if (static_entity->type == LABORATORY) {
 				//Health bar stats
@@ -228,7 +233,7 @@ bool j1Hud::PostUpdate()
 
 				}
 				else if (static_entity->spawning == false && finish_base == true) {
-					gatherer_amount++;
+					gatherer_amount--;
 					App->menu_manager->DestroyMenu(Menu::GATHERER_QUANTITY);
 					App->menu_manager->CreateMenu(Menu::GATHERER_QUANTITY);
 					finish_base = false;
@@ -322,7 +327,7 @@ bool j1Hud::PostUpdate()
 
 				}
 				else if (static_entity->spawning == false && finish_base == true) {
-					gatherer_amount++;
+					gatherer_amount--;
 					App->menu_manager->DestroyMenu(Menu::GATHERER_QUANTITY);
 					App->menu_manager->CreateMenu(Menu::GATHERER_QUANTITY);
 					finish_base = false;
@@ -413,7 +418,7 @@ bool j1Hud::PostUpdate()
 
 				}
 				else if (static_entity->spawning == false && finish_base == true) {
-					gatherer_amount++;
+					gatherer_amount--;
 					App->menu_manager->DestroyMenu(Menu::GATHERER_QUANTITY);
 					App->menu_manager->CreateMenu(Menu::GATHERER_QUANTITY);
 					finish_base = false;
@@ -440,7 +445,7 @@ bool j1Hud::PostUpdate()
 
 				if (static_entity->spawning) {
 
-					if(static_entity->spawn_stack[0].type ==MELEE){
+					if(static_entity->spawn_stack[0].type == MELEE){
 					SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
 					App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					entity = 1;
@@ -458,14 +463,14 @@ bool j1Hud::PostUpdate()
 				if (static_entity->spawning == false && finish_barrack == true) {
 					
 						if (entity == 1) {
-						
+							melee_amount--;
 							App->menu_manager->DestroyMenu(Menu::MELEE_QUANTITY);
 							App->menu_manager->CreateMenu(Menu::MELEE_QUANTITY);
 							finish_barrack = false;
 							entity = 0;
 						}
 						else if (entity == 2) {
-						
+							ranged_amount--;
 							App->menu_manager->DestroyMenu(Menu::RANGED_QUANTITY);
 							App->menu_manager->CreateMenu(Menu::RANGED_QUANTITY);
 							finish_barrack = false;

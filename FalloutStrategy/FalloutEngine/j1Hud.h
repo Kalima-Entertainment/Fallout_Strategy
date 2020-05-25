@@ -50,9 +50,9 @@ public:
 	char timer_text[10];
 	char minutes_text[15];
 	
-	int gatherer_amount = 1;
-	int melee_amount = 1;
-	int ranged_amount = 1;
+	int gatherer_amount;
+	int melee_amount;
+	int ranged_amount;
 	
 	bool finish_base;
 	bool finish_barrack;

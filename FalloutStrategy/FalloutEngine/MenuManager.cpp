@@ -266,7 +266,7 @@ void MenuManager::CreateMenu(Menu menu) {
 
 	case Menu::GATHERER_QUANTITY:
 
-		gatherer_quantity = std::to_string(App->scene->players[App->player->selected_entity->faction]->gatherers);
+		gatherer_quantity = std::to_string(App->hud->gatherer_amount);
 
 		gatherer_label = (UI_Label*)App->gui->CreateLabel(1010, 668, Label, gatherer_quantity, NULL, this, NULL, "StackedPixelSmall");
 
@@ -274,7 +274,7 @@ void MenuManager::CreateMenu(Menu menu) {
 
 	case Menu::RANGED_QUANTITY:
 
-		ranged_quantity = std::to_string(App->scene->players[App->player->selected_entity->faction]->rangeds);
+		ranged_quantity = std::to_string(App->hud->ranged_amount);
 
 		ranged_label = (UI_Label*)App->gui->CreateLabel(1107, 668, Label, ranged_quantity, NULL, this, NULL, "StackedPixelSmall");
 
@@ -282,8 +282,8 @@ void MenuManager::CreateMenu(Menu menu) {
 
 	case Menu::MELEE_QUANTITY:
 
-		melee_quantity = std::to_string(App->scene->players[App->player->selected_entity->faction]->melees);
-
+		melee_quantity = std::to_string(App->);
+		
 		melee_label = (UI_Label*)App->gui->CreateLabel(1010, 668, Label, melee_quantity, NULL, this, NULL, "StackedPixelSmall");
 
 		break;
@@ -1046,7 +1046,7 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->minimap->Show();
 		break;
 	case Menu::QUEST:
-		App->gui->DeleteArrayElements(quest, 7);
+		App->gui->DeleteArrayElements(quest, 10);
 		break;
 
 	default:
