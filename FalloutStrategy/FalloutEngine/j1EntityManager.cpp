@@ -1065,7 +1065,7 @@ void j1EntityManager::SpawnAnimals() {
 	
 	int randomAnimal = 0;
 
-	for (int i = 0; i < App->map->spawnCoordinates; i++)
+	for (int i = 0; i < 15; i++)
 	{
 		srand(time(NULL)+i);
 		randomAnimal = rand() % 2;

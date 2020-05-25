@@ -223,6 +223,7 @@ bool j1Map::CleanUp()
 		App->tex->UnLoad(data.tilesets[i].texture);
 	}
 
+
 	// Clean up the pugui tree
 	map_file.reset();
 
@@ -638,11 +639,14 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 				else if (object_type == "Bighorner") App->entities->CreateEntity(NO_FACTION, BIGHORNER, position.x, position.y);
 				else if (object_type == "SpawnPoint")
 				{
-					spawnPoint[spawnCoordinates].x = object_node.attribute("x").as_int() + offset[module_number].x;
-					spawnPoint[spawnCoordinates].y = object_node.attribute("y").as_int() + offset[module_number].y;
-					spawnPoint[spawnCoordinates] = App->map->IsometricWorldToMap(spawnPoint[spawnCoordinates].x, spawnPoint[spawnCoordinates].y);
-				//	LOG("spawnCoordinates = %i / SpawnPoints x = %i y = %i", spawnCoordinates, spawnPoint[spawnCoordinates].x, spawnPoint[spawnCoordinates].y);
-					spawnCoordinates++;
+					for (int i = 0; i < 15; i++)
+					{
+						spawnPoint[i].x = object_node.attribute("x").as_float() + offset[module_number].x;
+						spawnPoint[i].y = object_node.attribute("y").as_float() + offset[module_number].y;
+						spawnPoint[i] = App->map->IsometricWorldToMap(spawnPoint[i].x, spawnPoint[i].y);
+						//LOG("spawnCoordinates = %i / SpawnPoints x = %i y = %i", i, spawnPoint[spawnCoordinates].x, spawnPoint[spawnCoordinates].y);
+					}
+					
 				}
 			}
 
