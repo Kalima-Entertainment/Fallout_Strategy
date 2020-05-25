@@ -56,6 +56,7 @@ public:
 	Spawn_Stack spawn_stack[10];
 	bool spawning;
 	int level;
+	int GetUnitsInStack(EntityType type);
 
 private:
 	int gen_speed;

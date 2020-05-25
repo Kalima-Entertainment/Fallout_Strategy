@@ -687,6 +687,25 @@ bool StaticEntity::Save(pugi::xml_node& data) const
 	return true;
 }
 
+int StaticEntity::GetUnitsInStack(EntityType type)
+{
+	int num = 0;
+
+	if (type == MELEE) {
+		for (int i = 0; i < 10; i++) {
+			if (spawn_stack[i].type == MELEE)
+				num++;
+		}
+	}
+	else if (type == RANGED) {
+		for (int i = 0; i < 10; i++) {
+			if (spawn_stack[i].type == RANGED)
+				num++;
+		}
+	}
+	return num;
+}
+
 void StaticEntity::CalculateRenderAndSpawnPositions() {
 
 	if (tiles.size() > 0) {
