@@ -576,6 +576,15 @@ void j1EntityManager::DestroyAllEntities() {
 	}
 }
 
+void j1EntityManager::DestroyAllEntitiesNow() {
+	for (int i = 0; i < entities.size(); i++)
+	{
+		delete entities[i];
+		entities[i] = nullptr;
+	}
+	entities.clear();
+}
+
 j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
 	for (int i = 0; i < entities.size(); i++)
 	{
@@ -848,8 +857,7 @@ void j1EntityManager::DestroyResourceSpot(ResourceBuilding* resource_spot) {
 // Load Game State
 bool j1EntityManager::Load(pugi::xml_node& data)
 {
-
-	DestroyAllEntities();
+	DestroyAllEntitiesNow();
 	App->ai_manager->CleanUp();
 	App->ai_manager->Start();
 	RestartOccupiedTiles();
@@ -913,10 +921,10 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		current_health = iterator.attribute("current_health").as_int();
 
 		if (faction == NO_FACTION) {
-			CreateEntity(faction,type, position.x, position.y);
+			CreateEntity(faction,type, current_tile.x, current_tile.y);
 		}
 		else {
-			CreateEntity(faction, type, position.x, position.y, App->scene->players[faction]);
+			CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]);
 		}
 
 		iterator = iterator.next_sibling();

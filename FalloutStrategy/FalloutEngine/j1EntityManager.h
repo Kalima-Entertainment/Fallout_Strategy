@@ -83,6 +83,7 @@ public:
 	j1Entity* CreateEntity(Faction faction, EntityType type, int position_x, int position_y, GenericPlayer* owner = nullptr);
 	void DestroyEntity(j1Entity* delete_entity);
 	void DestroyAllEntities();
+	void DestroyAllEntitiesNow();
 	iPoint FindSpawnPoint(int position_x, int position_y);
 	void SpawnAnimals();
 	ResourceBuilding* CreateResourceSpot(int position_x, int position_y, Resource resource_type, int resource_quantity);
