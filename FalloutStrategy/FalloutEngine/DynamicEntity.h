@@ -28,6 +28,9 @@ struct UnitInfo {
 class DynamicEntity : public j1Entity
 {
 public:
+
+	friend class j1MovementManager;
+
 	DynamicEntity();
 	DynamicEntity(Faction faction, EntityType type, iPoint current_tile, GenericPlayer* owner = nullptr);
 	~DynamicEntity();
