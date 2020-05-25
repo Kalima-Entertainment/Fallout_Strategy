@@ -439,13 +439,13 @@ bool UI_Button::Update(float dt)
 					App->audio->PlayFx(1, App->audio->character_fx, 0);
 					App->scene->create_tutorial = true;
 					App->gui->ingame = false;
+				
 					App->easing_splines->CreateSpline(&App->menu_manager->tutorial_screen->pos.x, App->menu_manager->tutorial_screen->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
 					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[0]->pos.x, App->menu_manager->tutorial[0]->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
 					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[1]->pos.x, App->menu_manager->tutorial[1]->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
 					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[2]->pos.x, App->menu_manager->tutorial[2]->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
 					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[3]->pos.x, App->menu_manager->tutorial[3]->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
 					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[4]->pos.x, App->menu_manager->tutorial[4]->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[6]->pos.x, App->menu_manager->tutorial[6]->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
 					App->easing_splines->CreateSpline(&App->menu_manager->info_button2_element->pos.x, App->menu_manager->info_button2_element->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
 
 				}
@@ -453,13 +453,25 @@ bool UI_Button::Update(float dt)
 			
 			else if (t == info_button2) {
 				if (App->scene->create_tutorial == true) {
-
-					App->menu_manager->DestroyMenu(Menu::TUTORIAL);
+					App->easing_splines->CreateSpline(&App->menu_manager->tutorial_screen->pos.x, App->menu_manager->tutorial_screen->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[0]->pos.x, App->menu_manager->tutorial[0]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[1]->pos.x, App->menu_manager->tutorial[1]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[2]->pos.x, App->menu_manager->tutorial[2]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[3]->pos.x, App->menu_manager->tutorial[3]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[4]->pos.x, App->menu_manager->tutorial[4]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					if (App->menu_manager->tutorial[6] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[6]->pos.x, App->menu_manager->tutorial[6]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->tutorial[7] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[7]->pos.x, App->menu_manager->tutorial[7]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					App->easing_splines->CreateSpline(&App->menu_manager->info_button2_element->pos.x, App->menu_manager->info_button2_element->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					//App->menu_manager->DestroyMenu(Menu::TUTORIAL);
 					App->menu_manager->DestroyMenu(Menu::HOW_TO_PLAY);
+					App->gui->Delete_Element(App->menu_manager->tutorial[5]);
 					App->audio->PlayFx(1, App->audio->back_fx, 0);
 					App->scene->create_tutorial = false;
 					App->gui->ingame = true;
-
 				}
 
 			}
@@ -467,23 +479,39 @@ bool UI_Button::Update(float dt)
 			else if (t == control_button) {
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
 				App->gui->DeleteArrayElements(App->menu_manager->tutorial, 5);
+				App->menu_manager->tutorial[6] = (UI_Button*)App->gui->CreateButton(640, 435, back_tutorial_controls, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this);
 				App->menu_manager->tutorial[5] = (j1Image*)App->gui->CreateImage(670, 160, Image, { 0, 2028, 605, 305 }, NULL, this);
 				App->gui->ingame = false;
+			}
+
+			else if (t == back_tutorial_controls) {
+				App->audio->PlayFx(1, App->audio->back_fx, 0);
+				App->gui->Delete_Element(App->menu_manager->tutorial[5]);
+				App->gui->Delete_Element(App->menu_manager->tutorial[6]);
+				App->menu_manager->tutorial[0] = (UI_Button*)App->gui->CreateButton(680, 360, control_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+				App->menu_manager->tutorial[1] = (UI_Button*)App->gui->CreateButton(1000, 360, how_to_play_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+				App->menu_manager->tutorial[2] = (UI_Label*)App->gui->CreateLabel(890, 220, Label, "TUTORIAL", NULL, this, NULL);
+				App->menu_manager->tutorial[3] = (UI_Label*)App->gui->CreateLabel(710, 380, Label, "CONTROLS", NULL, this, NULL);
+				App->menu_manager->tutorial[4] = (UI_Label*)App->gui->CreateLabel(1020, 380, Label, "HOW TO PLAY", NULL, this, NULL);
 			}
 
 			else if (t == how_to_play_button) {
 				App->gui->DeleteArrayElements(App->menu_manager->tutorial, 5);
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
+				App->menu_manager->tutorial[7] = (UI_Button*)App->gui->CreateButton(640, 435, back_tutorial_how_to_play, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this);
 				App->menu_manager->CreateMenu(Menu::HOW_TO_PLAY);
 				App->gui->ingame = false;
 			}
 
-			else if (t == back_tutorial) {
-				App->menu_manager->DestroyMenu(Menu::TUTORIAL);
+			else if (t == back_tutorial_how_to_play) {
 				App->audio->PlayFx(1, App->audio->back_fx, 0);
-				App->menu_manager->CreateMenu(Menu::TUTORIAL);
-				App->scene->create_tutorial = true;
-				App->gui->ingame = false;
+				App->gui->DeleteArrayElements(App->menu_manager->how_to_play, 6);
+				App->gui->Delete_Element(App->menu_manager->tutorial[7]);
+				App->menu_manager->tutorial[0] = (UI_Button*)App->gui->CreateButton(680, 360, control_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+				App->menu_manager->tutorial[1] = (UI_Button*)App->gui->CreateButton(1000, 360, how_to_play_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+				App->menu_manager->tutorial[2] = (UI_Label*)App->gui->CreateLabel(890, 220, Label, "TUTORIAL", NULL, this, NULL);
+				App->menu_manager->tutorial[3] = (UI_Label*)App->gui->CreateLabel(710, 380, Label, "CONTROLS", NULL, this, NULL);
+				App->menu_manager->tutorial[4] = (UI_Label*)App->gui->CreateLabel(1020, 380, Label, "HOW TO PLAY", NULL, this, NULL);
 			}
 
 			else if (t == how_to_play_next) {

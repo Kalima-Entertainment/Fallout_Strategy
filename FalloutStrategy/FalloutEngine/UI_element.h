@@ -75,7 +75,8 @@ enum UI_Type {
 	how_to_play_button,
 	info_button,
 	info_button2,
-	back_tutorial,
+	back_tutorial_controls,
+	back_tutorial_how_to_play,
 	how_to_play_next,
 	how_to_play_previous,
 
