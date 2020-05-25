@@ -317,11 +317,9 @@ bool UI_Button::Update(float dt)
 
 				static_entity->SpawnUnit(MELEE);
 
-				if (App->hud->melee_amount < 10) {
-					App->hud->melee_amount++;
-					App->menu_manager->DestroyMenu(Menu::MELEE_QUANTITY);
-					App->menu_manager->CreateMenu(Menu::MELEE_QUANTITY);
-				}
+				App->menu_manager->DestroyMenu(Menu::MELEE_QUANTITY);
+				App->menu_manager->CreateMenu(Menu::MELEE_QUANTITY);
+		
 
 			}
 			//Spawn Ranged from any faction
@@ -336,11 +334,9 @@ bool UI_Button::Update(float dt)
 
 				static_entity->SpawnUnit(RANGED);
 
-				if (App->hud->ranged_amount < 10) {
-					App->hud->ranged_amount++;
-					App->menu_manager->DestroyMenu(Menu::RANGED_QUANTITY);
-					App->menu_manager->CreateMenu(Menu::RANGED_QUANTITY);
-				}
+				App->menu_manager->DestroyMenu(Menu::RANGED_QUANTITY);
+				App->menu_manager->CreateMenu(Menu::RANGED_QUANTITY);
+				
 
 			}
 			else if (t == button_select_ghoul)

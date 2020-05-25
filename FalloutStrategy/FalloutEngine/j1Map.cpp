@@ -65,7 +65,7 @@ void j1Map::Draw()
 					TileSet* tileset = GetTilesetFromTileId(tile_id);
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 
-					if (App->fowManager->GetFoWTileState({ x, y })->tileFogBits != fow_ALL) {
+					if (App->fowManager->GetFoWTileState({ x, y })->tileFogBits != fow_ALL || App->fowManager->GetFoWTileState({ x, y })->tileShroudBits != fow_ALL) {
 						//camera culling
 						if ((pos.x + r.w + tileset->offset_x > -(App->render->camera.x))
 							&& (pos.x < -App->render->camera.x + App->render->camera.w)
