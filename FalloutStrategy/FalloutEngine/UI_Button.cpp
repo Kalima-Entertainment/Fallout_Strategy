@@ -528,6 +528,57 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->CreateMenu(Menu::HOW_TO_PLAY);
 				App->gui->ingame = false;
 			}
+			else if (t == quest_button) {
+				App->easing_splines->CreateSpline(&App->menu_manager->quest[0]->pos.x, App->menu_manager->quest[0]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+				if (App->menu_manager->quest[1] != nullptr) {
+					App->easing_splines->CreateSpline(&App->menu_manager->quest[1]->pos.x, App->menu_manager->quest[1]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+				}
+				if (App->menu_manager->quest[2] != nullptr) {
+					App->easing_splines->CreateSpline(&App->menu_manager->quest[2]->pos.x, App->menu_manager->quest[2]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+				}
+				if (App->menu_manager->quest[3] != nullptr) {
+					App->easing_splines->CreateSpline(&App->menu_manager->quest[3]->pos.x, App->menu_manager->quest[3]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+				}
+				if (App->menu_manager->quest[4] != nullptr) {
+					App->easing_splines->CreateSpline(&App->menu_manager->quest[4]->pos.x, App->menu_manager->quest[4]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+				}
+				if (App->menu_manager->quest[5] != nullptr) {
+					App->easing_splines->CreateSpline(&App->menu_manager->quest[5]->pos.x, App->menu_manager->quest[5]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+				}
+				if (App->menu_manager->quest[6] != nullptr) {
+					App->easing_splines->CreateSpline(&App->menu_manager->quest[6]->pos.x, App->menu_manager->quest[6]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+				}
+				App->easing_splines->CreateSpline(&App->menu_manager->quest[7]->pos.x, App->menu_manager->quest[7]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+				
+				App->menu_manager->quest[8] = (UI_Button*)App->gui->CreateButton(0, 100, quest_button2, { 909,2084,43,46 }, { 909,2135,43,46 }, { 909,2185,43,46 }, NULL, this);
+				App->gui->Delete_Element(App->menu_manager->quest[7]);
+			}
+
+			else if (t == quest_button2) {
+				App->easing_splines->CreateSpline(&App->menu_manager->quest[0]->pos.x, App->menu_manager->quest[0]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+				if (App->menu_manager->quest[1] != nullptr) {
+					App->easing_splines->CreateSpline(&App->menu_manager->quest[1]->pos.x, App->menu_manager->quest[1]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+				}
+				if (App->menu_manager->quest[2] != nullptr) {
+					App->easing_splines->CreateSpline(&App->menu_manager->quest[2]->pos.x, App->menu_manager->quest[2]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+				}
+				if (App->menu_manager->quest[3] != nullptr) {
+					App->easing_splines->CreateSpline(&App->menu_manager->quest[3]->pos.x, App->menu_manager->quest[3]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+				}
+				if (App->menu_manager->quest[4] != nullptr) {
+					App->easing_splines->CreateSpline(&App->menu_manager->quest[4]->pos.x, App->menu_manager->quest[4]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+				}
+				if (App->menu_manager->quest[5] != nullptr) {
+					App->easing_splines->CreateSpline(&App->menu_manager->quest[5]->pos.x, App->menu_manager->quest[5]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+				}
+				if (App->menu_manager->quest[6] != nullptr) {
+					App->easing_splines->CreateSpline(&App->menu_manager->quest[6]->pos.x, App->menu_manager->quest[6]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+				}
+				App->easing_splines->CreateSpline(&App->menu_manager->quest[7]->pos.x, App->menu_manager->quest[7]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+				App->easing_splines->CreateSpline(&App->menu_manager->quest[8]->pos.x, App->menu_manager->quest[8]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+				App->gui->Delete_Element(App->menu_manager->quest[8]);
+				App->menu_manager->quest[7] = (UI_Button*)App->gui->CreateButton(307, 100, quest_button, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this);
+			}
 		}
 
 		else {

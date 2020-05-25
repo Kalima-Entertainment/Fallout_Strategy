@@ -1047,7 +1047,7 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->minimap->Show();
 		break;
 	case Menu::QUEST:
-		App->gui->DeleteArrayElements(quest, 7);
+		App->gui->DeleteArrayElements(quest, 10);
 		break;
 
 	default:
