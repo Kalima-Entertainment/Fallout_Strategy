@@ -87,6 +87,10 @@ enum UI_Type {
 	ADVANCE_DIALOGS,
 	FINISH_DIALOGS,
 
+	//Quests
+	quest_button,
+	quest_button2,
+
 	UI_NONE
 };
 

@@ -9,6 +9,7 @@
 #include "j1Scene.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 #include "FoWManager.h"
+#include "j1EntityManager.h"
 
 StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile,  GenericPlayer* g_owner) {
 
@@ -522,8 +523,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 		App->entities->unit_data[faction][RANGED].spawn_seconds = (floor)(App->entities->unit_data[faction][RANGED].spawn_seconds * (1-value_increment));
 
 		LOG("Units Creation Upgraded Upgraded");	
-	}
-	*/
+	}*/	
 }
 
 void StaticEntity::SpawnUnit(EntityType type, bool no_cost) {

@@ -101,24 +101,43 @@ bool DynamicEntity::PostUpdate() {
 	}
 	current_animation = &animations[state][direction];
 
+	//Health Bar
+	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 50, 4 };
+	SDL_Rect foreground_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, (float)current_health / max_health * 50, 4 };
+	SDL_Rect frame = { position.x - HALF_TILE * 0.75f - 1, position.y - TILE_SIZE * 1.5f - 1, 52, 6 };
+
 	//Render character
 	render_position = { (int)(position.x - sprite_size * 0.5f), (int)(position.y - 1.82f * TILE_SIZE)};
-	App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
+
+	if (this->faction == App->player->faction) {
+		//Player Render
+		App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
+
+		//Player Health Bar
+		App->render->DrawQuad(background_bar, 55, 55, 55, 255);
+		App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
+		App->render->DrawQuad(frame, 155, 155, 155, 185, false);
+	}
+	else {
+		//Enemy
+		//Fog Of War Rendering Based
+		if ((App->fowManager->GetFoWTileState({ this->current_tile })->tileFogBits != fow_ALL))
+		{
+			//Enemy Render
+			App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
+
+			//Enemy Health Bar only if visible on fog of war
+			App->render->DrawQuad(background_bar, 55, 55, 55, 255);
+			App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
+			App->render->DrawQuad(frame, 155, 155, 155, 185, false);
+		}	
+	}
 
 	if (App->render->debug) 
 	{
 		App->render->DrawQuad({ (int)position.x - 2, (int)position.y - 2 , 4,4 }, 255, 0, 0, 255);
 		App->render->DrawQuad({ (int)(next_tile_rect.x), (int)(next_tile_rect.y), next_tile_rect.w, next_tile_rect.h }, 0, 255, 0, 255);
-	}
-
-	//Health Bar
-	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 50, 4 };
-	SDL_Rect foreground_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, (float)current_health/max_health * 50, 4 };
-	SDL_Rect frame = { position.x - HALF_TILE * 0.75f - 1, position.y - TILE_SIZE * 1.5f - 1, 52, 6};
-	if (foreground_bar.w < 0) foreground_bar.w = 0;
-	App->render->DrawQuad(background_bar, 55, 55, 55, 255);
-	App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
-	App->render->DrawQuad(frame, 155, 155, 155, 185, false);
+	}	
 
 	return true;
 }
