@@ -289,7 +289,7 @@ void MenuManager::CreateMenu(Menu menu) {
 		break;
 
 	case Menu::MELEE_QUANTITY:
-
+		
 		if (App->player->selected_entity != nullptr)
 		{
 
@@ -1061,7 +1061,7 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->minimap->Show();
 		break;
 	case Menu::QUEST:
-		App->gui->DeleteArrayElements(quest, 10);
+		App->gui->DeleteArrayElements(quest, 12);
 		break;
 
 	default:

@@ -69,7 +69,7 @@ public:
 	UI_Label*	timer_item;
 	UI_Label*	timer_minutes;
 	UI_element* resources[3];
-	UI_element* quest[10];
+	UI_element* quest[12];
 
 	UI_element* brotherhood_base[15];
 	UI_element* brotherhood_barrack[22];

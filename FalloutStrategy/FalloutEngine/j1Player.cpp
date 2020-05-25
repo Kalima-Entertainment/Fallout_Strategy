@@ -10,6 +10,7 @@
 #include "StaticEntity.h"
 #include "p2Log.h"
 #include "UI_Label.h"
+#include "UI_Button.h"
 #include "j1Gui.h"
 #include "j1Minimap.h"
 #include "j1Image.h"
@@ -183,11 +184,18 @@ bool j1Player::Update(float dt) {
 	if (qcaps == false) {
 		
 		if (caps >= 1000) {
+			food = 401;
 			App->menu_manager->quest[6] = (j1Image*)App->gui->CreateImage(33, 200, Image, { 3061, 619, 30, 27 }, NULL, this);
 			reward++;
 			if (reward == 1) App->menu_manager->quest[1] = (j1Image*)App->gui->CreateImage(50, 261, Image, { 3155, 809, 60, 17 }, NULL, this);
 			if (reward == 2) App->menu_manager->quest[2] = (j1Image*)App->gui->CreateImage(114, 261, Image, { 3219, 809, 63, 17 }, NULL, this);
-			if (reward == 3) App->menu_manager->quest[3] = (j1Image*)App->gui->CreateImage(181, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
+			if (reward == 3) {
+				App->menu_manager->quest[3] = (j1Image*)App->gui->CreateImage(181, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
+				App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1231, 555, 282, 262 }, NULL, this);
+				App->menu_manager->quest[10] = (UI_Button*)App->gui->CreateButton(500, 450, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+				App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this, NULL);
+				App->entities->CreateEntity(App->player->faction, MR_HANDY, App->player->base->position.x, App->player->base->position.y, App->player);
+			}
 			qcaps = true;
 		}
 	}
@@ -195,26 +203,48 @@ bool j1Player::Update(float dt) {
 	if (qwater == false) {
 
 		if (water >= 1000) {
+			food = 401;
+			caps = 1001;
 			App->menu_manager->quest[4] = (j1Image*)App->gui->CreateImage(33, 120, Image, { 3061, 619, 30, 27 }, NULL, this);
 			reward++;
 			if (reward == 1) App->menu_manager->quest[1] = (j1Image*)App->gui->CreateImage(50, 261, Image, { 3155, 809, 60, 17 }, NULL, this);
 			if (reward == 2) App->menu_manager->quest[2] = (j1Image*)App->gui->CreateImage(114, 261, Image, { 3219, 809, 63, 17 }, NULL, this);
-			if (reward == 3) App->menu_manager->quest[3] = (j1Image*)App->gui->CreateImage(181, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
+			if (reward == 3) {
+				App->menu_manager->quest[3] = (j1Image*)App->gui->CreateImage(181, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
+				App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1231, 555, 282, 262 }, NULL, this);
+				App->menu_manager->quest[10] = (UI_Button*)App->gui->CreateButton(500, 450, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+				App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this, NULL);
+				App->entities->CreateEntity(App->player->faction, MR_HANDY, App->player->base->position.x, App->player->base->position.y, App->player);
+			}
 			qwater = true;
 		}
 	}
 
 	if (qfood == false) {
-
+		
 		if (food >= 400) {
 			App->menu_manager->quest[5] = (j1Image*)App->gui->CreateImage(33, 160, Image, { 3061, 619, 30, 27 }, NULL, this);
 			reward++;
 			if (reward == 1) App->menu_manager->quest[1] = (j1Image*)App->gui->CreateImage(50, 261, Image, { 3155, 809, 60, 17 }, NULL, this);
 			if (reward == 2) App->menu_manager->quest[2] = (j1Image*)App->gui->CreateImage(114, 261, Image, { 3219, 809, 63, 17 }, NULL, this);
-			if (reward == 3) App->menu_manager->quest[3] = (j1Image*)App->gui->CreateImage(181, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
+			if (reward == 3) {
+				App->menu_manager->quest[3] = (j1Image*)App->gui->CreateImage(181, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
+				App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1231, 555, 282, 262 }, NULL, this);
+				App->menu_manager->quest[10] = (UI_Button*)App->gui->CreateButton(500, 450, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+				App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this, NULL);
+				App->entities->CreateEntity(App->player->faction, MR_HANDY, App->player->base->position.x, App->player->base->position.y, App->player);
+			}
 			qfood = true;
 		}
 	}
+
+	/*
+	if (reward == 1) {
+		App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1231, 555, 282, 262 }, NULL, this);
+		App->menu_manager->quest[10] = (UI_Button*)App->gui->CreateButton(480, 310, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+		App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(500, 320, Label, "CONTINUE", NULL, this, NULL);
+	}
+	*/
 	
 	/*
 	//Zoom in, zoom out
