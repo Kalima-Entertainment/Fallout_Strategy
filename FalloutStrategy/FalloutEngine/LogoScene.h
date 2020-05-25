@@ -43,7 +43,7 @@ private:
 	j1Timer Timer;
 	bool drawable = true;
 	bool sound_end = true;
-
+	bool quit = false;
 
 };
 

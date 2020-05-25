@@ -82,6 +82,7 @@ bool LogoScene::Start()
 
 	start_game_rect = { 0, 0,561,30 };
 	LoadAnimations();
+	quit = false;
 	Loop = true;
 	Timer.Start();
 
@@ -105,13 +106,14 @@ bool LogoScene::Update(float dt) {
 	
 	last_dt = dt;
 
-	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && App->scene->win == false && App->scene->lose == false)
+	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && App->scene->win == false && App->scene->lose == false && quit == false)
 	{
 		App->audio->PlayMusic("Assets/audio/music/FalloutStrategyMainTheme.ogg", 0.0F);
 		App->audio->PlayFx(2, App->audio->F_press, 0);
 		App->video->DestroyVideo(my_video);
 		my_video = 0;
 		Loop = false;
+		quit = true;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && App->scene->win == true)
 	{

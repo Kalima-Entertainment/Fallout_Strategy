@@ -450,7 +450,6 @@ bool UI_Button::Update(float dt)
 
 				}
 			}
-			
 			else if (t == info_button2) {
 				if (App->scene->create_tutorial == true) {
 					App->easing_splines->CreateSpline(&App->menu_manager->tutorial_screen->pos.x, App->menu_manager->tutorial_screen->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
@@ -475,7 +474,6 @@ bool UI_Button::Update(float dt)
 				}
 
 			}
-			
 			else if (t == control_button) {
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
 				App->gui->DeleteArrayElements(App->menu_manager->tutorial, 5);
@@ -494,7 +492,6 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->tutorial[3] = (UI_Label*)App->gui->CreateLabel(710, 380, Label, "CONTROLS", NULL, this, NULL);
 				App->menu_manager->tutorial[4] = (UI_Label*)App->gui->CreateLabel(1020, 380, Label, "HOW TO PLAY", NULL, this, NULL);
 			}
-
 			else if (t == how_to_play_button) {
 				App->gui->DeleteArrayElements(App->menu_manager->tutorial, 5);
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
@@ -513,7 +510,6 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->tutorial[3] = (UI_Label*)App->gui->CreateLabel(710, 380, Label, "CONTROLS", NULL, this, NULL);
 				App->menu_manager->tutorial[4] = (UI_Label*)App->gui->CreateLabel(1020, 380, Label, "HOW TO PLAY", NULL, this, NULL);
 			}
-
 			else if (t == how_to_play_next) {
 				App->menu_manager->DestroyMenu(Menu::HOW_TO_PLAY);
 				App->menu_manager->how_to_play_counter++;
@@ -523,7 +519,6 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->CreateMenu(Menu::HOW_TO_PLAY);
 				App->gui->ingame = false;
 			}
-
 			else if (t == how_to_play_previous) {
 				App->menu_manager->DestroyMenu(Menu::HOW_TO_PLAY);
 				App->menu_manager->how_to_play_counter--;

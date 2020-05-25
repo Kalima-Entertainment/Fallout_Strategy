@@ -299,9 +299,9 @@ void MenuManager::CreateMenu(Menu menu) {
 		info_button2_element = (UI_Button*)App->gui->CreateButton(1294, 143, info_button2, { 908,2084,43,46 }, { 908,2135,43,46 }, { 908,2185,43,46 }, NULL, this);
 		
 		//Text
-		tutorial[2] = (UI_Label*)App->gui->CreateLabel(1590, 220, Label, "TUTORIAL", NULL, this, NULL);
-		tutorial[3] = (UI_Label*)App->gui->CreateLabel(1410, 380, Label, "CONTROLS", NULL, this, NULL);
-		tutorial[4] = (UI_Label*)App->gui->CreateLabel(1720, 380, Label, "HOW TO PLAY", NULL, this, NULL);
+		tutorial[2] = (UI_Label*)App->gui->CreateLabel(1600, 220, Label, "TUTORIAL", NULL, this, NULL);
+		tutorial[3] = (UI_Label*)App->gui->CreateLabel(1420, 375, Label, "CONTROLS", NULL, this, NULL);
+		tutorial[4] = (UI_Label*)App->gui->CreateLabel(1722, 375, Label, "HOW TO PLAY", NULL, this, NULL);
 
 		last_menu = current_menu;
 		current_menu = Menu::PAUSE_MENU;
@@ -694,7 +694,7 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 							supermutant_base[1] = (UI_Button*)App->gui->CreateButton(670, 653, Boost_base_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
 
 							//Images
-							supermutant_base[2] = (j1Image*)App->gui->CreateImage(530, 589, Image, { 934, 1577, 129, 91 }, NULL, this);
+							supermutant_base[2] = (j1Image*)App->gui->CreateImage(530, 600, Image, { 934, 1577, 129, 91 }, NULL, this);
 							supermutant_base[3] = (j1Image*)App->gui->CreateImage(682, 600, Image, { 191, 1868, 34, 32 }, NULL, this);
 							supermutant_base[4] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
 
@@ -710,8 +710,8 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 							
 
 							//Carts
-							supermutant_base[7] = (j1Image*)App->gui->CreateImage(1008, 609, Image, { 92, 1956, 53, 47 }, NULL, this);
-							supermutant_base[8] = (j1Image*)App->gui->CreateImage(1102, 610, Image, { 104, 2338, 49, 55 }, NULL, this);
+							supermutant_base[7] = (j1Image*)App->gui->CreateImage(1008, 600, Image, { 92, 1956, 53, 47 }, NULL, this);
+							supermutant_base[8] = (j1Image*)App->gui->CreateImage(1102, 600, Image, { 104, 2338, 49, 55 }, NULL, this);
 
 							//Cost
 							supermutant_base[9] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, "0", NULL, this, NULL, "StackedPixelXS");   //Nukas
@@ -788,11 +788,11 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 							supermutant_lab[2] = (UI_Button*)App->gui->CreateButton(670, 653, summon_mrhandy_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
 							
 							//Images
-							supermutant_lab[3] = (j1Image*)App->gui->CreateImage(530, 590, Image, { 801, 1549, 102, 119 }, NULL, this);
-							supermutant_lab[4] = (j1Image*)App->gui->CreateImage(687, 600, Image, { 877, 1874, 33, 20 }, NULL, this);
+							supermutant_lab[3] = (j1Image*)App->gui->CreateImage(540, 590, Image, { 801, 1549, 102, 119 }, NULL, this);
+							supermutant_lab[4] = (j1Image*)App->gui->CreateImage(677, 607, Image, { 877, 1874, 33, 20 }, NULL, this);
 							
 							supermutant_lab[5] = (j1Image*)App->gui->CreateImage(840, 600, Image, { 982, 1869, 31, 33 }, NULL, this);
-							supermutant_lab[6] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 1034, 1869, 35, 33 }, NULL, this);
+							supermutant_lab[6] = (j1Image*)App->gui->CreateImage(680, 660, Image, { 1034, 1869, 35, 33 }, NULL, this);
 
 							//Labels
 							if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
