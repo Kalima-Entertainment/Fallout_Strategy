@@ -35,6 +35,9 @@
 j1Scene::j1Scene() : j1Module()
 {
 	name = ("scene");
+	create = false;
+	create_tutorial = false;
+	menu_state = StatesMenu::NONE;
 }
 
 // Destructor
@@ -141,17 +144,7 @@ bool j1Scene::Update(float dt)
 	// Gui ---
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
 
-		if (create == true) {
-
-			App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
-			App->isPaused = false;
-			create = false;
-			Mix_PauseMusic();
-			App->hud->activateTimer = true;
-		}
-
-		else if (create == false) {
-
+		if (create == false) {
 			App->menu_manager->CreateMenu(Menu::PAUSE_MENU);
 			App->isPaused = true;
 			App->hud->activateTimer = false;
@@ -160,6 +153,13 @@ bool j1Scene::Update(float dt)
 				Mix_ResumeMusic();
 			}
 			App->audio->PlayMusic("Assets/audio/music/Fallout4TitleScreenwithThemeMusic.ogg", 0.0F);
+		}
+		else if (create == true) {
+			App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
+			App->isPaused = false;
+			create = false;
+			Mix_PauseMusic();
+			App->hud->activateTimer = true;
 		}
 
 	}

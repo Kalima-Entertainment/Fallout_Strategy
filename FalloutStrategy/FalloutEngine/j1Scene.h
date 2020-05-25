@@ -63,9 +63,9 @@ public:
 	int topright;
 	int bottomleft;
 	int bottomright;
-	bool create = false;
-	bool create_tutorial = false;
-	StatesMenu menu_state = StatesMenu::NONE;
+	bool create;
+	bool create_tutorial;
+	StatesMenu menu_state;
 	GenericPlayer* players[4];
 
 	std::string modules[4];

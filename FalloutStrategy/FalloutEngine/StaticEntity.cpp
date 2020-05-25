@@ -9,6 +9,7 @@
 #include "j1Scene.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 #include "FoWManager.h"
+#include "j1EntityManager.h"
 
 StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile,  GenericPlayer* g_owner) {
 
@@ -138,7 +139,6 @@ bool StaticEntity::PostUpdate() {
 		App->render->DrawQuad({ (int)position.x, (int)position.y, 4,4 }, 255, 0, 0, 255);
 
 	//Health bar stats
-	/*
 	SDL_Rect background_bar = { render_position.x + sprite_size * 0.5f - 40, render_position.y, 80, 4 };
 	SDL_Rect foreground_bar = { render_position.x + sprite_size * 0.5f - 40, render_position.y, (float)current_health / max_health * background_bar.w, 4 };
 	SDL_Rect frame = { render_position.x + sprite_size * 0.5f - 41, render_position.y - 1, 82, 6 };
@@ -146,7 +146,6 @@ bool StaticEntity::PostUpdate() {
 	App->render->DrawQuad(background_bar, 50, 50, 50, 255);
 	App->render->DrawQuad(foreground_bar, 20, 255, 20, 255);
 	App->render->DrawQuad(frame, 200, 200, 200, 200, false);
-	*/
 
 	//Spawn bar
 	if (spawning) {
@@ -277,7 +276,7 @@ bool StaticEntity::LoadAnimations(const char* folder, const char* file_name) {
 		else { 
 			//goto CHANGE_ANIMATION; 
 			animation = animation.next_sibling();
-			break;
+			continue;
 		}
 
 		id = animation.attribute("id").as_int();
@@ -524,8 +523,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 		App->entities->unit_data[faction][RANGED].spawn_seconds = (floor)(App->entities->unit_data[faction][RANGED].spawn_seconds * (1-value_increment));
 
 		LOG("Units Creation Upgraded Upgraded");	
-	}
-	*/
+	}*/	
 }
 
 void StaticEntity::SpawnUnit(EntityType type, bool no_cost) {
@@ -685,6 +683,25 @@ bool StaticEntity::Save(pugi::xml_node& data) const
 	//chrono.append_attribute("chrono_upgrade") = chrono_upgrade.Start;
 
 	return true;
+}
+
+int StaticEntity::GetUnitsInStack(EntityType type)
+{
+	int num = 0;
+
+	if (type == MELEE) {
+		for (int i = 0; i < 10; i++) {
+			if (spawn_stack[i].type == MELEE)
+				num++;
+		}
+	}
+	else if (type == RANGED) {
+		for (int i = 0; i < 10; i++) {
+			if (spawn_stack[i].type == RANGED)
+				num++;
+		}
+	}
+	return num;
 }
 
 void StaticEntity::CalculateRenderAndSpawnPositions() {

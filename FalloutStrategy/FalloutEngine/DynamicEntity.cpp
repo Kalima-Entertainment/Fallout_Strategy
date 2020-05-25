@@ -62,207 +62,6 @@ DynamicEntity::~DynamicEntity() {
 	entities_in_range.clear();
 }
 
-/*
-bool DynamicEntity::Update(float dt) {
-
-	Mix_AllocateChannels(25);
-	j1Entity* enemy_in_range = nullptr;
-
-	switch (state)
-	{
-	case IDLE:
-		
-		enemy_in_range = DetectEntitiesInRange();
-
-		if (enemy_in_range) {
-			if (is_agressive) {
-				if ((target_entity == nullptr)||(target_entity == enemy_in_range)) {
-					target_entity = enemy_in_range;
-					if ((current_tile.DistanceNoSqrt(enemy_in_range->current_tile) > range) && (target_entity->current_tile != target_tile))
-						PathfindToPosition(enemy_in_range->current_tile);
-					else {
-						next_tile = current_tile;
-						target_tile = current_tile;
-						UpdateTile();
-						path_to_target.clear();
-						state = ATTACK;
-						//action_timer.Start();
-					}
-				}
-			}
-			else if ((enemy_in_range->type != BRAHAM)&&(enemy_in_range->type != BIGHORNER)) {
-				Flee();
-				action_timer.Start();
-			}
-		}
-		else if ((type == BRAHAM)||(type  == BIGHORNER))
-		{
-			if (action_timer.ReadSec() > action_time) {
-				Flee();
-				action_timer.Start();
-			}
-		}		
-
-		break;
-
-	case WALK:
-
-		Move(dt);
-
-		if (current_tile.DistanceNoSqrt(target_tile) <= range) {
-			if (is_agressive) {
-				if (target_entity != nullptr) {
-					if ((target_entity->current_tile == target_tile) || (current_tile.DistanceNoSqrt(target_entity->current_tile) <= range)) {
-					state = ATTACK;
-					path_to_target.clear();
-					UpdateTile();
-					action_timer.Start();
-					target_entity->state = HIT;
-					}
-				}
-			}
-			else {
-				if (type == GATHERER) {
-					if (next_tile == target_tile) {
-						//gather
-						if (((resource_building != nullptr) && (resource_collected < storage_capacity))
-						  ||((resource_collected > 0) && (target_entity != nullptr))) {
-							state = GATHER;
-							action_timer.Start();
-						}
-					}
-				}
-			}
-		}
-
-		SpatialAudio(position.x, position.y, faction, state, type);
-
-		break;
-
-	case ATTACK:
-		if (target_entity == nullptr)
-			state = IDLE;
-		else if (target_entity->current_tile.DistanceNoSqrt(current_tile) > range) {
-			PathfindToPosition(target_entity->current_tile);
-		}
-		else if (action_timer.ReadSec() > action_time) {
-			Attack();
-		}
-
-		SpatialAudio(position.x, position.y, faction, state, type);
-
-		break;
-	case GATHER:
-		if (action_timer.ReadSec() > action_time) {
-			//collect resources
-			if (resource_collected < storage_capacity) {
-				Gather();
-				state = WALK;
-			}
-			else {
-				StoreGatheredResources();
-
-				//go back to resource building to get more resources
-				if (resource_building->quantity > 0) {
-					PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
-					state = WALK;
-				}
-				//find another building
-				else
-				{
-					resource_building = App->entities->GetClosestResourceBuilding(current_tile);
-					//if there is at least a resource building left, go there
-					if (resource_building != nullptr) {
-						PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
-						state = WALK;
-					}
-					//if there are no resource buildings left
-					else {
-						state = IDLE;
-					}
-				}
-			}
-		}
-		break;
-
-	case HIT:
-		current_animation = &animations[HIT][direction];
-
-		if (current_animation->Finished()) {
-			current_animation->Reset();
-			if (attacking_entity != nullptr) {
-				if (is_agressive) {
-					state = ATTACK;
-				}
-				else {
-					Flee();
-				}
-			}
-			else 
-			{
-				state = IDLE;
-			}
-		}
-
-		SpatialAudio(position.x, position.y, faction, state, type);
-
-		break;
-	case DIE:
-		direction = TOP_LEFT;
-		if (!delete_timer.Started()) {
-			delete_timer.Start();
-			direction = TOP_LEFT;
-
-			if (faction == ANIMALS) {
-				resource_building = App->entities->CreateResourceSpot(current_tile.x, current_tile.y, resource_type, resource_collected);
-				App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
-				current_tile = { -1,-1 };
-				next_tile = {-1,-1};
-				if (attacking_entity->owner->is_ai) {
-					((AI_Player*)attacking_entity->owner)->GatherFood(resource_building);
-					attacking_entity = nullptr;
-				}
-			}
-		}
-
-		if (faction != ANIMALS) {
-			if (delete_timer.ReadSec() > 4) {
-				to_delete = true;
-				App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
-				attacking_entity->state = IDLE;
-			}
-		}
-		else {
-			if (resource_building->quantity <= 0) {
-				to_delete = true;
-				App->entities->DestroyResourceSpot(resource_building);
-			}
-		}
-		
-		SpatialAudio(position.x, position.y, faction, state, type);
-
-		break;
-
-	default:
-		break;
-	}
-
-	//Group Movement Request
-	if (this->info.current_group != nullptr)
-	{
-		if (info.current_group->IsGroupLead(this)) {
-			if (this->faction == App->player->faction)
-				info.current_group->CheckForMovementRequest(App->player->Map_mouseposition, dt);
-		}
-	}
-
-	//save dt for animations
-	last_dt = dt;
-
-	return true;
-}
-*/
-
 bool DynamicEntity::PostUpdate() {
 
 	//tile debug
@@ -302,24 +101,43 @@ bool DynamicEntity::PostUpdate() {
 	}
 	current_animation = &animations[state][direction];
 
+	//Health Bar
+	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 50, 4 };
+	SDL_Rect foreground_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, (float)current_health / max_health * 50, 4 };
+	SDL_Rect frame = { position.x - HALF_TILE * 0.75f - 1, position.y - TILE_SIZE * 1.5f - 1, 52, 6 };
+
 	//Render character
 	render_position = { (int)(position.x - sprite_size * 0.5f), (int)(position.y - 1.82f * TILE_SIZE)};
-	App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
+
+	if (this->faction == App->player->faction) {
+		//Player Render
+		App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
+
+		//Player Health Bar
+		App->render->DrawQuad(background_bar, 55, 55, 55, 255);
+		App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
+		App->render->DrawQuad(frame, 155, 155, 155, 185, false);
+	}
+	else {
+		//Enemy
+		//Fog Of War Rendering Based
+		if ((App->fowManager->GetFoWTileState({ this->current_tile })->tileFogBits != fow_ALL))
+		{
+			//Enemy Render
+			App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
+
+			//Enemy Health Bar only if visible on fog of war
+			App->render->DrawQuad(background_bar, 55, 55, 55, 255);
+			App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
+			App->render->DrawQuad(frame, 155, 155, 155, 185, false);
+		}	
+	}
 
 	if (App->render->debug) 
 	{
 		App->render->DrawQuad({ (int)position.x - 2, (int)position.y - 2 , 4,4 }, 255, 0, 0, 255);
 		App->render->DrawQuad({ (int)(next_tile_rect.x), (int)(next_tile_rect.y), next_tile_rect.w, next_tile_rect.h }, 0, 255, 0, 255);
-	}
-
-	//Health Bar
-	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 50, 4 };
-	SDL_Rect foreground_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, (float)current_health/max_health * 50, 4 };
-	SDL_Rect frame = { position.x - HALF_TILE * 0.75f - 1, position.y - TILE_SIZE * 1.5f - 1, 52, 6};
-	if (foreground_bar.w < 0) foreground_bar.w = 0;
-	App->render->DrawQuad(background_bar, 55, 55, 55, 255);
-	App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
-	App->render->DrawQuad(frame, 155, 155, 155, 185, false);
+	}	
 
 	return true;
 }
@@ -648,23 +466,3 @@ UnitInfo::UnitInfo() {}
 UnitInfo::~UnitInfo() {}
 
 UnitInfo::UnitInfo(const UnitInfo& info) : color(info.color) {}
-
-// Load Game State
-bool DynamicEntity::Load(pugi::xml_node& data)
-{
-	//camera.x = data.child("camera").attribute("x").as_int();
-	//camera.y = data.child("camera").attribute("y").as_int();
-
-	return true;
-}
-
-// Save Game State
-bool DynamicEntity::Save(pugi::xml_node& data) const
-{
-	//pugi::xml_node cam = data.append_child("camera");
-
-	//cam.append_attribute("x") = camera.x;
-	//cam.append_attribute("y") = camera.y;
-
-	return true;
-}

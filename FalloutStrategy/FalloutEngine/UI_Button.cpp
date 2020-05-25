@@ -220,6 +220,7 @@ bool UI_Button::Update(float dt)
 				App->scene->create = !App->scene->create;
 				App->audio->PlayFx(1, App->audio->back_fx, 0);
 				Mix_PauseMusic();
+				App->isPaused = false;
 			}
 			else if (t == button_back_to_menu)
 			{
@@ -297,6 +298,12 @@ bool UI_Button::Update(float dt)
 				else
 					static_entity = (StaticEntity*)App->player->selected_entity;
 				static_entity->SpawnUnit(GATHERER);
+
+				if (App->hud->gatherer_amount < 10) {
+					App->hud->gatherer_amount++;
+					App->menu_manager->DestroyMenu(Menu::GATHERER_QUANTITY);
+					App->menu_manager->CreateMenu(Menu::GATHERER_QUANTITY);
+				}
 			}
 			//Spawn Melee from any faction
 			else if (t == Ghouls_melee_button || t == Vault_melee_button || t == Supermutant_melee_button || t == Brotherhood_melee_button){
@@ -309,6 +316,13 @@ bool UI_Button::Update(float dt)
 				static_entity = (StaticEntity*)App->player->selected_entity;
 
 				static_entity->SpawnUnit(MELEE);
+
+				if (App->hud->melee_amount < 10) {
+					App->hud->melee_amount++;
+					App->menu_manager->DestroyMenu(Menu::MELEE_QUANTITY);
+					App->menu_manager->CreateMenu(Menu::MELEE_QUANTITY);
+				}
+
 			}
 			//Spawn Ranged from any faction
 			else if (t == Ghouls_ranged_button || t == Vault_ranged_button || t == Supermutant_ranged_button || t == Brotherhood_ranged_button){
@@ -321,6 +335,13 @@ bool UI_Button::Update(float dt)
 				static_entity = (StaticEntity*)App->player->selected_entity;
 
 				static_entity->SpawnUnit(RANGED);
+
+				if (App->hud->ranged_amount < 10) {
+					App->hud->ranged_amount++;
+					App->menu_manager->DestroyMenu(Menu::RANGED_QUANTITY);
+					App->menu_manager->CreateMenu(Menu::RANGED_QUANTITY);
+				}
+
 			}
 			else if (t == button_select_ghoul)
 			{

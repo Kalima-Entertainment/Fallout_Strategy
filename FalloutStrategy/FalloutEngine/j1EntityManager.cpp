@@ -376,8 +376,6 @@ bool j1EntityManager::PostUpdate()
 j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int position_x, int position_y, GenericPlayer* owner) {
 	BROFILER_CATEGORY("EntityCreation", Profiler::Color::Linen)
 
-		//if (!owner) owner = App->scene->players[faction];
-
 	j1Entity* entity = nullptr;
 	iPoint available_tile;
 
@@ -1065,7 +1063,7 @@ void j1EntityManager::SpawnAnimals() {
 	
 	int randomAnimal = 0;
 
-	for (int i = 0; i < App->map->spawnCoordinates; i++)
+	for (int i = 0; i < 15; i++)
 	{
 		srand(time(NULL)+i);
 		randomAnimal = rand() % 2;
