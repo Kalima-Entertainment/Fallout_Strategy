@@ -156,9 +156,12 @@ bool j1EntityManager::PreUpdate() {
 		//delete entities to destroy
 		if (entities[i]->to_delete)
 		{
-			entities[i]->owner->DeleteEntity(entities[i]);
+			if(entities[i]->owner != nullptr)
+				entities[i]->owner->DeleteEntity(entities[i]);
+
 			if ((!entities[i]->is_dynamic)&&(!App->IsLoading()))
 				App->scene->CheckWinner();
+
 			delete entities[i];
 			entities[i] = nullptr;
 			entities.erase(entities.begin() + i);

@@ -297,6 +297,7 @@ bool UI_Button::Update(float dt)
 					static_entity = (StaticEntity*)App->player->last_selected_entity;
 				else
 					static_entity = (StaticEntity*)App->player->selected_entity;
+
 				static_entity->SpawnUnit(GATHERER);
 
 				if (App->hud->gatherer_amount < 10) {
