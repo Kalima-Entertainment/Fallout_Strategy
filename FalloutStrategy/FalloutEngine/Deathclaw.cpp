@@ -10,6 +10,9 @@ Deathclaw::Deathclaw(iPoint g_current_tile) : DynamicEntity() {
 	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
 	position.x += HALF_TILE;
 	position.y += HALF_TILE;
+	attack_time = 3;
+	range = 3;
+	attack_timer.Start();
 }
 
 Deathclaw::~Deathclaw() {
@@ -25,19 +28,42 @@ bool Deathclaw::Update(float dt) {
     case IDLE:
 		break;
     case WALK:
+		Move(dt);
+		if (current_tile.DistanceManhattan(target_tile) <= range) {
+			path_to_target.clear();
+			state = ATTACK;
+		}
 		SpatialAudio(position.x, position.y, faction, state, type);
         break;
     case ATTACK:
-		if (attack_timer.Read() > attack_time) {
+		if (attack_timer.ReadSec() > attack_time) {
+			current_animation->Reset();
+			UpdateTile();
 			Attack();
 		}
 		SpatialAudio(position.x, position.y, faction, state, type);
         break;
     case HIT:
+		current_animation = &animations[HIT][direction];
 		SpatialAudio(position.x, position.y, faction, state, type);
         break;
     case DIE:
+		direction = TOP_LEFT;
+		if (!delete_timer.Started()) {
+			delete_timer.Start();
+			direction = TOP_LEFT;
+			if (attacking_entity) {
+				attacking_entity->target_entity = nullptr;
+				attacking_entity->state = IDLE;
+			}
+		}
+
+		if (delete_timer.ReadSec() > 4) {
+			to_delete = true;
+			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
+		}
 		SpatialAudio(position.x, position.y, faction, state, type);
+
         break;
     default:
         break;
@@ -68,31 +94,6 @@ void Deathclaw::Attack() {
 			attacking_entity = nullptr;
 
 		target_entity = nullptr;
-	}
-
-	//Change animation directions to fit
-	else if (target_entity->is_dynamic) {
-		DynamicEntity* dynamic_target = (DynamicEntity*)target_entity;
-
-		target_entity->attacking_entity = this;
-		dynamic_target->state = HIT;
-
-		if ((current_tile.x > target_entity->current_tile.x) && (current_tile.y == target_entity->current_tile.y)) {
-			direction = TOP_LEFT;
-			dynamic_target->direction = BOTTOM_RIGHT;
-		}
-		else if ((current_tile.x == target_entity->current_tile.x) && (current_tile.y > target_entity->current_tile.y)) {
-			direction = TOP_RIGHT;
-			dynamic_target->direction = BOTTOM_LEFT;
-		}
-		else if ((current_tile.x == target_entity->current_tile.x) && (current_tile.y < target_entity->current_tile.y)) {
-			direction = BOTTOM_LEFT;
-			dynamic_target->direction = TOP_RIGHT;
-		}
-		else if ((current_tile.x < target_entity->current_tile.x) && (current_tile.y == target_entity->current_tile.y)) {
-			direction = BOTTOM_RIGHT;
-			dynamic_target->direction = TOP_LEFT;
-		}
 	}
 }
 

@@ -109,7 +109,7 @@ bool DynamicEntity::PostUpdate() {
 	//Render character
 	render_position = { (int)(position.x - sprite_size * 0.5f), (int)(position.y - 1.82f * TILE_SIZE)};
 
-	if (this->faction == App->player->faction) {
+	//if (this->faction == App->player->faction) {
 		//Player Render
 		App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
@@ -117,8 +117,8 @@ bool DynamicEntity::PostUpdate() {
 		App->render->DrawQuad(background_bar, 55, 55, 55, 255);
 		App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
 		App->render->DrawQuad(frame, 155, 155, 155, 185, false);
-	}
-	else {
+	//}
+	//else {
 		//Enemy
 		//Fog Of War Rendering Based
 		//if ((App->fowManager->GetFoWTileState({ this->current_tile })->tileFogBits != fow_ALL))
@@ -131,7 +131,7 @@ bool DynamicEntity::PostUpdate() {
 		//	App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
 		//	App->render->DrawQuad(frame, 155, 155, 155, 185, false);
 		//}	
-	}
+//	}
 
 	if (App->render->debug) 
 	{

@@ -18,6 +18,7 @@ private:
 	int damage;
 	int attack_time;
 	j1Timer attack_timer;
+	int range;
 };
 
 #endif // !_DEATHCLAW_H_

@@ -31,9 +31,6 @@
     <ClCompile Include="PugiXml\src\pugixml.cpp">
       <Filter>Desenvolupament  ========\Tools\PuguiXML</Filter>
     </ClCompile>
-    <ClCompile Include="j1Map.cpp">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="j1Timer.cpp">
       <Filter>Desenvolupament  ========\Tools</Filter>
     </ClCompile>
@@ -160,6 +157,9 @@
     <ClCompile Include="ParticleSystem.cpp">
       <Filter>Desenvolupament  ========\Particles</Filter>
     </ClCompile>
+    <ClCompile Include="j1Map.cpp">
+      <Filter>Desenvolupament  ========\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -209,9 +209,6 @@
     </ClInclude>
     <ClInclude Include="PugiXml\src\pugixml.hpp">
       <Filter>Desenvolupament  ========\Tools\PuguiXML</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Map.h">
-      <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
     <ClInclude Include="j1Timer.h">
       <Filter>Desenvolupament  ========\Tools</Filter>
@@ -347,6 +344,9 @@
     </ClInclude>
     <ClInclude Include="ParticleSystem.h">
       <Filter>Desenvolupament  ========\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Map.h">
+      <Filter>Desenvolupament  ========\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
