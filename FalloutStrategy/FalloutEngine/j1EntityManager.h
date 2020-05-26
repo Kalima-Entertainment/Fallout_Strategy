@@ -114,7 +114,7 @@ public:
 	int GetReferenceEntityID(Faction faction, EntityType type);
 
 	ParticleSystem* CreateParticle(fPoint);
-	void DeleteParticle();
+	void DeleteParticles();
 	void RestartOccupiedTiles();
 
 public:
