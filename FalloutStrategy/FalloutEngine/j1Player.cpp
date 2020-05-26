@@ -239,6 +239,19 @@ bool j1Player::Update(float dt) {
 		}
 	}
 
+	// -- Request GroupMovement
+	for (int i = 0; i < App->entities->entities.size(); i++)
+	{
+		//Just our dynamic troops must be checked
+		if (App->entities->entities[i]->is_dynamic && App->entities->entities[i]->faction == this->faction) {
+		
+			DynamicEntity* DynamicEnt = (DynamicEntity*)App->entities->entities[i];
+			/*if (DynamicEnt->info.current_group->IsGroupLead(DynamicEnt)) {
+				DynamicEnt->info.current_group->CheckForMovementRequest(Map_mouseposition, dt);
+			}*/
+		}
+	}
+
 	/*
 	if (reward == 1) {
 		App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1231, 555, 282, 262 }, NULL, this);
