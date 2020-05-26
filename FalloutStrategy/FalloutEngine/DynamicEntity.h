@@ -55,7 +55,6 @@ protected:
 	iPoint next_tile_position;
 	SDL_Rect next_tile_rect;
 	int detection_radius;
-	fPoint speed;
 
 	j1Timer detection_timer;
 

@@ -116,8 +116,8 @@ bool StaticEntity::PostUpdate() {
 			tex_position = App->map->MapToWorld(tiles[i].x, tiles[i].y);
 			App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
 		}
-
 	}
+
 	//debug tiles
 	else if (App->render->debug) 
 	{
@@ -142,7 +142,9 @@ bool StaticEntity::PostUpdate() {
 	SDL_Rect background_bar = { render_position.x + sprite_size * 0.5f - 40, render_position.y, 80, 4 };
 	SDL_Rect foreground_bar = { render_position.x + sprite_size * 0.5f - 40, render_position.y, (float)current_health / max_health * background_bar.w, 4 };
 	SDL_Rect frame = { render_position.x + sprite_size * 0.5f - 41, render_position.y - 1, 82, 6 };
-	if (foreground_bar.w < 0) foreground_bar.w = 0;
+
+	if (foreground_bar.w < 0) 
+		foreground_bar.w = 0;
 	App->render->DrawQuad(background_bar, 50, 50, 50, 255);
 	App->render->DrawQuad(foreground_bar, 20, 255, 20, 255);
 	App->render->DrawQuad(frame, 200, 200, 200, 200, false);
@@ -218,12 +220,10 @@ bool StaticEntity::LoadAnimations(const char* folder, const char* file_name) {
 
 	std::string image_path = std::string(folder).append(animation_file.child("map").child("tileset").child("image").attribute("source").as_string());
 
-	if (type == BASE)
-	{
+	if (type == BASE) {
 		texture = App->tex->Load(image_path.c_str());
 	}
-	else
-	{
+	else {
 		texture = App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, BASE)]->texture;
 	}
 
@@ -432,7 +432,6 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 }
 
 void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
-	/*
 	//We execute the upgrade as upgrade_seconds have already passed
 	if (upgrade_name == RESOURCES_LIMIT) {
 		if (storage_capacity < max_capacity) {
@@ -458,7 +457,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 				if (App->entities->entities[i]->type == GATHERER)
 					App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * value_increment);
 		}
-		App->entities->reference_entities[faction][GATHERER]->damage += (App->entities->reference_entities[faction][GATHERER]->damage * value_increment);
+		App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, GATHERER)]->damage += (App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, GATHERER)]->damage * value_increment);
 		LOG("Gatherer Resource Limit Upgraded");
 	}
 	else if (upgrade_name == UNITS_DAMAGE) {
@@ -473,8 +472,8 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 					App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * value_increment);
 		}
 		LOG("Units Damage Upgraded");
-		App->entities->reference_entities[faction][MELEE]->damage += (App->entities->reference_entities[faction][MELEE]->damage * value_increment);
-		App->entities->reference_entities[faction][RANGED]->damage += (App->entities->reference_entities[faction][RANGED]->damage * value_increment);
+		App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, MELEE)]->damage += (App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, MELEE)]->damage * value_increment);
+		App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, RANGED)]->damage += (App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, RANGED)]->damage * value_increment);
 	}
 	else if (upgrade_name == UNITS_SPEED) {
 		int cost = App->entities->units_speed[faction].first_price + (App->entities->units_speed[faction].price_increment * App->entities->units_speed[faction].upgrade_num);
@@ -489,12 +488,14 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 			}
 		}
 		LOG("Units Speed Upgraded");
-		App->entities->reference_entities[faction][MELEE]->speed.x += App->entities->reference_entities[faction][MELEE]->speed.x * value_increment;
-		App->entities->reference_entities[faction][MELEE]->speed.y += App->entities->reference_entities[faction][MELEE]->speed.y * value_increment;
-		App->entities->reference_entities[faction][RANGED]->speed.x += App->entities->reference_entities[faction][RANGED]->speed.x * value_increment;
-		App->entities->reference_entities[faction][RANGED]->speed.y += App->entities->reference_entities[faction][RANGED]->speed.y * value_increment;
-		App->entities->reference_entities[faction][GATHERER]->speed.x += App->entities->reference_entities[faction][GATHERER]->speed.x * value_increment;
-		App->entities->reference_entities[faction][GATHERER]->speed.y += App->entities->reference_entities[faction][GATHERER]->speed.y * value_increment;
+		App->entities->reference_entities[App->entities->GetReferenceEntityID(faction,MELEE)]->speed.x += App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, MELEE)]->speed.x * value_increment;
+		App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, MELEE)]->speed.y += App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, MELEE)]->speed.y * value_increment;
+		
+		App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, RANGED)]->speed.x += App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, RANGED)]->speed.x * value_increment;
+		App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, RANGED)]->speed.y += App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, RANGED)]->speed.y * value_increment;
+		
+		App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, GATHERER)]->speed.x += App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, GATHERER)]->speed.x * value_increment;
+		App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, GATHERER)]->speed.y += App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, GATHERER)]->speed.y * value_increment;
 	}
 	else if (upgrade_name == UNITS_HEALTH) {
 		int cost = App->entities->units_health[faction].first_price + (App->entities->units_health[faction].price_increment * App->entities->units_health[faction].upgrade_num);
@@ -510,8 +511,8 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 				}
 		}
 		LOG("Units Health Upgraded");	
-		App->entities->reference_entities[faction][MELEE]->max_health += (int)(App->entities->reference_entities[faction][MELEE]->max_health * value_increment);
-		App->entities->reference_entities[faction][RANGED]->max_health += (int)(App->entities->reference_entities[faction][RANGED]->max_health * value_increment);
+		App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, MELEE)]->max_health += (int)(App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, MELEE)]->max_health * value_increment);
+		App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, RANGED)]->max_health += (int)(App->entities->reference_entities[App->entities->GetReferenceEntityID(faction, RANGED)]->max_health * value_increment);
 	}
 	else if (upgrade_name == CREATION_TIME) {
 		int cost = App->entities->units_creation_time[faction].first_price + (App->entities->units_creation_time[faction].price_increment * App->entities->units_creation_time[faction].upgrade_num);
@@ -523,7 +524,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 		App->entities->unit_data[faction][RANGED].spawn_seconds = (floor)(App->entities->unit_data[faction][RANGED].spawn_seconds * (1-value_increment));
 
 		LOG("Units Creation Upgraded Upgraded");	
-	}*/	
+	}
 }
 
 void StaticEntity::SpawnUnit(EntityType type, bool no_cost) {

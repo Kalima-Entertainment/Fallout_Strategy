@@ -19,7 +19,6 @@ public:
 public:
 	StaticEntity* target_building;
 private:
-	int damage;
 	int attack_time;
 	j1Timer attack_timer;
 	int range;

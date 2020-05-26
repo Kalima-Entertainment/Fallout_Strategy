@@ -81,12 +81,14 @@ public:
 	fPoint position;
 	iPoint render_position;
 	iPoint spawnPosition;
+	fPoint speed;
 	int sprite_size;
 
 	//stats
 	int current_health;
 	int max_health;
 	int storage_capacity;
+	int damage;
 
 	//audio
 	int volume;
