@@ -75,6 +75,9 @@ public:
 	{
 		return sounded;
 	}
+	int GetNumFrames() {
+		return num_frames;
+	}
 };
 
 #endif

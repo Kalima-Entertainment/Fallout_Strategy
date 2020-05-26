@@ -67,6 +67,7 @@ bool Animal::Update(float dt) {
 				attacking_entity = nullptr;
 			}
 		}
+
 		if ((resource_spot->quantity <= 0) && (delete_timer.ReadSec() > 4)) {
 			App->entities->DestroyResourceSpot(resource_spot);
 			to_delete = true;

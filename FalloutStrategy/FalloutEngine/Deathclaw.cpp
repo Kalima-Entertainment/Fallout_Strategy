@@ -1,6 +1,8 @@
 #include "Deathclaw.h"
 #include "j1Player.h"
 #include "j1Map.h"
+#include "StaticEntity.h"
+#include "j1Player.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
 Deathclaw::Deathclaw(iPoint g_current_tile) : DynamicEntity() {
@@ -11,29 +13,37 @@ Deathclaw::Deathclaw(iPoint g_current_tile) : DynamicEntity() {
 	position.x += HALF_TILE;
 	position.y += HALF_TILE;
 	attack_time = 3;
-	range = 3;
+	range = 1;
 	attack_timer.Start();
 }
 
 Deathclaw::~Deathclaw() {
+	target_entity = nullptr;
 }
 
 bool Deathclaw::Update(float dt) {
 	bool ret = true;
 
 	Mix_AllocateChannels(35);
+	current_animation = &animations[state][direction];
 
 	switch (state)
 	{
     case IDLE:
+		
+		if (target_building) {
+			PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
+		}
 		break;
     case WALK:
 		Move(dt);
-		if (current_tile.DistanceManhattan(target_tile) <= range) {
-			path_to_target.clear();
+
+		if ((node_path.size() == 0) && (current_tile.DistanceManhattan(target_tile) <= range)) {
+			//path_to_target.clear();
 			state = ATTACK;
 		}
 		SpatialAudio(position.x, position.y, faction, state, type);
+
         break;
     case ATTACK:
 		if (attack_timer.ReadSec() > attack_time) {
@@ -79,21 +89,24 @@ void Deathclaw::Attack() {
 	attack_timer.Start();
 
 	//damage unit if god_mode isn't activated
-	if ((target_entity->faction == App->player->faction) && (App->player->god_mode))
+	if ((target_building->faction == App->player->faction) && (App->player->god_mode))
 		return;
 
-	target_entity->current_health -= damage;
+	target_building->current_health -= damage;
 
-	if (target_entity->current_health <= 0) {
-		target_entity->attacking_entity = this;
-		target_entity->state = DIE;
-		path_to_target.clear();
-		state = IDLE;
+	if (target_building->current_health <= 0) {
+		if (target_building->faction == App->player->faction) {
+			state = IDLE;
+		}
+		else {
+			path_to_target.clear();
+			delete_timer.Start();
+			state = DIE;
+		}
 
-		if (attacking_entity == target_entity)
-			attacking_entity = nullptr;
-
-		target_entity = nullptr;
+		target_building->attacking_entity = this;
+		target_building->state = DIE;
+		target_building = nullptr;
 	}
 }
 

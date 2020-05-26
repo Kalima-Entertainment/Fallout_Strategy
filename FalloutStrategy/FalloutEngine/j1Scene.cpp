@@ -142,40 +142,41 @@ bool j1Scene::Update(float dt)
 {
 	App->map->Draw();
 	
-	if (App->hud->timer == 50)
+	if ((App->hud->minutes == 5) && (deathclaw1 == false))
 	{
 		if (players[0]->base != nullptr && deathclaw1 == false)
 		{
 			Deathclaws[0] = (Deathclaw*)App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 75, 75);
-			Deathclaws[0]->PathfindToPosition(App->player->base->current_tile);
-			Deathclaws[0]->target_entity = players[0]->base;
+			iPoint pos = App->entities->ClosestTile(Deathclaws[0]->current_tile, players[0]->base->tiles);
+			Deathclaws[0]->PathfindToPosition(pos);
+			Deathclaws[0]->target_building = players[0]->base;
 			deathclaw1 = true;
 		}
 		if (players[1]->base != nullptr && deathclaw2 == false)
 		{
-			iPoint pos = players[1]->base->current_tile;
 			Deathclaws[1] = (Deathclaw*)App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 76, 75);
+			iPoint pos = App->entities->ClosestTile(Deathclaws[1]->current_tile, players[1]->base->tiles);
 			Deathclaws[1]->PathfindToPosition(pos);
-			Deathclaws[1]->target_entity = players[1]->base;
-			LOG("1");
+			Deathclaws[1]->target_building = players[1]->base;
+			//LOG("1");
 			deathclaw2  = true;
 		}
 		if (players[2]->base != nullptr && deathclaw3 == false)
 		{
-			iPoint pos = players[2]->base->current_tile;
 			Deathclaws[2] =  (Deathclaw*) App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 75, 76);
+			iPoint pos = App->entities->ClosestTile(Deathclaws[2]->current_tile, players[2]->base->tiles);
 			Deathclaws[2]->PathfindToPosition(pos);
-			Deathclaws[2]->target_entity = players[2]->base;
-			LOG("2");
+			Deathclaws[2]->target_building = players[2]->base;
+			//LOG("2");
 			deathclaw3 = true;
 		}
 		if (players[3]->base != nullptr && deathclaw4 == false)
 		{
-			iPoint pos = players[3]->base->current_tile;
 			Deathclaws[3] = (Deathclaw*)App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 76, 76);
+			iPoint pos = App->entities->ClosestTile(Deathclaws[3]->current_tile, players[3]->base->tiles);
 			Deathclaws[3]->PathfindToPosition(pos);
-			Deathclaws[3]->target_entity = players[3]->base;
-			LOG("3");
+			Deathclaws[3]->target_building = players[3]->base;
+			//LOG("3");
 			deathclaw4 = true;
 		}
 	}
@@ -343,11 +344,20 @@ void j1Scene::CheckWinner() {
 						LOG("Ghouls defeated!");
 				}
 			}
+			else if ((players[App->player->faction]->base == nullptr) && (Deathclaws[App->player->faction] != nullptr)) {
+				//LOSE
+				lose = true;
+				App->logo_scene->Loop = true;
+				App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+				App->gui->ingame = false;
+				App->isPaused = true;
+				App->logo_scene->playsound = true;
+			}
 		}
 	}
 
 	//WIN
-	if (beaten_enemies == 3 && Deathclaws[App->player->faction] == nullptr || (Deathclaws[App->player->faction] != nullptr) && (Deathclaws [App->player->faction]->state == DIE)) {
+	if (((beaten_enemies == 3) && (Deathclaws[App->player->faction] == nullptr)) || ((Deathclaws[App->player->faction] != nullptr) && (Deathclaws [App->player->faction]->state == DIE) && (App->player->base != nullptr))) {
 		LOG("You won!");
 		win = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);

@@ -3,6 +3,8 @@
 #include "DynamicEntity.h"
 #include "j1Entity.h"
 
+class StaticEntity;
+
 class Deathclaw : public DynamicEntity {
 public:
 	Deathclaw(iPoint current_tile);
@@ -14,6 +16,8 @@ public:
 	bool LoadDataFromReference();
 	bool LoadReferenceData(pugi::xml_node& node);
 
+public:
+	StaticEntity* target_building;
 private:
 	int damage;
 	int attack_time;
