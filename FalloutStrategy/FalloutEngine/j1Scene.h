@@ -81,6 +81,7 @@ public:
 	bool deathclaw2 = false;
 	bool deathclaw3 = false;
 	bool deathclaw4 = false;
+	
 private:
 	int SongPlaying = 0;
 	int beaten_enemies;
