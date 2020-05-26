@@ -185,7 +185,6 @@ bool j1Player::Update(float dt) {
 	if (qcaps == false) {
 		
 		if (caps >= 1000) {
-			food = 401;
 			App->menu_manager->quest[6] = (j1Image*)App->gui->CreateImage(33, 200, Image, { 3061, 619, 30, 27 }, NULL, this);
 			reward++;
 			if (reward == 1) App->menu_manager->quest[1] = (j1Image*)App->gui->CreateImage(50, 261, Image, { 3155, 809, 60, 17 }, NULL, this);
@@ -204,8 +203,6 @@ bool j1Player::Update(float dt) {
 	if (qwater == false) {
 
 		if (water >= 1000) {
-			food = 401;
-			caps = 1001;
 			App->menu_manager->quest[4] = (j1Image*)App->gui->CreateImage(33, 120, Image, { 3061, 619, 30, 27 }, NULL, this);
 			reward++;
 			if (reward == 1) App->menu_manager->quest[1] = (j1Image*)App->gui->CreateImage(50, 261, Image, { 3155, 809, 60, 17 }, NULL, this);

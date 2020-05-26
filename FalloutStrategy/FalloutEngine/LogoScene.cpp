@@ -151,7 +151,7 @@ bool LogoScene::PostUpdate()
 		{
 			video_texture = App->video->UpdateVideo(my_video);
 
-			App->render->Blit(video_texture, 0, 0);
+			App->render->Blit(video_texture, 0, 0, 0, 1.0f, 0);
 
 			if (App->video->IsPlaying(my_video) == 0)
 			{
