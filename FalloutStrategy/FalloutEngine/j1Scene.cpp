@@ -144,33 +144,37 @@ bool j1Scene::Update(float dt)
 	
 	if (App->hud->timer == 50)
 	{
-		if (deathclaw1 == false)
+		if (players[0]->base != nullptr && deathclaw1 == false)
 		{
 			Deathclaws[0] = (Deathclaw*)App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 75, 75);
 			Deathclaws[0]->PathfindToPosition(App->player->base->current_tile);
+			Deathclaws[0]->target_entity = players[0]->base;
 			deathclaw1 = true;
 		}
 		if (players[1]->base != nullptr && deathclaw2 == false)
 		{
 			iPoint pos = players[1]->base->current_tile;
-			Deathclaws[1] = (Deathclaw*)App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 70, 70);
+			Deathclaws[1] = (Deathclaw*)App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 76, 75);
 			Deathclaws[1]->PathfindToPosition(pos);
+			Deathclaws[1]->target_entity = players[1]->base;
 			LOG("1");
 			deathclaw2  = true;
 		}
 		if (players[2]->base != nullptr && deathclaw3 == false)
 		{
 			iPoint pos = players[2]->base->current_tile;
-			Deathclaws[2] =  (Deathclaw*) App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 80, 80);
+			Deathclaws[2] =  (Deathclaw*) App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 75, 76);
 			Deathclaws[2]->PathfindToPosition(pos);
+			Deathclaws[2]->target_entity = players[2]->base;
 			LOG("2");
 			deathclaw3 = true;
 		}
 		if (players[3]->base != nullptr && deathclaw4 == false)
 		{
 			iPoint pos = players[3]->base->current_tile;
-			Deathclaws[3] = (Deathclaw*)App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 85, 85);
+			Deathclaws[3] = (Deathclaw*)App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 76, 76);
 			Deathclaws[3]->PathfindToPosition(pos);
+			Deathclaws[3]->target_entity = players[3]->base;
 			LOG("3");
 			deathclaw4 = true;
 		}
@@ -343,7 +347,7 @@ void j1Scene::CheckWinner() {
 	}
 
 	//WIN
-	if (beaten_enemies == 3) {
+	if (beaten_enemies == 3 && Deathclaws[App->player->faction] == nullptr || (Deathclaws[App->player->faction] != nullptr) && (Deathclaws [App->player->faction]->state == DIE)) {
 		LOG("You won!");
 		win = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
