@@ -103,6 +103,8 @@ bool DynamicEntity::PostUpdate() {
 	//Health Bar
 	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 50, 4 };
 	SDL_Rect foreground_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, (float)current_health / max_health * 50, 4 };
+	if (foreground_bar.w < 0)
+		foreground_bar.w = 0;
 	SDL_Rect frame = { position.x - HALF_TILE * 0.75f - 1, position.y - TILE_SIZE * 1.5f - 1, 52, 6 };
 
 	//Render character

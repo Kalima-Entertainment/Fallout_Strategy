@@ -747,7 +747,7 @@ void j1EntityManager::OnCommand(std::vector<std::string> command_parts) {
 
 void j1EntityManager::LoadUpgradeCosts(pugi::xml_node& config)
 {
-	pugi::xml_node boost_node = config.first_child().first_child();
+	pugi::xml_node boost_node = config.child("boost").first_child();
 	Faction faction = NO_FACTION;
 	std::string faction_name;
 
