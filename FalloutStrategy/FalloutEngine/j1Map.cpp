@@ -65,7 +65,7 @@ void j1Map::Draw()
 					TileSet* tileset = GetTilesetFromTileId(tile_id);
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 
-					if (App->fowManager->GetFoWTileState({ x, y })->tileFogBits != fow_ALL || App->fowManager->GetFoWTileState({ x, y })->tileShroudBits != fow_ALL) {
+					if (CheckVisibleArea(x, y) == true || App->render->debug == true) { //Check Fog Of War visibility
 						//camera culling
 						if ((pos.x + r.w + tileset->offset_x > -(App->render->camera.x))
 							&& (pos.x < -App->render->camera.x + App->render->camera.w)
@@ -679,6 +679,34 @@ bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 			properties.list.add(p);
 		}
 	}
+
+	return ret;
+}
+
+bool j1Map::CheckVisibleArea(int x, int y)
+{
+	bool ret = false;
+
+	//Fog
+	/*switch (App->fowManager->GetFoWTileState({ x, y })->tileFogBits) {
+	case fow_ALL:
+		ret = false;
+		break;
+	}
+
+	//Shroud
+	switch (App->fowManager->GetFoWTileState({ x, y })->tileShroudBits) {
+	case fow_ALL://Covered totally by shroud
+		ret = false;
+		break;
+	}*/
+
+	if (App->fowManager->GetFoWTileState({ x, y })->tileFogBits != fow_ALL) 
+		ret = true;
+	else if (App->fowManager->GetFoWTileState({ x, y })->tileShroudBits == fow_ALL && ((x == 0)||(y == 0))) 
+		ret = false;
+	else if (App->fowManager->GetFoWTileState({ x, y })->tileShroudBits != fow_ALL)
+		ret = true;
 
 	return ret;
 }

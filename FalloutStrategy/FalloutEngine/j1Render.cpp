@@ -15,7 +15,7 @@ j1Render::j1Render() : j1Module()
 	background.g = 0;
 	background.b = 0;
 	background.a = 0;
-	debug = true;
+	debug = false;
 	fog_of_war = true;
 }
 

@@ -150,7 +150,7 @@ public:
 	void SetBuildingTilesUnwalkable(std::vector<iPoint> tiles);
 	int GetWidth() const { return data.width * data.tile_width; };
 	TileSet* GetTilesetFromTileId(int id) const;
-
+	bool CheckVisibleArea(int x, int y); //Checks if area is visible in Fog Of War
 private:
 
 	bool LoadMap();
@@ -160,6 +160,7 @@ private:
 	bool LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int module_number);
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
 
+	
 public:
 
 	MapData data;
