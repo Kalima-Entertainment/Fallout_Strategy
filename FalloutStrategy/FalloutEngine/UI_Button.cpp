@@ -144,6 +144,17 @@ bool UI_Button::Update(float dt)
 				App->audio->PlayFx(1, App->audio->click_fx, 0);
 				App->transition->fadetimer.Start();
 			}
+			else if (t == button_load_game) {
+
+				App->menu_manager->DestroyMenu(Menu::MAIN_MENU);
+				App->audio->PlayFx(1, App->audio->click_fx, 0);
+				App->gui->count = 0;
+				App->gui->ingame = true;
+				App->transition->fadetimer.Start();
+				App->transition->transition = true;
+				App->entities->Enable();
+				App->LoadGame("save_file.xml");
+			}
 			else if (t == Button_slider_music_left) {
 				App->gui->volume_up = 1;
 				App->audio->PlayFx(1, App->audio->volume_fx, 0);
