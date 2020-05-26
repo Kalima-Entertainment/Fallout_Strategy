@@ -70,8 +70,7 @@ bool Gatherer::Update(float dt) {
 
 		if (next_tile == target_tile) {
 			//gather
-			if (((resource_building != nullptr) && (resource_collected < storage_capacity))
-				|| ((resource_collected > 0) && (target_entity != nullptr))) {
+			if (((resource_building != nullptr) && (resource_collected < storage_capacity)) || ((resource_collected > 0) && (target_entity != nullptr))) {
 				state = GATHER;
 				gathering_timer.Start();
 			}

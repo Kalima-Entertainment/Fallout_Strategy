@@ -57,6 +57,7 @@ bool Animal::Update(float dt) {
 
 			resource_spot = App->entities->CreateResourceSpot(current_tile.x, current_tile.y, Resource::FOOD, food_quantity);
 			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
+			current_tile.x += 1;
 			next_tile = { -1,-1 };
 
 			if ((attacking_entity != nullptr)&&(attacking_entity->owner->is_ai)) {
@@ -67,6 +68,7 @@ bool Animal::Update(float dt) {
 
 		if ((resource_spot->quantity <= 0) && (delete_timer.ReadSec() > 4)) {
 			App->entities->DestroyResourceSpot(resource_spot);
+			resource_spot = nullptr;
 			to_delete = true;
 		}
 		SpatialAudio(position.x, position.y, faction, state, type);

@@ -588,7 +588,7 @@ void StaticEntity::SpawnChrono() {
 	}
 	if (spawning == true) {
 		if (chrono_spawn.ReadSec() > spawn_stack[0].spawn_seconds) {
-			App->entities->CreateEntity(faction, spawn_stack[0].type, spawnPosition.x, spawnPosition.y, owner);
+			App->entities->CreateEntity(faction, spawn_stack[0].type, spawnPosition.x, spawnPosition.y, App->scene->players[faction]);
 			//LOG("Unit Spawned");
 			UpdateSpawnStack();
 		}
