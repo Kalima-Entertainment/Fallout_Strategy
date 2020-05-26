@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="isometric" renderorder="right-down" width="75" height="75" tilewidth="64" tileheight="32" nextobjectid="37">
+<map version="1.0" orientation="isometric" renderorder="right-down" width="75" height="75" tilewidth="64" tileheight="32" nextobjectid="41">
  <tileset firstgid="1" name="Floor" tilewidth="64" tileheight="32" tilecount="512" columns="16">
   <image source="Floors64x32.png" width="1024" height="1024"/>
  </tileset>
@@ -11276,7 +11276,7 @@
    <tile gid="298"/>
   </data>
  </layer>
- <layer name="Decoration" width="75" height="75" offsetx="0" offsety="100">
+ <layer name="Decoration" width="75" height="75">
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -45054,7 +45054,7 @@
    <tile gid="0"/>
   </data>
  </layer>
- <objectgroup name="resources">
+ <objectgroup name="objectgroups">
   <object id="1" name="Resources" x="1090.32" y="13.3788" width="316.06" height="242.53">
    <properties>
     <property name="Nuka-Cola" type="int" value="200"/>
@@ -45100,7 +45100,7 @@
     <property name="Water" type="int" value="150"/>
    </properties>
   </object>
-  <object id="26" name="Resources" x="1522.84" y="1427.5" width="189.832" height="203.333">
+  <object id="26" name="Resources" x="1522.84" y="1453" width="189.832" height="177.833">
    <properties>
     <property name="Water" type="int" value="150"/>
    </properties>
@@ -45145,5 +45145,12 @@
     <property name="faction" type="int" value="3"/>
    </properties>
   </object>
+  <object id="37" name="Animal" type="Braham" x="194" y="421" width="24.25" height="21.5"/>
+  <object id="38" name="Animal" type="Bighorner" x="1183" y="304" width="24.25" height="21.5"/>
+  <object id="39" name="Animal" type="Bighorner" x="1145" y="1518" width="24.25" height="21.5"/>
+  <object id="40" name="Animal" type="Braham" x="1167" y="1825" width="24.25" height="21.5"/>
+  <object id="41" name="Animal" type="SpawnPoint" x="194" y="421" width="24.25" height="21.5"/>
+  <object id="42" name="Animal" type="SpawnPoint" x="1183" y="304" width="24.25" height="21.5"/>
+  <object id="43" name="Animal" type="SpawnPoint" x="1145" y="1518" width="24.25" height="21.5"/>
  </objectgroup>
 </map>

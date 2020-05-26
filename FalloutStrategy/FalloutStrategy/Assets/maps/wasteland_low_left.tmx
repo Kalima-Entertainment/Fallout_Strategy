@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="isometric" renderorder="left-up" width="75" height="75" tilewidth="64" tileheight="32" nextobjectid="50">
+<map version="1.0" orientation="isometric" renderorder="left-up" width="75" height="75" tilewidth="64" tileheight="32" nextobjectid="52">
  <properties>
   <property name="Navigation " value="1"/>
  </properties>
@@ -18,6 +18,7 @@
   <image source="WaterTank.png" width="2048" height="2048"/>
  </tileset>
  <tileset firstgid="897" name="Decoration" tilewidth="128" tileheight="128" tilecount="100" columns="10">
+  <tileoffset x="0" y="-100"/>
   <image source="Decoration.png" width="1280" height="1281"/>
  </tileset>
  <layer name="ground" width="75" height="75">
@@ -45208,5 +45209,9 @@
     <property name="faction" type="int" value="1"/>
    </properties>
   </object>
+  <object id="50" name="Animal" type="Bighorner" x="1755" y="422" width="24.25" height="21.5"/>
+  <object id="51" name="Animal" type="Braham" x="513" y="1485" width="24.25" height="21.5"/>
+  <object id="52" name="Animal" type="SpawnPoint" x="1755" y="422" width="24.25" height="21.5"/>
+  <object id="53" name="Animal" type="SpawnPoint" x="513" y="1485" width="24.25" height="21.5"/>
  </objectgroup>
 </map>

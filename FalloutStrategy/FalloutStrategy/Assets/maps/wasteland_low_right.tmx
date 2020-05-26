@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="isometric" renderorder="left-up" width="75" height="75" tilewidth="64" tileheight="32" nextobjectid="39">
+<map version="1.0" orientation="isometric" renderorder="left-up" width="75" height="75" tilewidth="64" tileheight="32" nextobjectid="42">
  <tileset firstgid="1" name="Floor" tilewidth="64" tileheight="32" tilecount="512" columns="16">
   <image source="Floors64x32.png" width="1024" height="1024"/>
  </tileset>
@@ -15,6 +15,7 @@
   <image source="WaterTank.png" width="2048" height="2048"/>
  </tileset>
  <tileset firstgid="897" name="Decoration" tilewidth="128" tileheight="128" tilecount="100" columns="10">
+  <tileoffset x="0" y="-100"/>
   <image source="Decoration.png" width="1280" height="1281"/>
  </tileset>
  <layer name="ground" width="75" height="75">
@@ -45161,5 +45162,11 @@
     <property name="faction" type="int" value="2"/>
    </properties>
   </object>
+  <object id="39" name="Animal" type="Bighorner" x="2104" y="1164" width="24.25" height="21.5"/>
+  <object id="40" name="Animal" type="Braham" x="447" y="1741" width="24.25" height="21.5"/>
+  <object id="41" name="Animal" type="Bighorner" x="979" y="221" width="24.25" height="21.5"/>
+  <object id="42" name="Animal" type="SpawnPoint" x="2104" y="1164" width="24.25" height="21.5"/>
+  <object id="43" name="Animal" type="SpawnPoint" x="447" y="1741" width="24.25" height="21.5"/>
+  <object id="44" name="Animal" type="SpawnPoint" x="979" y="221" width="24.25" height="21.5"/>
  </objectgroup>
 </map>
