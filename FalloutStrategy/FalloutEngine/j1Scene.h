@@ -6,7 +6,7 @@
 struct SDL_Texture;
 class DynamicEntity;
 class GenericPlayer;
-
+class Deathclaw;
 #define RECT_MIN_AREA 5
 
 enum class StatesMenu
@@ -67,7 +67,7 @@ public:
 	bool create_tutorial;
 	StatesMenu menu_state;
 	GenericPlayer* players[4];
-
+	Deathclaw* Deathclaws[4];
 	std::string modules[4];
 
 	//Rectangle Selection needed

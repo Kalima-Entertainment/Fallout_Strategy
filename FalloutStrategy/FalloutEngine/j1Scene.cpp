@@ -31,6 +31,7 @@
 #include "j1Console.h"
 #include "FoWManager.h"
 #include "j1Hud.h"
+#include "Deathclaw.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -144,27 +145,31 @@ bool j1Scene::Update(float dt)
 	{
 		if (deathclaw1 == false)
 		{
-			App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 1, 1);
+			Deathclaws[0] = (Deathclaw*)App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 75, 75);
+			Deathclaws[0]->PathfindToPosition(App->player->base->current_tile);
 			deathclaw1 = true;
 		}
 		if (players[1]->base != nullptr && deathclaw2 == false)
 		{
 			iPoint pos = players[1]->base->current_tile;
-			App->entities->CreateEntity(NO_FACTION, DEATHCLAW, pos.x, pos.y);
+			Deathclaws[1] = (Deathclaw*)App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 70, 70);
+			Deathclaws[1]->PathfindToPosition(pos);
 			LOG("1");
 			deathclaw2  = true;
 		}
 		if (players[2]->base != nullptr && deathclaw3 == false)
 		{
 			iPoint pos = players[2]->base->current_tile;
-			App->entities->CreateEntity(NO_FACTION, DEATHCLAW, pos.x, pos.y);
+			Deathclaws[2] =  (Deathclaw*) App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 80, 80);
+			Deathclaws[2]->PathfindToPosition(pos);
 			LOG("2");
 			deathclaw3 = true;
 		}
 		if (players[3]->base != nullptr && deathclaw4 == false)
 		{
 			iPoint pos = players[3]->base->current_tile;
-			App->entities->CreateEntity(NO_FACTION, DEATHCLAW, pos.x, pos.y);
+			Deathclaws[3] = (Deathclaw*)App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 85, 85);
+			Deathclaws[3]->PathfindToPosition(pos);
 			LOG("3");
 			deathclaw4 = true;
 		}
