@@ -31,6 +31,8 @@ j1Entity::j1Entity() {
 	to_delete = false;
 	particles_created = false;
 	playing_fx = false;
+
+	particle = nullptr;
 }
 
 j1Entity::~j1Entity() {}

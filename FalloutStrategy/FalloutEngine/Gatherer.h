@@ -29,8 +29,6 @@ private:
 	j1Timer gathering_timer;
 	int gather_time;
 	StaticEntity* base;
-
-	ParticleSystem* particle;
 };
 
 

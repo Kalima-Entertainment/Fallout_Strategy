@@ -115,6 +115,8 @@ public:
 	j1Timer delete_timer;
 
 	FoWEntity* visionEntity = nullptr;
+	ParticleSystem* particle;
+
 };
 
 #endif // !_j1ENTITY_H
