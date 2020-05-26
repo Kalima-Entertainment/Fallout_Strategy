@@ -67,6 +67,9 @@ bool j1Scene::Start()
 	App->console->CreateCommand("win", "Automatically win the game", this);
 	App->console->CreateCommand("lose", "Automatically lose the game", this);
 
+	App->player->Enable();
+	App->ai_manager->Enable();
+
 	//random map ----------------------------
 
 	App->pathfinding->SetMap();

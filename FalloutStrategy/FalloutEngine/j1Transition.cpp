@@ -149,8 +149,6 @@ void j1Transition::Transition()
 		transition = false;
 		App->gui->active;
 		App->Mmanager->Enable();
-		App->player->Enable();
-		App->ai_manager->Enable();
 		App->scene->Enable();
 		App->dialog_manager->Enable();
 		//App->minimap->Enable();
