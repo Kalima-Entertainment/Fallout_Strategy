@@ -331,6 +331,8 @@ void j1Scene::CheckWinner() {
 					lose = true;
 					App->logo_scene->Loop = true;
 					App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+					App->menu_manager->DestroyMenu(Menu::GUI);
+					App->hud->CleanUp();
 					App->gui->ingame = false;
 					App->isPaused = true;
 					App->logo_scene->playsound = true;
@@ -352,6 +354,8 @@ void j1Scene::CheckWinner() {
 				lose = true;
 				App->logo_scene->Loop = true;
 				App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+				App->menu_manager->DestroyMenu(Menu::GUI);
+				App->hud->CleanUp();
 				App->gui->ingame = false;
 				App->isPaused = true;
 				App->logo_scene->playsound = true;
@@ -391,6 +395,8 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 		}
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 		App->menu_manager->DestroyMenu(Menu::RESOURCES);
+		App->menu_manager->DestroyMenu(Menu::GUI);
+		App->hud->CleanUp();
 		App->logo_scene->playsound = true;
 		App->gui->ingame = false;
 		App->isPaused = true;
@@ -414,6 +420,8 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 		lose = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 		App->menu_manager->DestroyMenu(Menu::RESOURCES);
+		App->menu_manager->DestroyMenu(Menu::GUI);
+		App->hud->CleanUp();
 		App->logo_scene->playsound = true;
 		App->gui->ingame = false;
 		App->isPaused = true;

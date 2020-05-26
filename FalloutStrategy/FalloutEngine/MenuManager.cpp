@@ -666,9 +666,9 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 							//Images
 							brotherhood_lab[3] = (j1Image*)App->gui->CreateImage(530, 590, Image, { 663, 1567, 108, 104 }, NULL, this);// building
 							
-							brotherhood_lab[4] = (j1Image*)App->gui->CreateImage(687, 600, Image, { 877, 1874, 33, 20 }, NULL, this);//boost
+							brotherhood_lab[4] = (j1Image*)App->gui->CreateImage(677, 607, Image, { 877, 1874, 33, 20 }, NULL, this);//boost
 							brotherhood_lab[5] = (j1Image*)App->gui->CreateImage(840, 600, Image, { 982, 1869, 31, 33 }, NULL, this);//radar
-							brotherhood_lab[6] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 1034, 1869, 35, 33 }, NULL, this);//misterhandy
+							brotherhood_lab[6] = (j1Image*)App->gui->CreateImage(680, 660, Image, { 1034, 1869, 35, 33 }, NULL, this);//misterhandy
 
 							//Labels
 							if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
