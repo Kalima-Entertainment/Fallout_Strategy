@@ -38,6 +38,7 @@
   </fonts>
 
   <entities>
+
     <boost>
       <base cost="250" upgrade_time="45" cost_increment="250" storage_increment="0.3" gatherer_capacity="0.15"/>
       <laboratory cost="150" upgrade_time="45" cost_increment="250" health_increment="0.15" creation_time="0.05"/>
