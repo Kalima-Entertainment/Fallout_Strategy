@@ -246,9 +246,11 @@ bool j1Player::Update(float dt) {
 		if (App->entities->entities[i]->is_dynamic && App->entities->entities[i]->faction == this->faction) {
 		
 			DynamicEntity* DynamicEnt = (DynamicEntity*)App->entities->entities[i];
-			/*if (DynamicEnt->info.current_group->IsGroupLead(DynamicEnt)) {
-				DynamicEnt->info.current_group->CheckForMovementRequest(Map_mouseposition, dt);
-			}*/
+			if (DynamicEnt->info.current_group != nullptr) {
+				if (DynamicEnt->info.current_group->IsGroupLead(DynamicEnt)) {
+					DynamicEnt->info.current_group->CheckForMovementRequest(Map_mouseposition, dt);
+				}
+			}
 		}
 	}
 
