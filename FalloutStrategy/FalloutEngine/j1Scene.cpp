@@ -140,6 +140,7 @@ bool j1Scene::PreUpdate()
 bool j1Scene::Update(float dt)
 {
 	App->map->Draw();
+	
 	if (App->hud->timer == 50)
 	{
 		if (deathclaw1 == false)
