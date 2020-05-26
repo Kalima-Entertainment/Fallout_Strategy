@@ -125,8 +125,7 @@ bool Troop::Update(float dt) {
         break;
 
     case ATTACK:
-		if (attack_timer.ReadSec() > attack_time) {
-			current_animation->Reset();
+		if ((attack_timer.ReadSec() > attack_time) && (current_animation->current_frame >= current_animation->GetNumFrames() * 0.5f)) {
 			if ((current_tile.DistanceNoSqrt(target_entity->current_tile) > range)&&(target_entity->is_dynamic)) {
 				PathfindToPosition(target_entity->current_tile);
 			}
@@ -135,7 +134,6 @@ bool Troop::Update(float dt) {
 				UpdateTile();
 				path_to_target.clear();
 				Attack();
-				animations[ATTACK][direction].Reset();
 			}
 		}
 		SpatialAudio(position.x, position.y, faction, state, type);

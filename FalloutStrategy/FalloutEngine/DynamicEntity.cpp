@@ -99,7 +99,6 @@ bool DynamicEntity::PostUpdate() {
 		else 
 			direction = BOTTOM_RIGHT;
 	}
-	current_animation = &animations[state][direction];
 
 	//Health Bar
 	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 50, 4 };
@@ -109,6 +108,8 @@ bool DynamicEntity::PostUpdate() {
 	//Render character
 	render_position = { (int)(position.x - sprite_size * 0.5f), (int)(position.y - 1.82f * TILE_SIZE)};
 	
+	current_animation = &animations[state][direction];
+
 	//Fog Of War Rendering Based
 	if(this->current_tile.x >= 0 && this->current_tile.y >= 0)
 		if (App->fowManager->GetFoWTileState({ this->current_tile })->tileFogBits != fow_ALL)
@@ -121,7 +122,7 @@ bool DynamicEntity::PostUpdate() {
 			App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
 			App->render->DrawQuad(frame, 155, 155, 155, 185, false);			
 		}
-		else if (this->faction == NO_FACTION) {
+		else if ((this->faction == NO_FACTION)||(App->render->debug)) {
 			//Animals are also visible on shroud
 			if (App->fowManager->GetFoWTileState({ this->current_tile })->tileShroudBits == fow_ALL)
 			{
