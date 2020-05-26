@@ -75,7 +75,7 @@ bool Gatherer::Update(float dt) {
 				gathering_timer.Start();
 			}
 		}
-		//SpatialAudio(position.x, position.y, faction, state, type);
+		SpatialAudio(position.x, position.y, faction, state, type);
 		break;
 	case GATHER:
 		if (gathering_timer.ReadSec() > gather_time) {
