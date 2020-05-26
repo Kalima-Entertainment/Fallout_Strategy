@@ -108,30 +108,33 @@ bool DynamicEntity::PostUpdate() {
 
 	//Render character
 	render_position = { (int)(position.x - sprite_size * 0.5f), (int)(position.y - 1.82f * TILE_SIZE)};
+	
+	//Fog Of War Rendering Based
+	if(this->current_tile.x >= 0 && this->current_tile.y >= 0)
+		if (App->fowManager->GetFoWTileState({ this->current_tile })->tileFogBits != fow_ALL)
+		{
+			//Character Render
+			App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
-	//if (this->faction == App->player->faction) {
-		//Player Render
-		App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
+			//Enemy Health Bar only if visible on fog of war
+			App->render->DrawQuad(background_bar, 55, 55, 55, 255);
+			App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
+			App->render->DrawQuad(frame, 155, 155, 155, 185, false);			
+		}
+		else if (this->faction == NO_FACTION) {
+			//Animals are also visible on shroud
+			if (App->fowManager->GetFoWTileState({ this->current_tile })->tileShroudBits == fow_ALL)
+			{
+				//Character Render
+				App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
-		//Player Health Bar
-		App->render->DrawQuad(background_bar, 55, 55, 55, 255);
-		App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
-		App->render->DrawQuad(frame, 155, 155, 155, 185, false);
-	//}
-	//else {
-		//Enemy
-		//Fog Of War Rendering Based
-		//if ((App->fowManager->GetFoWTileState({ this->current_tile })->tileFogBits != fow_ALL))
-		//{
-		//	//Enemy Render
-		//	App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
-
-		//	//Enemy Health Bar only if visible on fog of war
-		//	App->render->DrawQuad(background_bar, 55, 55, 55, 255);
-		//	App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
-		//	App->render->DrawQuad(frame, 155, 155, 155, 185, false);
-		//}	
-//	}
+				//Enemy Health Bar only if visible on fog of war
+				App->render->DrawQuad(background_bar, 55, 55, 55, 255);
+				App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
+				App->render->DrawQuad(frame, 155, 155, 155, 185, false);
+			}
+		}
+	
 
 	if (App->render->debug) 
 	{

@@ -122,7 +122,7 @@ bool j1EntityManager::CleanUp()
 {
 	bool ret = true;
 
-
+	// -- Instance
 	for (int i = 0; i < REFERENCE_ENTITIES; i++)
 	{
 		App->tex->UnLoad(reference_entities[i]->texture);
@@ -130,6 +130,7 @@ bool j1EntityManager::CleanUp()
 		reference_entities[i] = nullptr;
 	}
 
+	// -- Entities
 	for (int i = 0; i < entities.size(); i++)
 	{
 		delete entities[i];
@@ -138,6 +139,16 @@ bool j1EntityManager::CleanUp()
 
 	entities.clear();
 
+	// -- Particles
+	for (int i = 0; i < particles.size(); i++)
+	{
+		delete particles[i];
+		particles[i] = nullptr;
+	}
+
+	particles.clear();
+
+	// -- Buildings
 	for (int j = 0; j < resource_buildings.size(); j++)
 	{
 		delete resource_buildings[j];
@@ -1114,6 +1125,15 @@ ParticleSystem* j1EntityManager::CreateParticle(fPoint pos) {
 	particles.push_back(ret);
 
 	return particleSystem;
+}
+
+void j1EntityManager::DeleteParticles(){
+	for (int i = 0; i < particles.size(); i++)
+	{
+		delete particles[i];
+		particles[i] = nullptr;
+	}
+	entities.clear();
 }
 
 void j1EntityManager::RestartOccupiedTiles() {
