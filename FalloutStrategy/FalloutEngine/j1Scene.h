@@ -77,7 +77,10 @@ public:
 	int rectangle_height = 0;
 	bool win = false;
 	bool lose = false;
-
+	bool deathclaw1 = false;
+	bool deathclaw2 = false;
+	bool deathclaw3 = false;
+	bool deathclaw4 = false;
 private:
 	int SongPlaying = 0;
 	int beaten_enemies;

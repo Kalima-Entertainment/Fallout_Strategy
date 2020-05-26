@@ -140,6 +140,35 @@ bool j1Scene::PreUpdate()
 bool j1Scene::Update(float dt)
 {
 	App->map->Draw();
+	if (App->hud->timer == 50)
+	{
+		if (deathclaw1 == false)
+		{
+			App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 1, 1);
+			deathclaw1 = true;
+		}
+		if (players[1]->base != nullptr && deathclaw2 == false)
+		{
+			iPoint pos = players[1]->base->current_tile;
+			App->entities->CreateEntity(NO_FACTION, DEATHCLAW, pos.x, pos.y);
+			LOG("1");
+			deathclaw2  = true;
+		}
+		if (players[2]->base != nullptr && deathclaw3 == false)
+		{
+			iPoint pos = players[2]->base->current_tile;
+			App->entities->CreateEntity(NO_FACTION, DEATHCLAW, pos.x, pos.y);
+			LOG("2");
+			deathclaw3 = true;
+		}
+		if (players[3]->base != nullptr && deathclaw4 == false)
+		{
+			iPoint pos = players[3]->base->current_tile;
+			App->entities->CreateEntity(NO_FACTION, DEATHCLAW, pos.x, pos.y);
+			LOG("3");
+			deathclaw4 = true;
+		}
+	}
 
 	// Gui ---
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
@@ -344,6 +373,10 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 		App->isPaused = true;
 		App->logo_scene->Loop = true;
 		win = true;
+		deathclaw1 = false;
+		deathclaw2 = false;
+		deathclaw3 = false;
+		deathclaw4 = false;
 	}
 	//Instantly lose the game
 	else if (command_beginning == "lose") {

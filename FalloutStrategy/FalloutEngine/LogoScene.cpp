@@ -199,7 +199,6 @@ bool LogoScene::PostUpdate()
 
 			if (App->video->IsPlaying(win_video) == 0)
 			{
-				LOG("WIN");
 				App->video->DestroyVideo(win_video);
 				win_video = 0;
 			}
@@ -233,7 +232,6 @@ bool LogoScene::PostUpdate()
 
 			if (App->video->IsPlaying(lose_video) == 0)
 			{
-				LOG("LOSE");
 				App->video->DestroyVideo(lose_video);
 				lose_video = 0;
 			}

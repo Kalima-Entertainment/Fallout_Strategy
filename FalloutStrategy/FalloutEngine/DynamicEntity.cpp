@@ -121,16 +121,16 @@ bool DynamicEntity::PostUpdate() {
 	else {
 		//Enemy
 		//Fog Of War Rendering Based
-		if ((App->fowManager->GetFoWTileState({ this->current_tile })->tileFogBits != fow_ALL))
-		{
-			//Enemy Render
-			App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
+		//if ((App->fowManager->GetFoWTileState({ this->current_tile })->tileFogBits != fow_ALL))
+		//{
+		//	//Enemy Render
+		//	App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
-			//Enemy Health Bar only if visible on fog of war
-			App->render->DrawQuad(background_bar, 55, 55, 55, 255);
-			App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
-			App->render->DrawQuad(frame, 155, 155, 155, 185, false);
-		}	
+		//	//Enemy Health Bar only if visible on fog of war
+		//	App->render->DrawQuad(background_bar, 55, 55, 55, 255);
+		//	App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
+		//	App->render->DrawQuad(frame, 155, 155, 155, 185, false);
+		//}	
 	}
 
 	if (App->render->debug) 
