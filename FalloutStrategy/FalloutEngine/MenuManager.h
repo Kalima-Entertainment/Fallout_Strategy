@@ -106,7 +106,7 @@ public:
 	EntityType current_building_type;
 
 	int how_to_play_counter = 0;
-
+	int cost;
 	std::string water;
 	std::string food;
 	std::string caps;

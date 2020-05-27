@@ -617,6 +617,7 @@ void StaticEntity::UpgradeChrono() {
 			if (upgrade_stack.building == BASE) {
 				ExecuteUpgrade(upgrade_stack.faction, RESOURCES_LIMIT);
 				ExecuteUpgrade(upgrade_stack.faction, GATHERER_CAPACITY);
+				
 			}
 			else if (upgrade_stack.building == BARRACK) {
 				ExecuteUpgrade(upgrade_stack.faction, UNITS_DAMAGE);
@@ -627,6 +628,7 @@ void StaticEntity::UpgradeChrono() {
 				ExecuteUpgrade(upgrade_stack.faction, CREATION_TIME);
 			}
 			upgrading = false;
+			level++;
 		}
 	}
 }
