@@ -24,8 +24,7 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 	position.x += HALF_TILE;
 	position.y += HALF_TILE;
 
-	if (owner)
-		base = owner->base;
+	if (owner) base = owner->base;
 
 	if (App->render->fog_of_war) {
 		if (this->faction == App->player->faction) {

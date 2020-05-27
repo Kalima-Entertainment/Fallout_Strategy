@@ -4,6 +4,7 @@
 #include "StaticEntity.h"
 #include "j1Render.h"
 #include "FoWManager.h"
+#include "j1Scene.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
 Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, GenericPlayer* g_owner) : DynamicEntity() {
@@ -94,9 +95,11 @@ bool Troop::Update(float dt) {
 					}
 				}
 			}
-			else {
-				StaticEntity* static_entity = (StaticEntity*)target_entity;
-				if (current_tile.DistanceManhattan(App->entities->ClosestTile(current_tile, static_entity->tiles)) <= range) {
+			else if (target_building){
+				if (target_building->state == DIE) {
+					target_entity = target_building = RequestTargetBuilding(target_building->faction);
+				}
+				else if (current_tile.DistanceManhattan(App->entities->ClosestTile(current_tile, target_building->tiles)) <= range) {
 					UpdateTile();
 					path_to_target.clear();
 					if (target_entity->faction != faction) {
@@ -126,8 +129,18 @@ bool Troop::Update(float dt) {
         break;
 
     case ATTACK:
-		if ((attack_timer.ReadSec() > attack_time) && (current_animation->current_frame >= current_animation->GetNumFrames() * 0.5f)) {
-			if ((current_tile.DistanceNoSqrt(target_entity->current_tile) > range)&&(target_entity->is_dynamic)) {
+		if ((target_entity) && (target_entity->state == DIE)) {
+			if (target_entity == target_building) {
+				target_entity = target_building = RequestTargetBuilding(target_building->faction);
+			}
+			else {
+				target_entity = nullptr;
+			}
+			break;
+		}
+
+		if (attack_timer.ReadSec() > attack_time) {
+			if ((target_entity)&&(current_tile.DistanceNoSqrt(target_entity->current_tile) > range)&&(target_entity->is_dynamic)) {
 				PathfindToPosition(target_entity->current_tile);
 			}
 			else
@@ -271,4 +284,20 @@ bool Troop::LoadReferenceData(pugi::xml_node& node) {
 	speed.y = speed.x * 0.5f;
 
 	return ret;
+}
+
+StaticEntity* Troop::RequestTargetBuilding(Faction faction) {
+	if (App->scene->players[faction]->laboratory != nullptr)
+		return App->scene->players[faction]->laboratory;
+
+	else if (App->scene->players[faction]->barrack[0] != nullptr)
+		return App->scene->players[faction]->barrack[0];
+
+	else if (App->scene->players[faction]->barrack[1] != nullptr)
+		return App->scene->players[faction]->barrack[1];
+
+	else if (App->scene->players[faction]->base != nullptr)
+		return App->scene->players[faction]->base;
+
+	else return nullptr;
 }

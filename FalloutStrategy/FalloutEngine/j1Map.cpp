@@ -714,22 +714,22 @@ bool j1Map::CreateWalkabilityMap() const
 {
 	bool ret = false;
 
-		MapLayer* layer = (MapLayer*)&data.layers[MAX_LAYERS -1];
+	MapLayer* layer = (MapLayer*)&data.layers[MAX_LAYERS -1];
 
-		for (int y = 0; y < data.height; ++y)
+	for (int y = 0; y < data.height; ++y)
+	{
+		for (int x = 0; x < data.width; ++x)
 		{
-			for (int x = 0; x < data.width; ++x)
+			int i = (y * layer->width) + x;
+
+			int tile_id = layer->Get(x, y);
+
+			if (tile_id != 0)
 			{
-				int i = (y * layer->width) + x;
-
-				int tile_id = layer->Get(x, y);
-
-				if (tile_id != 0)
-				{
-					App->pathfinding->SetTileAsUnwalkable(x, y);
-				}
+				App->pathfinding->SetTileAsUnwalkable(x, y);
 			}
 		}
+	}
 
 	ret = true;
 

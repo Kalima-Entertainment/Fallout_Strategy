@@ -134,8 +134,15 @@ bool j1Minimap::PostUpdate() {
 				App->render->DrawQuad(entity_rect, 0, 255, 0, 255, true, false); 
 			}
 			else { 
-				if((radar)||(grid[App->entities->entities[i]->current_tile.x][App->entities->entities[i]->current_tile.y] == 0))
-				App->render->DrawQuad(entity_rect, 255, 0, 0, 255, true, false);
+				if ((radar) || (grid[App->entities->entities[i]->current_tile.x][App->entities->entities[i]->current_tile.y] == 0)) {
+					if ((App->entities->entities[i]->type == BRAHAM) || (App->entities->entities[i]->type == BIGHORNER)) {
+						
+						App->render->DrawQuad(entity_rect, 255, 155, 0, 255, true, false); 
+					}
+					else {
+						App->render->DrawQuad(entity_rect, 255, 0, 0, 255, true, false);
+					}
+				}
 			}
 		}
 

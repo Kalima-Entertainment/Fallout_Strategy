@@ -105,8 +105,10 @@ bool AI_Player::Update(float dt) {
 
 	//if the ai_player is ready choose a player to attack
 	if ((wave_timer.ReadSec() > wave_time)&&(!is_attacking)) {
-		if ((rangeds >= ranged_minimum) && (melees >= melee_minimum) && (target_player == nullptr)) {
-			ChooseRandomPlayerEnemy();
+		if ((rangeds >= ranged_minimum) && (melees >= melee_minimum)) {
+			if (target_player == nullptr) {
+				ChooseRandomPlayerEnemy();
+			}
 			is_attacking = true;
 			wave_timer.Start();
 			LOG("attacking");

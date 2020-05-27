@@ -16,6 +16,7 @@ public:
 
 	bool LoadDataFromReference();
 	bool LoadReferenceData(pugi::xml_node& node);
+	StaticEntity* RequestTargetBuilding(Faction faction);
 
 public:
 	StaticEntity* target_building;
