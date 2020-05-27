@@ -139,8 +139,28 @@ bool j1Player::PreUpdate() {
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_REPEAT) {
 			int x, y;
 			App->input->GetMouseMotion(x, y);
+			LOG("camera x = %d", App->render->camera.x);
+			LOG("camera y = %d", App->render->camera.y);
 			App->render->camera.x += x * mouse_speed_multiplier;
 			App->render->camera.y += y * mouse_speed_multiplier;
+			// CAMERA LIMITS X
+			if (App->render->camera.x >= 5070)
+			{
+				App->render->camera.x = 5070;
+			}
+			if (App->render->camera.x <= -3695)
+			{
+				App->render->camera.x = -3695;
+			}
+			// CAMERA LIMITS Y
+			if (App->render->camera.y >= 314)
+			{
+				App->render->camera.y = 314;
+			}
+			if (App->render->camera.y <= -4452)
+			{
+				App->render->camera.y = -4452;
+			}
 		}
 
 		//move camera through minimap
