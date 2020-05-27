@@ -39,6 +39,16 @@ j1Scene::j1Scene() : j1Module()
 	create = false;
 	create_tutorial = false;
 	menu_state = StatesMenu::NONE;
+	iPoint mouse_pos = { 0,0 };
+	iPoint rectangle_origin = { 0,0 };
+	int rectangle_width = 0;
+	int rectangle_height = 0;
+	win = false;
+	lose = false;
+	deathclaw1 = false;
+	deathclaw2 = false;
+	deathclaw3 = false;
+	deathclaw4 = false;
 }
 
 // Destructor

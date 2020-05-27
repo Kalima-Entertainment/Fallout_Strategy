@@ -31,7 +31,6 @@ bool j1Hud::Awake(pugi::xml_node& node)
 {
 	timer = 59;
 	minutes = 14;
-	draw_health = false;
 	finish_base = false;
 	finish_barrack = false;
 	finish_lab = false;
@@ -39,13 +38,14 @@ bool j1Hud::Awake(pugi::xml_node& node)
 	gatherer_amount = 0;
 	melee_amount = 0;
 	ranged_amount = 0;
+	activateTimer = false;
 
 	return true;
 }
 
 bool j1Hud::Start()
 {
-	//activateTimer = false;
+	
 	
 	return true;
 }
