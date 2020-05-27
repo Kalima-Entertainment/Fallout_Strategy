@@ -8,6 +8,7 @@
 
 UI_Label::UI_Label(int x, int y, UI_Type type, std::string text_input, UI_element * parent, j1Module * Observer, int* counter) : UI_element(x, y, type, parent, Observer)
 {
+	text_texture = nullptr;
 	t = type;
 	timer_out = counter;
 }

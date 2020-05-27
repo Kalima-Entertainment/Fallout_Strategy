@@ -17,6 +17,10 @@
 j1Gui::j1Gui() : j1Module()
 {
 	name = ("gui");
+	debug_UI = false;
+	fullscreen = false;
+	cap = false;
+	ingame = false;
 }
 
 // Destructor

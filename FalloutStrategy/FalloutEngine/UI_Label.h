@@ -23,7 +23,7 @@ public:
 public:
 
 	std::string text;
-	SDL_Texture* text_texture=nullptr;
+	SDL_Texture* text_texture;
 	UI_Type t;
 
 	//Timer

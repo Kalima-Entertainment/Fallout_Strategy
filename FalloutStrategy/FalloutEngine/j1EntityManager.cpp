@@ -153,6 +153,7 @@ bool j1EntityManager::CleanUp()
 	}
 
 	particles.clear();
+	App->tex->UnLoad(blood);
 
 	// -- Buildings
 	for (int j = 0; j < resource_buildings.size(); j++)
