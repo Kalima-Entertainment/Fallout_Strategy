@@ -18,12 +18,12 @@ public:
 
 public:
 
-	bool InputText_Actived = false;
+	bool InputText_Actived;
 	int H, W;
 
 	std::string text;
 
-	SDL_Texture* texture = nullptr;
+	SDL_Texture* texture;
 	SDL_Rect r;
 
 	UI_Label* labelInputText;

@@ -420,20 +420,20 @@ bool UI_Button::Update(float dt)
 				static_entity->Upgrade(App->entities->gatherer_resource_limit[static_entity->faction]);
 				/*static_entity->level++;*/
 				if (App->player->faction == BROTHERHOOD) {
-					App->gui->Delete_Element(App->menu_manager->brotherhood_base[12]);
-					App->menu_manager->brotherhood_base[12] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->gui->Delete_Element(App->menu_manager->brotherhood_base[5]);
+					App->menu_manager->brotherhood_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
 				}
 				else if (App->player->faction == VAULT) {
-					App->gui->Delete_Element(App->menu_manager->vault_base[12]);
-					App->menu_manager->vault_base[12] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->gui->Delete_Element(App->menu_manager->vault_base[5]);
+					App->menu_manager->vault_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
 				}
 				else if (App->player->faction == MUTANT) {
-					App->gui->Delete_Element(App->menu_manager->supermutant_base[12]);
-					App->menu_manager->supermutant_base[12] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->gui->Delete_Element(App->menu_manager->supermutant_base[5]);
+					App->menu_manager->supermutant_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
 				}
 				else if (App->player->faction == GHOUL) {
-					App->gui->Delete_Element(App->menu_manager->ghoul_base[12]);
-					App->menu_manager->ghoul_base[12] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->gui->Delete_Element(App->menu_manager->ghoul_base[5]);
+					App->menu_manager->ghoul_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
 				}
 			
 			}
@@ -450,20 +450,20 @@ bool UI_Button::Update(float dt)
 				static_entity->Upgrade(App->entities->units_speed[static_entity->faction]);
 				//static_entity->level++;
 				if (App->player->faction == BROTHERHOOD) {
-					App->gui->Delete_Element(App->menu_manager->brotherhood_barrack[16]);
-					App->menu_manager->brotherhood_barrack[16]= (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->gui->Delete_Element(App->menu_manager->brotherhood_barrack[7]);
+					App->menu_manager->brotherhood_barrack[7]= (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
 				}
 				else if (App->player->faction == VAULT) {
-					App->gui->Delete_Element(App->menu_manager->vault_barrack[16]);
-					App->menu_manager->vault_barrack[16] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->gui->Delete_Element(App->menu_manager->vault_barrack[7]);
+					App->menu_manager->vault_barrack[7] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
 				}
 				else if (App->player->faction == MUTANT) {
-					App->gui->Delete_Element(App->menu_manager->supermutant_barrack[16]);
-					App->menu_manager->supermutant_barrack[16] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->gui->Delete_Element(App->menu_manager->supermutant_barrack[7]);
+					App->menu_manager->supermutant_barrack[7] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
 				}
 				else if (App->player->faction == GHOUL) {
-					App->gui->Delete_Element(App->menu_manager->ghoul_barrack[16]);
-					App->menu_manager->ghoul_barrack[16] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->gui->Delete_Element(App->menu_manager->ghoul_barrack[7]);
+					App->menu_manager->ghoul_barrack[7] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
 				}
 			}
 			else if (t == Boost_lab_button)
@@ -479,20 +479,20 @@ bool UI_Button::Update(float dt)
 				static_entity->Upgrade(App->entities->units_creation_time[static_entity->faction]);
 				/*static_entity->level++;*/
 				if (App->player->faction == BROTHERHOOD) {
-					App->gui->Delete_Element(App->menu_manager->brotherhood_lab[11]);
-					App->menu_manager->brotherhood_lab[11] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->gui->Delete_Element(App->menu_manager->brotherhood_lab[7]);
+					App->menu_manager->brotherhood_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
 				}
 				else if (App->player->faction == VAULT) {
-					App->gui->Delete_Element(App->menu_manager->vault_lab[11]);
-					App->menu_manager->vault_lab[11] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->gui->Delete_Element(App->menu_manager->vault_lab[7]);
+					App->menu_manager->vault_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
 				}
 				else if (App->player->faction == MUTANT) {
-					App->gui->Delete_Element(App->menu_manager->supermutant_lab[11]);
-					App->menu_manager->supermutant_lab[11] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->gui->Delete_Element(App->menu_manager->supermutant_lab[7]);
+					App->menu_manager->supermutant_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
 				}
 				else if (App->player->faction == GHOUL) {
-					App->gui->Delete_Element(App->menu_manager->ghoul_lab[11]);
-					App->menu_manager->ghoul_lab[11] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->gui->Delete_Element(App->menu_manager->ghoul_lab[7]);
+					App->menu_manager->ghoul_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
 				}
 			}
 			else if (t == Boost_radar_button) {
