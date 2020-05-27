@@ -139,8 +139,6 @@ bool j1Player::PreUpdate() {
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_REPEAT) {
 			int x, y;
 			App->input->GetMouseMotion(x, y);
-			LOG("camera x = %d", App->render->camera.x);
-			LOG("camera y = %d", App->render->camera.y);
 			App->render->camera.x += x * mouse_speed_multiplier;
 			App->render->camera.y += y * mouse_speed_multiplier;
 			// CAMERA LIMITS X
