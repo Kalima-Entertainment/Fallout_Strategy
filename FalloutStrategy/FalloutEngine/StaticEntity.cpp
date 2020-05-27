@@ -128,7 +128,6 @@ bool StaticEntity::PostUpdate() {
 	//debug tiles
 	else if (App->render->debug) 
 	{
-		tile_rect = { 128,0,64,64 };
 		for (int i = 0; i < tiles.size(); i++)
 		{
 			tex_position = App->map->MapToWorld(tiles[i].x, tiles[i].y);
@@ -196,7 +195,6 @@ bool StaticEntity::LoadDataFromReference() {
 
 	return ret;
 }
-
 
 bool StaticEntity::LoadReferenceData(pugi::xml_node& node) {
 	bool ret = true;
@@ -717,6 +715,7 @@ void StaticEntity::CalculateRenderAndSpawnPositions() {
 
 	if (tiles.size() > 0) {
 		current_tile = tiles.front();
+		App->entities->occupied_tiles[current_tile.x][current_tile.y] = true;
 		position = App->map->fMapToWorld(current_tile.x, current_tile.y);
 		render_position = { (int)(position.x - 0.5f * sprite_size),(int)(position.y - sprite_size * 0.75) };
 

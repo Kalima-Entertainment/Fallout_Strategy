@@ -485,7 +485,9 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	}
 
 	if (entity->reference_entity != nullptr) {
-		occupied_tiles[entity->current_tile.x][entity->current_tile.y] = true;
+		if(entity->is_dynamic)
+			occupied_tiles[entity->current_tile.x][entity->current_tile.y] = true;
+
 		entities.push_back(entity);
 		entity->LoadDataFromReference();
 	}
