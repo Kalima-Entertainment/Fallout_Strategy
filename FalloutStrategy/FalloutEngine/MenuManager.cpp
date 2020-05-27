@@ -429,7 +429,7 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 
 					//Labels
 					if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
-						int cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
+						 cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
 						
 						vault_base[12] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelXS");
 						
@@ -472,7 +472,7 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 
 					//Labels
 					if (App->entities->units_damage[App->player->faction].upgrade_num < 4) {
-						int cost = App->entities->units_damage[App->player->faction].first_price + App->entities->units_damage[App->player->faction].price_increment * App->entities->units_damage[App->player->faction].upgrade_num;
+						 cost = App->entities->units_damage[App->player->faction].first_price + App->entities->units_damage[App->player->faction].price_increment * App->entities->units_damage[App->player->faction].upgrade_num;
 						vault_barrack[16] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelXS");
 					}
 					else
@@ -524,7 +524,7 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 
 					//Labels
 					if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
-						int cost = App->entities->units_creation_time[App->player->faction].first_price + App->entities->units_creation_time[App->player->faction].price_increment * App->entities->units_creation_time[App->player->faction].upgrade_num;
+						cost = App->entities->units_creation_time[App->player->faction].first_price + App->entities->units_creation_time[App->player->faction].price_increment * App->entities->units_creation_time[App->player->faction].upgrade_num;
 						
 						vault_lab[11] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelXS");
 					}
@@ -575,7 +575,7 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 
 							//Labels
 							if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
-								int cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
+								 cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
 								
 								brotherhood_base[12] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelXS");
 							}
@@ -621,7 +621,7 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 
 							//Labels
 							if (App->entities->units_damage[App->player->faction].upgrade_num < 4) {
-								int cost = App->entities->units_damage[App->player->faction].first_price + App->entities->units_damage[App->player->faction].price_increment * App->entities->units_damage[App->player->faction].upgrade_num;
+								cost = App->entities->units_damage[App->player->faction].first_price + App->entities->units_damage[App->player->faction].price_increment * App->entities->units_damage[App->player->faction].upgrade_num;
 								brotherhood_barrack[16] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelXS");
 							}
 							else
@@ -672,7 +672,7 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 
 							//Labels
 							if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
-								int cost = App->entities->units_creation_time[App->player->faction].first_price + App->entities->units_creation_time[App->player->faction].price_increment * App->entities->units_creation_time[App->player->faction].upgrade_num;
+								 cost = App->entities->units_creation_time[App->player->faction].first_price + App->entities->units_creation_time[App->player->faction].price_increment * App->entities->units_creation_time[App->player->faction].upgrade_num;
 								brotherhood_lab[11] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelXS");
 							}
 							else
@@ -722,7 +722,7 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 
 							//Labels
 							if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
-								int cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
+								cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
 
 								supermutant_base[12] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelXS");
 
@@ -769,7 +769,7 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 
 							//Labels
 							if (App->entities->units_damage[App->player->faction].upgrade_num < 4) {
-								int cost = App->entities->units_damage[App->player->faction].first_price + App->entities->units_damage[App->player->faction].price_increment * App->entities->units_damage[App->player->faction].upgrade_num;
+								cost = App->entities->units_damage[App->player->faction].first_price + App->entities->units_damage[App->player->faction].price_increment * App->entities->units_damage[App->player->faction].upgrade_num;
 								supermutant_barrack[16] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelXS");
 							}
 							else
@@ -820,7 +820,7 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 
 							//Labels
 							if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
-								int cost = App->entities->units_creation_time[App->player->faction].first_price + App->entities->units_creation_time[App->player->faction].price_increment * App->entities->units_creation_time[App->player->faction].upgrade_num;
+								 cost = App->entities->units_creation_time[App->player->faction].first_price + App->entities->units_creation_time[App->player->faction].price_increment * App->entities->units_creation_time[App->player->faction].upgrade_num;
 								supermutant_lab[11] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelXS");
 							}
 							else
@@ -871,7 +871,7 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 
 							//Labels
 							if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
-								int cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
+								 cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
 								ghoul_base[12] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelXS");
 
 							}
@@ -915,7 +915,7 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 
 							//Labels
 							if (App->entities->units_damage[App->player->faction].upgrade_num < 4) {
-								int cost = App->entities->units_damage[App->player->faction].first_price + App->entities->units_damage[App->player->faction].price_increment * App->entities->units_damage[App->player->faction].upgrade_num;
+								 cost = App->entities->units_damage[App->player->faction].first_price + App->entities->units_damage[App->player->faction].price_increment * App->entities->units_damage[App->player->faction].upgrade_num;
 								
 								ghoul_barrack[16] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelXS");
 							}
@@ -967,7 +967,7 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 
 							//Labels
 							if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
-								int cost = App->entities->units_creation_time[App->player->faction].first_price + App->entities->units_creation_time[App->player->faction].price_increment * App->entities->units_creation_time[App->player->faction].upgrade_num;
+								 cost = App->entities->units_creation_time[App->player->faction].first_price + App->entities->units_creation_time[App->player->faction].price_increment * App->entities->units_creation_time[App->player->faction].upgrade_num;
 								ghoul_lab[11] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(cost * 2), NULL, this, NULL, "StackedPixelXS");
 							}
 							else

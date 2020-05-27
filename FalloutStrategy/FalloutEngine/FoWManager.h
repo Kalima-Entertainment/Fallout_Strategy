@@ -8,7 +8,7 @@
 #include "FoWBitDefs.h"
 #include "j1Module.h"
 #include "FoWEntity.h"
-
+#include "j1Timer.h"
 
 //this struct holds the information of fog and shroud for every tile
 struct FoWDataStruct
@@ -154,6 +154,8 @@ private:
 	uint height;
 	bool debugMode = false;
 	bool foWMapNeedsRefresh = false;
+
+	j1Timer update_timer;
 };
 
 #endif // !__FOW_MANAGER_H__
