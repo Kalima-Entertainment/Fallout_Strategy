@@ -21,6 +21,7 @@ j1Gui::j1Gui() : j1Module()
 	fullscreen = false;
 	cap = false;
 	ingame = false;
+	open = true;
 }
 
 // Destructor

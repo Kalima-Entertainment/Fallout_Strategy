@@ -71,6 +71,7 @@ public:
 	bool fullscreen;
 	bool cap;
 	bool ingame;
+	bool open;
 
 private:
 	pugi::xml_node node;

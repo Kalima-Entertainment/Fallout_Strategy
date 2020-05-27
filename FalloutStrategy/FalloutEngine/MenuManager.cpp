@@ -387,8 +387,8 @@ void MenuManager::CreateMenu(Menu menu) {
 		break;
 
 	case Menu::QUEST:
-		quest[0] = (UI_Button*)App->gui->CreateButton(307, 100, quest_button, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this);
-		quest[1] = (UI_Button*)App->gui->CreateButton(264, 146, quest_button2, { 908,2084,43,46 }, { 908,2135,43,46 }, { 908,2185,43,46 }, NULL, this);
+		quest[0] = (UI_Button*)App->gui->CreateButton(307, 100, quest_button, { 973,2084,43,47 }, { 973,2135,43,47 }, { 973,2185,43,47 }, NULL, this);
+		quest[1] = (UI_Button*)App->gui->CreateButton(-50, 146, quest_button2, { 909,2084,43,47 }, { 909,2135,43,47 }, { 909,2185,43,47 }, NULL, this);
 		quest[2] = (j1Image*)App->gui->CreateImage(0, 100, Image, { 3105, 597, 307, 199 }, NULL, this);
 		
 		quest[3] = nullptr;

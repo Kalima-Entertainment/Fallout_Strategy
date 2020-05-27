@@ -44,6 +44,7 @@ UI_Button::UI_Button(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, 
 	current_state = BUTTON_STATE::NONE;
 
 	inHover = true;
+	
 }
 
 UI_Button::~UI_Button() {
@@ -71,6 +72,7 @@ bool UI_Button::Draw()
 
 bool UI_Button::Update(float dt)
 {
+
 	//if cursor is inside button rectangle
 	if (IsIntersection() == true) {
 		
@@ -603,55 +605,69 @@ bool UI_Button::Update(float dt)
 				App->gui->ingame = false;
 			}
 			else if (t == quest_button) {
-				App->audio->PlayFx(1, App->audio->character_fx, 0);
-				App->easing_splines->CreateSpline(&App->menu_manager->quest[2]->pos.x, App->menu_manager->quest[2]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				if (App->menu_manager->quest[3] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[3]->pos.x, App->menu_manager->quest[3]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+
+				if (App->gui->open == true) {
+
+					App->audio->PlayFx(1, App->audio->character_fx, 0);
+					App->easing_splines->CreateSpline(&App->menu_manager->quest[2]->pos.x, App->menu_manager->quest[2]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					if (App->menu_manager->quest[3] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[3]->pos.x, App->menu_manager->quest[3]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[4] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[4]->pos.x, App->menu_manager->quest[4]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[5] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[5]->pos.x, App->menu_manager->quest[5]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[6] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[6]->pos.x, App->menu_manager->quest[6]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[7] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[7]->pos.x, App->menu_manager->quest[7]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[8] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[8]->pos.x, App->menu_manager->quest[8]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					App->easing_splines->CreateSpline(&App->menu_manager->quest[0]->pos.x, App->menu_manager->quest[0]->pos.x - 350, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->quest[1]->pos.x, App->menu_manager->quest[1]->pos.x + 50, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+
+					App->gui->open = false;
+
 				}
-				if (App->menu_manager->quest[4] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[4]->pos.x, App->menu_manager->quest[4]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				if (App->menu_manager->quest[5] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[5]->pos.x, App->menu_manager->quest[5]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				if (App->menu_manager->quest[6] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[6]->pos.x, App->menu_manager->quest[6]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				if (App->menu_manager->quest[7] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[7]->pos.x, App->menu_manager->quest[7]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				if (App->menu_manager->quest[8] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[8]->pos.x, App->menu_manager->quest[8]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				App->easing_splines->CreateSpline(&App->menu_manager->quest[0]->pos.x, App->menu_manager->quest[0]->pos.x - 350, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				App->easing_splines->CreateSpline(&App->menu_manager->quest[1]->pos.x, App->menu_manager->quest[1]->pos.x - 264, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-			}
+}
 			else if (t == quest_button2) {
-				App->audio->PlayFx(1, App->audio->character_fx, 0);
-				App->easing_splines->CreateSpline(&App->menu_manager->quest[2]->pos.x, App->menu_manager->quest[2]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				if (App->menu_manager->quest[3] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[3]->pos.x, App->menu_manager->quest[3]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				if (App->menu_manager->quest[4] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[4]->pos.x, App->menu_manager->quest[4]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				if (App->menu_manager->quest[5] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[5]->pos.x, App->menu_manager->quest[5]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				if (App->menu_manager->quest[6] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[6]->pos.x, App->menu_manager->quest[6]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				if (App->menu_manager->quest[7] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[7]->pos.x, App->menu_manager->quest[7]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				if (App->menu_manager->quest[8] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[8]->pos.x, App->menu_manager->quest[8]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				if (App->menu_manager->quest[0] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[0]->pos.x, App->menu_manager->quest[0]->pos.x + 350, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				if (App->menu_manager->quest[1] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[1]->pos.x, App->menu_manager->quest[1]->pos.x + 264, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+				
+				if (App->gui->open == false) {
+
+					App->audio->PlayFx(1, App->audio->character_fx, 0);
+					App->easing_splines->CreateSpline(&App->menu_manager->quest[2]->pos.x, App->menu_manager->quest[2]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					if (App->menu_manager->quest[3] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[3]->pos.x, App->menu_manager->quest[3]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[4] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[4]->pos.x, App->menu_manager->quest[4]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[5] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[5]->pos.x, App->menu_manager->quest[5]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[6] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[6]->pos.x, App->menu_manager->quest[6]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[7] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[7]->pos.x, App->menu_manager->quest[7]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[8] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[8]->pos.x, App->menu_manager->quest[8]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[0] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[0]->pos.x, App->menu_manager->quest[0]->pos.x + 350, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[1] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[1]->pos.x, App->menu_manager->quest[1]->pos.x - 50, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+
+					App->gui->open = true;
+
 				}
 							
 			}
