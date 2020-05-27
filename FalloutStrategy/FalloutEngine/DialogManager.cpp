@@ -70,12 +70,14 @@ bool DialogManager::CleanUp() {
 		delete dialogs[i];
 		dialogs[i] = nullptr;
 	}
+
 	dialogs.clear();
 	App->menu_manager->DestroyMenu(Menu::DIALOG);
 	App->menu_manager->CreateMenu(Menu::GUI);
 	App->menu_manager->CreateMenu(Menu::RESOURCES);
 	App->isPaused = false;
 	App->hud->activateTimer = true;
+
 	return ret;
 }
 

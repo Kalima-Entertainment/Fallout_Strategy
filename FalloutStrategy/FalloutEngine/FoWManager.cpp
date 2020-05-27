@@ -351,7 +351,7 @@ void FoWManager::DrawFoWMap()
 		update_timer.Start();
 }
 
-//TODO 2: Complete this function: given a position and a flag, create a new entity and return a pointer to it (or nullptr if something has gone wrong)
+//Given a position and a flag, create a new entity and return a pointer to it (or nullptr if something has gone wrong)
 //Note that the FoWManager needs to know about the entity we are creating, try to find where the FoWManager module stores all the FoWEntities and add it there
 FoWEntity* FoWManager::CreateFoWEntity(iPoint pos, bool providesVisibility)
 {

@@ -21,8 +21,9 @@ public:
 	bool loop = true;
 	Frame frames[MAX_FRAMES];
 	float current_frame = 0;
+
 private:
-	int loops;
+	int loops = 0;
 	int num_frames = 0;
 	int last_frame = 0;
 	int cont = -1;
