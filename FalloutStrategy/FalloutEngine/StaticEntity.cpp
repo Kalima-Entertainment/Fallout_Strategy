@@ -128,6 +128,7 @@ bool StaticEntity::PostUpdate() {
 	//debug tiles
 	else if (App->render->debug) 
 	{
+		tile_rect = { 128,0,64,64 };
 		for (int i = 0; i < tiles.size(); i++)
 		{
 			tex_position = App->map->MapToWorld(tiles[i].x, tiles[i].y);
@@ -153,6 +154,7 @@ bool StaticEntity::PostUpdate() {
 
 	if (foreground_health_bar.w < 0)
 		foreground_health_bar.w = 0;
+
 	App->render->DrawQuad(background_health_bar, 50, 50, 50, 255);
 	App->render->DrawQuad(foreground_health_bar, 20, 255, 20, 255);
 	App->render->DrawQuad(frame_quad, 200, 200, 200, 200, false);
