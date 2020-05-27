@@ -433,7 +433,7 @@ bool UI_Button::Update(float dt)
 				static_entity->Upgrade(App->entities->units_speed[static_entity->faction]);
 				static_entity->level++;
 			}
-			if (t == Boost_lab_button)
+			else if (t == Boost_lab_button)
 			{
 				StaticEntity* static_entity;
 				if (App->player->selected_entity == nullptr) {
@@ -508,7 +508,6 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->tutorial[5] = (j1Image*)App->gui->CreateImage(670, 160, Image, { 0, 2028, 605, 305 }, NULL, this);
 				App->gui->ingame = false;
 			}
-
 			else if (t == back_tutorial_controls) {
 				App->audio->PlayFx(1, App->audio->back_fx, 0);
 				App->gui->Delete_Element(App->menu_manager->tutorial[5]);
@@ -526,7 +525,6 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->CreateMenu(Menu::HOW_TO_PLAY);
 				App->gui->ingame = false;
 			}
-
 			else if (t == back_tutorial_how_to_play) {
 				App->audio->PlayFx(1, App->audio->back_fx, 0);
 				App->gui->DeleteArrayElements(App->menu_manager->how_to_play, 6);
@@ -579,7 +577,6 @@ bool UI_Button::Update(float dt)
 				App->easing_splines->CreateSpline(&App->menu_manager->quest[7]->pos.x, App->menu_manager->quest[7]->pos.x - 350, 1000, Spline_Type::EASE_IN_OUT_QUAD);
 				App->easing_splines->CreateSpline(&App->menu_manager->quest[8]->pos.x, App->menu_manager->quest[8]->pos.x - 264, 1000, Spline_Type::EASE_IN_OUT_QUAD);
 			}
-
 			else if (t == quest_button2) {
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
 				App->easing_splines->CreateSpline(&App->menu_manager->quest[0]->pos.x, App->menu_manager->quest[0]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
@@ -609,7 +606,6 @@ bool UI_Button::Update(float dt)
 				}
 							
 			}
-
 			else if (t == continue_button) {
 				App->gui->DeleteArrayElements(App->menu_manager->quest, 12);
 			}
