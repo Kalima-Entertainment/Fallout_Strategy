@@ -62,6 +62,13 @@ StaticEntity::~StaticEntity() {
 	current_animation = nullptr;
 	texture = nullptr;
 	tiles.clear();
+
+	//Clean Unit Spawn Stacks
+	for (size_t i = 0; i < 10; i++)
+	{
+		spawn_stack[i].type = NO_TYPE;
+		spawn_stack[i].spawn_seconds = 0;
+	}
 }
 
 bool StaticEntity::Update(float dt) {
@@ -620,10 +627,8 @@ void StaticEntity::UpgradeChrono() {
 			else if (upgrade_stack.building == LABORATORY) {
 				ExecuteUpgrade(upgrade_stack.faction, UNITS_HEALTH);
 				ExecuteUpgrade(upgrade_stack.faction, CREATION_TIME);
-
 			}
-
-			upgrading = true;
+			upgrading = false;
 		}
 	}
 }
