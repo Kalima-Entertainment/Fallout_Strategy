@@ -12,7 +12,7 @@ Animal::Animal(EntityType g_type, iPoint g_current_tile) : DynamicEntity() {
 	pasturing_time = 20;
 	faction = NO_FACTION;
 
-	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
+	position = App->map->floatMapToWorld(current_tile.x, current_tile.y);
 	position.x += HALF_TILE;
 	position.y += HALF_TILE;
 

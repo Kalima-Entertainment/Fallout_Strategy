@@ -723,8 +723,8 @@ void StaticEntity::CalculateRenderAndSpawnPositions() {
 
 	if (tiles.size() > 0) {
 		current_tile = tiles.front();
+		position = App->map->floatMapToWorld(current_tile.x, current_tile.y);
 		App->entities->occupied_tiles[current_tile.x][current_tile.y] = true;
-		position = App->map->fMapToWorld(current_tile.x, current_tile.y);
 		render_position = { (int)(position.x - 0.5f * sprite_size),(int)(position.y - sprite_size * 0.75) };
 
 		switch (faction)

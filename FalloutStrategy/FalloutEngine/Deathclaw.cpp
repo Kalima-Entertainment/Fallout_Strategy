@@ -10,7 +10,7 @@ Deathclaw::Deathclaw(iPoint g_current_tile) : DynamicEntity() {
 	current_tile = g_current_tile;
 	is_dynamic = true;
 	is_agressive = true;
-	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
+	position = App->map->floatMapToWorld(current_tile.x, current_tile.y);
 	position.x += HALF_TILE;
 	position.y += HALF_TILE;
 	attack_time = 3;
