@@ -397,7 +397,12 @@ void MenuManager::CreateMenu(Menu menu) {
 
 		quest[6] = nullptr;
 		quest[7] = nullptr;
-		quest[8] = nullptr;
+		quest[8] = nullptr; 
+		
+		quest[9] = nullptr;
+		quest[10] = nullptr;
+		quest[11] = nullptr;
+
 
 		/*
 		quest[3] = (j1Image*)App->gui->CreateImage(50, 261, Image, { 3155, 809, 60, 17 }, NULL, this);
@@ -1061,8 +1066,6 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->gui->DeleteArrayElements(tutorial, 8);
 		App->gui->Delete_Element(tutorial_screen);
 		App->gui->Delete_Element(info_button2_element);
-		App->gui->Delete_Element(App->menu_manager->tutorial[5]);
-		App->gui->Delete_Element(App->menu_manager->tutorial[6]);
 		break;
 	case Menu::HOW_TO_PLAY:
 		App->gui->DeleteArrayElements(how_to_play, 6);
