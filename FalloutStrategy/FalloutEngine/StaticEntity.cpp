@@ -627,6 +627,7 @@ void StaticEntity::UpgradeChrono() {
 				ExecuteUpgrade(upgrade_stack.faction, CREATION_TIME);
 			}
 			upgrading = false;
+			time_left_upgrade = upgrade_stack.upgrade_seconds - chrono_upgrade.ReadSec();
 		}
 	}
 }

@@ -148,6 +148,15 @@ bool j1Hud::PostUpdate() {
 					finish_base = false;
 				}
 
+				//TIMER BAG BOOST
+				SDL_Rect spawn_bag_background = { 1092, 692, 75, 6 };
+				App->render->DrawQuad(spawn_bag_background, 255, 255, 255, 255, true, 0.0f);
+
+				if(static_entity->upgrading == true)
+				{
+					SDL_Rect spawn_bag_foreground = { 1092, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_bag_background.w, 6 };
+					App->render->DrawQuad(spawn_bag_foreground, 18, 164, 62, 255, true, 0.0f);
+				}
 
 			}
 			else if (static_entity->type == BARRACK) {
