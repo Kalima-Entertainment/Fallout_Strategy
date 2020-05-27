@@ -140,14 +140,15 @@ bool Troop::Update(float dt) {
 		}
 
 		if (attack_timer.ReadSec() > attack_time) {
-			if ((target_entity)&&(current_tile.DistanceNoSqrt(target_entity->current_tile) > range)&&(target_entity->is_dynamic)) {
+			if (target_entity) {
+				if ((current_tile.DistanceNoSqrt(target_entity->current_tile) > range) && (target_entity->is_dynamic)) {
 				PathfindToPosition(target_entity->current_tile);
-			}
-			else
-			{
-				UpdateTile();
-				path_to_target.clear();
-				Attack();
+				}
+				else {
+					UpdateTile();
+					path_to_target.clear();
+					Attack();
+				}
 			}
 		}
 		SpatialAudio(position.x, position.y, faction, state, type);

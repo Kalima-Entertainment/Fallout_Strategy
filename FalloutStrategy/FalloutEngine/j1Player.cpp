@@ -322,11 +322,18 @@ void j1Player::MoveEntity(){
 
 	App->input->GetMousePosition(tx, ty);
 
-	if (TouchingUI(tx,ty))
-		return;
-
-	selected_spot = App->render->ScreenToWorld(tx, ty);
-	selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
+	if (TouchingUI(tx, ty)) { 
+		if ((tx > App->minimap->position.x) && (tx < App->minimap->position.x + App->minimap->width)
+			&& (ty > App->minimap->position.y) && (ty < App->minimap->position.y + App->minimap->height)) {
+			selected_spot = App->minimap->ScreenToMinimapToWorld(tx, ty);
+			selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
+		}
+	}
+	else
+	{
+		selected_spot = App->render->ScreenToWorld(tx, ty);
+		selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
+	}
 
 	j1Entity* target = App->entities->FindEntityByTile(selected_spot);
 
