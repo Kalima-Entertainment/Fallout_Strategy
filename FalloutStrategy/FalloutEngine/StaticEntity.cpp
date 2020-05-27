@@ -62,6 +62,13 @@ StaticEntity::~StaticEntity() {
 	current_animation = nullptr;
 	texture = nullptr;
 	tiles.clear();
+
+	//Clean Unit Spawn Stacks
+	for (size_t i = 0; i < 10; i++)
+	{
+		spawn_stack[i].type = NO_TYPE;
+		spawn_stack[i].spawn_seconds = 0;
+	}
 }
 
 bool StaticEntity::Update(float dt) {
