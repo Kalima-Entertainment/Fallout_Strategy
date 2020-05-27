@@ -34,6 +34,7 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 	want_to_upgrade = false;
 
 	time_left = 0;
+	time_left_upgrade = 0;
 	level = 0;
 	reference_entity = nullptr;
 	texture = nullptr;
@@ -630,10 +631,12 @@ void StaticEntity::UpgradeChrono() {
 				ExecuteUpgrade(upgrade_stack.faction, CREATION_TIME);
 			}
 			upgrading = false;
-			time_left_upgrade = upgrade_stack.upgrade_seconds - chrono_upgrade.ReadSec();
+			
 			level++;
 
 		}
+
+		time_left_upgrade = upgrade_stack.upgrade_seconds - chrono_upgrade.ReadSec();
 	}
 }
 
