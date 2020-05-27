@@ -22,7 +22,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 	faction = g_faction;
 	current_tile = g_current_tile;
 
-	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
+	position = App->map->floatMapToWorld(current_tile.x, current_tile.y);
 	position.x += HALF_TILE;
 	position.y += HALF_TILE;
 

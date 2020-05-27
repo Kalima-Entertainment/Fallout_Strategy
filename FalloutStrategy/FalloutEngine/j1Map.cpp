@@ -109,6 +109,17 @@ TileSet* j1Map::GetTilesetFromTileId(int id) const
 	return set;
 }
 
+fPoint j1Map::floatMapToWorld(int x, int y) const {
+
+	fPoint ret = { 0.0f,0.0f };
+	float i = 0.0f;
+
+	ret.x = ((x - y) * (32)) + i;
+	ret.y = ((x + y) * (16)) + i;
+
+	return ret;
+}
+
 iPoint j1Map::MapToWorld(int x, int y) const
 {
 	iPoint ret;
@@ -129,16 +140,6 @@ iPoint j1Map::MapToWorld(int x, int y) const
 		ret.x = x; 
 		ret.y = y;
 	}
-
-	return ret;
-}
-
-fPoint j1Map::fMapToWorld(int x, int y) const
-{
-	fPoint ret;
-
-	ret.x = (x - y) * (64 * 0.5f);
-	ret.y = (x + y) * (32 * 0.5f);
 
 	return ret;
 }
