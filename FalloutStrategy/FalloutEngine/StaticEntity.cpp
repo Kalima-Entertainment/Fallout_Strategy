@@ -625,10 +625,8 @@ void StaticEntity::UpgradeChrono() {
 			else if (upgrade_stack.building == LABORATORY) {
 				ExecuteUpgrade(upgrade_stack.faction, UNITS_HEALTH);
 				ExecuteUpgrade(upgrade_stack.faction, CREATION_TIME);
-
 			}
-
-			upgrading = true;
+			upgrading = false;
 		}
 	}
 }
