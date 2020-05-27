@@ -65,35 +65,35 @@ bool j1Hud::Update(float dt) {
 		{
 			timer_game.Start();
 			timer--;
-		}
-		if (timer == 0)
-		{
-			timer = 59;
-			minutes -= 1;
-		}
 
-		sprintf_s(timer_text, 10, "%i", timer);
-		sprintf_s(minutes_text, 10, "%i", minutes);
+			if (timer == 0)
+			{
+				timer = 59;
+				minutes -= 1;
+			}
 
-		if (timer < 10)
-		{
-			timer_text[2] = timer_text[1];
-			timer_text[1] = timer_text[0];
-			timer_text[0] = '0';
-		}
-		if (minutes < 10)
-		{
-			minutes_text[2] = minutes_text[1];
-			minutes_text[1] = minutes_text[0];
-			minutes_text[0] = '0';
-		}
+			sprintf_s(timer_text, 10, "%i", timer);
+			sprintf_s(minutes_text, 10, "%i", minutes);
 
-		App->menu_manager->timer_item->SetTextTimer(timer_text);
+			if (timer < 10)
+			{
+				timer_text[2] = timer_text[1];
+				timer_text[1] = timer_text[0];
+				timer_text[0] = '0';
+			}
+			if (minutes < 10)
+			{
+				minutes_text[2] = minutes_text[1];
+				minutes_text[1] = minutes_text[0];
+				minutes_text[0] = '0';
+			}
 
-		App->menu_manager->timer_minutes->SetTextTimer(minutes_text);
+			App->menu_manager->timer_item->SetTextTimer(timer_text);
+			App->menu_manager->timer_minutes->SetTextTimer(minutes_text);
 
-		if (minutes == 0 && timer == 0) {
-			activateTimer = false;
+			if (minutes == 0 && timer == 0) {
+				activateTimer = false;
+			}
 		}
 
 	}

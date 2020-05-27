@@ -631,7 +631,6 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 				static_entity->CalculateRenderAndSpawnPositions();
 
 				App->entities->CreateEntity(building_faction, dynamic_type, x + 1, y + 1, App->scene->players[building_faction]);
-
 			}
 			else if (object_name == "Animal") {
 				iPoint position;

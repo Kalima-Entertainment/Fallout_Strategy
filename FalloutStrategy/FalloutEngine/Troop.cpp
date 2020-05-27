@@ -20,6 +20,7 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 	position.x += HALF_TILE;
 	position.y += HALF_TILE;
 
+	attacking_entity = nullptr;
 	target_building = nullptr;
 
 	switch (type)
@@ -159,9 +160,19 @@ bool Troop::Update(float dt) {
 		if (!delete_timer.Started()) {
 			delete_timer.Start();
 			direction = TOP_LEFT;
+
 			if (attacking_entity) {
 				attacking_entity->target_entity = nullptr;
 				attacking_entity->state = IDLE;
+			}
+
+			if (type == MR_HANDY) {
+				DetectEntitiesInRange();
+				for (int i = 0; i < entities_in_range.size(); i++)
+				{
+					if (entities_in_range[i]->faction != faction)
+						entities_in_range[i]->current_health -= 2 * damage;
+				}
 			}
 		}
 		visionEntity->SetNewPosition(App->map->MapToWorld(-10, -10));
@@ -170,6 +181,7 @@ bool Troop::Update(float dt) {
 			to_delete = true;
 			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
 		}
+
 		SpatialAudio(position.x, position.y, faction, state, type);
         break;
 

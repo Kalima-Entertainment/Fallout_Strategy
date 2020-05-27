@@ -895,7 +895,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 	int upgrade_creat = 0;
 	int upgrade_dama = 0;
 	int upgrade_speed = 0;
-
+	bool dynamic = true;
 	pugi::xml_node iterator = data.first_child();
 
 	while (iterator)
@@ -903,12 +903,18 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		type_name = iterator.attribute("type").as_string();
 		faction_name = iterator.attribute("faction").as_string();
 
-		if (type_name == "melee") { type = MELEE; }
-		else if (type_name == "ranged") { type = RANGED; }
-		else if (type_name == "gatherer") { type = GATHERER; }
-		else if (type_name == "base") { type = BASE; }
-		else if (type_name == "laboratory") { type = LABORATORY; }
-		else if (type_name == "barrack") { type = BARRACK; }
+		if (type_name == "melee") { type = MELEE;}
+		else if (type_name == "ranged") { type = RANGED;}
+		else if (type_name == "gatherer") { type = GATHERER;}
+		else if (type_name == "base") { 
+			type = BASE; 
+			dynamic = false;}
+		else if (type_name == "laboratory") { 
+			type = LABORATORY; 
+			dynamic = false;}
+		else if (type_name == "barrack") { 
+			type = BARRACK;
+			dynamic = false;}
 		else if (type_name == "bighorner") { type = BIGHORNER; }
 		else if (type_name == "braham") { type = BRAHAM; }
 		else if (type_name == "deathclaw") { type = DEATHCLAW; }
@@ -940,15 +946,32 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		current_tile.y = iterator.attribute("current_tile_y").as_int();
 		current_health = iterator.attribute("current_health").as_int();
 
-		if (faction == NO_FACTION) {
-			CreateEntity(faction,type, current_tile.x, current_tile.y);
+		if (dynamic) {
+			if (faction == NO_FACTION) {
+				CreateEntity(faction, type, current_tile.x, current_tile.y);
+			}
+			else {
+				CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]);
+			}
 		}
-		else {
-			CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]);
+		else
+		{
+			StaticEntity* entity;
+			if (type == BASE) { 
+				App->scene->players[faction]->base;
+			}
+			else if (type == BARRACK) { 
+				App->scene->players[faction]->barrack[0]; 
+			}
+			else if (type == LABORATORY) { 
+				App->scene->players[faction]->laboratory; 
+			}
+
+			entity->current_tile = current_tile;
+			entity->position = position;
 		}
 
 		iterator = iterator.next_sibling();
-
 	}
 
 	LOG("%i", entities.size());
