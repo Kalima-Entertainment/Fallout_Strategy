@@ -34,6 +34,7 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 	want_to_upgrade = false;
 
 	time_left = 0;
+	time_left_upgrade = 0;
 	level = 0;
 	reference_entity = nullptr;
 	texture = nullptr;
@@ -599,6 +600,7 @@ void StaticEntity::SpawnChrono() {
 			App->entities->CreateEntity(faction, spawn_stack[0].type, spawnPosition.x, spawnPosition.y, owner);
 			//LOG("Unit Spawned");
 			UpdateSpawnStack();
+			App->audio->PlayFx(1, App->audio->upgrade_fx);
 		}
 		time_left = spawn_stack[0].spawn_seconds - chrono_spawn.ReadSec();
 	}
@@ -617,6 +619,7 @@ void StaticEntity::UpgradeChrono() {
 			if (upgrade_stack.building == BASE) {
 				ExecuteUpgrade(upgrade_stack.faction, RESOURCES_LIMIT);
 				ExecuteUpgrade(upgrade_stack.faction, GATHERER_CAPACITY);
+				
 			}
 			else if (upgrade_stack.building == BARRACK) {
 				ExecuteUpgrade(upgrade_stack.faction, UNITS_DAMAGE);
@@ -627,7 +630,12 @@ void StaticEntity::UpgradeChrono() {
 				ExecuteUpgrade(upgrade_stack.faction, CREATION_TIME);
 			}
 			upgrading = false;
+			
+			level++;
+			App->audio->PlayFx(1, App->audio->upgrade_fx);
 		}
+
+		time_left_upgrade = upgrade_stack.upgrade_seconds - chrono_upgrade.ReadSec();
 	}
 }
 

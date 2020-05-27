@@ -14,7 +14,7 @@ public:
 	bool LoadReferenceData(pugi::xml_node& node);
 
 public:
-
+	
 private:
 	int food_quantity;
 	ResourceBuilding* resource_spot;

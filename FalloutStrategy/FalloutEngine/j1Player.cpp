@@ -141,6 +141,24 @@ bool j1Player::PreUpdate() {
 			App->input->GetMouseMotion(x, y);
 			App->render->camera.x += x * mouse_speed_multiplier;
 			App->render->camera.y += y * mouse_speed_multiplier;
+			// CAMERA LIMITS X
+			if (App->render->camera.x >= 5070)
+			{
+				App->render->camera.x = 5070;
+			}
+			if (App->render->camera.x <= -3695)
+			{
+				App->render->camera.x = -3695;
+			}
+			// CAMERA LIMITS Y
+			if (App->render->camera.y >= 314)
+			{
+				App->render->camera.y = 314;
+			}
+			if (App->render->camera.y <= -4452)
+			{
+				App->render->camera.y = -4452;
+			}
 		}
 
 		//move camera through minimap
@@ -403,6 +421,7 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 		UpdateResourceData(Resource::WATER, resources_increase);
 		LOG("All resources increased");
 	}
+
 
 	if (command_beginning == "caps+") {
 		int caps_increase = std::stoi(command_parts[1].c_str());

@@ -67,10 +67,10 @@ public:
 public:
 	std::vector<UI_element*> ui_element;
 
-	bool debug_UI = false;
-	bool fullscreen = false;
-	bool cap = false;
-	bool ingame = false;
+	bool debug_UI;
+	bool fullscreen;
+	bool cap;
+	bool ingame;
 
 private:
 	pugi::xml_node node;

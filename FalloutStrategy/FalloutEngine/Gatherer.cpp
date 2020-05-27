@@ -39,13 +39,13 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 	}
 
 	
-	particle = App->entities->CreateParticle(position);
+	/*particle = App->entities->CreateParticle(position);
 	Animation anim;
 	anim.PushBack(SDL_Rect{ 0, 0 , 30, 30 }, 1);
 	anim.Reset();
 	Emiter emitter(position.x, position.y, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 2, nullptr, App->entities->blood, anim, true);
 	particle->PushEmiter(emitter);
-	particle->Desactivate();
+	particle->Desactivate();*/
 	
 }
 
@@ -138,7 +138,7 @@ bool Gatherer::Update(float dt) {
 	}
 
 
-	// -- Particle Test //
+	/*// -- Particle Test //
 	
 	particle->Activate();	//By default disabled, need to be actived for example if current state = HIT/DIE
 
@@ -148,7 +148,7 @@ bool Gatherer::Update(float dt) {
 
 	particle->Update(dt);
 	
-	// Finished test :D --//
+	// Finished test :D --//*/
 
 	last_dt = dt;
 
@@ -169,6 +169,8 @@ void Gatherer::Gather() {
 
 	if (resource_building->quantity <= 0)
 		resource_building = nullptr;
+	
+
 }
 
 void Gatherer::AssignResourceBuilding(ResourceBuilding* g_resource_building) {

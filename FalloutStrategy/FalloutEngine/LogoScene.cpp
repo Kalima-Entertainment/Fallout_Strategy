@@ -16,6 +16,14 @@
 LogoScene::LogoScene() : j1Module()
 {
 	name = ("logo_scene");
+	video_texture = nullptr;
+	win_tex = nullptr;
+	lose_tex = nullptr;
+	Loop = true;
+	playsound = false;
+	drawable = true;
+	sound_end = true;
+	quit = false;
 }
 
 // Destructor

@@ -39,6 +39,16 @@ j1Scene::j1Scene() : j1Module()
 	create = false;
 	create_tutorial = false;
 	menu_state = StatesMenu::NONE;
+	iPoint mouse_pos = { 0,0 };
+	iPoint rectangle_origin = { 0,0 };
+	int rectangle_width = 0;
+	int rectangle_height = 0;
+	win = false;
+	lose = false;
+	deathclaw1 = false;
+	deathclaw2 = false;
+	deathclaw3 = false;
+	deathclaw4 = false;
 }
 
 // Destructor
@@ -234,7 +244,7 @@ bool j1Scene::Update(float dt)
 	//App->win->SetTitle(title.GetString());
 	*/
 
-	if(App->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
+	if(App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 	{
 		
 		win = true;
@@ -245,7 +255,7 @@ bool j1Scene::Update(float dt)
 		App->logo_scene->Loop = true;
 
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_KP_2) == KEY_DOWN)
+	else if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 	{
 
 		lose = true;

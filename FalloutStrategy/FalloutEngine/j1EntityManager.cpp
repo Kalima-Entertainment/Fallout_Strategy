@@ -153,6 +153,7 @@ bool j1EntityManager::CleanUp()
 	}
 
 	particles.clear();
+	App->tex->UnLoad(blood);
 
 	// -- Buildings
 	for (int j = 0; j < resource_buildings.size(); j++)
@@ -883,6 +884,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 	App->ai_manager->CleanUp();
 	App->ai_manager->Start();
 	RestartOccupiedTiles();
+	
 
 	Faction faction = NO_FACTION;
 	std::string type_name = "NO_TYPE";
@@ -953,33 +955,45 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		current_tile.y = iterator.attribute("current_tile_y").as_int();
 		current_health = iterator.attribute("current_health").as_int();
 
-		if (dynamic_entity) {
+		LOG("%f %f %i %i", position.x, position.y , current_tile.x, current_tile.y);
+		if (dynamic_entity == false) {
+			
+			//create building
+
+			StaticEntity* entity = (StaticEntity*)App->entities->CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]);
+		
+			if (type_name == "base") {
+				entity = App->scene->players[faction]->base;
+				entity->tiles = App->map->CalculateArea(current_tile, 4, 4);
+			}
+			else if (type_name == "barrack") {
+				if (App->scene->players[faction]->barrack[0] == nullptr) {
+					App->scene->players[faction]->barrack[0] = entity;
+				}
+				else {
+					App->scene->players[faction]->barrack[1] = entity;
+				}
+				entity->tiles = App->map->CalculateArea(current_tile, 2, 4);
+			}
+			else if (type_name == "laboratory") {
+				entity = App->scene->players[faction]->laboratory;
+				entity->tiles = App->map->CalculateArea(current_tile, 3, 3);
+			}
+
+			entity->CalculateRenderAndSpawnPositions();
+
+		}
+		else if(dynamic_entity){
+
 			if (faction_name == "no_faction") {
 				CreateEntity(faction, type, current_tile.x, current_tile.y);
 			}
 			else {
 				CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]);
 			}
-		}
-
-		else if (dynamic_entity == false) {
-
-			StaticEntity* entity;
-			if (type_name == "base") {
-				App->scene->players[faction]->base;
-			}
-			else if (type_name == "barrack") {
-				App->scene->players[faction]->barrack[0];
-			}
-			else if (type_name == "laboratory") {
-				App->scene->players[faction]->laboratory;
-			}
-
-			entity->current_tile = current_tile;
-			entity->position = position;
-			CreateEntity(faction, type, entity->position.x, entity->position.y, App->scene->players[faction]);
 
 		}
+	
 
 		iterator = iterator.next_sibling();
 	}

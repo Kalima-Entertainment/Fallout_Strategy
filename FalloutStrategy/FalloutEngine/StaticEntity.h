@@ -53,23 +53,22 @@ public:
 public:
 	std::vector<iPoint> tiles;
 	float time_left;
+	float time_left_upgrade;
 	Spawn_Stack spawn_stack[10];
 	bool spawning;
 	int level;
 	int GetUnitsInStack(EntityType type);
-
+	bool upgrading;
+	Upgrade_Stack upgrade_stack;
 private:
 	int gen_speed;
 	Animation animations[2];
 
 	int max_capacity;
 
-	Upgrade_Stack upgrade_stack;
-
 	j1Timer chrono_spawn;
 	j1Timer chrono_upgrade;
 	
-	bool upgrading;
 	bool want_to_upgrade;
 	
 	UpgradeSprite upgrade_sprite[4];

@@ -71,33 +71,32 @@ public:
 	UI_element* resources[3];
 	UI_element* quest[12];
 
-	UI_element* brotherhood_base[15];
-	UI_element* brotherhood_barrack[22];
-	UI_element* brotherhood_lab[20];
+	UI_element* brotherhood_base[14];
+	UI_element* brotherhood_barrack[21];
+	UI_element* brotherhood_lab[19];
 
+	UI_element* ghoul_base[14];
+	UI_element* ghoul_barrack[21];
+	UI_element* ghoul_lab[19];
 
-	UI_element* ghoul_base[15];
-	UI_element* ghoul_barrack[22];
-	UI_element* ghoul_lab[20];
+	UI_element* vault_base[14];
+	UI_element* vault_barrack[21];
+	UI_element* vault_lab[19];
 
-	UI_element* vault_base[15];
-	UI_element* vault_barrack[22];
-	UI_element* vault_lab[20];
-
-	UI_element* supermutant_base[15];
-	UI_element* supermutant_barrack[22];
-	UI_element* supermutant_lab[20];
+	UI_element* supermutant_base[14];
+	UI_element* supermutant_barrack[21];
+	UI_element* supermutant_lab[19];
 
 	UI_element* win_scene[5];
 
 	UI_element* dialogs[11];
 
-	UI_Label* cap_label = nullptr;
-	UI_Label* fullscreen_label = nullptr;
+	UI_Label* cap_label;
+	UI_Label* fullscreen_label;
 	
-	UI_Label* gatherer_label = nullptr;
-	UI_Label* melee_label = nullptr;
-	UI_Label* ranged_label = nullptr;
+	UI_Label* gatherer_label;
+	UI_Label* melee_label;
+	UI_Label* ranged_label;
 
 	Menu current_menu;
 	Menu last_menu;
@@ -106,7 +105,7 @@ public:
 	EntityType current_building_type;
 
 	int how_to_play_counter = 0;
-
+	int cost;
 	std::string water;
 	std::string food;
 	std::string caps;

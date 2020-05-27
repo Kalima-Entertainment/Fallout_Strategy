@@ -31,7 +31,6 @@ bool j1Hud::Awake(pugi::xml_node& node)
 {
 	timer = 59;
 	minutes = 14;
-	draw_health = false;
 	finish_base = false;
 	finish_barrack = false;
 	finish_lab = false;
@@ -39,13 +38,14 @@ bool j1Hud::Awake(pugi::xml_node& node)
 	gatherer_amount = 0;
 	melee_amount = 0;
 	ranged_amount = 0;
+	activateTimer = false;
 
 	return true;
 }
 
 bool j1Hud::Start()
 {
-	//activateTimer = false;
+	
 	
 	return true;
 }
@@ -148,6 +148,15 @@ bool j1Hud::PostUpdate() {
 					finish_base = false;
 				}
 
+				//TIMER BAG BOOST
+				SDL_Rect spawn_bag_background = { 1092, 692, 75, 6 };
+				App->render->DrawQuad(spawn_bag_background, 255, 255, 255, 255, true, 0.0f);
+
+				if(static_entity->upgrading)
+				{
+					SDL_Rect spawn_bag_foreground = { 1092, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_bag_background.w, 6 };
+					App->render->DrawQuad(spawn_bag_foreground, 18, 164, 62, 255, true, 0.0f);
+				}
 
 			}
 			else if (static_entity->type == BARRACK) {
@@ -179,6 +188,15 @@ bool j1Hud::PostUpdate() {
 					}
 				}
 
+				//TIMER SPEED BOOST
+				SDL_Rect spawn_speed_background = { 1189, 692, 75, 6 };
+				App->render->DrawQuad(spawn_speed_background, 255, 255, 255, 255, true, 0.0f);
+
+				if (static_entity->upgrading)
+				{
+					SDL_Rect spawn_speed_foreground = { 1189, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_speed_background.w, 6 };
+					App->render->DrawQuad(spawn_speed_foreground, 18, 164, 62, 255, true, 0.0f);
+				}
 			}
 			else if (static_entity->type == LABORATORY) {
 				//Health bar stats
@@ -200,6 +218,16 @@ bool j1Hud::PostUpdate() {
 						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
 			
+				}
+
+				//TIMER SHIELD BOOST
+				SDL_Rect spawn_shield_background = { 1189, 692, 75, 6 };
+				App->render->DrawQuad(spawn_shield_background, 255, 255, 255, 255, true, 0.0f);
+
+				if (static_entity->upgrading)
+				{
+					SDL_Rect spawn_shield_foreground = { 1189, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_shield_background.w, 6 };
+					App->render->DrawQuad(spawn_shield_foreground, 18, 164, 62, 255, true, 0.0f);
 				}
 			}
 			break;
@@ -239,7 +267,15 @@ bool j1Hud::PostUpdate() {
 					finish_base = false;
 				}
 
+				//TIMER BAG BOOST
+				SDL_Rect spawn_bag_background = { 1092, 692, 75, 6 };
+				App->render->DrawQuad(spawn_bag_background, 255, 255, 255, 255, true, 0.0f);
 
+				if (static_entity->upgrading)
+				{
+					SDL_Rect spawn_bag_foreground = { 1092, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_bag_background.w, 6 };
+					App->render->DrawQuad(spawn_bag_foreground, 18, 164, 62, 255, true, 0.0f);
+				}
 			}
 			else if (static_entity->type == BARRACK) {
 
@@ -270,7 +306,15 @@ bool j1Hud::PostUpdate() {
 					}
 				}
 			
+				//TIMER SPEED BOOST
+				SDL_Rect spawn_speed_background = { 1189, 692, 75, 6 };
+				App->render->DrawQuad(spawn_speed_background, 255, 255, 255, 255, true, 0.0f);
 
+				if (static_entity->upgrading)
+				{
+					SDL_Rect spawn_speed_foreground = { 1189, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_speed_background.w, 6 };
+					App->render->DrawQuad(spawn_speed_foreground, 18, 164, 62, 255, true, 0.0f);
+				}
 			}
 			else if (static_entity->type == LABORATORY) {
 
@@ -293,6 +337,16 @@ bool j1Hud::PostUpdate() {
 						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
 
+				}
+
+				//TIMER SHIELD BOOST
+				SDL_Rect spawn_shield_background = { 1189, 692, 75, 6 };
+				App->render->DrawQuad(spawn_shield_background, 255, 255, 255, 255, true, 0.0f);
+
+				if (static_entity->upgrading)
+				{
+					SDL_Rect spawn_shield_foreground = { 1189, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_shield_background.w, 6 };
+					App->render->DrawQuad(spawn_shield_foreground, 18, 164, 62, 255, true, 0.0f);
 				}
 			}
 			break;
@@ -333,6 +387,15 @@ bool j1Hud::PostUpdate() {
 					finish_base = false;
 				}
 
+				//TIMER BAG BOOST
+				SDL_Rect spawn_bag_background = { 1092, 692, 75, 6 };
+				App->render->DrawQuad(spawn_bag_background, 255, 255, 255, 255, true, 0.0f);
+
+				if (static_entity->upgrading)
+				{
+					SDL_Rect spawn_bag_foreground = { 1092, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_bag_background.w, 6 };
+					App->render->DrawQuad(spawn_bag_foreground, 18, 164, 62, 255, true, 0.0f);
+				}
 			}
 			else if (static_entity->type == BARRACK) {
 
@@ -363,6 +426,15 @@ bool j1Hud::PostUpdate() {
 					}
 				}
 
+				//TIMER SPEED BOOST
+				SDL_Rect spawn_speed_background = { 1189, 692, 75, 6 };
+				App->render->DrawQuad(spawn_speed_background, 255, 255, 255, 255, true, 0.0f);
+
+				if (static_entity->upgrading)
+				{
+					SDL_Rect spawn_speed_foreground = { 1189, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_speed_background.w, 6 };
+					App->render->DrawQuad(spawn_speed_foreground, 18, 164, 62, 255, true, 0.0f);
+				}
 			}
 			else if (static_entity->type == LABORATORY) {
 
@@ -385,6 +457,16 @@ bool j1Hud::PostUpdate() {
 						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
 
+				}
+
+				//TIMER SHIELD BOOST
+				SDL_Rect spawn_shield_background = { 1189, 692, 75, 6 };
+				App->render->DrawQuad(spawn_shield_background, 255, 255, 255, 255, true, 0.0f);
+
+				if (static_entity->upgrading)
+				{
+					SDL_Rect spawn_shield_foreground = { 1189, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_shield_background.w, 6 };
+					App->render->DrawQuad(spawn_shield_foreground, 18, 164, 62, 255, true, 0.0f);
 				}
 
 			}
@@ -424,7 +506,15 @@ bool j1Hud::PostUpdate() {
 					finish_base = false;
 				}
 
+				//TIMER BAG BOOST
+				SDL_Rect spawn_bag_background = { 1092, 692, 75, 6 };
+				App->render->DrawQuad(spawn_bag_background, 255, 255, 255, 255, true, 0.0f);
 
+				if (static_entity->upgrading)
+				{
+					SDL_Rect spawn_bag_foreground = { 1092, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_bag_background.w, 6 };
+					App->render->DrawQuad(spawn_bag_foreground, 18, 164, 62, 255, true, 0.0f);
+				}
 			}
 			else if (static_entity->type == BARRACK) {
 
@@ -479,6 +569,16 @@ bool j1Hud::PostUpdate() {
 					
 				}
 
+				//TIMER SPEED BOOST
+				SDL_Rect spawn_speed_background = { 1189, 692, 75, 6 };
+				App->render->DrawQuad(spawn_speed_background, 255, 255, 255, 255, true, 0.0f);
+
+				if (static_entity->upgrading)
+				{
+					SDL_Rect spawn_speed_foreground = { 1189, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_speed_background.w, 6 };
+					App->render->DrawQuad(spawn_speed_foreground, 18, 164, 62, 255, true, 0.0f);
+				}
+
 
 			}
 			else if (static_entity->type == LABORATORY) {
@@ -501,6 +601,16 @@ bool j1Hud::PostUpdate() {
 						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
 					}
 
+				}
+
+				//TIMER SHIELD BOOST
+				SDL_Rect spawn_shield_background = { 1189, 692, 75, 6 };
+				App->render->DrawQuad(spawn_shield_background, 255, 255, 255, 255, true, 0.0f);
+
+				if (static_entity->upgrading)
+				{
+					SDL_Rect spawn_shield_foreground = { 1189, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_shield_background.w, 6 };
+					App->render->DrawQuad(spawn_shield_foreground, 18, 164, 62, 255, true, 0.0f);
 				}
 			}
 			break;
