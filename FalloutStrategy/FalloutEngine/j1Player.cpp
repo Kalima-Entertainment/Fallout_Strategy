@@ -29,7 +29,7 @@ j1Player::j1Player() : GenericPlayer() {
 
 	base = barrack[0] = barrack[1] = laboratory = nullptr;
 
-	caps = 999;
+	caps = 9990;
 	food = 399;
 	water = 999;
 

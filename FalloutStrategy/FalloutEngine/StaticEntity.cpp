@@ -604,7 +604,7 @@ void StaticEntity::UpgradeChrono() {
 		want_to_upgrade = false;
 	}
 	if (upgrading == true) {
-		//LOG("time remaining %f ", 45 - chrono_upgrade.ReadSec());
+		LOG("time remaining %f ", 45 - chrono_upgrade.ReadSec());
 		if (chrono_upgrade.ReadSec() > upgrade_stack.upgrade_seconds) {
 			if (upgrade_stack.building == BASE) {
 				ExecuteUpgrade(upgrade_stack.faction, RESOURCES_LIMIT);
@@ -617,10 +617,9 @@ void StaticEntity::UpgradeChrono() {
 			else if (upgrade_stack.building == LABORATORY) {
 				ExecuteUpgrade(upgrade_stack.faction, UNITS_HEALTH);
 				ExecuteUpgrade(upgrade_stack.faction, CREATION_TIME);
-
 			}
 
-			upgrading = true;
+			upgrading = false;
 		}
 	}
 }
