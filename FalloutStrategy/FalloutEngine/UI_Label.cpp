@@ -14,6 +14,10 @@ UI_Label::UI_Label(int x, int y, UI_Type type, std::string text_input, UI_elemen
 
 UI_Label::~UI_Label()
 {
+	App->tex->UnLoad(texture);
+	texture = nullptr;
+	App->tex->UnLoad(text_texture);
+	text_texture = nullptr;
 }
 
 bool UI_Label::Update(float dt)
@@ -39,12 +43,6 @@ bool UI_Label::Update(float dt)
 
 	}*/
 
-	return true;
-}
-
-bool UI_Label::CleanUp()
-{
-	App->tex->UnLoad(texture);
 	return true;
 }
 
@@ -76,7 +74,6 @@ bool UI_Label::SetLabelText(std::string text_input, std::string font)
 
 	}
 
-
 	return ret;
 }
 
@@ -85,7 +82,6 @@ void UI_Label::SetTextTimer(const char* text)
 	App->tex->UnLoad(texture);
 	texture = App->font->Print(text, { 255,255,255,255 }, "StackedPixel");
 	App->font->CalcSize(text, dimensions.w, dimensions.h);
-
 }
 
 bool UI_Label::Draw()

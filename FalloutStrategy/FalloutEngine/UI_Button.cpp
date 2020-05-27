@@ -46,9 +46,8 @@ UI_Button::UI_Button(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, 
 	inHover = true;
 }
 
-bool UI_Button::CleanUp()
-{
-	return true;
+UI_Button::~UI_Button() {
+	texture = nullptr;
 }
 
 bool UI_Button::Draw()

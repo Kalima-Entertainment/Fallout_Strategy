@@ -73,6 +73,9 @@ private:
 	bool want_to_upgrade;
 	
 	UpgradeSprite upgrade_sprite[4];
+
+	SDL_Rect spawn_bar_background;
+	SDL_Rect spawn_bar_foreground;
 };
 
 #endif // !_STATIC_ENTITY_H

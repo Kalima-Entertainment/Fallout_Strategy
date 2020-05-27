@@ -101,11 +101,11 @@ bool DynamicEntity::PostUpdate() {
 	}
 
 	//Health Bar
-	SDL_Rect background_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, 50, 4 };
-	SDL_Rect foreground_bar = { position.x - HALF_TILE * 0.75f, position.y - TILE_SIZE * 1.5f, (float)current_health / max_health * 50, 4 };
-	if (foreground_bar.w < 0)
-		foreground_bar.w = 0;
-	SDL_Rect frame = { position.x - HALF_TILE * 0.75f - 1, position.y - TILE_SIZE * 1.5f - 1, 52, 6 };
+	background_health_bar = { (int)(position.x - HALF_TILE * 0.75f),(int)(position.y - TILE_SIZE * 1.5f), 50, 4 };
+	foreground_health_bar = { (int)(position.x - HALF_TILE * 0.75f),(int)(position.y - TILE_SIZE * 1.5f), (int)(current_health/max_health * 50), 4 };
+	if (foreground_health_bar.w < 0)
+		foreground_health_bar.w = 0;
+	frame_quad = { (int)(position.x - HALF_TILE * 0.75f - 1), (int)(position.y - TILE_SIZE * 1.5f - 1), 52, 6 };
 
 	//Render character
 	render_position = { (int)(position.x - sprite_size * 0.5f), (int)(position.y - 1.82f * TILE_SIZE)};
@@ -120,9 +120,9 @@ bool DynamicEntity::PostUpdate() {
 			App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
 			//Enemy Health Bar only if visible on fog of war
-			App->render->DrawQuad(background_bar, 55, 55, 55, 255);
-			App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
-			App->render->DrawQuad(frame, 155, 155, 155, 185, false);			
+			App->render->DrawQuad(background_health_bar, 55, 55, 55, 255);
+			App->render->DrawQuad(foreground_health_bar, 0, 255, 0, 255);
+			App->render->DrawQuad(frame_quad, 155, 155, 155, 185, false);			
 		}
 		else if ((this->faction == NO_FACTION)||(App->render->debug)) {
 			//Animals are also visible on shroud
@@ -132,9 +132,9 @@ bool DynamicEntity::PostUpdate() {
 				App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
 				//Enemy Health Bar only if visible on fog of war
-				App->render->DrawQuad(background_bar, 55, 55, 55, 255);
-				App->render->DrawQuad(foreground_bar, 0, 255, 0, 255);
-				App->render->DrawQuad(frame, 155, 155, 155, 185, false);
+				App->render->DrawQuad(background_health_bar, 55, 55, 55, 255);
+				App->render->DrawQuad(foreground_health_bar, 0, 255, 0, 255);
+				App->render->DrawQuad(frame_quad, 155, 155, 155, 185, false);
 			}
 		}
 	

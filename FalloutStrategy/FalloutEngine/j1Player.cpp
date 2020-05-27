@@ -47,8 +47,13 @@ j1Player::j1Player() : GenericPlayer() {
 j1Player::~j1Player() {
 	selected_entity = nullptr;
 	last_selected_entity = nullptr;
+
+	for (int t = 0; t < troops.size(); t++) { troops[t] = nullptr; }
 	troops.clear();
+
+	for (int g = 0; g < gatherers_vector.size(); g++) { gatherers_vector[g] = nullptr; }
 	gatherers_vector.clear();
+
 	base = barrack[0] = barrack[1] = laboratory = nullptr;
 }
 

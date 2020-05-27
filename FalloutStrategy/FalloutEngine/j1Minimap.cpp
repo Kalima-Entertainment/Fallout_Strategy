@@ -228,23 +228,6 @@ void j1Minimap::EnableRadar() {
 void j1Minimap::DrawFogOfWar() {
 	SDL_Rect fog_of_war_rect = { 0,0,1,1 };
 	iPoint rect_pos;
-	/*
-	fog_of_war_rect.w = ceil(width / 150);
-	fog_of_war_rect.h = ceil(fog_of_war_rect.w * 0.5f);
-
-	for (int y = 0; y < MAP_LENGTH; y++)
-	{
-		for (int x = 0; x < MAP_LENGTH; x++)
-		{
-			rect_pos = MapToMinimap(x, y);
-			fog_of_war_rect.x = rect_pos.x;
-			fog_of_war_rect.y = rect_pos.y;
-
-			if (grid[x][y] != 0)
-				App->render->DrawQuad(fog_of_war_rect, 0, 0, 0, 255, true, false);
-		}
-	}
-	*/
 
 	int tile_width = width / 150;
 	fog_of_war_rect.h = ceil(tile_width * 0.5f);

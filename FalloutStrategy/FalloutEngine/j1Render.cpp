@@ -213,6 +213,7 @@ bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
 
 	SDL_Rect rec(rect);
+
 	if(use_camera)
 	{
 		rec.x = (int)(camera.x + rect.x * scale);

@@ -139,20 +139,21 @@ bool StaticEntity::PostUpdate() {
 		App->render->DrawQuad({ (int)position.x, (int)position.y, 4,4 }, 255, 0, 0, 255);
 
 	//Health bar stats
-	SDL_Rect background_bar = { render_position.x + sprite_size * 0.5f - 40, render_position.y, 80, 4 };
-	SDL_Rect foreground_bar = { render_position.x + sprite_size * 0.5f - 40, render_position.y, (float)current_health / max_health * background_bar.w, 4 };
-	SDL_Rect frame = { render_position.x + sprite_size * 0.5f - 41, render_position.y - 1, 82, 6 };
+	background_health_bar = { (int)(render_position.x + sprite_size * 0.5f - 40), (int)render_position.y, 80, 4 };
+	float health_proportion = current_health / max_health;
+	foreground_health_bar = { (int)(render_position.x + sprite_size * 0.5f - 40), render_position.y, (int)(health_proportion * background_health_bar.w), 4 };
+	frame_quad = { (int)(render_position.x + sprite_size * 0.5f - 41), render_position.y - 1, 82, 6 };
 
-	if (foreground_bar.w < 0) 
-		foreground_bar.w = 0;
-	App->render->DrawQuad(background_bar, 50, 50, 50, 255);
-	App->render->DrawQuad(foreground_bar, 20, 255, 20, 255);
-	App->render->DrawQuad(frame, 200, 200, 200, 200, false);
+	if (foreground_health_bar.w < 0)
+		foreground_health_bar.w = 0;
+	App->render->DrawQuad(background_health_bar, 50, 50, 50, 255);
+	App->render->DrawQuad(foreground_health_bar, 20, 255, 20, 255);
+	App->render->DrawQuad(frame_quad, 200, 200, 200, 200, false);
 
 	//Spawn bar
 	if (spawning) {
-		SDL_Rect spawn_bar_background = { render_position.x + sprite_size * 0.5f - 40, render_position.y +20, 80, 4 };
-		SDL_Rect spawn_bar_foreground = { render_position.x + sprite_size * 0.5f - 40, render_position.y+20, (float)time_left / spawn_stack[0].spawn_seconds * spawn_bar_background.w, 4 };
+		spawn_bar_background = { (int)(render_position.x + sprite_size * 0.5f - 40), render_position.y +20, 80, 4 };
+		spawn_bar_foreground = { (int)(render_position.x + sprite_size * 0.5f - 40), render_position.y+20, (int)(time_left / spawn_stack[0].spawn_seconds * spawn_bar_background.w), 4 };
 		App->render->DrawQuad(spawn_bar_background, 150, 150, 150, 255);
 		App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255);
 	}
@@ -191,7 +192,7 @@ bool StaticEntity::LoadDataFromReference() {
 bool StaticEntity::LoadReferenceData(pugi::xml_node& node) {
 	bool ret = true;
 
-	max_health = node.attribute("health").as_int();
+	max_health = node.attribute("health").as_float();
 	pugi::xml_node upgrade_node = node.child("upgrade");
 
 	for (int i = 0; i < 4; i++)

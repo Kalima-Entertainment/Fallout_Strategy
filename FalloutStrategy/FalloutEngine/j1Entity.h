@@ -85,8 +85,8 @@ public:
 	int sprite_size;
 
 	//stats
-	int current_health;
-	int max_health;
+	float current_health;
+	float max_health;
 	int storage_capacity;
 	int damage;
 
@@ -117,6 +117,10 @@ public:
 	FoWEntity* visionEntity = nullptr;
 	ParticleSystem* particle;
 
+protected:
+	SDL_Rect background_health_bar;
+	SDL_Rect foreground_health_bar;
+	SDL_Rect frame_quad;
 };
 
 #endif // !_j1ENTITY_H

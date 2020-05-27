@@ -253,7 +253,7 @@ bool Troop::LoadDataFromReference() {
 bool Troop::LoadReferenceData(pugi::xml_node& node) {
 	bool ret = true;
 	
-	max_health = node.attribute("health").as_int();
+	max_health = node.attribute("health").as_float();
 	damage = node.attribute("damage").as_int();
 	speed.x = node.attribute("speed").as_int();
 	speed.y = speed.x * 0.5f;

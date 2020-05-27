@@ -14,7 +14,6 @@ public:
 	~UI_Label();
 
 	bool Update(float dt);
-	bool CleanUp();
 
 	bool SetLabelText(std::string text_input, std::string font = "StackedPixel");
 	void SetTextTimer(const char* text);

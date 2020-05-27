@@ -68,7 +68,7 @@ bool Gatherer::Update(float dt) {
 	case WALK:
 		Move(dt);
 
-		if (next_tile == target_tile) {
+		if ((next_tile == target_tile)&&(node_path.size() == 0)) {
 			//gather
 			if (((resource_building != nullptr) && (resource_collected < storage_capacity)) || ((resource_collected > 0) && (target_entity != nullptr))) {
 				state = GATHER;
@@ -220,7 +220,7 @@ bool Gatherer::LoadDataFromReference() {
 bool Gatherer::LoadReferenceData(pugi::xml_node& node) {
 	bool ret = true;
 
-	max_health = node.attribute("health").as_int();
+	max_health = node.attribute("health").as_float();
 	resource_capacity = node.attribute("damage").as_int();
 	speed.x = node.attribute("speed").as_int();
 	speed.y = speed.x * 0.5f;

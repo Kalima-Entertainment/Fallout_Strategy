@@ -7,7 +7,8 @@ GenericPlayer::GenericPlayer() : j1Module() {
 	melees = 0;
 	rangeds = 0;
 	gatherers = 0;
-
+	target_player = nullptr;
+	target_building = nullptr;
 }
 
 GenericPlayer::~GenericPlayer() {}

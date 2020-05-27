@@ -18,7 +18,6 @@ public:
 
 	bool Draw();
 
-
 public:
 };
 

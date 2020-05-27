@@ -125,16 +125,20 @@ bool j1EntityManager::CleanUp()
 	// -- Instance
 	for (int i = 0; i < REFERENCE_ENTITIES; i++)
 	{
-		App->tex->UnLoad(reference_entities[i]->texture);
-		delete reference_entities[i];
-		reference_entities[i] = nullptr;
+		if (reference_entities[i] != nullptr) {
+			App->tex->UnLoad(reference_entities[i]->texture);
+			delete reference_entities[i];
+			reference_entities[i] = nullptr;
+		}
 	}
 
 	// -- Entities
 	for (int i = 0; i < entities.size(); i++)
 	{
-		delete entities[i];
-		entities[i] = nullptr;
+		if (entities[i] != nullptr) {
+			delete entities[i];
+			entities[i] = nullptr;
+		}
 	}
 
 	entities.clear();
@@ -142,8 +146,10 @@ bool j1EntityManager::CleanUp()
 	// -- Particles
 	for (int i = 0; i < particles.size(); i++)
 	{
-		delete particles[i];
-		particles[i] = nullptr;
+		if (particles[i] != nullptr) {
+			delete particles[i];
+			particles[i] = nullptr;
+		}
 	}
 
 	particles.clear();

@@ -3,6 +3,7 @@
 #include "j1Map.h"
 #include "StaticEntity.h"
 #include "j1Player.h"
+#include "j1Scene.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
 Deathclaw::Deathclaw(iPoint g_current_tile) : DynamicEntity() {
@@ -136,7 +137,7 @@ bool Deathclaw::LoadDataFromReference() {
 bool Deathclaw::LoadReferenceData(pugi::xml_node& node) {
 	bool ret = true;
 
-	max_health = node.attribute("health").as_int();
+	max_health = node.attribute("health").as_float();
 	damage = node.attribute("damage").as_int();
 	speed.x = node.attribute("speed").as_int();
 	speed.y = speed.x * 0.5f;

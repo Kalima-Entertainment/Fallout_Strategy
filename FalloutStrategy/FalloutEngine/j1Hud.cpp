@@ -20,6 +20,7 @@
 #include "StaticEntity.h"
 #include "j1Entity.h"
 #include "GenericPlayer.h"
+#include "brofiler/Brofiler/Brofiler.h"
 
 j1Hud::j1Hud() :j1Module()
 {
@@ -54,9 +55,8 @@ bool j1Hud::PreUpdate()
 	return true;
 }
 
-bool j1Hud::Update(float dt)
-{
-
+bool j1Hud::Update(float dt) {
+	BROFILER_CATEGORY("Hud Update", Profiler::Color::Aquamarine)
 	//TIMER
 
 	if (activateTimer)
@@ -105,8 +105,8 @@ bool j1Hud::Update(float dt)
 	return true;
 }
 
-bool j1Hud::PostUpdate()
-{
+bool j1Hud::PostUpdate() {
+	BROFILER_CATEGORY("Hud PostUpdate", Profiler::Color::Red)
 	if (App->player->selected_entity != nullptr)
 	{
 		StaticEntity* static_entity = (StaticEntity*)App->player->selected_entity;
