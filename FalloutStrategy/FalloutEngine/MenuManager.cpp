@@ -323,7 +323,9 @@ void MenuManager::CreateMenu(Menu menu) {
 		tutorial[2] = (UI_Label*)App->gui->CreateLabel(1600, 220, Label, "TUTORIAL", NULL, this, NULL);
 		tutorial[3] = (UI_Label*)App->gui->CreateLabel(1420, 375, Label, "CONTROLS", NULL, this, NULL);
 		tutorial[4] = (UI_Label*)App->gui->CreateLabel(1722, 375, Label, "HOW TO PLAY", NULL, this, NULL);
-
+		tutorial[5] = nullptr;
+		tutorial[6] = nullptr;
+		tutorial[7] = nullptr;
 		last_menu = current_menu;
 		current_menu = Menu::PAUSE_MENU;
 
