@@ -347,7 +347,7 @@ void FoWManager::DrawFoWMap()
 			}
 		}
 	}
-	if (update_timer.Read() > 4500)
+	if (update_timer.Read() > 2500)
 		update_timer.Start();
 }
 
