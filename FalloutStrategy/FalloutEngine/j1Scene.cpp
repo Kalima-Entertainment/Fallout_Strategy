@@ -244,7 +244,7 @@ bool j1Scene::Update(float dt)
 	//App->win->SetTitle(title.GetString());
 	*/
 
-	if(App->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
+	if(App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 	{
 		
 		win = true;
@@ -255,7 +255,7 @@ bool j1Scene::Update(float dt)
 		App->logo_scene->Loop = true;
 
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_KP_2) == KEY_DOWN)
+	else if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 	{
 
 		lose = true;

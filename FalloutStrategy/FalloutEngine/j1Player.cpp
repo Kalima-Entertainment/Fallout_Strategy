@@ -422,6 +422,7 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 		LOG("All resources increased");
 	}
 
+
 	if (command_beginning == "caps+") {
 		int caps_increase = std::stoi(command_parts[1].c_str());
 

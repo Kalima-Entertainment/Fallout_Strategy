@@ -64,7 +64,7 @@ bool j1Gui::Update(float dt) {
 			}
 		}
 
-	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN) {
 
 		debug_UI = !debug_UI;
 
