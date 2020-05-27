@@ -11,6 +11,8 @@ j1Audio::j1Audio() : j1Module()
 {
 	music = NULL;
 	name = ("audio");
+
+	die_sound = false;
 }
 
 // Destructor
@@ -95,7 +97,8 @@ bool j1Audio::Awake(pugi::xml_node& config)
 	lose = App->audio->LoadFx("Assets/audio/fx/WinLose/LoseSound.wav");
 	you_win = App->audio->LoadFx("Assets/audio/fx/WinLose/you_win.wav");
 	you_lose = App->audio->LoadFx("Assets/audio/fx/WinLose/you_lose.wav");
-
+	upgrade_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Mission.wav");
+	
 	click_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Arrow.wav");
 	hover_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Slider.wav");
 	back_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_ReadyOff.wav");

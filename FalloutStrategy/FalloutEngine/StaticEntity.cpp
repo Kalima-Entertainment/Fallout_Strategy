@@ -602,6 +602,7 @@ void StaticEntity::SpawnChrono() {
 			App->entities->CreateEntity(faction, spawn_stack[0].type, spawnPosition.x, spawnPosition.y, owner);
 			//LOG("Unit Spawned");
 			UpdateSpawnStack();
+			App->audio->PlayFx(1, App->audio->upgrade_fx);
 		}
 		time_left = spawn_stack[0].spawn_seconds - chrono_spawn.ReadSec();
 	}
@@ -633,7 +634,7 @@ void StaticEntity::UpgradeChrono() {
 			upgrading = false;
 			
 			level++;
-
+			App->audio->PlayFx(1, App->audio->upgrade_fx);
 		}
 
 		time_left_upgrade = upgrade_stack.upgrade_seconds - chrono_upgrade.ReadSec();

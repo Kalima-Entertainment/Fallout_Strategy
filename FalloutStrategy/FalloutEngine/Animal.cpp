@@ -2,6 +2,7 @@
 #include "GenericPlayer.h"
 #include "AI_Player.h"
 #include "j1Map.h"
+#include "j1Audio.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
 Animal::Animal(EntityType g_type, iPoint g_current_tile) : DynamicEntity() {
@@ -14,6 +15,7 @@ Animal::Animal(EntityType g_type, iPoint g_current_tile) : DynamicEntity() {
 	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
 	position.x += HALF_TILE;
 	position.y += HALF_TILE;
+
 }
 
 Animal::~Animal() {
@@ -71,7 +73,11 @@ bool Animal::Update(float dt) {
 			resource_spot = nullptr;
 			to_delete = true;
 		}
-		SpatialAudio(position.x, position.y, faction, state, type);
+		if (App->audio->die_sound == false) {
+			SpatialAudio(position.x, position.y, faction, state, type);
+			App->audio->die_sound = true;
+		}
+		
 
         break;
 

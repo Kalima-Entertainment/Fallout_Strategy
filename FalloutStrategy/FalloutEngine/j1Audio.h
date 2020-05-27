@@ -98,6 +98,9 @@ public:
 	int volume_fx;
 	int members_fx;
 	int character_fx;
+	int upgrade_fx;
+
+	bool die_sound;
 
 	float				music_volume;
 	float				fx_volume;

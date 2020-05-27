@@ -12,6 +12,7 @@
 #include "j1Pathfinding.h"
 #include "Troop.h"
 #include "Gatherer.h"
+#include "j1Audio.h"
 #include <vector>
 #include <math.h>
 
@@ -205,5 +206,6 @@ void AI_Player::GatherFood(ResourceBuilding* resource_spot) {
 			return;
 		}
 	}
+	App->audio->die_sound = false;
 }
 
