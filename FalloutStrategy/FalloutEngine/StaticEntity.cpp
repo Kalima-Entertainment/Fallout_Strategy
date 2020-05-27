@@ -62,13 +62,6 @@ StaticEntity::~StaticEntity() {
 	current_animation = nullptr;
 	texture = nullptr;
 	tiles.clear();
-
-	//Clean Unit Spawn Stacks
-	for (size_t i = 0; i < 10; i++)
-	{
-		spawn_stack[i].type = NO_TYPE;
-		spawn_stack[i].spawn_seconds = 0;
-	}
 }
 
 bool StaticEntity::Update(float dt) {
@@ -611,7 +604,7 @@ void StaticEntity::UpgradeChrono() {
 		want_to_upgrade = false;
 	}
 	if (upgrading == true) {
-		//LOG("time remaining %f ", 45 - chrono_upgrade.ReadSec());
+		LOG("time remaining %f ", 45 - chrono_upgrade.ReadSec());
 		if (chrono_upgrade.ReadSec() > upgrade_stack.upgrade_seconds) {
 			if (upgrade_stack.building == BASE) {
 				ExecuteUpgrade(upgrade_stack.faction, RESOURCES_LIMIT);
@@ -625,6 +618,7 @@ void StaticEntity::UpgradeChrono() {
 				ExecuteUpgrade(upgrade_stack.faction, UNITS_HEALTH);
 				ExecuteUpgrade(upgrade_stack.faction, CREATION_TIME);
 			}
+
 			upgrading = false;
 		}
 	}
