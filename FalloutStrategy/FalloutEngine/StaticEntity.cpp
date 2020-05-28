@@ -11,6 +11,9 @@
 #include "FoWManager.h"
 #include "j1EntityManager.h"
 
+#include "ParticleSystem.h"
+#include "Emiter.h"
+
 StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile, GenericPlayer* g_owner) : j1Entity() {
 
 	type = g_type;
@@ -53,6 +56,15 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
 		}
 	}
+
+	// -- Smoke particles
+	particle = App->entities->CreateParticle(position);
+	Animation anim;
+	anim.PushBack(SDL_Rect{ 0, 0 , 128, 128 }, 1);
+	anim.Reset();
+	Emiter emitter(position.x - 40, position.y, 0, -0.7f , 0.1f, NULL , 0.0080f, 0, 0, 0, 0, 0, 2, 4, nullptr, App->entities->smoke, anim, true);
+	particle->PushEmiter(emitter);
+	particle->Desactivate();
 }
 
 StaticEntity::~StaticEntity() {
@@ -79,6 +91,8 @@ bool StaticEntity::Update(float dt) {
 	switch (state) {
 	case IDLE:
 		break;
+	case HIT:
+		
 	case DIE:
 		if (!delete_timer.Started())
 			delete_timer.Start();
@@ -103,6 +117,16 @@ bool StaticEntity::Update(float dt) {
 	//Interact with the building to spawn units or investigate upgrades
 	//Select a building and press 1, 2, 3 or 4 to spawn or investigate
 	DebugSpawnsUpgrades();
+
+	// -- Active particle when health its lower or equal than half
+	if (particle != nullptr) {
+		particle->Move(position.x, position.y);
+		if (current_health <= (max_health/2))
+			particle->Activate();
+	}
+	else if(current_health <= 0.0f) {
+		particle->Desactivate();
+	}
 
 	last_dt = dt;
 
@@ -165,6 +189,9 @@ bool StaticEntity::PostUpdate() {
 		App->render->DrawQuad(spawn_bar_background, 150, 150, 150, 255);
 		App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255);
 	}
+
+	//Blit particles forward buildings
+	particle->Update(last_dt);
 
 	return true;
 }

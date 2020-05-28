@@ -39,6 +39,7 @@ j1EntityManager::j1EntityManager(){
 
 	blocked_movement = false;
 	blood = nullptr;
+	smoke = nullptr;
 }
 
 j1EntityManager::~j1EntityManager(){}
@@ -114,6 +115,7 @@ bool j1EntityManager::Start() {
 
 	// -- Loading Particle textures
 	blood = App->tex->Load("Assets/textures/particles/blood.png");
+	smoke = App->tex->Load("Assets/textures/particles/smoke.png");
 
 	return ret;
 }
@@ -154,6 +156,7 @@ bool j1EntityManager::CleanUp()
 
 	particles.clear();
 	App->tex->UnLoad(blood);
+	App->tex->UnLoad(smoke);
 
 	// -- Buildings
 	for (int j = 0; j < resource_buildings.size(); j++)
