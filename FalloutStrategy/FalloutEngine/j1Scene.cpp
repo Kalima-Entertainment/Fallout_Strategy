@@ -48,6 +48,7 @@ j1Scene::j1Scene() : j1Module()
 	deathclaw1 = deathclaw2 = deathclaw3 = deathclaw4 = false;
 	Deathclaws[0] = Deathclaws[1] = Deathclaws[2] = Deathclaws[3] = nullptr;
 	players[0] = players[1] = players[2] = players[3] = nullptr;
+	SongPlaying = 0;
 }
 
 // Destructor
