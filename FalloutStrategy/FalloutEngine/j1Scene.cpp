@@ -236,6 +236,7 @@ bool j1Scene::Update(float dt)
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 		App->menu_manager->DestroyMenu(Menu::RESOURCES);
 		App->gui->ingame = false;
+		App->logo_scene->playsound = true;
 		App->isPaused = true;
 		App->logo_scene->Loop = true;
 	}
@@ -244,6 +245,7 @@ bool j1Scene::Update(float dt)
 		lose = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 		App->menu_manager->DestroyMenu(Menu::RESOURCES);
+		App->logo_scene->playsound = true;
 		App->gui->ingame = false;
 		App->isPaused = true;
 		App->logo_scene->Loop = true;
