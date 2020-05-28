@@ -84,7 +84,7 @@ public:
 	bool deathclaw4;
 	
 private:
-	int SongPlaying = 0;
+	int SongPlaying;
 	int beaten_enemies;
 };
 

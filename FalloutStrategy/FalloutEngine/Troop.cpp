@@ -7,6 +7,9 @@
 #include "j1Scene.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
+#include "Emiter.h"
+#include "ParticleSystem.h"
+
 Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, GenericPlayer* g_owner) : DynamicEntity() {
 	type = g_type;
 	faction = g_faction;
@@ -50,6 +53,14 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
 		}
 	//}
+
+		particle = App->entities->CreateParticle(position);
+		Animation anim;
+		anim.PushBack(SDL_Rect{ 0, 0 , 5, 5 }, 1);
+		anim.Reset();
+		Emiter emitter(position.x, position.y - 20 , 0.2f , 0.2f , 5, 5, 0 , 0 , 0 , 0 , 2.0f , 2 , 20, 0.4f, nullptr, App->entities->blood, anim, true);
+		particle->PushEmiter(emitter);
+		particle->Desactivate();
 }
 
 Troop::~Troop() {
@@ -57,6 +68,7 @@ Troop::~Troop() {
 }
 
 bool Troop::Update(float dt) {
+
 	bool ret = true;
 	j1Entity* enemy_in_range = nullptr;
 	current_animation = &animations[state][direction];
@@ -210,6 +222,19 @@ bool Troop::Update(float dt) {
     default:
         break;
 	}
+
+
+	if (particle != nullptr) {
+
+		particle->Move(position.x, position.y);
+		if (state == HIT) 
+			particle->Activate();
+		else 
+			particle->Desactivate();	
+
+		particle->Update(dt);
+	}
+
 
 	last_dt = dt;
 

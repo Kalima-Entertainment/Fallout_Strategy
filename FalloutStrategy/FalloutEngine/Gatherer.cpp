@@ -9,8 +9,8 @@
 #include "FoWManager.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
-#include "ParticleSystem.h"
 #include "Emiter.h"
+#include "ParticleSystem.h"
 
 Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_owner) : DynamicEntity(), resource_collected(0) {
 	type = GATHERER;
@@ -41,9 +41,9 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 
 	particle = App->entities->CreateParticle(position);
 	Animation anim;
-	anim.PushBack(SDL_Rect{ 0, 0 , 12, 12 }, 1);
+	anim.PushBack(SDL_Rect{ 0, 0 , 5, 5 }, 1);
 	anim.Reset();
-	Emiter emitter(position.x, position.y, 0, 1, NULL, 0.5f , 0, 0, 0, 0, 10, 2, 15, 0.5f, nullptr, App->entities->blood, anim, true);
+	Emiter emitter(position.x, position.y - 20, 0.2f, 0.2f, 5, 5, 0, 0, 0, 0, 2.0f, 2, 20, 0.4f, nullptr, App->entities->blood, anim, true);
 	particle->PushEmiter(emitter);
 	particle->Desactivate();
 }
@@ -136,19 +136,17 @@ bool Gatherer::Update(float dt) {
 		break;
 	}
 
-
-	
-	if (state == HIT) { 
-		particle->Activate(); 
-	} else {
-		particle->Desactivate();
-	}
-
 	if (particle != nullptr) {
+
 		particle->Move(position.x, position.y);
+		if (state == HIT)
+			particle->Activate();
+		else
+			particle->Desactivate();
+
+		particle->Update(dt);
 	}
 
-	particle->Update(dt);
 	last_dt = dt;
 
 	return ret;

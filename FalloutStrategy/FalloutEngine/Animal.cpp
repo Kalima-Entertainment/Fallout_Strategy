@@ -5,6 +5,9 @@
 #include "j1Audio.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
+#include "ParticleSystem.h"
+#include "Emiter.h"
+
 Animal::Animal(EntityType g_type, iPoint g_current_tile) : DynamicEntity() {
 	type = g_type;
 	current_tile = g_current_tile;
@@ -15,6 +18,14 @@ Animal::Animal(EntityType g_type, iPoint g_current_tile) : DynamicEntity() {
 	position = App->map->floatMapToWorld(current_tile.x, current_tile.y);
 	position.x += HALF_TILE;
 	position.y += HALF_TILE;
+
+	particle = App->entities->CreateParticle(position);
+	Animation anim;
+	anim.PushBack(SDL_Rect{ 0, 0 , 5, 5 }, 1);
+	anim.Reset();
+	Emiter emitter(position.x, position.y - 20, 0.2f, 0.2f, 5, 5, 0, 0, 0, 0, 2.0f, 2, 20, 0.4f, nullptr, App->entities->blood, anim, true);
+	particle->PushEmiter(emitter);
+	particle->Desactivate();
 
 }
 
@@ -83,6 +94,17 @@ bool Animal::Update(float dt) {
 
     default:
         break;
+	}
+
+	if (particle != nullptr) {
+
+		particle->Move(position.x, position.y);
+		if (state == HIT)
+			particle->Activate();
+		else
+			particle->Desactivate();
+
+		particle->Update(dt);
 	}
 
 	last_dt = dt;
