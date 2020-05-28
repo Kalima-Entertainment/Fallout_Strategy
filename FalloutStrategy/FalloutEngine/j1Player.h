@@ -33,7 +33,7 @@ public:
 	bool qcaps;
 	bool qfood;
 	bool qwater;
-	int reward = 0;
+	int reward ;
 	
 private:
 	float mouse_speed_multiplier;
