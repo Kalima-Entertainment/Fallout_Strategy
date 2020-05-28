@@ -22,6 +22,7 @@
 #include "Animal.h"
 #include "Gatherer.h"
 #include "Deathclaw.h"
+#include "GenericPlayer.h"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -895,6 +896,8 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 	EntityType type = NO_TYPE;
 	fPoint position = { -1.0f,-1.0f };
 	iPoint current_tile = { 0,0 }, target_tile = { 0,0 };
+	GenericPlayer* owner = nullptr;
+
 	int current_health = 0;
 	int upgrade_gath = 0;
 	int upgrade_base = 0;
@@ -972,7 +975,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 			
 			//create building
 			StaticEntity* entity = (StaticEntity*)App->entities->CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]);
-			entity->owner = App->scene->players[faction];
+			
 			iPoint tile = current_tile;
 			if (type_name == "base") {
 				entity = App->scene->players[faction]->base;
@@ -1013,7 +1016,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 			}
 			else {
 				DynamicEntity* entity = (DynamicEntity*)CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]);
-				entity->owner = App->scene->players[faction];
+			
 			}
 
 		}

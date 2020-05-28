@@ -155,8 +155,8 @@ void j1Transition::Transition()
 		if(App->gui->load==false){
 			App->dialog_manager->Enable();
 			App->menu_manager->CreateMenu(Menu::DIALOG); 
-		}		
-		App->isPaused = true;
+			App->isPaused = true;
+		}				
 		App->gui->load = false;
 
 	}

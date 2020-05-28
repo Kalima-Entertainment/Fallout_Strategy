@@ -148,13 +148,19 @@ bool UI_Button::Update(float dt)
 
 				App->menu_manager->DestroyMenu(Menu::MAIN_MENU);
 				App->audio->PlayFx(1, App->audio->click_fx, 0);
+				App->player->faction = BROTHERHOOD;
 				App->gui->count = 0;
 				App->gui->ingame = true;
 				App->gui->load = true;
 				App->transition->fadetimer.Start();
 				App->transition->transition = true;
-				App->LoadGame("save_file.xml");
+				App->menu_manager->CreateMenu(Menu::GUI);
+				App->menu_manager->CreateMenu(Menu::RESOURCES);
+				App->hud->activateTimer = true;
+				App->isPaused = false;
 				App->entities->Enable();
+				
+				//App->LoadGame("save_file.xml");
 				
 			}
 			else if (t == Button_slider_music_left) {
