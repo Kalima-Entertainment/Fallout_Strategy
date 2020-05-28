@@ -641,7 +641,7 @@ ResourceBuilding* j1EntityManager::FindResourceBuildingByTile(iPoint tile) {
 	return nullptr;
 }
 
-iPoint j1EntityManager::ClosestTile(iPoint position, std::vector<iPoint> entity_tiles) const {
+iPoint j1EntityManager::ClosestTile(iPoint position, std::vector<iPoint> entity_tiles) {
 	iPoint pivot = entity_tiles[0];
 	for (int i = 0; i < entity_tiles.size(); i++)
 	{

@@ -11,7 +11,7 @@
 #include "FoWManager.h"
 #include "j1EntityManager.h"
 
-StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile,  GenericPlayer* g_owner) {
+StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile, GenericPlayer* g_owner) : j1Entity() {
 
 	type = g_type;
 	faction = g_faction;
@@ -143,8 +143,7 @@ bool StaticEntity::PostUpdate() {
 		App->render->Blit(texture, render_position.x + upgrade_sprite[i].position.x, render_position.y + upgrade_sprite[i].position.y, &upgrade_sprite[i].rect);
 	}
 
-	if (App->render->debug)
-		App->render->DrawQuad({ (int)position.x, (int)position.y, 4,4 }, 255, 0, 0, 255);
+	//if (App->render->debug) App->render->DrawQuad({ (int)position.x, (int)position.y, 4,4 }, 255, 0, 0, 255);
 
 	//Health bar stats
 	background_health_bar = { (int)(render_position.x + sprite_size * 0.5f - 40), (int)render_position.y, 80, 4 };

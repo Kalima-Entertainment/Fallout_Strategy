@@ -72,8 +72,12 @@ bool Troop::Update(float dt) {
 			target_entity = enemy_in_range;
 			PathfindToPosition(enemy_in_range->current_tile);
 		}
-		else if(target_building)
+		else if (target_building)
 		{
+			if (target_building->state == DIE) {
+				target_building = RequestTargetBuilding(target_building->faction);
+			}
+
 			target_entity = target_building;
 			PathfindToPosition(target_building->current_tile);
 		}
@@ -97,7 +101,8 @@ bool Troop::Update(float dt) {
 			}
 			else if (target_building){
 				if (target_building->state == DIE) {
-					target_entity = target_building = RequestTargetBuilding(target_building->faction);
+					target_building = RequestTargetBuilding(target_building->faction);
+					target_entity = target_building;
 				}
 				else if (current_tile.DistanceManhattan(App->entities->ClosestTile(current_tile, target_building->tiles)) <= range) {
 					UpdateTile();

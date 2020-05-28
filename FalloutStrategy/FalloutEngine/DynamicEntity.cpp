@@ -183,14 +183,8 @@ void DynamicEntity::Move(float dt) {
 					node_path.pop_back();
 
 					//if we have reached the final node pathfind to target building
-					if (node_path.size() == 0)
+					if (node_path.size() > 0)
 					{
-						if ((target_entity != nullptr)&&(!target_entity->is_dynamic)) {
-							target_tile = App->entities->ClosestTile(current_tile, ((StaticEntity*)target_entity)->tiles);
-						}
-					}
-					//if not we keep following the path 
-					else {
 						target_tile = node_path.back();
 					}
 

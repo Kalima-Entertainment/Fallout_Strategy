@@ -24,7 +24,8 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 	position.x += HALF_TILE;
 	position.y += HALF_TILE;
 
-	if (owner) base = owner->base;
+	if (owner) 
+		base = owner->base;
 
 	if (App->render->fog_of_war) {
 		if (this->faction == App->player->faction) {
@@ -38,7 +39,6 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 		}
 	}
 
-	
 	/*particle = App->entities->CreateParticle(position);
 	Animation anim;
 	anim.PushBack(SDL_Rect{ 0, 0 , 30, 30 }, 1);
@@ -46,7 +46,6 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 	Emiter emitter(position.x, position.y, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 2, nullptr, App->entities->blood, anim, true);
 	particle->PushEmiter(emitter);
 	particle->Desactivate();*/
-	
 }
 
 Gatherer::~Gatherer() {
@@ -69,7 +68,7 @@ bool Gatherer::Update(float dt) {
 
 		if ((next_tile == target_tile)&&(node_path.size() == 0)) {
 			//gather
-			if (((resource_building != nullptr) && (resource_collected < storage_capacity)) || ((resource_collected > 0) && (target_entity != nullptr))) {
+			if (((resource_building != nullptr) && (resource_collected < storage_capacity)) || ((resource_collected > 0) && (base != nullptr))) {
 				state = GATHER;
 				gathering_timer.Start();
 			}
@@ -87,7 +86,7 @@ bool Gatherer::Update(float dt) {
 				StoreGatheredResources();
 
 				//go back to resource building to get more resources
-				if ((resource_building)&&(resource_building->quantity > 0)) {
+				if ((resource_building != nullptr)&&(resource_building->quantity > 0)) {
 					PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
 					state = WALK;
 				}
@@ -178,7 +177,7 @@ void Gatherer::AssignResourceBuilding(ResourceBuilding* g_resource_building) {
 }
 
 void Gatherer::StoreGatheredResources() {
-	owner->base += resource_collected;
+	base->volume += resource_collected;
 
 	if (owner == App->player) {
 		App->player->UpdateResourceData(resource_type, resource_collected);

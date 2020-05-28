@@ -267,7 +267,7 @@ void j1App::FinishUpdate()
 		prev_last_sec_frame_count, dt, App->render->camera.x, App->render->camera.y);
 	App->win->SetTitle(title);
 	*/
-	sprintf_s(title, 256, " Fallout Strategy 0.7 - Kalima Entertainment | FPS: %d",
+	sprintf_s(title, 256, " Fallout Strategy 0.8 - Kalima Entertainment | FPS: %d",
 		prev_last_sec_frame_count);
 	App->win->SetTitle(title);
 

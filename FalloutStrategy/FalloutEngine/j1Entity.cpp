@@ -15,12 +15,9 @@
 
 j1Entity::j1Entity() {
 
-	position = { 0, 0 };
-	current_tile = { 0, 0 };
-
 	spawnPosition = {NULL,NULL};
 
-	max_health = current_health = 100;
+	max_health = current_health = 0;
 
 	current_animation = nullptr;
 	faction = VAULT;
@@ -31,6 +28,8 @@ j1Entity::j1Entity() {
 	to_delete = false;
 	particles_created = false;
 	playing_fx = false;
+
+	last_dt = 0.01;
 
 	particle = nullptr;
 }
