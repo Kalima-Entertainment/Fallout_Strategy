@@ -110,7 +110,7 @@ bool j1Hud::Update(float dt) {
 
 bool j1Hud::PostUpdate() {
 	BROFILER_CATEGORY("Hud PostUpdate", Profiler::Color::Red)
-	if (App->player->selected_entity != nullptr)
+	if (App->player->selected_entity != nullptr && App->gui->ingame == true)
 	{
 		StaticEntity* static_entity = (StaticEntity*)App->player->selected_entity;
 
