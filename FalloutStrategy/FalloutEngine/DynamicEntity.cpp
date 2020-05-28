@@ -16,6 +16,9 @@
 #include "SDL_mixer/include/SDL_mixer.h"
 #include "FoWManager.h"
 
+#include "Emiter.h"
+#include "ParticleSystem.h"
+
 DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile, GenericPlayer* g_owner) : j1Entity() {
 	owner = g_owner;
 	type = g_type;
@@ -42,6 +45,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 	detection_radius = 6;
 	//action_timer.Start();
 	detection_timer.Start();	
+	particle = nullptr;
 }
 
 DynamicEntity::DynamicEntity() {
@@ -61,6 +65,7 @@ DynamicEntity::~DynamicEntity() {
 	path_to_target.clear();
 	entities_in_range.clear();
 }
+
 
 bool DynamicEntity::PostUpdate() {
 

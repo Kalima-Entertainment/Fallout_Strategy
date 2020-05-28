@@ -62,7 +62,7 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 	Animation anim;
 	anim.PushBack(SDL_Rect{ 0, 0 , 128, 128 }, 1);
 	anim.Reset();
-	Emiter emitter(position.x - 40, position.y, 0, -0.7f , 0.1f, NULL , 0.0080f, 0, 0, 0, 0, 0, 2, 4, nullptr, App->entities->smoke, anim, true);
+	Emiter emitter(position.x - 40, position.y, 0, -0.7f , 0.1f, NULL , 0.0080f, 0, 0, 0, 0, 0, 0, 3.0f, nullptr, App->entities->smoke, anim, true);
 	particle->PushEmiter(emitter);
 	particle->Desactivate();
 }
@@ -91,13 +91,14 @@ bool StaticEntity::Update(float dt) {
 	switch (state) {
 	case IDLE:
 		break;
-	case HIT:
-		
 	case DIE:
 		if (!delete_timer.Started())
 			delete_timer.Start();
 
 		visionEntity->SetNewPosition(App->map->MapToWorld(-10, -10));
+
+		particle->Desactivate();
+		particle = nullptr;
 
 		if ((delete_timer.ReadSec() > 5)||(current_animation->Finished()))
 			to_delete = true;
@@ -123,9 +124,6 @@ bool StaticEntity::Update(float dt) {
 		particle->Move(position.x, position.y);
 		if (current_health <= (max_health/2))
 			particle->Activate();
-	}
-	else if(current_health <= 0.0f) {
-		particle->Desactivate();
 	}
 
 	last_dt = dt;
@@ -191,7 +189,7 @@ bool StaticEntity::PostUpdate() {
 	}
 
 	//Blit particles forward buildings
-	particle->Update(last_dt);
+	particle->Update(this->last_dt);
 
 	return true;
 }

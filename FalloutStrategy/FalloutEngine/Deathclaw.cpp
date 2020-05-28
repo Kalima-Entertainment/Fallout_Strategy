@@ -6,6 +6,9 @@
 #include "j1Scene.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
+#include "Emiter.h"
+#include "ParticleSystem.h"
+
 Deathclaw::Deathclaw(iPoint g_current_tile) : DynamicEntity() {
 	current_tile = g_current_tile;
 	is_dynamic = true;
@@ -16,6 +19,14 @@ Deathclaw::Deathclaw(iPoint g_current_tile) : DynamicEntity() {
 	attack_time = 3;
 	range = 1;
 	attack_timer.Start();
+
+	particle = App->entities->CreateParticle(position);
+	Animation anim;
+	anim.PushBack(SDL_Rect{ 0, 0 , 5, 5 }, 1);
+	anim.Reset();
+	Emiter emitter(position.x, position.y - 20, 0.2f, 0.2f, 5, 5, 0, 0, 0, 0, 2.0f, 2, 20, 0.4f, nullptr, App->entities->blood, anim, true);
+	particle->PushEmiter(emitter);
+	particle->Desactivate();
 }
 
 Deathclaw::~Deathclaw() {
@@ -78,6 +89,17 @@ bool Deathclaw::Update(float dt) {
         break;
     default:
         break;
+	}
+
+	if (particle != nullptr) {
+
+		particle->Move(position.x, position.y);
+		if (state == HIT)
+			particle->Activate();
+		else
+			particle->Desactivate();
+
+		particle->Update(dt);
 	}
 
 	last_dt = dt;
