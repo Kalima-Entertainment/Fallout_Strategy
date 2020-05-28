@@ -96,7 +96,7 @@ void ParticleSystem::Move(int x, int y)
 
 	int xPos, yPos;
 
-	//if (active)
+	if (active)
 	{
 		int numEmiters = emiterVector.size();
 

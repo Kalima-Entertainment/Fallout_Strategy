@@ -44,8 +44,8 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 
 	detection_radius = 6;
 	//action_timer.Start();
-	detection_timer.Start();	
-	particle = nullptr;
+	detection_timer.Start();
+	DynaParticle = nullptr;
 }
 
 DynamicEntity::DynamicEntity() {

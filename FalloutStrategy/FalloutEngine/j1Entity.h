@@ -115,7 +115,6 @@ public:
 	j1Timer delete_timer;
 
 	FoWEntity* visionEntity = nullptr;
-	ParticleSystem* particle;
 
 protected:
 	SDL_Rect background_health_bar;

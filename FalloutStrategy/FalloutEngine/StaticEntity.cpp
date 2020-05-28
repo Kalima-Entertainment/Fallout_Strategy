@@ -58,13 +58,13 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 	}
 
 	// -- Smoke particles
-	particle = App->entities->CreateParticle(position);
+	StaticParticle = App->entities->CreateParticle(position);
 	Animation anim;
 	anim.PushBack(SDL_Rect{ 0, 0 , 128, 128 }, 1);
 	anim.Reset();
 	Emiter emitter(position.x - 40, position.y, 0, -0.7f , 0.1f, NULL , 0.0080f, 0, 0, 0, 0, 0, 0, 3.0f, nullptr, App->entities->smoke, anim, true);
-	particle->PushEmiter(emitter);
-	particle->Desactivate();
+	StaticParticle->PushEmiter(emitter);
+	StaticParticle->Desactivate();
 }
 
 StaticEntity::~StaticEntity() {
@@ -74,6 +74,9 @@ StaticEntity::~StaticEntity() {
 	attacking_entity = nullptr;
 	current_animation = nullptr;
 	texture = nullptr;
+	StaticParticle = nullptr;
+	//App->entities->ReleaseParticle(StaticParticle);
+
 	tiles.clear();
 
 	//Clean Unit Spawn Stacks
@@ -97,8 +100,7 @@ bool StaticEntity::Update(float dt) {
 
 		visionEntity->SetNewPosition(App->map->MapToWorld(-10, -10));
 
-		particle->Desactivate();
-		particle = nullptr;
+		StaticParticle->Desactivate();
 
 		if ((delete_timer.ReadSec() > 5)||(current_animation->Finished()))
 			to_delete = true;
@@ -120,10 +122,10 @@ bool StaticEntity::Update(float dt) {
 	DebugSpawnsUpgrades();
 
 	// -- Active particle when health its lower or equal than half
-	if (particle != nullptr) {
-		particle->Move(position.x, position.y);
+	if (StaticParticle != nullptr) {
+		StaticParticle->Move(position.x, position.y);
 		if (current_health <= (max_health/2))
-			particle->Activate();
+			StaticParticle->Activate();
 	}
 
 	last_dt = dt;
@@ -189,10 +191,9 @@ bool StaticEntity::PostUpdate() {
 	}
 
 	//Blit particles forward buildings
-	if (particle!=nullptr)
-	{
-		particle->Update(last_dt);
-	}
+	if (StaticParticle  != nullptr)
+		StaticParticle->Update(last_dt);
+	
 
 	return true;
 }

@@ -42,7 +42,7 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 		break;
 	}
 
-	//if (App->render->fog_of_war) {
+	if (App->render->fog_of_war) {
 		if (this->faction == App->player->faction) {
 			//Player
 			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, true);
@@ -52,19 +52,21 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 			//Enemy
 			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
 		}
-	//}
+	}
 
-		particle = App->entities->CreateParticle(position);
-		Animation anim;
-		anim.PushBack(SDL_Rect{ 0, 0 , 5, 5 }, 1);
-		anim.Reset();
-		Emiter emitter(position.x, position.y - 20 , 0.2f , 0.2f , 5, 5, 0 , 0 , 0 , 0 , 2.0f , 2 , 20, 0.4f, nullptr, App->entities->blood, anim, true);
-		particle->PushEmiter(emitter);
-		particle->Desactivate();
+	DynaParticle = App->entities->CreateParticle(position);
+	Animation anim;
+	anim.PushBack(SDL_Rect{ 0, 0 , 5, 5 }, 1);
+	anim.Reset();
+	Emiter Blood(position.x, position.y - 20, 0.2f, 0.2f, 5, 5, 0, 0, 0, 0, 2.0f, 2, 20, 0.4f, nullptr, App->entities->blood, anim, true);
+	DynaParticle->PushEmiter(Blood);
+	DynaParticle->Desactivate();
 }
 
 Troop::~Troop() {
 	target_building = nullptr;
+	DynaParticle = nullptr;
+	//App->entities->ReleaseParticle(DynaParticle);
 }
 
 bool Troop::Update(float dt) {
@@ -220,18 +222,16 @@ bool Troop::Update(float dt) {
         break;
 	}
 
-
-	if (particle != nullptr) {
-
-		particle->Move(position.x, position.y);
-		if (state == HIT) 
-			particle->Activate();
-		else 
-			particle->Desactivate();	
-
-		particle->Update(dt);
+	// -- If there are any particle then move and blits when current state equals hit
+	if (DynaParticle != nullptr) {
+		if (state == HIT) DynaParticle->Activate();
+		else DynaParticle->Desactivate();
 	}
 
+	if (DynaParticle->IsActive()) {
+		DynaParticle->Move(position.x, position.y);
+		DynaParticle->Update(dt);
+	}
 
 	last_dt = dt;
 

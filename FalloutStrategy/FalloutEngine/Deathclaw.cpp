@@ -20,17 +20,19 @@ Deathclaw::Deathclaw(iPoint g_current_tile) : DynamicEntity() {
 	range = 1;
 	attack_timer.Start();
 
-	particle = App->entities->CreateParticle(position);
+	DynaParticle = App->entities->CreateParticle(position);
 	Animation anim;
 	anim.PushBack(SDL_Rect{ 0, 0 , 5, 5 }, 1);
 	anim.Reset();
-	Emiter emitter(position.x, position.y - 20, 0.2f, 0.2f, 5, 5, 0, 0, 0, 0, 2.0f, 2, 20, 0.4f, nullptr, App->entities->blood, anim, true);
-	particle->PushEmiter(emitter);
-	particle->Desactivate();
+	Emiter Blood(position.x, position.y - 20, 0.2f, 0.2f, 5, 5, 0, 0, 0, 0, 2.0f, 2, 20, 0.4f, nullptr, App->entities->blood, anim, true);
+	DynaParticle->PushEmiter(Blood);
+	DynaParticle->Desactivate();
 }
 
 Deathclaw::~Deathclaw() {
 	target_entity = nullptr;
+	DynaParticle = nullptr;
+	//App->entities->ReleaseParticle(DynaParticle);
 }
 
 bool Deathclaw::Update(float dt) {
@@ -91,15 +93,15 @@ bool Deathclaw::Update(float dt) {
         break;
 	}
 
-	if (particle != nullptr) {
+	// -- If there are any particle then move and blits when current state equals hit
+	if (DynaParticle != nullptr) {
+		if (state == HIT) DynaParticle->Activate();
+		else DynaParticle->Desactivate();
+	}
 
-		particle->Move(position.x, position.y);
-		if (state == HIT)
-			particle->Activate();
-		else
-			particle->Desactivate();
-
-		particle->Update(dt);
+	if (DynaParticle->IsActive()) {
+		DynaParticle->Move(position.x, position.y);
+		DynaParticle->Update(dt);
 	}
 
 	last_dt = dt;

@@ -75,6 +75,8 @@ private:
 
 	SDL_Rect spawn_bar_background;
 	SDL_Rect spawn_bar_foreground;
+
+	ParticleSystem* StaticParticle;
 };
 
 #endif // !_STATIC_ENTITY_H

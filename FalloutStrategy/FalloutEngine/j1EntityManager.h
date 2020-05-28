@@ -115,6 +115,7 @@ public:
 
 	ParticleSystem* CreateParticle(fPoint);
 	void DeleteParticles();
+	void ReleaseParticle(ParticleSystem*);
 	void RestartOccupiedTiles();
 
 public:

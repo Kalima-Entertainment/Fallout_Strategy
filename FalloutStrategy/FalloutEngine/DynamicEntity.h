@@ -71,6 +71,8 @@ public:
 	std::vector<iPoint> node_path;
 	std::vector<j1Entity*> entities_in_range;
 	std::vector<iPoint> path_to_target;
+	ParticleSystem* DynaParticle;
+
 };
 
 #endif // !_DYNAMIC_ENTITY_H

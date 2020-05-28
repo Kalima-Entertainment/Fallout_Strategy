@@ -1228,6 +1228,21 @@ void j1EntityManager::DeleteParticles(){
 	entities.clear();
 }
 
+void j1EntityManager::ReleaseParticle(ParticleSystem* particle) {
+
+	/*for (int i = 0; i < particles.size(); i++)
+	{
+		Deleting particles from vector
+		if (particles[i] == particle)
+		{
+			delete entities[i];
+			entities[i] = nullptr;
+			entities.erase(entities.begin() + i);
+		}
+	}*/
+
+}
+
 void j1EntityManager::RestartOccupiedTiles() {
 	for (int y = 0; y < 150; y++)
 	{

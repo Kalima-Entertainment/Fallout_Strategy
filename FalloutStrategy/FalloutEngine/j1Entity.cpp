@@ -30,8 +30,6 @@ j1Entity::j1Entity() {
 	playing_fx = false;
 
 	last_dt = 0.01;
-
-	particle = nullptr;
 }
 
 j1Entity::~j1Entity() {}
