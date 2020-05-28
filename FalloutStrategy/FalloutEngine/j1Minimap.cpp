@@ -105,6 +105,7 @@ bool j1Minimap::Start() {
 bool j1Minimap::CleanUp() {
 	bool ret = true;
 
+	visible = false;
 	App->tex->UnLoad(texture);
 	texture = nullptr;
 

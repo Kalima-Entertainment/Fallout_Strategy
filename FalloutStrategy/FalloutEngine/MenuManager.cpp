@@ -1071,7 +1071,6 @@ void MenuManager::DestroyMenu(Menu menu) {
 
 	switch (menu)
 	{
-
 	case Menu::MAIN_MENU:
 		App->gui->DeleteArrayElements(main_menu, 11);
 		break;

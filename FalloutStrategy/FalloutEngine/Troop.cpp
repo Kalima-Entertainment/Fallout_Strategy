@@ -16,6 +16,7 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 	current_tile = g_current_tile;
 	owner = g_owner;
 	is_agressive = true;
+	commanded = false;
 	attack_timer.Start();
 	attack_time = 3;
 	detection_radius = 4;
@@ -74,6 +75,9 @@ bool Troop::Update(float dt) {
 	bool ret = true;
 	j1Entity* enemy_in_range = nullptr;
 	current_animation = &animations[state][direction];
+
+	if ((target_entity)&&(!target_entity->is_dynamic))
+		target_building = (StaticEntity*)target_entity;
 
 	Mix_AllocateChannels(35);
 

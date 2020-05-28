@@ -624,6 +624,9 @@ void StaticEntity::SpawnChrono() {
 		spawning = true;
 	}
 	if (spawning == true) {
+		if (spawn_stack[0].type == MR_HANDY) {
+			spawn_stack[0].spawn_seconds = App->entities->mr_handy_time;
+		}
 		if (chrono_spawn.ReadSec() > spawn_stack[0].spawn_seconds) {
 			App->entities->CreateEntity(faction, spawn_stack[0].type, spawnPosition.x, spawnPosition.y, owner);
 			//LOG("Unit Spawned");

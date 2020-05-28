@@ -144,6 +144,7 @@ public:
 	Upgrades_Data units_creation_time[4];
 	int radar_cost;
 	int mr_handy_cost;
+	int mr_handy_time;
 
 	// -- Particle textures
 	SDL_Texture* blood;

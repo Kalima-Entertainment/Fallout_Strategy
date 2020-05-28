@@ -14,6 +14,7 @@ Animal::Animal(EntityType g_type, iPoint g_current_tile) : DynamicEntity() {
 	is_agressive = false;
 	pasturing_time = 20;
 	faction = NO_FACTION;
+	food_quantity = 0;
 
 	position = App->map->floatMapToWorld(current_tile.x, current_tile.y);
 	position.x += HALF_TILE;

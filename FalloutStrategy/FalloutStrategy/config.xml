@@ -45,8 +45,7 @@
       <barrack cost="350" upgrade_time="30" cost_increment="250" damage_increment="0.15" speed_increment="0.15"/>
     </boost>
     <radar cost="100" />
-    <mr_handy cost="1000" />
-
+    <mr_handy cost="1000" time="50"/>
     <animation_files base_folder="Assets/textures/characters/">
      <file folder="VaultDwellers/" tmx="VaultDwellers_Melee.tmx"/>
      <file folder="VaultDwellers/" tmx="VaultDwellers_Ranged.tmx"/>

@@ -41,7 +41,6 @@ bool DialogManager::Awake(pugi::xml_node&) {
 
 bool DialogManager::Start() {
 	bool ret = true;
-		
 	return ret;
 }
 
@@ -65,13 +64,15 @@ bool DialogManager::PostUpdate() {
 
 bool DialogManager::CleanUp() {
 	bool ret = true;
-	for (int i = 0; i < dialogs.size(); i++)
-	{
-		delete dialogs[i];
-		dialogs[i] = nullptr;
-	}
+	if (App->quitGame) {
+		for (int i = 0; i < dialogs.size(); i++)
+		{
+			delete dialogs[i];
+			dialogs[i] = nullptr;
+		}
 
-	dialogs.clear();
+		dialogs.clear();
+	}
 	App->menu_manager->DestroyMenu(Menu::DIALOG);
 	App->menu_manager->CreateMenu(Menu::GUI);
 	App->menu_manager->CreateMenu(Menu::RESOURCES);

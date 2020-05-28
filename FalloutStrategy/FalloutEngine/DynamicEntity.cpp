@@ -49,6 +49,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 }
 
 DynamicEntity::DynamicEntity() {
+	target_entity = nullptr;
 	is_dynamic = true;
 	commanded = false;
 	state = IDLE;
