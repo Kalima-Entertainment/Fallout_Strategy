@@ -885,7 +885,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 	App->ai_manager->Start();
 	RestartOccupiedTiles();
 	
-
+	std::string player_faction = "NO_FACTION_ASSIGNED";
 	Faction faction = NO_FACTION;
 	std::string type_name = "NO_TYPE";
 	std::string faction_name = "NO_FACTION";
@@ -901,8 +901,16 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 	int upgrade_speed = 0;
 	int width, height;
 	bool dynamic_entity = true;
-	pugi::xml_node iterator = data.first_child();
 
+	player_faction = data.child("player").attribute("player_faction").as_string();
+
+	if (player_faction == "brotherhood") { App->player->faction = BROTHERHOOD; }
+	else if (player_faction == "supermutant") { App->player->faction = MUTANT; }
+	else if (player_faction == "ghoul") { App->player->faction = GHOUL; }
+	else if (player_faction == "vault") { App->player->faction = VAULT; }
+
+
+	pugi::xml_node iterator = data.first_child();
 	while (iterator)
 	{
 		dynamic_entity = true;
@@ -961,6 +969,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 			
 			//create building
 			StaticEntity* entity = (StaticEntity*)App->entities->CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]);
+			entity->owner = App->scene->players[faction];
 			iPoint tile = current_tile;
 			if (type_name == "base") {
 				entity = App->scene->players[faction]->base;
@@ -1000,7 +1009,8 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 				CreateEntity(faction, type, current_tile.x, current_tile.y);
 			}
 			else {
-				CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]);
+				DynamicEntity* entity = (DynamicEntity*)CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]);
+				entity->owner = App->scene->players[faction];
 			}
 
 		}
@@ -1008,6 +1018,8 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 
 		iterator = iterator.next_sibling();
 	}
+	
+	
 
 	LOG("%i", entities.size());
 
@@ -1041,6 +1053,8 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 		else if (entities[i]->faction == GHOUL) { entities_pugi.append_attribute("faction") = "ghoul"; }
 		else if (entities[i]->faction == NO_FACTION) { entities_pugi.append_attribute("faction") = "no_faction"; }
 
+		
+
 		entities_pugi.append_attribute("position_x") = entities[i]->position.x;
 		entities_pugi.append_attribute("position_y") = entities[i]->position.y;
 		entities_pugi.append_attribute("current_tile_x") = entities[i]->current_tile.x;
@@ -1066,6 +1080,14 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 		}
 
 	}
+	
+	pugi::xml_node player_pugi = data.append_child("player");
+
+	if (App->player->faction == BROTHERHOOD) { player_pugi.append_attribute("player_faction") = "brotherhood"; }
+	else if (App->player->faction == MUTANT) { player_pugi.append_attribute("player_faction") = "supermutant"; }
+	else if (App->player->faction == VAULT) { player_pugi.append_attribute("player_faction") = "vault"; }
+	else if (App->player->faction == GHOUL) { player_pugi.append_attribute("player_faction") = "ghoul"; }
+	
 	LOG("%i", entities.size());
 
 	return true;

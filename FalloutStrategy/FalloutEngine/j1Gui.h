@@ -72,6 +72,7 @@ public:
 	bool cap;
 	bool ingame;
 	bool open;
+	bool load;
 
 private:
 	pugi::xml_node node;

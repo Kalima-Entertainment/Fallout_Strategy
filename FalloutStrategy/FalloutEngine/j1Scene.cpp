@@ -446,7 +446,7 @@ bool j1Scene::Load(pugi::xml_node& data)
 	
 	App->map->CleanUp();
 	App->minimap->CleanUp();
-	pugi::xml_node iterator;
+	pugi::xml_node iterator = data.first_child();
 	int i = 0;
 
 	while(iterator){
@@ -461,9 +461,10 @@ bool j1Scene::Load(pugi::xml_node& data)
 	if (App->map->Load(modules) == true)
 	{
 		App->map->CreateWalkabilityMap();
-		App->minimap->Start();
+		
 	}
 
+	App->minimap->Start();
 
 	return true;
 }

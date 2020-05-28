@@ -150,10 +150,12 @@ bool UI_Button::Update(float dt)
 				App->audio->PlayFx(1, App->audio->click_fx, 0);
 				App->gui->count = 0;
 				App->gui->ingame = true;
+				App->gui->load = true;
 				App->transition->fadetimer.Start();
 				App->transition->transition = true;
-				App->entities->Enable();
 				App->LoadGame("save_file.xml");
+				App->entities->Enable();
+				
 			}
 			else if (t == Button_slider_music_left) {
 				App->gui->volume_up = 1;

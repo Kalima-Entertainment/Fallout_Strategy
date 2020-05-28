@@ -150,10 +150,15 @@ void j1Transition::Transition()
 		App->gui->active;
 		App->Mmanager->Enable();
 		App->scene->Enable();
-		App->dialog_manager->Enable();
+		
 		//App->minimap->Enable();
-		App->menu_manager->CreateMenu(Menu::DIALOG);
+		if(App->gui->load==false){
+			App->dialog_manager->Enable();
+			App->menu_manager->CreateMenu(Menu::DIALOG); 
+		}		
 		App->isPaused = true;
+		App->gui->load = false;
+
 	}
 	else if ((fadetimer.Read() > 2500)&&(!App->gui->ingame)) {
 		Mix_PauseMusic();
