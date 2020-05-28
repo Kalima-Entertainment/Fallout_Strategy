@@ -52,6 +52,10 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 	radar_cost = config.child("radar").attribute("cost").as_int();
 	mr_handy_cost = config.child("mr_handy").attribute("cost").as_int();
 
+	LOG("%i",mr_handy_cost);
+
+	mr_handy_time = config.child("mr_handy").attribute("time").as_int();
+
 	pugi::xml_node animation_node = config.child("animation_files");
 	std::string base_folder = animation_node.attribute("base_folder").as_string();
 	pugi::xml_node file_node = animation_node.child("file");
