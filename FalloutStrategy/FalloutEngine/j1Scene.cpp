@@ -39,12 +39,13 @@ j1Scene::j1Scene() : j1Module()
 	create = false;
 	create_tutorial = false;
 	menu_state = StatesMenu::NONE;
-	iPoint mouse_pos = { 0,0 };
-	iPoint rectangle_origin = { 0,0 };
+	mouse_pos = { 0,0 };
+	rectangle_origin = { 0,0 };
 	int rectangle_width = 0;
 	int rectangle_height = 0;
 	win = false;
 	lose = false;
+	load_game = false;
 	deathclaw1 = false;
 	deathclaw2 = false;
 	deathclaw3 = false;
@@ -221,8 +222,9 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN){
 		App->SaveGame("save_file.xml");
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
+	else if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN || load_game == true) {
 		App->LoadGame("save_file.xml");
+		load_game = false;
 	}
 
 	int x, y;

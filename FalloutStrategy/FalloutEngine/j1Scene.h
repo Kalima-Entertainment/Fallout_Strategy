@@ -64,6 +64,7 @@ public:
 	int bottomleft;
 	int bottomright;
 	bool create;
+	bool load_game;
 	bool create_tutorial;
 	StatesMenu menu_state;
 	GenericPlayer* players[4];

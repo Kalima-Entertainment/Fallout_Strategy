@@ -159,7 +159,7 @@ bool UI_Button::Update(float dt)
 				App->hud->activateTimer = true;
 				App->isPaused = false;
 				App->entities->Enable();
-				
+				App->scene->load_game = true;
 				//App->LoadGame("save_file.xml");
 				
 			}

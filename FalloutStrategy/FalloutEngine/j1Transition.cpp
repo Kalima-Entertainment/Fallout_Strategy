@@ -24,6 +24,12 @@
 j1Transition::j1Transition() : j1Module()
 {
 	name = ("transition");
+
+	speed_reducer = 0;
+	gif_tex = nullptr;
+	logo_tex = nullptr;
+	background = nullptr;
+
 }
 
 j1Transition::~j1Transition()

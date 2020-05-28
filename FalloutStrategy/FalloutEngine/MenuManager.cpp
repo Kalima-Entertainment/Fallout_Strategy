@@ -43,6 +43,54 @@ MenuManager::MenuManager()
 	gatherer_label = nullptr;
 	melee_label = nullptr;
 	ranged_label = nullptr;
+
+	main_menu[11] = nullptr;
+	settings_menu[23] = nullptr;
+	credits_menu[5] = nullptr;
+	collaborators[9] = nullptr;
+	select_faction_menu[10] = nullptr;
+	select_faction_photos[4] = nullptr;
+	pause_menu[7] = nullptr;
+	gui_ingame[4] = nullptr;
+	tutorial[8] = nullptr;
+	how_to_play[6] = nullptr;
+	tutorial_screen = nullptr;
+	info_button2_element = nullptr;
+	quest_button2_element = nullptr;
+	timer_item = nullptr;
+	timer_minutes = nullptr;
+	resources[3] = nullptr;
+	quest[12] = nullptr;
+
+	brotherhood_base[14] = nullptr;
+	brotherhood_barrack[21] = nullptr;
+	brotherhood_lab[19] = nullptr;
+
+	ghoul_base[14] = nullptr;
+	ghoul_barrack[21] = nullptr;
+	ghoul_lab[19] = nullptr;
+
+	vault_base[14] = nullptr;
+	vault_barrack[21] = nullptr;
+	vault_lab[19] = nullptr;
+
+	supermutant_base[14] = nullptr;
+	supermutant_barrack[21] = nullptr;
+	supermutant_lab[19] = nullptr;
+
+	win_scene[5] = nullptr;
+
+	dialogs[11] = nullptr;
+
+	cap_label = nullptr;
+	fullscreen_label = nullptr;
+
+	gatherer_label = nullptr;
+	melee_label = nullptr;
+	ranged_label = nullptr;
+
+	how_to_play_counter = 0;
+
 }
 
 MenuManager::~MenuManager()

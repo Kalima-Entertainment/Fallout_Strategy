@@ -39,11 +39,9 @@ public:
 	j1Timer	timer_game;
 	bool activateTimer;
 	bool draw_health;
-	uint timer = 0;
-	uint minutes = 0;
+	uint timer;
+	uint minutes;
 
-	char coins_text[10];
-	char score_text[10];
 	char timer_text[10];
 	char minutes_text[15];
 	
