@@ -45,10 +45,9 @@ j1Scene::j1Scene() : j1Module()
 	int rectangle_height = 0;
 	win = false;
 	lose = false;
-	deathclaw1 = false;
-	deathclaw2 = false;
-	deathclaw3 = false;
-	deathclaw4 = false;
+	deathclaw1 = deathclaw2 = deathclaw3 = deathclaw4 = false;
+	Deathclaws[0] = Deathclaws[1] = Deathclaws[2] = Deathclaws[3] = nullptr;
+	players[0] = players[1] = players[2] = players[3] = nullptr;
 }
 
 // Destructor
@@ -230,30 +229,18 @@ bool j1Scene::Update(float dt)
 	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
 
 	//Used to select units and groups
-	if (!App->player->TouchingUI(x, y)) {
+	if ((!App->player->TouchingUI(x, y))&&(!App->isPaused)) {
 		RectangleSelection();
 	}
 
-	/*
-	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
-					App->map->data.width, App->map->data.height,
-					App->map->data.tile_width, App->map->data.tile_height,
-					App->map->data.tilesets.count(),
-					map_coordinates.x, map_coordinates.y);
-
-	//App->win->SetTitle(title.GetString());
-	*/
-
 	if(App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 	{
-		
 		win = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 		App->menu_manager->DestroyMenu(Menu::RESOURCES);
 		App->gui->ingame = false;
 		App->isPaused = true;
 		App->logo_scene->Loop = true;
-
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 	{
@@ -442,8 +429,7 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 
 // Load Game State
 bool j1Scene::Load(pugi::xml_node& data)
-{
-	
+{	
 	App->map->CleanUp();
 	App->minimap->CleanUp();
 	pugi::xml_node iterator = data.first_child();
@@ -465,6 +451,7 @@ bool j1Scene::Load(pugi::xml_node& data)
 	}
 
 	App->minimap->Start();
+	App->minimap->Show();
 
 	return true;
 }
