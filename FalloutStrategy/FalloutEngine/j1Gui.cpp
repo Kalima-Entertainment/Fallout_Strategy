@@ -106,6 +106,7 @@ void j1Gui::DeleteArrayElements(UI_element* array[], int size) {
 		for (int i = 0; i < size; i++)
 		{
 			Delete_Element(array[i]);
+			array[i] = nullptr;
 		}
 	}
 }

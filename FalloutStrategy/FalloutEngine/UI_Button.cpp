@@ -252,6 +252,10 @@ bool UI_Button::Update(float dt)
 			else if (t == button_pause_to_main)
 			{
 				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
+				App->menu_manager->DestroyMenu(Menu::RESOURCES);
+				App->menu_manager->DestroyMenu(Menu::TUTORIAL);
+				App->menu_manager->DestroyMenu(Menu::GUI);
+				App->menu_manager->DestroyMenu(Menu::QUEST);
 				App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 				App->audio->PlayFx(1, App->audio->back_fx, 0);
 				App->gui->ingame = false;
@@ -515,7 +519,7 @@ bool UI_Button::Update(float dt)
 				if (App->player->caps >= App->entities->mr_handy_cost) {
 					App->player->laboratory->SpawnUnit(MR_HANDY, true);
 					App->player->UpdateResourceData(Resource::CAPS, -App->entities->mr_handy_cost);
-					App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
+					//App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
 
 				}
 			}

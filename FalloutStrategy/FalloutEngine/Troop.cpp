@@ -16,6 +16,7 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 	current_tile = g_current_tile;
 	owner = g_owner;
 	is_agressive = true;
+	commanded = false;
 	attack_timer.Start();
 	attack_time = 3;
 	detection_radius = 4;
