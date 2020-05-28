@@ -899,6 +899,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 	int upgrade_creat = 0;
 	int upgrade_dama = 0;
 	int upgrade_speed = 0;
+	int width, height;
 	bool dynamic_entity = true;
 	pugi::xml_node iterator = data.first_child();
 
@@ -959,12 +960,11 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		if (dynamic_entity == false) {
 			
 			//create building
-
 			StaticEntity* entity = (StaticEntity*)App->entities->CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]);
-		
+			iPoint tile = current_tile;
 			if (type_name == "base") {
 				entity = App->scene->players[faction]->base;
-				entity->tiles = App->map->CalculateArea(current_tile, 4, 4);
+				width = height = 4;
 			}
 			else if (type_name == "barrack") {
 				if (App->scene->players[faction]->barrack[0] == nullptr) {
@@ -973,11 +973,22 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 				else {
 					App->scene->players[faction]->barrack[1] = entity;
 				}
-				entity->tiles = App->map->CalculateArea(current_tile, 2, 4);
+				width = 2;
+				height = 4;
 			}
 			else if (type_name == "laboratory") {
 				entity = App->scene->players[faction]->laboratory;
-				entity->tiles = App->map->CalculateArea(current_tile, 3, 3);
+				width = height = 3;
+			}
+
+			for (int y = 0; y < height; y++)
+			{
+				for (int x = 0; x < width; x++)
+				{
+					tile.x = current_tile.x + x;
+					tile.y = current_tile.y + y;
+					entity->tiles.push_back(tile);
+				}
 			}
 
 			entity->CalculateRenderAndSpawnPositions();
