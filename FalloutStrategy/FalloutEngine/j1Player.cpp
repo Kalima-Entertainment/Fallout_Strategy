@@ -39,6 +39,8 @@ j1Player::j1Player() : GenericPlayer() {
 	qwater = false;
 	qfood = false;
 
+	reward = 0;
+
 	//faction = VAULT;
 	defeated = false;
 	is_ai = false;

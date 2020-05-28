@@ -90,7 +90,7 @@ MenuManager::MenuManager()
 	ranged_label = nullptr;
 
 	how_to_play_counter = 0;
-
+	
 }
 
 MenuManager::~MenuManager()
@@ -608,7 +608,7 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 					vault_lab[11] = (UI_Label*)App->gui->CreateLabel(750, 613, Label, "0", NULL, this, NULL, "StackedPixelXS");
 					vault_lab[12] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "0", NULL, this, NULL, "StackedPixelXS");
 
-					vault_lab[13] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "100", NULL, this, NULL, "StackedPixelXS");
+					vault_lab[13] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "1000", NULL, this, NULL, "StackedPixelXS");
 					vault_lab[14] = (UI_Label*)App->gui->CreateLabel(750, 673, Label, "0", NULL, this, NULL, "StackedPixelXS");
 					vault_lab[15] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, NULL, "StackedPixelXS");
 
@@ -752,7 +752,7 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 							brotherhood_lab[11] = (UI_Label*)App->gui->CreateLabel(750, 613, Label, "0", NULL, this, NULL, "StackedPixelXS");
 							brotherhood_lab[12] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "0", NULL, this, NULL, "StackedPixelXS");
 
-							brotherhood_lab[13] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "100", NULL, this, NULL, "StackedPixelXS");
+							brotherhood_lab[13] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "1000", NULL, this, NULL, "StackedPixelXS");
 							brotherhood_lab[14] = (UI_Label*)App->gui->CreateLabel(750, 673, Label, "0", NULL, this, NULL, "StackedPixelXS");
 							brotherhood_lab[15] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, NULL, "StackedPixelXS");
 
@@ -897,7 +897,7 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 							supermutant_lab[11] = (UI_Label*)App->gui->CreateLabel(750, 613, Label, "0", NULL, this, NULL, "StackedPixelXS");
 							supermutant_lab[12] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "0", NULL, this, NULL, "StackedPixelXS");
 
-							supermutant_lab[13] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "100", NULL, this, NULL, "StackedPixelXS");
+							supermutant_lab[13] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "1000", NULL, this, NULL, "StackedPixelXS");
 							supermutant_lab[14] = (UI_Label*)App->gui->CreateLabel(750, 673, Label, "0", NULL, this, NULL, "StackedPixelXS");
 							supermutant_lab[15] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, NULL, "StackedPixelXS");
 
@@ -1039,7 +1039,7 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 							ghoul_lab[11] = (UI_Label*)App->gui->CreateLabel(750, 613, Label, "0", NULL, this, NULL, "StackedPixelXS");
 							ghoul_lab[12] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "0", NULL, this, NULL, "StackedPixelXS");
 						
-							ghoul_lab[13] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "100", NULL, this, NULL, "StackedPixelXS");
+							ghoul_lab[13] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "1000", NULL, this, NULL, "StackedPixelXS");
 							ghoul_lab[14] = (UI_Label*)App->gui->CreateLabel(750, 673, Label, "0", NULL, this, NULL, "StackedPixelXS");
 							ghoul_lab[15] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, NULL, "StackedPixelXS");
 							

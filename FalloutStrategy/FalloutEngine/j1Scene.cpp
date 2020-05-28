@@ -128,11 +128,8 @@ bool j1Scene::Start()
 	App->entities->CreateEntity(VAULT, MELEE, 130,110, App->player);
 
 	//Set camera to player's base position
-	App->render->camera.x -= App->player->base->position.x - App->render->camera.w * 0.5f;
-	App->render->camera.y -= App->player->base->position.y - App->render->camera.h * 0.5f;
-
-	//App->render->camera.x = 2000;
-	//App->render->camera.y = 0;
+	App->render->camera.x -= (int)(App->player->base->position.x - App->render->camera.w * 0.5f);
+	App->render->camera.y -= (int)(App->player->base->position.y - App->render->camera.h * 0.5f);
 
 	return true;
 }
@@ -215,7 +212,6 @@ bool j1Scene::Update(float dt)
 			Mix_PauseMusic();
 			App->hud->activateTimer = true;
 		}
-
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN){
@@ -241,15 +237,16 @@ bool j1Scene::Update(float dt)
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 		App->menu_manager->DestroyMenu(Menu::RESOURCES);
 		App->gui->ingame = false;
+		App->logo_scene->playsound = true;
 		App->isPaused = true;
 		App->logo_scene->Loop = true;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 	{
-
 		lose = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 		App->menu_manager->DestroyMenu(Menu::RESOURCES);
+		App->logo_scene->playsound = true;
 		App->gui->ingame = false;
 		App->isPaused = true;
 		App->logo_scene->Loop = true;

@@ -189,7 +189,10 @@ bool StaticEntity::PostUpdate() {
 	}
 
 	//Blit particles forward buildings
-	particle->Update(this->last_dt);
+	if (particle!=nullptr)
+	{
+		particle->Update(last_dt);
+	}
 
 	return true;
 }
