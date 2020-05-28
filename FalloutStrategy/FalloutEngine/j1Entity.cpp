@@ -29,6 +29,8 @@ j1Entity::j1Entity() {
 	particles_created = false;
 	playing_fx = false;
 
+	visionEntity = nullptr;
+
 	last_dt = 0.01;
 }
 
