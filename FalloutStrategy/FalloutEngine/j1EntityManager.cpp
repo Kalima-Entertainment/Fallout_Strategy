@@ -1212,7 +1212,7 @@ void j1EntityManager::SpawnAnimals() {
 ParticleSystem* j1EntityManager::CreateParticle(fPoint pos) {
 	ParticleSystem* particleSystem = new ParticleSystem(pos.x, pos.y);
 
-	j1Entity* ret = dynamic_cast<j1Entity*>(particleSystem);
+	j1Entity* ret = (j1Entity*)particleSystem;
 	ret->to_delete = false;
 	particles.push_back(ret);
 
