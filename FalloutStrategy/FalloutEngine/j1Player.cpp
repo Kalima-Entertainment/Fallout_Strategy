@@ -258,7 +258,22 @@ bool j1Player::Update(float dt) {
 			qfood = true;
 		}
 	}
+	
+	iPoint selected_spot;
+	App->input->GetMousePosition(selected_spot.x, selected_spot.y);
+	
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
+		if (TouchingUI(selected_spot.x, selected_spot.y)) {
+			if ((selected_spot.x > App->minimap->position.x) && (selected_spot.x < App->minimap->position.x + App->minimap->width)
+				&& (selected_spot.y > App->minimap->position.y) && (selected_spot.y < App->minimap->position.y + App->minimap->height)) {
 
+				selected_spot = App->minimap->ScreenToMinimapToWorld(selected_spot.x, selected_spot.y);
+				selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
+				Map_mouseposition = selected_spot;
+			}
+		}
+	}
+	
 	// -- Request GroupMovement
 	for (int i = 0; i < App->entities->entities.size(); i++)
 	{
