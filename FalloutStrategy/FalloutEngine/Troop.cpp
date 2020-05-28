@@ -73,6 +73,9 @@ bool Troop::Update(float dt) {
 	j1Entity* enemy_in_range = nullptr;
 	current_animation = &animations[state][direction];
 
+	if ((target_entity)&&(!target_entity->is_dynamic))
+		target_building = (StaticEntity*)target_entity;
+
 	Mix_AllocateChannels(35);
 
 	switch (state)
