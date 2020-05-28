@@ -39,8 +39,8 @@ j1Scene::j1Scene() : j1Module()
 	create = false;
 	create_tutorial = false;
 	menu_state = StatesMenu::NONE;
-	iPoint mouse_pos = { 0,0 };
-	iPoint rectangle_origin = { 0,0 };
+	mouse_pos = { 0,0 };
+	rectangle_origin = { 0,0 };
 	int rectangle_width = 0;
 	int rectangle_height = 0;
 	win = false;
@@ -110,7 +110,7 @@ bool j1Scene::Start()
 
 	// -- Creates FoW in current Map
 	if (App->render->fog_of_war)App->fowManager->CreateFoWMap(App->map->data.width, App->map->data.height);
-		
+
 	App->minimap->Enable();
 
 	//top_left
@@ -153,7 +153,7 @@ bool j1Scene::PreUpdate()
 bool j1Scene::Update(float dt)
 {
 	App->map->Draw();
-	
+
 	if ((App->hud->minutes == 5) && (deathclaw1 == false))
 	{
 		if (players[0]->base != nullptr && deathclaw1 == false)
@@ -207,7 +207,7 @@ bool j1Scene::Update(float dt)
 			App->audio->PlayMusic("Assets/audio/music/Fallout4TitleScreenwithThemeMusic.ogg", 0.0F);
 		}
 		else if (create == true && App->menu_manager->current_menu != Menu::PAUSE_SETTINGS) {
-			
+
 			App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
 			App->isPaused = false;
 			create = false;
@@ -220,8 +220,9 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN){
 		App->SaveGame("save_file.xml");
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
+	else if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN || load_game == true) {
 		App->LoadGame("save_file.xml");
+		load_game = false;
 	}
 
 	int x, y;
@@ -334,7 +335,7 @@ void j1Scene::CheckWinner() {
 					App->isPaused = true;
 					App->logo_scene->playsound = true;
 				}
-				else { 
+				else {
 					beaten_enemies++;
 					if (players[i]->faction == VAULT)
 						LOG("Vault Dwellers faction defeated!");
@@ -429,7 +430,7 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 
 // Load Game State
 bool j1Scene::Load(pugi::xml_node& data)
-{	
+{
 	App->map->CleanUp();
 	App->minimap->CleanUp();
 	pugi::xml_node iterator = data.first_child();
@@ -447,7 +448,7 @@ bool j1Scene::Load(pugi::xml_node& data)
 	if (App->map->Load(modules) == true)
 	{
 		App->map->CreateWalkabilityMap();
-		
+
 	}
 
 	App->minimap->Start();

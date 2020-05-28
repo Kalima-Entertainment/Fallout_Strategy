@@ -25,10 +25,7 @@
 j1Hud::j1Hud() :j1Module()
 {
 	name.assign("hud");
-}
-
-bool j1Hud::Awake(pugi::xml_node& node)
-{
+	
 	timer = 59;
 	minutes = 14;
 	finish_base = false;
@@ -39,7 +36,13 @@ bool j1Hud::Awake(pugi::xml_node& node)
 	melee_amount = 0;
 	ranged_amount = 0;
 	activateTimer = false;
+	timer_text[10] = '0';
+	minutes_text[15] = '0';
 
+}
+
+bool j1Hud::Awake(pugi::xml_node& node)
+{
 	return true;
 }
 
