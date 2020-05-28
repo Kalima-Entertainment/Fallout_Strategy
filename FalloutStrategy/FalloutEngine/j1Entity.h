@@ -114,8 +114,6 @@ public:
 	Group_Unit info;
 	j1Timer delete_timer;
 
-	FoWEntity* visionEntity;
-
 protected:
 	SDL_Rect background_health_bar;
 	SDL_Rect foreground_health_bar;

@@ -77,6 +77,7 @@ private:
 	SDL_Rect spawn_bar_foreground;
 
 	ParticleSystem* StaticParticle;
+	FoWEntity* visionEntity;
 };
 
 #endif // !_STATIC_ENTITY_H
