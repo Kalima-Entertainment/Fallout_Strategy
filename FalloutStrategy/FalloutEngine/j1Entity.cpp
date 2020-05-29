@@ -39,7 +39,14 @@ j1Entity::j1Entity() {
 	last_dt = 0.01;
 }
 
-j1Entity::~j1Entity() {}
+j1Entity::~j1Entity() {
+	reference_entity = nullptr;
+	target_entity = nullptr;
+	attacking_entity = nullptr;
+	owner = nullptr;
+	current_animation = nullptr;
+	texture = nullptr;
+}
 
 // to be updated
 

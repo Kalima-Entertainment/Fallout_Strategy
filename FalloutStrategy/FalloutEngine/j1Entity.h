@@ -47,7 +47,6 @@ enum State {
 	NO_STATE
 };
 
-
 class j1Entity
 {
 public:
