@@ -43,17 +43,17 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 		break;
 	}
 
-	if (App->render->fog_of_war) {
-		if (this->faction == App->player->faction) {
-			//Player
-			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, true);
-			visionEntity->SetNewVisionRadius(5);
-		}
-		else {
-			//Enemy
-			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
-		}
+
+	if (this->faction == App->player->faction) {
+		//Player
+		visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, true);
+		visionEntity->SetNewVisionRadius(5);
 	}
+	else {
+		//Enemy
+		visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
+	}
+	
 
 	DynaParticle = App->entities->CreateParticle(position);
 	Animation anim;
@@ -66,6 +66,7 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 
 Troop::~Troop() {
 	target_building = nullptr;
+	visionEntity = nullptr;
 	DynaParticle = nullptr;
 	//App->entities->ReleaseParticle(DynaParticle);
 }
