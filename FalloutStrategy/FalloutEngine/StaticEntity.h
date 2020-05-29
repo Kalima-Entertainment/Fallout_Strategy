@@ -74,8 +74,8 @@ private:
 	
 	UpgradeSprite upgrade_sprite[4];
 
-	SDL_Rect spawn_bar_background;
-	SDL_Rect spawn_bar_foreground;
+	//SDL_Rect spawn_bar_background;
+	//SDL_Rect spawn_bar_foreground;
 
 	ParticleSystem* StaticParticle;
 	FoWEntity* visionEntity;

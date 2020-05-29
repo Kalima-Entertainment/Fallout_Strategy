@@ -12,6 +12,8 @@
 #include "SDL_mixer/include/SDL_mixer.h"
 #include "MenuManager.h"
 #include "j1Transition.h"
+#include "j1Player.h"
+#include "j1Entity.h"
 
 LogoScene::LogoScene() : j1Module()
 {
@@ -130,6 +132,9 @@ bool LogoScene::Update(float dt) {
 		win_video = 0;
 		App->menu_manager->DestroyMenu(Menu::RESOURCES);
 		App->menu_manager->DestroyMenu(Menu::QUEST);
+		if ((App->player->selected_entity) && (!App->player->selected_entity->is_dynamic)) {
+			App->menu_manager->DestroyFaction(Menu::BUI_BASES, App->player->selected_entity->faction, App->player->selected_entity->type);
+		}
 		App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 		App->audio->PlayFx(1, App->audio->back_fx, 0);
 		App->gui->ingame = false;
@@ -145,6 +150,9 @@ bool LogoScene::Update(float dt) {
 		lose_video = 0;
 		App->menu_manager->DestroyMenu(Menu::RESOURCES);
 		App->menu_manager->DestroyMenu(Menu::QUEST);
+		if ((App->player->selected_entity) && (!App->player->selected_entity->is_dynamic)) {
+			App->menu_manager->DestroyFaction(Menu::BUI_BASES, App->player->selected_entity->faction, App->player->selected_entity->type);
+		}
 		App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 		App->audio->PlayFx(1, App->audio->back_fx, 0);
 		App->gui->ingame = false;
