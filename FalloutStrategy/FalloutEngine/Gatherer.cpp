@@ -52,6 +52,7 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 Gatherer::~Gatherer() {
 	resource_building = nullptr;
 	base = nullptr;
+	visionEntity = nullptr;
 	DynaParticle = nullptr;
 	//App->entities->ReleaseParticle(DynaParticle);
 }

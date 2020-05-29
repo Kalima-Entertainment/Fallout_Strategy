@@ -66,6 +66,7 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 
 Troop::~Troop() {
 	target_building = nullptr;
+	visionEntity = nullptr;
 	DynaParticle = nullptr;
 	//App->entities->ReleaseParticle(DynaParticle);
 }
