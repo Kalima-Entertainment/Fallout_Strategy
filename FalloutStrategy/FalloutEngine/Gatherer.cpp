@@ -28,7 +28,8 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 	if (owner) 
 		base = owner->base;
 
-	
+	resource_building = nullptr;
+
 	if (this->faction == App->player->faction) {
 		//Player
 		visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, true);
@@ -165,7 +166,10 @@ bool Gatherer::Update(float dt) {
 }
 
 void Gatherer::Gather() {
-	uint resource = resource_building->quantity - (storage_capacity - resource_collected);
+	uint resource = storage_capacity - resource_collected;
+
+	if ((resource_building->quantity -= resource) < 0)
+		resource = resource_building->quantity;
 
 	resource_building->quantity -= resource;
 	resource_collected += resource;

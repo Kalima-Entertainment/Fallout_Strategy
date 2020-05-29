@@ -17,6 +17,7 @@
 j1MovementManager::j1MovementManager()
 {
 	name.assign("MovementManager");
+	stop_iteration = false;
 }
 
 j1MovementManager::~j1MovementManager()
