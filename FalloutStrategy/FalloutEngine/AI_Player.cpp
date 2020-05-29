@@ -28,14 +28,10 @@ AI_Player::AI_Player(Faction g_faction) : GenericPlayer(), is_attacking(false), 
 	ranged_minimum = App->ai_manager->GetAI_PlayerInfo(faction).minimum_rangeds;
 	wave_time = App->ai_manager->GetAI_PlayerInfo(faction).wave_time;
 
-	defeated = false;
-	goal_tile_set = false;
-	target_player = nullptr;
-	target_building = nullptr;
 	target_building_position = { -1, -1 };
-	base = barrack[0] = barrack[1] = laboratory = nullptr;
 	wave_timer.Start();
 	is_ai = true;
+	is_attacking = false;
 }
 
 AI_Player::~AI_Player() 

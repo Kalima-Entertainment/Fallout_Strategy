@@ -20,8 +20,6 @@ public:
 	bool Update(float dt);
 	void GatherFood(ResourceBuilding* resource_spot);
 
-
-
 private:
 	void ChooseRandomPlayerEnemy();
 	DynamicEntity* GetClosestDynamicEntity();

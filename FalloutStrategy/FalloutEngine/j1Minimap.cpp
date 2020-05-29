@@ -163,6 +163,8 @@ bool j1Minimap::PostUpdate() {
 
 	}
 
+	App->render->DrawLine(0,position.y -8, 1270, position.y - 8, 255, 255, 255,255, false);
+
 	return true;
 }
 
