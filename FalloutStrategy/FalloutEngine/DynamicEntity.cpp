@@ -133,10 +133,11 @@ bool DynamicEntity::PostUpdate() {
 	//Health Bar
 	background_health_bar = { (int)(position.x - HALF_TILE * 0.75f),(int)(position.y - TILE_SIZE * 1.5f), 50, 4 };
 	foreground_health_bar = { (int)(position.x - HALF_TILE * 0.75f),(int)(position.y - TILE_SIZE * 1.5f), (int)(current_health/max_health * 50), 4 };
+
 	if (foreground_health_bar.w < 0){
 		foreground_health_bar.w = 0;
 	}
-	frame_quad = { (int)(position.x - HALF_TILE * 0.75f - 1), (int)(position.y - TILE_SIZE * 1.5f - 1), 52, 6 };
+	//frame_quad = { (int)(position.x - HALF_TILE * 0.75f - 1), (int)(position.y - TILE_SIZE * 1.5f - 1), 52, 6 };
 
 	//Render character
 	render_position = { (int)(position.x - sprite_size * 0.5f), (int)(position.y - 1.82f * TILE_SIZE)};

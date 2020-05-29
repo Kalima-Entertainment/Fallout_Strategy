@@ -120,7 +120,7 @@ public:
 protected:
 	SDL_Rect background_health_bar;
 	SDL_Rect foreground_health_bar;
-	SDL_Rect frame_quad;
+	//SDL_Rect frame_quad;
 };
 
 #endif // !_j1ENTITY_H
