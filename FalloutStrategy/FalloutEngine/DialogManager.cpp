@@ -73,6 +73,7 @@ bool DialogManager::CleanUp() {
 
 		dialogs.clear();
 	}
+	App->menu_manager->DestroyMenu(Menu::QUEST);
 	App->menu_manager->DestroyMenu(Menu::DIALOG);
 	App->menu_manager->CreateMenu(Menu::GUI);
 	App->menu_manager->CreateMenu(Menu::RESOURCES);
