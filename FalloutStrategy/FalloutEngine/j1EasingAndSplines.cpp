@@ -5,6 +5,7 @@
 j1EasingAndSplines::j1EasingAndSplines() : j1Module()
 {
 	name.assign("easing_splines");
+
 }
 
 // Destructor

@@ -44,6 +44,7 @@ UI_Button::UI_Button(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, 
 	current_state = BUTTON_STATE::NONE;
 
 	inHover = true;
+	counter = 0;
 	
 }
 

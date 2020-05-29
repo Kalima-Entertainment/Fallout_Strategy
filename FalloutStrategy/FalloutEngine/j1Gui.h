@@ -56,15 +56,14 @@ public:
 	UI_element* CreateInputBox(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer, std::string font = "StackedPixel");
 
 
-	int volume_up;
-	int fx_up;
-	int count;
+
 	/*void CreateImage(SDL_Rect& dimensions);
 	void CreateText(SDL_Rect& dimensions);
 	void CreateSlider(SDL_Rect& dimensions);*/
 
 
 public:
+	
 	std::vector<UI_element*> ui_element;
 
 	bool debug_UI;
@@ -73,6 +72,10 @@ public:
 	bool ingame;
 	bool open;
 	bool load;
+
+	int volume_up;
+	int fx_up;
+	int count;
 
 private:
 	pugi::xml_node node;

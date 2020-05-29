@@ -27,7 +27,6 @@ Animal::Animal(EntityType g_type, iPoint g_current_tile) : DynamicEntity() {
 	Emiter Blood(position.x, position.y - 20, 0.2f, 0.2f, 5, 5, 0, 0, 0, 0, 2.0f, 2, 20, 0.4f, nullptr, App->entities->blood, anim, true);
 	DynaParticle->PushEmiter(Blood);
 	DynaParticle->Desactivate();
-
 }
 
 Animal::~Animal() {

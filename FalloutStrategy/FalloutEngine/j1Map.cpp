@@ -23,6 +23,7 @@ j1Map::j1Map() : j1Module(), map_loaded(false)
 	name = ("map");
 	spawnCoordinates = 0;
 	data.type = MAPTYPE_ISOMETRIC;
+	map_loaded = false;
 }
 
 // Destructor

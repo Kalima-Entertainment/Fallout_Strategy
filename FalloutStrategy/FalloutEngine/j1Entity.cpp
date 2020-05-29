@@ -9,25 +9,29 @@
 #include "j1Collision.h"
 #include "FoWManager.h"
 #include "j1Player.h"
-
 #include "j1Scene.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
 j1Entity::j1Entity() {
-
 	spawnPosition = {NULL,NULL};
 
 	max_health = current_health = 0;
 
-	current_animation = nullptr;
-	faction = VAULT;
-
 	texture = nullptr;
+	current_animation = nullptr;
+	reference_entity = nullptr;
+	attacking_entity = nullptr;
+	owner = nullptr;
+
+	state = NO_STATE;
+	faction = NO_FACTION;
+	type = NO_TYPE;
 
 	is_dynamic = false;
 	to_delete = false;
 	particles_created = false;
 	playing_fx = false;
+
 	volume = 0;
 	channel = 0;
 	fx = 0;
@@ -49,8 +53,6 @@ j1Entity::~j1Entity() {
 }
 
 // to be updated
-
-
 iPoint j1Entity::MapPosition() {
 	iPoint spot = App->render->ScreenToWorld(position.x, position.y);
 	spot = App->map->WorldToMap(spot.x, spot.y);
@@ -61,9 +63,7 @@ int j1Entity::GetPositionScore() const {
 	return current_tile.x + current_tile.y;
 }
 
-
 void j1Entity::SpatialAudio(int positionx, int positiony, Faction faction, State state, EntityType type) {
-
 
 	switch (state)
 	{

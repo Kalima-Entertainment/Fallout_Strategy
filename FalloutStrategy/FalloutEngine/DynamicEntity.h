@@ -74,7 +74,6 @@ public:
 
 	ParticleSystem* DynaParticle;
 	FoWEntity* visionEntity;
-
 };
 
 #endif // !_DYNAMIC_ENTITY_H
