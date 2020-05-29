@@ -11,7 +11,7 @@ Destroy all other factions' buildings to win the game before you run out of time
 * Left click on the unit and left click on the position you want to make it go to.
 * º - Turn console ON/OFF
 * Y - Block/Unblock border scroll
-* F - Center camera on selected entity
+* C - Center camera on selected entity
 * F4 -  UI Debug ON/OFF
 * F5 -  Save
 * F6 -  Load

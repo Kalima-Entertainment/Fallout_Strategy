@@ -83,7 +83,7 @@ bool AI_Player::Update(float dt) {
 		mr_proportion = melees / rangeds;
 
 	//spawn melee
-	if ((barrack[0] != nullptr) &&(water > App->entities->unit_data[faction][MELEE].cost_water)&&(caps > App->entities->unit_data[faction][MELEE].cost_meat) && (last_barrack_to_spawn == 1) && (mr_proportion < 2)) {
+	if ((barrack[0] != nullptr) &&(water > App->entities->unit_data[faction][MELEE].cost_water)&&(food > App->entities->unit_data[faction][MELEE].cost_meat) && (last_barrack_to_spawn == 1)&&(melees > melee_minimum) && (mr_proportion < 2)) {
 		barrack[0]->SpawnUnit(MELEE);
 		water -= App->entities->unit_data[faction][MELEE].cost_water;
 		food -= App->entities->unit_data[faction][MELEE].cost_meat;
@@ -91,7 +91,7 @@ bool AI_Player::Update(float dt) {
 	}
 
 	//spawn ranged
-	if ((barrack[0] != nullptr) && (water > App->entities->unit_data[faction][RANGED].cost_water) && (caps > App->entities->unit_data[faction][RANGED].cost_meat)&&(barrack[1] != nullptr) && (last_barrack_to_spawn == 0)) {
+	if ((barrack[1] != nullptr) && (water > App->entities->unit_data[faction][RANGED].cost_water) && (food > App->entities->unit_data[faction][RANGED].cost_meat) && (rangeds > ranged_minimum) && (last_barrack_to_spawn == 0)) {
 		barrack[1]->SpawnUnit(RANGED);
 		water -= App->entities->unit_data[faction][RANGED].cost_water;
 		food -= App->entities->unit_data[faction][RANGED].cost_meat;
