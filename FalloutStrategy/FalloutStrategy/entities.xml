@@ -46,13 +46,8 @@
     </gatherer>
   </ghouls>
   <no_faction>
-
     <bighorner health="300" speed="40" resource_quantity="800"/>
     <braham health="150" speed="25" resource_quantity="300"/>
-
-    <bighorner health="50" speed="40" resource_quantity="8"/>
-    <braham health="50" speed="25" resource_quantity="3"/>
-
     <deathclaw health="5000" damage="300" speed="200" resource_quantity="2000"/>
     <mr_handy health="1000" speed="50" damage="60">
       <cost caps="1000" time="50"/>
@@ -61,19 +56,19 @@
  </dynamic> 
  <static>
    <vault>
-    <base health="80">
+    <base health="8000">
      <upgrade level="1" x="132" y="159" rect_x="2867" rect_y="985" rect_w="41" rect_h="39"/>
      <upgrade level="2" x="171" y="126" rect_x="2988" rect_y="942" rect_w="42" rect_h="82 "/>
      <upgrade level="3" x="64" y="143" rect_x="3105" rect_y="927" rect_w="61" rect_h="97"/>
      <upgrade level="4" x="128" y="192" rect_x="3240" rect_y="975" rect_w="62" rect_h="49"/>
     </base>
-    <barrack health="60">
+    <barrack health="6000">
      <upgrade level="1" x="17" y="140" rect_x="3498 " rect_y="950" rect_w="46" rect_h="74"/>
      <upgrade level="2" x="164" y="52" rect_x="3624" rect_y="896" rect_w="59" rect_h="128"/>
      <upgrade level="3" x="140" y="106" rect_x="3758" rect_y="943" rect_w="44" rect_h="81"/>
      <upgrade level="4" x="76" y="138" rect_x="3853" rect_y="935" rect_w="102" rect_h="89"/>
     </barrack>
-    <laboratory health="70"> 
+    <laboratory health="7000"> 
      <upgrade level="1" x="143" y="79" rect_x="2606" rect_y="1844" rect_w="53" rect_h="76"/>
      <upgrade level="2" x="74" y="121" rect_x="2724" rect_y="1870" rect_w="55" rect_h="50"/>
      <upgrade level="3" x="128" y="128" rect_x="2866" rect_y="1882" rect_w="28" rect_h="38"/>
@@ -81,19 +76,19 @@
     </laboratory>   
    </vault>
    <brotherhood>
-    <base health="80">
+    <base health="8000">
      <upgrade level="1" x="112" y="149" rect_x="51" rect_y="2906" rect_w="27" rect_h="38"/>
      <upgrade level="2" x="102" y="173" rect_x="162" rect_y="2844" rect_w="61" rect_h="100"/>
      <upgrade level="3" x="26" y="161" rect_x="285" rect_y="2849" rect_w="67" rect_h="95"/>
      <upgrade level="4" x="167" y="159" rect_x="412" rect_y="2851" rect_w="68" rect_h="93"/>
     </base>
-    <barrack health="60">
+    <barrack health="6000">
      <upgrade level="1" x="146 " y="204" rect_x="1314" rect_y="2885" rect_w="60" rect_h="59"/>
      <upgrade level="2" x="73" y="225" rect_x="1455" rect_y="2909" rect_w="34" rect_h="35"/>
      <upgrade level="3" x="118" y="195" rect_x="1585" rect_y="2867" rect_w="29" rect_h="77"/>
      <upgrade level="4" x="162" y="183" rect_x="1714" rect_y="2900" rect_w="28" rect_h="44"/>
     </barrack>
-    <laboratory health="0"> 
+    <laboratory health="7000"> 
      <upgrade level="1" x="72 " y="170" rect_x="682" rect_y="2863" rect_w="44" rect_h="81"/>
      <upgrade level="2" x="72" y="218" rect_x="818" rect_y="2911" rect_w="28" rect_h="33"/>
      <upgrade level="3" x="12" y="115" rect_x="930" rect_y="2816" rect_w="59" rect_h="128"/>
@@ -101,19 +96,19 @@
     </laboratory>   
    </brotherhood>
    <mutants>
-    <base health="80">
+    <base health="8000">
      <upgrade level="1" x="133" y="217" rect_x="1445" rect_y="975" rect_w="64" rect_h="49 "/>
      <upgrade level="2" x="227" y="173" rect_x="1582" rect_y="985" rect_w="36" rect_h="39"/>
      <upgrade level="3" x="215" y="145" rect_x="1714" rect_y="947" rect_w="30" rect_h="77"/>
      <upgrade level="4" x="24" y="191" rect_x="1792" rect_y="931" rect_w="102" rect_h="75"/>
     </base>
-    <barrack health="60">
+    <barrack health="6000">
      <upgrade level="1" x="26" y="192" rect_x="3234" rect_y="2231" rect_w="48" rect_h="73"/>
      <upgrade level="2" x="83" y="196" rect_x="3366" rect_y="2227" rect_w="58" rect_h="77"/>
      <upgrade level="3" x="198" y="152" rect_x="3505" rect_y="2231" rect_w="29" rect_h="73"/>
      <upgrade level="4" x="137" y="122" rect_x="3623" rect_y="2176" rect_w="59" rect_h="128"/>
     </barrack>
-    <laboratory health="70"> 
+    <laboratory health="7000"> 
      <upgrade level="1" x="123" y="188" rect_x="2225" rect_y="1716" rect_w="29" rect_h="76"/>
      <upgrade level="2" x="196" y="95" rect_x="2341" rect_y="1664" rect_w="60" rect_h="128"/>
      <upgrade level="3" x="165" y="159" rect_x="2474" rect_y="1722" rect_w="44" rect_h="70"/>
@@ -121,19 +116,19 @@
     </laboratory>   
    </mutants>
    <ghouls>
-    <base health="80">
+    <base health="8000">
      <upgrade level="1" x="55" y="207" rect_x="300" rect_y="474" rect_w="41" rect_h="38"/>
      <upgrade level="2" x="83" y="221" rect_x="420" rect_y="474" rect_w="41" rect_h="38"/>
      <upgrade level="3" x="160" y="170" rect_x="555" rect_y="432 " rect_w="45" rect_h="80"/>
      <upgrade level="4" x="131" y="200" rect_x="683" rect_y="447" rect_w="41" rect_h="65"/>
     </base>
-    <barrack health="60">
+    <barrack health="6000">
      <upgrade level="1" x="64" y="172" rect_x="2092" rect_y="1496" rect_w="44" rect_h="40"/>
      <upgrade level="2" x="17" y="199" rect_x="2198" rect_y="1490" rect_w="88" rect_h="46"/>
      <upgrade level="3" x="64" y="138" rect_x="2348" rect_y="1509" rect_w="37" rect_h="27"/>
      <upgrade level="4" x="109" y="142" rect_x="2460" rect_y="1447" rect_w="71" rect_h="89"/>
     </barrack>
-    <laboratory health="70"> 
+    <laboratory health="7000"> 
      <upgrade level="1" x="45" y="215" rect_x="3114" rect_y="1744" rect_w="44" rect_h="48"/>
      <upgrade level="2" x="150" y="215" rect_x="3243" rect_y="1745" rect_w="43" rect_h="48"/>
      <upgrade level="3" x="73" y="237" rect_x="3348" rect_y="1760" rect_w="88" rect_h="32"/>
