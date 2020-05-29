@@ -94,12 +94,10 @@ bool DynamicEntity::PostUpdate() {
 		if(App->player->selected_entity != this)
 			App->render->Blit(App->render->debug_tex, tile_tex_position.x, tile_tex_position.y, &tile_rect);
 
-		
 
-
-
-		App->render->DrawQuad({ (int)position.x - 2, (int)position.y - 2 , 4,4 }, 255, 0, 0, 255);
-		App->render->DrawQuad({ (int)(next_tile_rect.x), (int)(next_tile_rect.y), next_tile_rect.w, next_tile_rect.h }, 0, 255, 0, 255);
+		//App->render->DrawQuad({ (int)position.x - 2, (int)position.y - 2 , 4,4 }, 255, 0, 0, 255);
+		//App->render->DrawQuad({ (int)(next_tile_rect.x), (int)(next_tile_rect.y), next_tile_rect.w, next_tile_rect.h }, 0, 255, 0, 255);
+	
 	}
 
 	//selected entity
@@ -118,8 +116,9 @@ bool DynamicEntity::PostUpdate() {
 	//Health Bar
 	background_health_bar = { (int)(position.x - HALF_TILE * 0.75f),(int)(position.y - TILE_SIZE * 1.5f), 50, 4 };
 	foreground_health_bar = { (int)(position.x - HALF_TILE * 0.75f),(int)(position.y - TILE_SIZE * 1.5f), (int)(current_health/max_health * 50), 4 };
-	if (foreground_health_bar.w < 0)
+	if (foreground_health_bar.w < 0){
 		foreground_health_bar.w = 0;
+	}
 	frame_quad = { (int)(position.x - HALF_TILE * 0.75f - 1), (int)(position.y - TILE_SIZE * 1.5f - 1), 52, 6 };
 
 	//Render character
