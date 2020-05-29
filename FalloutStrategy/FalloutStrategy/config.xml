@@ -11,10 +11,10 @@
   </renderer>
   
   <AI>
-   <vault minimum_melees="5" minimum_rangeds="2" caps="100" water="100" food="100" wave_time="40"/>
-   <brotherhood minimum_melees="3" minimum_rangeds="2" caps="100" water="100" food="100" wave_time="40"/>
-   <mutant minimum_melees="3" minimum_rangeds="3" caps="100" water="100" food="100" wave_time="40"/>
-   <ghoul minimum_melees="5" minimum_rangeds="2" caps="100" water="100" food="100" wave_time="40"/>
+   <vault minimum_melees="5" minimum_rangeds="2" caps="750" water="750" food="750" wave_time="40"/>
+   <brotherhood minimum_melees="3" minimum_rangeds="2" caps="750" water="750" food="750" wave_time="40"/>
+   <mutant minimum_melees="3" minimum_rangeds="3" caps="750" water="750" food="750" wave_time="40"/>
+   <ghoul minimum_melees="5" minimum_rangeds="2" caps="750" water="750" food="750" wave_time="40"/>
   </AI>
   <console>
   <log_box r="20" g="20" b="20" a="225"/>
