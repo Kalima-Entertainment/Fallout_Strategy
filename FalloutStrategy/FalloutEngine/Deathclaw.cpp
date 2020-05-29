@@ -38,7 +38,6 @@ Deathclaw::~Deathclaw() {
 bool Deathclaw::Update(float dt) {
 	bool ret = true;
 
-	Mix_AllocateChannels(35);
 	current_animation = &animations[state][direction];
 
 	switch (state)

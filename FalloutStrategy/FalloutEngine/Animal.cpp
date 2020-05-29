@@ -40,8 +40,6 @@ bool Animal::Update(float dt) {
 	bool ret = true;
 	current_animation = &animations[state][direction];
 
-	Mix_AllocateChannels(35);
-
 	switch (state)
 	{
     case IDLE:
