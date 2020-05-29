@@ -47,7 +47,6 @@ enum State {
 	NO_STATE
 };
 
-
 class j1Entity
 {
 public:
@@ -98,6 +97,7 @@ public:
 
 	EntityType type;
 	Faction faction;
+
 	j1Entity* reference_entity;
 	j1Entity* target_entity;
 	DynamicEntity* attacking_entity;
@@ -119,7 +119,7 @@ public:
 protected:
 	SDL_Rect background_health_bar;
 	SDL_Rect foreground_health_bar;
-	SDL_Rect frame_quad;
+	//SDL_Rect frame_quad;
 };
 
 #endif // !_j1ENTITY_H

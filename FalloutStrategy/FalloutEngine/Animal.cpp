@@ -15,6 +15,7 @@ Animal::Animal(EntityType g_type, iPoint g_current_tile) : DynamicEntity() {
 	pasturing_time = 20;
 	faction = NO_FACTION;
 	food_quantity = 0;
+	resource_spot = nullptr;
 
 	position = App->map->floatMapToWorld(current_tile.x, current_tile.y);
 	position.x += HALF_TILE;
@@ -27,7 +28,6 @@ Animal::Animal(EntityType g_type, iPoint g_current_tile) : DynamicEntity() {
 	Emiter Blood(position.x, position.y - 20, 0.2f, 0.2f, 5, 5, 0, 0, 0, 0, 2.0f, 2, 20, 0.4f, nullptr, App->entities->blood, anim, true);
 	DynaParticle->PushEmiter(Blood);
 	DynaParticle->Desactivate();
-
 }
 
 Animal::~Animal() {

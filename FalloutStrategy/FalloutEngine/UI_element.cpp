@@ -10,7 +10,7 @@ UI_element::UI_element(int x, int y, UI_Type type, UI_element* parent, j1Module 
 	texture = App->gui->GetAtlas();
 	this->element_UI = parent;
 	observer = Observer;
-
+	drawable = true;
 }
 
 bool UI_element::Update(float dt)

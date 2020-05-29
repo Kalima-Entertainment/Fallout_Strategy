@@ -25,7 +25,14 @@ LogoScene::LogoScene() : j1Module()
 	playsound = false;
 	drawable = true;
 	sound_end = true;
+	my_video = -1;
+	win_video = -1;
+	lose_video = -1;
 	quit = false;
+	logo_tex = nullptr;
+	start_game_tex = nullptr;
+	start_game_rect = { 0,0,0,0 };
+	last_dt = 0.01f;
 }
 
 // Destructor

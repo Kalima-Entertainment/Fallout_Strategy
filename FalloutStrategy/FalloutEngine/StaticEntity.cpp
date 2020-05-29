@@ -21,7 +21,6 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 	owner = g_owner;
 
 	current_tile = g_current_tile;
-	//position = App->map->fMapToWorld(current_tile.x, current_tile.y);
 
 	state = IDLE;
 	storage_capacity = 1000;
@@ -43,8 +42,7 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 	texture = nullptr;
 	spawnPosition = {-1,-1};
 
-	CalculateRenderAndSpawnPositions();
-	
+	CalculateRenderAndSpawnPositions();	
 	
 	if (this->faction == App->player->faction) {
 		//Player
@@ -54,8 +52,7 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 	else {
 		//Enemy
 		visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
-	}
-	
+	}	
 
 	// -- Smoke particles
 	StaticParticle = App->entities->CreateParticle(position);
@@ -78,6 +75,9 @@ StaticEntity::~StaticEntity() {
 	//App->entities->ReleaseParticle(StaticParticle);
 	visionEntity = nullptr;
 	tiles.clear();
+
+	StaticParticle = nullptr;
+	visionEntity = nullptr;
 
 	//Clean Unit Spawn Stacks
 	for (size_t i = 0; i < 10; i++)

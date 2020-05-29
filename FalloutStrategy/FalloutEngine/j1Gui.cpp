@@ -26,6 +26,8 @@ j1Gui::j1Gui() : j1Module()
 	volume_up = 0;
 	fx_up = 0;
 	count = 0;
+	texture = nullptr;
+
 }
 
 // Destructor

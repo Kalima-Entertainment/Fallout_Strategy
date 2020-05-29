@@ -59,10 +59,6 @@ public:
 
 public:
 
-	int topleft;
-	int topright;
-	int bottomleft;
-	int bottomright;
 	bool create;
 	bool load_game;
 	bool create_tutorial;

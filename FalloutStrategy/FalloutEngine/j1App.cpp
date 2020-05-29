@@ -15,7 +15,6 @@
 #include "j1Fonts.h"
 #include "j1Gui.h"
 #include "j1App.h"
-#include "j1Collision.h"
 #include "j1EntityManager.h"
 #include "j1Player.h"
 #include "j1Minimap.h"
@@ -48,7 +47,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	pathfinding = new j1PathFinding();
 	font = new j1Fonts();
 	gui = new j1Gui();
-	collision = new j1Collision();
 	entities = new j1EntityManager();
 	player = new j1Player();
 	minimap = new j1Minimap();
@@ -75,7 +73,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	
 	AddModule(ai_manager);
 	AddModule(map);
-	//AddModule(collision);
 	AddModule(player);
 	AddModule(pathfinding);
 	AddModule(main_menu);

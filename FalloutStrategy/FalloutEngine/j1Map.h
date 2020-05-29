@@ -172,7 +172,6 @@ private:
 	pugi::xml_document	map_file;
 	std::string			folder;
 	bool				map_loaded;
-	uchar*				walkability_map;
 };
 
 #endif // __j1MAP_H__

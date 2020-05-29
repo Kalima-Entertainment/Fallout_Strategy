@@ -18,6 +18,7 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 	is_agressive = true;
 	commanded = false;
 	attack_timer.Start();
+
 	attack_time = 3;
 	detection_radius = 4;
 
@@ -43,7 +44,6 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 		break;
 	}
 
-
 	if (this->faction == App->player->faction) {
 		//Player
 		visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, true);
@@ -54,7 +54,6 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 		visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
 	}
 	
-
 	DynaParticle = App->entities->CreateParticle(position);
 	Animation anim;
 	anim.PushBack(SDL_Rect{ 0, 0 , 5, 5 }, 1);
@@ -68,7 +67,6 @@ Troop::~Troop() {
 	target_building = nullptr;
 	visionEntity = nullptr;
 	DynaParticle = nullptr;
-	//App->entities->ReleaseParticle(DynaParticle);
 }
 
 bool Troop::Update(float dt) {
@@ -77,8 +75,14 @@ bool Troop::Update(float dt) {
 	j1Entity* enemy_in_range = nullptr;
 	current_animation = &animations[state][direction];
 
-	if ((target_entity)&&(!target_entity->is_dynamic))
-		target_building = (StaticEntity*)target_entity;
+	if (target_entity == nullptr) {
+		if (target_building != nullptr)
+			target_entity = target_building;
+	}
+	else {
+		if (!target_entity->is_dynamic)
+			target_building = (StaticEntity*)target_entity;
+	}
 
 	Mix_AllocateChannels(35);
 

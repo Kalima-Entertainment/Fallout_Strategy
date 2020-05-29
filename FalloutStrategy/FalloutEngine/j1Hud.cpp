@@ -26,8 +26,8 @@ j1Hud::j1Hud() :j1Module()
 {
 	name.assign("hud");
 	
-	timer = 59;
-	minutes = 14;
+	timer = 59u;
+	minutes = 14u;
 	finish_base = false;
 	finish_barrack = false;
 	finish_lab = false;
@@ -38,7 +38,7 @@ j1Hud::j1Hud() :j1Module()
 	activateTimer = false;
 	timer_text[10] = '0';
 	minutes_text[15] = '0';
-
+	draw_health = false;
 }
 
 bool j1Hud::Awake(pugi::xml_node& node)

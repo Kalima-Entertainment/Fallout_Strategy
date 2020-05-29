@@ -35,7 +35,6 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 	direction = BOTTOM_RIGHT;
 
 	target_entity = nullptr;
-	//resource_building = nullptr;
 	attacking_entity = nullptr;
 
 	target_tile = { -1,-1 };
@@ -43,7 +42,6 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 	sprite_size = 128;
 
 	detection_radius = 6;
-	//action_timer.Start();
 	detection_timer.Start();
 
 	DynaParticle = nullptr;
@@ -52,19 +50,38 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 
 DynamicEntity::DynamicEntity() {
 	target_entity = nullptr;
+	target_tile = {-1,-1};
+	next_tile = {-1,-1};
+	next_tile_position = {-1,-1};
+	next_tile_rect = {0,0,0,0};
+	detection_radius = 0;
 	is_dynamic = true;
 	commanded = false;
+	is_agressive = false;
 	state = IDLE;
-	direction = TOP_LEFT;
+	direction = last_direction = TOP_LEFT;
+	DynaParticle = nullptr;
+	visionEntity = nullptr;
 }
 
 DynamicEntity::~DynamicEntity() {
+	target_tile = { -1,-1 };
+	next_tile = { -1,-1 };
+	next_tile_position = { -1,-1 };
+	next_tile_rect = { 0,0,0,0 };
+	detection_radius = 0;
+
+	direction = last_direction = TOP_LEFT;
+
 	target_entity = nullptr;
+	DynaParticle = nullptr;
+	visionEntity = nullptr;
 	reference_entity = nullptr;
 	owner = nullptr;
 	attacking_entity = nullptr;
 	current_animation = nullptr;
 	texture = nullptr;
+
 	path_to_target.clear();
 	entities_in_range.clear();
 }
@@ -94,12 +111,10 @@ bool DynamicEntity::PostUpdate() {
 		if(App->player->selected_entity != this)
 			App->render->Blit(App->render->debug_tex, tile_tex_position.x, tile_tex_position.y, &tile_rect);
 
-		
 
-
-
-		App->render->DrawQuad({ (int)position.x - 2, (int)position.y - 2 , 4,4 }, 255, 0, 0, 255);
-		App->render->DrawQuad({ (int)(next_tile_rect.x), (int)(next_tile_rect.y), next_tile_rect.w, next_tile_rect.h }, 0, 255, 0, 255);
+		//App->render->DrawQuad({ (int)position.x - 2, (int)position.y - 2 , 4,4 }, 255, 0, 0, 255);
+		//App->render->DrawQuad({ (int)(next_tile_rect.x), (int)(next_tile_rect.y), next_tile_rect.w, next_tile_rect.h }, 0, 255, 0, 255);
+	
 	}
 
 	//selected entity
@@ -118,9 +133,11 @@ bool DynamicEntity::PostUpdate() {
 	//Health Bar
 	background_health_bar = { (int)(position.x - HALF_TILE * 0.75f),(int)(position.y - TILE_SIZE * 1.5f), 50, 4 };
 	foreground_health_bar = { (int)(position.x - HALF_TILE * 0.75f),(int)(position.y - TILE_SIZE * 1.5f), (int)(current_health/max_health * 50), 4 };
-	if (foreground_health_bar.w < 0)
+
+	if (foreground_health_bar.w < 0){
 		foreground_health_bar.w = 0;
-	frame_quad = { (int)(position.x - HALF_TILE * 0.75f - 1), (int)(position.y - TILE_SIZE * 1.5f - 1), 52, 6 };
+	}
+	//frame_quad = { (int)(position.x - HALF_TILE * 0.75f - 1), (int)(position.y - TILE_SIZE * 1.5f - 1), 52, 6 };
 
 	//Render character
 	render_position = { (int)(position.x - sprite_size * 0.5f), (int)(position.y - 1.82f * TILE_SIZE)};
@@ -137,7 +154,7 @@ bool DynamicEntity::PostUpdate() {
 			//Enemy Health Bar only if visible on fog of war
 			App->render->DrawQuad(background_health_bar, 55, 55, 55, 255);
 			App->render->DrawQuad(foreground_health_bar, 0, 255, 0, 255);
-			App->render->DrawQuad(frame_quad, 155, 155, 155, 185, false);			
+			//App->render->DrawQuad(frame_quad, 155, 155, 155, 185, false);			
 		}
 		else if ((this->faction == NO_FACTION)||(App->render->debug)) {
 			//Animals are also visible on shroud
@@ -149,7 +166,7 @@ bool DynamicEntity::PostUpdate() {
 				//Enemy Health Bar only if visible on fog of war
 				App->render->DrawQuad(background_health_bar, 55, 55, 55, 255);
 				App->render->DrawQuad(foreground_health_bar, 0, 255, 0, 255);
-				App->render->DrawQuad(frame_quad, 155, 155, 155, 185, false);
+				//App->render->DrawQuad(frame_quad, 155, 155, 155, 185, false);
 			}
 		}
 	

@@ -40,7 +40,6 @@ struct Unit_Data {
 	int cost_water;
 	int cost_meat;
 	int spawn_seconds;
-
 };
 
 enum Upgrades {

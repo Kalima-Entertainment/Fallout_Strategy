@@ -46,8 +46,8 @@
     </gatherer>
   </ghouls>
   <no_faction>
-    <bighorner health="50" speed="40" resource_quantity="800"/>
-    <braham health="50" speed="25" resource_quantity="300"/>
+    <bighorner health="50" speed="40" resource_quantity="8"/>
+    <braham health="50" speed="25" resource_quantity="3"/>
     <deathclaw health="5000" damage="300" speed="200" resource_quantity="2000"/>
     <mr_handy health="1000" speed="50" damage="60">
       <cost caps="1000" time="50"/>
