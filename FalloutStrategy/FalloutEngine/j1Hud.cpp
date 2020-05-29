@@ -93,7 +93,7 @@ bool j1Hud::Update(float dt) {
 
 			//App->menu_manager->timer_item->SetTextTimer(timer_text);
 			//App->menu_manager->timer_minutes->SetTextTimer(minutes_text);
-			LOG("Minutes %i Seconds %i", minutes, timer);
+			/*LOG("Minutes %i Seconds %i", minutes, timer);*/
 			if (minutes == 0 && timer == 0) {
 				activateTimer = false;
 			}
