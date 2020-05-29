@@ -38,7 +38,10 @@ j1EntityManager::j1EntityManager(){
 
 	name.assign("entities");
 
+	loading_faction = VAULT;
+	loading_entity = MELEE;
 	blocked_movement = false;
+	showing_building_menu = false;
 	blood = nullptr;
 	smoke = nullptr;
 }
@@ -67,6 +70,14 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 		tmx_files[i] = file_node.attribute("tmx").as_string();
 		file_node = file_node.next_sibling();
 		reference_entities[i] = nullptr;
+	}
+
+	for (int y = 0; y < 150; y++)
+	{
+		for (int x = 0; x < 150; x++)
+		{
+			occupied_tiles[x][y] = false;
+		}
 	}
 
 	RandomFactions();
@@ -162,6 +173,8 @@ bool j1EntityManager::CleanUp()
 	particles.clear();
 	App->tex->UnLoad(blood);
 	App->tex->UnLoad(smoke);
+	blood = nullptr;
+	smoke = nullptr;
 
 	// -- Buildings
 	for (int j = 0; j < resource_buildings.size(); j++)
