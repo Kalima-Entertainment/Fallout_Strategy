@@ -279,6 +279,7 @@ void Troop::Attack() {
 			attacking_entity = nullptr;
 
 		target_entity = nullptr;
+		target_building = nullptr;
 	}
 	else if (target_entity->is_dynamic) {
 		DynamicEntity* dynamic_target = (DynamicEntity*)target_entity;

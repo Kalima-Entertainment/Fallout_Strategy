@@ -27,8 +27,6 @@ j1Player::j1Player() : GenericPlayer() {
 	border_scroll = false;
 	mouse_speed_multiplier = 1.5f;
 
-	base = barrack[0] = barrack[1] = laboratory = nullptr;
-
 	caps = 999;
 	food = 399;
 	water = 999;
@@ -41,9 +39,10 @@ j1Player::j1Player() : GenericPlayer() {
 
 	reward = 0;
 
-	//faction = VAULT;
-	defeated = false;
 	is_ai = false;
+
+	Map_mouseposition = {1,1};
+
 }
 
 j1Player::~j1Player() {

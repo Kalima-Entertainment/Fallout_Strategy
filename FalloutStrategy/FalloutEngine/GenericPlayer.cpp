@@ -9,9 +9,17 @@ GenericPlayer::GenericPlayer() : j1Module() {
 	gatherers = 0;
 	target_player = nullptr;
 	target_building = nullptr;
+	base = barrack[0] = barrack[1] = laboratory = nullptr;
+	goal_tile_set = false;
+	defeated = false;
+	faction = NO_FACTION;
 }
 
-GenericPlayer::~GenericPlayer() {}
+GenericPlayer::~GenericPlayer() {
+	target_player = nullptr;
+	target_building = nullptr;
+	base = barrack[0] = barrack[1] = laboratory = nullptr;
+}
 
 int GenericPlayer::GetTroopsAmount() const {
 	return troops.size();
