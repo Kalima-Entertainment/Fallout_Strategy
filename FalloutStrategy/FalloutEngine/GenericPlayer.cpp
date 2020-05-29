@@ -51,8 +51,10 @@ bool GenericPlayer::DeleteEntity(j1Entity* entity) {
 		base = nullptr;
 		break;
 	case BARRACK:
-		if (barrack[0] == (StaticEntity*)entity) barrack[0] = nullptr;
-		else if (barrack[1] == (StaticEntity*)entity) barrack[1] = nullptr;
+		if (barrack[0] == (StaticEntity*)entity)
+			barrack[0] = nullptr;
+		else if (barrack[1] == (StaticEntity*)entity)
+			barrack[1] = nullptr;
 		break;
 	case LABORATORY:
 		laboratory = nullptr;

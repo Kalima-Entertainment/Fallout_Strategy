@@ -90,21 +90,18 @@ bool Troop::Update(float dt) {
 			target_entity = enemy_in_range;
 			PathfindToPosition(enemy_in_range->current_tile);
 		}
-		else if (target_building)
-		{
-			if (target_building->state == DIE) {
-				target_building = RequestTargetBuilding(target_building->faction);
+		else {
+			if (target_building) {
+				if (target_building->to_delete) {
+					target_entity = target_building = RequestTargetBuilding(target_building->faction);
+
+					if (target_building == nullptr)
+						break;
+				}
+				else {
+					PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
+				}
 			}
-
-			target_entity = target_building;
-			// FIX I PROPOSED MARC CONFIRMAMELO
-
-			/*if (target_building != nullptr)
-			{
-				PathfindToPosition(target_building->current_tile);
-			}*/
-
-			PathfindToPosition(target_building->current_tile);
 		}
         break;
 
@@ -121,13 +118,15 @@ bool Troop::Update(float dt) {
 					}
 					else {
 						state = IDLE;
+						commanded = false;
 					}
 				}
 			}
-			else if (target_building){
+			else if (target_building == target_entity){
 				if (target_building->state == DIE) {
-					target_building = RequestTargetBuilding(target_building->faction);
-					target_entity = target_building;
+					target_entity = target_building = RequestTargetBuilding(target_building->faction);
+					if(target_building)
+						PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
 				}
 				else if (current_tile.DistanceManhattan(App->entities->ClosestTile(current_tile, target_building->tiles)) <= range) {
 					UpdateTile();
@@ -137,6 +136,7 @@ bool Troop::Update(float dt) {
 					}
 					else {
 						state = IDLE;
+						commanded = false;
 					}
 				}
 			}
@@ -162,9 +162,12 @@ bool Troop::Update(float dt) {
 		if ((target_entity) && (target_entity->state == DIE)) {
 			if (target_entity == target_building) {
 				target_entity = target_building = RequestTargetBuilding(target_building->faction);
+				if(target_building)
+					PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
 			}
 			else {
 				target_entity = nullptr;
+				state = IDLE;
 			}
 			break;
 		}
@@ -179,6 +182,9 @@ bool Troop::Update(float dt) {
 					path_to_target.clear();
 					Attack();
 				}
+			}
+			else {
+				state = IDLE;
 			}
 		}
 		SpatialAudio(position.x, position.y, faction, state, type);
@@ -205,7 +211,7 @@ bool Troop::Update(float dt) {
 			delete_timer.Start();
 			direction = TOP_LEFT;
 
-			if (attacking_entity) {
+			if ((attacking_entity)&&(attacking_entity->target_entity == this)) {
 				attacking_entity->target_entity = nullptr;
 				attacking_entity->state = IDLE;
 			}
@@ -329,16 +335,16 @@ bool Troop::LoadReferenceData(pugi::xml_node& node) {
 }
 
 StaticEntity* Troop::RequestTargetBuilding(Faction faction) {
-	if (App->scene->players[faction]->laboratory != nullptr)
+	if ((App->scene->players[faction]->laboratory != nullptr)&&(App->scene->players[faction]->laboratory->state != DIE))
 		return App->scene->players[faction]->laboratory;
 
-	else if (App->scene->players[faction]->barrack[0] != nullptr)
+	else if ((App->scene->players[faction]->barrack[0] != nullptr) && (App->scene->players[faction]->barrack[0]->state != DIE))
 		return App->scene->players[faction]->barrack[0];
 
-	else if (App->scene->players[faction]->barrack[1] != nullptr)
+	else if ((App->scene->players[faction]->barrack[1] != nullptr) && (App->scene->players[faction]->barrack[1]->state != DIE))
 		return App->scene->players[faction]->barrack[1];
 
-	else if (App->scene->players[faction]->base != nullptr)
+	else if ((App->scene->players[faction]->base != nullptr) && (App->scene->players[faction]->base->state != DIE))
 		return App->scene->players[faction]->base;
 
 	else return nullptr;

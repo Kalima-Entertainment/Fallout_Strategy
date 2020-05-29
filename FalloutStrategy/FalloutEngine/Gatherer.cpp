@@ -19,6 +19,7 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 	owner = g_owner;
 	is_agressive = false;
 	gather_time = 2;
+	storage_capacity = 0;
 
 	position = App->map->floatMapToWorld(current_tile.x, current_tile.y);
 	position.x += HALF_TILE;
@@ -64,6 +65,12 @@ bool Gatherer::Update(float dt) {
 	switch (state)
 	{
 	case IDLE:
+		if ((resource_collected > 0) && (base != nullptr) && (base->state != DIE)) {
+			PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
+		}
+		else if ((resource_building != nullptr) && (resource_building->quantity > 0)) {
+			PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
+		}
 		break;
 	case WALK:
 		Move(dt);
@@ -84,17 +91,16 @@ bool Gatherer::Update(float dt) {
 				Gather();
 				state = WALK;
 			}
-			else {
+			else if ((base != nullptr)&&(base->state != DIE)){
+
 				StoreGatheredResources();
 
 				//go back to resource building to get more resources
 				if ((resource_building != nullptr)&&(resource_building->quantity > 0)) {
 					PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
-					state = WALK;
 				}
 				//find another building
-				else
-				{
+				else {
 					resource_building = App->entities->GetClosestResourceBuilding(current_tile);
 					//if there is at least a resource building left, go there
 					if (resource_building != nullptr) {
@@ -106,6 +112,9 @@ bool Gatherer::Update(float dt) {
 						state = IDLE;
 					}
 				}
+			}
+			else {
+				state = IDLE;
 			}
 		}
 		break;
@@ -121,7 +130,7 @@ bool Gatherer::Update(float dt) {
 		if (!delete_timer.Started()) {
 			delete_timer.Start();
 			direction = TOP_LEFT;
-			if (attacking_entity) {
+			if ((attacking_entity)&&(attacking_entity->target_entity == this)) {
 				attacking_entity->target_entity = nullptr;
 				attacking_entity->state = IDLE;
 			}
@@ -155,13 +164,18 @@ bool Gatherer::Update(float dt) {
 }
 
 void Gatherer::Gather() {
-	uint resource = resource_building->quantity - (resource_capacity - resource_collected);
+	uint resource = resource_building->quantity - (storage_capacity - resource_collected);
 
 	resource_building->quantity -= resource;
 	resource_collected += resource;
 	resource_type = resource_building->resource_type;
 
 	if (base != nullptr) {
+		if (base->state == DIE) {
+			state = IDLE;
+			return;
+		}
+			
 		PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
 		target_entity = base;
 	}
@@ -207,12 +221,11 @@ bool Gatherer::LoadDataFromReference() {
 	}
 
 	//load property data
-	current_health = max_health = reference_entity->max_health;
-	resource_capacity = reference_gatherer->resource_capacity;
-	speed = reference_gatherer->speed;
-	sprite_size = reference_entity->sprite_size;
-	storage_capacity = reference_gatherer->storage_capacity;
 	texture = reference_entity->texture;
+	current_health = max_health = reference_entity->max_health;
+	sprite_size = reference_entity->sprite_size;
+	speed = reference_gatherer->speed;
+	storage_capacity = reference_gatherer->storage_capacity;
 
 	return ret;
 }
@@ -221,7 +234,6 @@ bool Gatherer::LoadReferenceData(pugi::xml_node& node) {
 	bool ret = true;
 
 	max_health = node.attribute("health").as_float();
-	resource_capacity = node.attribute("damage").as_int();
 	speed.x = node.attribute("speed").as_int();
 	speed.y = speed.x * 0.5f;
 	storage_capacity = node.attribute("storage_capacity").as_int();

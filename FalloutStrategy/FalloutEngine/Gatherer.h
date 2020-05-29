@@ -24,7 +24,6 @@ public:
 private:
 	ResourceBuilding* resource_building;
 	Resource resource_type;
-	int resource_capacity;
 	int resource_collected;
 	j1Timer gathering_timer;
 	int gather_time;
