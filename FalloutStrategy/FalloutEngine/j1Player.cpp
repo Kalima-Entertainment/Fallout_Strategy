@@ -27,9 +27,9 @@ j1Player::j1Player() : GenericPlayer() {
 	border_scroll = false;
 	mouse_speed_multiplier = 1.5f;
 
-	caps = 100;
-	food = 100;
-	water = 100;
+	caps = 500;
+	food = 500;
+	water = 500;
 
 	god_mode = false;
 
