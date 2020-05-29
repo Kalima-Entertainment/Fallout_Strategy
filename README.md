@@ -2,18 +2,21 @@
 This is a real-time strategy game produced by 2nd year students from CITM/UPC University in Terrassa, Barcelona.
 
 ## Goal
-* Make your faction survive among the others in this exciting RTS!
+* Make your faction survive among the others in this exciting RTS! Be careful with the deathclaws at the end of the game.
 
 ### Win / Lose conditions
-Destroy all other factions' buildings to win the game, if all of yours are destroyed you will lose.  
+Destroy all other factions' buildings to win the game before you run out of time, if all of yours are destroyed you will lose.  
 
 ## Controls
 * Left click on the unit and left click on the position you want to make it go to.
 * º - Turn console ON/OFF
 * Y - Block/Unblock border scroll
 * F - Center camera on selected entity
-* F7 - Show nodes in minimap
-* F8 - UI Debug ON/OFF
+* F4 -  UI Debug ON/OFF
+* F5 -  Save
+* F6 -  Load
+* F7 - Win the game instantly
+* F8 - Lose the game instantly
 * F9 - Debug mode ON/OFF
 * F10 - Godmode
 * ESC - Pause
@@ -23,6 +26,14 @@ Upgrade your buildings to give differents boosts to your faction. Every building
 * Base - Increase resource limit and Gatherer resource limit
 * Barrack - Damage and Speed to all the units
 * Laboratory - Add health to units and decrease creation time
+
+## Special ability/unit
+Obtain an extra help in the laboratory of your faction that would make your journey easier.
+*Radar- Reveal the location of your enemies
+*Mr. Handy- Great robot with a big amount of life and damage, that will lend you a hand in the fight.
+
+## Quests
+Complete the quests at the beginning of the game to receive a Mr. Handy totally free.
 
 ### Debug
 In debug mode you will be able to see the path the player follows and how it does so.
