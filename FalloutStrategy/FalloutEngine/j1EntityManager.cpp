@@ -44,6 +44,12 @@ j1EntityManager::j1EntityManager(){
 	showing_building_menu = false;
 	blood = nullptr;
 	smoke = nullptr;
+	entities_loaded = false;
+	
+	mr_handy_cost = NULL;
+	mr_handy_time = NULL;
+
+	radar_cost = NULL;
 }
 
 j1EntityManager::~j1EntityManager(){}

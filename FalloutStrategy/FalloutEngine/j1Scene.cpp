@@ -119,17 +119,13 @@ bool j1Scene::Start()
 	App->minimap->Enable();
 
 	//top_left
-	App->entities->CreateEntity(VAULT, MELEE, 20, 20, App->player);
-	//App->entities->CreateEntity(ANIMALS, BIGHRONER, 15, 20, App->player);
-	//App->entities->CreateEntity(ANIMALS, BRAHAM, 22, 20, App->player);
-	//App->entities->CreateEntity(ANIMALS, DEATHCLAW, 28, 20, App->player);
-
+	//App->entities->CreateEntity(VAULT, MELEE, 20, 20, App->player);
 	//top_right
-	App->entities->CreateEntity(VAULT, MELEE, 130, 20, App->player);
+	//App->entities->CreateEntity(VAULT, MELEE, 130, 20, App->player);
 	//bottom_left
-	App->entities->CreateEntity(VAULT, MELEE, 20, 130, App->player);
+	//App->entities->CreateEntity(VAULT, MELEE, 20, 130, App->player);
 	//bottom_right
-	App->entities->CreateEntity(VAULT, MELEE, 130,110, App->player);
+	//App->entities->CreateEntity(VAULT, MELEE, 130,110, App->player);
 
 	//Set camera to player's base position
 	App->render->camera.x -= (int)(App->player->base->position.x - App->render->camera.w * 0.5f);
@@ -172,7 +168,6 @@ bool j1Scene::Update(float dt)
 			iPoint pos = App->entities->ClosestTile(Deathclaws[1]->current_tile, players[1]->base->tiles);
 			Deathclaws[1]->PathfindToPosition(pos);
 			Deathclaws[1]->target_building = players[1]->base;
-			//LOG("1");
 			deathclaw2  = true;
 		}
 		if (players[2]->base != nullptr && deathclaw3 == false)
@@ -181,7 +176,6 @@ bool j1Scene::Update(float dt)
 			iPoint pos = App->entities->ClosestTile(Deathclaws[2]->current_tile, players[2]->base->tiles);
 			Deathclaws[2]->PathfindToPosition(pos);
 			Deathclaws[2]->target_building = players[2]->base;
-			//LOG("2");
 			deathclaw3 = true;
 		}
 		if (players[3]->base != nullptr && deathclaw4 == false)
@@ -190,7 +184,6 @@ bool j1Scene::Update(float dt)
 			iPoint pos = App->entities->ClosestTile(Deathclaws[3]->current_tile, players[3]->base->tiles);
 			Deathclaws[3]->PathfindToPosition(pos);
 			Deathclaws[3]->target_building = players[3]->base;
-			//LOG("3");
 			deathclaw4 = true;
 		}
 	}
