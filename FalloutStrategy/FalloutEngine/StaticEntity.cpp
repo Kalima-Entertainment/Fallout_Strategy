@@ -76,7 +76,7 @@ StaticEntity::~StaticEntity() {
 	texture = nullptr;
 	StaticParticle = nullptr;
 	//App->entities->ReleaseParticle(StaticParticle);
-
+	visionEntity = nullptr;
 	tiles.clear();
 
 	//Clean Unit Spawn Stacks

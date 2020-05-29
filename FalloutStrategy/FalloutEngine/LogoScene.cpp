@@ -128,6 +128,8 @@ bool LogoScene::Update(float dt) {
 		Loop = false;
 		App->audio->PlayFx(2, App->audio->F_press, 0);
 		win_video = 0;
+		App->menu_manager->DestroyMenu(Menu::RESOURCES);
+		App->menu_manager->DestroyMenu(Menu::QUEST);
 		App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 		App->audio->PlayFx(1, App->audio->back_fx, 0);
 		App->gui->ingame = false;
@@ -141,6 +143,8 @@ bool LogoScene::Update(float dt) {
 		Loop = false;
 		App->audio->PlayFx(2, App->audio->F_press, 0);
 		lose_video = 0;
+		App->menu_manager->DestroyMenu(Menu::RESOURCES);
+		App->menu_manager->DestroyMenu(Menu::QUEST);
 		App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 		App->audio->PlayFx(1, App->audio->back_fx, 0);
 		App->gui->ingame = false;

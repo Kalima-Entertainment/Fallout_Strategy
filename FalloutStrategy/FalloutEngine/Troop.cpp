@@ -92,13 +92,13 @@ bool Troop::Update(float dt) {
 		}
 		else {
 			if (target_building) {
-				if (target_building->to_delete) {
+				if ((target_building->to_delete)||(target_building->state == DIE)) {
 					target_entity = target_building = RequestTargetBuilding(target_building->faction);
 
 					if (target_building == nullptr)
 						break;
 				}
-				else {
+				else if(current_tile.DistanceManhattan(App->entities->ClosestTile(current_tile, target_building->tiles)) > range) {
 					PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
 				}
 			}
