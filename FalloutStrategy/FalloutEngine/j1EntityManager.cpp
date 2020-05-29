@@ -192,6 +192,10 @@ bool j1EntityManager::PreUpdate() {
 
 	for (int i = 0; i < entities.size(); i++)
 	{
+		if ((entities[i]->target_entity != nullptr) && (entities[i]->target_entity->to_delete)) {
+			entities[i]->target_entity = nullptr;
+		}
+
 		//delete entities to destroy
 		if (entities[i]->to_delete)
 		{
@@ -204,9 +208,6 @@ bool j1EntityManager::PreUpdate() {
 			delete entities[i];
 			entities[i] = nullptr;
 			entities.erase(entities.begin() + i);
-		}
-		if ((entities[i]->target_entity != nullptr) && (entities[i]->target_entity->to_delete)) {
-			entities[i]->target_entity = nullptr;
 		}
 	}
 
