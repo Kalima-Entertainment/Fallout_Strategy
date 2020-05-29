@@ -15,12 +15,22 @@ j1Input::j1Input() : j1Module()
 	keyboard = new j1KeyState[MAX_KEYS];
 	memset(keyboard, KEY_IDLE, sizeof(j1KeyState) * MAX_KEYS);
 	memset(mouse_buttons, KEY_IDLE, sizeof(j1KeyState) * NUM_MOUSE_BUTTONS);
+	
+	mouse_wheel_motion_y = 0u;
+	mouse_motion_x = 0;
+	mouse_motion_y = 0;
+	mouse_x = 0;
+	mouse_y = 0;
+
+	newLetter = nullptr;
+	 isPresed = false;
 }
 
 // Destructor
 j1Input::~j1Input()
 {
 	delete[] keyboard;
+	delete newLetter;
 }
 
 // Called before render is available

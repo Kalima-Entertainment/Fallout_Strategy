@@ -11,13 +11,17 @@ j1Audio::j1Audio() : j1Module()
 {
 	music = NULL;
 	name = ("audio");
-
+	Music_Volume = 0;
 	die_sound = false;
+
+	music_volume = 0;
+	fx_volume = 0;
 }
 
 // Destructor
-j1Audio::~j1Audio()
-{}
+j1Audio::~j1Audio(){
+delete music;
+}
 
 // Called before render is available
 bool j1Audio::Awake(pugi::xml_node& config)

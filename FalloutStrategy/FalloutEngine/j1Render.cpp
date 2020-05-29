@@ -17,6 +17,11 @@ j1Render::j1Render() : j1Module()
 	background.a = 0;
 	debug = false;
 	fog_of_war = true;
+
+	viewport.x = 0;
+	viewport.y = 0;
+	viewport.h = 0;
+	viewport.w = 0;
 }
 
 // Destructor

@@ -8,6 +8,8 @@
 
 j1Video::j1Video()
 {
+	baseticks = 0;
+	framems = 0;
 }
 
 j1Video::~j1Video()

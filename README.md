@@ -51,6 +51,7 @@ In debug mode you will be able to see the path the player follows and how it doe
 * spawn gatherer/melee/ranged/army -  spawns 1 unit of the selected type or an army of 10 melee and 10 ranged
 * win - automatically win the game
 * lose - automatically lose the game
+* fog of war - active/desactive the fog of war
 
 ## Team
 
