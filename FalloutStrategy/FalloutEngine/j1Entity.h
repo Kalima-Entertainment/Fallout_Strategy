@@ -93,6 +93,8 @@ public:
 	//audio
 	int volume;
 	bool playing_fx;
+	int channel;
+	int fx;
 
 	EntityType type;
 	Faction faction;

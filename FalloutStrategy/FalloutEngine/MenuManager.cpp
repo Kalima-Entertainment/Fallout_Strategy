@@ -290,9 +290,9 @@ void MenuManager::CreateMenu(Menu menu) {
 	case Menu::GUI:
 		//Images
 		gui_ingame[0] = (j1Image*)App->gui->CreateImage(0, 0, Image, { 0, 2428, 1290, 730 }, NULL, this);
-		gui_ingame[1] = (UI_Label*)App->gui->CreateLabel(690, 7, Label, ":", NULL, this, NULL, "StackedPixel");
-		timer_item = (UI_Label*)App->gui->CreateLabel(700, 7, Label, "0", NULL, this, NULL, "StackedPixel");
-		timer_minutes = (UI_Label*)App->gui->CreateLabel(652, 7, Label, "0", NULL, this, NULL, "StackedPixel");
+		//gui_ingame[1] = (UI_Label*)App->gui->CreateLabel(690, 7, Label, ":", NULL, this, NULL, "StackedPixel");
+		//timer_item = (UI_Label*)App->gui->CreateLabel(700, 7, Label, "0", NULL, this, NULL, "StackedPixel");
+		//timer_minutes = (UI_Label*)App->gui->CreateLabel(652, 7, Label, "0", NULL, this, NULL, "StackedPixel");
 		
 		
 
@@ -1096,8 +1096,8 @@ void MenuManager::DestroyMenu(Menu menu) {
 		break;
 	case Menu::GUI:
 		App->gui->DeleteArrayElements(gui_ingame, 4);
-		App->gui->Delete_Element(timer_item);
-		App->gui->Delete_Element(timer_minutes);
+		//App->gui->Delete_Element(timer_item);
+		//App->gui->Delete_Element(timer_minutes);
 		break;
 	case Menu::RESOURCES:
 		App->gui->DeleteArrayElements(resources, 3);

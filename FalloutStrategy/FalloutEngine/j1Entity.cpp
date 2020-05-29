@@ -29,6 +29,8 @@ j1Entity::j1Entity() {
 	particles_created = false;
 	playing_fx = false;
 	volume = 0;
+	channel = 0;
+	fx = 0;
 
 	last_dt = 0.01;
 }
@@ -50,16 +52,15 @@ int j1Entity::GetPositionScore() const {
 
 
 void j1Entity::SpatialAudio(int positionx, int positiony, Faction faction, State state, EntityType type) {
-	int channel = 0;
-	int fx = 0;
+
 
 	switch (state)
 	{
 	case WALK:
-		if (faction == VAULT) channel = 17;
-		else if (faction == BROTHERHOOD) channel = 18;
-		else if (faction == MUTANT) channel = 2;
-		else if (faction == GHOUL) channel = 19;
+		if (faction == VAULT) { channel = 17; }
+		else if (faction == BROTHERHOOD) { channel = 18; }
+		else if (faction == MUTANT) { channel = 2; }
+		else if (faction == GHOUL) { channel = 19; }
 		fx = App->audio->Brotherhood_walk;
 
 		if (type == MR_HANDY) {
