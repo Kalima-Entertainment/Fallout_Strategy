@@ -145,7 +145,8 @@ bool DynamicEntity::PostUpdate() {
 	current_animation = &animations[state][direction];
 
 	//Fog Of War Rendering Based
-	if(this->current_tile.x >= 0 && this->current_tile.y >= 0)
+	if (this->current_tile.x >= 0 && this->current_tile.y >= 0)
+	{
 		if (App->fowManager->GetFoWTileState({ this->current_tile })->tileFogBits != fow_ALL)
 		{
 			//Character Render
@@ -156,7 +157,7 @@ bool DynamicEntity::PostUpdate() {
 			App->render->DrawQuad(foreground_health_bar, 0, 255, 0, 255);
 			//App->render->DrawQuad(frame_quad, 155, 155, 155, 185, false);			
 		}
-		else if ((this->faction == NO_FACTION)||(App->render->debug)) {
+		else if ((this->faction == NO_FACTION) || (App->render->debug)) {
 			//Animals are also visible on shroud
 			if (App->fowManager->GetFoWTileState({ this->current_tile })->tileShroudBits == fow_ALL)
 			{
@@ -169,7 +170,7 @@ bool DynamicEntity::PostUpdate() {
 				//App->render->DrawQuad(frame_quad, 155, 155, 155, 185, false);
 			}
 		}
-	
+	}
 
 	return true;
 }

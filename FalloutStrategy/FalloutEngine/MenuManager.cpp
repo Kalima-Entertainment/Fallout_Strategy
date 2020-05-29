@@ -51,7 +51,7 @@ MenuManager::MenuManager()
 	select_faction_menu[10] = nullptr;
 	select_faction_photos[4] = nullptr;
 	pause_menu[7] = nullptr;
-	gui_ingame[4] = nullptr;
+	gui_ingame[3] = nullptr;
 	tutorial[8] = nullptr;
 	how_to_play[6] = nullptr;
 	tutorial_screen = nullptr;
@@ -296,12 +296,12 @@ void MenuManager::CreateMenu(Menu menu) {
 		
 		
 
+		//Tutorial
+		gui_ingame[1] = (j1Image*)App->gui->CreateImage(1205, 70, Image, { 1037, 2120, 74, 71 }, NULL, this);
+		gui_ingame[2] = (UI_Button*)App->gui->CreateButton(1160, 70, info_button, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this);
+
 		last_menu = current_menu;
 		current_menu = Menu::GUI;
-		
-		//Tutorial
-		gui_ingame[2] = (j1Image*)App->gui->CreateImage(1205, 70, Image, { 1037, 2120, 74, 71 }, NULL, this);
-		gui_ingame[3] = (UI_Button*)App->gui->CreateButton(1160, 70, info_button, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this);
 		break;
 
 	case Menu::RESOURCES:
@@ -1095,7 +1095,7 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->gui->DeleteArrayElements(pause_menu, 7);
 		break;
 	case Menu::GUI:
-		App->gui->DeleteArrayElements(gui_ingame, 4);
+		App->gui->DeleteArrayElements(gui_ingame, 3);
 		//App->gui->Delete_Element(timer_item);
 		//App->gui->Delete_Element(timer_minutes);
 		break;

@@ -60,7 +60,7 @@ public:
 	UI_element* select_faction_menu[10];
 	UI_element* select_faction_photos[4];
 	UI_element* pause_menu[7];
-	UI_element* gui_ingame[4];
+	UI_element* gui_ingame[3];
 	UI_element* tutorial[8];
 	UI_element* how_to_play[6];
 	UI_element* tutorial_screen;
