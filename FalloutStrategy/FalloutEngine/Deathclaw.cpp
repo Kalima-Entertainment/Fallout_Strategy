@@ -19,6 +19,9 @@ Deathclaw::Deathclaw(iPoint g_current_tile) : DynamicEntity() {
 	attack_time = 3;
 	range = 1;
 	attack_timer.Start();
+	target_building = nullptr;
+	target_entity = nullptr;
+	DynaParticle = nullptr;
 
 	DynaParticle = App->entities->CreateParticle(position);
 	Animation anim;
@@ -32,6 +35,7 @@ Deathclaw::Deathclaw(iPoint g_current_tile) : DynamicEntity() {
 Deathclaw::~Deathclaw() {
 	target_entity = nullptr;
 	DynaParticle = nullptr;
+	target_building = nullptr;
 	//App->entities->ReleaseParticle(DynaParticle);
 }
 
