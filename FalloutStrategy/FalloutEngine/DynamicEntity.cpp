@@ -93,7 +93,11 @@ bool DynamicEntity::PostUpdate() {
 
 		if(App->player->selected_entity != this)
 			App->render->Blit(App->render->debug_tex, tile_tex_position.x, tile_tex_position.y, &tile_rect);
+
 		
+
+
+
 		App->render->DrawQuad({ (int)position.x - 2, (int)position.y - 2 , 4,4 }, 255, 0, 0, 255);
 		App->render->DrawQuad({ (int)(next_tile_rect.x), (int)(next_tile_rect.y), next_tile_rect.w, next_tile_rect.h }, 0, 255, 0, 255);
 	}
@@ -148,8 +152,6 @@ bool DynamicEntity::PostUpdate() {
 				App->render->DrawQuad(frame_quad, 155, 155, 155, 185, false);
 			}
 		}
-	
-
 	
 
 	return true;

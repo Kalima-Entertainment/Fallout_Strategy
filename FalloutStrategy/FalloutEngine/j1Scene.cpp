@@ -240,6 +240,7 @@ bool j1Scene::Update(float dt)
 		App->logo_scene->playsound = true;
 		App->isPaused = true;
 		App->logo_scene->Loop = true;
+		App->hud->activateTimer = false;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 	{
@@ -250,6 +251,7 @@ bool j1Scene::Update(float dt)
 		App->gui->ingame = false;
 		App->isPaused = true;
 		App->logo_scene->Loop = true;
+		App->hud->activateTimer = false;
 	}
 
 	return true;

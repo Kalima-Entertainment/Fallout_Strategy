@@ -79,7 +79,8 @@ bool DialogManager::CleanUp() {
 	App->menu_manager->CreateMenu(Menu::RESOURCES);
 	App->isPaused = false;
 	App->hud->activateTimer = true;
-
+	App->hud->minutes = 14;
+	App->hud->timer = 59;
 	return ret;
 }
 

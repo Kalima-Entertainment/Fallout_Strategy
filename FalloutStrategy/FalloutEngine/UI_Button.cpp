@@ -301,16 +301,6 @@ bool UI_Button::Update(float dt)
 				App->minimap->CleanUp();
 				App->minimap->Start();
 			}
-			else if (t == button_win_lose_to_main)
-			{
-				App->menu_manager->CreateMenu(Menu::MAIN_MENU);
-				App->audio->PlayFx(1, App->audio->back_fx, 0);
-				App->gui->ingame = false;
-				App->transition->StartTimer();
-				App->transition->transition = true;
-				App->transition->fadetimer.Start();
-				
-			}
 			//Spawn Gatherer from any faction
 			else if (t == Ghouls_ghaterer_button || t == Vault_ghaterer_button || t == Supermutant_ghaterer_button || t == Brotherhood_ghaterer_button){
 				App->audio->PlayFx(1, App->audio->character_fx, 0);

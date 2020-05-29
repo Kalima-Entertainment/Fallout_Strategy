@@ -23,6 +23,9 @@ j1Gui::j1Gui() : j1Module()
 	ingame = false;
 	open = true;
 	load = false;
+	volume_up = 0;
+	fx_up = 0;
+	count = 0;
 }
 
 // Destructor
