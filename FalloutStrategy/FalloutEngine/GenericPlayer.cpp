@@ -7,10 +7,19 @@ GenericPlayer::GenericPlayer() : j1Module() {
 	melees = 0;
 	rangeds = 0;
 	gatherers = 0;
-
+	target_player = nullptr;
+	target_building = nullptr;
+	base = barrack[0] = barrack[1] = laboratory = nullptr;
+	goal_tile_set = false;
+	defeated = false;
+	faction = NO_FACTION;
 }
 
-GenericPlayer::~GenericPlayer() {}
+GenericPlayer::~GenericPlayer() {
+	target_player = nullptr;
+	target_building = nullptr;
+	base = barrack[0] = barrack[1] = laboratory = nullptr;
+}
 
 int GenericPlayer::GetTroopsAmount() const {
 	return troops.size();
@@ -50,8 +59,10 @@ bool GenericPlayer::DeleteEntity(j1Entity* entity) {
 		base = nullptr;
 		break;
 	case BARRACK:
-		if (barrack[0] == (StaticEntity*)entity) barrack[0] = nullptr;
-		else if (barrack[1] == (StaticEntity*)entity) barrack[1] = nullptr;
+		if (barrack[0] == (StaticEntity*)entity)
+			barrack[0] = nullptr;
+		else if (barrack[1] == (StaticEntity*)entity)
+			barrack[1] = nullptr;
 		break;
 	case LABORATORY:
 		laboratory = nullptr;

@@ -27,11 +27,9 @@ j1Player::j1Player() : GenericPlayer() {
 	border_scroll = false;
 	mouse_speed_multiplier = 1.5f;
 
-	base = barrack[0] = barrack[1] = laboratory = nullptr;
-
-	caps = 999;
-	food = 399;
-	water = 999;
+	caps = 100;
+	food = 100;
+	water = 100;
 
 	god_mode = false;
 
@@ -39,16 +37,23 @@ j1Player::j1Player() : GenericPlayer() {
 	qwater = false;
 	qfood = false;
 
-	//faction = VAULT;
-	defeated = false;
+	reward = 0;
+
 	is_ai = false;
+
+	Map_mouseposition = {1,1};
 }
 
 j1Player::~j1Player() {
 	selected_entity = nullptr;
 	last_selected_entity = nullptr;
+
+	for (int t = 0; t < troops.size(); t++) { troops[t] = nullptr; }
 	troops.clear();
+
+	for (int g = 0; g < gatherers_vector.size(); g++) { gatherers_vector[g] = nullptr; }
 	gatherers_vector.clear();
+
 	base = barrack[0] = barrack[1] = laboratory = nullptr;
 }
 
@@ -89,7 +94,7 @@ bool j1Player::PreUpdate() {
 		border_scroll = !border_scroll;
 
 	//center camera
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
 	{
 		if (selected_entity != nullptr)
 		{
@@ -136,6 +141,24 @@ bool j1Player::PreUpdate() {
 			App->input->GetMouseMotion(x, y);
 			App->render->camera.x += x * mouse_speed_multiplier;
 			App->render->camera.y += y * mouse_speed_multiplier;
+			// CAMERA LIMITS X
+			if (App->render->camera.x >= 5070)
+			{
+				App->render->camera.x = 5070;
+			}
+			if (App->render->camera.x <= -3695)
+			{
+				App->render->camera.x = -3695;
+			}
+			// CAMERA LIMITS Y
+			if (App->render->camera.y >= 314)
+			{
+				App->render->camera.y = 314;
+			}
+			if (App->render->camera.y <= -4452)
+			{
+				App->render->camera.y = -4452;
+			}
 		}
 
 		//move camera through minimap
@@ -185,18 +208,34 @@ bool j1Player::Update(float dt) {
 	if (qcaps == false) {
 		
 		if (caps >= 1000) {
-			food = 401;
-			App->menu_manager->quest[6] = (j1Image*)App->gui->CreateImage(33, 200, Image, { 3061, 619, 30, 27 }, NULL, this);
-			reward++;
-			if (reward == 1) App->menu_manager->quest[1] = (j1Image*)App->gui->CreateImage(50, 261, Image, { 3155, 809, 60, 17 }, NULL, this);
-			if (reward == 2) App->menu_manager->quest[2] = (j1Image*)App->gui->CreateImage(114, 261, Image, { 3219, 809, 63, 17 }, NULL, this);
-			if (reward == 3) {
-				App->menu_manager->quest[3] = (j1Image*)App->gui->CreateImage(181, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
-				App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1231, 555, 282, 262 }, NULL, this);
-				App->menu_manager->quest[10] = (UI_Button*)App->gui->CreateButton(500, 450, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-				App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this, NULL);
-				App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
+			
+			if (App->gui->open == false) {
+				App->menu_manager->quest[8] = (j1Image*)App->gui->CreateImage(-274, 200, Image, { 3061, 619, 30, 27 }, NULL, this);
+				reward++;
+				if (reward == 1) App->menu_manager->quest[3] = (j1Image*)App->gui->CreateImage(-257, 261, Image, { 3155, 809, 60, 17 }, NULL, this);
+				if (reward == 2) App->menu_manager->quest[4] = (j1Image*)App->gui->CreateImage(-193, 261, Image, { 3219, 809, 63, 17 }, NULL, this);
+				if (reward == 3) {
+					App->menu_manager->quest[5] = (j1Image*)App->gui->CreateImage(-126, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
+					App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1226, 559, 282, 262 }, NULL, this);
+					App->menu_manager->quest[10] = (UI_Button*)App->gui->CreateButton(500, 450, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+					App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this, NULL);
+					App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
+				}
 			}
+			else if (App->gui->open == true) {
+				App->menu_manager->quest[8] = (j1Image*)App->gui->CreateImage(33, 200, Image, { 3061, 619, 30, 27 }, NULL, this);
+				reward++;
+				if (reward == 1) App->menu_manager->quest[3] = (j1Image*)App->gui->CreateImage(50, 261, Image, { 3155, 809, 60, 17 }, NULL, this);
+				if (reward == 2) App->menu_manager->quest[4] = (j1Image*)App->gui->CreateImage(114, 261, Image, { 3219, 809, 63, 17 }, NULL, this);
+				if (reward == 3) {
+					App->menu_manager->quest[5] = (j1Image*)App->gui->CreateImage(181, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
+					App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1226, 559, 282, 262 }, NULL, this);
+					App->menu_manager->quest[10] = (UI_Button*)App->gui->CreateButton(500, 450, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+					App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this, NULL);
+					App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
+				}
+			}
+		
 			qcaps = true;
 		}
 	}
@@ -204,19 +243,34 @@ bool j1Player::Update(float dt) {
 	if (qwater == false) {
 
 		if (water >= 1000) {
-			food = 401;
-			caps = 1001;
-			App->menu_manager->quest[4] = (j1Image*)App->gui->CreateImage(33, 120, Image, { 3061, 619, 30, 27 }, NULL, this);
-			reward++;
-			if (reward == 1) App->menu_manager->quest[1] = (j1Image*)App->gui->CreateImage(50, 261, Image, { 3155, 809, 60, 17 }, NULL, this);
-			if (reward == 2) App->menu_manager->quest[2] = (j1Image*)App->gui->CreateImage(114, 261, Image, { 3219, 809, 63, 17 }, NULL, this);
-			if (reward == 3) {
-				App->menu_manager->quest[3] = (j1Image*)App->gui->CreateImage(181, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
-				App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1231, 555, 282, 262 }, NULL, this);
-				App->menu_manager->quest[10] = (UI_Button*)App->gui->CreateButton(500, 450, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-				App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this, NULL);
-				App->entities->CreateEntity(App->player->faction, MR_HANDY, App->player->base->position.x, App->player->base->position.y, App->player);
+
+			if (App->gui->open == false) {
+				App->menu_manager->quest[6] = (j1Image*)App->gui->CreateImage(-274, 120, Image, { 3061, 619, 30, 27 }, NULL, this);
+				reward++;
+				if (reward == 1) App->menu_manager->quest[3] = (j1Image*)App->gui->CreateImage(-257, 261, Image, { 3155, 809, 60, 17 }, NULL, this);
+				if (reward == 2) App->menu_manager->quest[4] = (j1Image*)App->gui->CreateImage(-193, 261, Image, { 3219, 809, 63, 17 }, NULL, this);
+				if (reward == 3) {
+					App->menu_manager->quest[5] = (j1Image*)App->gui->CreateImage(-126, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
+					App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1226, 559, 282, 262 }, NULL, this);
+					App->menu_manager->quest[10] = (UI_Button*)App->gui->CreateButton(500, 450, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+					App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this, NULL);
+					App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
+				}
 			}
+			else if (App->gui->open == true) {
+				App->menu_manager->quest[6] = (j1Image*)App->gui->CreateImage(33, 120, Image, { 3061, 619, 30, 27 }, NULL, this);
+				reward++;
+				if (reward == 1) App->menu_manager->quest[3] = (j1Image*)App->gui->CreateImage(50, 261, Image, { 3155, 809, 60, 17 }, NULL, this);
+				if (reward == 2) App->menu_manager->quest[4] = (j1Image*)App->gui->CreateImage(114, 261, Image, { 3219, 809, 63, 17 }, NULL, this);
+				if (reward == 3) {
+					App->menu_manager->quest[5] = (j1Image*)App->gui->CreateImage(181, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
+					App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1226, 559, 282, 262 }, NULL, this);
+					App->menu_manager->quest[10] = (UI_Button*)App->gui->CreateButton(500, 450, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+					App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this, NULL);
+					App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
+				}
+			}
+			
 			qwater = true;
 		}
 	}
@@ -224,21 +278,53 @@ bool j1Player::Update(float dt) {
 	if (qfood == false) {
 		
 		if (food >= 400) {
-			App->menu_manager->quest[5] = (j1Image*)App->gui->CreateImage(33, 160, Image, { 3061, 619, 30, 27 }, NULL, this);
-			reward++;
-			if (reward == 1) App->menu_manager->quest[1] = (j1Image*)App->gui->CreateImage(50, 261, Image, { 3155, 809, 60, 17 }, NULL, this);
-			if (reward == 2) App->menu_manager->quest[2] = (j1Image*)App->gui->CreateImage(114, 261, Image, { 3219, 809, 63, 17 }, NULL, this);
-			if (reward == 3) {
-				App->menu_manager->quest[3] = (j1Image*)App->gui->CreateImage(181, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
-				App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1231, 555, 282, 262 }, NULL, this);
-				App->menu_manager->quest[10] = (UI_Button*)App->gui->CreateButton(500, 450, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-				App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this, NULL);
-				App->entities->CreateEntity(App->player->faction, MR_HANDY, App->player->base->position.x, App->player->base->position.y, App->player);
+
+			if (App->gui->open == false) {
+				App->menu_manager->quest[7] = (j1Image*)App->gui->CreateImage(-274, 160, Image, { 3061, 619, 30, 27 }, NULL, this);
+				reward++;
+				if (reward == 1) App->menu_manager->quest[3] = (j1Image*)App->gui->CreateImage(-257, 261, Image, { 3155, 809, 60, 17 }, NULL, this);
+				if (reward == 2) App->menu_manager->quest[4] = (j1Image*)App->gui->CreateImage(-193, 261, Image, { 3219, 809, 63, 17 }, NULL, this);
+				if (reward == 3) {
+					App->menu_manager->quest[5] = (j1Image*)App->gui->CreateImage(-126, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
+					App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1226, 559, 282, 262 }, NULL, this);
+					App->menu_manager->quest[10] = (UI_Button*)App->gui->CreateButton(500, 450, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+					App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this, NULL);
+					App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
+				}
 			}
+			else if (App->gui->open == true) {
+				App->menu_manager->quest[7] = (j1Image*)App->gui->CreateImage(33, 160, Image, { 3061, 619, 30, 27 }, NULL, this);
+				reward++;
+				if (reward == 1) App->menu_manager->quest[3] = (j1Image*)App->gui->CreateImage(50, 261, Image, { 3155, 809, 60, 17 }, NULL, this);
+				if (reward == 2) App->menu_manager->quest[4] = (j1Image*)App->gui->CreateImage(114, 261, Image, { 3219, 809, 63, 17 }, NULL, this);
+				if (reward == 3) {
+					App->menu_manager->quest[5] = (j1Image*)App->gui->CreateImage(181, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
+					App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1226, 559, 282, 262 }, NULL, this);
+					App->menu_manager->quest[10] = (UI_Button*)App->gui->CreateButton(500, 450, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+					App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this, NULL);
+					App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
+				}
+			}
+			
 			qfood = true;
 		}
 	}
+	
+	iPoint selected_spot;
+	App->input->GetMousePosition(selected_spot.x, selected_spot.y);
+	
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
+		if (TouchingUI(selected_spot.x, selected_spot.y)) {
+			if ((selected_spot.x > App->minimap->position.x) && (selected_spot.x < App->minimap->position.x + App->minimap->width)
+				&& (selected_spot.y > App->minimap->position.y) && (selected_spot.y < App->minimap->position.y + App->minimap->height)) {
 
+				selected_spot = App->minimap->ScreenToMinimapToWorld(selected_spot.x, selected_spot.y);
+				selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
+				Map_mouseposition = selected_spot;
+			}
+		}
+	}
+	
 	// -- Request GroupMovement
 	for (int i = 0; i < App->entities->entities.size(); i++)
 	{
@@ -320,11 +406,21 @@ void j1Player::MoveEntity(){
 
 	App->input->GetMousePosition(tx, ty);
 
-	if (TouchingUI(tx,ty))
-		return;
-
-	selected_spot = App->render->ScreenToWorld(tx, ty);
-	selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
+	if (TouchingUI(tx, ty)) { 
+		if ((tx > App->minimap->position.x) && (tx < App->minimap->position.x + App->minimap->width)
+			&& (ty > App->minimap->position.y) && (ty < App->minimap->position.y + App->minimap->height)) {
+			selected_spot = App->minimap->ScreenToMinimapToWorld(tx, ty);
+			selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
+		}
+		else {
+			return;
+		}
+	}
+	else
+	{
+		selected_spot = App->render->ScreenToWorld(tx, ty);
+		selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
+	}
 
 	j1Entity* target = App->entities->FindEntityByTile(selected_spot);
 
@@ -394,6 +490,7 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 		UpdateResourceData(Resource::WATER, resources_increase);
 		LOG("All resources increased");
 	}
+
 
 	if (command_beginning == "caps+") {
 		int caps_increase = std::stoi(command_parts[1].c_str());

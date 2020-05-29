@@ -40,7 +40,6 @@ struct Unit_Data {
 	int cost_water;
 	int cost_meat;
 	int spawn_seconds;
-
 };
 
 enum Upgrades {
@@ -94,7 +93,7 @@ public:
 	ResourceBuilding* FindResourceBuildingByTile(iPoint tile);
 	ResourceBuilding* GetClosestResourceBuilding(iPoint current_position);
 
-	iPoint ClosestTile(iPoint position, std::vector<iPoint> entity_tiles) const;
+	iPoint ClosestTile(iPoint position, std::vector<iPoint> entity_tiles);
 	iPoint FindFreeAdjacentTile(iPoint origin, iPoint destination);
 
 	bool LoadReferenceEntityAnimations();
@@ -115,6 +114,7 @@ public:
 
 	ParticleSystem* CreateParticle(fPoint);
 	void DeleteParticles();
+	void ReleaseParticle(ParticleSystem*);
 	void RestartOccupiedTiles();
 
 public:
@@ -143,9 +143,11 @@ public:
 	Upgrades_Data units_creation_time[4];
 	int radar_cost;
 	int mr_handy_cost;
+	int mr_handy_time;
 
 	// -- Particle textures
 	SDL_Texture* blood;
+	SDL_Texture* smoke;
 
 private:
 	int loading_faction;

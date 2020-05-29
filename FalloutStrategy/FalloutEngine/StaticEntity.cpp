@@ -11,14 +11,16 @@
 #include "FoWManager.h"
 #include "j1EntityManager.h"
 
-StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile,  GenericPlayer* g_owner) {
+#include "ParticleSystem.h"
+#include "Emiter.h"
+
+StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile, GenericPlayer* g_owner) : j1Entity() {
 
 	type = g_type;
 	faction = g_faction;
 	owner = g_owner;
 
 	current_tile = g_current_tile;
-	//position = App->map->fMapToWorld(current_tile.x, current_tile.y);
 
 	state = IDLE;
 	storage_capacity = 1000;
@@ -34,24 +36,40 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 	want_to_upgrade = false;
 
 	time_left = 0;
+	time_left_upgrade = 0;
 	level = 0;
+
+	target_entity = nullptr;
 	reference_entity = nullptr;
+	attacking_entity = nullptr;
+	current_animation = nullptr;
 	texture = nullptr;
+	//App->entities->ReleaseParticle(StaticParticle);
+
+	StaticParticle = nullptr;
+	visionEntity = nullptr;
 	spawnPosition = {-1,-1};
 
-	CalculateRenderAndSpawnPositions();
+	CalculateRenderAndSpawnPositions();	
 	
-	if (App->render->fog_of_war) {
-		if (this->faction == App->player->faction) {
-			//Player
-			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, true);
-			visionEntity->SetNewVisionRadius(7);
-		}
-		else {
-			//Enemy
-			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
-		}
+	if (this->faction == App->player->faction) {
+		//Player
+		visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, true);
+		visionEntity->SetNewVisionRadius(7);
 	}
+	else {
+		//Enemy
+		visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
+	}	
+
+	// -- Smoke particles
+	StaticParticle = App->entities->CreateParticle(position);
+	Animation anim;
+	anim.PushBack(SDL_Rect{ 0, 0 , 128, 128 }, 1);
+	anim.Reset();
+	Emiter emitter(position.x - 40, position.y, 0, -0.7f , 0.1f, NULL , 0.0080f, 0, 0, 0, 0, 0, 0, 3.0f, nullptr, App->entities->smoke, anim, true);
+	StaticParticle->PushEmiter(emitter);
+	StaticParticle->Desactivate();
 }
 
 StaticEntity::~StaticEntity() {
@@ -61,7 +79,20 @@ StaticEntity::~StaticEntity() {
 	attacking_entity = nullptr;
 	current_animation = nullptr;
 	texture = nullptr;
+	StaticParticle = nullptr;
+	//App->entities->ReleaseParticle(StaticParticle);
+	visionEntity = nullptr;
 	tiles.clear();
+
+	StaticParticle = nullptr;
+	visionEntity = nullptr;
+
+	//Clean Unit Spawn Stacks
+	for (size_t i = 0; i < 10; i++)
+	{
+		spawn_stack[i].type = NO_TYPE;
+		spawn_stack[i].spawn_seconds = 0;
+	}
 }
 
 bool StaticEntity::Update(float dt) {
@@ -76,6 +107,8 @@ bool StaticEntity::Update(float dt) {
 			delete_timer.Start();
 
 		visionEntity->SetNewPosition(App->map->MapToWorld(-10, -10));
+
+		StaticParticle->Desactivate();
 
 		if ((delete_timer.ReadSec() > 5)||(current_animation->Finished()))
 			to_delete = true;
@@ -95,6 +128,12 @@ bool StaticEntity::Update(float dt) {
 	//Interact with the building to spawn units or investigate upgrades
 	//Select a building and press 1, 2, 3 or 4 to spawn or investigate
 	DebugSpawnsUpgrades();
+
+	// -- Active particle when health its lower or equal than half
+	if (StaticParticle != nullptr) {
+		if (current_health <= (max_health/2))
+			StaticParticle->Activate();
+	}
 
 	last_dt = dt;
 
@@ -135,27 +174,36 @@ bool StaticEntity::PostUpdate() {
 		App->render->Blit(texture, render_position.x + upgrade_sprite[i].position.x, render_position.y + upgrade_sprite[i].position.y, &upgrade_sprite[i].rect);
 	}
 
-	if (App->render->debug)
-		App->render->DrawQuad({ (int)position.x, (int)position.y, 4,4 }, 255, 0, 0, 255);
+	//if (App->render->debug) App->render->DrawQuad({ (int)position.x, (int)position.y, 4,4 }, 255, 0, 0, 255);
 
 	//Health bar stats
-	SDL_Rect background_bar = { render_position.x + sprite_size * 0.5f - 40, render_position.y, 80, 4 };
-	SDL_Rect foreground_bar = { render_position.x + sprite_size * 0.5f - 40, render_position.y, (float)current_health / max_health * background_bar.w, 4 };
-	SDL_Rect frame = { render_position.x + sprite_size * 0.5f - 41, render_position.y - 1, 82, 6 };
+	/*
+	background_health_bar = { (int)(render_position.x + sprite_size * 0.5f - 40), (int)render_position.y, 80, 4 };
+	float health_proportion = current_health / max_health;
+	foreground_health_bar = { (int)(render_position.x + sprite_size * 0.5f - 40), render_position.y, (int)(health_proportion * background_health_bar.w), 4 };
+	frame_quad = { (int)(render_position.x + sprite_size * 0.5f - 41), render_position.y - 1, 82, 6 };
 
-	if (foreground_bar.w < 0) 
-		foreground_bar.w = 0;
-	App->render->DrawQuad(background_bar, 50, 50, 50, 255);
-	App->render->DrawQuad(foreground_bar, 20, 255, 20, 255);
-	App->render->DrawQuad(frame, 200, 200, 200, 200, false);
+	if (foreground_health_bar.w < 0)
+		foreground_health_bar.w = 0;
+
+	App->render->DrawQuad(background_health_bar, 50, 50, 50, 255);
+	App->render->DrawQuad(foreground_health_bar, 20, 255, 20, 255);
+	App->render->DrawQuad(frame_quad, 200, 200, 200, 200, false);
 
 	//Spawn bar
 	if (spawning) {
-		SDL_Rect spawn_bar_background = { render_position.x + sprite_size * 0.5f - 40, render_position.y +20, 80, 4 };
-		SDL_Rect spawn_bar_foreground = { render_position.x + sprite_size * 0.5f - 40, render_position.y+20, (float)time_left / spawn_stack[0].spawn_seconds * spawn_bar_background.w, 4 };
+		spawn_bar_background = { (int)(render_position.x + sprite_size * 0.5f - 40), render_position.y +20, 80, 4 };
+		spawn_bar_foreground = { (int)(render_position.x + sprite_size * 0.5f - 40), render_position.y+20, (int)(time_left / spawn_stack[0].spawn_seconds * spawn_bar_background.w), 4 };
 		App->render->DrawQuad(spawn_bar_background, 150, 150, 150, 255);
 		App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255);
 	}
+	*/
+	//Blit particles forward buildings
+	if (StaticParticle != nullptr) {
+		StaticParticle->Move(position.x, position.y);
+		StaticParticle->Update(last_dt);
+	}
+	
 
 	return true;
 }
@@ -187,11 +235,10 @@ bool StaticEntity::LoadDataFromReference() {
 	return ret;
 }
 
-
 bool StaticEntity::LoadReferenceData(pugi::xml_node& node) {
 	bool ret = true;
 
-	max_health = node.attribute("health").as_int();
+	max_health = node.attribute("health").as_float();
 	pugi::xml_node upgrade_node = node.child("upgrade");
 
 	for (int i = 0; i < 4; i++)
@@ -587,10 +634,14 @@ void StaticEntity::SpawnChrono() {
 		spawning = true;
 	}
 	if (spawning == true) {
+		if (spawn_stack[0].type == MR_HANDY) {
+			spawn_stack[0].spawn_seconds = App->entities->mr_handy_time;
+		}
 		if (chrono_spawn.ReadSec() > spawn_stack[0].spawn_seconds) {
 			App->entities->CreateEntity(faction, spawn_stack[0].type, spawnPosition.x, spawnPosition.y, owner);
 			//LOG("Unit Spawned");
 			UpdateSpawnStack();
+			App->audio->PlayFx(1, App->audio->upgrade_fx);
 		}
 		time_left = spawn_stack[0].spawn_seconds - chrono_spawn.ReadSec();
 	}
@@ -609,6 +660,7 @@ void StaticEntity::UpgradeChrono() {
 			if (upgrade_stack.building == BASE) {
 				ExecuteUpgrade(upgrade_stack.faction, RESOURCES_LIMIT);
 				ExecuteUpgrade(upgrade_stack.faction, GATHERER_CAPACITY);
+				
 			}
 			else if (upgrade_stack.building == BARRACK) {
 				ExecuteUpgrade(upgrade_stack.faction, UNITS_DAMAGE);
@@ -617,11 +669,14 @@ void StaticEntity::UpgradeChrono() {
 			else if (upgrade_stack.building == LABORATORY) {
 				ExecuteUpgrade(upgrade_stack.faction, UNITS_HEALTH);
 				ExecuteUpgrade(upgrade_stack.faction, CREATION_TIME);
-
 			}
-
-			upgrading = true;
+			upgrading = false;
+			
+			level++;
+			App->audio->PlayFx(1, App->audio->upgrade_fx);
 		}
+
+		time_left_upgrade = upgrade_stack.upgrade_seconds - chrono_upgrade.ReadSec();
 	}
 }
 
@@ -709,7 +764,8 @@ void StaticEntity::CalculateRenderAndSpawnPositions() {
 
 	if (tiles.size() > 0) {
 		current_tile = tiles.front();
-		position = App->map->fMapToWorld(current_tile.x, current_tile.y);
+		position = App->map->floatMapToWorld(current_tile.x, current_tile.y);
+		App->entities->occupied_tiles[current_tile.x][current_tile.y] = true;
 		render_position = { (int)(position.x - 0.5f * sprite_size),(int)(position.y - sprite_size * 0.75) };
 
 		switch (faction)

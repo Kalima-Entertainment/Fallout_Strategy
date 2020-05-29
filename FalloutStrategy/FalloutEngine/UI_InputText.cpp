@@ -14,13 +14,17 @@
 
 InputText::InputText(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer, std::string font) : UI_element(x, y, type, parent, Observer) {
 
+	InputText_Actived = false;
+	texture = nullptr;
 	type = InputBox;
 	this->pos.x = x;
 	this->pos.y = y;
-
+	H = 0;
+	W = 0;
 	labelInputText = (UI_Label*)App->gui->CreateLabel(x, y, Label, text_input, NULL, NULL, NULL, font);
 
 	font_text = font;
+
 }
 
 InputText::~InputText() {}

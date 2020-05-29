@@ -37,7 +37,7 @@ public:
 	void Change_Volume_Music(float value);
 	void Change_Volume_FX(float value);
 
-	float Music_Volume = 0;
+	float Music_Volume;
 	float Get_Music_Volume();
 	float Get_FX_Volume();
 
@@ -98,11 +98,14 @@ public:
 	int volume_fx;
 	int members_fx;
 	int character_fx;
+	int upgrade_fx;
+
+	bool die_sound;
 
 	float				music_volume;
 	float				fx_volume;
 
-	_Mix_Music* music = NULL;
+	_Mix_Music* music;
 	std::vector<Mix_Chunk*> fx;
 
 private:

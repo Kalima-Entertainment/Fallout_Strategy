@@ -36,17 +36,12 @@ public:
 public:
 
 
-	bool draw_health;
 	j1Timer	timer_game;
-	int lifesCounter = 3;
-	bool activateTimer = false;
-	bool extraLife = false;
-	bool drawLife = false;
-	uint timer = 0;
-	uint minutes = 0;
+	bool activateTimer;
+	bool draw_health;
+	uint timer;
+	uint minutes;
 
-	char coins_text[10];
-	char score_text[10];
 	char timer_text[10];
 	char minutes_text[15];
 	

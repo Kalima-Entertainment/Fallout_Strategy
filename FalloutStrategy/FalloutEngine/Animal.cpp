@@ -2,7 +2,11 @@
 #include "GenericPlayer.h"
 #include "AI_Player.h"
 #include "j1Map.h"
+#include "j1Audio.h"
 #include "SDL_mixer/include/SDL_mixer.h"
+
+#include "ParticleSystem.h"
+#include "Emiter.h"
 
 Animal::Animal(EntityType g_type, iPoint g_current_tile) : DynamicEntity() {
 	type = g_type;
@@ -10,21 +14,31 @@ Animal::Animal(EntityType g_type, iPoint g_current_tile) : DynamicEntity() {
 	is_agressive = false;
 	pasturing_time = 20;
 	faction = NO_FACTION;
+	food_quantity = 0;
+	resource_spot = nullptr;
 
-	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
+	position = App->map->floatMapToWorld(current_tile.x, current_tile.y);
 	position.x += HALF_TILE;
 	position.y += HALF_TILE;
+
+	DynaParticle = App->entities->CreateParticle(position);
+	Animation anim;
+	anim.PushBack(SDL_Rect{ 0, 0 , 5, 5 }, 1);
+	anim.Reset();
+	Emiter Blood(position.x, position.y - 20, 0.2f, 0.2f, 5, 5, 0, 0, 0, 0, 2.0f, 2, 20, 0.4f, nullptr, App->entities->blood, anim, true);
+	DynaParticle->PushEmiter(Blood);
+	DynaParticle->Desactivate();
 }
 
 Animal::~Animal() {
 	resource_spot = nullptr;
+	DynaParticle = nullptr;
+	//App->entities->ReleaseParticle(DynaParticle);
 }
 
 bool Animal::Update(float dt) {
 	bool ret = true;
 	current_animation = &animations[state][direction];
-
-	Mix_AllocateChannels(35);
 
 	switch (state)
 	{
@@ -51,15 +65,13 @@ bool Animal::Update(float dt) {
         break;
 
     case DIE:
-        direction = TOP_LEFT;
-
 		if (!delete_timer.Started()) {
 			delete_timer.Start();
 			direction = TOP_LEFT;
 
 			resource_spot = App->entities->CreateResourceSpot(current_tile.x, current_tile.y, Resource::FOOD, food_quantity);
 			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
-			current_tile = { -1,-1 };
+			current_tile.x += 1;
 			next_tile = { -1,-1 };
 
 			if ((attacking_entity != nullptr)&&(attacking_entity->owner->is_ai)) {
@@ -70,14 +82,30 @@ bool Animal::Update(float dt) {
 
 		if ((resource_spot->quantity <= 0) && (delete_timer.ReadSec() > 4)) {
 			App->entities->DestroyResourceSpot(resource_spot);
+			resource_spot = nullptr;
 			to_delete = true;
 		}
-		SpatialAudio(position.x, position.y, faction, state, type);
+		if (App->audio->die_sound == false) {
+			SpatialAudio(position.x, position.y, faction, state, type);
+			App->audio->die_sound = true;
+		}
+		
 
         break;
 
     default:
         break;
+	}
+
+	// -- If there are any particle then move and blits when current state equals hit
+	if (DynaParticle != nullptr) {
+		if (state == HIT) DynaParticle->Activate();
+		else DynaParticle->Desactivate();
+	}
+
+	if (DynaParticle->IsActive()) {
+		DynaParticle->Move(position.x, position.y);
+		DynaParticle->Update(dt);
 	}
 
 	last_dt = dt;
@@ -111,7 +139,7 @@ bool Animal::LoadDataFromReference() {
 bool Animal::LoadReferenceData(pugi::xml_node& node) {
 	bool ret = true;
 
-	max_health = node.attribute("health").as_int();
+	max_health = node.attribute("health").as_float();
 	food_quantity = node.attribute("resource_quantity").as_int();
 	speed.x = node.attribute("speed").as_int();
 	speed.y = speed.x * 0.5f;

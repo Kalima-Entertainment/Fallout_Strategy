@@ -105,6 +105,7 @@ bool j1Minimap::Start() {
 bool j1Minimap::CleanUp() {
 	bool ret = true;
 
+	visible = false;
 	App->tex->UnLoad(texture);
 	texture = nullptr;
 
@@ -134,8 +135,15 @@ bool j1Minimap::PostUpdate() {
 				App->render->DrawQuad(entity_rect, 0, 255, 0, 255, true, false); 
 			}
 			else { 
-				if((radar)||(grid[App->entities->entities[i]->current_tile.x][App->entities->entities[i]->current_tile.y] == 0))
-				App->render->DrawQuad(entity_rect, 255, 0, 0, 255, true, false);
+				if ((radar) || (grid[App->entities->entities[i]->current_tile.x][App->entities->entities[i]->current_tile.y] == 0)) {
+					if ((App->entities->entities[i]->type == BRAHAM) || (App->entities->entities[i]->type == BIGHORNER)) {
+						
+						App->render->DrawQuad(entity_rect, 255, 155, 0, 255, true, false); 
+					}
+					else {
+						App->render->DrawQuad(entity_rect, 255, 0, 0, 255, true, false);
+					}
+				}
 			}
 		}
 
@@ -213,11 +221,18 @@ iPoint j1Minimap::ScreenToMinimapToWorld(int x, int y) {
 	return minimap_position;
 }
 
-iPoint  j1Minimap::MapToMinimap(int x, int y) {
+iPoint j1Minimap::MapToMinimap(int x, int y) {
 	iPoint minimap_position;
 	minimap_position.x = minimap_x_center + (x - y) * HALF_TILE * scale;
 	minimap_position.y = position.y + (x + y) * HALF_TILE * 0.5f * scale;
 	return minimap_position;
+}
+
+iPoint j1Minimap::MinimapToMap(int x, int y) {
+	iPoint map_position;
+	map_position.x = (x - minimap_x_center) / (HALF_TILE * scale) + y;
+	map_position.y = (y - position.y) / (HALF_TILE * 0.5f * scale) - x;
+	return map_position;
 }
 
 void j1Minimap::EnableRadar() {
@@ -227,27 +242,10 @@ void j1Minimap::EnableRadar() {
 
 void j1Minimap::DrawFogOfWar() {
 	SDL_Rect fog_of_war_rect = { 0,0,1,1 };
-	iPoint rect_pos;
-	/*
-	fog_of_war_rect.w = ceil(width / 150);
-	fog_of_war_rect.h = ceil(fog_of_war_rect.w * 0.5f);
-
-	for (int y = 0; y < MAP_LENGTH; y++)
-	{
-		for (int x = 0; x < MAP_LENGTH; x++)
-		{
-			rect_pos = MapToMinimap(x, y);
-			fog_of_war_rect.x = rect_pos.x;
-			fog_of_war_rect.y = rect_pos.y;
-
-			if (grid[x][y] != 0)
-				App->render->DrawQuad(fog_of_war_rect, 0, 0, 0, 255, true, false);
-		}
-	}
-	*/
+	iPoint rect_pos = {0,0};
 
 	int tile_width = width / 150;
-	fog_of_war_rect.h = ceil(tile_width * 0.5f);
+	fog_of_war_rect.h = 1;
 	int y = 0;
 	int j = 0;
 	int counter = 0;

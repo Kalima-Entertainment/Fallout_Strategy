@@ -36,6 +36,7 @@ public:
 	iPoint WorldToMinimap(int x, int y);
 	iPoint ScreenToMinimapToWorld(int x, int y);
 	iPoint MapToMinimap(int x, int y);
+	iPoint MinimapToMap(int x, int y);
 	void EnableRadar();
 	void DrawFogOfWar();
 

@@ -64,11 +64,15 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_PLAYER_ATTACK][COLLIDER_PLATFORM] = false;
 	matrix[COLLIDER_PLAYER_ATTACK][COLLIDER_PLAYER_ATTACK] = false;
 	matrix[COLLIDER_PLAYER_ATTACK][COLLIDER_WALL] = true;
+
+	debug = false;
 }
 
 // Destructor
-j1Collision::~j1Collision()
-{}
+j1Collision::~j1Collision(){
+	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	delete colliders[i];
+}
 
 bool j1Collision::PreUpdate()
 {

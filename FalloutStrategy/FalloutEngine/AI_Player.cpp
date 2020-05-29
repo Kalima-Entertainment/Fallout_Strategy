@@ -12,6 +12,7 @@
 #include "j1Pathfinding.h"
 #include "Troop.h"
 #include "Gatherer.h"
+#include "j1Audio.h"
 #include <vector>
 #include <math.h>
 
@@ -26,14 +27,11 @@ AI_Player::AI_Player(Faction g_faction) : GenericPlayer(), is_attacking(false), 
 	melee_minimum = App->ai_manager->GetAI_PlayerInfo(faction).minimum_melees;
 	ranged_minimum = App->ai_manager->GetAI_PlayerInfo(faction).minimum_rangeds;
 	wave_time = App->ai_manager->GetAI_PlayerInfo(faction).wave_time;
-	defeated = false;
-	goal_tile_set = false;
-	target_player = nullptr;
-	target_building = nullptr;
+
 	target_building_position = { -1, -1 };
-	base = barrack[0] = barrack[1] = laboratory = nullptr;
 	wave_timer.Start();
 	is_ai = true;
+	is_attacking = false;
 }
 
 AI_Player::~AI_Player() 
@@ -63,7 +61,6 @@ bool AI_Player::Update(float dt) {
 				//if there is at least a resource building left, go there
 				if (gatherers_vector[i]->GetResourceBuilding() != nullptr) {
 					gatherers_vector[i]->PathfindToPosition(App->entities->ClosestTile(gatherers_vector[i]->current_tile, gatherers_vector[i]->GetResourceBuilding()->tiles));
-					gatherers_vector[i]->state = WALK;
 				}
 				//if there are no resource buildings left
 				else
@@ -86,7 +83,7 @@ bool AI_Player::Update(float dt) {
 		mr_proportion = melees / rangeds;
 
 	//spawn melee
-	if ((barrack[0] != nullptr) &&(water > App->entities->unit_data[faction][MELEE].cost_water)&&(caps > App->entities->unit_data[faction][MELEE].cost_meat) && (last_barrack_to_spawn == 1) && (mr_proportion < 2)) {
+	if ((barrack[0] != nullptr) &&(water > App->entities->unit_data[faction][MELEE].cost_water)&&(food > App->entities->unit_data[faction][MELEE].cost_meat) && (last_barrack_to_spawn == 1)&&(melees > melee_minimum) && (mr_proportion < 2)) {
 		barrack[0]->SpawnUnit(MELEE);
 		water -= App->entities->unit_data[faction][MELEE].cost_water;
 		food -= App->entities->unit_data[faction][MELEE].cost_meat;
@@ -94,7 +91,7 @@ bool AI_Player::Update(float dt) {
 	}
 
 	//spawn ranged
-	if ((barrack[0] != nullptr) && (water > App->entities->unit_data[faction][RANGED].cost_water) && (caps > App->entities->unit_data[faction][RANGED].cost_meat)&&(barrack[1] != nullptr) && (last_barrack_to_spawn == 0)) {
+	if ((barrack[1] != nullptr) && (water > App->entities->unit_data[faction][RANGED].cost_water) && (food > App->entities->unit_data[faction][RANGED].cost_meat) && (rangeds > ranged_minimum) && (last_barrack_to_spawn == 0)) {
 		barrack[1]->SpawnUnit(RANGED);
 		water -= App->entities->unit_data[faction][RANGED].cost_water;
 		food -= App->entities->unit_data[faction][RANGED].cost_meat;
@@ -105,11 +102,13 @@ bool AI_Player::Update(float dt) {
 
 	//if the ai_player is ready choose a player to attack
 	if ((wave_timer.ReadSec() > wave_time)&&(!is_attacking)) {
-		if ((rangeds >= ranged_minimum) && (melees >= melee_minimum) && (target_player == nullptr)) {
-			ChooseRandomPlayerEnemy();
+		if ((rangeds >= ranged_minimum) && (melees >= melee_minimum)) {
+			if (target_player == nullptr) {
+				ChooseRandomPlayerEnemy();
+			}
 			is_attacking = true;
 			wave_timer.Start();
-			LOG("attacking");
+			//LOG("attacking");
 		}
 	}
 
@@ -203,5 +202,6 @@ void AI_Player::GatherFood(ResourceBuilding* resource_spot) {
 			return;
 		}
 	}
+	App->audio->die_sound = false;
 }
 

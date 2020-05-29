@@ -25,16 +25,13 @@ public:
 	UI_Button(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, SDL_Rect click, UI_element* parent, j1Module* Observer);
 
 	//Destructor
-	~UI_Button() {}
+	~UI_Button();
 
 	// Called each loop iteration
 	bool Update(float dt);
 
 	// Called each loop iteration
 	bool Draw();
-
-	// Called before quitting
-	bool CleanUp();
 
 	UI_Type GetType();
 

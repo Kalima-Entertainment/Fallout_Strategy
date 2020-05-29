@@ -59,11 +59,8 @@ public:
 
 public:
 
-	int topleft;
-	int topright;
-	int bottomleft;
-	int bottomright;
 	bool create;
+	bool load_game;
 	bool create_tutorial;
 	StatesMenu menu_state;
 	GenericPlayer* players[4];
@@ -71,19 +68,19 @@ public:
 	std::string modules[4];
 
 	//Rectangle Selection needed
-	iPoint mouse_pos = { 0,0 };
-	iPoint rectangle_origin = { 0,0 };
-	int rectangle_width = 0;
-	int rectangle_height = 0;
-	bool win = false;
-	bool lose = false;
-	bool deathclaw1 = false;
-	bool deathclaw2 = false;
-	bool deathclaw3 = false;
-	bool deathclaw4 = false;
+	iPoint mouse_pos;
+	iPoint rectangle_origin;
+	int rectangle_width;
+	int rectangle_height;
+	bool win;
+	bool lose;
+	bool deathclaw1;
+	bool deathclaw2;
+	bool deathclaw3;
+	bool deathclaw4;
 	
 private:
-	int SongPlaying = 0;
+	int SongPlaying;
 	int beaten_enemies;
 };
 

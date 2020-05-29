@@ -141,7 +141,7 @@ public:
 	bool Load(std::string modules[4]);
 
 	iPoint MapToWorld(int x, int y) const;
-	fPoint fMapToWorld(int x, int y) const;
+	fPoint floatMapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
 	iPoint fWorldToMap(float x, float y) const;
 	iPoint IsometricWorldToMap(int x, int y) const;
@@ -172,7 +172,6 @@ private:
 	pugi::xml_document	map_file;
 	std::string			folder;
 	bool				map_loaded;
-	uchar*				walkability_map;
 };
 
 #endif // __j1MAP_H__

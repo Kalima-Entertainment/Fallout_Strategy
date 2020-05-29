@@ -3,28 +3,45 @@
 #include "j1Map.h"
 #include "StaticEntity.h"
 #include "j1Player.h"
+#include "j1Scene.h"
 #include "SDL_mixer/include/SDL_mixer.h"
+
+#include "Emiter.h"
+#include "ParticleSystem.h"
 
 Deathclaw::Deathclaw(iPoint g_current_tile) : DynamicEntity() {
 	current_tile = g_current_tile;
 	is_dynamic = true;
 	is_agressive = true;
-	position = App->map->fMapToWorld(current_tile.x, current_tile.y);
+	position = App->map->floatMapToWorld(current_tile.x, current_tile.y);
 	position.x += HALF_TILE;
 	position.y += HALF_TILE;
 	attack_time = 3;
 	range = 1;
 	attack_timer.Start();
+	target_building = nullptr;
+	target_entity = nullptr;
+	DynaParticle = nullptr;
+
+	DynaParticle = App->entities->CreateParticle(position);
+	Animation anim;
+	anim.PushBack(SDL_Rect{ 0, 0 , 5, 5 }, 1);
+	anim.Reset();
+	Emiter Blood(position.x, position.y - 20, 0.2f, 0.2f, 5, 5, 0, 0, 0, 0, 2.0f, 2, 20, 0.4f, nullptr, App->entities->blood, anim, true);
+	DynaParticle->PushEmiter(Blood);
+	DynaParticle->Desactivate();
 }
 
 Deathclaw::~Deathclaw() {
 	target_entity = nullptr;
+	DynaParticle = nullptr;
+	target_building = nullptr;
+	//App->entities->ReleaseParticle(DynaParticle);
 }
 
 bool Deathclaw::Update(float dt) {
 	bool ret = true;
 
-	Mix_AllocateChannels(35);
 	current_animation = &animations[state][direction];
 
 	switch (state)
@@ -77,6 +94,17 @@ bool Deathclaw::Update(float dt) {
         break;
     default:
         break;
+	}
+
+	// -- If there are any particle then move and blits when current state equals hit
+	if (DynaParticle != nullptr) {
+		if (state == HIT) DynaParticle->Activate();
+		else DynaParticle->Desactivate();
+	}
+
+	if (DynaParticle->IsActive()) {
+		DynaParticle->Move(position.x, position.y);
+		DynaParticle->Update(dt);
 	}
 
 	last_dt = dt;
@@ -136,7 +164,7 @@ bool Deathclaw::LoadDataFromReference() {
 bool Deathclaw::LoadReferenceData(pugi::xml_node& node) {
 	bool ret = true;
 
-	max_health = node.attribute("health").as_int();
+	max_health = node.attribute("health").as_float();
 	damage = node.attribute("damage").as_int();
 	speed.x = node.attribute("speed").as_int();
 	speed.y = speed.x * 0.5f;

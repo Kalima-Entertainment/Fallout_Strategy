@@ -11,10 +11,10 @@
   </renderer>
   
   <AI>
-   <vault minimum_melees="1" minimum_rangeds="1" caps="1000" water="1000" food="1000" wave_time="70"/>
-   <brotherhood minimum_melees="1" minimum_rangeds="1" caps="1000" water="1000" food="1000" wave_time="15"/>
-   <mutant minimum_melees="1" minimum_rangeds="1" caps="1000" water="1000" food="1000" wave_time="20"/>
-   <ghoul minimum_melees="1" minimum_rangeds="1" caps="1000" water="1000" food="1000" wave_time="10"/>
+   <vault minimum_melees="5" minimum_rangeds="2" caps="100" water="100" food="100"/>
+   <brotherhood minimum_melees="3" minimum_rangeds="2" caps="100" water="100" food="100"/>
+   <mutant minimum_melees="3" minimum_rangeds="3" caps="100" water="100" food="100"/>
+   <ghoul minimum_melees="5" minimum_rangeds="2" caps="100" water="100" food="100"/>
   </AI>
   <console>
   <log_box r="20" g="20" b="20" a="225"/>
@@ -38,14 +38,14 @@
   </fonts>
 
   <entities>
+
     <boost>
-      <base cost="250" upgrade_time="45" cost_increment="250" storage_increment="0.3" gatherer_capacity="0.15"/>
-      <laboratory cost="150" upgrade_time="45" cost_increment="250" health_increment="0.15" creation_time="0.05"/>
-      <barrack cost="350" upgrade_time="45" cost_increment="250" damage_increment="0.15" speed_increment="0.15"/>
+      <base cost="250" upgrade_time="30" cost_increment="250" storage_increment="0.3" gatherer_capacity="0.15"/>
+      <laboratory cost="150" upgrade_time="30" cost_increment="250" health_increment="0.15" creation_time="0.05"/>
+      <barrack cost="350" upgrade_time="30" cost_increment="250" damage_increment="0.15" speed_increment="0.15"/>
     </boost>
     <radar cost="100" />
-    <mr_handy cost="100" />
-
+    <mr_handy cost="1000" time="50"/>
     <animation_files base_folder="Assets/textures/characters/">
      <file folder="VaultDwellers/" tmx="VaultDwellers_Melee.tmx"/>
      <file folder="VaultDwellers/" tmx="VaultDwellers_Ranged.tmx"/>
@@ -90,5 +90,5 @@
   <map>
     <folder>Assets/maps/</folder>
   </map>
-  <minimap width="260" corner="bottom_left" margin="22"/>
+  <minimap width="260" corner="bottom_left" margin="35"/>
 </config>

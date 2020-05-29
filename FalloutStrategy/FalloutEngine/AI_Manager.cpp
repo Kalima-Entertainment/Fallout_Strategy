@@ -17,7 +17,7 @@ AI_Manager::AI_Manager() : j1Module(), beaten_ai_players(0) {
 }
 
 AI_Manager::~AI_Manager() {
-
+	ai_player[0] = ai_player[1] = ai_player[2] = ai_player[3] = nullptr;
 }
 
 bool AI_Manager::Awake(pugi::xml_node& config) {

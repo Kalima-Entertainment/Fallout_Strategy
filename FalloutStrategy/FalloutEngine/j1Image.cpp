@@ -6,6 +6,7 @@ j1Image::j1Image(int x, int y, UI_Type type, SDL_Rect image_rect, UI_element* pa
 }
 
 j1Image::~j1Image() {
+	texture = nullptr;
 }
 
 bool j1Image::Draw() {

@@ -23,6 +23,9 @@ j1Map::j1Map() : j1Module(), map_loaded(false)
 	name = ("map");
 	spawnCoordinates = 0;
 	data.type = MAPTYPE_ISOMETRIC;
+	map_loaded = false;
+
+
 }
 
 // Destructor
@@ -109,6 +112,17 @@ TileSet* j1Map::GetTilesetFromTileId(int id) const
 	return set;
 }
 
+fPoint j1Map::floatMapToWorld(int x, int y) const {
+
+	fPoint ret = { 0.0f,0.0f };
+	float i = 0.0f;
+
+	ret.x = ((x - y) * (32)) + i;
+	ret.y = ((x + y) * (16)) + i;
+
+	return ret;
+}
+
 iPoint j1Map::MapToWorld(int x, int y) const
 {
 	iPoint ret;
@@ -129,16 +143,6 @@ iPoint j1Map::MapToWorld(int x, int y) const
 		ret.x = x; 
 		ret.y = y;
 	}
-
-	return ret;
-}
-
-fPoint j1Map::fMapToWorld(int x, int y) const
-{
-	fPoint ret;
-
-	ret.x = (x - y) * (64 * 0.5f);
-	ret.y = (x + y) * (32 * 0.5f);
 
 	return ret;
 }
@@ -631,7 +635,6 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 				static_entity->CalculateRenderAndSpawnPositions();
 
 				App->entities->CreateEntity(building_faction, dynamic_type, x + 1, y + 1, App->scene->players[building_faction]);
-
 			}
 			else if (object_name == "Animal") {
 				iPoint position;
@@ -715,22 +718,22 @@ bool j1Map::CreateWalkabilityMap() const
 {
 	bool ret = false;
 
-		MapLayer* layer = (MapLayer*)&data.layers[MAX_LAYERS -1];
+	MapLayer* layer = (MapLayer*)&data.layers[MAX_LAYERS -1];
 
-		for (int y = 0; y < data.height; ++y)
+	for (int y = 0; y < data.height; ++y)
+	{
+		for (int x = 0; x < data.width; ++x)
 		{
-			for (int x = 0; x < data.width; ++x)
+			int i = (y * layer->width) + x;
+
+			int tile_id = layer->Get(x, y);
+
+			if (tile_id != 0)
 			{
-				int i = (y * layer->width) + x;
-
-				int tile_id = layer->Get(x, y);
-
-				if (tile_id != 0)
-				{
-					App->pathfinding->SetTileAsUnwalkable(x, y);
-				}
+				App->pathfinding->SetTileAsUnwalkable(x, y);
 			}
 		}
+	}
 
 	ret = true;
 

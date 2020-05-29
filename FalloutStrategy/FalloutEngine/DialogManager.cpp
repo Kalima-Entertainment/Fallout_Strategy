@@ -11,17 +11,17 @@
 
 DialogManager::DialogManager() : j1Module() {
 	background_box = { 60, 355, 1170, 340};
-	borders[0] =	 { 58, 355, 1172, 344 };
-
 	statement_box =  { 80, 370, 1135, 85};
+
+	borders[0] = { 58, 355, 1172, 344 };
 	borders[1] =     { 78, 368, 1139, 89 };
+	borders[2] = { 78, 468, 1139, 69 };
+	borders[3] = { 78, 543, 1139, 69 };
+	borders[4] = { 78, 618, 1139, 69 };
 
 	option_box[0] =  { 80, 470, 1135, 65};
-	borders[2] =     { 78, 468, 1139, 69 };
 	option_box[1] =  { 80, 545, 1135, 65 };
-	borders[3] =     { 78, 543, 1139, 69 };
 	option_box[2] =  { 80, 620, 1135, 65 };
-	borders[4] =     { 78, 618, 1139, 69 };
 
 	dialog_level = 0;
 
@@ -41,7 +41,6 @@ bool DialogManager::Awake(pugi::xml_node&) {
 
 bool DialogManager::Start() {
 	bool ret = true;
-		
 	return ret;
 }
 
@@ -65,17 +64,23 @@ bool DialogManager::PostUpdate() {
 
 bool DialogManager::CleanUp() {
 	bool ret = true;
-	for (int i = 0; i < dialogs.size(); i++)
-	{
-		delete dialogs[i];
-		dialogs[i] = nullptr;
+	if (App->quitGame) {
+		for (int i = 0; i < dialogs.size(); i++)
+		{
+			delete dialogs[i];
+			dialogs[i] = nullptr;
+		}
+
+		dialogs.clear();
 	}
-	dialogs.clear();
+	App->menu_manager->DestroyMenu(Menu::QUEST);
 	App->menu_manager->DestroyMenu(Menu::DIALOG);
 	App->menu_manager->CreateMenu(Menu::GUI);
 	App->menu_manager->CreateMenu(Menu::RESOURCES);
 	App->isPaused = false;
 	App->hud->activateTimer = true;
+	App->hud->minutes = 14;
+	App->hud->timer = 59;
 	return ret;
 }
 

@@ -12,10 +12,27 @@
 #include "SDL_mixer/include/SDL_mixer.h"
 #include "MenuManager.h"
 #include "j1Transition.h"
+#include "j1Player.h"
+#include "j1Entity.h"
 
 LogoScene::LogoScene() : j1Module()
 {
 	name = ("logo_scene");
+	video_texture = nullptr;
+	win_tex = nullptr;
+	lose_tex = nullptr;
+	Loop = true;
+	playsound = false;
+	drawable = true;
+	sound_end = true;
+	my_video = -1;
+	win_video = -1;
+	lose_video = -1;
+	quit = false;
+	logo_tex = nullptr;
+	start_game_tex = nullptr;
+	start_game_rect = { 0,0,0,0 };
+	last_dt = 0.01f;
 }
 
 // Destructor
@@ -120,6 +137,11 @@ bool LogoScene::Update(float dt) {
 		Loop = false;
 		App->audio->PlayFx(2, App->audio->F_press, 0);
 		win_video = 0;
+		App->menu_manager->DestroyMenu(Menu::RESOURCES);
+		App->menu_manager->DestroyMenu(Menu::QUEST);
+		if ((App->player->selected_entity) && (!App->player->selected_entity->is_dynamic)) {
+			App->menu_manager->DestroyFaction(Menu::BUI_BASES, App->player->selected_entity->faction, App->player->selected_entity->type);
+		}
 		App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 		App->audio->PlayFx(1, App->audio->back_fx, 0);
 		App->gui->ingame = false;
@@ -133,6 +155,11 @@ bool LogoScene::Update(float dt) {
 		Loop = false;
 		App->audio->PlayFx(2, App->audio->F_press, 0);
 		lose_video = 0;
+		App->menu_manager->DestroyMenu(Menu::RESOURCES);
+		App->menu_manager->DestroyMenu(Menu::QUEST);
+		if ((App->player->selected_entity) && (!App->player->selected_entity->is_dynamic)) {
+			App->menu_manager->DestroyFaction(Menu::BUI_BASES, App->player->selected_entity->faction, App->player->selected_entity->type);
+		}
 		App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 		App->audio->PlayFx(1, App->audio->back_fx, 0);
 		App->gui->ingame = false;
@@ -151,7 +178,7 @@ bool LogoScene::PostUpdate()
 		{
 			video_texture = App->video->UpdateVideo(my_video);
 
-			App->render->Blit(video_texture, 0, 0);
+			App->render->Blit(video_texture, 0, 0, 0, 1.0f, 0);
 
 			if (App->video->IsPlaying(my_video) == 0)
 			{

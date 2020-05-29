@@ -19,7 +19,9 @@ j1Console::j1Console() : j1Module() {
 	name = "console";
 }
 
-j1Console::~j1Console() {}
+j1Console::~j1Console() {
+
+}
 
 bool j1Console::Awake(pugi::xml_node& config) {
 	bool ret = true;
@@ -126,6 +128,7 @@ void j1Console::AddLogText(std::string incoming_text) {
 		DestroyInterface();
 		if (log_record.size() > MAX_LOG_RECORD)
 		{
+
 			log_record.erase(log_record.begin());
 		}
 		CreateInterface();

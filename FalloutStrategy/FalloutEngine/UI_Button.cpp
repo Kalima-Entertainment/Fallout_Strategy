@@ -44,12 +44,12 @@ UI_Button::UI_Button(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, 
 	current_state = BUTTON_STATE::NONE;
 
 	inHover = true;
-
+	counter = 0;
+	
 }
 
-bool UI_Button::CleanUp()
-{
-	return true;
+UI_Button::~UI_Button() {
+	texture = nullptr;
 }
 
 bool UI_Button::Draw()
@@ -73,6 +73,7 @@ bool UI_Button::Draw()
 
 bool UI_Button::Update(float dt)
 {
+
 	//if cursor is inside button rectangle
 	if (IsIntersection() == true) {
 		
@@ -143,6 +144,25 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->CreateMenu(Menu::SELECT_FACTION);
 				App->audio->PlayFx(1, App->audio->click_fx, 0);
 				App->transition->fadetimer.Start();
+			}
+			else if (t == button_load_game) {
+
+				App->menu_manager->DestroyMenu(Menu::MAIN_MENU);
+				App->audio->PlayFx(1, App->audio->click_fx, 0);
+				App->player->faction = BROTHERHOOD;
+				App->gui->count = 0;
+				App->gui->ingame = true;
+				App->gui->load = true;
+				App->transition->fadetimer.Start();
+				App->transition->transition = true;
+				App->menu_manager->CreateMenu(Menu::GUI);
+				App->menu_manager->CreateMenu(Menu::RESOURCES);
+				App->hud->activateTimer = true;
+				App->isPaused = false;
+				App->entities->Enable();
+				App->scene->load_game = true;
+				//App->LoadGame("save_file.xml");
+				
 			}
 			else if (t == Button_slider_music_left) {
 				App->gui->volume_up = 1;
@@ -219,6 +239,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
 				App->scene->create = !App->scene->create;
 				App->audio->PlayFx(1, App->audio->back_fx, 0);
+				App->hud->activateTimer = true;
 				Mix_PauseMusic();
 				App->isPaused = false;
 			}
@@ -233,9 +254,22 @@ bool UI_Button::Update(float dt)
 			else if (t == button_pause_to_main)
 			{
 				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
+				App->menu_manager->DestroyMenu(Menu::RESOURCES);
+				App->menu_manager->DestroyMenu(Menu::TUTORIAL);
+				App->menu_manager->DestroyMenu(Menu::GUI);
+				App->menu_manager->DestroyMenu(Menu::QUEST);
+				App->hud->CleanUp();
+				if ((App->player->selected_entity) && (!App->player->selected_entity->is_dynamic)) {
+					App->menu_manager->DestroyFaction(Menu::BUI_BASES, App->player->selected_entity->faction, App->player->selected_entity->type);
+				}
 				App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 				App->audio->PlayFx(1, App->audio->back_fx, 0);
 				App->gui->ingame = false;
+				if (App->entities->showing_building_menu = true) {
+					App->menu_manager->DestroyFaction(Menu::BUI_BASES, App->menu_manager->current_building_faction, App->menu_manager->current_building_type);
+					App->entities->showing_building_menu = false;
+					App->player->selected_entity = nullptr;
+				}
 				App->transition->StartTimer();
 				App->transition->transition = true;
 				App->transition->fadetimer.Start();
@@ -276,16 +310,6 @@ bool UI_Button::Update(float dt)
 
 				App->minimap->CleanUp();
 				App->minimap->Start();
-			}
-			else if (t == button_win_lose_to_main)
-			{
-				App->menu_manager->CreateMenu(Menu::MAIN_MENU);
-				App->audio->PlayFx(1, App->audio->back_fx, 0);
-				App->gui->ingame = false;
-				App->transition->StartTimer();
-				App->transition->transition = true;
-				App->transition->fadetimer.Start();
-				
 			}
 			//Spawn Gatherer from any faction
 			else if (t == Ghouls_ghaterer_button || t == Vault_ghaterer_button || t == Supermutant_ghaterer_button || t == Brotherhood_ghaterer_button){
@@ -409,7 +433,24 @@ bool UI_Button::Update(float dt)
 				}
 				static_entity->Upgrade(App->entities->base_resource_limit[static_entity->faction]);
 				static_entity->Upgrade(App->entities->gatherer_resource_limit[static_entity->faction]);
-				static_entity->level++;
+				/*static_entity->level++;*/
+				if (App->player->faction == BROTHERHOOD) {
+					App->gui->Delete_Element(App->menu_manager->brotherhood_base[5]);
+					App->menu_manager->brotherhood_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+				}
+				else if (App->player->faction == VAULT) {
+					App->gui->Delete_Element(App->menu_manager->vault_base[5]);
+					App->menu_manager->vault_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+				}
+				else if (App->player->faction == MUTANT) {
+					App->gui->Delete_Element(App->menu_manager->supermutant_base[5]);
+					App->menu_manager->supermutant_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+				}
+				else if (App->player->faction == GHOUL) {
+					App->gui->Delete_Element(App->menu_manager->ghoul_base[5]);
+					App->menu_manager->ghoul_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+				}
+			
 			}
 			else if (t == Boost_barrack_button)
 			{
@@ -422,9 +463,25 @@ bool UI_Button::Update(float dt)
 				}
 				static_entity->Upgrade(App->entities->units_damage[static_entity->faction]);
 				static_entity->Upgrade(App->entities->units_speed[static_entity->faction]);
-				static_entity->level++;
+				//static_entity->level++;
+				if (App->player->faction == BROTHERHOOD) {
+					App->gui->Delete_Element(App->menu_manager->brotherhood_barrack[7]);
+					App->menu_manager->brotherhood_barrack[7]= (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+				}
+				else if (App->player->faction == VAULT) {
+					App->gui->Delete_Element(App->menu_manager->vault_barrack[7]);
+					App->menu_manager->vault_barrack[7] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+				}
+				else if (App->player->faction == MUTANT) {
+					App->gui->Delete_Element(App->menu_manager->supermutant_barrack[7]);
+					App->menu_manager->supermutant_barrack[7] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+				}
+				else if (App->player->faction == GHOUL) {
+					App->gui->Delete_Element(App->menu_manager->ghoul_barrack[7]);
+					App->menu_manager->ghoul_barrack[7] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+				}
 			}
-			if (t == Boost_lab_button)
+			else if (t == Boost_lab_button)
 			{
 				StaticEntity* static_entity;
 				if (App->player->selected_entity == nullptr) {
@@ -435,7 +492,23 @@ bool UI_Button::Update(float dt)
 				}
 				static_entity->Upgrade(App->entities->units_health[static_entity->faction]);
 				static_entity->Upgrade(App->entities->units_creation_time[static_entity->faction]);
-				static_entity->level++;
+				/*static_entity->level++;*/
+				if (App->player->faction == BROTHERHOOD) {
+					App->gui->Delete_Element(App->menu_manager->brotherhood_lab[7]);
+					App->menu_manager->brotherhood_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+				}
+				else if (App->player->faction == VAULT) {
+					App->gui->Delete_Element(App->menu_manager->vault_lab[7]);
+					App->menu_manager->vault_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+				}
+				else if (App->player->faction == MUTANT) {
+					App->gui->Delete_Element(App->menu_manager->supermutant_lab[7]);
+					App->menu_manager->supermutant_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+				}
+				else if (App->player->faction == GHOUL) {
+					App->gui->Delete_Element(App->menu_manager->ghoul_lab[7]);
+					App->menu_manager->ghoul_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+				}
 			}
 			else if (t == Boost_radar_button) {
 				if (App->player->caps >= App->entities->radar_cost) {
@@ -447,7 +520,7 @@ bool UI_Button::Update(float dt)
 				if (App->player->caps >= App->entities->mr_handy_cost) {
 					App->player->laboratory->SpawnUnit(MR_HANDY, true);
 					App->player->UpdateResourceData(Resource::CAPS, -App->entities->mr_handy_cost);
-					App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
+					//App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
 
 				}
 			}
@@ -499,7 +572,6 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->tutorial[5] = (j1Image*)App->gui->CreateImage(670, 160, Image, { 0, 2028, 605, 305 }, NULL, this);
 				App->gui->ingame = false;
 			}
-
 			else if (t == back_tutorial_controls) {
 				App->audio->PlayFx(1, App->audio->back_fx, 0);
 				App->gui->Delete_Element(App->menu_manager->tutorial[5]);
@@ -517,7 +589,6 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->CreateMenu(Menu::HOW_TO_PLAY);
 				App->gui->ingame = false;
 			}
-
 			else if (t == back_tutorial_how_to_play) {
 				App->audio->PlayFx(1, App->audio->back_fx, 0);
 				App->gui->DeleteArrayElements(App->menu_manager->how_to_play, 6);
@@ -547,57 +618,72 @@ bool UI_Button::Update(float dt)
 				App->gui->ingame = false;
 			}
 			else if (t == quest_button) {
-				App->easing_splines->CreateSpline(&App->menu_manager->quest[0]->pos.x, App->menu_manager->quest[0]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				if (App->menu_manager->quest[1] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[1]->pos.x, App->menu_manager->quest[1]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				if (App->menu_manager->quest[2] != nullptr) {
+
+				if (App->gui->open == true) {
+
+					App->audio->PlayFx(1, App->audio->character_fx, 0);
 					App->easing_splines->CreateSpline(&App->menu_manager->quest[2]->pos.x, App->menu_manager->quest[2]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				if (App->menu_manager->quest[3] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[3]->pos.x, App->menu_manager->quest[3]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				if (App->menu_manager->quest[4] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[4]->pos.x, App->menu_manager->quest[4]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				if (App->menu_manager->quest[5] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[5]->pos.x, App->menu_manager->quest[5]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				if (App->menu_manager->quest[6] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[6]->pos.x, App->menu_manager->quest[6]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				App->easing_splines->CreateSpline(&App->menu_manager->quest[7]->pos.x, App->menu_manager->quest[7]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				
-				App->menu_manager->quest[8] = (UI_Button*)App->gui->CreateButton(0, 100, quest_button2, { 909,2084,43,46 }, { 909,2135,43,46 }, { 909,2185,43,46 }, NULL, this);
-				App->gui->Delete_Element(App->menu_manager->quest[7]);
-			}
+					if (App->menu_manager->quest[3] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[3]->pos.x, App->menu_manager->quest[3]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[4] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[4]->pos.x, App->menu_manager->quest[4]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[5] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[5]->pos.x, App->menu_manager->quest[5]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[6] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[6]->pos.x, App->menu_manager->quest[6]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[7] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[7]->pos.x, App->menu_manager->quest[7]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[8] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[8]->pos.x, App->menu_manager->quest[8]->pos.x - 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					App->easing_splines->CreateSpline(&App->menu_manager->quest[0]->pos.x, App->menu_manager->quest[0]->pos.x - 350, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->quest[1]->pos.x, App->menu_manager->quest[1]->pos.x + 50, 1000, Spline_Type::EASE_IN_OUT_QUAD);
 
+					App->gui->open = false;
+
+				}
+}
 			else if (t == quest_button2) {
-				App->easing_splines->CreateSpline(&App->menu_manager->quest[0]->pos.x, App->menu_manager->quest[0]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				if (App->menu_manager->quest[1] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[1]->pos.x, App->menu_manager->quest[1]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				if (App->menu_manager->quest[2] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[2]->pos.x, App->menu_manager->quest[2]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				if (App->menu_manager->quest[3] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[3]->pos.x, App->menu_manager->quest[3]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				if (App->menu_manager->quest[4] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[4]->pos.x, App->menu_manager->quest[4]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				if (App->menu_manager->quest[5] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[5]->pos.x, App->menu_manager->quest[5]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				if (App->menu_manager->quest[6] != nullptr) {
-					App->easing_splines->CreateSpline(&App->menu_manager->quest[6]->pos.x, App->menu_manager->quest[6]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				}
-				App->easing_splines->CreateSpline(&App->menu_manager->quest[7]->pos.x, App->menu_manager->quest[7]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				App->easing_splines->CreateSpline(&App->menu_manager->quest[8]->pos.x, App->menu_manager->quest[8]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-				App->gui->Delete_Element(App->menu_manager->quest[8]);
-				App->menu_manager->quest[7] = (UI_Button*)App->gui->CreateButton(307, 100, quest_button, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this);
-			}
+				
+				if (App->gui->open == false) {
 
+					App->audio->PlayFx(1, App->audio->character_fx, 0);
+					App->easing_splines->CreateSpline(&App->menu_manager->quest[2]->pos.x, App->menu_manager->quest[2]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					if (App->menu_manager->quest[3] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[3]->pos.x, App->menu_manager->quest[3]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[4] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[4]->pos.x, App->menu_manager->quest[4]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[5] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[5]->pos.x, App->menu_manager->quest[5]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[6] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[6]->pos.x, App->menu_manager->quest[6]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[7] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[7]->pos.x, App->menu_manager->quest[7]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[8] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[8]->pos.x, App->menu_manager->quest[8]->pos.x + 307, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[0] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[0]->pos.x, App->menu_manager->quest[0]->pos.x + 350, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->quest[1] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->quest[1]->pos.x, App->menu_manager->quest[1]->pos.x - 50, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+
+					App->gui->open = true;
+
+				}
+							
+			}
 			else if (t == continue_button) {
 				App->gui->DeleteArrayElements(App->menu_manager->quest, 12);
 			}

@@ -47,7 +47,6 @@ enum State {
 	NO_STATE
 };
 
-
 class j1Entity
 {
 public:
@@ -85,17 +84,20 @@ public:
 	int sprite_size;
 
 	//stats
-	int current_health;
-	int max_health;
+	float current_health;
+	float max_health;
 	int storage_capacity;
 	int damage;
 
 	//audio
 	int volume;
 	bool playing_fx;
+	int channel;
+	int fx;
 
 	EntityType type;
 	Faction faction;
+
 	j1Entity* reference_entity;
 	j1Entity* target_entity;
 	DynamicEntity* attacking_entity;
@@ -114,7 +116,10 @@ public:
 	Group_Unit info;
 	j1Timer delete_timer;
 
-	FoWEntity* visionEntity = nullptr;
+protected:
+	SDL_Rect background_health_bar;
+	SDL_Rect foreground_health_bar;
+	//SDL_Rect frame_quad;
 };
 
 #endif // !_j1ENTITY_H

@@ -24,6 +24,14 @@
 j1Transition::j1Transition() : j1Module()
 {
 	name = ("transition");
+
+	speed_reducer = 0;
+	gif_tex = nullptr;
+	logo_tex = nullptr;
+	background = nullptr;
+	lastdt = 0.01f;
+	transition = false;
+
 }
 
 j1Transition::~j1Transition()
@@ -149,13 +157,16 @@ void j1Transition::Transition()
 		transition = false;
 		App->gui->active;
 		App->Mmanager->Enable();
-		App->player->Enable();
-		App->ai_manager->Enable();
 		App->scene->Enable();
-		App->dialog_manager->Enable();
+		
 		//App->minimap->Enable();
-		App->menu_manager->CreateMenu(Menu::DIALOG);
-		App->isPaused = true;
+		if(App->gui->load==false){
+			App->dialog_manager->Enable();
+			App->menu_manager->CreateMenu(Menu::DIALOG); 
+			App->isPaused = true;
+		}				
+		App->gui->load = false;
+
 	}
 	else if ((fadetimer.Read() > 2500)&&(!App->gui->ingame)) {
 		Mix_PauseMusic();
@@ -168,7 +179,15 @@ void j1Transition::Transition()
 		App->map->Disable();
 		App->minimap->Disable();
 		App->Mmanager->Disable();
+		App->hud->CleanUp();
 		transition = false;
+		App->gui->ingame = false;
+		App->menu_manager->DestroyMenu(Menu::GUI);
+		if (App->entities->showing_building_menu = true) {
+			App->menu_manager->DestroyFaction(Menu::BUI_BASES, App->menu_manager->current_building_faction, App->menu_manager->current_building_type);
+			App->entities->showing_building_menu = false;
+			App->player->selected_entity = nullptr;
+		}
 		App->isPaused = false;
 		App->scene->win = false;
 		App->scene->lose = false;

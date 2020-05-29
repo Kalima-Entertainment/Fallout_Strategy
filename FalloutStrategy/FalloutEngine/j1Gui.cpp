@@ -17,6 +17,17 @@
 j1Gui::j1Gui() : j1Module()
 {
 	name = ("gui");
+	debug_UI = false;
+	fullscreen = false;
+	cap = false;
+	ingame = false;
+	open = true;
+	load = false;
+	volume_up = 0;
+	fx_up = 0;
+	count = 0;
+	texture = nullptr;
+
 }
 
 // Destructor
@@ -60,7 +71,7 @@ bool j1Gui::Update(float dt) {
 			}
 		}
 
-	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN) {
 
 		debug_UI = !debug_UI;
 
@@ -100,6 +111,7 @@ void j1Gui::DeleteArrayElements(UI_element* array[], int size) {
 		for (int i = 0; i < size; i++)
 		{
 			Delete_Element(array[i]);
+			array[i] = nullptr;
 		}
 	}
 }

@@ -21,7 +21,6 @@ class j1PathFinding;
 class j1Fonts;
 class j1Gui;
 class j1EntityManager;
-class j1Collision;
 class j1Player;
 class j1Minimap;
 class MenuManager;
@@ -114,7 +113,6 @@ public:
 	j1PathFinding*		pathfinding = NULL;
 	j1Fonts*			font = NULL;
 	j1Gui*				gui = NULL;
-	j1Collision	*		collision = NULL;
 	j1EntityManager*	entities = NULL;
 	j1Player*			player = NULL;
 	j1Minimap*			minimap = NULL;

@@ -37,7 +37,6 @@ bool j1Textures::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Textures::Start()
 {
-
 	LOG("start textures");
 	bool ret = true;
 	return ret;
@@ -80,13 +79,13 @@ SDL_Texture* const j1Textures::Load(const char* path)
 // Unload texture
 bool j1Textures::UnLoad(SDL_Texture* texture)
 {
-
 	for (int i = 0; i < textures.size(); i++)
 	{
 		if (texture == textures[i])
 		{
 			SDL_DestroyTexture(textures[i]);
 			textures.erase(textures.begin() + i);
+			texture = nullptr;
 			return true;
 		}
 	}

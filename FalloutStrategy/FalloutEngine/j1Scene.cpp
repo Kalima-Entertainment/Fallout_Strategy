@@ -36,9 +36,23 @@
 j1Scene::j1Scene() : j1Module()
 {
 	name = ("scene");
+
 	create = false;
+	load_game = false;
 	create_tutorial = false;
 	menu_state = StatesMenu::NONE;
+	mouse_pos = { 0,0 };
+	rectangle_origin = { 0,0 };
+	rectangle_width = 0;
+	rectangle_height = 0;
+	win = false;
+	lose = false;
+	deathclaw1 = deathclaw2 = deathclaw3 = deathclaw4 = false;
+	Deathclaws[0] = Deathclaws[1] = Deathclaws[2] = Deathclaws[3] = nullptr;
+	players[0] = players[1] = players[2] = players[3] = nullptr;
+	SongPlaying = 0;
+	beaten_enemies = 0;
+
 }
 
 // Destructor
@@ -66,6 +80,9 @@ bool j1Scene::Start()
 
 	App->console->CreateCommand("win", "Automatically win the game", this);
 	App->console->CreateCommand("lose", "Automatically lose the game", this);
+
+	App->player->Enable();
+	App->ai_manager->Enable();
 
 	//random map ----------------------------
 
@@ -98,28 +115,21 @@ bool j1Scene::Start()
 
 	// -- Creates FoW in current Map
 	if (App->render->fog_of_war)App->fowManager->CreateFoWMap(App->map->data.width, App->map->data.height);
-		
+
 	App->minimap->Enable();
 
 	//top_left
-	App->entities->CreateEntity(VAULT, MELEE, 20, 20, App->player);
-	//App->entities->CreateEntity(ANIMALS, BIGHRONER, 15, 20, App->player);
-	//App->entities->CreateEntity(ANIMALS, BRAHAM, 22, 20, App->player);
-	//App->entities->CreateEntity(ANIMALS, DEATHCLAW, 28, 20, App->player);
-
+	//App->entities->CreateEntity(VAULT, MELEE, 20, 20, App->player);
 	//top_right
-	App->entities->CreateEntity(VAULT, MELEE, 130, 20, App->player);
+	//App->entities->CreateEntity(VAULT, MELEE, 130, 20, App->player);
 	//bottom_left
-	App->entities->CreateEntity(VAULT, MELEE, 20, 130, App->player);
+	//App->entities->CreateEntity(VAULT, MELEE, 20, 130, App->player);
 	//bottom_right
-	App->entities->CreateEntity(VAULT, MELEE, 130,110, App->player);
+	//App->entities->CreateEntity(VAULT, MELEE, 130,110, App->player);
 
 	//Set camera to player's base position
-	App->render->camera.x -= App->player->base->position.x - App->render->camera.w * 0.5f;
-	App->render->camera.y -= App->player->base->position.y - App->render->camera.h * 0.5f;
-
-	//App->render->camera.x = 2000;
-	//App->render->camera.y = 0;
+	App->render->camera.x -= (int)(App->player->base->position.x - App->render->camera.w * 0.5f);
+	App->render->camera.y -= (int)(App->player->base->position.y - App->render->camera.h * 0.5f);
 
 	return true;
 }
@@ -141,7 +151,7 @@ bool j1Scene::PreUpdate()
 bool j1Scene::Update(float dt)
 {
 	App->map->Draw();
-	
+
 	if ((App->hud->minutes == 5) && (deathclaw1 == false))
 	{
 		if (players[0]->base != nullptr && deathclaw1 == false)
@@ -158,7 +168,6 @@ bool j1Scene::Update(float dt)
 			iPoint pos = App->entities->ClosestTile(Deathclaws[1]->current_tile, players[1]->base->tiles);
 			Deathclaws[1]->PathfindToPosition(pos);
 			Deathclaws[1]->target_building = players[1]->base;
-			//LOG("1");
 			deathclaw2  = true;
 		}
 		if (players[2]->base != nullptr && deathclaw3 == false)
@@ -167,7 +176,6 @@ bool j1Scene::Update(float dt)
 			iPoint pos = App->entities->ClosestTile(Deathclaws[2]->current_tile, players[2]->base->tiles);
 			Deathclaws[2]->PathfindToPosition(pos);
 			Deathclaws[2]->target_building = players[2]->base;
-			//LOG("2");
 			deathclaw3 = true;
 		}
 		if (players[3]->base != nullptr && deathclaw4 == false)
@@ -176,7 +184,6 @@ bool j1Scene::Update(float dt)
 			iPoint pos = App->entities->ClosestTile(Deathclaws[3]->current_tile, players[3]->base->tiles);
 			Deathclaws[3]->PathfindToPosition(pos);
 			Deathclaws[3]->target_building = players[3]->base;
-			//LOG("3");
 			deathclaw4 = true;
 		}
 	}
@@ -195,21 +202,21 @@ bool j1Scene::Update(float dt)
 			App->audio->PlayMusic("Assets/audio/music/Fallout4TitleScreenwithThemeMusic.ogg", 0.0F);
 		}
 		else if (create == true && App->menu_manager->current_menu != Menu::PAUSE_SETTINGS) {
-			
+
 			App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
 			App->isPaused = false;
 			create = false;
 			Mix_PauseMusic();
 			App->hud->activateTimer = true;
 		}
-
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN){
 		App->SaveGame("save_file.xml");
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
+	else if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN || load_game == true) {
 		App->LoadGame("save_file.xml");
+		load_game = false;
 	}
 
 	int x, y;
@@ -217,40 +224,31 @@ bool j1Scene::Update(float dt)
 	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
 
 	//Used to select units and groups
-	if (!App->player->TouchingUI(x, y)) {
+	if ((!App->player->TouchingUI(x, y))&&(!App->isPaused)) {
 		RectangleSelection();
 	}
 
-	/*
-	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
-					App->map->data.width, App->map->data.height,
-					App->map->data.tile_width, App->map->data.tile_height,
-					App->map->data.tilesets.count(),
-					map_coordinates.x, map_coordinates.y);
-
-	//App->win->SetTitle(title.GetString());
-	*/
-
-	if(App->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
+	if(App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 	{
-		
 		win = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 		App->menu_manager->DestroyMenu(Menu::RESOURCES);
 		App->gui->ingame = false;
+		App->logo_scene->playsound = true;
 		App->isPaused = true;
 		App->logo_scene->Loop = true;
-
+		App->hud->activateTimer = false;
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_KP_2) == KEY_DOWN)
+	else if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 	{
-
 		lose = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 		App->menu_manager->DestroyMenu(Menu::RESOURCES);
+		App->logo_scene->playsound = true;
 		App->gui->ingame = false;
 		App->isPaused = true;
 		App->logo_scene->Loop = true;
+		App->hud->activateTimer = false;
 	}
 
 	return true;
@@ -328,11 +326,13 @@ void j1Scene::CheckWinner() {
 					lose = true;
 					App->logo_scene->Loop = true;
 					App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+					App->menu_manager->DestroyMenu(Menu::GUI);
+					App->hud->CleanUp();
 					App->gui->ingame = false;
 					App->isPaused = true;
 					App->logo_scene->playsound = true;
 				}
-				else { 
+				else {
 					beaten_enemies++;
 					if (players[i]->faction == VAULT)
 						LOG("Vault Dwellers faction defeated!");
@@ -349,6 +349,8 @@ void j1Scene::CheckWinner() {
 				lose = true;
 				App->logo_scene->Loop = true;
 				App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+				App->menu_manager->DestroyMenu(Menu::GUI);
+				App->hud->CleanUp();
 				App->gui->ingame = false;
 				App->isPaused = true;
 				App->logo_scene->playsound = true;
@@ -388,6 +390,8 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 		}
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 		App->menu_manager->DestroyMenu(Menu::RESOURCES);
+		App->menu_manager->DestroyMenu(Menu::GUI);
+		App->hud->CleanUp();
 		App->logo_scene->playsound = true;
 		App->gui->ingame = false;
 		App->isPaused = true;
@@ -411,6 +415,8 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 		lose = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 		App->menu_manager->DestroyMenu(Menu::RESOURCES);
+		App->menu_manager->DestroyMenu(Menu::GUI);
+		App->hud->CleanUp();
 		App->logo_scene->playsound = true;
 		App->gui->ingame = false;
 		App->isPaused = true;
@@ -422,10 +428,9 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 // Load Game State
 bool j1Scene::Load(pugi::xml_node& data)
 {
-	
 	App->map->CleanUp();
 	App->minimap->CleanUp();
-	pugi::xml_node iterator;
+	pugi::xml_node iterator = data.first_child();
 	int i = 0;
 
 	while(iterator){
@@ -440,9 +445,11 @@ bool j1Scene::Load(pugi::xml_node& data)
 	if (App->map->Load(modules) == true)
 	{
 		App->map->CreateWalkabilityMap();
-		App->minimap->Start();
+
 	}
 
+	App->minimap->Start();
+	App->minimap->Show();
 
 	return true;
 }

@@ -24,7 +24,6 @@ FoWManager::~FoWManager()
 bool FoWManager::Awake(pugi::xml_node&)
 {
 	bool ret = true;
-
 	return ret;
 }
 
@@ -35,6 +34,7 @@ bool FoWManager::Start()
 
 	smoothFoWtexture = App->tex->Load("Assets/maps/fogTiles.png");
 	debugFoWtexture = App->tex->Load("Assets/maps/fogTilesDebug.png");
+	update_timer.Start();
 
 	if (smoothFoWtexture == nullptr || debugFoWtexture == nullptr)
 	ret = false;
@@ -305,11 +305,12 @@ void FoWManager::DrawFoWMap()
 				offset = App->map->MapToWorld(4, 2);
 
 				//Camera Culling -> Draw only what is on screen
-				if ((worldDrawPos.x + offset.x > -(App->render->camera.x))
+				if (((worldDrawPos.x + offset.x > -(App->render->camera.x))
 					&& (worldDrawPos.x < -App->render->camera.x + App->render->camera.w)
 					&& (worldDrawPos.y + offset.y > -(App->render->camera.y))
-					&& (worldDrawPos.y < (-App->render->camera.y + App->render->camera.h)))
+					&& (worldDrawPos.y < (-App->render->camera.y + App->render->camera.h))) || (update_timer.Read() > 2500))
 				{
+
 					if (bitToTextureTable.find(tileInfo->tileFogBits) != bitToTextureTable.end())
 					{
 						fogId = bitToTextureTable[tileInfo->tileFogBits];
@@ -346,9 +347,11 @@ void FoWManager::DrawFoWMap()
 			}
 		}
 	}
+	if (update_timer.Read() > 2500)
+		update_timer.Start();
 }
 
-//TODO 2: Complete this function: given a position and a flag, create a new entity and return a pointer to it (or nullptr if something has gone wrong)
+//Given a position and a flag, create a new entity and return a pointer to it (or nullptr if something has gone wrong)
 //Note that the FoWManager needs to know about the entity we are creating, try to find where the FoWManager module stores all the FoWEntities and add it there
 FoWEntity* FoWManager::CreateFoWEntity(iPoint pos, bool providesVisibility)
 {

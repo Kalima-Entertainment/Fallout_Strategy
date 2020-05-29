@@ -22,6 +22,7 @@
 #include "Animal.h"
 #include "Gatherer.h"
 #include "Deathclaw.h"
+#include "GenericPlayer.h"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -37,8 +38,18 @@ j1EntityManager::j1EntityManager(){
 
 	name.assign("entities");
 
+	loading_faction = VAULT;
+	loading_entity = MELEE;
 	blocked_movement = false;
+	showing_building_menu = false;
 	blood = nullptr;
+	smoke = nullptr;
+	entities_loaded = false;
+	
+	mr_handy_cost = NULL;
+	mr_handy_time = NULL;
+
+	radar_cost = NULL;
 }
 
 j1EntityManager::~j1EntityManager(){}
@@ -49,6 +60,10 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 
 	radar_cost = config.child("radar").attribute("cost").as_int();
 	mr_handy_cost = config.child("mr_handy").attribute("cost").as_int();
+
+	LOG("%i",mr_handy_cost);
+
+	mr_handy_time = config.child("mr_handy").attribute("time").as_int();
 
 	pugi::xml_node animation_node = config.child("animation_files");
 	std::string base_folder = animation_node.attribute("base_folder").as_string();
@@ -61,6 +76,14 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 		tmx_files[i] = file_node.attribute("tmx").as_string();
 		file_node = file_node.next_sibling();
 		reference_entities[i] = nullptr;
+	}
+
+	for (int y = 0; y < 150; y++)
+	{
+		for (int x = 0; x < 150; x++)
+		{
+			occupied_tiles[x][y] = false;
+		}
 	}
 
 	RandomFactions();
@@ -114,6 +137,7 @@ bool j1EntityManager::Start() {
 
 	// -- Loading Particle textures
 	blood = App->tex->Load("Assets/textures/particles/blood.png");
+	smoke = App->tex->Load("Assets/textures/particles/smoke.png");
 
 	return ret;
 }
@@ -125,16 +149,20 @@ bool j1EntityManager::CleanUp()
 	// -- Instance
 	for (int i = 0; i < REFERENCE_ENTITIES; i++)
 	{
-		App->tex->UnLoad(reference_entities[i]->texture);
-		delete reference_entities[i];
-		reference_entities[i] = nullptr;
+		if (reference_entities[i] != nullptr) {
+			App->tex->UnLoad(reference_entities[i]->texture);
+			delete reference_entities[i];
+			reference_entities[i] = nullptr;
+		}
 	}
 
 	// -- Entities
 	for (int i = 0; i < entities.size(); i++)
 	{
-		delete entities[i];
-		entities[i] = nullptr;
+		if (entities[i] != nullptr) {
+			delete entities[i];
+			entities[i] = nullptr;
+		}
 	}
 
 	entities.clear();
@@ -142,11 +170,17 @@ bool j1EntityManager::CleanUp()
 	// -- Particles
 	for (int i = 0; i < particles.size(); i++)
 	{
-		delete particles[i];
-		particles[i] = nullptr;
+		if (particles[i] != nullptr) {
+			delete particles[i];
+			particles[i] = nullptr;
+		}
 	}
 
 	particles.clear();
+	App->tex->UnLoad(blood);
+	App->tex->UnLoad(smoke);
+	blood = nullptr;
+	smoke = nullptr;
 
 	// -- Buildings
 	for (int j = 0; j < resource_buildings.size(); j++)
@@ -164,6 +198,10 @@ bool j1EntityManager::PreUpdate() {
 
 	for (int i = 0; i < entities.size(); i++)
 	{
+		if ((entities[i]->target_entity != nullptr) && (entities[i]->target_entity->to_delete)) {
+			entities[i]->target_entity = nullptr;
+		}
+
 		//delete entities to destroy
 		if (entities[i]->to_delete)
 		{
@@ -479,7 +517,9 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	}
 
 	if (entity->reference_entity != nullptr) {
-		occupied_tiles[entity->current_tile.x][entity->current_tile.y] = true;
+		if(entity->is_dynamic)
+			occupied_tiles[entity->current_tile.x][entity->current_tile.y] = true;
+
 		entities.push_back(entity);
 		entity->LoadDataFromReference();
 	}
@@ -632,7 +672,7 @@ ResourceBuilding* j1EntityManager::FindResourceBuildingByTile(iPoint tile) {
 	return nullptr;
 }
 
-iPoint j1EntityManager::ClosestTile(iPoint position, std::vector<iPoint> entity_tiles) const {
+iPoint j1EntityManager::ClosestTile(iPoint position, std::vector<iPoint> entity_tiles) {
 	iPoint pivot = entity_tiles[0];
 	for (int i = 0; i < entity_tiles.size(); i++)
 	{
@@ -747,7 +787,7 @@ void j1EntityManager::OnCommand(std::vector<std::string> command_parts) {
 
 void j1EntityManager::LoadUpgradeCosts(pugi::xml_node& config)
 {
-	pugi::xml_node boost_node = config.first_child().first_child();
+	pugi::xml_node boost_node = config.child("boost").first_child();
 	Faction faction = NO_FACTION;
 	std::string faction_name;
 
@@ -875,13 +915,16 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 	App->ai_manager->CleanUp();
 	App->ai_manager->Start();
 	RestartOccupiedTiles();
-
+	
+	std::string player_faction = "NO_FACTION_ASSIGNED";
 	Faction faction = NO_FACTION;
 	std::string type_name = "NO_TYPE";
 	std::string faction_name = "NO_FACTION";
 	EntityType type = NO_TYPE;
 	fPoint position = { -1.0f,-1.0f };
 	iPoint current_tile = { 0,0 }, target_tile = { 0,0 };
+	GenericPlayer* owner = nullptr;
+
 	int current_health = 0;
 	int upgrade_gath = 0;
 	int upgrade_base = 0;
@@ -889,20 +932,40 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 	int upgrade_creat = 0;
 	int upgrade_dama = 0;
 	int upgrade_speed = 0;
+	int width, height;
+	bool dynamic_entity = true;
+
+	player_faction = data.child("player").attribute("player_faction").as_string();
+
+	if (player_faction == "brotherhood") { App->player->faction = BROTHERHOOD; }
+	else if (player_faction == "supermutant") { App->player->faction = MUTANT; }
+	else if (player_faction == "ghoul") { App->player->faction = GHOUL; }
+	else if (player_faction == "vault") { App->player->faction = VAULT; }
+
 
 	pugi::xml_node iterator = data.first_child();
-
 	while (iterator)
 	{
+		dynamic_entity = true;
+
 		type_name = iterator.attribute("type").as_string();
 		faction_name = iterator.attribute("faction").as_string();
 
-		if (type_name == "melee") { type = MELEE; }
-		else if (type_name == "ranged") { type = RANGED; }
-		else if (type_name == "gatherer") { type = GATHERER; }
-		else if (type_name == "base") { type = BASE; }
-		else if (type_name == "laboratory") { type = LABORATORY; }
-		else if (type_name == "barrack") { type = BARRACK; }
+		if (type_name == "melee") { type = MELEE;}
+		else if (type_name == "ranged") { type = RANGED;}
+		else if (type_name == "gatherer") { type = GATHERER;}
+		else if (type_name == "base") { 
+			type = BASE; 
+			dynamic_entity = false;
+		}
+		else if (type_name == "laboratory") { 
+			type = LABORATORY; 
+			dynamic_entity = false;
+		}
+		else if (type_name == "barrack") { 
+			type = BARRACK;
+			dynamic_entity = false;
+		}
 		else if (type_name == "bighorner") { type = BIGHORNER; }
 		else if (type_name == "braham") { type = BRAHAM; }
 		else if (type_name == "deathclaw") { type = DEATHCLAW; }
@@ -934,16 +997,62 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		current_tile.y = iterator.attribute("current_tile_y").as_int();
 		current_health = iterator.attribute("current_health").as_int();
 
-		if (faction == NO_FACTION) {
-			CreateEntity(faction,type, current_tile.x, current_tile.y);
+		LOG("%f %f %i %i", position.x, position.y , current_tile.x, current_tile.y);
+		if (dynamic_entity == false) {
+			
+			//create building
+			StaticEntity* entity = (StaticEntity*)App->entities->CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]);
+			
+			iPoint tile = current_tile;
+			if (type_name == "base") {
+				entity = App->scene->players[faction]->base;
+				width = height = 4;
+			}
+			else if (type_name == "barrack") {
+				if (App->scene->players[faction]->barrack[0] == nullptr) {
+					App->scene->players[faction]->barrack[0] = entity;
+				}
+				else {
+					App->scene->players[faction]->barrack[1] = entity;
+				}
+				width = 2;
+				height = 4;
+			}
+			else if (type_name == "laboratory") {
+				entity = App->scene->players[faction]->laboratory;
+				width = height = 3;
+			}
+
+			for (int y = 0; y < height; y++)
+			{
+				for (int x = 0; x < width; x++)
+				{
+					tile.x = current_tile.x + x;
+					tile.y = current_tile.y + y;
+					entity->tiles.push_back(tile);
+				}
+			}
+
+			entity->CalculateRenderAndSpawnPositions();
+
 		}
-		else {
-			CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]);
+		else if(dynamic_entity){
+
+			if (faction_name == "no_faction") {
+				CreateEntity(faction, type, current_tile.x, current_tile.y);
+			}
+			else {
+				DynamicEntity* entity = (DynamicEntity*)CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]);
+			
+			}
+
 		}
+	
 
 		iterator = iterator.next_sibling();
-
 	}
+	
+	
 
 	LOG("%i", entities.size());
 
@@ -977,6 +1086,8 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 		else if (entities[i]->faction == GHOUL) { entities_pugi.append_attribute("faction") = "ghoul"; }
 		else if (entities[i]->faction == NO_FACTION) { entities_pugi.append_attribute("faction") = "no_faction"; }
 
+		
+
 		entities_pugi.append_attribute("position_x") = entities[i]->position.x;
 		entities_pugi.append_attribute("position_y") = entities[i]->position.y;
 		entities_pugi.append_attribute("current_tile_x") = entities[i]->current_tile.x;
@@ -1002,6 +1113,14 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 		}
 
 	}
+	
+	pugi::xml_node player_pugi = data.append_child("player");
+
+	if (App->player->faction == BROTHERHOOD) { player_pugi.append_attribute("player_faction") = "brotherhood"; }
+	else if (App->player->faction == MUTANT) { player_pugi.append_attribute("player_faction") = "supermutant"; }
+	else if (App->player->faction == VAULT) { player_pugi.append_attribute("player_faction") = "vault"; }
+	else if (App->player->faction == GHOUL) { player_pugi.append_attribute("player_faction") = "ghoul"; }
+	
 	LOG("%i", entities.size());
 
 	return true;
@@ -1120,7 +1239,7 @@ void j1EntityManager::SpawnAnimals() {
 ParticleSystem* j1EntityManager::CreateParticle(fPoint pos) {
 	ParticleSystem* particleSystem = new ParticleSystem(pos.x, pos.y);
 
-	j1Entity* ret = dynamic_cast<j1Entity*>(particleSystem);
+	j1Entity* ret = (j1Entity*)particleSystem;
 	ret->to_delete = false;
 	particles.push_back(ret);
 
@@ -1134,6 +1253,21 @@ void j1EntityManager::DeleteParticles(){
 		particles[i] = nullptr;
 	}
 	entities.clear();
+}
+
+void j1EntityManager::ReleaseParticle(ParticleSystem* particle) {
+
+	/*for (int i = 0; i < particles.size(); i++)
+	{
+		Deleting particles from vector
+		if (particles[i] == particle)
+		{
+			delete entities[i];
+			entities[i] = nullptr;
+			entities.erase(entities.begin() + i);
+		}
+	}*/
+
 }
 
 void j1EntityManager::RestartOccupiedTiles() {
