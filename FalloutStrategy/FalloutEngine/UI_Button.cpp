@@ -238,6 +238,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
 				App->scene->create = !App->scene->create;
 				App->audio->PlayFx(1, App->audio->back_fx, 0);
+				App->hud->activateTimer = true;
 				Mix_PauseMusic();
 				App->isPaused = false;
 			}
