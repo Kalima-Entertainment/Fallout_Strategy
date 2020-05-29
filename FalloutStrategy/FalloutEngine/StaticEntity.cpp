@@ -123,7 +123,6 @@ bool StaticEntity::Update(float dt) {
 
 	// -- Active particle when health its lower or equal than half
 	if (StaticParticle != nullptr) {
-		StaticParticle->Move(position.x, position.y);
 		if (current_health <= (max_health/2))
 			StaticParticle->Activate();
 	}
@@ -191,8 +190,10 @@ bool StaticEntity::PostUpdate() {
 	}
 
 	//Blit particles forward buildings
-	if (StaticParticle  != nullptr)
+	if (StaticParticle != nullptr) {
+		StaticParticle->Move(position.x, position.y);
 		StaticParticle->Update(last_dt);
+	}
 	
 
 	return true;
