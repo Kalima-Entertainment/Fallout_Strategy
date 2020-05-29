@@ -29,6 +29,8 @@ j1Transition::j1Transition() : j1Module()
 	gif_tex = nullptr;
 	logo_tex = nullptr;
 	background = nullptr;
+	lastdt = 0.01f;
+	transition = false;
 
 }
 
