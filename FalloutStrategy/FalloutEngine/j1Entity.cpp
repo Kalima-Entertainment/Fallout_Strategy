@@ -28,6 +28,7 @@ j1Entity::j1Entity() {
 	to_delete = false;
 	particles_created = false;
 	playing_fx = false;
+	volume = 0;
 
 	last_dt = 0.01;
 }
