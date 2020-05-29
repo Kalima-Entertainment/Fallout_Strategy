@@ -11,6 +11,10 @@ j1Window::j1Window() : j1Module()
 	window = NULL;
 	screen_surface = NULL;
 	name = ("window");
+
+	fullscreen = false;
+	big_screen = false;
+
 }
 
 // Destructor
