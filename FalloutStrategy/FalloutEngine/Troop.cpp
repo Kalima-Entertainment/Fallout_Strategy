@@ -97,10 +97,14 @@ bool Troop::Update(float dt) {
 			}
 
 			target_entity = target_building;
-			if (target_building != nullptr)
+			// FIX I PROPOSED MARC CONFIRMAMELO
+
+			/*if (target_building != nullptr)
 			{
 				PathfindToPosition(target_building->current_tile);
-			}
+			}*/
+
+			PathfindToPosition(target_building->current_tile);
 		}
         break;
 
