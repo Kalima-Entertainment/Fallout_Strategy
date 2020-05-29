@@ -42,7 +42,7 @@ j1Entity::j1Entity() {
 
 	last_dt = 0.01;
 
-	//Mix_AllocateChannels(32);
+	Mix_AllocateChannels(32);
 }
 
 j1Entity::~j1Entity() {
