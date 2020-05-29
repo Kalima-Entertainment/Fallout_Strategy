@@ -177,7 +177,15 @@ void j1Transition::Transition()
 		App->map->Disable();
 		App->minimap->Disable();
 		App->Mmanager->Disable();
+		App->hud->CleanUp();
 		transition = false;
+		App->gui->ingame = false;
+		App->menu_manager->DestroyMenu(Menu::GUI);
+		if (App->entities->showing_building_menu = true) {
+			App->menu_manager->DestroyFaction(Menu::BUI_BASES, App->menu_manager->current_building_faction, App->menu_manager->current_building_type);
+			App->entities->showing_building_menu = false;
+			App->player->selected_entity = nullptr;
+		}
 		App->isPaused = false;
 		App->scene->win = false;
 		App->scene->lose = false;

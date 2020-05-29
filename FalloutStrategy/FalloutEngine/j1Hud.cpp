@@ -630,6 +630,18 @@ bool j1Hud::PostUpdate() {
 
 bool j1Hud::CleanUp()
 {
+	timer = 59;
+	minutes = 14;
+	finish_base = false;
+	finish_barrack = false;
+	finish_lab = false;
+	entity = 0;
+	gatherer_amount = 0;
+	melee_amount = 0;
+	ranged_amount = 0;
+	activateTimer = false;
+	timer_text[10] = '0';
+	minutes_text[15] = '0';
 	return true;
 }
 
