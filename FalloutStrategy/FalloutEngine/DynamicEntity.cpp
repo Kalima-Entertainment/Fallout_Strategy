@@ -35,7 +35,6 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 	direction = BOTTOM_RIGHT;
 
 	target_entity = nullptr;
-	//resource_building = nullptr;
 	attacking_entity = nullptr;
 
 	target_tile = { -1,-1 };
@@ -43,7 +42,6 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 	sprite_size = 128;
 
 	detection_radius = 6;
-	//action_timer.Start();
 	detection_timer.Start();
 
 	DynaParticle = nullptr;
@@ -52,19 +50,38 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 
 DynamicEntity::DynamicEntity() {
 	target_entity = nullptr;
+	target_tile = {-1,-1};
+	next_tile = {-1,-1};
+	next_tile_position = {-1,-1};
+	next_tile_rect = {0,0,0,0};
+	detection_radius = 0;
 	is_dynamic = true;
 	commanded = false;
+	is_agressive = false;
 	state = IDLE;
-	direction = TOP_LEFT;
+	direction = last_direction = TOP_LEFT;
+	DynaParticle = nullptr;
+	visionEntity = nullptr;
 }
 
 DynamicEntity::~DynamicEntity() {
+	target_tile = { -1,-1 };
+	next_tile = { -1,-1 };
+	next_tile_position = { -1,-1 };
+	next_tile_rect = { 0,0,0,0 };
+	detection_radius = 0;
+
+	direction = last_direction = TOP_LEFT;
+
 	target_entity = nullptr;
+	DynaParticle = nullptr;
+	visionEntity = nullptr;
 	reference_entity = nullptr;
 	owner = nullptr;
 	attacking_entity = nullptr;
 	current_animation = nullptr;
 	texture = nullptr;
+
 	path_to_target.clear();
 	entities_in_range.clear();
 }
@@ -137,7 +154,7 @@ bool DynamicEntity::PostUpdate() {
 			//Enemy Health Bar only if visible on fog of war
 			App->render->DrawQuad(background_health_bar, 55, 55, 55, 255);
 			App->render->DrawQuad(foreground_health_bar, 0, 255, 0, 255);
-			App->render->DrawQuad(frame_quad, 155, 155, 155, 185, false);			
+			//App->render->DrawQuad(frame_quad, 155, 155, 155, 185, false);			
 		}
 		else if ((this->faction == NO_FACTION)||(App->render->debug)) {
 			//Animals are also visible on shroud
@@ -149,7 +166,7 @@ bool DynamicEntity::PostUpdate() {
 				//Enemy Health Bar only if visible on fog of war
 				App->render->DrawQuad(background_health_bar, 55, 55, 55, 255);
 				App->render->DrawQuad(foreground_health_bar, 0, 255, 0, 255);
-				App->render->DrawQuad(frame_quad, 155, 155, 155, 185, false);
+				//App->render->DrawQuad(frame_quad, 155, 155, 155, 185, false);
 			}
 		}
 	
