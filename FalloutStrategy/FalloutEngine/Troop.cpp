@@ -84,8 +84,6 @@ bool Troop::Update(float dt) {
 			target_building = (StaticEntity*)target_entity;
 	}
 
-	Mix_AllocateChannels(35);
-
 	switch (state)
 	{
     case IDLE:
