@@ -23,7 +23,7 @@ j1Entity::j1Entity() {
 	reference_entity = nullptr;
 	attacking_entity = nullptr;
 	owner = nullptr;
-	
+
 	state = NO_STATE;
 	faction = NO_FACTION;
 	type = NO_TYPE;
@@ -37,7 +37,11 @@ j1Entity::j1Entity() {
 	channel = 0;
 	fx = 0;
 
-	last_dt = 0.01f;
+	background_health_bar = { 0,0,0,0 };
+	foreground_health_bar = { 0,0,0,0 };
+	frame_quad = { 0,0,0,0 };
+
+	last_dt = 0.01;
 }
 
 j1Entity::~j1Entity() {

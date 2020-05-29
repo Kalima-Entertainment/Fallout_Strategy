@@ -134,7 +134,7 @@ public:
 
 	bool destroy;
 
-	bool drawable = true;
+	bool drawable;
 
 
 	//pointer to an element

@@ -36,19 +36,23 @@
 j1Scene::j1Scene() : j1Module()
 {
 	name = ("scene");
+
 	create = false;
+	load_game = false;
 	create_tutorial = false;
 	menu_state = StatesMenu::NONE;
 	mouse_pos = { 0,0 };
 	rectangle_origin = { 0,0 };
-	int rectangle_width = 0;
-	int rectangle_height = 0;
+	rectangle_width = 0;
+	rectangle_height = 0;
 	win = false;
 	lose = false;
 	deathclaw1 = deathclaw2 = deathclaw3 = deathclaw4 = false;
 	Deathclaws[0] = Deathclaws[1] = Deathclaws[2] = Deathclaws[3] = nullptr;
 	players[0] = players[1] = players[2] = players[3] = nullptr;
 	SongPlaying = 0;
+	beaten_enemies = 0;
+
 }
 
 // Destructor
