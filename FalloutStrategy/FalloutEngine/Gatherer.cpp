@@ -28,17 +28,17 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 	if (owner) 
 		base = owner->base;
 
-	if (App->render->fog_of_war) {
-		if (this->faction == App->player->faction) {
-			//Player
-			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, true);
-			visionEntity->SetNewVisionRadius(5);
-		}
-		else {
-			//Enemy
-			visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
-		}
+	
+	if (this->faction == App->player->faction) {
+		//Player
+		visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, true);
+		visionEntity->SetNewVisionRadius(5);
 	}
+	else {
+		//Enemy
+		visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
+	}
+	
 
 	DynaParticle = App->entities->CreateParticle(position);
 	Animation anim;
