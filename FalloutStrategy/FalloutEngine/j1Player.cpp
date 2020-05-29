@@ -42,7 +42,6 @@ j1Player::j1Player() : GenericPlayer() {
 	is_ai = false;
 
 	Map_mouseposition = {1,1};
-
 }
 
 j1Player::~j1Player() {
@@ -412,6 +411,9 @@ void j1Player::MoveEntity(){
 			&& (ty > App->minimap->position.y) && (ty < App->minimap->position.y + App->minimap->height)) {
 			selected_spot = App->minimap->ScreenToMinimapToWorld(tx, ty);
 			selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
+		}
+		else {
+			return;
 		}
 	}
 	else

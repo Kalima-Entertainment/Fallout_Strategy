@@ -187,8 +187,6 @@ void Gatherer::Gather() {
 
 	if (resource_building->quantity <= 0)
 		resource_building = nullptr;
-	
-
 }
 
 void Gatherer::AssignResourceBuilding(ResourceBuilding* g_resource_building) {

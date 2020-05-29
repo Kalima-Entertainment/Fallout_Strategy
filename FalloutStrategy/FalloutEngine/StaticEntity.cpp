@@ -38,15 +38,13 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 	time_left = 0;
 	time_left_upgrade = 0;
 	level = 0;
+
 	target_entity = nullptr;
 	reference_entity = nullptr;
-	owner = nullptr;
 	attacking_entity = nullptr;
 	current_animation = nullptr;
 	texture = nullptr;
-	StaticParticle = nullptr;
 	//App->entities->ReleaseParticle(StaticParticle);
-	visionEntity = nullptr;
 
 	StaticParticle = nullptr;
 	visionEntity = nullptr;
