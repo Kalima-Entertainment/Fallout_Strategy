@@ -76,7 +76,7 @@ StaticEntity::~StaticEntity() {
 	texture = nullptr;
 	StaticParticle = nullptr;
 	//App->entities->ReleaseParticle(StaticParticle);
-
+	visionEntity = nullptr;
 	tiles.clear();
 
 	//Clean Unit Spawn Stacks
@@ -169,6 +169,7 @@ bool StaticEntity::PostUpdate() {
 	//if (App->render->debug) App->render->DrawQuad({ (int)position.x, (int)position.y, 4,4 }, 255, 0, 0, 255);
 
 	//Health bar stats
+	/*
 	background_health_bar = { (int)(render_position.x + sprite_size * 0.5f - 40), (int)render_position.y, 80, 4 };
 	float health_proportion = current_health / max_health;
 	foreground_health_bar = { (int)(render_position.x + sprite_size * 0.5f - 40), render_position.y, (int)(health_proportion * background_health_bar.w), 4 };
@@ -188,7 +189,7 @@ bool StaticEntity::PostUpdate() {
 		App->render->DrawQuad(spawn_bar_background, 150, 150, 150, 255);
 		App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255);
 	}
-
+	*/
 	//Blit particles forward buildings
 	if (StaticParticle != nullptr) {
 		StaticParticle->Move(position.x, position.y);

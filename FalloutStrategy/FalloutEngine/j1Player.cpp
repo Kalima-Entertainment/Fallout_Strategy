@@ -96,7 +96,7 @@ bool j1Player::PreUpdate() {
 		border_scroll = !border_scroll;
 
 	//center camera
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
 	{
 		if (selected_entity != nullptr)
 		{

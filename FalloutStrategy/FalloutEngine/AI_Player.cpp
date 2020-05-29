@@ -112,7 +112,7 @@ bool AI_Player::Update(float dt) {
 			}
 			is_attacking = true;
 			wave_timer.Start();
-			LOG("attacking");
+			//LOG("attacking");
 		}
 	}
 

@@ -45,11 +45,12 @@ public:
 
 	void DebugSpawnsUpgrades();
 	void CalculateRenderAndSpawnPositions();
+	int GetUnitsInStack(EntityType type);
 
 	// Load / Save
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
-	
+
 public:
 	std::vector<iPoint> tiles;
 	float time_left;
@@ -57,9 +58,9 @@ public:
 	Spawn_Stack spawn_stack[10];
 	bool spawning;
 	int level;
-	int GetUnitsInStack(EntityType type);
 	bool upgrading;
 	Upgrade_Stack upgrade_stack;
+
 private:
 	int gen_speed;
 	Animation animations[2];
@@ -73,8 +74,8 @@ private:
 	
 	UpgradeSprite upgrade_sprite[4];
 
-	SDL_Rect spawn_bar_background;
-	SDL_Rect spawn_bar_foreground;
+	//SDL_Rect spawn_bar_background;
+	//SDL_Rect spawn_bar_foreground;
 
 	ParticleSystem* StaticParticle;
 	FoWEntity* visionEntity;
