@@ -76,7 +76,7 @@
     </laboratory>   
    </vault>
    <brotherhood>
-    <base health="80">
+    <base health="800000000">
      <upgrade level="1" x="112" y="149" rect_x="51" rect_y="2906" rect_w="27" rect_h="38"/>
      <upgrade level="2" x="102" y="173" rect_x="162" rect_y="2844" rect_w="61" rect_h="100"/>
      <upgrade level="3" x="26" y="161" rect_x="285" rect_y="2849" rect_w="67" rect_h="95"/>

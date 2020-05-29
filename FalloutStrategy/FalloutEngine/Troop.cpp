@@ -97,7 +97,10 @@ bool Troop::Update(float dt) {
 			}
 
 			target_entity = target_building;
-			PathfindToPosition(target_building->current_tile);
+			if (target_building != nullptr)
+			{
+				PathfindToPosition(target_building->current_tile);
+			}
 		}
         break;
 

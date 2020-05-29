@@ -123,21 +123,21 @@ bool j1Hud::PostUpdate() {
 				SDL_Rect background_bar = { 530, 698, 122, 4 };
 				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
-				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, 0.0f);
-				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, 0.0f);
+				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
+				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
 
 				//Spawn bar
 
 				SDL_Rect spawn_bar_background = { 995, 692, 75, 6 };
 
-				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, false);
 
 				if (static_entity->spawning) {
 
 					if (static_entity->spawn_stack[0].type == GATHERER) {
 						
 						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, false);
 						
 					}
 
@@ -153,12 +153,12 @@ bool j1Hud::PostUpdate() {
 
 				//TIMER BAG BOOST
 				SDL_Rect spawn_bag_background = { 1092, 692, 75, 6 };
-				App->render->DrawQuad(spawn_bag_background, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_bag_background, 255, 255, 255, 255, true, false);
 
 				if(static_entity->upgrading)
 				{
 					SDL_Rect spawn_bag_foreground = { 1092, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_bag_background.w, 6 };
-					App->render->DrawQuad(spawn_bag_foreground, 18, 164, 62, 255, true, 0.0f);
+					App->render->DrawQuad(spawn_bag_foreground, 18, 164, 62, 255, true, false);
 				}
 
 			}
@@ -168,37 +168,37 @@ bool j1Hud::PostUpdate() {
 				SDL_Rect background_bar = { 530, 698, 122, 4 };
 				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
-				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, 0.0f);
-				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, 0.0f);
+				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
+				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
 
 				//Spawn bar
 
 				SDL_Rect spawn_bar_background = { 995, 692, 75, 6 };
 				SDL_Rect spawn_bar_background2 = { 1092, 692, 75, 6 };
 
-				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
-				App->render->DrawQuad(spawn_bar_background2, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, false);
+				App->render->DrawQuad(spawn_bar_background2, 255, 255, 255, 255, true, false);
 
 				if (static_entity->spawning) {
 
 					if (static_entity->spawn_stack[0].type == MELEE) {
 						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, false);
 					}
 					else if (static_entity->spawn_stack[0].type == RANGED) {
 						SDL_Rect spawn_bar_foreground = { 1092, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background2.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, false);
 					}
 				}
 
 				//TIMER SPEED BOOST
 				SDL_Rect spawn_speed_background = { 1189, 692, 75, 6 };
-				App->render->DrawQuad(spawn_speed_background, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_speed_background, 255, 255, 255, 255, true, false);
 
 				if (static_entity->upgrading)
 				{
 					SDL_Rect spawn_speed_foreground = { 1189, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_speed_background.w, 6 };
-					App->render->DrawQuad(spawn_speed_foreground, 18, 164, 62, 255, true, 0.0f);
+					App->render->DrawQuad(spawn_speed_foreground, 18, 164, 62, 255, true, false);
 				}
 			}
 			else if (static_entity->type == LABORATORY) {
@@ -206,31 +206,31 @@ bool j1Hud::PostUpdate() {
 				SDL_Rect background_bar = { 530, 698, 122, 4 };
 				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
-				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, 0.0f);
-				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, 0.0f);
+				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
+				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
 
 				//Spawn bar
 
 				SDL_Rect spawn_bar_background = { 995, 692, 75, 6 };
-				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, false);
 
 				if (static_entity->spawning) {
 
 					if (static_entity->spawn_stack[0].type == MR_HANDY) {
 						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, false);
 					}
 			
 				}
 
 				//TIMER SHIELD BOOST
 				SDL_Rect spawn_shield_background = { 1189, 692, 75, 6 };
-				App->render->DrawQuad(spawn_shield_background, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_shield_background, 255, 255, 255, 255, true, false);
 
 				if (static_entity->upgrading)
 				{
 					SDL_Rect spawn_shield_foreground = { 1189, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_shield_background.w, 6 };
-					App->render->DrawQuad(spawn_shield_foreground, 18, 164, 62, 255, true, 0.0f);
+					App->render->DrawQuad(spawn_shield_foreground, 18, 164, 62, 255, true, false);
 				}
 			}
 			break;
@@ -242,21 +242,21 @@ bool j1Hud::PostUpdate() {
 				SDL_Rect background_bar = { 530, 698, 122, 4 };
 				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
-				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, 0.0f);
-				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, 0.0f);
+				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
+				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
 
 				//Spawn bar
 
 				SDL_Rect spawn_bar_background = { 995, 692, 75, 6 };
 
-				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, false);
 
 				if (static_entity->spawning) {
 
 					if (static_entity->spawn_stack[0].type == GATHERER) {
 						
 						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, false);
 						
 					}
 
@@ -272,12 +272,12 @@ bool j1Hud::PostUpdate() {
 
 				//TIMER BAG BOOST
 				SDL_Rect spawn_bag_background = { 1092, 692, 75, 6 };
-				App->render->DrawQuad(spawn_bag_background, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_bag_background, 255, 255, 255, 255, true, false);
 
 				if (static_entity->upgrading)
 				{
 					SDL_Rect spawn_bag_foreground = { 1092, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_bag_background.w, 6 };
-					App->render->DrawQuad(spawn_bag_foreground, 18, 164, 62, 255, true, 0.0f);
+					App->render->DrawQuad(spawn_bag_foreground, 18, 164, 62, 255, true, false);
 				}
 			}
 			else if (static_entity->type == BARRACK) {
@@ -286,37 +286,37 @@ bool j1Hud::PostUpdate() {
 				SDL_Rect background_bar = { 530, 698, 122, 4 };
 				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
-				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, 0.0f);
-				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, 0.0f);
+				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
+				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
 
 				//Spawn bar
 
 				SDL_Rect spawn_bar_background = { 995, 692, 75, 6 };
 				SDL_Rect spawn_bar_background2 = { 1092, 692, 75, 6 };
 
-				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
-				App->render->DrawQuad(spawn_bar_background2, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, false);
+				App->render->DrawQuad(spawn_bar_background2, 255, 255, 255, 255, true, false);
 
 				if (static_entity->spawning) {
 
 					if (static_entity->spawn_stack[0].type == MELEE) {
 						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, false);
 					}
 					else if (static_entity->spawn_stack[0].type == RANGED) {
 						SDL_Rect spawn_bar_foreground = { 1092, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background2.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, false);
 					}
 				}
 			
 				//TIMER SPEED BOOST
 				SDL_Rect spawn_speed_background = { 1189, 692, 75, 6 };
-				App->render->DrawQuad(spawn_speed_background, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_speed_background, 255, 255, 255, 255, true, false);
 
 				if (static_entity->upgrading)
 				{
 					SDL_Rect spawn_speed_foreground = { 1189, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_speed_background.w, 6 };
-					App->render->DrawQuad(spawn_speed_foreground, 18, 164, 62, 255, true, 0.0f);
+					App->render->DrawQuad(spawn_speed_foreground, 18, 164, 62, 255, true, false);
 				}
 			}
 			else if (static_entity->type == LABORATORY) {
@@ -325,31 +325,31 @@ bool j1Hud::PostUpdate() {
 				SDL_Rect background_bar = { 530, 698, 122, 4 };
 				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
-				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, 0.0f);
-				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, 0.0f);
+				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
+				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
 
 				//Spawn bar
 
 				SDL_Rect spawn_bar_background = { 995, 692, 75, 6 };
-				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, false);
 
 				if (static_entity->spawning) {
 
 					if (static_entity->spawn_stack[0].type == MR_HANDY) {
 						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, false);
 					}
 
 				}
 
 				//TIMER SHIELD BOOST
 				SDL_Rect spawn_shield_background = { 1189, 692, 75, 6 };
-				App->render->DrawQuad(spawn_shield_background, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_shield_background, 255, 255, 255, 255, true, false);
 
 				if (static_entity->upgrading)
 				{
 					SDL_Rect spawn_shield_foreground = { 1189, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_shield_background.w, 6 };
-					App->render->DrawQuad(spawn_shield_foreground, 18, 164, 62, 255, true, 0.0f);
+					App->render->DrawQuad(spawn_shield_foreground, 18, 164, 62, 255, true, false);
 				}
 			}
 			break;
@@ -362,21 +362,21 @@ bool j1Hud::PostUpdate() {
 				SDL_Rect background_bar = { 530, 698, 122, 4 };
 				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
-				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, 0.0f);
-				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, 0.0f);
+				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
+				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
 
 				//Spawn bar
 
 				SDL_Rect spawn_bar_background = { 995, 692, 75, 6 };
 
-				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, false);
 
 				if (static_entity->spawning) {
 
 					if (static_entity->spawn_stack[0].type == GATHERER) {
 
 						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, false);
 
 					}
 
@@ -392,12 +392,12 @@ bool j1Hud::PostUpdate() {
 
 				//TIMER BAG BOOST
 				SDL_Rect spawn_bag_background = { 1092, 692, 75, 6 };
-				App->render->DrawQuad(spawn_bag_background, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_bag_background, 255, 255, 255, 255, true, false);
 
 				if (static_entity->upgrading)
 				{
 					SDL_Rect spawn_bag_foreground = { 1092, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_bag_background.w, 6 };
-					App->render->DrawQuad(spawn_bag_foreground, 18, 164, 62, 255, true, 0.0f);
+					App->render->DrawQuad(spawn_bag_foreground, 18, 164, 62, 255, true, false);
 				}
 			}
 			else if (static_entity->type == BARRACK) {
@@ -406,37 +406,37 @@ bool j1Hud::PostUpdate() {
 				SDL_Rect background_bar = { 530, 698, 122, 4 };
 				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
-				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, 0.0f);
-				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, 0.0f);
+				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
+				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
 
 				//Spawn bar
 
 				SDL_Rect spawn_bar_background = { 995, 692, 75, 6 };
 				SDL_Rect spawn_bar_background2 = { 1092, 692, 75, 6 };
 
-				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
-				App->render->DrawQuad(spawn_bar_background2, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, false);
+				App->render->DrawQuad(spawn_bar_background2, 255, 255, 255, 255, true, false);
 
 				if (static_entity->spawning) {
 
 					if (static_entity->spawn_stack[0].type == MELEE) {
 						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, false);
 					}
 					else if (static_entity->spawn_stack[0].type == RANGED) {
 						SDL_Rect spawn_bar_foreground = { 1092, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background2.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, false);
 					}
 				}
 
 				//TIMER SPEED BOOST
 				SDL_Rect spawn_speed_background = { 1189, 692, 75, 6 };
-				App->render->DrawQuad(spawn_speed_background, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_speed_background, 255, 255, 255, 255, true, false);
 
 				if (static_entity->upgrading)
 				{
 					SDL_Rect spawn_speed_foreground = { 1189, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_speed_background.w, 6 };
-					App->render->DrawQuad(spawn_speed_foreground, 18, 164, 62, 255, true, 0.0f);
+					App->render->DrawQuad(spawn_speed_foreground, 18, 164, 62, 255, true, false);
 				}
 			}
 			else if (static_entity->type == LABORATORY) {
@@ -445,31 +445,31 @@ bool j1Hud::PostUpdate() {
 				SDL_Rect background_bar = { 530, 698, 122, 4 };
 				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
-				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, 0.0f);
-				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, 0.0f);
+				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
+				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
 
 				//Spawn bar
 
 				SDL_Rect spawn_bar_background = { 995, 692, 75, 6 };
-				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, false);
 
 				if (static_entity->spawning) {
 
 					if (static_entity->spawn_stack[0].type == MR_HANDY) {
 						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, false);
 					}
 
 				}
 
 				//TIMER SHIELD BOOST
 				SDL_Rect spawn_shield_background = { 1189, 692, 75, 6 };
-				App->render->DrawQuad(spawn_shield_background, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_shield_background, 255, 255, 255, 255, true, false);
 
 				if (static_entity->upgrading)
 				{
 					SDL_Rect spawn_shield_foreground = { 1189, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_shield_background.w, 6 };
-					App->render->DrawQuad(spawn_shield_foreground, 18, 164, 62, 255, true, 0.0f);
+					App->render->DrawQuad(spawn_shield_foreground, 18, 164, 62, 255, true, false);
 				}
 
 			}
@@ -481,21 +481,21 @@ bool j1Hud::PostUpdate() {
 				SDL_Rect background_bar = { 530, 698, 122, 4 };
 				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
-				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, 0.0f);
-				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, 0.0f);
+				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
+				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
 
 				//Spawn bar
 
 				SDL_Rect spawn_bar_background = { 995, 692, 75, 6 };
 
-				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, false);
 
 				if (static_entity->spawning) {
 
 					if (static_entity->spawn_stack[0].type == GATHERER) {
 
 						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, false);
 
 					}
 
@@ -511,12 +511,12 @@ bool j1Hud::PostUpdate() {
 
 				//TIMER BAG BOOST
 				SDL_Rect spawn_bag_background = { 1092, 692, 75, 6 };
-				App->render->DrawQuad(spawn_bag_background, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_bag_background, 255, 255, 255, 255, true, false);
 
 				if (static_entity->upgrading)
 				{
 					SDL_Rect spawn_bag_foreground = { 1092, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_bag_background.w, 6 };
-					App->render->DrawQuad(spawn_bag_foreground, 18, 164, 62, 255, true, 0.0f);
+					App->render->DrawQuad(spawn_bag_foreground, 18, 164, 62, 255, true, false);
 				}
 			}
 			else if (static_entity->type == BARRACK) {
@@ -525,28 +525,28 @@ bool j1Hud::PostUpdate() {
 				SDL_Rect background_bar = { 530, 698, 122, 4 };
 				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
-				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, 0.0f);
-				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, 0.0f);
+				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
+				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
 
 				//Spawn bar
 
 				SDL_Rect spawn_bar_background = { 995, 692, 75, 6 };
 				SDL_Rect spawn_bar_background2 = { 1092, 692, 75, 6 };
 
-				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
-				App->render->DrawQuad(spawn_bar_background2, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, false);
+				App->render->DrawQuad(spawn_bar_background2, 255, 255, 255, 255, true, false);
 
 				if (static_entity->spawning) {
 
 					if(static_entity->spawn_stack[0].type == MELEE){
 					SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
-					App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
+					App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, false);
 					entity = 1;
 					}
 					
 					else if (static_entity->spawn_stack[0].type == RANGED) {
 					SDL_Rect spawn_bar_foreground = { 1092, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background2.w, 6 };
-					App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
+					App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, false);
 					entity = 2;
 					}
 
@@ -574,12 +574,12 @@ bool j1Hud::PostUpdate() {
 
 				//TIMER SPEED BOOST
 				SDL_Rect spawn_speed_background = { 1189, 692, 75, 6 };
-				App->render->DrawQuad(spawn_speed_background, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_speed_background, 255, 255, 255, 255, true, false);
 
 				if (static_entity->upgrading)
 				{
 					SDL_Rect spawn_speed_foreground = { 1189, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_speed_background.w, 6 };
-					App->render->DrawQuad(spawn_speed_foreground, 18, 164, 62, 255, true, 0.0f);
+					App->render->DrawQuad(spawn_speed_foreground, 18, 164, 62, 255, true, false);
 				}
 
 
@@ -590,30 +590,30 @@ bool j1Hud::PostUpdate() {
 				SDL_Rect background_bar = { 530, 698, 122, 4 };
 				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
-				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, 0.0f);
-				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, 0.0f);
+				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
+				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
 				//Spawn bar
 
 				SDL_Rect spawn_bar_background = { 995, 692, 75, 6 };
-				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_bar_background, 255, 255, 255, 255, true, false);
 
 				if (static_entity->spawning) {
 
 					if (static_entity->spawn_stack[0].type == MR_HANDY) {
 						SDL_Rect spawn_bar_foreground = { 995, 692, static_entity->time_left / static_entity->spawn_stack[0].spawn_seconds * spawn_bar_background.w, 6 };
-						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, 0.0f);
+						App->render->DrawQuad(spawn_bar_foreground, 18, 164, 62, 255, true, false);
 					}
 
 				}
 
 				//TIMER SHIELD BOOST
 				SDL_Rect spawn_shield_background = { 1189, 692, 75, 6 };
-				App->render->DrawQuad(spawn_shield_background, 255, 255, 255, 255, true, 0.0f);
+				App->render->DrawQuad(spawn_shield_background, 255, 255, 255, 255, true, false);
 
 				if (static_entity->upgrading)
 				{
 					SDL_Rect spawn_shield_foreground = { 1189, 692,  static_entity->time_left_upgrade / static_entity->upgrade_stack.upgrade_seconds * spawn_shield_background.w, 6 };
-					App->render->DrawQuad(spawn_shield_foreground, 18, 164, 62, 255, true, 0.0f);
+					App->render->DrawQuad(spawn_shield_foreground, 18, 164, 62, 255, true, false);
 				}
 			}
 			break;
