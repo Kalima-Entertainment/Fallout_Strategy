@@ -76,11 +76,10 @@ bool Troop::Update(float dt) {
 	current_animation = &animations[state][direction];
 
 	if (target_entity == nullptr) {
-		if (target_building != nullptr)
+		if ((target_building != nullptr)&&(target_building->state != DIE))
 			target_entity = target_building;
 	}
-	else {
-		if (!target_entity->is_dynamic)
+	else if ((!target_entity->is_dynamic)&&(target_entity->state != DIE)) {
 			target_building = (StaticEntity*)target_entity;
 	}
 
@@ -96,7 +95,8 @@ bool Troop::Update(float dt) {
 		else {
 			if (target_building) {
 				if ((target_building->to_delete)||(target_building->state == DIE)) {
-					target_entity = target_building = RequestTargetBuilding(target_building->faction);
+					target_building = RequestTargetBuilding(target_building->faction);
+					target_entity = target_building;
 
 					if (target_building == nullptr)
 						break;
@@ -127,7 +127,9 @@ bool Troop::Update(float dt) {
 			}
 			else if (target_building == target_entity){
 				if (target_building->state == DIE) {
-					target_entity = target_building = RequestTargetBuilding(target_building->faction);
+					target_building = RequestTargetBuilding(target_building->faction);
+					target_entity = target_building;
+
 					if(target_building)
 						PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
 				}

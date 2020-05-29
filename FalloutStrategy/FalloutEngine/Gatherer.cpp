@@ -192,16 +192,18 @@ void Gatherer::AssignResourceBuilding(ResourceBuilding* g_resource_building) {
 }
 
 void Gatherer::StoreGatheredResources() {
-	base->volume += resource_collected;
 
 	if (owner == App->player) {
 		App->player->UpdateResourceData(resource_type, resource_collected);
 	}
 	else {
 		//update owner resources
-		if (resource_type == Resource::CAPS) owner->caps += resource_collected;
-		else if (resource_type == Resource::WATER) owner->water += resource_collected;
-		else if (resource_type == Resource::FOOD) owner->food += resource_collected;
+		if (resource_type == Resource::CAPS) 
+			owner->caps += resource_collected;
+		else if (resource_type == Resource::WATER) 
+			owner->water += resource_collected;
+		else if (resource_type == Resource::FOOD) 
+			owner->food += resource_collected;
 	}
 
 	resource_collected = 0;
