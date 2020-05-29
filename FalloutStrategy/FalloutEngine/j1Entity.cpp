@@ -9,7 +9,6 @@
 #include "j1Collision.h"
 #include "FoWManager.h"
 #include "j1Player.h"
-
 #include "j1Scene.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
@@ -45,11 +44,12 @@ j1Entity::j1Entity() {
 }
 
 j1Entity::~j1Entity() {
-	texture = nullptr;
-	current_animation = nullptr;
 	reference_entity = nullptr;
+	target_entity = nullptr;
 	attacking_entity = nullptr;
 	owner = nullptr;
+	current_animation = nullptr;
+	texture = nullptr;
 }
 
 // to be updated
