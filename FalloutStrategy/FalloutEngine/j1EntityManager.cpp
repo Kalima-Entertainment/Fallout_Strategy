@@ -205,6 +205,9 @@ bool j1EntityManager::PreUpdate() {
 			entities[i] = nullptr;
 			entities.erase(entities.begin() + i);
 		}
+		if ((entities[i]->target_entity != nullptr) && (entities[i]->target_entity->to_delete)) {
+			entities[i]->target_entity = nullptr;
+		}
 	}
 
 	return ret;

@@ -242,10 +242,10 @@ void j1Minimap::EnableRadar() {
 
 void j1Minimap::DrawFogOfWar() {
 	SDL_Rect fog_of_war_rect = { 0,0,1,1 };
-	iPoint rect_pos;
+	iPoint rect_pos = {0,0};
 
 	int tile_width = width / 150;
-	fog_of_war_rect.h = ceil(tile_width * 0.5f);
+	fog_of_war_rect.h = 1;
 	int y = 0;
 	int j = 0;
 	int counter = 0;
