@@ -120,8 +120,8 @@ bool j1Hud::PostUpdate() {
 			if (static_entity->type == BASE) {
 
 				//Health bar stats
-				SDL_Rect background_bar = { 530, 698, 122, 4 };
-				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
+				SDL_Rect background_bar = { 530, 698, 123, 6 };
+				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w - 2, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
 				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
 				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
@@ -165,8 +165,8 @@ bool j1Hud::PostUpdate() {
 			else if (static_entity->type == BARRACK) {
 
 				//Health bar stats
-				SDL_Rect background_bar = { 530, 698, 122, 4 };
-				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
+				SDL_Rect background_bar = { 530, 698, 123, 6 };
+				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w - 2, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
 				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
 				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
@@ -203,8 +203,8 @@ bool j1Hud::PostUpdate() {
 			}
 			else if (static_entity->type == LABORATORY) {
 				//Health bar stats
-				SDL_Rect background_bar = { 530, 698, 122, 4 };
-				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
+				SDL_Rect background_bar = { 530, 698, 123, 6 };
+				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w - 2, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
 				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
 				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
@@ -239,8 +239,8 @@ bool j1Hud::PostUpdate() {
 			if (static_entity->type == BASE) {
 
 				//Health bar stats
-				SDL_Rect background_bar = { 530, 698, 122, 4 };
-				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
+				SDL_Rect background_bar = { 530, 698, 123, 6 };
+				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w - 2, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
 				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
 				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
@@ -283,8 +283,8 @@ bool j1Hud::PostUpdate() {
 			else if (static_entity->type == BARRACK) {
 
 				//Health bar stats
-				SDL_Rect background_bar = { 530, 698, 122, 4 };
-				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
+				SDL_Rect background_bar = { 530, 698, 123, 6 };
+				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w - 2, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
 				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
 				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
@@ -322,8 +322,8 @@ bool j1Hud::PostUpdate() {
 			else if (static_entity->type == LABORATORY) {
 
 				//Health bar stats
-				SDL_Rect background_bar = { 530, 698, 122, 4 };
-				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
+				SDL_Rect background_bar = { 530, 698, 123, 6 };
+				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w - 2, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
 				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
 				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
@@ -359,8 +359,8 @@ bool j1Hud::PostUpdate() {
 			if (static_entity->type == BASE) {
 
 				//Health bar stats
-				SDL_Rect background_bar = { 530, 698, 122, 4 };
-				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
+				SDL_Rect background_bar = { 530, 698, 123, 6 };
+				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w-2, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
 				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
 				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
@@ -403,8 +403,8 @@ bool j1Hud::PostUpdate() {
 			else if (static_entity->type == BARRACK) {
 
 				//Health bar stats
-				SDL_Rect background_bar = { 530, 698, 122, 4 };
-				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
+				SDL_Rect background_bar = { 530, 698, 123, 6 };
+				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w - 2, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
 				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
 				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
@@ -442,8 +442,8 @@ bool j1Hud::PostUpdate() {
 			else if (static_entity->type == LABORATORY) {
 
 				//Health bar stats
-				SDL_Rect background_bar = { 530, 698, 122, 4 };
-				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
+				SDL_Rect background_bar = { 530, 698, 123, 6 };
+				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w - 2, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
 				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
 				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
@@ -478,8 +478,8 @@ bool j1Hud::PostUpdate() {
 			if (static_entity->type == BASE) {
 
 				//Health bar stats
-				SDL_Rect background_bar = { 530, 698, 122, 4 };
-				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
+				SDL_Rect background_bar = { 530, 698, 123, 6 };
+				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w - 2, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
 				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
 				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
@@ -522,8 +522,8 @@ bool j1Hud::PostUpdate() {
 			else if (static_entity->type == BARRACK) {
 
 				//Health bar stats
-				SDL_Rect background_bar = { 530, 698, 122, 4 };
-				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
+				SDL_Rect background_bar = { 530, 698, 123, 6 };
+				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w - 2, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
 				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
 				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);
@@ -587,8 +587,8 @@ bool j1Hud::PostUpdate() {
 			else if (static_entity->type == LABORATORY) {
 
 				//Health bar stats
-				SDL_Rect background_bar = { 530, 698, 122, 4 };
-				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w, 4 };
+				SDL_Rect background_bar = { 530, 698, 123, 6 };
+				SDL_Rect foreground_bar = { 531, 699, (float)static_entity->current_health / static_entity->max_health * background_bar.w - 2, 4 };
 				if (foreground_bar.w < 0) { foreground_bar.w = 0; }
 				App->render->DrawQuad(background_bar, 255, 255, 255, 255, true, false);
 				App->render->DrawQuad(foreground_bar, 18, 164, 62, 255, true, false);

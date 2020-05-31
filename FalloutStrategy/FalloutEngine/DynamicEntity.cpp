@@ -90,7 +90,7 @@ DynamicEntity::~DynamicEntity() {
 bool DynamicEntity::PostUpdate() {
 
 	//tile debug
-	SDL_Rect tile_rect;
+	SDL_Rect tile_rect = {0,0,0,0};
 	iPoint tile_tex_position = App->map->MapToWorld(current_tile.x, current_tile.y);
 
 	//debug
@@ -110,10 +110,6 @@ bool DynamicEntity::PostUpdate() {
 
 		if(App->player->selected_entity != this)
 			App->render->Blit(App->render->debug_tex, tile_tex_position.x, tile_tex_position.y, &tile_rect);
-
-
-		//App->render->DrawQuad({ (int)position.x - 2, (int)position.y - 2 , 4,4 }, 255, 0, 0, 255);
-		//App->render->DrawQuad({ (int)(next_tile_rect.x), (int)(next_tile_rect.y), next_tile_rect.w, next_tile_rect.h }, 0, 255, 0, 255);
 	
 	}
 
@@ -145,7 +141,7 @@ bool DynamicEntity::PostUpdate() {
 	current_animation = &animations[state][direction];
 
 	//Fog Of War Rendering Based
-	if (this->current_tile.x >= 0 && this->current_tile.y >= 0)
+	if (current_tile.x >= 0 && current_tile.y >= 0)
 	{
 		if (App->fowManager->GetFoWTileState({ this->current_tile })->tileFogBits != fow_ALL)
 		{

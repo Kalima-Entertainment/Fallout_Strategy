@@ -13,6 +13,9 @@
 #include "Troop.h"
 #include "Gatherer.h"
 #include "j1Audio.h"
+
+#include "j1Hud.h"
+
 #include <vector>
 #include <math.h>
 
@@ -108,7 +111,7 @@ bool AI_Player::Update(float dt) {
 			}
 			is_attacking = true;
 			wave_timer.Start();
-			//LOG("attacking");
+			LOG("Attacking %i:%i", App->hud->minutes, App->hud->timer);
 		}
 	}
 
@@ -139,7 +142,8 @@ bool AI_Player::Update(float dt) {
 
 		for (int i = 0; i < troops.size(); i++)
 		{
-			troops[i]->target_building = target_building;
+			if(troops[i]->target_building == nullptr)
+			 troops[i]->target_building = target_building;
 		}
 
 		is_attacking = false;
@@ -150,7 +154,7 @@ bool AI_Player::Update(float dt) {
 
 void AI_Player::ChooseRandomPlayerEnemy() {
 	srand(time(NULL));
-	int enemy_faction;
+	int enemy_faction = NO_FACTION;
 
 	do
 	{
