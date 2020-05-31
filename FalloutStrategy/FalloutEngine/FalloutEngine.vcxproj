@@ -88,7 +88,6 @@
     <ClCompile Include="FoWManager.cpp" />
     <ClCompile Include="Gatherer.cpp" />
     <ClCompile Include="GenericPlayer.cpp" />
-    <ClCompile Include="j1Collision.cpp" />
     <ClCompile Include="j1Console.cpp" />
     <ClCompile Include="j1EasingAndSplines.cpp" />
     <ClCompile Include="j1Entity.cpp" />
@@ -150,7 +149,6 @@
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="theoraplay.h" />
-    <ClInclude Include="j1Collision.h" />
     <ClInclude Include="j1Console.h" />
     <ClInclude Include="j1Entity.h" />
     <ClInclude Include="j1EntityManager.h" />

@@ -46,9 +46,6 @@
     <ClCompile Include="j1EntityManager.cpp">
       <Filter>Desenvolupament  ========\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="j1Collision.cpp">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="DynamicEntity.cpp">
       <Filter>Desenvolupament  ========\Entities</Filter>
     </ClCompile>
@@ -227,9 +224,6 @@
     </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>Desenvolupament  ========\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Collision.h">
-      <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
     <ClInclude Include="DynamicEntity.h">
       <Filter>Desenvolupament  ========\Entities</Filter>

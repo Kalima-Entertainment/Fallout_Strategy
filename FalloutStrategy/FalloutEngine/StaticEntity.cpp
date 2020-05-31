@@ -202,8 +202,7 @@ bool StaticEntity::PostUpdate() {
 	if (StaticParticle != nullptr) {
 		StaticParticle->Move(position.x, position.y);
 		StaticParticle->Update(last_dt);
-	}
-	
+	}	
 
 	return true;
 }
