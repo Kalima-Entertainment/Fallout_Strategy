@@ -94,7 +94,7 @@ void Emiter::Start()
 
 	particleVector.reserve(maxParticles);
 
-	for (int i = 0; i < maxParticles; i++)
+	for(size_t i = 0; i < maxParticles; i++)
 	{
 		CreateParticle();
 	}
@@ -179,7 +179,7 @@ void Emiter::Update(float dt) {
 	int numParticles = particleVector.size();
 
 
-	for (int i = 0; i < numParticles; i++)
+	for(size_t i = 0; i < numParticles; i++)
 	{
 		particleVector[i].Update(dt);
 	}
@@ -190,7 +190,7 @@ void Emiter::PostUpdate(float dt) {
 
 	int numParticles = particleVector.size();
 
-	for (int i = 0; i < numParticles; i++)
+	for(size_t i = 0; i < numParticles; i++)
 	{
 		particleVector[i].PostUpdate(dt);
 	}
@@ -219,7 +219,7 @@ void Emiter::ThrowParticles() {
 	{
 		int emited = 0;
 
-		for (int i = 0; i < particleVector.size(); i++)
+		for (size_t i = 0; i < particleVector.size(); i++)
 		{
 			//TODO 2: Call Activate(), use Generate...() functions to get the parameters Activate() needs.
 			//Activate returns false if the particle is already active, and true if we activate it.
@@ -284,7 +284,7 @@ void Emiter::SetMaxTime(float NewTime)
 
 	particleVector.reserve(maxParticles);
 
-	for (int i = 0; i < maxParticles; i++)
+	for(size_t i = 0; i < maxParticles; i++)
 	{
 		CreateParticle();
 	}*/

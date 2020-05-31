@@ -7536,7 +7536,7 @@ PUGI__NS_BEGIN
 			if (tc) to++;
 		}
 
-		for (int i = 0; i < 128; ++i)
+		for(size_t i = 0; i < 128; ++i)
 			if (!table[i])
 				table[i] = static_cast<unsigned char>(i);
 

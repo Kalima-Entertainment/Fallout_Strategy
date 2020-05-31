@@ -91,9 +91,9 @@ bool j1Minimap::Start() {
 	radar_line.x1 = minimap_x_center;
 	radar_line.y1 = position.y + height * 0.5f;
 
-	for (int y = 0; y < 150; y++) 
+	for(size_t y = 0; y < 150; y++) 
 	{
-		for (int x = 0; x < 150; x++) 
+		for(size_t x = 0; x < 150; x++) 
 		{
 			grid[x][y] = 1;
 		}
@@ -123,7 +123,7 @@ bool j1Minimap::PostUpdate() {
 			DrawFogOfWar();
 		}
 
-		for (int i = 0; i < App->entities->entities.size(); i++)
+		for(size_t i = 0; i < App->entities->entities.size(); i++)
 		{
 			SDL_Rect entity_rect = { 0,0,3,3 };
 			iPoint entity_position = App->minimap->WorldToMinimap(App->entities->entities[i]->position.x, App->entities->entities[i]->position.y);
@@ -174,16 +174,16 @@ bool j1Minimap::CreateMinimap() {
 	texture = SDL_CreateTexture(App->render->renderer, SDL_GetWindowPixelFormat(App->win->window), SDL_TEXTUREACCESS_TARGET, width, height);
 	SDL_SetRenderTarget(App->render->renderer, texture);
 
-	for (int l = 0; l < MAX_LAYERS; l++)
+	for(size_t l = 0; l < MAX_LAYERS; l++)
 	{
 		MapLayer* layer = &App->map->data.layers[l];
 
 		if (layer->properties.Get("Nodraw") != 0)
 			continue;
 
-		for (int y = 0; y < MAP_LENGTH; ++y)
+		for(size_t y = 0; y < MAP_LENGTH; ++y)
 		{
-			for (int x = 0; x < MAP_LENGTH; ++x)
+			for(size_t x = 0; x < MAP_LENGTH; ++x)
 			{
 				int tile_id = layer->Get(x, y);
 				if (tile_id > 0)
@@ -250,7 +250,7 @@ void j1Minimap::DrawFogOfWar() {
 	int j = 0;
 	int counter = 0;
 
-	for (int i = 0; i < 300; i++)
+	for(size_t i = 0; i < 300; i++)
 	{
 		y = i - j;
 
@@ -264,7 +264,7 @@ void j1Minimap::DrawFogOfWar() {
 		fog_of_war_rect.y = rect_pos.y;
 		counter = 0;
 
-		for (int x = j; x < i + 1, y >= j; x++, y--)
+		for(size_t x = j; x < i + 1, y >= j; x++, y--)
 		{
 			if (grid[x][y] != 0) {
 				counter++;

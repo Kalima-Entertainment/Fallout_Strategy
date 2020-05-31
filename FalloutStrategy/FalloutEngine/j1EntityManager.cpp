@@ -68,7 +68,7 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 	std::string base_folder = animation_node.attribute("base_folder").as_string();
 	pugi::xml_node file_node = animation_node.child("file");
 
-	for (int i = 0; i < REFERENCE_ENTITIES; i++)
+	for(size_t i = 0; i < REFERENCE_ENTITIES; i++)
 	{
 		texture_folders[i] = base_folder;
 		texture_folders[i].append(file_node.attribute("folder").as_string());
@@ -77,9 +77,9 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 		reference_entities[i] = nullptr;
 	}
 
-	for (int y = 0; y < 150; y++)
+	for(size_t y = 0; y < 150; y++)
 	{
-		for (int x = 0; x < 150; x++)
+		for(size_t x = 0; x < 150; x++)
 		{
 			occupied_tiles[x][y] = false;
 		}
@@ -102,9 +102,9 @@ bool j1EntityManager::Start() {
 	loading_faction = VAULT;
 	loading_entity = MELEE;
 
-	for (int y = 0; y < 150; y++)
+	for(size_t y = 0; y < 150; y++)
 	{
-		for (int x = 0; x < 150; x++)
+		for(size_t x = 0; x < 150; x++)
 		{
 			occupied_tiles[x][y] = false;
 		}
@@ -112,9 +112,9 @@ bool j1EntityManager::Start() {
 
 	//automatic entities loading
 	int i = 0;
-	for (int faction = VAULT; faction < NO_FACTION; faction++)
+	for(size_t faction = VAULT; faction < NO_FACTION; faction++)
 	{
-		for (int type = MELEE; type < BIGHORNER; type++)
+		for(size_t type = MELEE; type < BIGHORNER; type++)
 		{
 			reference_entities[i] = CreateEntity((Faction)faction, (EntityType)type, faction, type);
 			i++;
@@ -146,7 +146,7 @@ bool j1EntityManager::CleanUp()
 	bool ret = true;
 
 	// -- Instance
-	for (int i = 0; i < REFERENCE_ENTITIES; i++)
+	for(size_t i = 0; i < REFERENCE_ENTITIES; i++)
 	{
 		if (reference_entities[i] != nullptr) {
 			App->tex->UnLoad(reference_entities[i]->texture);
@@ -408,9 +408,9 @@ bool j1EntityManager::PostUpdate()
 
 		if (App->render->debug) {
 			iPoint occuppied_tile = { -1,-1 };
-			for (int y = 0; y < 150; y++)
+			for(size_t y = 0; y < 150; y++)
 			{
-				for (int x = 0; x < 150; x++)
+				for(size_t x = 0; x < 150; x++)
 				{
 					if (occupied_tiles[x][y]) {
 						occuppied_tile = App->map->MapToWorld(x, y);
@@ -429,7 +429,8 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 
 	j1Entity* entity = nullptr;
 	iPoint available_tile;
-
+	bool default_case = false;
+	
 	switch (type)
 	{
 	case MELEE:
@@ -512,10 +513,11 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		entity->reference_entity = reference_entities[GetReferenceEntityID(NO_FACTION, MR_HANDY)];
 		break;
 	default:
+		default_case = true; //Potential bug. If the program comes here and this variable didn't exist -> It would crash
 		break;
 	}
 
-	if (entity->reference_entity != nullptr) {
+	if (default_case == false && entity->reference_entity != nullptr) {
 		if(entity->is_dynamic)
 			occupied_tiles[entity->current_tile.x][entity->current_tile.y] = true;
 
@@ -689,9 +691,9 @@ iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) 
 	int distance_to_destination = 100000;
 
 	while (max < 5) {
-		for (int y = -max; y <= max; y++)
+		for(size_t y = -max; y <= max; y++)
 		{
-			for (int x = -max; x <= max; x++)
+			for(size_t x = -max; x <= max; x++)
 			{
 				if (x != 0 || y != 0) {
 					possible_tile.x = destination.x + x;
@@ -757,12 +759,12 @@ void j1EntityManager::RandomFactions() {
 	//Randomize faction order
 	//std::random_shuffle(&randomFaction[0], &randomFaction[3]);
 
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 
 	int temp = 0;
 	int randomIndex = 0;
 
-	for (int i = 0; i < 4; i++) {
+	for(size_t i = 0; i < 4; i++) {
 		randomIndex = rand() % 4;
 		temp = randomFaction[i];
 		randomFaction[i] = randomFaction[randomIndex];
@@ -770,7 +772,7 @@ void j1EntityManager::RandomFactions() {
 	}
 
 
-	for (int i = 0; i < 4; i++)
+	for(size_t i = 0; i < 4; i++)
 		LOG("faction %i", randomFaction[i]);
 }
 
@@ -790,8 +792,8 @@ void j1EntityManager::LoadUpgradeCosts(pugi::xml_node& config)
 	Faction faction = NO_FACTION;
 	std::string faction_name;
 
-	for (int j = 0; j < 3; j++) {
-		for (int i = 0; i < 4; i++) {
+	for(size_t j = 0; j < 3; j++) {
+		for(size_t i = 0; i < 4; i++) {
 			if (i == 0)faction = VAULT;
 			else if (i == 1)faction = BROTHERHOOD;
 			else if (i == 2)faction = MUTANT;
@@ -1022,9 +1024,9 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 				width = height = 3;
 			}
 
-			for (int y = 0; y < height; y++)
+			for(size_t y = 0; y < height; y++)
 			{
-				for (int x = 0; x < width; x++)
+				for(size_t x = 0; x < width; x++)
 				{
 					tile.x = current_tile.x + x;
 					tile.y = current_tile.y + y;
@@ -1129,8 +1131,8 @@ iPoint j1EntityManager::FindSpawnPoint(int position_x, int position_y) {
 		bool spawnPointFound = false;
 
 		while (occupied_tiles[position_x][position_y]) {
-			for (int k = 0; k < 10; k++) {
-				for (int i = 0; i <= 5; i++) {
+			for(size_t k = 0; k < 10; k++) {
+				for(size_t i = 0; i <= 5; i++) {
 					if (spawnPointFound == false) {
 						if (!occupied_tiles[position_x - i][position_y + k]) {
 							position_x -= i;
@@ -1140,7 +1142,7 @@ iPoint j1EntityManager::FindSpawnPoint(int position_x, int position_y) {
 					}
 				}
 				if (spawnPointFound == false) {
-					for (int j = 0; j <= 5; j++) {
+					for(size_t j = 0; j <= 5; j++) {
 						if (spawnPointFound == false) {
 							if (!occupied_tiles[position_x + k][position_y - j]) {
 								position_y -= j;
@@ -1210,9 +1212,9 @@ void j1EntityManager::SpawnAnimals() {
 	
 	int randomAnimal = 0;
 
-	for (int i = 0; i < 15; i++)
+	for(size_t i = 0; i < 15; i++)
 	{
-		srand(time(NULL)+i);
+		srand((unsigned int)time(NULL)+i);
 		randomAnimal = rand() % 2;
 
 		if(randomAnimal == 1)
@@ -1254,7 +1256,7 @@ void j1EntityManager::DeleteParticles(){
 
 void j1EntityManager::ReleaseParticle(ParticleSystem* particle) {
 
-	/*for (int i = 0; i < particles.size(); i++)
+	/*for(size_t i = 0; i < particles.size(); i++)
 	{
 		Deleting particles from vector
 		if (particles[i] == particle)
@@ -1267,9 +1269,9 @@ void j1EntityManager::ReleaseParticle(ParticleSystem* particle) {
 }
 
 void j1EntityManager::RestartOccupiedTiles() {
-	for (int y = 0; y < 150; y++)
+	for(size_t y = 0; y < 150; y++)
 	{
-		for (int x = 0; x < 150; x++)
+		for(size_t x = 0; x < 150; x++)
 		{
 			occupied_tiles[x][y] = false;
 		}

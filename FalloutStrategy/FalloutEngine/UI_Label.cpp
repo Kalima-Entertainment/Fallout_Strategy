@@ -30,7 +30,7 @@ bool UI_Label::Update(float dt)
 		timer_count = *timer_out;
 		d = 100000;
 
-		for (int i = 0; i < 6; i++) {
+		for(size_t i = 0; i < 6; i++) {
 
 			timer[i] = (char)(timer_count/d);
 

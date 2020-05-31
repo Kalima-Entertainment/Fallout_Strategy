@@ -281,7 +281,7 @@ bool j1EasingAndSplines::Update(float dt)
 	//Todo 1: We want to delete spline when it's over. For this we have to:
 	//Check the easing_splines list and removes those that Update return false. This means that Spline has finished.
 
-	for (int i=0; i < easing_splines.size(); i++) {
+	for(size_t i=0; i < easing_splines.size(); i++) {
 		
 		if (easing_splines[i] != nullptr) {
 			
@@ -478,7 +478,7 @@ bool j1EasingAndSplines::CleanUp()
 {
 	LOG("Freeing scene");
 
-	for (int i = 0; i < easing_splines.size(); i++) {
+	for(size_t i = 0; i < easing_splines.size(); i++) {
 
 		if (easing_splines[i] != nullptr) {
 

@@ -60,7 +60,7 @@ bool j1Fonts::CleanUp()
 {
 	LOG("Freeing True Type fonts and library");
 
-	for (int i = 0; i < fonts.size(); i++)
+	for(size_t i = 0; i < fonts.size(); i++)
 	{
 		TTF_CloseFont(fonts[i].font);
 	}
@@ -93,7 +93,7 @@ SDL_Texture* j1Fonts::Print(const char* text, SDL_Color color, std::string font_
 	SDL_Texture* ret = NULL;
 	_TTF_Font* font = NULL;
 
-	for (int i = 0; i < fonts.size(); i++)
+	for(size_t i = 0; i < fonts.size(); i++)
 	{
 		if (fonts[i].name == font_name)
 			font = fonts[i].font;

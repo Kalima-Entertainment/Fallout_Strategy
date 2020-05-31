@@ -31,9 +31,9 @@ bool j1PathFinding::CleanUp()
 // Sets up the walkability map
 void j1PathFinding::SetMap()
 {
-	for (int y = 0; y < 150; y++)
+	for(size_t y = 0; y < 150; y++)
 	{
-		for (int x = 0; x < 150; x++)
+		for(size_t x = 0; x < 150; x++)
 		{
 			map[x][y] = true;
 		}
@@ -132,7 +132,7 @@ iPoint j1PathFinding::FindNearestWalkableTile(iPoint origin, iPoint destination)
 std::vector<iPoint> j1PathFinding::GetLastPath() const
 {
 	std::vector<iPoint> vector;
-	for (int i = 0; i < last_path.size(); i++)
+	for(size_t i = 0; i < last_path.size(); i++)
 	{
 		vector.push_back(last_path[i]);
 	}
@@ -149,9 +149,9 @@ std::vector<iPoint> j1PathFinding::CreateNodeMap() {
 	std::vector<iPoint> map;
 	int distance = 150 / node_map_divisions;
 
-	for (int y = distance; y < 150; y += distance)
+	for(size_t y = distance; y < 150; y += distance)
 	{
-		for (int x = distance; x < 150; x += distance)
+		for(size_t x = distance; x < 150; x += distance)
 		{
 			map.push_back(iPoint(x, y));
 		}
@@ -173,14 +173,14 @@ std::vector<iPoint> j1PathFinding::CreateNodePath(iPoint origin, iPoint destinat
 	destination_node = node_map[0];
 
 	//closest origin node
-	for (int i = 0; i < node_map.size(); i++)
+	for(size_t i = 0; i < node_map.size(); i++)
 	{
 		if (node_map[i].DistanceTo(origin) < origin_node.DistanceTo(origin))
 			origin_node = node_map[i];
 	}
 
 	//closest destination node
-	for (int i = 0; i < node_map.size(); i++)
+	for(size_t i = 0; i < node_map.size(); i++)
 	{
 		if (node_map[i].DistanceTo(destination) < destination_node.DistanceTo(destination))
 			destination_node = node_map[i];
@@ -195,9 +195,9 @@ std::vector<iPoint> j1PathFinding::CreateNodePath(iPoint origin, iPoint destinat
 		iPoint possible_node;
 		iPoint best_node;
 		//find neighbour nodes
-		for (int y = -node_distance; y <= node_distance; y += node_distance)
+		for(int y = -node_distance; y <= node_distance; y += node_distance)
 		{
-			for (int x = -node_distance; x <= node_distance; x += node_distance)
+			for(int x = -node_distance; x <= node_distance; x += node_distance)
 			{
 				possible_node.x = current_node.x + x;
 				possible_node.y = current_node.y + y;
@@ -407,9 +407,9 @@ iPoint j1PathFinding::ExpandTile(iPoint target_tile) const {
 	
 	while (!IsWalkable(pivot) && (max < 50))
 	{
-		for (int y = -max; y < max; y++)
+		for(size_t y = -max; y < max; y++)
 		{
-			for (int x = -max; x < max; x++)
+			for(size_t x = -max; x < max; x++)
 			{
 				pivot.x = target_tile.x + x;
 				pivot.y = target_tile.y + y;

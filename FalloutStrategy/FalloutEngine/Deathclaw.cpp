@@ -143,9 +143,9 @@ bool Deathclaw::LoadDataFromReference() {
 	Deathclaw* reference_deathclaw = (Deathclaw*)reference_entity;
 
 	//load animations
-	for (int i = 0; i < NO_STATE; i++)
+	for(size_t i = 0; i < NO_STATE; i++)
 	{
-		for (int j = 0; j < NO_DIRECTION; j++)
+		for(size_t j = 0; j < NO_DIRECTION; j++)
 		{
 			animations[i][j] = reference_deathclaw->animations[i][j];
 		}

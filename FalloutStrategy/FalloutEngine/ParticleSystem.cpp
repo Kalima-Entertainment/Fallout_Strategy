@@ -31,7 +31,7 @@ bool ParticleSystem::Update(float dt)
 {
 	int numEmiters = emiterVector.size();
 
-	for (int i = 0; i < numEmiters; i++)
+	for(size_t i = 0; i < numEmiters; i++)
 	{
 		emiterVector[i].Update(dt);
 	}
@@ -43,7 +43,7 @@ bool ParticleSystem::PostUpdate(float dt)
 {
 	int numEmiters = emiterVector.size();
 
-	for (int i = 0; i < numEmiters; i++)
+	for(size_t i = 0; i < numEmiters; i++)
 	{
 		emiterVector[i].PostUpdate(dt);
 	}
@@ -61,7 +61,7 @@ void ParticleSystem::Desactivate()
 {
 	int numEmiters = emiterVector.size();
 
-	for (int i = 0; i < numEmiters; i++)
+	for(size_t i = 0; i < numEmiters; i++)
 	{
 		emiterVector[i].Desactivate();
 	}
@@ -74,7 +74,7 @@ void ParticleSystem::Activate()
 {
 	int numEmiters = emiterVector.size();
 
-	for (int i = 0; i < numEmiters; i++)
+	for(size_t i = 0; i < numEmiters; i++)
 	{
 		emiterVector[i].Activate();
 	}
@@ -100,7 +100,7 @@ void ParticleSystem::Move(int x, int y)
 	{
 		int numEmiters = emiterVector.size();
 
-		for (int i = 0; i < numEmiters; i++)
+		for(size_t i = 0; i < numEmiters; i++)
 		{
 			emiterVector[i].GetPosition(xPos, yPos);
 

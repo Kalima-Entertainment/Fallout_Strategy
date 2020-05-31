@@ -59,7 +59,6 @@ public:
 	virtual bool Update(float dt) { return true; }
 	virtual bool PostUpdate() { return true; };
 	virtual bool CleanUp() { return true; }
-	virtual void OnCollision(Collider* c1, Collider* c2) {};
 
 	virtual bool LoadAnimations(const char* folder, const char* file_name) { return true; };
 	virtual bool LoadFx() { return true; };

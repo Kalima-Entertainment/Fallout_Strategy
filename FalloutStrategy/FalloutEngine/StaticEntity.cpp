@@ -28,7 +28,7 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 
 	is_dynamic = false;
 
-	for (int i = 0; i < 10; i++)
+	for(size_t i = 0; i < 10; i++)
 		spawn_stack[i].type = NO_TYPE;
 
 	spawning = false;
@@ -150,7 +150,7 @@ bool StaticEntity::PostUpdate() {
 	if (App->player->selected_entity == this)
 	{
 		tile_rect = { 128,0,64,64 };
-		for (int i = 0; i < tiles.size(); i++)
+		for(size_t i = 0; i < tiles.size(); i++)
 		{
 			tex_position = App->map->MapToWorld(tiles[i].x, tiles[i].y);
 			App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
@@ -160,7 +160,7 @@ bool StaticEntity::PostUpdate() {
 	//debug tiles
 	else if (App->render->debug) 
 	{
-		for (int i = 0; i < tiles.size(); i++)
+		for(size_t i = 0; i < tiles.size(); i++)
 		{
 			tex_position = App->map->MapToWorld(tiles[i].x, tiles[i].y);
 			App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
@@ -169,7 +169,7 @@ bool StaticEntity::PostUpdate() {
 
 	App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
-	for (int i = 0; i < level; i++)
+	for(size_t i = 0; i < level; i++)
 	{
 		App->render->Blit(texture, render_position.x + upgrade_sprite[i].position.x, render_position.y + upgrade_sprite[i].position.y, &upgrade_sprite[i].rect);
 	}
@@ -213,12 +213,12 @@ bool StaticEntity::LoadDataFromReference() {
 	StaticEntity* static_reference = (StaticEntity*)reference_entity;
 
 	//load animations
-	for (int i = 0; i < 2; i++)
+	for(size_t i = 0; i < 2; i++)
 	{
 		animations[i] = static_reference->animations[i];
 	}
 	
-	for (int i = 0; i < 4; i++)
+	for(size_t i = 0; i < 4; i++)
 	{
 		upgrade_sprite[i] = static_reference->upgrade_sprite[i];
 	}
@@ -240,7 +240,7 @@ bool StaticEntity::LoadReferenceData(pugi::xml_node& node) {
 	max_health = node.attribute("health").as_float();
 	pugi::xml_node upgrade_node = node.child("upgrade");
 
-	for (int i = 0; i < 4; i++)
+	for(size_t i = 0; i < 4; i++)
 	{
 		upgrade_sprite[i].position.x = upgrade_node.attribute("x").as_int();
 		upgrade_sprite[i].position.y = upgrade_node.attribute("y").as_int();
@@ -498,7 +498,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 		float value_increment = App->entities->gatherer_resource_limit[faction].value_increment;
 
 		//Upgrade gatherers that are currently alive
-		for (int i = 0; i < App->entities->entities.size(); i++) {
+		for(size_t i = 0; i < App->entities->entities.size(); i++) {
 			if (App->entities->entities[i]->faction == faction)
 				if (App->entities->entities[i]->type == GATHERER)
 					App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * value_increment);
@@ -512,7 +512,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 		float value_increment = App->entities->units_damage[faction].value_increment;
 
 		//Upgrade melees and ranged that are currently alive
-		for (int i = 0; i < App->entities->entities.size(); i++) {
+		for(size_t i = 0; i < App->entities->entities.size(); i++) {
 			if (App->entities->entities[i]->faction == faction)
 				if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED)
 					App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * value_increment);
@@ -527,7 +527,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 		float value_increment = App->entities->units_speed[faction].value_increment;
 
 		//Upgrade units that are currently alive
-		for (int i = 0; i < App->entities->entities.size(); i++) {
+		for(size_t i = 0; i < App->entities->entities.size(); i++) {
 			if (App->entities->entities[i]->faction == faction) {
 				App->entities->entities[i]->speed.x += App->entities->entities[i]->speed.x * value_increment;
 				App->entities->entities[i]->speed.y += App->entities->entities[i]->speed.y * value_increment;
@@ -549,7 +549,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 		float value_increment = App->entities->units_health[faction].value_increment;
 
 		//Upgrade melees and ranged that are currently alive
-		for (int i = 0; i < App->entities->entities.size(); i++) {
+		for(size_t i = 0; i < App->entities->entities.size(); i++) {
 			if (App->entities->entities[i]->faction == faction)
 				if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED) {
 					App->entities->entities[i]->max_health += (int)(App->entities->entities[i]->max_health * value_increment);
@@ -603,7 +603,7 @@ void StaticEntity::SpawnUnit(EntityType type, bool no_cost) {
 		}
 
 		//Add to stack
-		for (int i = 0; i < 10; i++) {
+		for(size_t i = 0; i < 10; i++) {
 			if (spawn_stack[i].type == NO_TYPE) {
 
 				spawn_stack[i].type = type;
@@ -618,7 +618,7 @@ void StaticEntity::SpawnUnit(EntityType type, bool no_cost) {
 void StaticEntity::UpdateSpawnStack() {
 	//First entity in queue has been spawned
 	//Now let's start timer for the next entity
-	for (int i = 0; i < 9; i++) {
+	for(size_t i = 0; i < 9; i++) {
 		spawn_stack[i] = spawn_stack[i + 1];
 	}
 	spawn_stack[9] = { NO_TYPE, 0 };
@@ -745,13 +745,13 @@ int StaticEntity::GetUnitsInStack(EntityType type)
 	int num = 0;
 
 	if (type == MELEE) {
-		for (int i = 0; i < 10; i++) {
+		for(size_t i = 0; i < 10; i++) {
 			if (spawn_stack[i].type == MELEE)
 				num++;
 		}
 	}
 	else if (type == RANGED) {
-		for (int i = 0; i < 10; i++) {
+		for(size_t i = 0; i < 10; i++) {
 			if (spawn_stack[i].type == RANGED)
 				num++;
 		}

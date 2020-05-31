@@ -219,7 +219,7 @@ bool Troop::Update(float dt) {
 
 			if (type == MR_HANDY) {
 				DetectEntitiesInRange();
-				for (int i = 0; i < entities_in_range.size(); i++)
+				for(size_t i = 0; i < entities_in_range.size(); i++)
 				{
 					if (entities_in_range[i]->faction != faction)
 						entities_in_range[i]->current_health -= 2 * damage;
@@ -307,9 +307,9 @@ bool Troop::LoadDataFromReference() {
 	Troop* reference_troop = (Troop*)reference_entity;
 
 	//load animations
-	for (int i = 0; i < NO_STATE; i++)
+	for(size_t i = 0; i < NO_STATE; i++)
 	{
-		for (int j = 0; j < NO_DIRECTION; j++)
+		for(size_t j = 0; j < NO_DIRECTION; j++)
 		{
 			animations[i][j] = reference_troop->animations[i][j];
 		}

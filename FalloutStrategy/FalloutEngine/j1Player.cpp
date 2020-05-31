@@ -48,10 +48,10 @@ j1Player::~j1Player() {
 	selected_entity = nullptr;
 	last_selected_entity = nullptr;
 
-	for (int t = 0; t < troops.size(); t++) { troops[t] = nullptr; }
+	for (size_t t = 0; t < troops.size(); t++) { troops[t] = nullptr; }
 	troops.clear();
 
-	for (int g = 0; g < gatherers_vector.size(); g++) { gatherers_vector[g] = nullptr; }
+	for (size_t g = 0; g < gatherers_vector.size(); g++) { gatherers_vector[g] = nullptr; }
 	gatherers_vector.clear();
 
 	base = barrack[0] = barrack[1] = laboratory = nullptr;
@@ -98,8 +98,8 @@ bool j1Player::PreUpdate() {
 	{
 		if (selected_entity != nullptr)
 		{
-			App->render->camera.x = -selected_entity->position.x + (App->render->camera.w * 0.5f);
-			App->render->camera.y = -selected_entity->position.y + (App->render->camera.h * 0.5f);
+			App->render->camera.x = (int)(-selected_entity->position.x + (App->render->camera.w * 0.5f));
+			App->render->camera.y = (int)(-selected_entity->position.y + (App->render->camera.h * 0.5f));
 		}
 		else
 		{
@@ -139,8 +139,8 @@ bool j1Player::PreUpdate() {
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_REPEAT) {
 			int x, y;
 			App->input->GetMouseMotion(x, y);
-			App->render->camera.x += x * mouse_speed_multiplier;
-			App->render->camera.y += y * mouse_speed_multiplier;
+			App->render->camera.x += (int)(x * mouse_speed_multiplier);
+			App->render->camera.y += (int)(y * mouse_speed_multiplier);
 			// CAMERA LIMITS X
 			if (App->render->camera.x >= 5070)
 			{
@@ -172,8 +172,8 @@ bool j1Player::PreUpdate() {
 			{
 				iPoint minimap_mouse_position;
 				minimap_mouse_position = App->minimap->ScreenToMinimapToWorld(mouse_x, mouse_y);
-				App->render->camera.x = -(minimap_mouse_position.x - App->render->camera.w * 0.5f);
-				App->render->camera.y = -(minimap_mouse_position.y - App->render->camera.h * 0.5f);
+				App->render->camera.x = (int)(-(minimap_mouse_position.x - App->render->camera.w * 0.5f));
+				App->render->camera.y = (int)(-(minimap_mouse_position.y - App->render->camera.h * 0.5f));
 			}
 		}
 	}
@@ -196,10 +196,10 @@ bool j1Player::Update(float dt) {
 
 	if (border_scroll)
 	{
-		if (x < 40) App->render->camera.x += floor(600.0f * dt);
-		if (x > width - 40) App->render->camera.x -= floor(600.0f * dt);
-		if (y < 40) App->render->camera.y += floor(600.0f * dt);
-		if (y > height - 40) App->render->camera.y -= floor(600.0f * dt);
+		if (x < 40) App->render->camera.x += (int)(floor(600.0f * dt));
+		if (x > width - 40) App->render->camera.x -= (int)(floor(600.0f * dt));
+		if (y < 40) App->render->camera.y += (int)(floor(600.0f * dt));
+		if (y > height - 40) App->render->camera.y -= (int)(floor(600.0f * dt));
 	}
 
 	// --- We get the map coords of the mouse ---
@@ -326,7 +326,7 @@ bool j1Player::Update(float dt) {
 	}
 	
 	// -- Request GroupMovement
-	for (int i = 0; i < App->entities->entities.size(); i++)
+	for (size_t i = 0; i < App->entities->entities.size(); i++)
 	{
 		//Just our dynamic troops must be checked
 		if (App->entities->entities[i]->is_dynamic && App->entities->entities[i]->faction == this->faction) {
@@ -364,16 +364,16 @@ bool j1Player::Update(float dt) {
 
 	//Move map
 	if ((App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)&&(App->render->camera.y < App->render->camera.h * 0.25f))
-		App->render->camera.y += floor(200.0f * dt);
+		App->render->camera.y += (int)(floor(200.0f * dt));
 
 	if ((App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)&&(App->render->camera.y > -MAP_LENGTH * HALF_TILE + App->render->camera.h * 0.75f))
-		App->render->camera.y -= floor(200.0f * dt);
+		App->render->camera.y -= (int)(floor(200.0f * dt));
 
 	if ((App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) && (App->render->camera.x < MAP_LENGTH * HALF_TILE + App->render->camera.w * 0.25f))
-		App->render->camera.x += floor(200.0f * dt);
+		App->render->camera.x += (int)(floor(200.0f * dt));
 
 	if ((App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) && (App->render->camera.x > -MAP_LENGTH* HALF_TILE + App->render->camera.w * 0.75f))
-		App->render->camera.x -= floor(200.0f * dt);
+		App->render->camera.x -= (int)(floor(200.0f * dt));
 
 	return ret;
 }
@@ -557,7 +557,7 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 			if (command_parts[1] == "ranged")
 				App->entities->CreateEntity(static_entity->faction, RANGED, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
 			if (command_parts[1] == "army")
-				for (int i = 0; i < 10; i++) {
+				for(size_t i = 0; i < 10; i++) {
 					App->entities->CreateEntity(static_entity->faction, MELEE, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
 					App->entities->CreateEntity(static_entity->faction, RANGED, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
 				}

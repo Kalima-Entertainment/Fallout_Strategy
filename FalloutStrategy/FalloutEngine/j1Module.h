@@ -11,7 +11,6 @@
 #include "PugiXml\src\pugixml.hpp"
 
 class j1App;
-struct Collider;
 class UI_element;
 
 class j1Module
@@ -87,7 +86,6 @@ public:
 		CleanUp();
 	}
 
-	virtual void OnCollision(Collider* c1, Collider* c2) {}
 	virtual void Callback(UI_element* element) {}
 	virtual void OnCommand(std::vector<std::string> command) {}
 

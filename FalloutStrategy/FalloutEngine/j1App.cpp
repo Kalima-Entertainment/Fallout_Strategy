@@ -105,7 +105,7 @@ j1App::~j1App()
 {
 	// release modules
 
-	for (int i = 0; i < modules.size(); i++)
+	for(size_t i = 0; i < modules.size(); i++)
 	{
 		RELEASE(modules[i]);
 	}
@@ -150,7 +150,7 @@ bool j1App::Awake()
 
 	if(ret == true)
 	{
-		for (int i = 0; i < modules.size() && ret == true; i++)
+		for(size_t i = 0; i < modules.size() && ret == true; i++)
 		{
 			ret = modules[i]->Awake(config.child(modules[i]->name.c_str()));
 		}
@@ -174,7 +174,7 @@ bool j1App::Start()
 	minimap->active = false;
 	dialog_manager->active = false;
 
-	for (int i = 0; i < modules.size() && ret == true; i++)
+	for(size_t i = 0; i < modules.size() && ret == true; i++)
 	{
 		if(modules[i]->active)
 			ret = modules[i]->Start();
@@ -289,7 +289,7 @@ bool j1App::PreUpdate()
 	bool ret = true;
 	j1Module* pModule = NULL;
 
-	for (int i = 0; i < modules.size() && ret == true; i++)
+	for(size_t i = 0; i < modules.size() && ret == true; i++)
 	{
 		pModule = modules[i];
 		if (pModule->active == false) {
@@ -327,7 +327,7 @@ bool j1App::PostUpdate()
 	bool ret = true;
 	j1Module* pModule = NULL;
 
-	for (int i = 0;i < modules.size() && ret == true; i++)
+	for(size_t i = 0;i < modules.size() && ret == true; i++)
 	{
 		pModule = modules[i];
 
@@ -347,7 +347,7 @@ bool j1App::CleanUp()
 	PERF_START(ptimer);
 	bool ret = true;
 
-	for (int i = 0; i < modules.size() && ret == true; i++)
+	for(size_t i = 0; i < modules.size() && ret == true; i++)
 	{
 		ret = modules[i]->CleanUp();
 	}
@@ -434,7 +434,7 @@ bool j1App::LoadGameNow()
 		j1Module* pModule = modules[0];
 		ret = true;
 
-		for (int i = 0; i < modules.size() && ret == true; i++)
+		for(size_t i = 0; i < modules.size() && ret == true; i++)
 		{
 			ret = modules[i]->Load(root.child(modules[i]->name.c_str()));
 			pModule = modules[i];
@@ -467,7 +467,7 @@ bool j1App::SavegameNow() const
 
 	j1Module* pModule = modules[0];
 
-	for (int i = 0; i < modules.size() && ret == true; i++)
+	for(size_t i = 0; i < modules.size() && ret == true; i++)
 	{
 		ret = modules[i]->Save(root.append_child(modules[i]->name.c_str()));
 		pModule = modules[i];

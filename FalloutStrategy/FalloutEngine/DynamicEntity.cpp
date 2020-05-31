@@ -454,9 +454,9 @@ j1Entity* DynamicEntity::DetectEntitiesInRange() {
 
 	entities_in_range.clear();
 
-	for (int y = -detection_radius; y <= detection_radius; y++)
+	for(size_t y = -detection_radius; y <= detection_radius; y++)
 	{
-		for (int x = -detection_radius; x <= detection_radius; x++)
+		for(size_t x = -detection_radius; x <= detection_radius; x++)
 		{
 			if (x != 0 || y != 0) {
 				checked_tile.x = current_tile.x + x;

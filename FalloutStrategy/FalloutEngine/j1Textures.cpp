@@ -47,7 +47,7 @@ bool j1Textures::CleanUp()
 {
 	LOG("Freeing textures and Image library");
 
-	for (int i = 0; i < textures.size(); i++)
+	for(size_t i = 0; i < textures.size(); i++)
 	{
 		SDL_DestroyTexture(textures[i]);
 	}
@@ -79,7 +79,7 @@ SDL_Texture* const j1Textures::Load(const char* path)
 // Unload texture
 bool j1Textures::UnLoad(SDL_Texture* texture)
 {
-	for (int i = 0; i < textures.size(); i++)
+	for(size_t i = 0; i < textures.size(); i++)
 	{
 		if (texture == textures[i])
 		{

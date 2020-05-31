@@ -26,7 +26,7 @@ bool AI_Manager::Awake(pugi::xml_node& config) {
 	Faction faction = NO_FACTION;
 	std::string faction_name;
 
-	for (int i = 0; i < 4; i++)
+	for(size_t i = 0; i < 4; i++)
 	{
 		faction_name = faction_node.name();
 		if (faction_name == "vault") faction = VAULT;
@@ -50,7 +50,7 @@ bool AI_Manager::Awake(pugi::xml_node& config) {
 bool AI_Manager::Start() {
 	bool ret = true;	
 
-	for (int i = 0; i < 4; i++)
+	for(size_t i = 0; i < 4; i++)
 	{
 		if (App->player->faction != (Faction) i) {
 			ai_player[i] = new AI_Player((Faction) i);
@@ -71,7 +71,7 @@ bool AI_Manager::Update(float dt) {
 	bool ret = true;
 
 	if (players_created) {
-		for (int i = 0; i < 4; i++)
+		for(size_t i = 0; i < 4; i++)
 		{
 			if ((ai_player[i] != nullptr)&&(!ai_player[i]->defeated)) {
 				ai_player[i]->Update(dt);
@@ -92,7 +92,7 @@ bool AI_Manager::PostUpdate() {
 bool AI_Manager::CleanUp() {
 	bool ret = true;
 
-	for (int i = 0; i < 4; i++)
+	for(size_t i = 0; i < 4; i++)
 	{
 		if (ai_player[i] != nullptr) {
 			delete ai_player[i];

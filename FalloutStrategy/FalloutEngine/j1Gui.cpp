@@ -63,7 +63,7 @@ bool j1Gui::PreUpdate()
 
 bool j1Gui::Update(float dt) {
 	BROFILER_CATEGORY("GuiUpdate", Profiler::Color::Yellow)
-		for (int i = 0; i < ui_element.size(); i++) {
+		for(size_t i = 0; i < ui_element.size(); i++) {
 			if (ui_element[i] != nullptr) {
 
 				ui_element[i]->Update(dt);
@@ -83,7 +83,7 @@ bool j1Gui::Update(float dt) {
 // Called after all Updates
 bool j1Gui::PostUpdate() {
 	BROFILER_CATEGORY("GuiPostUpdate", Profiler::Color::LightGreen)
-		for (int i = 0; i < ui_element.size(); i++) {
+		for(size_t i = 0; i < ui_element.size(); i++) {
 
 			if (ui_element[i] != nullptr) {
 				ui_element[i]->Draw();
@@ -97,7 +97,7 @@ bool j1Gui::CleanUp()
 {
 	LOG("Freeing GUI");
 
-	for (int i = 0; i < ui_element.size(); i++)
+	for(size_t i = 0; i < ui_element.size(); i++)
 	{
 		Delete_Element(ui_element[i]);
 	}
@@ -108,7 +108,7 @@ bool j1Gui::CleanUp()
 void j1Gui::DeleteArrayElements(UI_element* array[], int size) {
 
 	if (size != NULL) {
-		for (int i = 0; i < size; i++)
+		for(size_t i = 0; i < size; i++)
 		{
 			Delete_Element(array[i]);
 			array[i] = nullptr;
@@ -118,7 +118,7 @@ void j1Gui::DeleteArrayElements(UI_element* array[], int size) {
 
 bool j1Gui::Delete_Element(UI_element* element) {
 
-	for (int i = 0; i < ui_element.size(); i++)
+	for(size_t i = 0; i < ui_element.size(); i++)
 	{
 		if (element == ui_element[i]) {
 			delete ui_element[i];
