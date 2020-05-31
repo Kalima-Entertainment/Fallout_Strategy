@@ -20,6 +20,7 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 	is_agressive = false;
 	gather_time = 2;
 	storage_capacity = 0;
+	resource_type = Resource::NO_TYPE;
 
 	position = App->map->floatMapToWorld(current_tile.x, current_tile.y);
 	position.x += HALF_TILE;
@@ -164,6 +165,14 @@ bool Gatherer::Update(float dt) {
 }
 
 void Gatherer::Gather() {
+	//go back to base if resource building type is differrent from resource collected
+	if ((resource_collected > 0) && (resource_type != resource_building->resource_type)) {
+		if ((base != nullptr) && (base->state != DIE)) {
+			PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
+			return;
+		}
+	}
+
 	uint resource = storage_capacity - resource_collected;
 
 	if ((resource_building->quantity -= resource) < 0)

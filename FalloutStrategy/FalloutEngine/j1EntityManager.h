@@ -26,7 +26,8 @@ class Emiter;
 enum class Resource {
 	CAPS,
 	WATER,
-	FOOD
+	FOOD,
+	NO_TYPE
 };
 
 struct ResourceBuilding {

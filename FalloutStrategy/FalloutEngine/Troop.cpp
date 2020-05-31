@@ -97,7 +97,7 @@ bool Troop::Update(float dt) {
 					if (target_building == nullptr)
 						break;
 				}
-				else if(current_tile.DistanceManhattan(App->entities->ClosestTile(current_tile, target_building->tiles)) > range) {
+				else {
 					PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
 				}
 			}
