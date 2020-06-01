@@ -91,8 +91,8 @@ bool j1Hud::Update(float dt) {
 				minutes_text[0] = '0';
 			}
 
-			//App->menu_manager->timer_item->SetTextTimer(timer_text);
-			//App->menu_manager->timer_minutes->SetTextTimer(minutes_text);
+			App->menu_manager->timer_item->SetLabelText(timer_text, "StackedPixel");
+			App->menu_manager->timer_minutes->SetLabelText(minutes_text, "StackedPixel");
 			/*LOG("Minutes %i Seconds %i", minutes, timer);*/
 			if (minutes == 0 && timer == 0) {
 				activateTimer = false;

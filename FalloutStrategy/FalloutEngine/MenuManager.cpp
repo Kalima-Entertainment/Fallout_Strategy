@@ -44,44 +44,49 @@ MenuManager::MenuManager()
 	melee_label = nullptr;
 	ranged_label = nullptr;
 
-	main_menu[11] = nullptr;
-	settings_menu[23] = nullptr;
-	credits_menu[5] = nullptr;
-	collaborators[9] = nullptr;
-	select_faction_menu[10] = nullptr;
-	select_faction_photos[4] = nullptr;
-	pause_menu[7] = nullptr;
-	gui_ingame[3] = nullptr;
-	tutorial[8] = nullptr;
-	how_to_play[6] = nullptr;
+	for (size_t i = 0; i <= 11; i++) {
+		main_menu[i] = nullptr;
+	}
+	for (size_t i = 0; i <= 23; i++) {
+		settings_menu[i] = nullptr;
+	}
+	for (size_t i = 0; i <= 5; i++) {
+		credits_menu[i] = nullptr;
+	}
+	for (size_t i = 0; i <= 9; i++) {
+		collaborators[i] = nullptr;
+	}
+	for (size_t i = 0; i <= 10; i++) {
+		select_faction_menu[i] = nullptr;
+	}
+	for (size_t i = 0; i <= 4; i++) {
+		select_faction_photos[i] = nullptr;
+	}
+	for (size_t i = 0; i <= 7; i++) {
+		pause_menu[i] = nullptr;
+	}
+	for (size_t i = 0; i <= 4; i++) {
+		gui_ingame[i] = nullptr;
+	}
+	for (size_t i = 0; i <= 8; i++) {
+		tutorial[i] = nullptr;
+	}
+	for (size_t i = 0; i <= 6; i++) {
+		how_to_play[i] = nullptr;
+	}
+	for (size_t i = 0; i <= 3; i++) {
+		resources[i] = nullptr;
+	}
+	for (size_t i = 0; i <= 12; i++) {
+		quest[i] = nullptr;
+	}
+
+
 	tutorial_screen = nullptr;
 	info_button2_element = nullptr;
 	quest_button2_element = nullptr;
 	timer_item = nullptr;
 	timer_minutes = nullptr;
-	resources[3] = nullptr;
-	quest[12] = nullptr;
-
-	brotherhood_base[14] = nullptr;
-	brotherhood_barrack[21] = nullptr;
-	brotherhood_lab[19] = nullptr;
-
-	ghoul_base[14] = nullptr;
-	ghoul_barrack[21] = nullptr;
-	ghoul_lab[19] = nullptr;
-
-	vault_base[14] = nullptr;
-	vault_barrack[21] = nullptr;
-	vault_lab[19] = nullptr;
-
-	supermutant_base[14] = nullptr;
-	supermutant_barrack[21] = nullptr;
-	supermutant_lab[19] = nullptr;
-
-	win_scene[5] = nullptr;
-
-	dialogs[11] = nullptr;
-
 	cap_label = nullptr;
 	fullscreen_label = nullptr;
 
@@ -90,6 +95,59 @@ MenuManager::MenuManager()
 	ranged_label = nullptr;
 
 	how_to_play_counter = 0;
+
+	for (size_t i = 0; i <= 14; i++) {
+		brotherhood_base[i] = nullptr;
+	}
+	for (size_t i = 0; i <= 21; i++) {
+		brotherhood_barrack[i] = nullptr;
+	}
+	for (size_t i = 0; i <= 19; i++) {
+		brotherhood_lab[i] = nullptr;
+	}
+
+
+	for (size_t i = 0; i <= 14; i++) {
+		ghoul_base[i] = nullptr;
+	}
+	for (size_t i = 0; i <= 21; i++) {
+		ghoul_barrack[i] = nullptr;
+	}
+	for (size_t i = 0; i <= 19; i++) {
+		ghoul_lab[i] = nullptr;
+	}
+
+
+	for (size_t i = 0; i <= 14; i++) {
+		vault_base[i] = nullptr;
+	}
+	for (size_t i = 0; i <= 21; i++) {
+		vault_barrack[i] = nullptr;
+	}
+	for (size_t i = 0; i <= 19; i++) {
+		vault_lab[i] = nullptr;
+	}
+
+
+	for (size_t i = 0; i <= 14; i++) {
+		supermutant_base[i] = nullptr;
+	}
+	for (size_t i = 0; i <= 21; i++) {
+		supermutant_barrack[i] = nullptr;
+	}
+	for (size_t i = 0; i <= 19; i++) {
+		supermutant_lab[i] = nullptr;
+	}
+
+	for (size_t i = 0; i <= 5; i++) {
+		win_scene[i] = nullptr;
+	}
+	for (size_t i = 0; i <= 11; i++) {
+		dialogs[i] = nullptr;
+	}
+
+
+	
 	
 }
 
@@ -290,15 +348,15 @@ void MenuManager::CreateMenu(Menu menu) {
 	case Menu::GUI:
 		//Images
 		gui_ingame[0] = (j1Image*)App->gui->CreateImage(0, 0, Image, { 0, 2428, 1290, 730 }, NULL, this);
-		//gui_ingame[1] = (UI_Label*)App->gui->CreateLabel(690, 7, Label, ":", NULL, this, NULL, "StackedPixel");
-		//timer_item = (UI_Label*)App->gui->CreateLabel(700, 7, Label, "0", NULL, this, NULL, "StackedPixel");
-		//timer_minutes = (UI_Label*)App->gui->CreateLabel(652, 7, Label, "0", NULL, this, NULL, "StackedPixel");
+		gui_ingame[1] = (UI_Label*)App->gui->CreateLabel(690, 7, Label, ":", NULL, this, NULL, "StackedPixel");
+		timer_item = (UI_Label*)App->gui->CreateLabel(700, 7, Label, "0", NULL, this, NULL, "StackedPixel");
+		timer_minutes = (UI_Label*)App->gui->CreateLabel(652, 7, Label, "0", NULL, this, NULL, "StackedPixel");
 		
 		
 
 		//Tutorial
-		gui_ingame[1] = (j1Image*)App->gui->CreateImage(1205, 70, Image, { 1037, 2120, 74, 71 }, NULL, this);
-		gui_ingame[2] = (UI_Button*)App->gui->CreateButton(1160, 70, info_button, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this);
+		gui_ingame[2] = (j1Image*)App->gui->CreateImage(1205, 70, Image, { 1037, 2120, 74, 71 }, NULL, this);
+		gui_ingame[3] = (UI_Button*)App->gui->CreateButton(1160, 70, info_button, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this);
 
 		last_menu = current_menu;
 		current_menu = Menu::GUI;
@@ -1095,9 +1153,9 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->gui->DeleteArrayElements(pause_menu, 7);
 		break;
 	case Menu::GUI:
-		App->gui->DeleteArrayElements(gui_ingame, 3);
-		//App->gui->Delete_Element(timer_item);
-		//App->gui->Delete_Element(timer_minutes);
+		App->gui->DeleteArrayElements(gui_ingame, 4);
+		App->gui->Delete_Element(timer_item);
+		App->gui->Delete_Element(timer_minutes);
 		break;
 	case Menu::RESOURCES:
 		App->gui->DeleteArrayElements(resources, 3);
