@@ -432,7 +432,6 @@ void j1Player::MoveEntity(){
 			DynamicEntity* dynamic_entity;
 			dynamic_entity = (DynamicEntity*)selected_entity;
 			dynamic_entity->PathfindToPosition(selected_spot);
-			dynamic_entity->state = WALK;
 
 			if (target != nullptr) {
 				dynamic_entity->target_entity = target;

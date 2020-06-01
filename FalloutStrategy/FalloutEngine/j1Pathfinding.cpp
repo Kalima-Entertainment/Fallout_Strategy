@@ -407,9 +407,9 @@ iPoint j1PathFinding::ExpandTile(iPoint target_tile) const {
 	
 	while (!IsWalkable(pivot) && (max < 50))
 	{
-		for(size_t y = -max; y < max; y++)
+		for(int y = -max; y <= max; y++)
 		{
-			for(size_t x = -max; x < max; x++)
+			for(int x = -max; x <= max; x++)
 			{
 				pivot.x = target_tile.x + x;
 				pivot.y = target_tile.y + y;

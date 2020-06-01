@@ -97,7 +97,7 @@ bool Troop::Update(float dt) {
 					if (target_building == nullptr)
 						break;
 				}
-				else {
+				else if (current_tile.DistanceManhattan(App->entities->ClosestTile(current_tile, target_building->tiles)) > range) {
 					PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
 				}
 			}
@@ -117,7 +117,6 @@ bool Troop::Update(float dt) {
 					}
 					else {
 						state = IDLE;
-						commanded = false;
 					}
 				}
 			}
@@ -132,13 +131,15 @@ bool Troop::Update(float dt) {
 				else if (current_tile.DistanceManhattan(App->entities->ClosestTile(current_tile, target_building->tiles)) <= range) {
 					UpdateTile();
 					path_to_target.clear();
-					if (target_entity->faction != faction) {
+					if (target_building->faction != faction) {
+					    //iPoint closest_building_tile = App->entities->ClosestTile(current_tile, target_building->tiles);
+						//direction = GetDirectionToGo({ closest_building_tile.x, closest_building_tile.y, 4,4 });
 						state = ATTACK;
 					}
 					else {
 						state = IDLE;
-						commanded = false;
 					}
+					commanded = false;
 				}
 			}
 		}

@@ -240,7 +240,7 @@ bool j1EntityManager::Update(float dt)
 
 	if (!App->isPaused)
 	{
-		for (size_t i = 0; i < entities.size(); i++)
+		for (int i = 0; i < entities.size(); i++)
 		{
 			if(!entities[i]->to_delete)
 				entities[i]->Update(dt);
@@ -691,9 +691,9 @@ iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) 
 	int distance_to_destination = 100000;
 
 	while (max < 5) {
-		for(size_t y = -max; y <= max; y++)
+		for(int y = -max; y <= max; y++)
 		{
-			for(size_t x = -max; x <= max; x++)
+			for(int x = -max; x <= max; x++)
 			{
 				if (x != 0 || y != 0) {
 					possible_tile.x = destination.x + x;

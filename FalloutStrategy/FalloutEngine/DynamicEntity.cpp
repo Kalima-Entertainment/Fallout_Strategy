@@ -126,19 +126,20 @@ bool DynamicEntity::PostUpdate() {
 			direction = BOTTOM_RIGHT;
 	}
 
-	//Health Bar
-	background_health_bar = { (int)(position.x - HALF_TILE * 0.75f),(int)(position.y - TILE_SIZE * 1.5f), 50, 4 };
-	foreground_health_bar = { (int)(position.x - HALF_TILE * 0.75f),(int)(position.y - TILE_SIZE * 1.5f), (int)(current_health/max_health * 50), 4 };
-
-	if (foreground_health_bar.w < 0){
-		foreground_health_bar.w = 0;
-	}
-	//frame_quad = { (int)(position.x - HALF_TILE * 0.75f - 1), (int)(position.y - TILE_SIZE * 1.5f - 1), 52, 6 };
 
 	//Render character
 	render_position = { (int)(position.x - sprite_size * 0.5f), (int)(position.y - 1.82f * TILE_SIZE)};
 	
 	current_animation = &animations[state][direction];
+	
+	//Health Bar
+	background_health_bar = { (int)(position.x - HALF_TILE * 0.75f),(int)(position.y - TILE_SIZE * 1.25f), 50, 4 };
+	foreground_health_bar = { (int)(position.x - HALF_TILE * 0.75f),(int)(position.y - TILE_SIZE * 1.25f), (int)(current_health / max_health * 50), 4 };
+
+	if (foreground_health_bar.w < 0) {
+		foreground_health_bar.w = 0;
+	}
+	frame_quad = { (int)(position.x - HALF_TILE * 0.75f - 1), (int)(position.y - TILE_SIZE * 1.25f - 1), 52, 6 };
 
 	//Fog Of War Rendering Based
 	if (current_tile.x >= 0 && current_tile.y >= 0)
@@ -148,10 +149,12 @@ bool DynamicEntity::PostUpdate() {
 			//Character Render
 			App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
-			//Enemy Health Bar only if visible on fog of war
-			App->render->DrawQuad(background_health_bar, 55, 55, 55, 255);
-			App->render->DrawQuad(foreground_health_bar, 0, 255, 0, 255);
-			//App->render->DrawQuad(frame_quad, 155, 155, 155, 185, false);			
+			//Enemy Health Bar only if visible on fog of war and alive
+			if (current_health > 0) {
+				App->render->DrawQuad(background_health_bar, 75, 75, 75, 255);
+				App->render->DrawQuad(foreground_health_bar, 0, 255, 0, 255);
+				App->render->DrawQuad(frame_quad, 155, 155, 155, 185, false);		
+			}	
 		}
 		else if ((this->faction == NO_FACTION) || (App->render->debug)) {
 			//Animals are also visible on shroud
@@ -160,10 +163,12 @@ bool DynamicEntity::PostUpdate() {
 				//Character Render
 				App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
-				//Enemy Health Bar only if visible on fog of war
-				App->render->DrawQuad(background_health_bar, 55, 55, 55, 255);
+				//Enemy Health Bar only if visible on fog of war and alive
+				if (current_health > 0) {
+				App->render->DrawQuad(background_health_bar, 75, 75, 75, 255);
 				App->render->DrawQuad(foreground_health_bar, 0, 255, 0, 255);
-				//App->render->DrawQuad(frame_quad, 155, 155, 155, 185, false);
+				App->render->DrawQuad(frame_quad, 155, 155, 155, 185, false);
+				}
 			}
 		}
 	}
@@ -198,7 +203,9 @@ void DynamicEntity::Move(float dt) {
 						PathfindToPosition(target_tile);
 					}					
 				}
-				path_to_target.erase(path_to_target.begin());
+
+				if(path_to_target.size() > 0)
+					path_to_target.erase(path_to_target.begin());
 			}
 			//node movement 
 			else if ((node_path.size() > 0)) {
@@ -298,8 +305,11 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 	if (!App->pathfinding->IsWalkable(destination)) 
 		destination = App->pathfinding->FindNearestWalkableTile(current_tile, destination);
 
-	if (App->entities->occupied_tiles[destination.x][destination.y])
+	if (App->entities->occupied_tiles[destination.x][destination.y]) {
 		destination = App->entities->FindFreeAdjacentTile(current_tile, destination);
+		if (App->entities->occupied_tiles[destination.x][destination.y])
+			LOG("occupied destination");
+	}
 
 	target_tile = destination;
 	
