@@ -38,7 +38,7 @@ public:
 	}
 
 	void SetWidth(const int & width) {
-		for(size_t i = 0; i < num_frames; ++i) {
+		for(int i = 0; i < num_frames; ++i) {
 			frames[i].rect.w = width;
 		}
 	}

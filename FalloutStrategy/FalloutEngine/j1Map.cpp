@@ -102,7 +102,7 @@ int Properties::Get(const char* value, int default_value) const
 TileSet* j1Map::GetTilesetFromTileId(int id) const
 {
 	TileSet* set = (TileSet*)&data.tilesets[0];
-	for(size_t i = 0; i < MAX_TILESETS; i++){
+	for(int i = 0; i < MAX_TILESETS; i++){
 		set = (TileSet*)&data.tilesets[i];
 		if (id < data.tilesets[i + 1].firstgid)
 		{
@@ -224,7 +224,7 @@ bool j1Map::CleanUp()
 	LOG("Unloading map");
 
 	//remove all tilesets
-	for(size_t i = 0; i < MAX_TILESETS; i++)
+	for(int i = 0; i < MAX_TILESETS; i++)
 	{
 		App->tex->UnLoad(data.tilesets[i].texture);
 	}
@@ -240,7 +240,7 @@ bool j1Map::CleanUp()
 bool j1Map::Load(std::string modules[4])
 {
 	bool ret = true;
-	for(size_t i = 0; i < 4; i++) {
+	for(int i = 0; i < 4; i++) {
 		std::string tmp = folder;
 		tmp.append(modules[i].c_str());
 
@@ -263,7 +263,7 @@ bool j1Map::Load(std::string modules[4])
 			// Load all tilesets info ----------------------------------------------
 			pugi::xml_node tileset = map_file.child("map").child("tileset");
 
-			for(size_t t = 0; t < MAX_TILESETS && ret; t++)
+			for(int t = 0; t < MAX_TILESETS && ret; t++)
 			{
 				TileSet* set = new TileSet();
 				if (ret == true)
@@ -289,7 +289,7 @@ bool j1Map::Load(std::string modules[4])
 
 		// Load layer info ----------------------------------------------
 		pugi::xml_node layer = map_file.child("map").child("layer");
-		for(size_t l = 0; l < MAX_LAYERS && ret; l++)
+		for(int l = 0; l < MAX_LAYERS && ret; l++)
 		{
 			ret = LoadLayer(layer, &data.layers[l], i);
 			layer = layer.next_sibling("layer");
@@ -314,7 +314,7 @@ bool j1Map::Load(std::string modules[4])
 			LOG("tile_width: %d tile_height: %d", data.tile_width, data.tile_height);
 
 			if (i == 0) {
-				for(size_t t = 0; t < MAX_TILESETS; t++)
+				for(int t = 0; t < MAX_TILESETS; t++)
 				{
 					LOG("Tileset ----");
 					LOG("name: %s firstgid: %d", data.tilesets[t].name.c_str(), data.tilesets[t].firstgid);
@@ -323,7 +323,7 @@ bool j1Map::Load(std::string modules[4])
 				}
 			}
 
-			for(size_t l = 0; l < MAX_LAYERS; l++)
+			for(int l = 0; l < MAX_LAYERS; l++)
 			{
 				LOG("Layer ----");
 				LOG("name: %s", data.layers[l].name.c_str());
@@ -644,7 +644,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 				else if (object_type == "Bighorner") App->entities->CreateEntity(NO_FACTION, BIGHORNER, position.x, position.y);
 				else if (object_type == "SpawnPoint")
 				{
-					for(size_t i = 0; i < 15; i++)
+					for(int i = 0; i < 15; i++)
 					{
 						spawnPoint[i].x = object_node.attribute("x").as_float() + offset[module_number].x;
 						spawnPoint[i].y = object_node.attribute("y").as_float() + offset[module_number].y;
@@ -720,9 +720,9 @@ bool j1Map::CreateWalkabilityMap() const
 
 	MapLayer* layer = (MapLayer*)&data.layers[MAX_LAYERS -1];
 
-	for(size_t y = 0; y < data.height; ++y)
+	for(int y = 0; y < data.height; ++y)
 	{
-		for(size_t x = 0; x < data.width; ++x)
+		for(int x = 0; x < data.width; ++x)
 		{
 			int i = (y * layer->width) + x;
 

@@ -118,9 +118,9 @@ bool Animal::LoadDataFromReference() {
 	Animal* reference_animal = (Animal*)reference_entity;
 
 	//load animations
-	for(size_t i = 0; i < NO_STATE; i++)
+	for(int i = 0; i < NO_STATE; i++)
 	{
-		for(size_t j = 0; j < NO_DIRECTION; j++)
+		for(int j = 0; j < NO_DIRECTION; j++)
 		{
 			animations[i][j] = reference_animal->animations[i][j];
 		}

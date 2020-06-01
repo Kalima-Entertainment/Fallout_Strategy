@@ -126,7 +126,7 @@ bool j1Audio::CleanUp()
 		Mix_FreeMusic(music);
 	}
 
-	for(size_t i = 0; i < fx.size(); i++) {
+	for(int i = 0; i < fx.size(); i++) {
 		Mix_FreeChunk(fx[i]);
 	}
 

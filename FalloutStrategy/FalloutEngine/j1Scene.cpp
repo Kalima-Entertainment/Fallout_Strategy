@@ -88,7 +88,7 @@ bool j1Scene::Start()
 
 	App->pathfinding->SetMap();
 
-	for(size_t i = 0; i < 4; i++)
+	for(int i = 0; i < 4; i++)
 	{
 		int type = rand() % 4;
 		if (type == 0)
@@ -305,7 +305,7 @@ void j1Scene::RectangleSelection()
 
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
 		std::vector<DynamicEntity*> selected_entities;
-		for(size_t i = 0; i < App->entities->entities.size(); i++)
+		for(int i = 0; i < App->entities->entities.size(); i++)
 		{
 			if (App->entities->entities[i]->info.IsSelected && App->entities->entities[i]->is_dynamic) {
 				selected_entities.push_back((DynamicEntity*)App->entities->entities[i]);
@@ -316,7 +316,7 @@ void j1Scene::RectangleSelection()
 }
 
 void j1Scene::CheckWinner() {
-	for(size_t i = 0; i < 4; i++)
+	for(int i = 0; i < 4; i++)
 	{
 		if (!players[i]->defeated) {
 			if ((players[i]->base == nullptr) && (players[i]->laboratory == nullptr) && (players[i]->barrack[0] == nullptr) && (players[i]->barrack[1] == nullptr)) {
@@ -375,7 +375,7 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 
 	//Instantly win the game
 	if (command_beginning == "win") {
-		for(size_t i = 0; i < 4; i++)
+		for(int i = 0; i < 4; i++)
 		{
 			if (players[i]->faction != App->player->faction) {
 				if (players[i]->base != nullptr)

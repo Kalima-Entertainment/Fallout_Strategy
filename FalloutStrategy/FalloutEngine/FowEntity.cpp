@@ -73,7 +73,7 @@ void FoWEntity::ApplyMaskToTiles(std::vector<iPoint>tilesAffected)
 	unsigned short* precMask = &App->fowManager->circleMasks[boundingBoxRadius - fow_MIN_CIRCLE_RADIUS][0];
 
 	//You have to complete the code inside this for
-	for(size_t i = 0; i < tilesAffected.size(); i++)
+	for(int i = 0; i < tilesAffected.size(); i++)
 	{
 		//You have to request the fog & shroud values of each affected tile. Hint:(You can take both with a single function call)
 		FoWDataStruct* tileValue = App->fowManager->GetFoWTileState(tilesAffected[i]);

@@ -31,9 +31,9 @@ bool j1PathFinding::CleanUp()
 // Sets up the walkability map
 void j1PathFinding::SetMap()
 {
-	for(size_t y = 0; y < 150; y++)
+	for(int y = 0; y < 150; y++)
 	{
-		for(size_t x = 0; x < 150; x++)
+		for(int x = 0; x < 150; x++)
 		{
 			map[x][y] = true;
 		}
@@ -59,7 +59,7 @@ void j1PathFinding::SetTileAsUnwalkable(int tile_x, int tile_y) {
 
 iPoint j1PathFinding::FindWalkableAdjacentTile(iPoint point) const {
 	iPoint tile;
-	
+
 	//north
 	tile = { point.x, point.y - 1 };
 	if (App->pathfinding->IsWalkable(tile))
@@ -69,7 +69,7 @@ iPoint j1PathFinding::FindWalkableAdjacentTile(iPoint point) const {
 	tile = { point.x, point.y + 1 };
 	if (App->pathfinding->IsWalkable(tile))
 		return tile;
-	
+
 	// east
 	tile = { point.x + 1, point.y };
 	if (App->pathfinding->IsWalkable(tile))
@@ -85,7 +85,7 @@ iPoint j1PathFinding::FindWalkableAdjacentTile(iPoint point) const {
 
 iPoint j1PathFinding::FindNearestWalkableTile(iPoint origin, iPoint destination) const
 {
-	if (!IsWalkable(origin)) 
+	if (!IsWalkable(origin))
 		origin = FindWalkableAdjacentTile(origin);
 
 	if (!IsWalkable(destination)) {
@@ -132,7 +132,7 @@ iPoint j1PathFinding::FindNearestWalkableTile(iPoint origin, iPoint destination)
 std::vector<iPoint> j1PathFinding::GetLastPath() const
 {
 	std::vector<iPoint> vector;
-	for(size_t i = 0; i < last_path.size(); i++)
+	for(int i = 0; i < last_path.size(); i++)
 	{
 		vector.push_back(last_path[i]);
 	}
@@ -149,9 +149,9 @@ std::vector<iPoint> j1PathFinding::CreateNodeMap() {
 	std::vector<iPoint> map;
 	int distance = 150 / node_map_divisions;
 
-	for(size_t y = distance; y < 150; y += distance)
+	for(int y = distance; y < 150; y += distance)
 	{
-		for(size_t x = distance; x < 150; x += distance)
+		for(int x = distance; x < 150; x += distance)
 		{
 			map.push_back(iPoint(x, y));
 		}
@@ -173,14 +173,14 @@ std::vector<iPoint> j1PathFinding::CreateNodePath(iPoint origin, iPoint destinat
 	destination_node = node_map[0];
 
 	//closest origin node
-	for(size_t i = 0; i < node_map.size(); i++)
+	for(int i = 0; i < node_map.size(); i++)
 	{
 		if (node_map[i].DistanceTo(origin) < origin_node.DistanceTo(origin))
 			origin_node = node_map[i];
 	}
 
 	//closest destination node
-	for(size_t i = 0; i < node_map.size(); i++)
+	for(int i = 0; i < node_map.size(); i++)
 	{
 		if (node_map[i].DistanceTo(destination) < destination_node.DistanceTo(destination))
 			destination_node = node_map[i];
@@ -212,7 +212,7 @@ std::vector<iPoint> j1PathFinding::CreateNodePath(iPoint origin, iPoint destinat
 		path.push_back(best_node);
 	}
 
-	//flip final path 
+	//flip final path
 	std::reverse(path.begin(), path.end());
 
 	return path;
@@ -358,7 +358,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 			last_path.push_back(path_item->pos);
 			std::reverse(last_path.begin(), last_path.end());
-			
+
 			path_timer.Start();
 			return last_path.size();
 		}
@@ -374,14 +374,14 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 		PathList childs;
 		close.list.back().FindWalkableAdjacents(childs);
-			
+
 		std::list<PathNode>::iterator child_node = childs.list.begin();
 		while (child_node != childs.list.end())
 		{
-			if (!close.Find((*child_node).pos) != NULL)	
+			if (!close.Find((*child_node).pos) != NULL)
 			{
-				(*child_node).CalculateF(destination); 
-				if (open.Find((*child_node).pos) != NULL) 
+				(*child_node).CalculateF(destination);
+				if (open.Find((*child_node).pos) != NULL)
 				{
 					if ((*open.Find((*child_node).pos)).g > (*child_node).g)
 					{
@@ -404,7 +404,7 @@ iPoint j1PathFinding::ExpandTile(iPoint target_tile) const {
 
 	iPoint pivot = target_tile;
 	int max = 1;
-	
+
 	while (!IsWalkable(pivot) && (max < 50))
 	{
 		for(int y = -max; y <= max; y++)
@@ -414,7 +414,7 @@ iPoint j1PathFinding::ExpandTile(iPoint target_tile) const {
 				pivot.x = target_tile.x + x;
 				pivot.y = target_tile.y + y;
 
-				if (IsWalkable(pivot)) 
+				if (IsWalkable(pivot))
 					return pivot;
 			}
 		}
