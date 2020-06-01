@@ -19,6 +19,7 @@ UI_Label::~UI_Label()
 	texture = nullptr;
 	App->tex->UnLoad(text_texture);
 	text_texture = nullptr;
+	observer = nullptr;
 }
 
 bool UI_Label::Update(float dt)

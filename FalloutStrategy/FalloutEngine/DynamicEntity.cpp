@@ -135,7 +135,6 @@ bool DynamicEntity::PostUpdate() {
 	//Health Bar
 	background_health_bar = { (int)(position.x - HALF_TILE * 0.75f),(int)(position.y - TILE_SIZE * 1.25f), 50, 4 };
 	foreground_health_bar = { (int)(position.x - HALF_TILE * 0.75f),(int)(position.y - TILE_SIZE * 1.25f), (int)(current_health / max_health * 50), 4 };
-
 	if (foreground_health_bar.w < 0) {
 		foreground_health_bar.w = 0;
 	}
@@ -153,7 +152,7 @@ bool DynamicEntity::PostUpdate() {
 			if (current_health > 0) {
 				App->render->DrawQuad(background_health_bar, 75, 75, 75, 255);
 				App->render->DrawQuad(foreground_health_bar, 0, 255, 0, 255);
-				App->render->DrawQuad(frame_quad, 155, 155, 155, 185, false);		
+				App->render->DrawQuad(frame_quad, 200, 200, 200, 185, false);		
 			}	
 		}
 		else if ((this->faction == NO_FACTION) || (App->render->debug)) {
@@ -167,7 +166,7 @@ bool DynamicEntity::PostUpdate() {
 				if (current_health > 0) {
 				App->render->DrawQuad(background_health_bar, 75, 75, 75, 255);
 				App->render->DrawQuad(foreground_health_bar, 0, 255, 0, 255);
-				App->render->DrawQuad(frame_quad, 155, 155, 155, 185, false);
+				App->render->DrawQuad(frame_quad, 200, 200, 200, 185, false);
 				}
 			}
 		}
@@ -195,7 +194,7 @@ void DynamicEntity::Move(float dt) {
 			if (next_tile != target_tile)
 			{
 				//current_tile = path_to_target.front();
-				if (path_to_target.size() > 1)
+				if (path_to_target.size() > 0)
 				{
 					next_tile = path_to_target[1];
 					
@@ -323,8 +322,11 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 		target_tile = node_path.back();
 	}
 	else {
-		if (App->pathfinding->CreatePath(current_tile, destination) == -2)
+		if (App->pathfinding->CreatePath(current_tile, destination) == -2) {
 			LOG("No");
+			if (!App->pathfinding->IsWalkable(destination))
+				LOG("Unwalkable destination");
+		}
 	}
 	
 	path_to_target.clear();
