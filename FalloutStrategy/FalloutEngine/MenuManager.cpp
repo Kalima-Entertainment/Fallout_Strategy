@@ -44,40 +44,40 @@ MenuManager::MenuManager()
 	melee_label = nullptr;
 	ranged_label = nullptr;
 
-	for (size_t i = 0; i <= 11; i++) {
+	for(int i = 0; i <= 11; i++) {
 		main_menu[i] = nullptr;
 	}
-	for (size_t i = 0; i <= 23; i++) {
+	for(int i = 0; i <= 23; i++) {
 		settings_menu[i] = nullptr;
 	}
-	for (size_t i = 0; i <= 5; i++) {
+	for(int i = 0; i <= 5; i++) {
 		credits_menu[i] = nullptr;
 	}
-	for (size_t i = 0; i <= 9; i++) {
+	for(int i = 0; i <= 9; i++) {
 		collaborators[i] = nullptr;
 	}
-	for (size_t i = 0; i <= 10; i++) {
+	for(int i = 0; i <= 10; i++) {
 		select_faction_menu[i] = nullptr;
 	}
-	for (size_t i = 0; i <= 4; i++) {
+	for(int i = 0; i <= 4; i++) {
 		select_faction_photos[i] = nullptr;
 	}
-	for (size_t i = 0; i <= 7; i++) {
+	for(int i = 0; i <= 7; i++) {
 		pause_menu[i] = nullptr;
 	}
-	for (size_t i = 0; i <= 4; i++) {
+	for(int i = 0; i <= 4; i++) {
 		gui_ingame[i] = nullptr;
 	}
-	for (size_t i = 0; i <= 8; i++) {
+	for(int i = 0; i <= 8; i++) {
 		tutorial[i] = nullptr;
 	}
-	for (size_t i = 0; i <= 6; i++) {
+	for(int i = 0; i <= 6; i++) {
 		how_to_play[i] = nullptr;
 	}
-	for (size_t i = 0; i <= 3; i++) {
+	for(int i = 0; i <= 3; i++) {
 		resources[i] = nullptr;
 	}
-	for (size_t i = 0; i <= 12; i++) {
+	for(int i = 0; i <= 12; i++) {
 		quest[i] = nullptr;
 	}
 
@@ -96,53 +96,53 @@ MenuManager::MenuManager()
 
 	how_to_play_counter = 0;
 
-	for (size_t i = 0; i <= 14; i++) {
+	for(int i = 0; i <= 14; i++) {
 		brotherhood_base[i] = nullptr;
 	}
-	for (size_t i = 0; i <= 21; i++) {
+	for(int i = 0; i <= 21; i++) {
 		brotherhood_barrack[i] = nullptr;
 	}
-	for (size_t i = 0; i <= 19; i++) {
+	for(int i = 0; i <= 19; i++) {
 		brotherhood_lab[i] = nullptr;
 	}
 
 
-	for (size_t i = 0; i <= 14; i++) {
+	for(int i = 0; i <= 14; i++) {
 		ghoul_base[i] = nullptr;
 	}
-	for (size_t i = 0; i <= 21; i++) {
+	for(int i = 0; i <= 21; i++) {
 		ghoul_barrack[i] = nullptr;
 	}
-	for (size_t i = 0; i <= 19; i++) {
+	for(int i = 0; i <= 19; i++) {
 		ghoul_lab[i] = nullptr;
 	}
 
 
-	for (size_t i = 0; i <= 14; i++) {
+	for(int i = 0; i <= 14; i++) {
 		vault_base[i] = nullptr;
 	}
-	for (size_t i = 0; i <= 21; i++) {
+	for(int i = 0; i <= 21; i++) {
 		vault_barrack[i] = nullptr;
 	}
-	for (size_t i = 0; i <= 19; i++) {
+	for(int i = 0; i <= 19; i++) {
 		vault_lab[i] = nullptr;
 	}
 
 
-	for (size_t i = 0; i <= 14; i++) {
+	for(int i = 0; i <= 14; i++) {
 		supermutant_base[i] = nullptr;
 	}
-	for (size_t i = 0; i <= 21; i++) {
+	for(int i = 0; i <= 21; i++) {
 		supermutant_barrack[i] = nullptr;
 	}
-	for (size_t i = 0; i <= 19; i++) {
+	for(int i = 0; i <= 19; i++) {
 		supermutant_lab[i] = nullptr;
 	}
 
-	for (size_t i = 0; i <= 5; i++) {
+	for(int i = 0; i <= 5; i++) {
 		win_scene[i] = nullptr;
 	}
-	for (size_t i = 0; i <= 11; i++) {
+	for(int i = 0; i <= 11; i++) {
 		dialogs[i] = nullptr;
 	}
 

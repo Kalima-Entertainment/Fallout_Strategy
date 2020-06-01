@@ -48,10 +48,10 @@ j1Player::~j1Player() {
 	selected_entity = nullptr;
 	last_selected_entity = nullptr;
 
-	for (size_t t = 0; t < troops.size(); t++) { troops[t] = nullptr; }
+	for(int t = 0; t < troops.size(); t++) { troops[t] = nullptr; }
 	troops.clear();
 
-	for (size_t g = 0; g < gatherers_vector.size(); g++) { gatherers_vector[g] = nullptr; }
+	for(int g = 0; g < gatherers_vector.size(); g++) { gatherers_vector[g] = nullptr; }
 	gatherers_vector.clear();
 
 	base = barrack[0] = barrack[1] = laboratory = nullptr;
@@ -326,7 +326,7 @@ bool j1Player::Update(float dt) {
 	}
 	
 	// -- Request GroupMovement
-	for (size_t i = 0; i < App->entities->entities.size(); i++)
+	for(int i = 0; i < App->entities->entities.size(); i++)
 	{
 		//Just our dynamic troops must be checked
 		if (App->entities->entities[i]->is_dynamic && App->entities->entities[i]->faction == this->faction) {
@@ -557,7 +557,7 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 			if (command_parts[1] == "ranged")
 				App->entities->CreateEntity(static_entity->faction, RANGED, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
 			if (command_parts[1] == "army")
-				for(size_t i = 0; i < 10; i++) {
+				for(int i = 0; i < 10; i++) {
 					App->entities->CreateEntity(static_entity->faction, MELEE, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
 					App->entities->CreateEntity(static_entity->faction, RANGED, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
 				}

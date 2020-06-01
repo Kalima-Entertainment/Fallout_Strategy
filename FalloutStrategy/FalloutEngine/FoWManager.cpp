@@ -95,7 +95,7 @@ bool FoWManager::PreUpdate()
 	bool ret = true;
 
 	//deletes all the entities that request to do so
-	for (size_t i = 0; i < fowEntities.size(); i++)
+	for(int i = 0; i < fowEntities.size(); i++)
 	{
 		if (fowEntities[i]->deleteEntity)
 		{
@@ -192,7 +192,7 @@ void FoWManager::ResetFoWMap()
 	{
 		memset(fowMap, NULL, width * height);
 
-		for (size_t i = 0; i < width * height; i++)
+		for(int i = 0; i < width * height; i++)
 		{
 			fowMap[i].tileShroudBits = fow_ALL;
 			fowMap[i].tileFogBits = fow_ALL;
@@ -253,19 +253,19 @@ void FoWManager::UpdateFoWMap()
 {
 	if (fowMap != nullptr)
 	{
-		for(size_t i = 0; i < width * height; i++)
+		for(int i = 0; i < width * height; i++)
 		{
 			fowMap[i].tileFogBits = fow_ALL;
 		}
 
-		for(size_t i = 0; i < fowEntities.size(); i++)
+		for(int i = 0; i < fowEntities.size(); i++)
 		{
 			fowEntities[i]->Update();
 		}
 
 		if (!debugMode)
 		{
-			for(size_t i = 0; i < fowEntities.size(); i++)
+			for(int i = 0; i < fowEntities.size(); i++)
 			{
 				if (CheckTileVisibility(fowEntities[i]->GetPos()))
 				{
@@ -276,7 +276,7 @@ void FoWManager::UpdateFoWMap()
 		}
 		else
 		{
-			for(size_t i = 0; i < fowEntities.size(); i++)
+			for(int i = 0; i < fowEntities.size(); i++)
 			{
 				fowEntities[i]->isVisible = true;
 			}

@@ -65,7 +65,7 @@ bool DialogManager::PostUpdate() {
 bool DialogManager::CleanUp() {
 	bool ret = true;
 	if (App->quitGame) {
-		for (size_t i = 0; i < dialogs.size(); i++)
+		for(int i = 0; i < dialogs.size(); i++)
 		{
 			delete dialogs[i];
 			dialogs[i] = nullptr;
@@ -134,7 +134,7 @@ void DialogManager::Callback(UI_element* button) {
 			if (option->text != " ") {
 				//LOG("Option A");
 				label->SetLabelText(dialogs[dialog_level]->response[0].c_str(), "StackedPixelSmall");
-				for(size_t i = 1; i < 4; i++)
+				for(int i = 1; i < 4; i++)
 				{
 					label = (UI_Label*)App->menu_manager->dialogs[i];
 					label->SetLabelText(" ", "StackedPixelSmall");
@@ -147,7 +147,7 @@ void DialogManager::Callback(UI_element* button) {
 			if (option->text != " ") {
 				//LOG("Option B");
 				label->SetLabelText(dialogs[dialog_level]->response[1].c_str(), "StackedPixelSmall");
-				for(size_t i = 1; i < 4; i++)
+				for(int i = 1; i < 4; i++)
 				{
 					label = (UI_Label*)App->menu_manager->dialogs[i];
 					label->SetLabelText(" ", "StackedPixelSmall");
@@ -160,7 +160,7 @@ void DialogManager::Callback(UI_element* button) {
 			if (option->text != " ") {
 				//LOG("Option C");
 				label->SetLabelText(dialogs[dialog_level]->response[2].c_str(), "StackedPixelSmall");
-				for(size_t i = 1; i < 4; i++)
+				for(int i = 1; i < 4; i++)
 				{
 					label = (UI_Label*)App->menu_manager->dialogs[i];
 					label->SetLabelText(" ", "StackedPixelSmall");
@@ -173,7 +173,7 @@ void DialogManager::Callback(UI_element* button) {
 			label = (UI_Label*)App->menu_manager->dialogs[0];
 			label->SetLabelText(dialogs[dialog_level]->statement.c_str(), "StackedPixelSmall");
 
-			for(size_t i = 1; i < 4; i++)
+			for(int i = 1; i < 4; i++)
 			{
 				label = (UI_Label*)App->menu_manager->dialogs[i];
 				label->SetLabelText(dialogs[dialog_level]->options[i-1].c_str(), "StackedPixelSmall");

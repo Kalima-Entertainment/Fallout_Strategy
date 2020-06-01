@@ -87,7 +87,7 @@ public:
 		if (num_elements > 0)
 		{
 			num_elements--;
-			for(size_t i = 0; i < num_elements; i++)
+			for(int i = 0; i < num_elements; i++)
 			{
 				data[i] = data[i+1];
 			}

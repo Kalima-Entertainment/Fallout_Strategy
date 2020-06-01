@@ -99,7 +99,7 @@ bool j1Console::PostUpdate() {
 		App->render->DrawQuad(command_background, input_box_color.r, input_box_color.g, input_box_color.b, input_box_color.a);
 		App->render->DrawQuad(command_background, 255, 255, 255, 255, false);
 		//log text
-		for(size_t i = 0; i < on_screen_log.size(); i++)
+		for(int i = 0; i < on_screen_log.size(); i++)
 		{
 			on_screen_log[i]->Draw();
 		}
@@ -147,7 +147,7 @@ void j1Console::CreateInterface() {
 	int spacing = 6;
 	int j = 1;
 
-	for(size_t i = log_record.size() -1; i >= 0; i--)
+	for(int i = log_record.size() -1; i >= 0; i--)
 	{
 		on_screen_log.push_back((UI_Label*)App->gui->CreateLabel(0 + x_margin, log_box.h - (j * (font_size + spacing)) -spacing, Label, log_record[i].c_str(), NULL, this, NULL, "OpenSans-Light"));
 		j++;
@@ -158,7 +158,7 @@ void j1Console::CreateInterface() {
 
 void j1Console::DestroyInterface() {
 
-	for(size_t i = 0; i < on_screen_log.size(); i++)
+	for(int i = 0; i < on_screen_log.size(); i++)
 	{
 		App->gui->Delete_Element(on_screen_log[i]);
 		on_screen_log[i] = nullptr;
@@ -180,7 +180,7 @@ void j1Console::CreateCommand(std::string name, std::string description, j1Modul
 	command.callback = callback;
 
 	//check the command doesn't already exist 
-	for(size_t i = 0; i < command_vector.size(); i++)
+	for(int i = 0; i < command_vector.size(); i++)
 	{
 		if (command_vector[i].name == name)
 			return;
@@ -197,7 +197,7 @@ void j1Console::ProcessCommand(std::string command_text) {
 	//break the command in parts
 	std::vector<std::string> command_parts;
 	int cut_beginning = 0;
-	for(size_t i = 0; i < command_text.size(); i++)
+	for(int i = 0; i < command_text.size(); i++)
 	{
 		if (command_text[i] == ' ') {
 			command_parts.push_back(command_text.substr(cut_beginning, i-cut_beginning));
@@ -218,7 +218,7 @@ void j1Console::ProcessCommand(std::string command_text) {
 }
 
 j1Module* j1Console::FindModule(std::string command_beginning) {
-	for(size_t i = 0; i < command_vector.size(); i++)
+	for(int i = 0; i < command_vector.size(); i++)
 	{
 		if (command_vector[i].name == command_beginning)
 			return command_vector[i].callback;
@@ -230,7 +230,7 @@ void j1Console::OnCommand(std::vector<std::string> command_parts) {
 	std::string command_beginning = command_parts[0];
 	
 	if (command_beginning == "help") {
-		for(size_t i = 0; i < command_vector.size(); i++)
+		for(int i = 0; i < command_vector.size(); i++)
 		{
 			std::string command_and_description = command_vector[i].name;
 			command_and_description.append(": ").append(command_vector[i].description);
@@ -257,7 +257,7 @@ void j1Console::OnCommand(std::vector<std::string> command_parts) {
 }
 
 std::string ToLower(std::string string) {
-	for(size_t i = 0; i < string.size(); i++)
+	for(int i = 0; i < string.size(); i++)
 	{
 		string[i] = tolower(string[i]);
 	}

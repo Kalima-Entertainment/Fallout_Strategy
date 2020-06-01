@@ -39,10 +39,10 @@ AI_Player::AI_Player(Faction g_faction) : GenericPlayer(), is_attacking(false), 
 
 AI_Player::~AI_Player() 
 {
-	for (size_t t = 0; t < troops.size(); t++) { troops[t] = nullptr;}
+	for(int t = 0; t < troops.size(); t++) { troops[t] = nullptr;}
 	troops.clear();
 
-	for (size_t g = 0; g < gatherers_vector.size(); g++) { gatherers_vector[g] = nullptr; }
+	for(int g = 0; g < gatherers_vector.size(); g++) { gatherers_vector[g] = nullptr; }
 	gatherers_vector.clear();
 
 	target_player = nullptr;
@@ -56,7 +56,7 @@ bool AI_Player::Update(float dt) {
 	// Gather -----------------------------------------------------
 
 	if (!gatherers_commanded) {
-		for (size_t i = 0; i < gatherers_vector.size(); i++)
+		for(int i = 0; i < gatherers_vector.size(); i++)
 		{
 			//authomatic gathering
 			if (gatherers_vector[i]->GetResourceBuilding() == nullptr) {
@@ -140,7 +140,7 @@ bool AI_Player::Update(float dt) {
 				target_building_position = target_building->current_tile;
 		}
 
-		for (size_t i = 0; i < troops.size(); i++)
+		for(int i = 0; i < troops.size(); i++)
 		{
 			if(troops[i]->target_building == nullptr)
 			 troops[i]->target_building = target_building;
@@ -170,7 +170,7 @@ DynamicEntity* AI_Player::GetClosestDynamicEntity() {
 	DynamicEntity* target_entity = nullptr;
 	int distance = 1000000;
 
-	for (size_t i = 0; i < target_player->troops.size(); i++)
+	for(int i = 0; i < target_player->troops.size(); i++)
 	{
 		if ((target_player->troops[i]->current_tile.DistanceManhattan(base->current_tile) < distance)&&(target_player->troops[i])) {
 			target_entity = target_player->troops[i];
@@ -198,7 +198,7 @@ StaticEntity* AI_Player::ChooseTargetBuilding() {
 
 void AI_Player::GatherFood(ResourceBuilding* resource_spot) {
 
-	for(size_t i = 0; i < gatherers; i++)
+	for(int i = 0; i < gatherers; i++)
 	{
 		if ((gatherers_vector[i]->GetResourceBuilding() == nullptr)||(gatherers_vector[i]->GetResourceCollected() == 0)) {
 			gatherers_vector[i]->AssignResourceBuilding(resource_spot);
