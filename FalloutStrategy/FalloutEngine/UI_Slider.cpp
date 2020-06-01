@@ -53,6 +53,7 @@ UI_Slider::UI_Slider(int x, int y, UI_Type type, SDL_Rect scrollbar, SDL_Rect bu
 
 UI_Slider::~UI_Slider() {
 	texture = nullptr;
+	observer = nullptr;
 }
 
 bool UI_Slider::Update(float dt)

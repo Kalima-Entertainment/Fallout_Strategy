@@ -224,14 +224,14 @@ iPoint j1Minimap::ScreenToMinimapToWorld(int x, int y) {
 iPoint j1Minimap::MapToMinimap(int x, int y) {
 	iPoint minimap_position;
 	minimap_position.x = minimap_x_center + (x - y) * HALF_TILE * scale;
-	minimap_position.y = position.y + (x + y) * HALF_TILE * 0.5f * scale;
+	minimap_position.y = position.y + (x + y) * TILE_QUARTER * scale;
 	return minimap_position;
 }
 
 iPoint j1Minimap::MinimapToMap(int x, int y) {
 	iPoint map_position;
 	map_position.x = (x - minimap_x_center) / (HALF_TILE * scale) + y;
-	map_position.y = (y - position.y) / (HALF_TILE * 0.5f * scale) - x;
+	map_position.y = (y - position.y) / (TILE_QUARTER * scale) - x;
 	return map_position;
 }
 

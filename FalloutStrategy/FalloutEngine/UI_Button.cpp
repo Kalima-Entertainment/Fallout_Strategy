@@ -50,6 +50,7 @@ UI_Button::UI_Button(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, 
 
 UI_Button::~UI_Button() {
 	texture = nullptr;
+	observer = nullptr;
 }
 
 bool UI_Button::Draw()

@@ -14,6 +14,7 @@
 
 #define TILE_SIZE 64
 #define HALF_TILE 32
+#define TILE_QUARTER 16
 
 enum EntityType {
 	MELEE,

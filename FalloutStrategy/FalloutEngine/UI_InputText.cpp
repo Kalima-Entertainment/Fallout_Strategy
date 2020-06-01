@@ -27,7 +27,9 @@ InputText::InputText(int x, int y, UI_Type type, std::string text_input, UI_elem
 
 }
 
-InputText::~InputText() {}
+InputText::~InputText() {
+	observer = nullptr;
+}
 
 
 bool InputText::Update(float dt) {
