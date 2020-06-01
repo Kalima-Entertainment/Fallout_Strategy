@@ -3,7 +3,7 @@
 #include "j1App.h"
 #include "j1Textures.h"
 #include "j1Fonts.h"
-
+#include "j1Render.h"
 #include "SDL\include\SDL.h"
 #include "SDL_TTF\include\SDL_ttf.h"
 #pragma comment( lib, "SDL_ttf/libx86/SDL2_ttf.lib" )
@@ -95,8 +95,11 @@ SDL_Texture* j1Fonts::Print(const char* text, SDL_Color color, std::string font_
 
 	for(size_t i = 0; i < fonts.size(); i++)
 	{
-		if (fonts[i].name == font_name)
+		if (fonts[i].name == font_name) {
 			font = fonts[i].font;
+		}
+			
+		
 	}
 
 	SDL_Surface* surface = TTF_RenderText_Blended((font) ? font : default, text, color);
@@ -107,7 +110,7 @@ SDL_Texture* j1Fonts::Print(const char* text, SDL_Color color, std::string font_
 	}
 	else
 	{
-		ret = App->tex->LoadSurface(surface);
+		ret = SDL_CreateTextureFromSurface(App->render->renderer, surface);
 		SDL_FreeSurface(surface);
 	}
 
