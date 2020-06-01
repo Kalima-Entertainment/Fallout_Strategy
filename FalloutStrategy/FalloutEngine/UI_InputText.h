@@ -26,6 +26,6 @@ public:
 	SDL_Texture* texture;
 	SDL_Rect r;
 
-	UI_Label* labelInputText;
+	
 
 };

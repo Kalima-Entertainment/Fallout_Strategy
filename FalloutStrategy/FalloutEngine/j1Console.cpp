@@ -8,6 +8,7 @@
 #include "j1EntityManager.h"
 #include "j1Gui.h"
 #include "UI_InputText.h"
+#include "UI_Label.h"
 #include "brofiler/Brofiler/Brofiler.h"
 #include "j1Player.h"
 
@@ -53,7 +54,7 @@ bool j1Console::Start() {
 
 	CreateCommand("help", "list all console commands", this);
 	CreateCommand("fps", "Change FPS cap", this);
-
+	
 	return ret;
 }
 
@@ -103,6 +104,7 @@ bool j1Console::PostUpdate() {
 		{
 			on_screen_log[i]->Draw();
 		}
+		
 		input_box->Update(last_dt);
 		input_box->Draw();
 	}
@@ -125,6 +127,7 @@ void j1Console::AddLogText(std::string incoming_text) {
 	log_record.push_back(incoming_text);
 
 	if (isVisible) {
+
 		DestroyInterface();
 		if (log_record.size() > MAX_LOG_RECORD)
 		{
@@ -142,6 +145,7 @@ void j1Console::AddLogText(std::string incoming_text) {
 }
 
 void j1Console::CreateInterface() {
+	
 	int font_size = 14;
 	int x_margin = 14;
 	int spacing = 6;
@@ -149,11 +153,14 @@ void j1Console::CreateInterface() {
 
 	for(int i = log_record.size() -1; i >= 0; i--)
 	{
-		on_screen_log.push_back((UI_Label*)App->gui->CreateLabel(0 + x_margin, log_box.h - (j * (font_size + spacing)) -spacing, Label, log_record[i].c_str(), NULL, this, NULL, "OpenSans-Light"));
+		on_screen_log.push_back((UI_Label*)App->gui->CreateLabel(x_margin, log_box.h - (j * (font_size + spacing)) -spacing, Label, log_record[i].c_str(), NULL, this, NULL, "OpenSans-Light"));
 		j++;
 	}
 
-	input_box = (InputText*)App->gui->CreateInputBox(x_margin, log_box.h , InputBox, " ", NULL, this, "StackedPixelSmall");
+	input_box = (InputText*)App->gui->CreateInputBox(x_margin, log_box.h + 5, InputBox, "Press Enter", NULL, this, "StackedPixelMedium");
+
+	SDL_StartTextInput();
+
 }
 
 void j1Console::DestroyInterface() {

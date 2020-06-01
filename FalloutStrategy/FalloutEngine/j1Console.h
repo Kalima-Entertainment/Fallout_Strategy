@@ -10,6 +10,7 @@
 class UI_Label;
 struct SDL_Rect;
 class InputText;
+class UI_Label;
 
 struct Command {
 	std::string name;
@@ -54,6 +55,8 @@ public:
 	SDL_Rect command_background;
 	bool CleanUpStarted;
 	float last_dt;
+
+	UI_Label* labelInputText;
 
 private:
 	SDL_Color log_box_color;

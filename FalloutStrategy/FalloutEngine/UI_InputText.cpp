@@ -21,7 +21,6 @@ InputText::InputText(int x, int y, UI_Type type, std::string text_input, UI_elem
 	this->pos.y = y;
 	H = 0;
 	W = 0;
-	labelInputText = (UI_Label*)App->gui->CreateLabel(x, y, Label, text_input, NULL, NULL, NULL, font);
 
 	font_text = font;
 
@@ -49,8 +48,8 @@ bool InputText::Update(float dt) {
 				text.pop_back();
 				
 				if(text.size()>0){
-				App->font->CalcSize(text.data(), r.w, r.h);
-				texture = App->font->Print(text.data(), {255, 255, 255, 255}, font_text);
+					App->font->CalcSize(text.data(), r.w, r.h);
+					texture = App->font->Print(text.data(), {255, 255, 255, 255}, font_text);
 				}
 		
 		}
@@ -73,9 +72,9 @@ bool InputText::Update(float dt) {
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN || App->console->isVisible) {
 		
 		InputText_Actived = !InputText_Actived;
+
 		if (InputText_Actived) {
-			labelInputText->SetLabelText("", font_text);
-			SDL_StartTextInput();
+			
 		}
 		
 	}
