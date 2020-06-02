@@ -75,7 +75,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(player);
 	AddModule(pathfinding);
-	AddModule(main_menu);
 	//AddModule(entities); Changed after scene because particles drawn behind map
 	AddModule(font);
 	AddModule(scene);
@@ -89,6 +88,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(gui);
 	AddModule(minimap);
 	AddModule(console);
+	AddModule(main_menu);
 	AddModule(logo_scene);
 	AddModule(transition);	
 	AddModule(hud);

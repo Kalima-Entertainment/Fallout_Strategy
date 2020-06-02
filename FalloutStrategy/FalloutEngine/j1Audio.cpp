@@ -20,7 +20,7 @@ j1Audio::j1Audio() : j1Module()
 
 // Destructor
 j1Audio::~j1Audio(){
-delete music;
+
 }
 
 // Called before render is available

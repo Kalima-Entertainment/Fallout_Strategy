@@ -1294,5 +1294,5 @@ void MenuManager::DestroyFaction(Menu menu, Faction faction, EntityType type) {
 		break;
 	}
 
-	current_menu = last_menu;
+	//current_menu = last_menu;
 }

@@ -67,15 +67,6 @@
    </animation>
   </tile>
  </tileset>
- <tileset firstgid="61" name="StartGameTex" tilewidth="561" tileheight="30" tilecount="2" columns="1">
-  <image source="StartGameTex.png" trans="ff00ff" width="561" height="60"/>
-  <tile id="0">
-   <animation>
-    <frame tileid="0" duration="500"/>
-    <frame tileid="1" duration="500"/>
-   </animation>
-  </tile>
- </tileset>
  <layer name="Capa de Patrones 1" width="2" height="2">
   <data encoding="csv">
 1,0,

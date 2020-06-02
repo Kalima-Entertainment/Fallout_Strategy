@@ -263,7 +263,6 @@ bool UI_Button::Update(float dt)
 				if ((App->player->selected_entity) && (!App->player->selected_entity->is_dynamic)) {
 					App->menu_manager->DestroyFaction(Menu::BUI_BASES, App->player->selected_entity->faction, App->player->selected_entity->type);
 				}
-				App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 				App->audio->PlayFx(1, App->audio->back_fx, 0);
 				App->gui->ingame = false;
 				if (App->entities->showing_building_menu = true) {

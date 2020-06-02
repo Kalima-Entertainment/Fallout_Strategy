@@ -115,8 +115,6 @@ bool j1Transition::Start()
 
 bool j1Transition::CleanUp()
 {
-	App->tex->UnLoad(logo_tex);
-	logo_tex = nullptr;
 	App->tex->UnLoad(gif_tex);
 	gif_tex = nullptr;
 	App->tex->UnLoad(background);
@@ -181,13 +179,8 @@ void j1Transition::Transition()
 		App->Mmanager->Disable();
 		App->hud->CleanUp();
 		transition = false;
-		App->gui->ingame = false;
-		App->menu_manager->DestroyMenu(Menu::GUI);
-		if (App->entities->showing_building_menu = true) {
-			App->menu_manager->DestroyFaction(Menu::BUI_BASES, App->menu_manager->current_building_faction, App->menu_manager->current_building_type);
-			App->entities->showing_building_menu = false;
-			App->player->selected_entity = nullptr;
-		}
+		App->gui->ingame = false;		
+		App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 		App->isPaused = false;
 		App->scene->win = false;
 		App->scene->lose = false;
