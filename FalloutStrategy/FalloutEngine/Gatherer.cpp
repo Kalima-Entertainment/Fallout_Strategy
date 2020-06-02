@@ -113,6 +113,7 @@ bool Gatherer::Update(float dt) {
 					}
 					//if there are no resource buildings left
 					else {
+						LOG("No more resource buildings");
 						state = IDLE;
 					}
 				}

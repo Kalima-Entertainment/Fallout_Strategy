@@ -127,6 +127,9 @@ bool Troop::Update(float dt) {
 						state = IDLE;
 					}
 				}
+				else {
+					PathfindToPosition(target_entity->current_tile);
+				}
 			}
 			else if (target_building == target_entity){
 				if (target_building->state == DIE) {
@@ -149,6 +152,8 @@ bool Troop::Update(float dt) {
 					}
 					//commanded = false;
 				}
+				else if (path_to_target.size() == 0)
+					PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
 			}
 		}
 		else if(!commanded){

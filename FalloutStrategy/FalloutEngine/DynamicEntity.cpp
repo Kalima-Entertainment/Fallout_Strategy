@@ -272,21 +272,24 @@ void DynamicEntity::Move(float dt) {
 
 Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
 
-	if ((ceil(position.x) > floor(next_tile_rect.x)) && (floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w))
-		&& (ceil(position.y) > floor(next_tile_rect.y)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h))) {
+	if ((position.x > next_tile_rect.x) && (position.x < next_tile_rect.x + next_tile_rect.w)
+		&& (position.y > next_tile_rect.y) && (position.y < next_tile_rect.y + next_tile_rect.h)) {
 		return Direction::NO_DIRECTION;
 	}
-	if ((ceil(position.x) > floor(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (ceil(position.y) > floor(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+	if ((position.x > next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y > next_tile_rect.y + next_tile_rect.h * 0.5f)) {
 		return Direction::TOP_LEFT;
 	}
-	else if ((ceil(position.x) > floor(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+	else if ((position.x > next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y < next_tile_rect.y + next_tile_rect.h * 0.5f)) {
 		return Direction::BOTTOM_LEFT;
 	}
-	else if ((floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (ceil(position.y) > floor(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+	else if ((position.x < next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y > next_tile_rect.y + next_tile_rect.h * 0.5f)) {
 		return Direction::TOP_RIGHT;
 	}
-	else if ((floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+	else if ((position.x < next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y < next_tile_rect.y + next_tile_rect.h * 0.5f)) {
 		return Direction::BOTTOM_RIGHT;
+	}
+	else {
+	//	LOG("stuck");
 	}
 }
 
@@ -325,15 +328,21 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 	if (destination == current_tile)
 		return;
 
-	if (!App->pathfinding->IsWalkable(current_tile))
+	if (!App->pathfinding->IsWalkable(current_tile)) {
 		destination = App->pathfinding->FindWalkableAdjacentTile(current_tile);
+		LOG("unwalkable origin");
+	}
 
 	//if the tile is in the map but it's not walkable
-	if (!App->pathfinding->IsWalkable(destination)) 
+	if (!App->pathfinding->IsWalkable(destination)) {
 		destination = App->pathfinding->FindNearestWalkableTile(current_tile, destination);
+		if (!App->pathfinding->IsWalkable(destination))
+			LOG("unwalkable destination");
+	}
 
 	if (App->entities->occupied_tiles[destination.x][destination.y]) {
 		destination = App->entities->FindFreeAdjacentTile(current_tile, destination);
+		next_tile = destination;
 		if (App->entities->occupied_tiles[destination.x][destination.y])
 			LOG("occupied destination");
 	}
@@ -345,6 +354,9 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 
 		if (!App->pathfinding->IsWalkable(node_path.back()))
 			node_path.back() = App->pathfinding->FindNearestWalkableTile(current_tile, node_path.back());
+
+		if (node_path.back() == current_tile)
+			node_path.pop_back();
 
 		App->pathfinding->CreatePath(current_tile, node_path.back());
 		target_tile = node_path.back();

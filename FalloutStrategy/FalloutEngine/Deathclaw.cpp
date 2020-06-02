@@ -22,6 +22,7 @@ Deathclaw::Deathclaw(iPoint g_current_tile) : DynamicEntity() {
 	target_building = nullptr;
 	target_entity = nullptr;
 	DynaParticle = nullptr;
+	type = DEATHCLAW;
 
 	DynaParticle = App->entities->CreateParticle(position);
 	Animation anim;
@@ -47,7 +48,6 @@ bool Deathclaw::Update(float dt) {
 	switch (state)
 	{
     case IDLE:
-		
 		if (target_building) {
 			PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
 		}
@@ -58,6 +58,9 @@ bool Deathclaw::Update(float dt) {
 		if ((node_path.size() == 0) && (current_tile.DistanceManhattan(target_tile) <= range)) {
 			//path_to_target.clear();
 			state = ATTACK;
+		}
+		else if(path_to_target.size() == 0){
+			PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
 		}
 		SpatialAudio(position.x, position.y, faction, state, type);
 
@@ -72,6 +75,11 @@ bool Deathclaw::Update(float dt) {
         break;
     case HIT:
 		current_animation = &animations[HIT][direction];
+		if (current_animation->Finished()) {
+			current_animation->Reset();
+			PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
+		}
+
 		SpatialAudio(position.x, position.y, faction, state, type);
         break;
     case DIE:

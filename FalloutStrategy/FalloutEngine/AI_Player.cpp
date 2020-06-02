@@ -19,7 +19,7 @@
 #include <vector>
 #include <math.h>
 
-AI_Player::AI_Player(Faction g_faction) : GenericPlayer(), is_attacking(false), last_barrack_to_spawn(1), gatherers_commanded(false) {
+AI_Player::AI_Player(Faction g_faction) : GenericPlayer(), is_attacking(false), last_barrack_to_spawn(0), gatherers_commanded(false) {
 	
 	name.assign("AI");
 
@@ -86,7 +86,7 @@ bool AI_Player::Update(float dt) {
 		mr_proportion = melees / rangeds;
 
 	//spawn melee
-	if ((barrack[0] != nullptr) &&(water > App->entities->unit_data[faction][MELEE].cost_water)&&(food > App->entities->unit_data[faction][MELEE].cost_meat) && (last_barrack_to_spawn == 1)&&(melees > melee_minimum) && (mr_proportion < 2)) {
+	if ((barrack[0] != nullptr) &&(water >= App->entities->unit_data[faction][MELEE].cost_water)&&(food >= App->entities->unit_data[faction][MELEE].cost_meat) && (last_barrack_to_spawn == 1) && (mr_proportion < 2)) {
 		barrack[0]->SpawnUnit(MELEE);
 		water -= App->entities->unit_data[faction][MELEE].cost_water;
 		food -= App->entities->unit_data[faction][MELEE].cost_meat;
@@ -94,7 +94,7 @@ bool AI_Player::Update(float dt) {
 	}
 
 	//spawn ranged
-	if ((barrack[1] != nullptr) && (water > App->entities->unit_data[faction][RANGED].cost_water) && (food > App->entities->unit_data[faction][RANGED].cost_meat) && (rangeds > ranged_minimum) && (last_barrack_to_spawn == 0)) {
+	if ((barrack[1] != nullptr) && (water >= App->entities->unit_data[faction][RANGED].cost_water)&&(food >= App->entities->unit_data[faction][RANGED].cost_meat) && (last_barrack_to_spawn == 0)) {
 		barrack[1]->SpawnUnit(RANGED);
 		water -= App->entities->unit_data[faction][RANGED].cost_water;
 		food -= App->entities->unit_data[faction][RANGED].cost_meat;
@@ -139,11 +139,12 @@ bool AI_Player::Update(float dt) {
 			if(target_building != nullptr)
 				target_building_position = target_building->current_tile;
 		}
-
-		for(int i = 0; i < troops.size(); i++)
-		{
-			if(troops[i]->target_building == nullptr)
-			 troops[i]->target_building = target_building;
+		else {
+			for (int i = 0; i < troops.size(); i++)
+			{
+				if (troops[i]->target_building == nullptr)
+					troops[i]->target_building = target_building;
+			}
 		}
 
 		is_attacking = false;
@@ -183,7 +184,6 @@ DynamicEntity* AI_Player::GetClosestDynamicEntity() {
 StaticEntity* AI_Player::ChooseTargetBuilding() {
 
 	//choose a building to attack in preference order
-
 	if (target_player->barrack[0] != nullptr)
 		target_building = target_player->barrack[0];
 	else if (target_player->laboratory != nullptr)
