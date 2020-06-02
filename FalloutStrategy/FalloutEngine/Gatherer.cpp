@@ -76,11 +76,14 @@ bool Gatherer::Update(float dt) {
 	case WALK:
 		Move(dt);
 
-		if ((next_tile == target_tile)&&(node_path.size() == 0)) {
+		if ((current_tile == target_tile)&&(node_path.size() == 0)) {
 			//gather
 			if (((resource_building != nullptr) && (resource_collected < storage_capacity)) || ((resource_collected > 0) && (base != nullptr))) {
 				state = GATHER;
 				gathering_timer.Start();
+			}
+			else {
+				state = IDLE;
 			}
 		}
 		SpatialAudio(position.x, position.y, faction, state, type);
@@ -122,7 +125,8 @@ bool Gatherer::Update(float dt) {
 	case HIT:
 		if (current_animation->Finished()) {
 			current_animation->Reset();
-			state = IDLE;
+			//state = IDLE;
+			Flee();
 		}
 		SpatialAudio(position.x, position.y, faction, state, type);
 		break;

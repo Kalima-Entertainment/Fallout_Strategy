@@ -72,7 +72,7 @@ bool j1Player::Start() {
 bool j1Player::PreUpdate() {
 	bool ret = true;
 
-	//debug keys
+	//debug keys -------------------------------------------------------
 
 	//enable/disable debug mode
 	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
@@ -89,27 +89,34 @@ bool j1Player::PreUpdate() {
 
 	}
 
-	//block border scroll
-	if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
-		border_scroll = !border_scroll;
-
-	//center camera
-	if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
-	{
-		if (selected_entity != nullptr)
-		{
-			App->render->camera.x = (int)(-selected_entity->position.x + (App->render->camera.w * 0.5f));
-			App->render->camera.y = (int)(-selected_entity->position.y + (App->render->camera.h * 0.5f));
-		}
-		else
-		{
-			App->render->camera.x = 0;
-			App->render->camera.y = 0;
-		}
-	}
-
 	if (!App->isPaused)
 	{
+		//keyboard keys ------------------------------------------------------
+		//block border scroll
+		if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
+			border_scroll = !border_scroll;
+
+		//center camera
+		if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+		{
+			if (selected_entity != nullptr)
+			{
+				App->render->camera.x = (int)(-selected_entity->position.x + (App->render->camera.w * 0.5f));
+				App->render->camera.y = (int)(-selected_entity->position.y + (App->render->camera.h * 0.5f));
+			}
+			else
+			{
+				App->render->camera.x = 0;
+				App->render->camera.y = 0;
+			}
+		}
+
+		//use radar
+		if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+			App->minimap->EnableRadar();
+
+		//mouse --------------------------------------------------------------------------
+		App->input->GetMousePosition(mouse_position.x, mouse_position.y);
 		//entity selection and interaction
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
 			selected_entity = SelectEntity();
@@ -162,24 +169,19 @@ bool j1Player::PreUpdate() {
 		}
 
 		//move camera through minimap
-		int mouse_x, mouse_y;
+
 		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) && (App->minimap->IsVisible()))
 		{
-			App->input->GetMousePosition(mouse_x, mouse_y);
 			SDL_Rect minimap = { App->minimap->position.x, App->minimap->position.y, App->minimap->width, App->minimap->height };
 
-			if ((mouse_x > minimap.x) && (mouse_x < minimap.x + minimap.w) && (mouse_y > minimap.y) && (mouse_y < minimap.y + minimap.h))
+			if ((mouse_position.x > minimap.x) && (mouse_position.x < minimap.x + minimap.w) && (mouse_position.y > minimap.y) && (mouse_position.y < minimap.y + minimap.h))
 			{
 				iPoint minimap_mouse_position;
-				minimap_mouse_position = App->minimap->ScreenToMinimapToWorld(mouse_x, mouse_y);
+				minimap_mouse_position = App->minimap->ScreenToMinimapToWorld(mouse_position.x, mouse_position.y);
 				App->render->camera.x = (int)(-(minimap_mouse_position.x - App->render->camera.w * 0.5f));
 				App->render->camera.y = (int)(-(minimap_mouse_position.y - App->render->camera.h * 0.5f));
 			}
 		}
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
-		App->minimap->EnableRadar();
 	}
 
 	return ret;
@@ -379,13 +381,11 @@ bool j1Player::Update(float dt) {
 }
 
 j1Entity* j1Player::SelectEntity() {
-	int tx, ty;
 	iPoint selected_spot;
-	App->input->GetMousePosition(tx, ty);
-	if (TouchingUI(tx, ty))
+	if (TouchingUI(mouse_position.x, mouse_position.y))
 		return selected_entity;
 
-	selected_spot = App->render->ScreenToWorld(tx, ty);
+	selected_spot = App->render->ScreenToWorld(mouse_position.x, mouse_position.y);
 	selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
 
 	//check if there's an entity in the selected spot
@@ -401,64 +401,46 @@ j1Entity* j1Player::SelectEntity() {
 }
 
 void j1Player::MoveEntity(){
-	int tx, ty;
 	iPoint selected_spot;
 
-	App->input->GetMousePosition(tx, ty);
-
-	if (TouchingUI(tx, ty)) { 
-		if ((tx > App->minimap->position.x) && (tx < App->minimap->position.x + App->minimap->width)
-			&& (ty > App->minimap->position.y) && (ty < App->minimap->position.y + App->minimap->height)) {
-			selected_spot = App->minimap->ScreenToMinimapToWorld(tx, ty);
+	if (TouchingUI(mouse_position.x, mouse_position.y)) {
+		if ((mouse_position.x > App->minimap->position.x) && (mouse_position.x < App->minimap->position.x + App->minimap->width)
+			&& (mouse_position.y > App->minimap->position.y) && (mouse_position.y < App->minimap->position.y + App->minimap->height)) {
+			selected_spot = App->minimap->ScreenToMinimapToWorld(mouse_position.x, mouse_position.y);
 			selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
 		}
 		else {
 			return;
 		}
 	}
-	else
-	{
-		selected_spot = App->render->ScreenToWorld(tx, ty);
+	else {
+		selected_spot = App->render->ScreenToWorld(mouse_position.x, mouse_position.y);
 		selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
 	}
-
-	j1Entity* target = App->entities->FindEntityByTile(selected_spot);
 
 	//dynamic entities
 	if (selected_entity->state != DIE) 
 	{
-		if (selected_entity->is_dynamic)
-		{
-			DynamicEntity* dynamic_entity;
-			dynamic_entity = (DynamicEntity*)selected_entity;
-			dynamic_entity->PathfindToPosition(selected_spot);
+		DynamicEntity* dynamic_entity;
+		dynamic_entity = (DynamicEntity*)selected_entity;
+		dynamic_entity->PathfindToPosition(selected_spot);
 
-			if (target != nullptr) {
-				dynamic_entity->target_entity = target;
-			}
-			else {
-				dynamic_entity->target_entity = nullptr;
+		j1Entity* target = App->entities->FindEntityByTile(selected_spot);
 
-				if (dynamic_entity->type == GATHERER) {
-					ResourceBuilding* resource_building;
-					resource_building = App->entities->FindResourceBuildingByTile(selected_spot);
+		dynamic_entity->target_entity = target;
 
-					//assign a resource building to the entity
-					if ((resource_building != nullptr) && (resource_building->quantity > 0) && (dynamic_entity->type == GATHERER)) {
-						((Gatherer*)dynamic_entity)->AssignResourceBuilding(resource_building);
-					}
-				}
-				else if (dynamic_entity->is_agressive) {
-					dynamic_entity->target_entity = nullptr;
-					dynamic_entity->commanded = true;
+		if (target == nullptr) {
+			if (dynamic_entity->type == GATHERER) {
+				ResourceBuilding* resource_building = App->entities->FindResourceBuildingByTile(selected_spot);
+
+				//assign a resource building to the entity
+				if ((resource_building != nullptr) && (resource_building->quantity > 0)) {
+					((Gatherer*)dynamic_entity)->AssignResourceBuilding(resource_building);
 				}
 			}
-		}
-		//static entities
-		else
-		{
-			StaticEntity* static_entity;
-			static_entity = (StaticEntity*)selected_entity;
+			else if (dynamic_entity->is_agressive) {
+				dynamic_entity->commanded = true;
+			}
 		}
 	}
 }

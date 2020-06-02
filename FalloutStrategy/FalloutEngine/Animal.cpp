@@ -50,6 +50,9 @@ bool Animal::Update(float dt) {
         break;
     case WALK:
         Move(dt);
+		if (current_tile == target_tile)
+			state = IDLE;
+
 		SpatialAudio(position.x, position.y, faction, state, type);
 
         break;
@@ -71,7 +74,8 @@ bool Animal::Update(float dt) {
 
 			resource_spot = App->entities->CreateResourceSpot(current_tile.x, current_tile.y, Resource::FOOD, food_quantity);
 			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
-			current_tile.x += 1;
+			path_to_target.clear();
+			current_tile = { 149, 149 };
 			next_tile = { -1,-1 };
 
 			if ((attacking_entity != nullptr)&&(attacking_entity->owner->is_ai)) {
@@ -89,7 +93,6 @@ bool Animal::Update(float dt) {
 			SpatialAudio(position.x, position.y, faction, state, type);
 			App->audio->die_sound = true;
 		}
-		
 
         break;
 

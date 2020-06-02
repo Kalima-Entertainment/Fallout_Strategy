@@ -84,7 +84,7 @@ bool Troop::Update(float dt) {
     case IDLE:
 		enemy_in_range = DetectEntitiesInRange();
 
-		if ((enemy_in_range) && (enemy_in_range != target_entity)) {
+		if ((enemy_in_range) && (enemy_in_range != target_entity) && (!commanded)) {
 			target_entity = enemy_in_range;
 			PathfindToPosition(enemy_in_range->current_tile);
 		}
@@ -97,14 +97,17 @@ bool Troop::Update(float dt) {
 					if (target_building == nullptr)
 						break;
 				}
-				else{
+				else {
 					if (current_tile.DistanceManhattan(App->entities->ClosestTile(current_tile, target_building->tiles)) > range) {
 						PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
 					}
-					else {
+					else if (target_building->faction != faction){
 						state = ATTACK;
 					}
 				}
+			}
+			else if ((target_entity)&&(target_entity->is_dynamic)) {
+				PathfindToPosition(target_entity->current_tile);
 			}
 		}
         break;
@@ -130,21 +133,21 @@ bool Troop::Update(float dt) {
 					target_building = RequestTargetBuilding(target_building->faction);
 					target_entity = target_building;
 
-					if(target_building)
+					if (target_building)
 						PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
+					else
+						commanded = false;
 				}
 				else if (current_tile.DistanceManhattan(App->entities->ClosestTile(current_tile, target_building->tiles)) <= range) {
 					UpdateTile();
 					path_to_target.clear();
 					if (target_building->faction != faction) {
-					    //iPoint closest_building_tile = App->entities->ClosestTile(current_tile, target_building->tiles);
-						//direction = GetDirectionToGo({ closest_building_tile.x, closest_building_tile.y, 4,4 });
 						state = ATTACK;
 					}
 					else {
 						state = IDLE;
 					}
-					commanded = false;
+					//commanded = false;
 				}
 			}
 		}
@@ -160,6 +163,12 @@ bool Troop::Update(float dt) {
 				target_entity = target_building;
 				PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
 			}
+			else {
+				state = IDLE;
+			}
+		}
+		else if (current_tile == target_tile){
+			state = IDLE;
 		}
 
 		SpatialAudio(position.x, position.y, faction, state, type);
@@ -194,6 +203,7 @@ bool Troop::Update(float dt) {
 				state = IDLE;
 			}
 		}
+
 		SpatialAudio(position.x, position.y, faction, state, type);
 
         break;
@@ -248,8 +258,10 @@ bool Troop::Update(float dt) {
 
 	// -- If there are any particle then move and blits when current state equals hit
 	if (DynaParticle != nullptr) {
-		if (state == HIT) DynaParticle->Activate();
-		else DynaParticle->Desactivate();
+		if (state == HIT) 
+			DynaParticle->Activate();
+		else 
+			DynaParticle->Desactivate();
 	}
 
 	if (DynaParticle->IsActive()) {

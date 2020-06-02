@@ -414,7 +414,7 @@ bool j1EntityManager::PostUpdate()
 				{
 					if (occupied_tiles[x][y]) {
 						occuppied_tile = App->map->MapToWorld(x, y);
-						App->render->DrawQuad({ occuppied_tile.x + HALF_TILE,occuppied_tile.y + HALF_TILE,8,8 }, 155, 155, 155, 255);
+						App->render->DrawQuad({ occuppied_tile.x + HALF_TILE,occuppied_tile.y + HALF_TILE,8,8 }, 155, 155, 155, 155);
 					}
 				}
 			}

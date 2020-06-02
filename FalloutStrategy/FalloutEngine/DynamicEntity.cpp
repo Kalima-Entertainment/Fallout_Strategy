@@ -111,6 +111,7 @@ bool DynamicEntity::PostUpdate() {
 		if(App->player->selected_entity != this)
 			App->render->Blit(App->render->debug_tex, tile_tex_position.x, tile_tex_position.y, &tile_rect);
 	
+		App->render->DrawQuad({(int)position.x, (int)position.y, 2, 2 }, 255, 0, 0, 255);
 	}
 
 	//selected entity
@@ -143,7 +144,7 @@ bool DynamicEntity::PostUpdate() {
 	//Fog Of War Rendering Based
 	if (current_tile.x >= 0 && current_tile.y >= 0)
 	{
-		if (App->fowManager->GetFoWTileState({ this->current_tile })->tileFogBits != fow_ALL)
+		if ((App->fowManager->GetFoWTileState({ this->current_tile })->tileFogBits != fow_ALL)||(App->render->debug))
 		{
 			//Character Render
 			App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
@@ -151,10 +152,11 @@ bool DynamicEntity::PostUpdate() {
 			//Enemy Health Bar only if visible on fog of war and alive
 			if (current_health > 0) {
 				App->render->DrawQuad(background_health_bar, 75, 75, 75, 255);
-				App->render->DrawQuad(foreground_health_bar, 0, 255, 0, 255);
+				App->render->DrawQuad(foreground_health_bar, 0, 235, 0, 255);
 				App->render->DrawQuad(frame_quad, 200, 200, 200, 185, false);		
 			}	
 		}
+		/*
 		else if ((this->faction == NO_FACTION) || (App->render->debug)) {
 			//Animals are also visible on shroud
 			if (App->fowManager->GetFoWTileState({ this->current_tile })->tileShroudBits == fow_ALL)
@@ -170,6 +172,7 @@ bool DynamicEntity::PostUpdate() {
 				}
 			}
 		}
+		*/
 	}
 
 	return true;
@@ -191,6 +194,8 @@ void DynamicEntity::Move(float dt) {
 		switch (direction)
 		{
 		case NO_DIRECTION:
+			UpdateTile();
+
 			if (next_tile != target_tile)
 			{
 				//current_tile = path_to_target.front();
@@ -223,9 +228,9 @@ void DynamicEntity::Move(float dt) {
 			else if (node_path.size() == 0)
 			{
 				path_to_target.clear();
-				state = IDLE;
+				//state = IDLE;
 				direction = last_direction;
-				commanded = false;
+				//commanded = false;
 			}
 
 			break;
@@ -258,11 +263,31 @@ void DynamicEntity::Move(float dt) {
 	{
 		UpdateTile();
 		direction = last_direction;
-		state = IDLE;
-		commanded = false;
+		//state = IDLE;
+		//commanded = false;
 	}
 
-	UpdateTile();
+	//UpdateTile();
+}
+
+Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
+
+	if ((ceil(position.x) > floor(next_tile_rect.x)) && (floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w))
+		&& (ceil(position.y) > floor(next_tile_rect.y)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h))) {
+		return Direction::NO_DIRECTION;
+	}
+	if ((ceil(position.x) > floor(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (ceil(position.y) > floor(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+		return Direction::TOP_LEFT;
+	}
+	else if ((ceil(position.x) > floor(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+		return Direction::BOTTOM_LEFT;
+	}
+	else if ((floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (ceil(position.y) > floor(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+		return Direction::TOP_RIGHT;
+	}
+	else if ((floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+		return Direction::BOTTOM_RIGHT;
+	}
 }
 
 void DynamicEntity::Flee() {
@@ -296,6 +321,9 @@ void DynamicEntity::Flee() {
 void DynamicEntity::PathfindToPosition(iPoint destination) {
 	
 	UpdateTile();
+
+	if (destination == current_tile)
+		return;
 
 	if (!App->pathfinding->IsWalkable(current_tile))
 		destination = App->pathfinding->FindWalkableAdjacentTile(current_tile);
@@ -429,25 +457,6 @@ bool DynamicEntity::LoadAnimations(const char* folder, const char* file_name) {
 	return ret;
 }
 
-Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
-
-	if ((ceil(position.x) > floor(next_tile_rect.x)) && (floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w))
-		&& (ceil(position.y) > floor(next_tile_rect.y)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h))) {
-		return Direction::NO_DIRECTION;
-	}
-	if ((ceil(position.x) > floor(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (ceil(position.y) > floor(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
-		return Direction::TOP_LEFT;
-	}
-	else if ((ceil(position.x) > floor(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
-		return Direction::BOTTOM_LEFT;
-	}
-	else if ((floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (ceil(position.y) > floor(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
-		return Direction::TOP_RIGHT;
-	}
-	else if ((floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
-		return Direction::BOTTOM_RIGHT;
-	}
-}
 
 void DynamicEntity::UpdateTile() {
 	App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;

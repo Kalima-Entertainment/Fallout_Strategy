@@ -29,6 +29,7 @@ public:
 	j1Entity* selected_entity;
 	j1Entity* last_selected_entity;
 	bool god_mode;
+	iPoint mouse_position;
 	iPoint Map_mouseposition;
 	bool qcaps;
 	bool qfood;

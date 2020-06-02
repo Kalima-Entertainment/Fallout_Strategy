@@ -21,9 +21,9 @@ InputText::InputText(int x, int y, UI_Type type, std::string text_input, UI_elem
 	this->pos.y = y;
 	H = 0;
 	W = 0;
-
+	text = text_input;
 	font_text = font;
-
+	texture = App->font->Print(text.data(), { 255,255,255,255 }, font_text);
 }
 
 InputText::~InputText() {
@@ -74,11 +74,7 @@ bool InputText::Update(float dt) {
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN || App->console->isVisible) {
 		
 		InputText_Actived = !InputText_Actived;
-
-		if (InputText_Actived) {
-			
-		}
-		
+	
 	}
 
 	
