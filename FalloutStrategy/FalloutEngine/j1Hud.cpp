@@ -145,7 +145,7 @@ bool j1Hud::PostUpdate() {
 
 				}
 				else if (static_entity->spawning == false && finish_base == true) {
-					gatherer_amount--;
+
 					App->menu_manager->DestroyMenu(Menu::GATHERER_QUANTITY);
 					App->menu_manager->CreateMenu(Menu::GATHERER_QUANTITY);
 					finish_base = false;
@@ -264,7 +264,7 @@ bool j1Hud::PostUpdate() {
 
 				}
 				else if (static_entity->spawning == false && finish_base == true) {
-					gatherer_amount--;
+
 					App->menu_manager->DestroyMenu(Menu::GATHERER_QUANTITY);
 					App->menu_manager->CreateMenu(Menu::GATHERER_QUANTITY);
 					finish_base = false;
@@ -384,7 +384,7 @@ bool j1Hud::PostUpdate() {
 
 				}
 				else if (static_entity->spawning == false && finish_base == true) {
-					gatherer_amount--;
+
 					App->menu_manager->DestroyMenu(Menu::GATHERER_QUANTITY);
 					App->menu_manager->CreateMenu(Menu::GATHERER_QUANTITY);
 					finish_base = false;
@@ -503,7 +503,7 @@ bool j1Hud::PostUpdate() {
 
 				}
 				else if (static_entity->spawning == false && finish_base == true) {
-					gatherer_amount--;
+
 					App->menu_manager->DestroyMenu(Menu::GATHERER_QUANTITY);
 					App->menu_manager->CreateMenu(Menu::GATHERER_QUANTITY);
 					finish_base = false;

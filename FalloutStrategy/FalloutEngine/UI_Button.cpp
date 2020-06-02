@@ -325,11 +325,9 @@ bool UI_Button::Update(float dt)
 
 				static_entity->SpawnUnit(GATHERER);
 
-				if (App->hud->gatherer_amount < 10) {
-					App->hud->gatherer_amount++;
-					App->menu_manager->DestroyMenu(Menu::GATHERER_QUANTITY);
-					App->menu_manager->CreateMenu(Menu::GATHERER_QUANTITY);
-				}
+				App->menu_manager->DestroyMenu(Menu::GATHERER_QUANTITY);
+				App->menu_manager->CreateMenu(Menu::GATHERER_QUANTITY);
+
 			}
 			//Spawn Melee from any faction
 			else if (t == Ghouls_melee_button || t == Vault_melee_button || t == Supermutant_melee_button || t == Brotherhood_melee_button){
