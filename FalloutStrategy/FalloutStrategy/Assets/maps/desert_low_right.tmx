@@ -45061,39 +45061,39 @@
   </properties>
   <object id="1" name="Resources" x="60.6667" y="147.333" width="242.667" height="421.333">
    <properties>
-    <property name="Water" type="int" value="300"/>
+    <property name="Water" type="int" value="1000"/>
    </properties>
   </object>
   <object id="2" name="Resources" x="742" y="708" width="282" height="282">
    <properties>
-    <property name="Nuka-Cola" type="int" value="250"/>
+    <property name="Nuka-Cola" type="int" value="1000"/>
    </properties>
   </object>
   <object id="3" x="1225.76" y="689.394"/>
   <object id="4" name="Resources" x="1452" y="736.667" width="352.667" height="286">
    <properties>
-    <property name="Water" type="int" value="250"/>
+    <property name="Water" type="int" value="1000"/>
    </properties>
   </object>
   <object id="5" x="1333.33" y="538.667"/>
   <object id="6" name="Resources" x="1608" y="66.6667" width="221.333" height="224">
    <properties>
-    <property name="Nuka-Cola" type="int" value="300"/>
+    <property name="Nuka-Cola" type="int" value="1000"/>
    </properties>
   </object>
   <object id="7" name="Resources" x="756" y="59.3333" width="230" height="240.667">
    <properties>
-    <property name="Nuka-Cola" type="int" value="230"/>
+    <property name="Nuka-Cola" type="int" value="1000"/>
    </properties>
   </object>
   <object id="8" name="Resources" x="770" y="1738" width="272" height="260">
    <properties>
-    <property name="Water" type="int" value="150"/>
+    <property name="Water" type="int" value="1000"/>
    </properties>
   </object>
   <object id="10" name="Resources" x="131" y="1919" width="286" height="294">
    <properties>
-    <property name="Nuka-Cola" type="int" value="220"/>
+    <property name="Nuka-Cola" type="int" value="1000"/>
    </properties>
   </object>
   <object id="11" name="Static" type="Barrack" x="1440" y="1920" width="54.5908" height="109.323">

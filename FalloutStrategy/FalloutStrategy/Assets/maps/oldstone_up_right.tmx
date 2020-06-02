@@ -45057,48 +45057,48 @@
  <objectgroup name="resources">
   <object id="13" name="Resources" x="103" y="1970" width="335" height="323">
    <properties>
-    <property name="Nuka-Cola" type="int" value="200"/>
+    <property name="Nuka-Cola" type="int" value="500"/>
    </properties>
   </object>
   <object id="14" name="Resources" x="420" y="1494" width="294" height="430">
    <properties>
-    <property name="Water" type="int" value="170"/>
+    <property name="Water" type="int" value="500"/>
    </properties>
   </object>
   <object id="15" name="Resources" x="1296" y="1604" width="284" height="332">
    <properties>
-    <property name="Water" type="int" value="150"/>
+    <property name="Water" type="int" value="1000"/>
    </properties>
   </object>
   <object id="17" name="Resources" x="2000" y="1911" width="285" height="309">
    <properties>
-    <property name="Nuka-Cola" type="int" value="125"/>
+    <property name="Nuka-Cola" type="int" value="1000"/>
    </properties>
   </object>
   <object id="18" name="Resources" x="83.3333" y="81.3333" width="280.667" height="382">
    <properties>
-    <property name="Water" type="int" value="200"/>
+    <property name="Water" type="int" value="500"/>
    </properties>
   </object>
   <object id="19" name="Resources" x="1967" y="1010" width="379" height="311">
    <properties>
-    <property name="Water" type="int" value="130"/>
+    <property name="Water" type="int" value="1000"/>
    </properties>
   </object>
   <object id="21" name="Resources" x="624" y="758.667" width="284" height="305.333">
    <properties>
-    <property name="Nuka-Cola" type="int" value="150"/>
+    <property name="Nuka-Cola" type="int" value="500"/>
    </properties>
   </object>
   <object id="22" x="479" y="261"/>
   <object id="23" name="Resources" x="748" y="49" width="291" height="311">
    <properties>
-    <property name="Water" type="int" value="180"/>
+    <property name="Water" type="int" value="1000"/>
    </properties>
   </object>
   <object id="24" name="Resources" x="1231.5" y="781.5" width="283" height="313">
    <properties>
-    <property name="Nuka-Cola" type="int" value="200"/>
+    <property name="Nuka-Cola" type="int" value="1000"/>
    </properties>
   </object>
   <object id="25" name="Static" type="Laboratory" x="1991.66" y="673.583" width="70.8333" height="75.8333">

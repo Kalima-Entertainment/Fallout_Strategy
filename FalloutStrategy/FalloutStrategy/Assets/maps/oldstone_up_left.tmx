@@ -45057,39 +45057,43 @@
  <objectgroup name="resources">
   <object id="25" name="Resources" x="72" y="822" width="358" height="302">
    <properties>
-    <property name="Nuka-Cola" type="int" value="200"/>
+    <property name="Nuka-Cola" type="int" value="1000"/>
    </properties>
   </object>
   <object id="26" x="1286.36" y="2774.24"/>
   <object id="27" name="Resources" x="175" y="1776" width="285" height="473">
    <properties>
-    <property name="Water" type="int" value="250"/>
+    <property name="Water" type="int" value="1000"/>
    </properties>
   </object>
   <object id="28" name="Resources" x="599" y="1169" width="276" height="476">
    <properties>
-    <property name="Nuka-Cola" type="int" value="220"/>
+    <property name="Nuka-Cola" type="int" value="1000"/>
    </properties>
   </object>
   <object id="29" name="Resources" x="1326" y="1432" width="350" height="298">
    <properties>
-    <property name="Nuka-Cola" type="int" value="210"/>
+    <property name="Nuka-Cola" type="int" value="1000"/>
    </properties>
   </object>
-  <object id="30" name="Resources" x="2006" y="1843" width="283" height="471"/>
+  <object id="30" name="Resources" x="2006" y="1843" width="283" height="471">
+   <properties>
+    <property name="Nuka-Cola" type="int" value="1000"/>
+   </properties>
+  </object>
   <object id="31" name="Resources" x="1360" y="627" width="449" height="437">
    <properties>
-    <property name="Water" type="int" value="230"/>
+    <property name="Water" type="int" value="1000"/>
    </properties>
   </object>
   <object id="32" name="Resources" x="1936" y="24" width="348" height="364">
    <properties>
-    <property name="Water" type="int" value="180"/>
+    <property name="Water" type="int" value="1000"/>
    </properties>
   </object>
   <object id="33" name="Resources" x="911" y="53" width="348" height="308">
    <properties>
-    <property name="Nuka-Cola" type="int" value="200"/>
+    <property name="Nuka-Cola" type="int" value="1000"/>
    </properties>
   </object>
   <object id="34" name="Static" type="Barrack" x="640" y="96" width="50.6667" height="101.333">
