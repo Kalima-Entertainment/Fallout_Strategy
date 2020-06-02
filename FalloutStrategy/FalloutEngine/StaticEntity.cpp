@@ -756,6 +756,12 @@ int StaticEntity::GetUnitsInStack(EntityType type)
 				num++;
 		}
 	}
+	else if (type == GATHERER) {
+		for (int i = 0; i < 10; i++) {
+			if (spawn_stack[i].type == GATHERER)
+				num++;
+		}
+	}
 	return num;
 }
 

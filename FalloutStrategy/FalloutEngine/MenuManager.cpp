@@ -379,9 +379,16 @@ void MenuManager::CreateMenu(Menu menu) {
 
 	case Menu::GATHERER_QUANTITY:
 
-		gatherer_quantity = std::to_string(App->hud->gatherer_amount);
+		if (App->player->selected_entity != nullptr)
+		{
 
-		gatherer_label = (UI_Label*)App->gui->CreateLabel(1010, 668, Label, gatherer_quantity, NULL, this, NULL, "StackedPixelSmall");
+			StaticEntity* static_entity_gatherer = (StaticEntity*)App->player->selected_entity;
+
+			gatherer_quantity = std::to_string(static_entity_gatherer->GetUnitsInStack(GATHERER));
+
+			gatherer_label = (UI_Label*)App->gui->CreateLabel(1010, 668, Label, gatherer_quantity, NULL, this, NULL, "StackedPixelSmall");
+
+		}
 
 		break; 
 
