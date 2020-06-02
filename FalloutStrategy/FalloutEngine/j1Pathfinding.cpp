@@ -175,14 +175,14 @@ std::vector<iPoint> j1PathFinding::CreateNodePath(iPoint origin, iPoint destinat
 	//closest origin node
 	for(int i = 0; i < node_map.size(); i++)
 	{
-		if (node_map[i].DistanceTo(origin) < origin_node.DistanceTo(origin))
+		if (node_map[i].DistanceManhattan(origin) < origin_node.DistanceManhattan(origin))
 			origin_node = node_map[i];
 	}
 
 	//closest destination node
 	for(int i = 0; i < node_map.size(); i++)
 	{
-		if (node_map[i].DistanceTo(destination) < destination_node.DistanceTo(destination))
+		if (node_map[i].DistanceManhattan(destination) < destination_node.DistanceManhattan(destination))
 			destination_node = node_map[i];
 	}
 
@@ -202,8 +202,8 @@ std::vector<iPoint> j1PathFinding::CreateNodePath(iPoint origin, iPoint destinat
 				possible_node.x = current_node.x + x;
 				possible_node.y = current_node.y + y;
 
-				if (possible_node.DistanceTo(destination_node) < current_node.DistanceTo(destination_node)) {
-					if (possible_node.DistanceTo(destination_node) < best_node.DistanceTo(destination_node))
+				if (possible_node.DistanceManhattan(destination_node) < current_node.DistanceManhattan(destination_node)) {
+					if (possible_node.DistanceManhattan(origin_node) <= best_node.DistanceManhattan(origin_node))
 						best_node = possible_node;
 				}
 			}

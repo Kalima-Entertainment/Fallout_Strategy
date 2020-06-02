@@ -355,7 +355,7 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 		if (!App->pathfinding->IsWalkable(node_path.back()))
 			node_path.back() = App->pathfinding->FindNearestWalkableTile(current_tile, node_path.back());
 
-		if (node_path.back() == current_tile)
+		if(node_path.back() == current_tile)
 			node_path.pop_back();
 
 		App->pathfinding->CreatePath(current_tile, node_path.back());

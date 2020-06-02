@@ -59,9 +59,7 @@ bool Deathclaw::Update(float dt) {
 			//path_to_target.clear();
 			state = ATTACK;
 		}
-		else if(path_to_target.size() == 0){
-			PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
-		}
+
 		SpatialAudio(position.x, position.y, faction, state, type);
 
         break;
