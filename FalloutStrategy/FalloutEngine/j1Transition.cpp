@@ -159,7 +159,6 @@ void j1Transition::Transition()
 		App->Mmanager->Enable();
 		App->scene->Enable();
 		App->main_menu->Disable();
-		
 		//App->minimap->Enable();
 		if(App->gui->load==false){
 			App->dialog_manager->Enable();
@@ -179,7 +178,7 @@ void j1Transition::Transition()
 		App->map->Disable();
 		App->minimap->Disable();
 		App->Mmanager->Disable();
-		App->hud->Disable();
+		App->hud->CleanUp();
 		transition = false;
 		App->gui->ingame = false;		
 		App->menu_manager->CreateMenu(Menu::MAIN_MENU);
@@ -187,6 +186,12 @@ void j1Transition::Transition()
 		App->scene->win = false;
 		App->scene->lose = false;
 		App->main_menu->Enable();
+		if (App->entities->showing_building_menu == true) {
+			App->menu_manager->DestroyFaction(Menu::BUI_BASES, App->menu_manager->current_building_faction, App->menu_manager->current_building_type);
+			App->entities->showing_building_menu = false;
+			App->player->selected_entity = nullptr;
+		}
+
 	}
 }
 
