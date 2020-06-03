@@ -6,7 +6,7 @@
 #include "j1Render.h"
 #include "MenuManager.h"
 #include "MainMenu.h"
-
+#include "j1Transition.h"
 
 MainMenu::MainMenu() : j1Module()
 {
@@ -79,7 +79,11 @@ bool MainMenu::Awake(pugi::xml_node& config)
 
 bool MainMenu::Start()
 {
-	LoadAnimations();
+	if(loader == nullptr)
+	{
+		LoadAnimations();
+	}
+	
 	App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 
 	return true;
@@ -101,6 +105,7 @@ bool MainMenu::PostUpdate()
 		App->render->Blit(title_tex, 70, -130, &loader->GetCurrentFrame(last_dt), 1.0f, 0.0f);
 
 	}
+
 
 	return true;
 }
