@@ -536,12 +536,12 @@ void MenuManager::CreateMenu(Menu menu) {
 
 	case Menu::RADIO:
 
-		radio[1] = (UI_Button*)App->gui->CreateButton( 600, 125, RockFM_button, { 1397,2312,114,114 }, { 1055,2312,114,114 }, { 1718,2312,114,114 }, NULL, this);
-		radio[2] = (UI_Button*)App->gui->CreateButton( 450, 225, AyuwokiFM_button, { 1289,2312,114,114 }, { 941,2312,114,114 }, { 1612,2312,114,114 }, NULL, this);
-		radio[3] = (UI_Button*)App->gui->CreateButton( 750, 225, SlimShadyFM_button, { 1504,2312,114,114 }, { 1169,2312,114,114 }, { 1824,2312,114,114 }, NULL, this);
-		radio[4] = (UI_Button*)App->gui->CreateButton( 450, 375, FiestaLatinaFM_button, { 2278,2312,114,114 }, { 1932,2312,114,114 }, { 608,2312,114,114 }, NULL, this);
-		radio[5] = (UI_Button*)App->gui->CreateButton( 750, 375, FusionCoreFM_button, { 2498,2312,114,114 }, { 2160,2312,114,114 }, { 829,2312,114,114 }, NULL, this);
-		radio[6] = (UI_Button*)App->gui->CreateButton( 600, 475, UltraRADIO_button, { 2389,2312,114,114 }, { 2046,2312,114,114 }, { 718,2312,114,114 }, NULL, this);
+		radio[1] = (UI_Button*)App->gui->CreateButton( 600, 125, RockFM_button, { 1391,2312,114,114 }, { 1055,2312,114,114 }, { 1712,2312,114,114 }, NULL, this);
+		radio[2] = (UI_Button*)App->gui->CreateButton( 450, 225, AyuwokiFM_button, { 1283,2312,114,114 }, { 941,2312,114,114 }, { 1606,2312,114,114 }, NULL, this);
+		radio[3] = (UI_Button*)App->gui->CreateButton( 750, 225, SlimShadyFM_button, { 1499,2312,114,114 }, { 1169,2312,114,114 }, { 1818,2312,114,114 }, NULL, this);
+		radio[4] = (UI_Button*)App->gui->CreateButton( 450, 375, FiestaLatinaFM_button, { 2274,2312,114,114 }, { 1932,2312,114,114 }, { 602,2312,114,114 }, NULL, this);
+		radio[5] = (UI_Button*)App->gui->CreateButton( 750, 375, FusionCoreFM_button, { 2492,2312,114,114 }, { 2160,2312,114,114 }, { 823,2312,114,114 }, NULL, this);
+		radio[6] = (UI_Button*)App->gui->CreateButton( 600, 475, UltraRADIO_button, { 2383,2312,114,114 }, { 2046,2312,114,114 }, { 712,2312,114,114 }, NULL, this);
 
 		last_menu = current_menu;
 		current_menu = Menu::RADIO;
