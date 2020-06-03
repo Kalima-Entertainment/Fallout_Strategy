@@ -182,6 +182,8 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 
 	UpdateTile();
 
+	iPoint original_destination = destination;
+
 	if (destination == current_tile)
 		return;
 
@@ -204,7 +206,10 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 			LOG("occupied destination");
 	}
 
-	target_tile = destination;
+	if (node_path.size() == 0)
+		target_tile = destination;
+	else if (original_destination == node_path.back())
+		node_path.back() = destination;
 
 	if (current_tile.DistanceManhattan(destination) > DEFAULT_PATH_LENGTH) {
 		node_path = App->pathfinding->CreateNodePath(current_tile, destination);
@@ -216,7 +221,7 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 			node_path.pop_back();
 
 		App->pathfinding->CreatePath(current_tile, node_path.back());
-		target_tile = node_path.back();
+		//target_tile = node_path.back();
 	}
 	else {
 		if (App->pathfinding->CreatePath(current_tile, destination) == -2) {
@@ -241,94 +246,75 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 
 void DynamicEntity::Move(float dt) {
 
-	if (path_to_target.size() > 0) {
 
-		// -- Get next tile center
-		next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
-		next_tile_rect = { next_tile_position.x + HALF_TILE - 4, next_tile_position.y + HALF_TILE -2, 8, 8 };
+	// -- Get next tile center
+	next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
+	next_tile_rect = { next_tile_position.x + HALF_TILE - 4, next_tile_position.y + HALF_TILE -2, 8, 8 };
 
-		last_direction = direction;
-		direction = GetDirectionToGo(next_tile_rect);
+	last_direction = direction;
+	direction = GetDirectionToGo(next_tile_rect);
 
-		fPoint auxPos = position; //We use that variable to optimize Fog Of War code 
+	fPoint auxPos = position; //We use that variable to optimize Fog Of War code 
 
-		switch (direction)
-		{
-		case NO_DIRECTION:
-			UpdateTile();
+	switch (direction)
+	{
+	case NO_DIRECTION:
+		UpdateTile();
 
-			if (next_tile != target_tile)
-			{
-				//current_tile = path_to_target.front();
-				if (path_to_target.size() > 0)
-				{
-					next_tile = path_to_target[1];
-					
-					if (App->entities->occupied_tiles[next_tile.x][next_tile.y]) {
-						PathfindToPosition(target_tile);
-					}					
+		//we are following a node path
+		if (node_path.size() > 0) {
+			//if we have reached the closest node
+			if (current_tile == node_path.back()) {
+				//forget it
+				node_path.pop_back();
+				//if we have more nodes to go to
+				if (node_path.size() > 0) {
+					//pathfind to the next one
+					PathfindToPosition(node_path.back());
 				}
-
-				if(path_to_target.size() > 0)
-					path_to_target.erase(path_to_target.begin());
-			}
-			//node movement 
-			else if ((node_path.size() > 0)) {
-				if (next_tile == target_tile) {
-					node_path.pop_back();
-
-					//if we have reached the final node pathfind to target building
-					if (node_path.size() > 0)
-					{
-						target_tile = node_path.back();
-					}
-
+				else {
+					//if not pathfind to the destination
 					PathfindToPosition(target_tile);
 				}
 			}
-			else if (node_path.size() == 0)
-			{
-				path_to_target.clear();
-				//state = IDLE;
-				direction = last_direction;
-				//commanded = false;
-			}
-
-			break;
-
-		case TOP_LEFT:
-			position.x -= speed.x * dt;
-			position.y -= speed.y * dt;
-			break;
-		case TOP_RIGHT:
-			position.x += speed.x * dt;
-			position.y -= speed.y * dt;
-			break;
-		case BOTTOM_LEFT:
-			position.x -= speed.x * dt;
-			position.y += speed.y * dt;
-			break;
-		case BOTTOM_RIGHT:
-			position.x += speed.x * dt;
-			position.y += speed.y * dt;
-			break;
-		default:
-			break;
 		}
 
-		//Update Fog Of War Position
-		if (auxPos != position && visionEntity != NULL)
-			visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
-	}
-	else
-	{
-		UpdateTile();
-		direction = last_direction;
-		//state = IDLE;
-		//commanded = false;
+		if (current_tile == target_tile){
+			direction = last_direction;
+			state = IDLE;
+		}
+		else {
+			next_tile = path_to_target.front();
+
+			if(path_to_target.size() > 0)
+			path_to_target.erase(path_to_target.cbegin());
+		}
+
+		break;
+
+	case TOP_LEFT:
+		position.x -= speed.x * dt;
+		position.y -= speed.y * dt;
+		break;
+	case TOP_RIGHT:
+		position.x += speed.x * dt;
+		position.y -= speed.y * dt;
+		break;
+	case BOTTOM_LEFT:
+		position.x -= speed.x * dt;
+		position.y += speed.y * dt;
+		break;
+	case BOTTOM_RIGHT:
+		position.x += speed.x * dt;
+		position.y += speed.y * dt;
+		break;
+	default:
+		break;
 	}
 
-	//UpdateTile();
+	//Update Fog Of War Position
+	if (auxPos != position && visionEntity != NULL)
+		visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
 }
 
 Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {

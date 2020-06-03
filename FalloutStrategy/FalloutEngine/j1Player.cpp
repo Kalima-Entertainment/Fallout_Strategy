@@ -140,11 +140,6 @@ bool j1Player::PreUpdate() {
 			}
 		}
 
-		if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)&&(selected_entity != nullptr)) {
-			if(selected_entity->is_dynamic)
-				MoveEntity();
-		}
-
 		//move camera
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_REPEAT) {
 			int x, y;
@@ -318,6 +313,11 @@ bool j1Player::Update(float dt) {
 	iPoint selected_spot;
 	App->input->GetMousePosition(selected_spot.x, selected_spot.y);
 	
+	if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) && (selected_entity != nullptr)) {
+		if (selected_entity->is_dynamic)
+			MoveEntity();
+	}
+
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
 		if (TouchingUI(selected_spot.x, selected_spot.y)) {
 			if ((selected_spot.x > App->minimap->position.x) && (selected_spot.x < App->minimap->position.x + App->minimap->width)

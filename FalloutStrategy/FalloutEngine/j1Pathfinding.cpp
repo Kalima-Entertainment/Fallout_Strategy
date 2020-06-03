@@ -6,9 +6,10 @@
 #include "StaticEntity.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
-j1PathFinding::j1PathFinding() : j1Module(), last_path(DEFAULT_PATH_LENGTH), width(150), height(150), node_map_divisions(15)
+j1PathFinding::j1PathFinding() : j1Module(), last_path(DEFAULT_PATH_LENGTH), width(150), height(150)
 {
 	name = ("pathfinding");
+	node_map_divisions = 15;
 	node_map = CreateNodeMap();
 	path_timer.Start();
 }
@@ -124,7 +125,7 @@ iPoint j1PathFinding::FindNearestWalkableTile(iPoint origin, iPoint destination)
 	}
 
 	if (!IsWalkable(destination))
-		LOG("Unwalkable destination");
+		LOG("Unwalkable destination 3");
 
 	return destination;
 }
@@ -164,36 +165,33 @@ std::vector<iPoint>j1PathFinding::GetNodeMap() const { return node_map; }
 std::vector<iPoint> j1PathFinding::CreateNodePath(iPoint origin, iPoint destination) {
 	BROFILER_CATEGORY("CreateNodePath", Profiler::Color::Azure)
 	std::vector<iPoint> path;
-	iPoint current_node;
-	iPoint origin_node;
-	iPoint destination_node;
 	int node_distance = GetDistanceBetweenNodes();
 
-	origin_node = node_map[0];
-	destination_node = node_map[0];
+	iPoint origin_node = node_map[0];
+	iPoint destination_node = node_map[0];
 
 	//closest origin node
 	for(int i = 0; i < node_map.size(); i++)
 	{
-		if (node_map[i].DistanceManhattan(origin) < origin_node.DistanceManhattan(origin))
+		if (node_map[i].DistanceTo(origin) < origin_node.DistanceTo(origin))
 			origin_node = node_map[i];
 	}
 
 	//closest destination node
 	for(int i = 0; i < node_map.size(); i++)
 	{
-		if (node_map[i].DistanceManhattan(destination) < destination_node.DistanceManhattan(destination))
+		if (node_map[i].DistanceTo(destination) < destination_node.DistanceTo(destination))
 			destination_node = node_map[i];
 	}
 
-	current_node = origin_node;
+	iPoint current_node = origin_node;
 	path.push_back(current_node);
 
 	//iterate nodes to create the path
 	while (current_node != destination_node)
 	{
-		iPoint possible_node;
-		iPoint best_node;
+		iPoint possible_node = {0,0};
+		iPoint best_node = current_node;
 		//find neighbour nodes
 		for(int y = -node_distance; y <= node_distance; y += node_distance)
 		{
@@ -202,8 +200,8 @@ std::vector<iPoint> j1PathFinding::CreateNodePath(iPoint origin, iPoint destinat
 				possible_node.x = current_node.x + x;
 				possible_node.y = current_node.y + y;
 
-				if (possible_node.DistanceManhattan(destination_node) < current_node.DistanceManhattan(destination_node)) {
-					if (possible_node.DistanceManhattan(origin_node) <= best_node.DistanceManhattan(origin_node))
+				if (possible_node.DistanceTo(destination_node) < current_node.DistanceTo(destination_node)) {
+					if (possible_node.DistanceTo(destination_node) < best_node.DistanceTo(destination_node))
 						best_node = possible_node;
 				}
 			}
@@ -422,4 +420,8 @@ iPoint j1PathFinding::ExpandTile(iPoint target_tile) const {
 	}
 
 	return pivot;
+}
+
+int j1PathFinding::GetDistanceBetweenNodes() const {
+	return 150 / node_map_divisions;
 }
