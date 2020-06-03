@@ -107,6 +107,7 @@ bool Troop::Update(float dt) {
 				}
 			}
 			else if ((target_entity)&&(target_entity->is_dynamic)) {
+				
 				PathfindToPosition(target_entity->current_tile);
 			}
 		}
