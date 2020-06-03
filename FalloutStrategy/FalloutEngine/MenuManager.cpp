@@ -350,7 +350,8 @@ void MenuManager::CreateMenu(Menu menu) {
 		timer_item = (UI_Label*)App->gui->CreateLabel(700, 7, Label, "0", NULL, this, NULL, "StackedPixel");
 		timer_minutes = (UI_Label*)App->gui->CreateLabel(652, 7, Label, "0", NULL, this, NULL, "StackedPixel");
 		
-		
+		//radio
+		radio[0] = (UI_Button*)App->gui->CreateButton(1205, 0, Radio_button, { 1043,1998,74,71 }, { 966,1998,74,71 }, { 889,1998,74,71 }, NULL, this);
 
 		//Tutorial
 		gui_ingame[2] = (j1Image*)App->gui->CreateImage(1205, 70, Image, { 1037, 2120, 74, 71 }, NULL, this);
@@ -535,10 +536,15 @@ void MenuManager::CreateMenu(Menu menu) {
 
 	case Menu::RADIO:
 
-		quest[0] = (j1Image*)App->gui->CreateImage(500, 500, Image, { 1290, 2313, 115, 115 }, NULL, this);
+		radio[1] = (UI_Button*)App->gui->CreateButton( 600, 125, RockFM_button, { 1397,2312,114,114 }, { 1055,2312,114,114 }, { 1718,2312,114,114 }, NULL, this);
+		radio[2] = (UI_Button*)App->gui->CreateButton( 450, 225, AyuwokiFM_button, { 1289,2312,114,114 }, { 941,2312,114,114 }, { 1612,2312,114,114 }, NULL, this);
+		radio[3] = (UI_Button*)App->gui->CreateButton( 750, 225, SlimShadyFM_button, { 1504,2312,114,114 }, { 1169,2312,114,114 }, { 1824,2312,114,114 }, NULL, this);
+		radio[4] = (UI_Button*)App->gui->CreateButton( 450, 375, FiestaLatinaFM_button, { 2278,2312,114,114 }, { 1932,2312,114,114 }, { 608,2312,114,114 }, NULL, this);
+		radio[5] = (UI_Button*)App->gui->CreateButton( 750, 375, FusionCoreFM_button, { 2498,2312,114,114 }, { 2160,2312,114,114 }, { 829,2312,114,114 }, NULL, this);
+		radio[6] = (UI_Button*)App->gui->CreateButton( 600, 475, UltraRADIO_button, { 2389,2312,114,114 }, { 2046,2312,114,114 }, { 718,2312,114,114 }, NULL, this);
 
-		//last_menu = current_menu;
-		//current_menu = Menu::QUEST;
+		last_menu = current_menu;
+		current_menu = Menu::RADIO;
 
 		break;
 	case Menu::NO_MENU:
@@ -1198,6 +1204,9 @@ void MenuManager::DestroyMenu(Menu menu) {
 		break;
 	case Menu::QUEST:
 		App->gui->DeleteArrayElements(quest, 12);
+		break;
+	case Menu::RADIO:
+		App->gui->DeleteArrayElements(radio, 7);
 		break;
 
 	default:

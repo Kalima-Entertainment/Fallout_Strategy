@@ -671,6 +671,9 @@ bool UI_Button::Update(float dt)
 			else if (t == continue_button) {
 				App->gui->DeleteArrayElements(App->menu_manager->quest, 12);
 			}
+			else if (t == Radio_button) {
+				App->menu_manager->CreateMenu(Menu::RADIO);
+			}
 		}
 
 		else {
