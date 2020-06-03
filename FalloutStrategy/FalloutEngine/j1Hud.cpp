@@ -39,6 +39,9 @@ j1Hud::j1Hud() :j1Module()
 	timer_text[10] = '0';
 	minutes_text[15] = '0';
 	draw_health = false;
+	cursorRect = { 0,0, 18,25 };
+	cursor_position = { 0,0 };
+	cursor_offset = { 0, 0 };
 }
 
 bool j1Hud::Awake(pugi::xml_node& node)
@@ -59,9 +62,9 @@ bool j1Hud::PreUpdate()
 }
 
 bool j1Hud::Update(float dt) {
-	BROFILER_CATEGORY("Hud Update", Profiler::Color::Aquamarine)
-	//TIMER
+	BROFILER_CATEGORY("Hud Update", Profiler::Color::Aquamarine);
 
+	//TIMER
 	if (activateTimer)
 	{
 		if (timer_game.Read() >= 1000)
@@ -108,8 +111,15 @@ bool j1Hud::Update(float dt) {
 	return true;
 }
 
-bool j1Hud::PostUpdate() {
-	BROFILER_CATEGORY("Hud PostUpdate", Profiler::Color::Red)
+bool j1Hud::PostUpdate() 
+{
+	BROFILER_CATEGORY("Hud PostUpdate", Profiler::Color::Red);
+
+	//CURSOR
+	App->input->GetMousePosition(cursor_position.x, cursor_position.y);
+	App->render->Blit((SDL_Texture*)App->gui->GetAtlas(), cursor_position.x * App->win->GetScale() + cursor_offset.x, cursor_position.y * App->win->GetScale() + cursor_offset.y, &cursorRect);
+
+	//INGAME HUD
 	if (App->player->selected_entity != nullptr && App->gui->ingame == true)
 	{
 		StaticEntity* static_entity = (StaticEntity*)App->player->selected_entity;
