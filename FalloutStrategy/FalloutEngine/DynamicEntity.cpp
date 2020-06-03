@@ -178,6 +178,67 @@ bool DynamicEntity::PostUpdate() {
 	return true;
 }
 
+void DynamicEntity::PathfindToPosition(iPoint destination) {
+
+	UpdateTile();
+
+	if (destination == current_tile)
+		return;
+
+	if (!App->pathfinding->IsWalkable(current_tile)) {
+		destination = App->pathfinding->FindWalkableAdjacentTile(current_tile);
+		LOG("unwalkable origin");
+	}
+
+	//if the tile is in the map but it's not walkable
+	if (!App->pathfinding->IsWalkable(destination)) {
+		destination = App->pathfinding->FindNearestWalkableTile(current_tile, destination);
+		if (!App->pathfinding->IsWalkable(destination))
+			LOG("unwalkable destination");
+	}
+
+	if (App->entities->occupied_tiles[destination.x][destination.y]) {
+		destination = App->entities->FindFreeAdjacentTile(current_tile, destination);
+		next_tile = destination;
+		if (App->entities->occupied_tiles[destination.x][destination.y])
+			LOG("occupied destination");
+	}
+
+	target_tile = destination;
+
+	if (current_tile.DistanceManhattan(destination) > DEFAULT_PATH_LENGTH) {
+		node_path = App->pathfinding->CreateNodePath(current_tile, destination);
+
+		if (!App->pathfinding->IsWalkable(node_path.back()))
+			node_path.back() = App->pathfinding->FindNearestWalkableTile(current_tile, node_path.back());
+
+		if (node_path.back() == current_tile)
+			node_path.pop_back();
+
+		App->pathfinding->CreatePath(current_tile, node_path.back());
+		target_tile = node_path.back();
+	}
+	else {
+		if (App->pathfinding->CreatePath(current_tile, destination) == -2) {
+			LOG("No");
+			if (!App->pathfinding->IsWalkable(destination))
+				LOG("Unwalkable destination");
+		}
+	}
+
+	path_to_target.clear();
+	path_to_target = App->pathfinding->GetLastPath();
+
+	state = WALK;
+
+	if (path_to_target.size() > 0) {
+		if (path_to_target.front() == current_tile)
+			path_to_target.erase(path_to_target.begin());
+
+		next_tile = path_to_target.front();
+	}
+}
+
 void DynamicEntity::Move(float dt) {
 
 	if (path_to_target.size() > 0) {
@@ -319,67 +380,6 @@ void DynamicEntity::Flee() {
 	} while ((App->entities->occupied_tiles[possible_tile.x][possible_tile.y])&&(!App->pathfinding->IsWalkable(possible_tile)));
 
 	PathfindToPosition(possible_tile);
-}
-
-void DynamicEntity::PathfindToPosition(iPoint destination) {
-	
-	UpdateTile();
-
-	if (destination == current_tile)
-		return;
-
-	if (!App->pathfinding->IsWalkable(current_tile)) {
-		destination = App->pathfinding->FindWalkableAdjacentTile(current_tile);
-		LOG("unwalkable origin");
-	}
-
-	//if the tile is in the map but it's not walkable
-	if (!App->pathfinding->IsWalkable(destination)) {
-		destination = App->pathfinding->FindNearestWalkableTile(current_tile, destination);
-		if (!App->pathfinding->IsWalkable(destination))
-			LOG("unwalkable destination");
-	}
-
-	if (App->entities->occupied_tiles[destination.x][destination.y]) {
-		destination = App->entities->FindFreeAdjacentTile(current_tile, destination);
-		next_tile = destination;
-		if (App->entities->occupied_tiles[destination.x][destination.y])
-			LOG("occupied destination");
-	}
-
-	target_tile = destination;
-	
-	if (current_tile.DistanceManhattan(destination) > DEFAULT_PATH_LENGTH) {
-		node_path = App->pathfinding->CreateNodePath(current_tile, destination);
-
-		if (!App->pathfinding->IsWalkable(node_path.back()))
-			node_path.back() = App->pathfinding->FindNearestWalkableTile(current_tile, node_path.back());
-
-		if(node_path.back() == current_tile)
-			node_path.pop_back();
-
-		App->pathfinding->CreatePath(current_tile, node_path.back());
-		target_tile = node_path.back();
-	}
-	else {
-		if (App->pathfinding->CreatePath(current_tile, destination) == -2) {
-			LOG("No");
-			if (!App->pathfinding->IsWalkable(destination))
-				LOG("Unwalkable destination");
-		}
-	}
-	
-	path_to_target.clear();
-	path_to_target = App->pathfinding->GetLastPath();
-
-	state = WALK;
-
-	if (path_to_target.size() > 0) {
-		if (path_to_target.front() == current_tile)
-			path_to_target.erase(path_to_target.begin());
-
-		next_tile = path_to_target.front();
-	}
 }
 
 bool DynamicEntity::LoadAnimations(const char* folder, const char* file_name) {

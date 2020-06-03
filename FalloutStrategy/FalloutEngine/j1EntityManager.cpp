@@ -237,13 +237,15 @@ bool j1EntityManager::Update(float dt)
 			}
 		}
 	}
-
-	if (!App->isPaused)
+	else if (!App->isPaused)
 	{
 		for(int i = 0; i < entities.size(); i++)
 		{
 			if(!entities[i]->to_delete)
 				entities[i]->Update(dt);
+
+			if ((entities.size() == 0)||(i > entities.size()))
+				LOG("Break");
 		}
 	}
 

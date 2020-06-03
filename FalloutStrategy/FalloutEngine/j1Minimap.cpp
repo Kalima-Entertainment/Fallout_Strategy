@@ -25,6 +25,7 @@ j1Minimap::j1Minimap() : j1Module(), texture(nullptr) {
 	radar_time = 5;
 	radar = false;
 	visible = false;
+	position = {0,0};
 }
 
 j1Minimap::~j1Minimap() {
@@ -171,8 +172,17 @@ bool j1Minimap::CreateMinimap() {
 	PERF_START(ptimer);
 	int half_width = map_width * 0.5f;
 
+	/*
+	if (texture != nullptr) {
+		App->tex->UnLoad(texture);
+		texture = nullptr;
+	}
+	*/
+
 	texture = SDL_CreateTexture(App->render->renderer, SDL_GetWindowPixelFormat(App->win->window), SDL_TEXTUREACCESS_TARGET, width, height);
-	SDL_SetRenderTarget(App->render->renderer, texture);
+	
+	if(SDL_SetRenderTarget(App->render->renderer, texture) != 0)
+		LOG("Error setting rendering target %s", SDL_GetError());
 
 	for(int l = 0; l < MAX_LAYERS; l++)
 	{
@@ -199,7 +209,9 @@ bool j1Minimap::CreateMinimap() {
 		}
 	}
 
-	SDL_SetRenderTarget(App->render->renderer, NULL);
+	if (SDL_SetRenderTarget(App->render->renderer, NULL) != 0)
+		LOG("Error setting rendering target %s", SDL_GetError());
+	//SDL_SetRenderTarget(App->render->renderer, NULL);
 
 	PERF_PEEK(ptimer);
 

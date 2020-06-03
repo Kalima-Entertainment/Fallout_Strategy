@@ -75,7 +75,8 @@ bool Deathclaw::Update(float dt) {
 		current_animation = &animations[HIT][direction];
 		if (current_animation->Finished()) {
 			current_animation->Reset();
-			PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
+			//PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
+			state = WALK;
 		}
 
 		SpatialAudio(position.x, position.y, faction, state, type);

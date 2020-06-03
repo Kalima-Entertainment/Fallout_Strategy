@@ -152,7 +152,7 @@ bool j1Scene::Update(float dt)
 {
 	App->map->Draw();
 
-	if ((App->hud->minutes == 14) && (deathclaw1 == false))
+	if ((App->hud->minutes == 4) && (deathclaw1 == false))
 	{
 		if (players[0]->base != nullptr && deathclaw1 == false)
 		{
@@ -214,6 +214,7 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN){
 		App->SaveGame("save_file.xml");
 	}
+
 	else if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN || load_game == true) {
 		App->LoadGame("save_file.xml");
 		load_game = false;
@@ -271,7 +272,6 @@ void j1Scene::SetMenuState(const StatesMenu& menu)
 {
 	menu_state = menu;
 }
-
 
 void j1Scene::RectangleSelection()
 {
@@ -445,7 +445,6 @@ bool j1Scene::Load(pugi::xml_node& data)
 	if (App->map->Load(modules) == true)
 	{
 		App->map->CreateWalkabilityMap();
-
 	}
 
 	App->minimap->Start();
@@ -457,14 +456,11 @@ bool j1Scene::Load(pugi::xml_node& data)
 // Save Game State
 bool j1Scene::Save(pugi::xml_node& data) const
 {
-
 	for(int i=0; i<4;i++){
 
 		pugi::xml_node module = data.append_child("modules");
 		module.append_attribute("map") = modules[i].c_str();
 
 	}
-
 	return true;
-
 }
