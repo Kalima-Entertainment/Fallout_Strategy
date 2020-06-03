@@ -18,7 +18,7 @@
 #include "j1Hud.h"
 #include "DialogManager.h"
 #include "MenuManager.h"
-
+#include "MainMenu.h"
 #include "SDL_mixer\include\SDL_mixer.h"
 
 j1Transition::j1Transition() : j1Module()
@@ -109,12 +109,14 @@ bool j1Transition::Start()
 	{
 		LoadAnimations();
 	}
-	transition = false;
+	
 	return true;
 }
 
 bool j1Transition::CleanUp()
 {
+	App->tex->UnLoad(logo_tex);
+	logo_tex = nullptr;
 	App->tex->UnLoad(gif_tex);
 	gif_tex = nullptr;
 	App->tex->UnLoad(background);
@@ -156,6 +158,7 @@ void j1Transition::Transition()
 		App->gui->active;
 		App->Mmanager->Enable();
 		App->scene->Enable();
+		App->main_menu->Disable();
 		
 		//App->minimap->Enable();
 		if(App->gui->load==false){
@@ -164,7 +167,6 @@ void j1Transition::Transition()
 			App->isPaused = true;
 		}				
 		App->gui->load = false;
-
 	}
 	else if ((fadetimer.Read() > 2500)&&(!App->gui->ingame)) {
 		Mix_PauseMusic();
@@ -177,13 +179,14 @@ void j1Transition::Transition()
 		App->map->Disable();
 		App->minimap->Disable();
 		App->Mmanager->Disable();
-		App->hud->CleanUp();
+		App->hud->Disable();
 		transition = false;
 		App->gui->ingame = false;		
 		App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 		App->isPaused = false;
 		App->scene->win = false;
 		App->scene->lose = false;
+		App->main_menu->Enable();
 	}
 }
 
