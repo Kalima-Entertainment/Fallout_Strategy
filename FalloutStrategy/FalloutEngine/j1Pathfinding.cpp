@@ -200,8 +200,8 @@ std::vector<iPoint> j1PathFinding::CreateNodePath(iPoint origin, iPoint destinat
 				possible_node.x = current_node.x + x;
 				possible_node.y = current_node.y + y;
 
-				if (possible_node.DistanceTo(origin_node) <= current_node.DistanceTo(origin_node)) {
-					if (possible_node.DistanceTo(destination_node) < current_node.DistanceTo(destination_node))
+				if (possible_node.DistanceTo(destination_node) < current_node.DistanceTo(destination_node)) {
+					if (possible_node.DistanceTo(destination_node) < best_node.DistanceTo(destination_node))
 						best_node = possible_node;
 				}
 			}
