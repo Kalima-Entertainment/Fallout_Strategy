@@ -313,15 +313,13 @@ void MenuManager::CreateMenu(Menu menu) {
 		select_faction_menu[2] = (UI_Button*)App->gui->CreateButton(160, 290, button_select_vault, { 1900,1144,204,60 }, { 1900,1210,204,60 }, { 1900,1277,204,60 }, NULL, this);
 		select_faction_menu[3] = (UI_Button*)App->gui->CreateButton(160, 380, button_select_brotherhood, { 1900,1144,204,60 }, { 1900,1210,204,60 }, { 1900,1277,204,60 }, NULL, this);
 		select_faction_menu[4] = (UI_Button*)App->gui->CreateButton(160, 470, button_select_supermutant, { 1900,1144,204,60 }, { 1900,1210,204,60 }, { 1900,1277,204,60 }, NULL, this);
-		select_faction_menu[5] = (UI_Button*)App->gui->CreateButton(120, 605, button_back_to_menu, { 1243,2014,73,78 }, { 1243,2102,73,79 }, { 1243,2188,73,71 }, NULL, this);
-		//select_faction_menu[6] = (UI_Button*)App->gui->CreateButton(900, 605, button_start_game, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+		select_faction_menu[5] = (UI_Button*)App->gui->CreateButton(40, 190, button_back_to_menu, { 1243,2014,73,78 }, { 1243,2102,73,79 }, { 1243,2188,73,71 }, NULL, this);
 
 		//Labels
 		select_faction_menu[6] = (UI_Label*)App->gui->CreateLabel(222, 215, Label, "GHOUL", NULL, this, NULL, "StackedPixelMedium");
 		select_faction_menu[7] = (UI_Label*)App->gui->CreateLabel(220, 305, Label, "VAULT", NULL, this, NULL, "StackedPixelMedium");
 		select_faction_menu[8] = (UI_Label*)App->gui->CreateLabel(175, 395, Label, "BROTHERHOOD", NULL, this, NULL, "StackedPixelMedium");
 		select_faction_menu[9] = (UI_Label*)App->gui->CreateLabel(170, 485, Label, "SUPERMUTANT", NULL, this, NULL, "StackedPixelMedium");
-		//select_faction_menu[10] = (UI_Label*)App->gui->CreateLabel(925, 620, Label, "START GAME", NULL, this, NULL);
 
 		last_menu = current_menu;
 		current_menu = Menu::SELECT_FACTION;

@@ -70,6 +70,7 @@ bool LogoScene::Update(float dt) {
 		my_video = 0;
 		Loop = false;
 		quit = true;
+		App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && App->scene->win == true)
 	{
@@ -98,7 +99,6 @@ bool LogoScene::Update(float dt) {
 		if ((App->player->selected_entity) && (!App->player->selected_entity->is_dynamic)) {
 			App->menu_manager->DestroyFaction(Menu::BUI_BASES, App->player->selected_entity->faction, App->player->selected_entity->type);
 		}
-		App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 		App->audio->PlayFx(1, App->audio->back_fx, 0);
 		App->gui->ingame = false;
 		App->transition->StartTimer();

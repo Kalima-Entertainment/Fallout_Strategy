@@ -84,7 +84,7 @@ bool MainMenu::Start()
 		LoadAnimations();
 	}
 	
-	App->menu_manager->CreateMenu(Menu::MAIN_MENU);
+	
 
 	return true;
 }
