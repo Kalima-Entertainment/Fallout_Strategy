@@ -17,9 +17,9 @@
 j1Minimap::j1Minimap() : j1Module(), texture(nullptr) {
 	name = ("minimap");
 
-	map_height = 200;
+	map_height = 0;
 	scale = 1;
-	width = 100;
+	width = 0;
 	margin = 0;
 	corner = Corner::TOP_LEFT;
 	radar_time = 5;
@@ -32,7 +32,6 @@ j1Minimap::~j1Minimap() {
 }
 
 bool j1Minimap::Awake(pugi::xml_node& config) {
-	uint window_width, window_height;
 
 	width = config.attribute("width").as_int();
 
@@ -118,12 +117,14 @@ bool j1Minimap::PostUpdate() {
 
  	if (visible) {
 
+		//texture
 		App->render->Blit(texture, position.x, position.y, NULL, 1.0, 0);
 
-		if (App->render->fog_of_war) {
+		//fog of war
+		if (App->render->fog_of_war) 
 			DrawFogOfWar();
-		}
 
+		//entities
 		for(int i = 0; i < App->entities->entities.size(); i++)
 		{
 			SDL_Rect entity_rect = { 0,0,3,3 };
@@ -158,6 +159,7 @@ bool j1Minimap::PostUpdate() {
 			App->render->DrawLine(radar_line.x1, radar_line.y1, radar_line.x2, radar_line.y2, 0,255,0,255,false);
 		}
 
+		//white rect
 		SDL_Rect rect = { 0,0,0,0 };
 		iPoint rect_position = WorldToMinimap(-App->render->camera.x, -App->render->camera.y);
 		App->render->DrawQuad({ rect_position.x, rect_position.y, (int)(App->render->camera.w * scale),(int)(App->render->camera.h * scale) }, 255, 255, 255, 255, false, false);
@@ -171,18 +173,21 @@ bool j1Minimap::CreateMinimap() {
 
 	PERF_START(ptimer);
 	int half_width = map_width * 0.5f;
-
-	/*
+		
 	if (texture != nullptr) {
 		App->tex->UnLoad(texture);
 		texture = nullptr;
 	}
-	*/
-
+	
 	texture = SDL_CreateTexture(App->render->renderer, SDL_GetWindowPixelFormat(App->win->window), SDL_TEXTUREACCESS_TARGET, width, height);
+
+	if(texture == NULL)
+		LOG("Error creating texture %s", SDL_GetError());
 	
 	if(SDL_SetRenderTarget(App->render->renderer, texture) != 0)
 		LOG("Error setting rendering target %s", SDL_GetError());
+
+	App->render->ResetCameraPosition();
 
 	for(int l = 0; l < MAX_LAYERS; l++)
 	{
@@ -283,13 +288,13 @@ void j1Minimap::DrawFogOfWar() {
 			}
 			else {
 				fog_of_war_rect.w = round(1.75f * tile_width * counter);
-				App->render->DrawQuad(fog_of_war_rect, 0, 0, 0, 255, true, false);
+				App->render->DrawQuad(fog_of_war_rect, 50, 50,50, 255, true, false);
 				fog_of_war_rect.x += round(fog_of_war_rect.w + 1.75f * tile_width);
 				counter = 0;
 			}
 		}
 		fog_of_war_rect.w = round(1.75f * tile_width * counter);
-		App->render->DrawQuad(fog_of_war_rect, 0, 0, 0, 255, true, false);
+		App->render->DrawQuad(fog_of_war_rect, 50, 50, 50, 255, true, false);
 	}
 }
 

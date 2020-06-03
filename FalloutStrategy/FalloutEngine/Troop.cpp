@@ -202,7 +202,6 @@ bool Troop::Update(float dt) {
 				else {
 					UpdateTile();
 					path_to_target.clear();
-					current_animation->Reset();
 					Attack();
 				}
 			}
@@ -306,6 +305,9 @@ void Troop::Attack() {
 		DynamicEntity* dynamic_target = (DynamicEntity*)target_entity;
 
 		target_entity->attacking_entity = this;
+		if (dynamic_target->state == ATTACK)
+			dynamic_target->current_animation->Reset();
+
 		dynamic_target->state = HIT;
 
 		if ((current_tile.x > target_entity->current_tile.x) && (current_tile.y == target_entity->current_tile.y)) {

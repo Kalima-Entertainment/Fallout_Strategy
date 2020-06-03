@@ -36,6 +36,7 @@ public:
 	// Utils
 	void SetViewPort(const SDL_Rect& rect);
 	void ResetViewPort();
+	void ResetCameraPosition();
 	iPoint ScreenToWorld(int x, int y) const;
 	iPoint WorldToScreen(int x, int y) const;
 	fPoint fWorldToScreen(int x, int y) const;
