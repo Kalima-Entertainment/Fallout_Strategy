@@ -674,6 +674,36 @@ bool UI_Button::Update(float dt)
 			else if (t == Radio_button) {
 				App->menu_manager->CreateMenu(Menu::RADIO);
 			}
+			else if (t == RockFM_button)
+			{
+			Mix_PauseMusic();
+			App->audio->PlayMusic("Assets/audio/music/RockFM/bon-jovi-its-my-life.ogg", 0.0F);
+			}
+			else if (t == SlimShadyFM_button)
+			{
+			Mix_PauseMusic();
+			App->audio->PlayMusic("Assets/audio/music/SlimShadyFM/not-afraid-eminem.ogg", 0.0F);
+			}
+			else if (t == UltraRADIO_button)
+			{
+			Mix_PauseMusic();
+			App->audio->PlayMusic("Assets/audio/music/Ultraradio/avicii-hey-brother.ogg", 0.0F);
+			}
+			else if (t == FiestaLatinaFM_button)
+			{
+			Mix_PauseMusic();
+			App->audio->PlayMusic("Assets/audio/music/FiestalatinaFM/karol-g-nicki-minaj-tusa.ogg", 0.0F);
+			}
+			else if (t == AyuwokiFM_button)
+			{
+			Mix_PauseMusic();
+			App->audio->PlayMusic("Assets/audio/music/AyuwokiFM/michael-jackson-billy-jean.ogg", 0.0F);
+			}
+			else if (t == FusionCoreFM_button)
+			{
+			Mix_PauseMusic();
+			App->audio->PlayMusic("Assets/audio/music/FusioncoreFM/fallout-3-soundtrack-rhythm-for-you.ogg", 0.0F);
+			}
 		}
 
 		else {
