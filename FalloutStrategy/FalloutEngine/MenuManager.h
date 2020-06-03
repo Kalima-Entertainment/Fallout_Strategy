@@ -30,6 +30,7 @@ enum class Menu {
 	COLLABORATORS_CREDITS,
 	DIALOG,
 	QUEST,
+	RADIO,
 	GATHERER_QUANTITY,
 	MELEE_QUANTITY,
 	RANGED_QUANTITY,
@@ -70,6 +71,7 @@ public:
 	UI_Label*	timer_minutes;
 	UI_element* resources[3];
 	UI_element* quest[12];
+	UI_element* radio[6];
 
 	UI_element* brotherhood_base[14];
 	UI_element* brotherhood_barrack[21];

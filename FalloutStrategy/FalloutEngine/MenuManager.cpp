@@ -437,10 +437,11 @@ void MenuManager::CreateMenu(Menu menu) {
 		tutorial[5] = nullptr;
 		tutorial[6] = nullptr;
 		tutorial[7] = nullptr;
+		
 		last_menu = current_menu;
 		current_menu = Menu::PAUSE_MENU;
 
-		break;
+		break; 
 
 	case Menu::HOW_TO_PLAY:
 		how_to_play[0] = (UI_Button*)App->gui->CreateButton(920, 470, how_to_play_previous, { 1671,880,26,26 }, { 1738,880,26,26 }, { 1671,880,26,26 }, NULL, this);
@@ -527,6 +528,15 @@ void MenuManager::CreateMenu(Menu menu) {
 		quest[7] = (j1Image*)App->gui->CreateImage(33, 160, Image, { 3061, 619, 30, 27 }, NULL, this);
 		quest[8] = (j1Image*)App->gui->CreateImage(33, 200, Image, { 3061, 619, 30, 27 }, NULL, this);
 		*/
+		//last_menu = current_menu;
+		//current_menu = Menu::QUEST;
+
+		break;
+
+	case Menu::RADIO:
+
+		quest[0] = (j1Image*)App->gui->CreateImage(500, 500, Image, { 1290, 2313, 115, 115 }, NULL, this);
+
 		//last_menu = current_menu;
 		//current_menu = Menu::QUEST;
 
