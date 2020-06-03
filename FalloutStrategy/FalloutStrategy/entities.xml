@@ -97,22 +97,22 @@
    </brotherhood>
    <mutants>
     <base health="8000">
-     <upgrade level="1" x="133" y="217" rect_x="1445" rect_y="975" rect_w="64" rect_h="49 "/>
-     <upgrade level="2" x="227" y="173" rect_x="1582" rect_y="985" rect_w="36" rect_h="39"/>
-     <upgrade level="3" x="215" y="145" rect_x="1714" rect_y="947" rect_w="30" rect_h="77"/>
-     <upgrade level="4" x="24" y="191" rect_x="1792" rect_y="931" rect_w="102" rect_h="75"/>
+     <upgrade level="1" x="133" y="217" rect_x="1445" rect_y="719" rect_w="64" rect_h="49 "/>
+     <upgrade level="2" x="227" y="173" rect_x="1582" rect_y="729" rect_w="36" rect_h="39"/>
+     <upgrade level="3" x="215" y="145" rect_x="1714" rect_y="692" rect_w="30" rect_h="77"/>
+     <upgrade level="4" x="24" y="191" rect_x="1792" rect_y="672" rect_w="102" rect_h="75"/>
     </base>
     <barrack health="6000">
-     <upgrade level="1" x="26" y="192" rect_x="3234" rect_y="2231" rect_w="48" rect_h="73"/>
-     <upgrade level="2" x="83" y="196" rect_x="3366" rect_y="2227" rect_w="58" rect_h="77"/>
-     <upgrade level="3" x="198" y="152" rect_x="3505" rect_y="2231" rect_w="29" rect_h="73"/>
-     <upgrade level="4" x="137" y="122" rect_x="3623" rect_y="2176" rect_w="59" rect_h="128"/>
+     <upgrade level="1" x="26" y="192" rect_x="3234" rect_y="1208" rect_w="48" rect_h="73"/>
+     <upgrade level="2" x="83" y="196" rect_x="3366" rect_y="1204" rect_w="58" rect_h="77"/>
+     <upgrade level="3" x="198" y="152" rect_x="3505" rect_y="1208" rect_w="29" rect_h="73"/>
+     <upgrade level="4" x="137" y="122" rect_x="3623" rect_y="1152" rect_w="59" rect_h="128"/>
     </barrack>
     <laboratory health="7000"> 
-     <upgrade level="1" x="123" y="188" rect_x="2225" rect_y="1716" rect_w="29" rect_h="76"/>
-     <upgrade level="2" x="196" y="95" rect_x="2341" rect_y="1664" rect_w="60" rect_h="128"/>
-     <upgrade level="3" x="165" y="159" rect_x="2474" rect_y="1722" rect_w="44" rect_h="70"/>
-     <upgrade level="4" x="108" y="84" rect_x="2595" rect_y="1733" rect_w="59" rect_h="59"/>
+     <upgrade level="1" x="123" y="188" rect_x="2225" rect_y="948" rect_w="29" rect_h="76"/>
+     <upgrade level="2" x="196" y="95" rect_x="2341" rect_y="895" rect_w="60" rect_h="128"/>
+     <upgrade level="3" x="165" y="159" rect_x="2474" rect_y="954" rect_w="44" rect_h="70"/>
+     <upgrade level="4" x="108" y="84" rect_x="2595" rect_y="965" rect_w="59" rect_h="59"/>
     </laboratory>   
    </mutants>
    <ghouls>
