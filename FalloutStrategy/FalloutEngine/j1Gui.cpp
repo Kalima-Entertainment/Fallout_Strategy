@@ -49,7 +49,7 @@ bool j1Gui::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Gui::Start()
 {
-	//SDL_ShowCursor(SDL_DISABLE);
+	SDL_ShowCursor(SDL_DISABLE);
 	texture = App->tex->Load(PATH(folder.c_str(), UI_file_name.c_str()));
 
 	return true;
