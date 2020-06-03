@@ -118,7 +118,7 @@ bool Troop::Update(float dt) {
 
 		if (target_entity) {
 			if (target_entity->is_dynamic) {
-				if (current_tile.DistanceManhattan(target_entity->current_tile) <= range) {
+				if (current_tile.DistanceNoSqrt(target_entity->current_tile) <= range) {
 					UpdateTile();
 					path_to_target.clear();
 					if (target_entity->faction != faction) {
@@ -128,7 +128,7 @@ bool Troop::Update(float dt) {
 						state = IDLE;
 					}
 				}
-				else {
+				else if (current_tile.DistanceNoSqrt(target_entity->current_tile) > range){
 					PathfindToPosition(target_entity->current_tile);
 				}
 			}
@@ -202,6 +202,7 @@ bool Troop::Update(float dt) {
 				else {
 					UpdateTile();
 					path_to_target.clear();
+					current_animation->Reset();
 					Attack();
 				}
 			}

@@ -50,6 +50,7 @@ bool Animal::Update(float dt) {
         break;
     case WALK:
         Move(dt);
+
 		if (current_tile == target_tile)
 			state = IDLE;
 

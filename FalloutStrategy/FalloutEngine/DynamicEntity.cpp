@@ -284,10 +284,12 @@ void DynamicEntity::Move(float dt) {
 			state = IDLE;
 		}
 		else {
-			next_tile = path_to_target.front();
+			if (path_to_target.size() > 0) {
+				next_tile = path_to_target.front();
 
-			if(path_to_target.size() > 0)
-			path_to_target.erase(path_to_target.cbegin());
+				if (path_to_target.size() > 0)
+					path_to_target.erase(path_to_target.cbegin());
+			}
 		}
 
 		break;
