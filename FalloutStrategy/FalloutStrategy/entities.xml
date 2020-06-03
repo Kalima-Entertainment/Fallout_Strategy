@@ -77,22 +77,22 @@
    </vault>
    <brotherhood>
     <base health="8000">
-     <upgrade level="1" x="112" y="149" rect_x="51" rect_y="2906" rect_w="27" rect_h="38"/>
-     <upgrade level="2" x="102" y="173" rect_x="162" rect_y="2844" rect_w="61" rect_h="100"/>
-     <upgrade level="3" x="26" y="161" rect_x="285" rect_y="2849" rect_w="67" rect_h="95"/>
-     <upgrade level="4" x="167" y="159" rect_x="412" rect_y="2851" rect_w="68" rect_h="93"/>
+     <upgrade level="1" x="112" y="149" rect_x="51" rect_y="1882" rect_w="27" rect_h="38"/>
+     <upgrade level="2" x="102" y="173" rect_x="162" rect_y="1820" rect_w="61" rect_h="100"/>
+     <upgrade level="3" x="26" y="161" rect_x="285" rect_y="1825" rect_w="67" rect_h="95"/>
+     <upgrade level="4" x="167" y="159" rect_x="412" rect_y="1825" rect_w="68" rect_h="93"/>
     </base>
     <barrack health="6000">
-     <upgrade level="1" x="146 " y="204" rect_x="1314" rect_y="2885" rect_w="60" rect_h="59"/>
-     <upgrade level="2" x="73" y="225" rect_x="1455" rect_y="2909" rect_w="34" rect_h="35"/>
-     <upgrade level="3" x="118" y="195" rect_x="1585" rect_y="2867" rect_w="29" rect_h="77"/>
-     <upgrade level="4" x="162" y="183" rect_x="1714" rect_y="2900" rect_w="28" rect_h="44"/>
+     <upgrade level="1" x="146 " y="204" rect_x="1314" rect_y="1861" rect_w="60" rect_h="59"/>
+     <upgrade level="2" x="73" y="225" rect_x="1455" rect_y="1885" rect_w="34" rect_h="35"/>
+     <upgrade level="3" x="118" y="195" rect_x="1585" rect_y="1843" rect_w="29" rect_h="77"/>
+     <upgrade level="4" x="162" y="183" rect_x="1714" rect_y="1876" rect_w="28" rect_h="44"/>
     </barrack>
     <laboratory health="7000"> 
-     <upgrade level="1" x="72 " y="170" rect_x="682" rect_y="2863" rect_w="44" rect_h="81"/>
-     <upgrade level="2" x="72" y="218" rect_x="818" rect_y="2911" rect_w="28" rect_h="33"/>
-     <upgrade level="3" x="12" y="115" rect_x="930" rect_y="2816" rect_w="59" rect_h="128"/>
-     <upgrade level="4" x="140" y="153" rect_x="1061" rect_y="2829" rect_w="74" rect_h="115"/>
+     <upgrade level="1" x="72 " y="170" rect_x="682" rect_y="1839" rect_w="44" rect_h="81"/>
+     <upgrade level="2" x="72" y="218" rect_x="818" rect_y="1886" rect_w="28" rect_h="33"/>
+     <upgrade level="3" x="12" y="115" rect_x="930" rect_y="1791" rect_w="59" rect_h="128"/>
+     <upgrade level="4" x="140" y="153" rect_x="1061" rect_y="1805" rect_w="74" rect_h="115"/>
     </laboratory>   
    </brotherhood>
    <mutants>
