@@ -115,9 +115,6 @@ bool j1Player::PreUpdate() {
 		if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
 			App->minimap->EnableRadar();
 
-		if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
-			App->minimap->Start();
-
 		//mouse --------------------------------------------------------------------------
 		App->input->GetMousePosition(mouse_position.x, mouse_position.y);
 		//entity selection and interaction
@@ -309,7 +306,7 @@ bool j1Player::Update(float dt) {
 			qfood = true;
 		}
 	}
-	
+
 	iPoint selected_spot;
 	App->input->GetMousePosition(selected_spot.x, selected_spot.y);
 	

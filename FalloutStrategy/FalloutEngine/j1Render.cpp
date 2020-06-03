@@ -135,6 +135,11 @@ void j1Render::ResetViewPort()
 	SDL_RenderSetViewport(renderer, &viewport);
 }
 
+void j1Render::ResetCameraPosition() {
+	camera.x = 0;
+	camera.y = 0;
+}
+
 iPoint j1Render::ScreenToWorld(int x, int y) const
 {
 	iPoint ret;
