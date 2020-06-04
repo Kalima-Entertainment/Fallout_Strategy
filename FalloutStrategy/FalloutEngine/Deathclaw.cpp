@@ -123,6 +123,11 @@ void Deathclaw::Attack() {
 
 	attack_timer.Start();
 
+	if (target_building == nullptr) {
+		state = DIE;
+		return;
+	}
+
 	//damage unit if god_mode isn't activated
 	if ((target_building->faction == App->player->faction) && (App->player->god_mode))
 		return;

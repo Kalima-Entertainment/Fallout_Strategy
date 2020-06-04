@@ -135,7 +135,8 @@ void j1Render::ResetViewPort()
 	SDL_RenderSetViewport(renderer, &viewport);
 }
 
-void j1Render::ResetCameraPosition() {
+void j1Render::ResetCameraPosition() 
+{
 	camera.x = 0;
 	camera.y = 0;
 }
@@ -170,7 +171,7 @@ fPoint j1Render::fWorldToScreen(int x, int y) const
 }
 
 // Blit to screen
-bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale, float speed, double angle, int pivot_x, int pivot_y, Uint8 alpha) const
+bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale, float speed, bool color, double angle, int pivot_x, int pivot_y, Uint8 alpha) const
 {
 	bool ret = true;
 	//float scale = App->win->GetScale();
@@ -205,6 +206,10 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 		p = &pivot;
 	}
 
+	if (color == true) {
+		SDL_SetTextureColorMod(texture, 0, 200, 240);
+	}
+
 	if (SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, SDL_FLIP_NONE) != 0)
 	{
 		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
@@ -217,8 +222,8 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, bool use_camera) const
 {
 	bool ret = true;
-	//uint scale = App->win->GetScale();
-	uint scale = 1;
+	uint scale = App->win->GetScale();
+	//uint scale = 1;
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);

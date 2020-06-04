@@ -71,7 +71,7 @@ void j1MovementManager::SelectEntities_inRect(SDL_Rect SRect)
 	}
 }
 
-void j1MovementManager::CreateGroup(std::vector<DynamicEntity*> entities_vector)
+j1Group* j1MovementManager::CreateGroup(std::vector<DynamicEntity*> entities_vector)
 {
 	//LOG("Group Creation Called");
 	bool Validgroup = false;
@@ -102,13 +102,18 @@ void j1MovementManager::CreateGroup(std::vector<DynamicEntity*> entities_vector)
 	}
 
 	// --- Finally, If the group is Valid add it to our Groups list, else delete it ---
-	if (Validgroup) Groups.push_back(group);
+	if (Validgroup) {
+		Groups.push_back(group);
+		return group;
+	}
 	else delete group;
+
+	return nullptr;
 }
 
 void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 {
-	
+	/*
 	// -- Getting group information
 	std::list <j1Entity*>::const_iterator unit = group->Units.begin();
 
@@ -199,7 +204,7 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 		}
 
 	}
-	
+	*/
 }
 
 // Load Game State

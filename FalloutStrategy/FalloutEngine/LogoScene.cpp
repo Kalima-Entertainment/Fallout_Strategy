@@ -87,7 +87,6 @@ bool LogoScene::Update(float dt) {
 		App->transition->StartTimer();
 		App->transition->transition = true;
 		App->transition->fadetimer.Start();
-		Mix_PauseMusic();
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && App->scene->lose == true)
 	{

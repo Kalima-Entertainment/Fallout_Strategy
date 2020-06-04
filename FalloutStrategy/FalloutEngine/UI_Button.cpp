@@ -266,6 +266,7 @@ bool UI_Button::Update(float dt)
 				App->transition->StartTimer();
 				App->transition->transition = true;
 				App->transition->fadetimer.Start();
+				App->transition->freeTransitionTex = false;
 				
 			}
 			else if (t == button_cap) {
@@ -302,8 +303,7 @@ bool UI_Button::Update(float dt)
 					App->menu_manager->fullscreen_label = (UI_Label*)App->gui->CreateLabel(763, 613, Label, "NO", NULL, this, NULL, "StackedPixelMedium");
 				}
 
-				App->minimap->CleanUp();
-				App->minimap->Start();
+				App->minimap->Reset();
 			}
 			//Spawn Gatherer from any faction
 			else if (t == Ghouls_ghaterer_button || t == Vault_ghaterer_button || t == Supermutant_ghaterer_button || t == Brotherhood_ghaterer_button){
@@ -528,11 +528,21 @@ bool UI_Button::Update(float dt)
 			else if (t == info_button2) {
 				if (App->scene->create_tutorial == true) {
 					App->easing_splines->CreateSpline(&App->menu_manager->tutorial_screen->pos.x, App->menu_manager->tutorial_screen->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[0]->pos.x, App->menu_manager->tutorial[0]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[1]->pos.x, App->menu_manager->tutorial[1]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[2]->pos.x, App->menu_manager->tutorial[2]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[3]->pos.x, App->menu_manager->tutorial[3]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[4]->pos.x, App->menu_manager->tutorial[4]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					if (App->menu_manager->tutorial[0] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[0]->pos.x, App->menu_manager->tutorial[0]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->tutorial[1] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[1]->pos.x, App->menu_manager->tutorial[1]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->tutorial[2] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[2]->pos.x, App->menu_manager->tutorial[2]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->tutorial[3] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[3]->pos.x, App->menu_manager->tutorial[3]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
+					if (App->menu_manager->tutorial[4] != nullptr) {
+						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[4]->pos.x, App->menu_manager->tutorial[4]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					}
 					if (App->menu_manager->tutorial[6] != nullptr) {
 						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[6]->pos.x, App->menu_manager->tutorial[6]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
 					}

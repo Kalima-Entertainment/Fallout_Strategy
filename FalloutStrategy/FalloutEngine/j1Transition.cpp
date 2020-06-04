@@ -31,11 +31,10 @@ j1Transition::j1Transition() : j1Module()
 	background = nullptr;
 	lastdt = 0.01f;
 	transition = false;
-
+	freeTransitionTex = false;
 }
 
-j1Transition::~j1Transition()
-{
+j1Transition::~j1Transition() {
 }
 
 bool j1Transition::LoadAnimations() {
@@ -128,6 +127,7 @@ bool j1Transition::CleanUp()
 bool j1Transition::Update(float dt)
 {
 	lastdt = dt;
+
 	return true;
 }
 bool j1Transition::PostUpdate()
@@ -166,6 +166,7 @@ void j1Transition::Transition()
 			App->isPaused = true;
 		}				
 		App->gui->load = false;
+		freeTransitionTex = true;
 	}
 	else if ((fadetimer.Read() > 2500)&&(!App->gui->ingame)) {
 		Mix_PauseMusic();
@@ -191,8 +192,22 @@ void j1Transition::Transition()
 			App->entities->showing_building_menu = false;
 			App->player->selected_entity = nullptr;
 		}
-
 	}
+
+	if(logo_tex != nullptr)
+	{
+		if (freeTransitionTex)
+		{
+			CleanUp();
+		}
+	}
+	if(logo_tex == nullptr && !freeTransitionTex)
+	{
+		Start();
+	}
+	
+
+	
 }
 
 void j1Transition::StartTimer() {fadetimer.Start();}

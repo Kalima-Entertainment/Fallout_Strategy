@@ -543,8 +543,8 @@ void MenuManager::CreateMenu(Menu menu) {
 		radio[4] = (UI_Button*)App->gui->CreateButton( 750, 375, FusionCoreFM_button, { 2492,2312,114,114 }, { 2160,2312,114,114 }, { 823,2312,114,114 }, NULL, this);
 		radio[5] = (UI_Button*)App->gui->CreateButton( 600, 475, UltraRADIO_button, { 2383,2312,114,114 }, { 2046,2312,114,114 }, { 712,2312,114,114 }, NULL, this);
 
-		last_menu = current_menu;
-		current_menu = Menu::RADIO;
+		//last_menu = current_menu;
+		//current_menu = Menu::RADIO;
 
 		break;
 	case Menu::NO_MENU:

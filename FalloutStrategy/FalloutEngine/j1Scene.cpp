@@ -152,7 +152,7 @@ bool j1Scene::Update(float dt)
 {
 	App->map->Draw();
 
-	if ((App->hud->minutes == 4) && (deathclaw1 == false))
+	if ((App->hud->minutes == 14) && (deathclaw1 == false))
 	{
 		if (players[0]->base != nullptr && deathclaw1 == false)
 		{
@@ -234,11 +234,12 @@ bool j1Scene::Update(float dt)
 		win = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 		App->menu_manager->DestroyMenu(Menu::RESOURCES);
-		App->gui->ingame = false;
 		App->logo_scene->playsound = true;
+		App->gui->ingame = false;
 		App->isPaused = true;
 		App->logo_scene->Loop = true;
 		App->hud->activateTimer = false;
+		App->transition->freeTransitionTex = false;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 	{
@@ -250,6 +251,7 @@ bool j1Scene::Update(float dt)
 		App->isPaused = true;
 		App->logo_scene->Loop = true;
 		App->hud->activateTimer = false;
+		App->transition->freeTransitionTex = false;
 	}
 
 	return true;
@@ -311,7 +313,7 @@ void j1Scene::RectangleSelection()
 				selected_entities.push_back((DynamicEntity*)App->entities->entities[i]);
 			}
 		}
-		App->Mmanager->CreateGroup(selected_entities);
+		App->player->selected_group = App->Mmanager->CreateGroup(selected_entities);
 	}
 }
 
@@ -327,10 +329,11 @@ void j1Scene::CheckWinner() {
 					App->logo_scene->Loop = true;
 					App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 					App->menu_manager->DestroyMenu(Menu::GUI);
-					App->hud->Disable();
+					App->hud->CleanUp();
 					App->gui->ingame = false;
 					App->isPaused = true;
 					App->logo_scene->playsound = true;
+					App->transition->freeTransitionTex = false;
 				}
 				else {
 					beaten_enemies++;
@@ -350,10 +353,11 @@ void j1Scene::CheckWinner() {
 				App->logo_scene->Loop = true;
 				App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 				App->menu_manager->DestroyMenu(Menu::GUI);
-				App->hud->Disable();
+				App->hud->CleanUp();
 				App->gui->ingame = false;
 				App->isPaused = true;
 				App->logo_scene->playsound = true;
+				App->transition->freeTransitionTex = false;
 			}
 		}
 	}
