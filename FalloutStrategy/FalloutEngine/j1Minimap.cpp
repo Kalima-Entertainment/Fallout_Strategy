@@ -238,8 +238,8 @@ iPoint j1Minimap::ScreenToMinimapToWorld(int x, int y) {
 	return minimap_position;
 }
 
-iPoint j1Minimap::MapToMinimap(int x, int y) {
-	iPoint minimap_position;
+fPoint j1Minimap::MapToMinimap(int x, int y) {
+	fPoint minimap_position;
 	minimap_position.x = minimap_x_center + (x - y) * HALF_TILE * scale;
 	minimap_position.y = position.y + (x + y) * TILE_QUARTER * scale;
 	return minimap_position;
@@ -259,7 +259,7 @@ void j1Minimap::EnableRadar() {
 
 void j1Minimap::DrawFogOfWar() {
 	SDL_Rect fog_of_war_rect = { 0,0,1,1 };
-	iPoint rect_pos = {0,0};
+	fPoint rect_pos = {0,0};
 
 	int tile_width = width / 150;
 	fog_of_war_rect.h = 1;
