@@ -335,6 +335,7 @@ bool j1Player::Update(float dt) {
 		}
 	}
 	
+	/*
 	// -- Request GroupMovement
 	for(int i = 0; i < App->entities->entities.size(); i++)
 	{
@@ -349,6 +350,7 @@ bool j1Player::Update(float dt) {
 			}
 		}
 	}
+	*/
 
 	/*
 	if (reward == 1) {
