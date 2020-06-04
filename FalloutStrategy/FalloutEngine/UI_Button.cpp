@@ -708,7 +708,7 @@ bool UI_Button::Update(float dt)
 			else if (t == UltraRADIO_button)
 			{
 			Mix_PauseMusic();
-			App->audio->PlayMusic("Assets/audio/music/Ultraradio/daft-punk-get-lucky.ogg", 0.0F);
+			App->audio->PlayMusic("Assets/audio/music/Ultraradio/Instagram.ogg", 0.0F);
 			}
 			else if (t == FiestaLatinaFM_button)
 			{
@@ -718,12 +718,12 @@ bool UI_Button::Update(float dt)
 			else if (t == AyuwokiFM_button)
 			{
 			Mix_PauseMusic();
-			App->audio->PlayMusic("Assets/audio/music/AyuwokiFM/michael-jackson-smooth-criminal.ogg", 0.0F);
+			App->audio->PlayMusic("Assets/audio/music/AyuwokiFM/Michael Jackson- Smooth Criminal- Lyrics.ogg", 0.0F);
 			}
 			else if (t == FusionCoreFM_button)
 			{
 			Mix_PauseMusic();
-			App->audio->PlayMusic("Assets/audio/music/FusioncoreFM/fallout-3-soundtrack-rhythm-for-you.ogg", 0.0F);
+			App->audio->PlayMusic("Assets/audio/music/FusioncoreFM/edith-piaf-la-vie-en-rose.ogg", 0.0F);
 			}
 		}
 

@@ -329,7 +329,7 @@ void j1Scene::CheckWinner() {
 					App->logo_scene->Loop = true;
 					App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 					App->menu_manager->DestroyMenu(Menu::GUI);
-					App->hud->Disable();
+					App->hud->CleanUp();
 					App->gui->ingame = false;
 					App->isPaused = true;
 					App->logo_scene->playsound = true;
@@ -353,7 +353,7 @@ void j1Scene::CheckWinner() {
 				App->logo_scene->Loop = true;
 				App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 				App->menu_manager->DestroyMenu(Menu::GUI);
-				App->hud->Disable();
+				App->hud->CleanUp();
 				App->gui->ingame = false;
 				App->isPaused = true;
 				App->logo_scene->playsound = true;
