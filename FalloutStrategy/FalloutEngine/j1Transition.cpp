@@ -31,11 +31,9 @@ j1Transition::j1Transition() : j1Module()
 	background = nullptr;
 	lastdt = 0.01f;
 	transition = false;
-
 }
 
-j1Transition::~j1Transition()
-{
+j1Transition::~j1Transition() {
 }
 
 bool j1Transition::LoadAnimations() {

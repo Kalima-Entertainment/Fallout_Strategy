@@ -110,8 +110,6 @@ bool DynamicEntity::PostUpdate() {
 
 		if(App->player->selected_entity != this)
 			App->render->Blit(App->render->debug_tex, tile_tex_position.x, tile_tex_position.y, &tile_rect);
-	
-		App->render->DrawQuad({(int)position.x, (int)position.y, 2, 2 }, 255, 0, 0, 255);
 	}
 
 	//selected entity
@@ -156,23 +154,11 @@ bool DynamicEntity::PostUpdate() {
 				App->render->DrawQuad(frame_quad, 200, 200, 200, 185, false);		
 			}	
 		}
-		/*
-		else if ((this->faction == NO_FACTION) || (App->render->debug)) {
-			//Animals are also visible on shroud
-			if (App->fowManager->GetFoWTileState({ this->current_tile })->tileShroudBits == fow_ALL)
-			{
-				//Character Render
-				App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
-				//Enemy Health Bar only if visible on fog of war and alive
-				if (current_health > 0) {
-				App->render->DrawQuad(background_health_bar, 75, 75, 75, 255);
-				App->render->DrawQuad(foreground_health_bar, 0, 255, 0, 255);
-				App->render->DrawQuad(frame_quad, 200, 200, 200, 185, false);
-				}
-			}
+		if (App->render->debug) {
+			//App->render->DrawQuad(next_tile_rect, 0, 255, 0, 255);
+			//App->render->DrawQuad({ (int)position.x, (int)position.y, 2, 2 }, 255, 0, 0, 255);
 		}
-		*/
 	}
 
 	return true;
@@ -180,7 +166,7 @@ bool DynamicEntity::PostUpdate() {
 
 void DynamicEntity::PathfindToPosition(iPoint destination) {
 
-	UpdateTile();
+	//UpdateTile();
 
 	iPoint original_destination = destination;
 
@@ -189,7 +175,8 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 
 	if (!App->pathfinding->IsWalkable(current_tile)) {
 		destination = App->pathfinding->FindWalkableAdjacentTile(current_tile);
-		LOG("unwalkable origin");
+		if(!App->pathfinding->IsWalkable(destination))
+			LOG("unwalkable origin");
 	}
 
 	//if the tile is in the map but it's not walkable
@@ -201,7 +188,6 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 
 	if (App->entities->occupied_tiles[destination.x][destination.y]) {
 		destination = App->entities->FindFreeAdjacentTile(current_tile, destination);
-		next_tile = destination;
 		if (App->entities->occupied_tiles[destination.x][destination.y])
 			LOG("occupied destination");
 	}
@@ -281,7 +267,7 @@ void DynamicEntity::Move(float dt) {
 
 		if (current_tile == target_tile){
 			direction = last_direction;
-			state = IDLE;
+			//state = IDLE;
 		}
 		else {
 			if (path_to_target.size() > 0) {
@@ -321,8 +307,25 @@ void DynamicEntity::Move(float dt) {
 
 Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
 
-	if ((position.x > next_tile_rect.x) && (position.x < next_tile_rect.x + next_tile_rect.w)
-		&& (position.y > next_tile_rect.y) && (position.y < next_tile_rect.y + next_tile_rect.h)) {
+	if ((ceil(position.x) > next_tile_rect.x) && (floor(position.x) < next_tile_rect.x + next_tile_rect.w)
+		&& (ceil(position.y) > next_tile_rect.y) && (floor(position.y) < next_tile_rect.y + next_tile_rect.h)) {
+		return Direction::NO_DIRECTION;
+	}
+	if ((ceil(position.x) > floor(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (ceil(position.y) > floor(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+		return Direction::TOP_LEFT;
+	}
+	else if ((ceil(position.x) > floor(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+		return Direction::BOTTOM_LEFT;
+	}
+	else if ((floor(position.x < ceil(next_tile_rect.x + next_tile_rect.w * 0.5f))) && (ceil(position.y) > floor(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+		return Direction::TOP_RIGHT;
+	}
+	else if ((floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+		return Direction::BOTTOM_RIGHT;
+	}
+
+	/*	if ((ceil(position.x) > floor(next_tile_rect.x)) && (floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w))
+		&& (ceil(position.y) > floor(next_tile_rect.y)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h))) {
 		return Direction::NO_DIRECTION;
 	}
 	if ((position.x > next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y > next_tile_rect.y + next_tile_rect.h * 0.5f)) {
@@ -336,10 +339,7 @@ Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
 	}
 	else if ((position.x < next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y < next_tile_rect.y + next_tile_rect.h * 0.5f)) {
 		return Direction::BOTTOM_RIGHT;
-	}
-	else {
-	//	LOG("stuck");
-	}
+	}*/
 }
 
 void DynamicEntity::Flee() {

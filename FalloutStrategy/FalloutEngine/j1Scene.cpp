@@ -152,7 +152,7 @@ bool j1Scene::Update(float dt)
 {
 	App->map->Draw();
 
-	if ((App->hud->minutes == 4) && (deathclaw1 == false))
+	if ((App->hud->minutes == 14) && (deathclaw1 == false))
 	{
 		if (players[0]->base != nullptr && deathclaw1 == false)
 		{
