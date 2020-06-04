@@ -33,7 +33,7 @@ public:
 
 	// --- Group Tools ---
 	void SelectEntities_inRect(SDL_Rect SRect);
-	void CreateGroup(std::vector<DynamicEntity*> entities_vector);
+	j1Group* CreateGroup(std::vector<DynamicEntity*> entities_vector);
 
 	// --- Move Unit ---
 	void Move(j1Group* unit, iPoint goal_path, float dt);

@@ -34,6 +34,7 @@ private:
 	float lastdt;
 public:
 	bool transition;
+	bool freeTransitionTex;
 	j1Timer fadetimer;
 
 };

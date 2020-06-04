@@ -266,6 +266,7 @@ bool UI_Button::Update(float dt)
 				App->transition->StartTimer();
 				App->transition->transition = true;
 				App->transition->fadetimer.Start();
+				App->transition->freeTransitionTex = false;
 				
 			}
 			else if (t == button_cap) {

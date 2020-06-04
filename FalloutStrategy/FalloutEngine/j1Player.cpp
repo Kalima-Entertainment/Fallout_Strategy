@@ -24,6 +24,7 @@ j1Player::j1Player() : GenericPlayer() {
 	name.assign("Player");
 
 	selected_entity = last_selected_entity = nullptr;
+	selected_group = nullptr;
 	border_scroll = false;
 	mouse_speed_multiplier = 1.5f;
 
@@ -310,9 +311,11 @@ bool j1Player::Update(float dt) {
 	iPoint selected_spot;
 	App->input->GetMousePosition(selected_spot.x, selected_spot.y);
 	
-	if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) && (selected_entity != nullptr)) {
-		if (selected_entity->is_dynamic)
-			MoveEntity();
+	if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) && ((selected_entity != nullptr)||(selected_group != nullptr))) {
+		if ((selected_entity != nullptr)&&(selected_entity->is_dynamic))
+			MoveEntity((DynamicEntity*)selected_entity);
+		if (selected_group != nullptr)
+			MoveGroup();
 	}
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
@@ -400,7 +403,7 @@ j1Entity* j1Player::SelectEntity() {
 	return nullptr;
 }
 
-void j1Player::MoveEntity(){
+void j1Player::MoveEntity(DynamicEntity* entity){
 	iPoint selected_spot;
 
 	if (TouchingUI(mouse_position.x, mouse_position.y)) {
@@ -419,29 +422,34 @@ void j1Player::MoveEntity(){
 	}
 
 	//dynamic entities
-	if (selected_entity->state != DIE) 
+	if (entity->state != DIE) 
 	{
-		DynamicEntity* dynamic_entity;
-		dynamic_entity = (DynamicEntity*)selected_entity;
-		dynamic_entity->PathfindToPosition(selected_spot);
+		entity->PathfindToPosition(selected_spot);
 
 		j1Entity* target = App->entities->FindEntityByTile(selected_spot);
 
-		dynamic_entity->target_entity = target;
+		entity->target_entity = target;
 
 		if (target == nullptr) {
-			if (dynamic_entity->type == GATHERER) {
+			if (entity->type == GATHERER) {
 				ResourceBuilding* resource_building = App->entities->FindResourceBuildingByTile(selected_spot);
 
 				//assign a resource building to the entity
 				if ((resource_building != nullptr) && (resource_building->quantity > 0)) {
-					((Gatherer*)dynamic_entity)->AssignResourceBuilding(resource_building);
+					((Gatherer*)entity)->AssignResourceBuilding(resource_building);
 				}
 			}
-			else if (dynamic_entity->is_agressive) {
-				dynamic_entity->commanded = true;
+			else if (entity->is_agressive) {
+				entity->commanded = true;
 			}
 		}
+	}
+}
+
+void j1Player::MoveGroup() {
+	for (int i = 0; i < selected_group->GetSize(); i++)
+	{
+		MoveEntity(selected_group->Units[i]);
 	}
 }
 
