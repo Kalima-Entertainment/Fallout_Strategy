@@ -351,7 +351,7 @@ void MenuManager::CreateMenu(Menu menu) {
 		timer_minutes = (UI_Label*)App->gui->CreateLabel(652, 7, Label, "0", NULL, this, NULL, "StackedPixel");
 		
 		//radio
-		radio[0] = (UI_Button*)App->gui->CreateButton(1205, 0, Radio_button, { 1043,1998,74,71 }, { 966,1998,74,71 }, { 889,1998,74,71 }, NULL, this);
+		radio[6] = (UI_Button*)App->gui->CreateButton(1205, 0, Radio_button, { 1043,1998,74,71 }, { 966,1998,74,71 }, { 889,1998,74,71 }, NULL, this);
 
 		//Tutorial
 		gui_ingame[2] = (j1Image*)App->gui->CreateImage(1205, 70, Image, { 1037, 2120, 74, 71 }, NULL, this);
@@ -536,12 +536,12 @@ void MenuManager::CreateMenu(Menu menu) {
 
 	case Menu::RADIO:
 
-		radio[1] = (UI_Button*)App->gui->CreateButton( 600, 125, RockFM_button, { 1391,2312,114,114 }, { 1055,2312,114,114 }, { 1712,2312,114,114 }, NULL, this);
-		radio[2] = (UI_Button*)App->gui->CreateButton( 450, 225, AyuwokiFM_button, { 1283,2312,114,114 }, { 941,2312,114,114 }, { 1606,2312,114,114 }, NULL, this);
-		radio[3] = (UI_Button*)App->gui->CreateButton( 750, 225, SlimShadyFM_button, { 1499,2312,114,114 }, { 1169,2312,114,114 }, { 1818,2312,114,114 }, NULL, this);
-		radio[4] = (UI_Button*)App->gui->CreateButton( 450, 375, FiestaLatinaFM_button, { 2274,2312,114,114 }, { 1932,2312,114,114 }, { 602,2312,114,114 }, NULL, this);
-		radio[5] = (UI_Button*)App->gui->CreateButton( 750, 375, FusionCoreFM_button, { 2492,2312,114,114 }, { 2160,2312,114,114 }, { 823,2312,114,114 }, NULL, this);
-		radio[6] = (UI_Button*)App->gui->CreateButton( 600, 475, UltraRADIO_button, { 2383,2312,114,114 }, { 2046,2312,114,114 }, { 712,2312,114,114 }, NULL, this);
+		radio[0] = (UI_Button*)App->gui->CreateButton( 600, 125, RockFM_button, { 1391,2312,114,114 }, { 1055,2312,114,114 }, { 1712,2312,114,114 }, NULL, this);
+		radio[1] = (UI_Button*)App->gui->CreateButton( 450, 225, AyuwokiFM_button, { 1283,2312,114,114 }, { 941,2312,114,114 }, { 1606,2312,114,114 }, NULL, this);
+		radio[2] = (UI_Button*)App->gui->CreateButton( 750, 225, SlimShadyFM_button, { 1499,2312,114,114 }, { 1169,2312,114,114 }, { 1818,2312,114,114 }, NULL, this);
+		radio[3] = (UI_Button*)App->gui->CreateButton( 450, 375, FiestaLatinaFM_button, { 2274,2312,114,114 }, { 1932,2312,114,114 }, { 602,2312,114,114 }, NULL, this);
+		radio[4] = (UI_Button*)App->gui->CreateButton( 750, 375, FusionCoreFM_button, { 2492,2312,114,114 }, { 2160,2312,114,114 }, { 823,2312,114,114 }, NULL, this);
+		radio[5] = (UI_Button*)App->gui->CreateButton( 600, 475, UltraRADIO_button, { 2383,2312,114,114 }, { 2046,2312,114,114 }, { 712,2312,114,114 }, NULL, this);
 
 		last_menu = current_menu;
 		current_menu = Menu::RADIO;
@@ -1206,7 +1206,7 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->gui->DeleteArrayElements(quest, 12);
 		break;
 	case Menu::RADIO:
-		App->gui->DeleteArrayElements(radio, 7);
+		App->gui->DeleteArrayElements(radio, 6);
 		break;
 
 	default:

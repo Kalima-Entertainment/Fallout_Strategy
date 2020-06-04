@@ -63,7 +63,7 @@ public:
 
 	bool inHover;
 	int counter;
-	
+	bool radio;
 };
 
 

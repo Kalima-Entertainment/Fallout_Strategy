@@ -45,7 +45,7 @@ UI_Button::UI_Button(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, 
 
 	inHover = true;
 	counter = 0;
-	
+	radio = false;
 }
 
 UI_Button::~UI_Button() {
@@ -672,7 +672,18 @@ bool UI_Button::Update(float dt)
 				App->gui->DeleteArrayElements(App->menu_manager->quest, 12);
 			}
 			else if (t == Radio_button) {
-				App->menu_manager->CreateMenu(Menu::RADIO);
+				
+				if (radio == true)
+				{
+					App->menu_manager->DestroyMenu(Menu::RADIO);
+					radio = false;
+				}
+				
+				else if (radio == false)
+				{
+					App->menu_manager->CreateMenu(Menu::RADIO);
+					radio = true;
+				}			
 			}
 			else if (t == RockFM_button)
 			{
@@ -687,7 +698,7 @@ bool UI_Button::Update(float dt)
 			else if (t == UltraRADIO_button)
 			{
 			Mix_PauseMusic();
-			App->audio->PlayMusic("Assets/audio/music/Ultraradio/avicii-hey-brother.ogg", 0.0F);
+			App->audio->PlayMusic("Assets/audio/music/Ultraradio/daft-punk-get-lucky.ogg", 0.0F);
 			}
 			else if (t == FiestaLatinaFM_button)
 			{
@@ -697,7 +708,7 @@ bool UI_Button::Update(float dt)
 			else if (t == AyuwokiFM_button)
 			{
 			Mix_PauseMusic();
-			App->audio->PlayMusic("Assets/audio/music/AyuwokiFM/michael-jackson-billy-jean.ogg", 0.0F);
+			App->audio->PlayMusic("Assets/audio/music/AyuwokiFM/michael-jackson-smooth-criminal.ogg", 0.0F);
 			}
 			else if (t == FusionCoreFM_button)
 			{
