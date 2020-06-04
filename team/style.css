@@ -1,8 +1,52 @@
 img{
     float: right;
-    width: 30%;
+    width: 50%;
 }
 
-i{
-    font-size: 100px;
+.fa {
+    padding: 2%;
+    font-size: 100%;
+    width: 70px;
+    text-align: center;
+    text-decoration: none;
+    margin: 5px 5px;
+    border-radius: 50%;
+}
+
+.fa:hover {
+    opacity: 0.7;
+}
+
+.fa-twitter {
+    background: #55ACEE;
+    color: white;   
+}
+
+.fa-linkedin {
+    background: #007bb5;
+    color: white;
+}
+
+.fa-github{
+    background: #6e5494;
+    color: white;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+    margin-top: 10%;
+    float: left;
+    width: 50%;
+    padding: 10px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
 }
