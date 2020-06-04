@@ -135,7 +135,8 @@ void j1Render::ResetViewPort()
 	SDL_RenderSetViewport(renderer, &viewport);
 }
 
-void j1Render::ResetCameraPosition() {
+void j1Render::ResetCameraPosition() 
+{
 	camera.x = 0;
 	camera.y = 0;
 }

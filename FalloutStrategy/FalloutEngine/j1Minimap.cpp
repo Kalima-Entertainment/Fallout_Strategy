@@ -288,13 +288,13 @@ void j1Minimap::DrawFogOfWar() {
 			}
 			else {
 				fog_of_war_rect.w = round(1.75f * tile_width * counter);
-				App->render->DrawQuad(fog_of_war_rect, 50, 50,50, 255, true, false);
+				App->render->DrawQuad(fog_of_war_rect, 0, 0,0, 255, true, false);
 				fog_of_war_rect.x += round(fog_of_war_rect.w + 1.75f * tile_width);
 				counter = 0;
 			}
 		}
 		fog_of_war_rect.w = round(1.75f * tile_width * counter);
-		App->render->DrawQuad(fog_of_war_rect, 50, 50, 50, 255, true, false);
+		App->render->DrawQuad(fog_of_war_rect, 0, 0, 0, 255, true, false);
 	}
 }
 
@@ -308,4 +308,16 @@ void j1Minimap::Hide() {
 
 bool j1Minimap::IsVisible() {
 	return visible;
+}
+
+bool j1Minimap::Reset() {
+	bool ret = true;
+	iPoint last_camera_position = { 0,0 };
+	last_camera_position.x = App->render->camera.x;
+	last_camera_position.y = App->render->camera.y;
+	ret = CleanUp();
+	ret = Start();
+	App->render->camera.x = last_camera_position.x;
+	App->render->camera.y = last_camera_position.y;
+	return ret;
 }

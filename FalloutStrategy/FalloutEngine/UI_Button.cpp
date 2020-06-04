@@ -302,8 +302,7 @@ bool UI_Button::Update(float dt)
 					App->menu_manager->fullscreen_label = (UI_Label*)App->gui->CreateLabel(763, 613, Label, "NO", NULL, this, NULL, "StackedPixelMedium");
 				}
 
-				App->minimap->CleanUp();
-				App->minimap->Start();
+				App->minimap->Reset();
 			}
 			//Spawn Gatherer from any faction
 			else if (t == Ghouls_ghaterer_button || t == Vault_ghaterer_button || t == Supermutant_ghaterer_button || t == Brotherhood_ghaterer_button){

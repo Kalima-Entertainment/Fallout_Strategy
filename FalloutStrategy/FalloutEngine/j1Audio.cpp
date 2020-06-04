@@ -257,6 +257,7 @@ void j1Audio::Change_Volume_Music(float value)
 	//LOG("%f", total_volume);
 
 }
+
 void j1Audio::Change_Volume_FX(float value)
 {
 	value = value / 50;
