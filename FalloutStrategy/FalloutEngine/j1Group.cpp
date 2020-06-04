@@ -4,6 +4,7 @@
 #include "j1App.h"
 #include "j1Input.h"
 #include "j1Pathfinding.h"
+#include "DynamicEntity.h"
 
 j1Group::j1Group()
 {
@@ -37,6 +38,10 @@ void j1Group::AddTiletoOccupied(iPoint to_add)
 
 void j1Group::ClearGroup()
 {
+	for (int i = 0; i < Units.size(); i++)
+	{
+		Units[i]->info.IsSelected = false;
+	}
 	Units.clear();
 }
 

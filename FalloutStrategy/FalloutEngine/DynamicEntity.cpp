@@ -267,6 +267,7 @@ void DynamicEntity::Move(float dt) {
 
 		if (current_tile == target_tile){
 			direction = last_direction;
+			//target_tile = App->entities->FindFreeAdjacentTile(current_tile, target_tile);
 			//state = IDLE;
 		}
 		else {
@@ -275,6 +276,9 @@ void DynamicEntity::Move(float dt) {
 
 				if (path_to_target.size() > 0)
 					path_to_target.erase(path_to_target.cbegin());
+
+				if (App->entities->occupied_tiles[next_tile.x][next_tile.y])
+					PathfindToPosition(target_tile);
 			}
 		}
 
