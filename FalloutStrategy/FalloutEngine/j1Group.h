@@ -16,8 +16,8 @@ public:
 	~j1Group();
 
 	// --- Add/Remove ---
-	void addUnit(j1Entity* unit_toadd);
-	void removeUnit(j1Entity* unit_toremove);
+	void addUnit(DynamicEntity* unit_toadd);
+	void removeUnit(DynamicEntity* unit_toremove);
 	void AddTiletoOccupied(iPoint to_add);
 
 	// --- Clear Stuff ---
@@ -31,7 +31,7 @@ public:
 	void CheckForMovementRequest(iPoint destiny ,float dt);
 	
 	// --- Enquiries ---
-	bool IsGroupLead(j1Entity* entity);
+	bool IsGroupLead(DynamicEntity* entity);
 	void SetUnitGoalTile(j1Entity* entity);
 	bool FindFreeAdjacents(iPoint* base_tile);
 	bool IsTileFree(iPoint* adjacent);
@@ -41,7 +41,7 @@ public:
 	bool Save(pugi::xml_node&) const;
 
 public:
-	std::list <j1Entity*> Units;
+	std::vector <DynamicEntity*> Units;
 private:
 	iPoint last_goal = { 0,0 };
 

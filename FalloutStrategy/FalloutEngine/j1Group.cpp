@@ -13,14 +13,18 @@ j1Group::~j1Group()
 {
 }
 
-void j1Group::addUnit(j1Entity* unit_toadd)
+void j1Group::addUnit(DynamicEntity* unit_toadd)
 {
 	Units.push_back(unit_toadd);
 }
 
-void j1Group::removeUnit(j1Entity* unit_toremove)
+void j1Group::removeUnit(DynamicEntity* unit_toremove)
 {
-	Units.remove(unit_toremove);
+	for (int i = 0; i < Units.size(); i++)
+	{
+		if (unit_toremove == Units[i])
+			Units.erase(Units.cbegin() + i);
+	}
 }
 
 void j1Group::AddTiletoOccupied(iPoint to_add)
@@ -51,13 +55,14 @@ void j1Group::CheckForMovementRequest(iPoint destiny, float dt)
 	App->Mmanager->Move(this, destiny, dt);
 }
 
-bool j1Group::IsGroupLead(j1Entity* entity)
+bool j1Group::IsGroupLead(DynamicEntity* entity)
 {
 	return (*Units.begin()) == entity;
 }
 
 void j1Group::SetUnitGoalTile(j1Entity* entity)
 {
+	/*
 	std::list <j1Entity*>::const_iterator it = Units.begin();
 	bool Goal_found = false;
 
@@ -80,7 +85,7 @@ void j1Group::SetUnitGoalTile(j1Entity* entity)
 
 		it++;
 	}
-
+	*/
 }
 
 bool j1Group::FindFreeAdjacents(iPoint* base_tile)
