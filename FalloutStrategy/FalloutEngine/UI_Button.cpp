@@ -713,7 +713,7 @@ bool UI_Button::Update(float dt)
 			else if (t == FiestaLatinaFM_button)
 			{
 			Mix_PauseMusic();
-			App->audio->PlayMusic("Assets/audio/music/FiestalatinaFM/karol-g-nicki-minaj-tusa.ogg", 0.0F);
+			App->audio->PlayMusic("Assets/audio/music/FiestalatinaFM/tusa.ogg", 0.0F);
 			}
 			else if (t == AyuwokiFM_button)
 			{
@@ -723,7 +723,7 @@ bool UI_Button::Update(float dt)
 			else if (t == FusionCoreFM_button)
 			{
 			Mix_PauseMusic();
-			App->audio->PlayMusic("Assets/audio/music/FusioncoreFM/fallout-3-soundtrack-rhythm-for-you.ogg", 0.0F);
+			App->audio->PlayMusic("Assets/audio/music/FusioncoreFM/edith-piaf-la-vie-en-rose.ogg", 0.0F);
 			}
 		}
 
