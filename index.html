@@ -48,8 +48,36 @@
 </style>
 
 <body>
-    <!-- Header -->
-    <div id="header"></div>    
+    <!-- Navbar (sit on top) -->
+    <div class="w3-top">
+        <div class="w3-bar w3-white w3-card" id="myNavbar">
+            <!-- <img src="Assets/blank-male-silhouette.jpg" style="max-height: 40px; max-width: 40px;" alt="Logo"> -->
+            <!-- Right-sided navbar links -->
+            <div class="w3-right w3-hide-small">
+                <a href="#about" class="w3-bar-item w3-button">ABOUT</a>
+                <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user"></i> TEAM</a>
+                <a href="#work" class="w3-bar-item w3-button"><i class="fa fa-th"></i> WORK</a>
+                <a href="#contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> CONTACT</a>
+            </div>
+            <!-- Hide right-floated links on small screens and replace them with a menu icon -->
+    
+            <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium"
+                onclick="w3_open()">
+                <i class="fa fa-bars"></i>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Sidebar on small screens when clicking the menu icon -->
+    <nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none"
+        id="mySidebar">
+        <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close
+            ×</a>
+        <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT</a>
+        <a href="#team" onclick="w3_close()" class="w3-bar-item w3-button">TEAM</a>
+        <a href="#work" onclick="w3_close()" class="w3-bar-item w3-button">WORK</a>
+        <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button">CONTACT</a>
+    </nav>
 
     <!-- Header with full-height image -->
     <header class="bgimg-1 w3-display-container w3-grayscale-min" id="home">
@@ -70,7 +98,7 @@
             <i class="fa fa-linkedin w3-hover-opacity"></i>
         </div>
     </header>
-    
+
     <!-- About Section -->
     <div class="w3-container" style="padding:128px 16px" id="about">
         <h3 class="w3-center">ABOUT THE COMPANY</h3>
@@ -316,9 +344,15 @@
         </div>
     </div>
 
-    <!-- Footer Section -->
-    <!-- <iframe src="footer.html"></iframe> -->
-    <div id="footer"></div>
+    <!-- Footer -->
+    <footer class="w3-center w3-black w3-padding-64">
+        <a href="#home" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
+        <div class="w3-xlarge w3-section">
+            <a href="https://twitter.com/kalimaentmt" class="fa fa-twitter" style="text-decoration: none;"></a>
+        </div>
+        <p>Powered by <a href="https://kalima-entertainment.github.io/Fallout_Strategy/" title="Kalima Entertainment"
+                target="_blank" class="w3-hover-text-green">Kalima Entertainment</a></p>
+    </footer>
 
     <script>
         // Modal Image Gallery
