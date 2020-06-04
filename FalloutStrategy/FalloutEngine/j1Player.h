@@ -4,6 +4,8 @@
 #include "p2Point.h"
 #include "FoWEntity.h"
 
+class j1Group;
+
 class j1Player : public GenericPlayer
 {
 public:
@@ -17,7 +19,8 @@ public:
 	void OnCommand(std::vector<std::string> command_parts);
 
 	j1Entity* SelectEntity();
-	void MoveEntity();
+	void MoveEntity(DynamicEntity* entity);
+	void MoveGroup();
 	void UpdateResourceData(Resource resource_type, int quantity);
 	bool TouchingUI(int x, int y);
 
@@ -28,6 +31,7 @@ public:
 public:
 	j1Entity* selected_entity;
 	j1Entity* last_selected_entity;
+	j1Group* selected_group;
 	bool god_mode;
 	iPoint mouse_position;
 	iPoint Map_mouseposition;
@@ -35,7 +39,7 @@ public:
 	bool qfood;
 	bool qwater;
 	int reward ;
-	
+
 private:
 	float mouse_speed_multiplier;
 	bool border_scroll;
