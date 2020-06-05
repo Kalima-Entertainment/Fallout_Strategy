@@ -149,6 +149,7 @@ public:
 	// -- Particle textures
 	SDL_Texture* blood;
 	SDL_Texture* smoke;
+	SDL_Texture* hit;
 
 private:
 	int loading_faction;

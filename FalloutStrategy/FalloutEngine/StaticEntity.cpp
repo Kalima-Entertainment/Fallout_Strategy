@@ -47,6 +47,7 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 	//App->entities->ReleaseParticle(StaticParticle);
 
 	StaticParticle = nullptr;
+	HitParticle = nullptr;
 	visionEntity = nullptr;
 	spawnPosition = {-1,-1};
 
@@ -63,13 +64,40 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 	}	
 
 	// -- Smoke particles
-	StaticParticle = App->entities->CreateParticle(position);
-	Animation anim;
-	anim.PushBack(SDL_Rect{ 0, 0 , 128, 128 }, 1);
-	anim.Reset();
-	Emiter emitter(position.x - 40, position.y, 0, -0.7f , 0.1f, NULL , 0.0080f, 0, 0, 0, 0, 0, 0, 3.0f, nullptr, App->entities->smoke, anim, true);
-	StaticParticle->PushEmiter(emitter);
-	StaticParticle->Desactivate();
+	{
+		StaticParticle = App->entities->CreateParticle(position);
+		Animation anim;
+		anim.PushBack(SDL_Rect{ 0, 0 , 128, 128 }, 1);
+		anim.Reset();
+		Emiter emitter(position.x - 40, position.y, 0, -0.7f, 0.1f, NULL, 0.0080f, 0, 0, 0, 0, 0, 0, 3.0f, nullptr, App->entities->smoke, anim, true);
+		StaticParticle->PushEmiter(emitter);
+		StaticParticle->Desactivate();
+	}
+
+	//Hit Particle
+	{
+		HitParticle = App->entities->CreateParticle(position);
+		Animation hit;
+
+		//First Row hardcoded because i dont even care about that :D
+		hit.PushBack(SDL_Rect{ 0,0,64,64 }, 20);
+		hit.PushBack(SDL_Rect{ 64,0,64,64 }, 20);
+		hit.PushBack(SDL_Rect{ 128,0,64,64 }, 20);
+		hit.PushBack(SDL_Rect{ 192,0,64,64 }, 20);
+		
+		//Second row
+		hit.PushBack(SDL_Rect{ 0,64,64,64 }, 20);
+		hit.PushBack(SDL_Rect{ 64,64,64,64 }, 20);
+		hit.PushBack(SDL_Rect{ 128,64,64,64 }, 20);
+		hit.PushBack(SDL_Rect{ 192,64,64,64 }, 20);
+
+		hit.Reset();
+
+		Emiter Hit(position.x, position.y, 0 , 0, 0 , 0, 0, 0, 0, 0, 0, 0, 1, 2.0f, nullptr, App->entities->hit, hit, true);
+		HitParticle->PushEmiter(Hit);
+		HitParticle->Desactivate();
+	}
+
 }
 
 StaticEntity::~StaticEntity() {
@@ -80,7 +108,8 @@ StaticEntity::~StaticEntity() {
 	current_animation = nullptr;
 	texture = nullptr;
 	StaticParticle = nullptr;
-	//App->entities->ReleaseParticle(StaticParticle);
+	HitParticle = nullptr;
+
 	visionEntity = nullptr;
 	tiles.clear();
 
@@ -102,13 +131,15 @@ bool StaticEntity::Update(float dt) {
 	switch (state) {
 	case IDLE:
 		break;
+	case HIT:
+		
+		break;
 	case DIE:
 		if (!delete_timer.Started())
 			delete_timer.Start();
 
 		visionEntity->SetNewPosition(App->map->MapToWorld(-10, -10));
 
-		StaticParticle->Desactivate();
 
 		if ((delete_timer.ReadSec() > 5)||(current_animation->Finished()))
 			to_delete = true;
@@ -129,10 +160,20 @@ bool StaticEntity::Update(float dt) {
 	//Select a building and press 1, 2, 3 or 4 to spawn or investigate
 	DebugSpawnsUpgrades();
 
-	// -- Active particle when health its lower or equal than half
+	//Smoke Particles if half life or less
 	if (StaticParticle != nullptr) {
-		if (current_health <= (max_health/2))
+		if (current_health <= max_health / 2)
 			StaticParticle->Activate();
+		else
+			StaticParticle->Desactivate();
+	}
+		
+	//Hit particles
+	if (HitParticle != nullptr) {
+		if (state == HIT)
+			HitParticle->Activate();
+		else
+			HitParticle->Desactivate();
 	}
 
 	last_dt = dt;
@@ -157,6 +198,7 @@ bool StaticEntity::PostUpdate() {
 		}
 	}
 
+	
 	//debug tiles
 	else if (App->render->debug) 
 	{
@@ -198,11 +240,20 @@ bool StaticEntity::PostUpdate() {
 		App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255);
 	}
 	*/
+
 	//Blit particles forward buildings
-	if (StaticParticle != nullptr) {
+	if (StaticParticle->IsActive()) {
 		StaticParticle->Move(position.x, position.y);
 		StaticParticle->Update(last_dt);
 	}	
+
+	if (HitParticle->IsActive()) {
+		HitParticle->Move(position.x, position.y);
+		HitParticle->Update(last_dt);
+	}
+
+		
+	
 
 	return true;
 }

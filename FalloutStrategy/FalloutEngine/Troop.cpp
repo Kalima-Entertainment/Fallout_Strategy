@@ -288,6 +288,7 @@ void Troop::Attack() {
 		return;
 
 	target_entity->current_health -= damage;
+	target_entity->state = HIT;
 
 	if (target_entity->current_health <= 0) {
 		target_entity->state = DIE;

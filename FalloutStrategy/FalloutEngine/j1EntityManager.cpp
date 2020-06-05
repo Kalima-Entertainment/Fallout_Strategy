@@ -43,6 +43,7 @@ j1EntityManager::j1EntityManager(){
 	showing_building_menu = false;
 	blood = nullptr;
 	smoke = nullptr;
+	hit = nullptr;
 	entities_loaded = false;
 
 	mr_handy_cost = NULL;
@@ -137,6 +138,7 @@ bool j1EntityManager::Start() {
 	// -- Loading Particle textures
 	blood = App->tex->Load("Assets/textures/particles/blood.png");
 	smoke = App->tex->Load("Assets/textures/particles/smoke.png");
+	hit = App->tex->Load("Assets/textures/particles/HitParticle.png");
 
 	return ret;
 }
@@ -178,8 +180,11 @@ bool j1EntityManager::CleanUp()
 	particles.clear();
 	App->tex->UnLoad(blood);
 	App->tex->UnLoad(smoke);
+	App->tex->UnLoad(hit);
+
 	blood = nullptr;
 	smoke = nullptr;
+	hit = nullptr;
 
 	// -- Buildings
 	for(int j = 0; j < resource_buildings.size(); j++)
