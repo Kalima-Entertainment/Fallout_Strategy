@@ -21,25 +21,7 @@
 
 
 <body>
-    <!-- Navbar (sit on top) -->
-    <div class="w3-top">
-        <div class="w3-bar w3-white w3-card" id="myNavbar">
-            <!-- <img src="Assets/blank-male-silhouette.jpg" style="max-height: 40px; max-width: 40px;" alt="Logo"> -->
-            <!-- Right-sided navbar links -->
-            <div class="w3-right w3-hide-small">
-                <a href="#about" class="w3-bar-item w3-button">ABOUT</a>
-                <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user"></i> TEAM</a>
-                <a href="#work" class="w3-bar-item w3-button"><i class="fa fa-th"></i> WORK</a>
-                <a href="#contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> CONTACT</a>
-            </div>
-            <!-- Hide right-floated links on small screens and replace them with a menu icon -->
-    
-            <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium"
-                onclick="w3_open()">
-                <i class="fa fa-bars"></i>
-            </a>
-        </div>
-    </div>
+    <div id="header"></div>
     
     <!-- Sidebar on small screens when clicking the menu icon -->
     <nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none"
@@ -105,7 +87,7 @@
                 <h3>We know design.</h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod<br>tempor incididunt ut
                     labore et dolore.</p><br>
-                <a href="#work" class="w3-button w3-blue" style="font-size:2.7em;"><i class="fa fa-th"> </i> Download Fallout Strategy</a>
+                <a href="#work" id="download_button" class="w3-button w3-blue"><i class="fa fa-th"> </i> Download Fallout Strategy</a>
             </div>
             <div class="w3-col m6">
                 <img class="w3-image w3-round-large" src="/Assets/blank-male-silhouette.jpg" alt="Buildings" width="700"
@@ -125,7 +107,7 @@
                     <div class="w3-container">
                         <h3>Marc Pagès</h3>
                         <p class="w3-opacity">Team Leader</p>
-                        <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+                        <p>I'm the fucking boss
                         </p>
                         <p><a href="team/marc_pages.html" class="w3-button w3-light-grey w3-block"><i class="fa fa-male"></i> About Me</a>
                         </p>
@@ -147,11 +129,11 @@
             </div>
             <div class="w3-col l3 m6 w3-margin-bottom">
                 <div class="w3-card">
-                    <img src="./Assets/pablo_galve.jpg" alt="Mike" style="width:100%">
+                    <img src="./Assets/pablo_galve.jpg" alt="Pablo" style="width:100%">
                     <div class="w3-container">
                         <h3>Pablo Galve</h3>
                         <p class="w3-opacity">QA Manager</p>
-                        <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+                        <p>I am in charge of ensuring the quality of the project.
                         </p>
                         <p><a href="team/pablo_galve.html" target="_blank" class="w3-button w3-light-grey w3-block"><i class="fa fa-male"></i> About Me</a>
                         </p>
@@ -227,22 +209,22 @@
     </div>
 
     <!-- Promo Section "Statistics" -->
-    <div class="w3-container w3-row w3-center w3-dark-grey w3-padding-64">
-        <div class="w3-quarter">
-            <span class="w3-xxlarge">8</span>
-            <br>professionals in the team
-        </div>
+    <div class="w3-container w3-row w3-center w3-dark-grey w3-padding-64">        
         <div class="w3-quarter">
             <span class="w3-xxlarge">3500+</span>
             <br>work hours
         </div>
         <div class="w3-quarter">
-            <span class="w3-xxlarge">80+</span>
+            <span class="w3-xxlarge">100+</span>
             <br>Bugs Solved
         </div>
         <div class="w3-quarter">
             <span class="w3-xxlarge">15+</span>
             <br>Meetings
+        </div>
+        <div class="w3-quarter">
+            <span class="w3-xxlarge">8</span>
+            <br>professionals in the team
         </div>
     </div>
 
@@ -306,7 +288,7 @@
         <p class="w3-center w3-large">Lets get in touch. Find Us On Social Media:</p>
         <div style="margin-top:48px">
             <p><i class="fa fa-map-marker fa-fw w3-xxlarge w3-margin-right"></i> Barcelona, Spain</p>
-            <p><a href="https://twitter.com/kalimaentmt" class="fa fa-twitter" style="text-decoration: none;font-size:36px"></a>Kalima Entertainment</p>
+            <p><a href="https://twitter.com/kalimaentmt" class="fa fa-twitter" style="text-decoration: none;font-size:36px">Kalima Entertainment</a></p>
             <br>
         </div>
     </div>
