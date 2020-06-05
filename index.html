@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <title>Kalima Entertainment</title>
 <head>
@@ -21,7 +21,28 @@
 
 
 <body>
-    <div id="header"></div>
+    <!-- Navbar (sit on top) -->
+    <div class="w3-top">
+        <div class="w3-bar w3-white w3-card" id="myNavbar">
+    
+            <!-- Right-sided navbar links -->
+            <div class="w3-right w3-hide-small">
+                <a href="index.html" class="w3-bar-item w3-button"><i class="fa fa-home"></i> HOME</a>
+                <a href="#trailer" class="w3-bar-item w3-button"
+                    style="background-color: rgba(181, 57, 57, 0.5);"><i class="fa fa-download"></i> DOWNLOAD</a>
+                <a href="#about" class="w3-bar-item w3-button"><i class="fa fa-user"></i> ABOUT</a>
+                <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user"></i> TEAM</a>
+                <a href="#work" class="w3-bar-item w3-button"><i class="fa fa-th"></i> WORK</a>
+                <a href="#contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> CONTACT</a>
+            </div>
+            <!-- Hide right-floated links on small screens and replace them with a menu icon -->
+    
+            <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium"
+                onclick="w3_open()">
+                <i class="fa fa-bars"></i>
+            </a>
+        </div>
+    </div>
     
     <!-- Sidebar on small screens when clicking the menu icon -->
     <nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none"
@@ -90,7 +111,7 @@
                 <a href="#work" id="download_button" class="w3-button w3-blue"><i class="fa fa-th"> </i> Download Fallout Strategy</a>
             </div>
             <div class="w3-col m6">
-                <img class="w3-image w3-round-large" src="/Assets/blank-male-silhouette.jpg" alt="Buildings" width="700"
+                <img class="w3-image w3-round-large" src="./Assets/blank-male-silhouette.jpg" alt="Buildings" width="700"
                     height="394">
             </div>
         </div>
@@ -103,7 +124,7 @@
         <div class="w3-row-padding w3-grayscale" style="margin-top:64px">
             <div class="w3-col l3 m6 w3-margin-bottom">
                 <div class="w3-card">
-                    <img src="/Assets/blank-male-silhouette.jpg" alt="Marc" style="width:100%">
+                    <img src="./Assets/blank-male-silhouette.jpg" alt="Marc" style="width:100%">
                     <div class="w3-container">
                         <h3>Marc Pagès</h3>
                         <p class="w3-opacity">Team Leader</p>
@@ -142,7 +163,7 @@
             </div>
             <div class="w3-col l3 m6 w3-margin-bottom">
                 <div class="w3-card">
-                    <img src="/Assets/blank-male-silhouette.jpg" alt="Dan" style="width:100%">
+                    <img src="./Assets/blank-male-silhouette.jpg" alt="Dan" style="width:100%">
                     <div class="w3-container">
                         <h3>Germán Insua</h3>
                         <p class="w3-opacity">Code</p>
@@ -181,11 +202,11 @@
             </div>
             <div class="w3-col l3 m6 w3-margin-bottom">
                 <div class="w3-card">
-                    <img src="/Assets/blank-male-silhouette.jpg" alt="Mike" style="width:100%">
+                    <img src="./Assets/Silvino.jpg" alt="Mike" style="width:100%">
                     <div class="w3-container">
                         <h3>Silvino Medina</h3>
                         <p class="w3-opacity">Audio</p>
-                        <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+                        <p>Let's goooo!!!
                         </p>
                         <p><a href="team/silvino_medina.html" target="_blank" class="w3-button w3-light-grey w3-block"><i class="fa fa-male"></i> About Me</a>
                         </p>
@@ -198,7 +219,7 @@
                     <div class="w3-container">
                         <h3>Christian Piña</h3>
                         <p class="w3-opacity">User Interface</p>
-                        <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+                        <p>Solucionado borrado de 30 yes
                         </p>
                         <p><a href="team/christian_piña.html" target="_blank" class="w3-button w3-light-grey w3-block"><i class="fa fa-male"></i> About Me</a>
                         </p>
@@ -235,38 +256,38 @@
 
         <div class="w3-row-padding" style="margin-top:64px">
             <div class="w3-col l3 m6">
-                <img src="/Assets/blank-male-silhouette.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity"
+                <img src="./Assets/blank-male-silhouette.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity"
                     alt="A microphone">
             </div>
             <div class="w3-col l3 m6">
-                <img src="/Assets/blank-male-silhouette.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity"
+                <img src="./Assets/blank-male-silhouette.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity"
                     alt="A phone">
             </div>
             <div class="w3-col l3 m6">
-                <img src="/Assets/blank-male-silhouette.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity"
+                <img src="./Assets/blank-male-silhouette.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity"
                     alt="A drone">
             </div>
             <div class="w3-col l3 m6">
-                <img src="/Assets/blank-male-silhouette.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity"
+                <img src="./Assets/blank-male-silhouette.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity"
                     alt="Soundbox">
             </div>
         </div>
 
         <div class="w3-row-padding w3-section">
             <div class="w3-col l3 m6">
-                <img src="/Assets/blank-male-silhouette.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity"
+                <img src="./Assets/blank-male-silhouette.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity"
                     alt="A tablet">
             </div>
             <div class="w3-col l3 m6">
-                <img src="/Assets/blank-male-silhouette.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity"
+                <img src="./Assets/blank-male-silhouette.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity"
                     alt="A camera">
             </div>
             <div class="w3-col l3 m6">
-                <img src="/Assets/blank-male-silhouette.jpg" style="width:100%" onclick="onClick(this)"
+                <img src="./Assets/blank-male-silhouette.jpg" style="width:100%" onclick="onClick(this)"
                     class="w3-hover-opacity" alt="A typewriter">
             </div>
             <div class="w3-col l3 m6">
-                <img src="/Assets/blank-male-silhouette.jpg" style="width:100%" onclick="onClick(this)"
+                <img src="./Assets/blank-male-silhouette.jpg" style="width:100%" onclick="onClick(this)"
                     class="w3-hover-opacity" alt="A tableturner">
             </div>
         </div>
