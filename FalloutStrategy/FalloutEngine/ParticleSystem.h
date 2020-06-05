@@ -28,7 +28,6 @@ public:
 private:
 
 	std::vector<float>	position;
-
 	bool active;
 };
 

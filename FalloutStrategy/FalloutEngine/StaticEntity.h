@@ -45,6 +45,7 @@ public:
 
 	void DebugSpawnsUpgrades();
 	void CalculateRenderAndSpawnPositions();
+	void GetHit();
 	int GetUnitsInStack(EntityType type);
 
 	// Load / Save
@@ -80,6 +81,8 @@ private:
 	ParticleSystem* StaticParticle;
 	ParticleSystem* HitParticle;
 	FoWEntity* visionEntity;
+	j1Timer hit_particles_timer;
+	int hit_particles_time;
 };
 
 #endif // !_STATIC_ENTITY_H

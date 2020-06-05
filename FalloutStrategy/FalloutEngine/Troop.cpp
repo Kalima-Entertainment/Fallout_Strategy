@@ -290,18 +290,7 @@ void Troop::Attack() {
 	target_entity->current_health -= damage;
 	target_entity->state = HIT;
 
-	if (target_entity->current_health <= 0) {
-		target_entity->state = DIE;
-		path_to_target.clear();
-		state = IDLE;
-
-		if (attacking_entity == target_entity)
-			attacking_entity = nullptr;
-
-		target_entity = nullptr;
-		target_building = nullptr;
-	}
-	else if (target_entity->is_dynamic) {
+	if (target_entity->is_dynamic) {
 		DynamicEntity* dynamic_target = (DynamicEntity*)target_entity;
 
 		target_entity->attacking_entity = this;
@@ -326,6 +315,22 @@ void Troop::Attack() {
 			direction = BOTTOM_RIGHT;
 			dynamic_target->direction = TOP_LEFT;
 		}
+	}
+	else {
+		StaticEntity* static_entity = (StaticEntity*)target_entity;
+		static_entity->GetHit();
+	}
+
+	if (target_entity->current_health <= 0) {
+		target_entity->state = DIE;
+		path_to_target.clear();
+		state = IDLE;
+
+		if (attacking_entity == target_entity)
+			attacking_entity = nullptr;
+
+		target_entity = nullptr;
+		target_building = nullptr;
 	}
 }
 

@@ -98,6 +98,9 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 		HitParticle->Desactivate();
 	}
 
+	current_animation = &animations[IDLE];
+	hit_particles_time = 2000;
+
 }
 
 StaticEntity::~StaticEntity() {
@@ -130,11 +133,15 @@ bool StaticEntity::Update(float dt) {
 
 	switch (state) {
 	case IDLE:
+		current_animation = &animations[IDLE];
 		break;
 	case HIT:
-		
+		current_animation = &animations[IDLE];
+		if (hit_particles_timer.Read() > hit_particles_time)
+			state = IDLE;
 		break;
 	case DIE:
+		current_animation = &animations[DIE];
 		if (!delete_timer.Started())
 			delete_timer.Start();
 
@@ -182,7 +189,6 @@ bool StaticEntity::Update(float dt) {
 }
 
 bool StaticEntity::PostUpdate() {
-	current_animation = &animations[state];
 
 	SDL_Rect tile_rect = { 256,0,64,64 };
 	iPoint tex_position;
@@ -250,12 +256,14 @@ bool StaticEntity::PostUpdate() {
 	if (HitParticle->IsActive()) {
 		HitParticle->Move(position.x, position.y);
 		HitParticle->Update(last_dt);
-	}
-
-		
-	
+	}	
 
 	return true;
+}
+
+void StaticEntity::GetHit() {
+	state = HIT;
+	hit_particles_timer.Start();
 }
 
 bool StaticEntity::LoadDataFromReference() {
