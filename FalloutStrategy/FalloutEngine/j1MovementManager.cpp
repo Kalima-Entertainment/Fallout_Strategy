@@ -16,8 +16,7 @@ j1MovementManager::j1MovementManager()
 {
 }
 
-j1MovementManager::~j1MovementManager()
-{
+j1MovementManager::~j1MovementManager() {
 
 }
 
@@ -118,8 +117,6 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 
 	while (unit != group->Units.cend())
 	{
-		DynamicEntity* dynamic_entity = (DynamicEntity*)(*unit);
-
 		// --- We Get the map coords of the Entity ---
 		Map_Entityposition.x = (*unit)->position.x;
 		Map_Entityposition.y = (*unit)->position.y;
@@ -136,10 +133,12 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 
 			if (((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && (*unit)->info.IsSelected))||(!(*unit)->owner->goal_tile_set))
 			{
+				(*unit)->commanded = true;
 				if (group->IsGroupLead((*unit)) == false)
 				{
 					// --- If any other unit of the group has the same goal, change the goal tile ---
 					group->SetUnitGoalTile((*unit));
+					(*unit)->state = WALK;
 				}
 				else
 				{
@@ -170,6 +169,7 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 
 			// --- Whenever the unit faces an obstacle of any type during a scheduled path, overcome it ---
 			(*unit)->state = IDLE;
+			(*unit)->commanded = false;
 			break;
 
 		case MovementState::MovementState_FollowPath:
@@ -196,10 +196,10 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 			distanceToNextTile.x *= (*unit)->speed.x * dt;
 			distanceToNextTile.y *= (*unit)->speed.y * dt;
 
-			if ((distanceToNextTile.x >= 0) && (distanceToNextTile.y < 0)) { dynamic_entity->direction = TOP_RIGHT; }
-			else if ((distanceToNextTile.x > 0) && (distanceToNextTile.y >= 0)) { dynamic_entity->direction = BOTTOM_RIGHT; }
-			else if ((distanceToNextTile.x <= 0) && (distanceToNextTile.y > 0)) { dynamic_entity->direction = BOTTOM_LEFT; }
-			else if ((distanceToNextTile.x < 0) && (distanceToNextTile.y <= 0)) { dynamic_entity->direction = TOP_LEFT; }
+			if ((distanceToNextTile.x >= 0) && (distanceToNextTile.y < 0)) { (*unit)->direction = TOP_RIGHT; }
+			else if ((distanceToNextTile.x > 0) && (distanceToNextTile.y >= 0)) { (*unit)->direction = BOTTOM_RIGHT; }
+			else if ((distanceToNextTile.x <= 0) && (distanceToNextTile.y > 0)) { (*unit)->direction = BOTTOM_LEFT; }
+			else if ((distanceToNextTile.x < 0) && (distanceToNextTile.y <= 0)) { (*unit)->direction = TOP_LEFT; }
 
 			(*unit)->current_tile = App->map->WorldToMap((*unit)->position.x, (*unit)->position.y);
 
@@ -245,7 +245,8 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 			// --- The unit reaches the end of the path, thus stopping and returning to NoState ---
 			(*unit)->info.UnitMovementState = MovementState::MovementState_NoState;
 			(*unit)->current_tile = App->map->WorldToMap((*unit)->position.x, (*unit)->position.y);
-			dynamic_entity->state = IDLE;
+			(*unit)->state = IDLE;
+			(*unit)->commanded = false;
 
 			break;
 		}

@@ -165,19 +165,21 @@ bool DynamicEntity::PostUpdate() {
 	return true;
 }
 
-void DynamicEntity::PathfindToPosition(iPoint destination) {
+bool DynamicEntity::PathfindToPosition(iPoint destination) {
 
+	bool ret = true;
 	//UpdateTile();
 
 	iPoint original_destination = destination;
 
 	if (destination == current_tile)
-		return;
+		return ret;
 
 	if (!App->pathfinding->IsWalkable(current_tile)) {
 		destination = App->pathfinding->FindWalkableAdjacentTile(current_tile);
 		if(!App->pathfinding->IsWalkable(destination))
 			LOG("unwalkable origin");
+		ret = false;
 	}
 
 	//if the tile is in the map but it's not walkable
@@ -185,6 +187,7 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 		destination = App->pathfinding->FindNearestWalkableTile(current_tile, destination);
 		if (!App->pathfinding->IsWalkable(destination))
 			LOG("unwalkable destination");
+		ret = false;
 	}
 
 	if (App->entities->occupied_tiles[destination.x][destination.y]) {
@@ -215,6 +218,7 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 			LOG("No");
 			if (!App->pathfinding->IsWalkable(destination))
 				LOG("Unwalkable destination");
+			ret = false;
 		}
 	}
 
@@ -229,6 +233,8 @@ void DynamicEntity::PathfindToPosition(iPoint destination) {
 
 		next_tile = path_to_target.front();
 	}
+
+	return ret;
 }
 
 void DynamicEntity::Move(float dt) {

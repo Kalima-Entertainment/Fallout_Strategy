@@ -44,7 +44,7 @@ public:
 	void Flee();
 
 	j1Entity* DetectEntitiesInRange();
-	void PathfindToPosition(iPoint target);
+	bool PathfindToPosition(iPoint target);
 	Direction GetDirectionToGo(SDL_Rect next_tile_rect) const;
 	void UpdateTile();
 
