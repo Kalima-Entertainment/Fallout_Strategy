@@ -20,7 +20,7 @@ html {
 .bgimg-1 {
     background-position: center;
     background-size: cover;
-    background-image: url("Assets/fondo.PNG");
+    background-image: url("Assets/fondo.png");
     min-height: 100%;
 }
 
