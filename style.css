@@ -1,5 +1,3 @@
-
-
 body,
 h1,
 h2,
@@ -38,7 +36,12 @@ html {
     color:goldenrod;
     background-color:black;
     position: relative;
-    top: 100px;
+    top: 90px;
+}
+
+#button_eslogan{
+    position: relative;
+    top: 60px;
 }
 
 .exp{
