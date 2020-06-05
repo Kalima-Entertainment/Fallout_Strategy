@@ -21,25 +21,7 @@
 
 
 <body>
-    <!-- Navbar (sit on top) -->
-    <div class="w3-top">
-        <div class="w3-bar w3-white w3-card" id="myNavbar">
-            <!-- <img src="Assets/blank-male-silhouette.jpg" style="max-height: 40px; max-width: 40px;" alt="Logo"> -->
-            <!-- Right-sided navbar links -->
-            <div class="w3-right w3-hide-small">
-                <a href="#about" class="w3-bar-item w3-button">ABOUT</a>
-                <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user"></i> TEAM</a>
-                <a href="#work" class="w3-bar-item w3-button"><i class="fa fa-th"></i> WORK</a>
-                <a href="#contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> CONTACT</a>
-            </div>
-            <!-- Hide right-floated links on small screens and replace them with a menu icon -->
-    
-            <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium"
-                onclick="w3_open()">
-                <i class="fa fa-bars"></i>
-            </a>
-        </div>
-    </div>
+    <div id="header"></div>
     
     <!-- Sidebar on small screens when clicking the menu icon -->
     <nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none"
@@ -55,9 +37,9 @@
     <!-- Header with full-height image -->
     <header class="bgimg-1 w3-display-container w3-grayscale-min" id="home">
         <div class="w3-display-left w3-text-white" style="padding:48px">
-            <img src="/Assets/logo.png" alt="Fallout_Strategy" style="width:50%"></br>
+            <img src="./Assets/logo.png" alt="Fallout_Strategy" style="width:50%"></br>
             <p class="eslogan">In a future in which surviving is the hardest task, forge a strategy to lead your faction to a longer life.</p>
-            <p><a href="#about"
+            <p><a href="#trailer" id="button_eslogan"
                     class="w3-button w3-white w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Learn
                     more and start playing today</a></p>
         </div>
@@ -77,18 +59,17 @@
                 <i class="fa fa-book w3-margin-bottom w3-jumbo w3-center"></i>
                 <p class="titlex">BECOME A LEGEND</p>
                 <p class="exp">On Fallout Strategy you are in a godlike position where you have full control of newborn colony founded in the wasteland, you have to manage different resources and troops to protect your colony from the foreigns colonies or deathly Deathclaws. If you feel with power enough you can also try to conquer the other bases to expand your borders and become the biggest power in the Commonwealth.</p>
-                <img src="/Assets/foto1.png"  style="width:100%"></br>
+                <img src="./Assets/foto1.png"  style="width:100%"></br>
             </div>
             <div class="w3-quarter">
                 <i class="fa fa-world w3-margin-bottom w3-jumbo"></i>
                 <p class="titlex">CONQUEST THE WASTELAND</p>
-                <p class="exp">Build your faction, create units that will help on your journey. Collect different resources to power your colony, and boost it by upgrading your buildings. Make your quest easier while listening the best hits on the radio.</p>
+                <p class="exp">Build your community, create units that will help on your journey. Collect different resources to power your colony, and boost it by upgrading your buildings. Make your quest easier while listening the best hits on the radio. But don't be to cocky, every game the map will be different, so you won't be able to use the same strategy.</p>
             </div>
             <div class="w3-quarter">
                 <i class="fa fa-sword w3-margin-bottom w3-jumbo"></i>
                 <p class="titlex">MEET YOUR FOES</p>
-                <p class="exp">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore.</p>
+                <p class="exp"> Choose your faction among 4 different classes, create your defenses or be the first to attack. Be the last survivor.</p>
             </div>
             <div class="w3-quarter">
                 <i class="fa fa-cog w3-margin-bottom w3-jumbo"></i>
@@ -100,13 +81,13 @@
     </div>
 
     <!-- Promo Section - "We know design" -->
-    <div class="w3-container w3-light-grey" style="padding:128px 16px">
+    <div id="trailer" class="w3-container w3-light-grey" style="padding:128px 16px">
         <div class="w3-row-padding">
             <div class="w3-col m6">
                 <h3>We know design.</h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod<br>tempor incididunt ut
                     labore et dolore.</p><br>
-                <a href="#work" class="w3-button w3-blue" style="font-size:2.7em;"><i class="fa fa-th"> </i> Download Fallout Strategy</a>
+                <a href="#work" id="download_button" class="w3-button w3-blue"><i class="fa fa-th"> </i> Download Fallout Strategy</a>
             </div>
             <div class="w3-col m6">
                 <img class="w3-image w3-round-large" src="/Assets/blank-male-silhouette.jpg" alt="Buildings" width="700"
@@ -126,7 +107,7 @@
                     <div class="w3-container">
                         <h3>Marc Pagès</h3>
                         <p class="w3-opacity">Team Leader</p>
-                        <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+                        <p>I'm the fucking boss
                         </p>
                         <p><a href="team/marc_pages.html" class="w3-button w3-light-grey w3-block"><i class="fa fa-male"></i> About Me</a>
                         </p>
@@ -135,7 +116,7 @@
             </div>
             <div class="w3-col l3 m6 w3-margin-bottom">
                 <div class="w3-card">
-                    <img src="/Assets/Javi.jpg" alt="Javier" style="width:100%">
+                    <img src="./Assets/Javi.jpg" alt="Javier" style="width:100%">
                     <div class="w3-container">
                         <h3>Javier Belda</h3>
                         <p class="w3-opacity">Manager</p>
@@ -148,11 +129,11 @@
             </div>
             <div class="w3-col l3 m6 w3-margin-bottom">
                 <div class="w3-card">
-                    <img src="/Assets/blank-male-silhouette.jpg" alt="Mike" style="width:100%">
+                    <img src="./Assets/pablo_galve.jpg" alt="Pablo" style="width:100%">
                     <div class="w3-container">
                         <h3>Pablo Galve</h3>
                         <p class="w3-opacity">QA Manager</p>
-                        <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+                        <p>I am in charge of ensuring the quality of the project.
                         </p>
                         <p><a href="team/pablo_galve.html" target="_blank" class="w3-button w3-light-grey w3-block"><i class="fa fa-male"></i> About Me</a>
                         </p>
@@ -174,7 +155,7 @@
             </div>
             <div class="w3-col l3 m6 w3-margin-bottom">
                 <div class="w3-card">
-                    <img src="/Assets/blank-male-silhouette.jpg" alt="John" style="width:100%">
+                    <img src="./Assets/Meisia.jpg" alt="John" style="width:100%">
                     <div class="w3-container">
                         <h3>Macià Dalmau</h3>
                         <p class="w3-opacity">Art</p>
@@ -187,11 +168,11 @@
             </div>
             <div class="w3-col l3 m6 w3-margin-bottom">
                 <div class="w3-card">
-                    <img src="/Assets/blank-male-silhouette.jpg" alt="Jane" style="width:100%">
+                    <img src="./Assets/poljs.jpg" alt="Jane" style="width:100%">
                     <div class="w3-container">
                         <h3>Pol Juan</h3>
                         <p class="w3-opacity">Design</p>
-                        <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+                        <p> Do the maps have to be done again? Aww shit, here i go again.
                         </p>
                         <p><a href="team/pol_juan.html" target="_blank" class="w3-button w3-light-grey w3-block"><i class="fa fa-male"></i> About Me</a>
                         </p>
@@ -213,7 +194,7 @@
             </div>
             <div class="w3-col l3 m6 w3-margin-bottom">
                 <div class="w3-card">
-                    <img src="/Assets/blank-male-silhouette.jpg" alt="Dan" style="width:100%">
+                    <img src="./Assets/Christian .jpg" alt="Dan" style="width:100%">
                     <div class="w3-container">
                         <h3>Christian Piña</h3>
                         <p class="w3-opacity">User Interface</p>
@@ -228,22 +209,22 @@
     </div>
 
     <!-- Promo Section "Statistics" -->
-    <div class="w3-container w3-row w3-center w3-dark-grey w3-padding-64">
-        <div class="w3-quarter">
-            <span class="w3-xxlarge">8</span>
-            <br>professionals in the team
-        </div>
+    <div class="w3-container w3-row w3-center w3-dark-grey w3-padding-64">        
         <div class="w3-quarter">
             <span class="w3-xxlarge">3500+</span>
             <br>work hours
         </div>
         <div class="w3-quarter">
-            <span class="w3-xxlarge">80+</span>
+            <span class="w3-xxlarge">100+</span>
             <br>Bugs Solved
         </div>
         <div class="w3-quarter">
             <span class="w3-xxlarge">15+</span>
             <br>Meetings
+        </div>
+        <div class="w3-quarter">
+            <span class="w3-xxlarge">8</span>
+            <br>professionals in the team
         </div>
     </div>
 
@@ -307,7 +288,7 @@
         <p class="w3-center w3-large">Lets get in touch. Find Us On Social Media:</p>
         <div style="margin-top:48px">
             <p><i class="fa fa-map-marker fa-fw w3-xxlarge w3-margin-right"></i> Barcelona, Spain</p>
-            <p><a href="https://twitter.com/kalimaentmt" class="fa fa-twitter" style="text-decoration: none;font-size:36px"></a>Kalima Entertainment</p>
+            <p><a href="https://twitter.com/kalimaentmt" class="fa fa-twitter" style="text-decoration: none;font-size:36px">Kalima Entertainment</a></p>
             <br>
         </div>
     </div>

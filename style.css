@@ -1,5 +1,3 @@
-
-
 body,
 h1,
 h2,
@@ -8,6 +6,10 @@ h4,
 h5,
 h6 {
     font-family: "Raleway", sans-serif
+}
+
+p{
+    font-size: 1vw;
 }
 
 body,
@@ -20,7 +22,7 @@ html {
 .bgimg-1 {
     background-position: center;
     background-size: cover;
-    background-image: url("/Assets/fondo.png");
+    background-image: url("./Assets/fondo.png");
     min-height: 100%;
 }
 
@@ -30,10 +32,21 @@ html {
 
 .eslogan{
     
-    font-size: 35px;
+    font-size: 1.5vw;
     font-family:Lucida;
     color:goldenrod;
     background-color:black;
+    position: relative;
+    top: 90px;
+}
+
+#button_eslogan{
+    position: relative;
+    top: 60px;
+}
+
+#download_button{
+    font-size: 200%;
 }
 
 .exp{
