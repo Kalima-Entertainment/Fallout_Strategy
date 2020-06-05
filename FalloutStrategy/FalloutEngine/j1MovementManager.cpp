@@ -110,7 +110,7 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 
 	iPoint Map_Entityposition;
 	fPoint distanceToNextTile;
-	iPoint next_tile_world;
+	fPoint next_tile_world;
 	float DirectDistance;
 	fPoint to_fPoint;
 
@@ -131,7 +131,7 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 
 			// --- On call to Move, Units will request a path to the destination ---
 
-			if (((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && (*unit)->info.IsSelected))||(!(*unit)->owner->goal_tile_set))
+			if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) && ((*unit)->info.IsSelected))
 			{
 				(*unit)->commanded = true;
 				if (group->IsGroupLead((*unit)) == false)
@@ -186,9 +186,12 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 			(*unit)->state = WALK;
 			// --- If a path is created, the unit will start following it ---
 
-			next_tile_world = App->map->MapToWorld((*unit)->info.next_tile.x, (*unit)->info.next_tile.y);
+			next_tile_world = App->map->fMapToWorld((*unit)->info.next_tile.x, (*unit)->info.next_tile.y);
+			next_tile_world.x += 32.0f;
+			next_tile_world.y += 32.0f;
 
-			distanceToNextTile = { (float)next_tile_world.x - (*unit)->position.x,(float)next_tile_world.y - (*unit)->position.y };
+			//distanceToNextTile = { (float)(next_tile_world.x + 32.0f - (*unit)->position.x),(float)(next_tile_world.y + 32.0f - (*unit)->position.y)};
+			distanceToNextTile = { next_tile_world.x - (*unit)->position.x, next_tile_world.y - (*unit)->position.y };
 
 			// --- We compute the module of our vector ---
 			DirectDistance = sqrtf(pow(distanceToNextTile.x, 2.0f) + pow(distanceToNextTile.y, 2.0f));
@@ -212,10 +215,8 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 			(*unit)->current_tile = App->map->WorldToMap((*unit)->position.x, (*unit)->position.y);
 
 			// --- We convert an iPoint to fPoint for comparing purposes ---
-			to_fPoint.x = next_tile_world.x;
-			to_fPoint.y = next_tile_world.y;
 
-			if ((*unit)->position.DistanceTo(to_fPoint) < 3)
+			if ((*unit)->position.DistanceTo(next_tile_world) < 3)
 			{
 				(*unit)->position.x = next_tile_world.x;
 				(*unit)->position.y = next_tile_world.y;
@@ -224,6 +225,7 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 
 			else
 			{
+				//LOG("Current distance %.2f", (*unit)->position.DistanceTo(next_tile_world));
 				(*unit)->position.x += distanceToNextTile.x;
 				(*unit)->position.y += distanceToNextTile.y;
 			}
@@ -252,7 +254,8 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 						(*unit)->info.goal_tile = (*unit)->target_tile;
 					}
 
-					if (App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile) != -1)
+					//if (App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile) != -1)
+					if((*unit)->PathfindToPosition(goal_path))
 					{
 						(*unit)->info.Current_path = App->pathfinding->GetLastPath();
 						(*unit)->info.Current_path.erase((*unit)->info.Current_path.begin());

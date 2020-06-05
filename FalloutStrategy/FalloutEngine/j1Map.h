@@ -140,6 +140,7 @@ public:
 	// Load new map
 	bool Load(std::string modules[4]);
 
+	fPoint fMapToWorld(int x, int y) const;
 	iPoint MapToWorld(int x, int y) const;
 	fPoint floatMapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;

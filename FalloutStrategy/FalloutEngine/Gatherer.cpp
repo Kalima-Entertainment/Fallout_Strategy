@@ -77,6 +77,12 @@ bool Gatherer::Update(float dt) {
 		if (this->info.current_group == nullptr) {
 			Move(dt);
 		}
+		else {
+			if (info.current_group->IsGroupLead(this)) {
+				if (this->faction == App->player->faction)
+					info.current_group->CheckForMovementRequest(App->player->Map_mouseposition, dt);
+			}
+		}
 
 		if ((current_tile == target_tile)&&(node_path.size() == 0)) {
 			//gather
@@ -164,14 +170,6 @@ bool Gatherer::Update(float dt) {
 	if (DynaParticle->IsActive()) {
 		DynaParticle->Move(position.x, position.y);
 		DynaParticle->Update(dt);
-	}
-
-	if (this->info.current_group != nullptr)
-	{
-		if (info.current_group->IsGroupLead(this)) {
-			if (this->faction == App->player->faction)
-				info.current_group->CheckForMovementRequest(App->player->Map_mouseposition, dt);
-		}
 	}
 
 	last_dt = dt;

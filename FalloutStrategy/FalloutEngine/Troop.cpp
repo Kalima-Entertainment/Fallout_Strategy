@@ -114,8 +114,15 @@ bool Troop::Update(float dt) {
         break;
 
     case WALK:
-		if(info.current_group == nullptr)
+		if (info.current_group == nullptr) {
 			Move(dt);
+		}
+		else {
+			if (info.current_group->IsGroupLead(this)) {
+				if (this->faction == App->player->faction)
+					info.current_group->CheckForMovementRequest(App->player->Map_mouseposition, dt);
+			}
+		}
 
 		if (target_entity) {
 			if (target_entity->is_dynamic) {

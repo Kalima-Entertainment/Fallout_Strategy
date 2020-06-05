@@ -319,8 +319,9 @@ bool j1Player::Update(float dt) {
 	if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) && ((selected_entity != nullptr)||(selected_group != nullptr))) {
 		if ((selected_entity != nullptr)&&(selected_entity->is_dynamic))
 			MoveEntity((DynamicEntity*)selected_entity);
-		//if (selected_group != nullptr)
-			//MoveGroup();
+
+		if (selected_group != nullptr)
+			MoveGroup();
 	}
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
@@ -434,7 +435,10 @@ void j1Player::MoveEntity(DynamicEntity* entity){
 void j1Player::MoveGroup() {
 	for (int i = 0; i < selected_group->GetSize(); i++)
 	{
+		/*
 		MoveEntity(selected_group->Units[i]);
+		*/
+		selected_group->Units[i]->state = WALK;
 	}
 }
 
