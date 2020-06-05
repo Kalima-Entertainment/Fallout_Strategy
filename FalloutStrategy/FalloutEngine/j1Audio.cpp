@@ -62,7 +62,7 @@ bool j1Audio::Awake(pugi::xml_node& config)
 
 	Deathclaw_walk = LoadFx("Assets/audio/fx/CharactersSounds/Deathclaw/babWalk.wav");
 	Deathclaw_hit = LoadFx("Assets/audio/fx/CharactersSounds/Deathclaw/babHit2.wav");
-	Deathclaw_attack = LoadFx("Assets/audio/fx/CharactersSounds/Deathclaw/Attack2.wav");
+	Deathclaw_attack = LoadFx("Assets/audio/fx/CharactersSounds/Deathclaw/Attack1.wav");
 	Deathclaw_die = LoadFx("Assets/audio/fx/CharactersSounds/Deathclaw/babDeath1.wav");
 
 	Mr_Handy_walk = LoadFx("Assets/audio/fx/CharactersSounds/Mr_Handy/Mr_Handy_walk.wav");
