@@ -34,20 +34,8 @@ bool UI_element::Draw()
 
 bool UI_element::IsIntersection() {
 
-	bool ret;
-
 	App->input->GetMousePosition(mouse_pos.x, mouse_pos.y);
 
-	if (mouse_pos.x > pos.x && mouse_pos.x<pos.x + dimensions.w && mouse_pos.y > pos.y && mouse_pos.y < pos.y + dimensions.h) {
-
-		ret = true;
-	}
-	
-	else {
-
-		ret = false;
-
-	}
-
-	return ret;
+	return ((mouse_pos.x > pos.x) && (mouse_pos.x < pos.x + dimensions.w)
+		&& (mouse_pos.y > pos.y) && (mouse_pos.y < pos.y + dimensions.h));
 }

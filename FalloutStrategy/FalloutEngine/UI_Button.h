@@ -62,7 +62,7 @@ public:
 	BUTTON_STATE current_state;
 
 	bool inHover;
-	int counter;
+	bool fx_played;
 	bool radio;
 };
 

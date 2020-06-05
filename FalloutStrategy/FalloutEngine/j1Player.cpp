@@ -122,7 +122,7 @@ bool j1Player::PreUpdate() {
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
 			selected_entity = SelectEntity();
 			if ((selected_entity == nullptr) && (selected_group != nullptr)) {
-				selected_group->ClearGroup();
+				selected_group->DeselectGroup();
 				selected_group = nullptr;
 			}
 
@@ -396,9 +396,8 @@ j1Entity* j1Player::SelectEntity() {
 	j1Entity* target = App->entities->FindEntityByTile(selected_spot);
 
 	if (target != nullptr) {
-		if (((god_mode) || (target->faction == faction))&&(target->state != DIE)) {
-			return target;
-		}
+		if (((god_mode) || (target->faction == faction))&&(target->state != DIE)) 
+				return target;
 	}
 
 	return nullptr;
@@ -425,25 +424,10 @@ void j1Player::MoveEntity(DynamicEntity* entity){
 	//dynamic entities
 	if (entity->state != DIE) 
 	{
+		if (entity->info.current_group != nullptr)
+			entity->info.current_group = nullptr;
 		entity->PathfindToPosition(selected_spot);
-
-		j1Entity* target = App->entities->FindEntityByTile(selected_spot);
-
-		entity->target_entity = target;
-
-		if (target == nullptr) {
-			if (entity->type == GATHERER) {
-				ResourceBuilding* resource_building = App->entities->FindResourceBuildingByTile(selected_spot);
-
-				//assign a resource building to the entity
-				if ((resource_building != nullptr) && (resource_building->quantity > 0)) {
-					((Gatherer*)entity)->AssignResourceBuilding(resource_building);
-				}
-			}
-			else if (entity->is_agressive) {
-				entity->commanded = true;
-			}
-		}
+		entity->CheckDestination(selected_spot);
 	}
 }
 

@@ -36,14 +36,14 @@ public:
 	DynamicEntity(Faction faction, EntityType type, iPoint current_tile, GenericPlayer* owner = nullptr);
 	~DynamicEntity();
 
-	//Core
-	//bool Update(float dt);
 	bool PostUpdate();
 
 	void Move(float dt);
 	void Flee();
 
 	j1Entity* DetectEntitiesInRange();
+	void CheckDestination(iPoint destination);
+
 	bool PathfindToPosition(iPoint target);
 	Direction GetDirectionToGo(SDL_Rect next_tile_rect) const;
 	void UpdateTile();

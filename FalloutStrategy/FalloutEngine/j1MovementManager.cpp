@@ -12,8 +12,7 @@
 #include "j1Player.h"
 #include "DynamicEntity.h"
 
-j1MovementManager::j1MovementManager()
-{
+j1MovementManager::j1MovementManager() {
 }
 
 j1MovementManager::~j1MovementManager() {
@@ -122,7 +121,8 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 		Map_Entityposition.y = (*unit)->position.y;
 		Map_Entityposition = App->map->WorldToMap(Map_Entityposition.x, Map_Entityposition.y);
 
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && (*unit)->info.IsSelected) (*unit)->info.UnitMovementState = MovementState::MovementState_NoState;
+		if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) && (*unit)->info.IsSelected) 
+			(*unit)->info.UnitMovementState = MovementState::MovementState_NoState;
 
 		switch ((*unit)->info.UnitMovementState)
 		{
@@ -146,16 +146,24 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 					group->ClearOccupiedlist();
 					(*unit)->info.goal_tile = goal_path;
 					group->Occupied_tiles.push_back(&(*unit)->info.goal_tile);
-					LOG("CREATE PATH RETURNS: %i", App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile));
-					(*unit)->owner->goal_tile_set = true;
+					//LOG("CREATE PATH RETURNS: %i", App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile));
+					//(*unit)->owner->goal_tile_set = true;
 				}
 
+				(*unit)->CheckDestination(goal_path);
+
+				/*
 				if (App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile) != -1)
 				{
 					(*unit)->info.Current_path = App->pathfinding->GetLastPath();
 					(*unit)->info.Current_path.erase((*unit)->info.Current_path.begin());
 					(*unit)->info.Current_path.erase((*unit)->info.Current_path.begin());
 
+					(*unit)->info.UnitMovementState = MovementState::MovementState_NextStep;
+				}
+				else */
+				if ((*unit)->PathfindToPosition(goal_path)){
+					(*unit)->info.Current_path = (*unit)->path_to_target;
 					(*unit)->info.UnitMovementState = MovementState::MovementState_NextStep;
 				}
 				else {
@@ -235,7 +243,26 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 			}
 			else
 			{
-				(*unit)->info.UnitMovementState = MovementState::MovementState_DestinationReached;
+				if (group->IsGroupLead((*unit))&&((*unit)->node_path.size() > 0)) {
+					(*unit)->node_path.pop_back();
+					if((*unit)->node_path.size() > 0){
+						(*unit)->info.goal_tile = (*unit)->node_path.back();
+					}
+					else {
+						(*unit)->info.goal_tile = (*unit)->target_tile;
+					}
+
+					if (App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile) != -1)
+					{
+						(*unit)->info.Current_path = App->pathfinding->GetLastPath();
+						(*unit)->info.Current_path.erase((*unit)->info.Current_path.begin());
+						(*unit)->info.Current_path.erase((*unit)->info.Current_path.begin());
+						(*unit)->info.UnitMovementState = MovementState::MovementState_NextStep;
+					}
+				}
+				else {
+					(*unit)->info.UnitMovementState = MovementState::MovementState_DestinationReached;
+				}
 			}
 
 			break;

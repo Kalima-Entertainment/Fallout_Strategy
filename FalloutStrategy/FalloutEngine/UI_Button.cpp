@@ -44,7 +44,7 @@ UI_Button::UI_Button(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, 
 	current_state = BUTTON_STATE::NONE;
 
 	inHover = true;
-	counter = 0;
+	fx_played = false;
 	radio = false;
 }
 
@@ -78,17 +78,15 @@ bool UI_Button::Update(float dt)
 	//if cursor is inside button rectangle
 	if (IsIntersection() == true) {
 		
-		counter++;
-
 		//rect is button hover
 		dimensions = Button_hover;
 		//LOG("%i", counter);
 
 		//only plays fx once
-		if (counter == 1) {
+		if (!fx_played) {
 			App->audio->PlayFx(1, App->audio->hover_fx, 0);
+			fx_played = true;
 		}
-
 
 		if (t == button_select_ghoul)
 		{
@@ -737,7 +735,7 @@ bool UI_Button::Update(float dt)
 
 	else {
 		dimensions = Button_idle;
-		counter = 0;
+		fx_played = false;
 		current_state = BUTTON_STATE::HOVER_EXIT;
 	}
 

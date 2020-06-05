@@ -11,6 +11,7 @@
 #include "j1Input.h"
 #include "AI_Player.h"
 #include "StaticEntity.h"
+#include "Gatherer.h"
 #include <iostream>
 #include <string>
 #include "SDL_mixer/include/SDL_mixer.h"
@@ -510,6 +511,26 @@ j1Entity* DynamicEntity::DetectEntitiesInRange() {
 		}
 	}
 	return closest_enemy;
+}
+
+void DynamicEntity::CheckDestination(iPoint destination) {
+	j1Entity* target = App->entities->FindEntityByTile(destination);
+
+	target_entity = target;
+
+	if (target == nullptr) {
+		if (type == GATHERER) {
+			ResourceBuilding* resource_building = App->entities->FindResourceBuildingByTile(destination);
+
+			//assign a resource building to the entity
+			if ((resource_building != nullptr) && (resource_building->quantity > 0)) {
+				((Gatherer*)this)->AssignResourceBuilding(resource_building);
+			}
+		}
+		else if (is_agressive) {
+			commanded = true;
+		}
+	}
 }
 
 // --- UnitInfo Constructors and Destructor ---
