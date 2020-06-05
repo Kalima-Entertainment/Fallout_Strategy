@@ -62,6 +62,7 @@ DynamicEntity::DynamicEntity() {
 	direction = last_direction = TOP_LEFT;
 	DynaParticle = nullptr;
 	visionEntity = nullptr;
+	info.current_group = nullptr;
 }
 
 DynamicEntity::~DynamicEntity() {

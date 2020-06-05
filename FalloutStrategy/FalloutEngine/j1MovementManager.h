@@ -40,13 +40,9 @@ public:
 
 	void AddGroup(j1Group* group){ Groups.push_back(group);}
 
-	// Load / Save
-	bool Load(pugi::xml_node&);
-	bool Save(pugi::xml_node&) const;
-
 private:
-	std::list <j1Group*> Groups;
-	bool stop_iteration;
+	std::vector <j1Group*> Groups;
+	bool stop_iteration = false;
 };
 
 #endif // __J1MOVEMENTMANAGER_H__

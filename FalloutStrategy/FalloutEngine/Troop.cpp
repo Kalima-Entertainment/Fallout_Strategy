@@ -114,7 +114,8 @@ bool Troop::Update(float dt) {
         break;
 
     case WALK:
-		Move(dt);
+		if(info.current_group == nullptr)
+			Move(dt);
 
 		if (target_entity) {
 			if (target_entity->is_dynamic) {
@@ -272,6 +273,14 @@ bool Troop::Update(float dt) {
 	if (DynaParticle->IsActive()) {
 		DynaParticle->Move(position.x, position.y);
 		DynaParticle->Update(dt);
+	}
+
+	if (this->info.current_group != nullptr)
+	{
+		if (info.current_group->IsGroupLead(this)) {
+			if (this->faction == App->player->faction)
+				info.current_group->CheckForMovementRequest(App->player->Map_mouseposition, dt);
+		}
 	}
 
 	last_dt = dt;

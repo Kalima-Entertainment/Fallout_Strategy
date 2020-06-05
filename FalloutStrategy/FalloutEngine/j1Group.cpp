@@ -6,8 +6,8 @@
 #include "j1Pathfinding.h"
 #include "DynamicEntity.h"
 
-j1Group::j1Group()
-{
+j1Group::j1Group() {
+	last_goal = { 0,0 };
 }
 
 j1Group::~j1Group()
@@ -41,6 +41,7 @@ void j1Group::ClearGroup()
 	for (int i = 0; i < Units.size(); i++)
 	{
 		Units[i]->info.IsSelected = false;
+		Units[i]->info.current_group = nullptr;
 	}
 	Units.clear();
 }
@@ -65,13 +66,12 @@ bool j1Group::IsGroupLead(DynamicEntity* entity)
 	return (*Units.begin()) == entity;
 }
 
-void j1Group::SetUnitGoalTile(j1Entity* entity)
+void j1Group::SetUnitGoalTile(DynamicEntity* entity)
 {
-	/*
-	std::list <j1Entity*>::const_iterator it = Units.begin();
+	std::vector<DynamicEntity*>::const_iterator it = Units.cbegin();
 	bool Goal_found = false;
 
-	while (it != Units.end())
+	while (it != Units.cend())
 	{
 		if (*it == entity)
 		{
@@ -84,13 +84,12 @@ void j1Group::SetUnitGoalTile(j1Entity* entity)
 		if (Goal_found)
 		{
 			entity->info.goal_tile = last_goal;
-			//entity->target_tile = last_goal;
+			entity->target_tile = last_goal;
 			break;
 		}
 
 		it++;
 	}
-	*/
 }
 
 bool j1Group::FindFreeAdjacents(iPoint* base_tile)

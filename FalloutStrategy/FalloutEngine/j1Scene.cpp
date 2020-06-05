@@ -313,7 +313,8 @@ void j1Scene::RectangleSelection()
 				selected_entities.push_back((DynamicEntity*)App->entities->entities[i]);
 			}
 		}
-		App->player->selected_group = App->Mmanager->CreateGroup(selected_entities);
+		if(selected_entities.size() > 0)
+			App->player->selected_group = App->Mmanager->CreateGroup(selected_entities);
 	}
 }
 
