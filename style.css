@@ -20,7 +20,7 @@ html {
 .bgimg-1 {
     background-position: center;
     background-size: cover;
-    background-image: url("Assets/fondo.png");
+    background-image: url("https://github.com/Kalima-Entertainment/Fallout_Strategy/blob/gh-pages/Assets/fondo.png?raw=true");
     min-height: 100%;
 }
 
