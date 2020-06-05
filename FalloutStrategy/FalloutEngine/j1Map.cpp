@@ -690,20 +690,6 @@ bool j1Map::CheckVisibleArea(int x, int y)
 {
 	bool ret = false;
 
-	//Fog
-	/*switch (App->fowManager->GetFoWTileState({ x, y })->tileFogBits) {
-	case fow_ALL:
-		ret = false;
-		break;
-	}
-
-	//Shroud
-	switch (App->fowManager->GetFoWTileState({ x, y })->tileShroudBits) {
-	case fow_ALL://Covered totally by shroud
-		ret = false;
-		break;
-	}*/
-
 	if (App->fowManager->GetFoWTileState({ x, y })->tileFogBits != fow_ALL) 
 		ret = true;
 	else if (App->fowManager->GetFoWTileState({ x, y })->tileShroudBits == fow_ALL && ((x == 0)||(y == 0))) 
