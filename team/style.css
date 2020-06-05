@@ -1,6 +1,10 @@
-img{
+.profile_pic{
     float: right;
-    width: 50%;
+    width: 60%;
+}
+
+.presentation_pic{
+    width: 100%;
 }
 
 .fa {
