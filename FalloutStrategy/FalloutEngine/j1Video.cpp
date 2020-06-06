@@ -5,7 +5,6 @@
 #include "p2Log.h"
 #include "j1Video.h"
 
-
 j1Video::j1Video()
 {
 	baseticks = 0;

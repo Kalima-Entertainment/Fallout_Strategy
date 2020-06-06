@@ -93,7 +93,6 @@ public:
 	j1Entity*		  FindEntityByTile(iPoint tile);
 	ResourceBuilding* FindResourceBuildingByTile(iPoint tile);
 	ResourceBuilding* GetClosestResourceBuilding(iPoint current_position);
-	bool IsTileOccupied(iPoint position);
 
 	iPoint ClosestTile(iPoint position, std::vector<iPoint> entity_tiles);
 	iPoint FindFreeAdjacentTile(iPoint origin, iPoint destination);

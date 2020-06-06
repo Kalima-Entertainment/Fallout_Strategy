@@ -80,9 +80,10 @@ bool Gatherer::Update(float dt) {
 		else {
 			if (info.current_group->IsGroupLead(this)) {
 				if (this->faction == App->player->faction)
-					info.current_group->CheckForMovementRequest(target_tile, dt);
+					info.current_group->CheckForMovementRequest(App->player->Map_mouseposition, dt);
 			}
 		}
+
 		if ((current_tile == target_tile)&&(node_path.size() == 0)) {
 			//gather
 			if (((resource_building != nullptr) && (resource_collected < storage_capacity)) || ((resource_collected > 0) && (base != nullptr))) {

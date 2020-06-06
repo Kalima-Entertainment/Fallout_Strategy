@@ -12,6 +12,7 @@
 // Modules
 class j1Window;
 class j1Input;
+class ModuleAssetsManager;
 class j1Render;
 class j1Textures;
 class j1Audio;
@@ -105,6 +106,7 @@ public:
 	// Modules
 	j1Window*			win = NULL;
 	j1Input*			input = NULL;
+	ModuleAssetsManager* assetManager = NULL;
 	j1Render*			render = NULL;
 	j1Textures*			tex = NULL;
 	j1Audio*			audio = NULL;

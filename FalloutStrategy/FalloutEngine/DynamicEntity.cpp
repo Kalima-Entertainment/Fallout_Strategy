@@ -159,7 +159,7 @@ bool DynamicEntity::PostUpdate() {
 
 		if (App->render->debug) {
 			//App->render->DrawQuad(next_tile_rect, 0, 255, 0, 255);
-			App->render->DrawQuad({ (int)position.x, (int)position.y, 2, 2 }, 255, 0, 0, 255);
+			//App->render->DrawQuad({ (int)position.x, (int)position.y, 2, 2 }, 255, 0, 0, 255);
 		}
 	}
 
@@ -284,6 +284,7 @@ void DynamicEntity::Move(float dt) {
 
 				if (path_to_target.size() > 0)
 					path_to_target.erase(path_to_target.cbegin());
+
 			}
 		}
 

@@ -2,7 +2,7 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Audio.h"
-
+#include "AssetsManager.h"
 #include "SDL/include/SDL.h"
 #include "SDL_mixer\include\SDL_mixer.h"
 #pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
@@ -163,7 +163,7 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 		Mix_FreeMusic(music);
 	}
 
-	music = Mix_LoadMUS(path);
+	music = Mix_LoadMUS_RW(App->assetManager->Load(path), 1);
 
 	if(music == NULL)
 	{
@@ -202,7 +202,7 @@ unsigned int j1Audio::LoadFx(const char* path)
 	if(!active)
 		return 0;
 
-	Mix_Chunk* chunk = Mix_LoadWAV(path);
+	Mix_Chunk* chunk = Mix_LoadWAV_RW(App->assetManager->Load(path), 1);
 
 	if(chunk == NULL)
 	{

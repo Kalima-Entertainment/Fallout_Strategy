@@ -120,7 +120,7 @@ bool Troop::Update(float dt) {
 		else {
 			if (info.current_group->IsGroupLead(this)) {
 				if (this->faction == App->player->faction)
-					info.current_group->CheckForMovementRequest(target_tile, dt);
+					info.current_group->CheckForMovementRequest(App->player->Map_mouseposition, dt);
 			}
 		}
 

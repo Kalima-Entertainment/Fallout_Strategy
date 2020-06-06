@@ -35,7 +35,7 @@ public:
 	bool IsGroupLead(DynamicEntity* entity);
 	void SetUnitGoalTile(DynamicEntity* entity);
 	bool FindFreeAdjacents(iPoint* base_tile);
-	bool IsTileFree(iPoint adjacent);
+	bool IsTileFree(iPoint* adjacent);
 
 	// Load / Save
 	bool Load(pugi::xml_node&);

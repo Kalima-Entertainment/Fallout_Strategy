@@ -97,7 +97,7 @@ j1Group* j1MovementManager::CreateGroup(std::vector<DynamicEntity*> entities_vec
 	// --- Finally, If the group is Valid add it to our Groups list, else delete it ---
 	if (Validgroup) {
 		Groups.push_back(group);
-		//LOG("Group Created");
+		LOG("Group Created");
 		return group;
 	}
 	else delete group;
@@ -116,8 +116,6 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 
 	while (unit != group->Units.cend())
 	{
-		(*unit)->UpdateTile();
-
 		// --- We Get the map coords of the Entity ---
 		Map_Entityposition.x = (*unit)->position.x;
 		Map_Entityposition.y = (*unit)->position.y;
@@ -140,7 +138,7 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 				{
 					// --- If any other unit of the group has the same goal, change the goal tile ---
 					group->SetUnitGoalTile((*unit));
-					App->entities->occupied_tiles[(*unit)->info.goal_tile.x][(*unit)->info.goal_tile.y];
+					(*unit)->state = WALK;
 				}
 				else
 				{
@@ -239,35 +237,30 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 
 			// --- If a path is being followed, the unit will get the next tile in the path ---
 
-			if (App->entities->IsTileOccupied((*unit)->target_tile))
-				(*unit)->PathfindToPosition((*unit)->target_tile);
-
-			//if we haven't reached our destination
-			if ((*unit)->path_to_target.size() > 0)
+			if ((*unit)->info.Current_path.size() > 0)
 			{
-				(*unit)->info.next_tile = (*unit)->path_to_target.front();
-				(*unit)->path_to_target.erase((*unit)->path_to_target.begin());
+				(*unit)->info.next_tile = (*unit)->info.Current_path.front();
+				(*unit)->info.Current_path.erase((*unit)->info.Current_path.begin());
 				(*unit)->info.UnitMovementState = MovementState::MovementState_FollowPath;
 			}
 			else
 			{
-				//we reach the following node
-				if (((*unit)->node_path.size() > 0)&&((*unit)->current_tile == (*unit)->node_path.back())) {
+				if (group->IsGroupLead((*unit))&&((*unit)->node_path.size() > 0)) {
 					(*unit)->node_path.pop_back();
-					//if there are more nodes to follow get the next one
 					if((*unit)->node_path.size() > 0){
 						(*unit)->info.goal_tile = (*unit)->node_path.back();
 					}
-					//if not pathfind to target tile
 					else {
 						(*unit)->info.goal_tile = (*unit)->target_tile;
 					}
 
-					if((*unit)->PathfindToPosition((*unit)->info.goal_tile))
+					//if (App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile) != -1)
+					if((*unit)->PathfindToPosition(goal_path))
 					{
-						(*unit)->info.next_tile = (*unit)->path_to_target.front();
-						(*unit)->path_to_target.erase((*unit)->path_to_target.begin());
-						(*unit)->info.UnitMovementState = MovementState::MovementState_FollowPath;
+						(*unit)->info.Current_path = App->pathfinding->GetLastPath();
+						(*unit)->info.Current_path.erase((*unit)->info.Current_path.begin());
+						(*unit)->info.Current_path.erase((*unit)->info.Current_path.begin());
+						(*unit)->info.UnitMovementState = MovementState::MovementState_NextStep;
 					}
 				}
 				else {
@@ -281,9 +274,10 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 
 			// --- The unit reaches the end of the path, thus stopping and returning to NoState ---
 			(*unit)->info.UnitMovementState = MovementState::MovementState_NoState;
-			(*unit)->UpdateTile();
+			(*unit)->current_tile = App->map->WorldToMap((*unit)->position.x, (*unit)->position.y);
 			(*unit)->state = IDLE;
 			(*unit)->commanded = false;
+
 			break;
 		}
 
