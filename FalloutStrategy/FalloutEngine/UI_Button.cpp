@@ -92,6 +92,8 @@ bool UI_Button::Update(float dt)
 		{
 			if (inHover) {
 				faction_image = (j1Image*)App->gui->CreateImage(510, 300, Image, ghoul_rect, NULL, this);
+				faction_image->hover = true;
+				elements_to_show.push_back(faction_image);
 				current_state = BUTTON_STATE::HOVER;
 				inHover = !inHover;
 			}
@@ -100,6 +102,8 @@ bool UI_Button::Update(float dt)
 		{
 			if (inHover) {
 				faction_image = (j1Image*)App->gui->CreateImage(510, 300, Image, vault_rect, NULL, this);
+				faction_image->hover = true;
+				elements_to_show.push_back(faction_image);
 				current_state = BUTTON_STATE::HOVER;
 				inHover = !inHover;
 			}
@@ -108,6 +112,8 @@ bool UI_Button::Update(float dt)
 		{
 			if (inHover) {
 				faction_image = (j1Image*)App->gui->CreateImage(510, 300, Image, brotherhood_rect, NULL, this);
+				faction_image->hover = true;
+				elements_to_show.push_back(faction_image);
 				current_state = BUTTON_STATE::HOVER;
 				inHover = !inHover;
 			}
@@ -116,6 +122,8 @@ bool UI_Button::Update(float dt)
 		{
 			if (inHover) {
 				faction_image = (j1Image*)App->gui->CreateImage(510, 300, Image, supermutant_rect, NULL, this);
+				faction_image->hover = true;
+				elements_to_show.push_back(faction_image);
 				current_state = BUTTON_STATE::HOVER;
 				inHover = !inHover;
 			}
@@ -740,12 +748,16 @@ bool UI_Button::Update(float dt)
 	}
 
 	if (current_state == BUTTON_STATE::HOVER_EXIT) {
-		App->gui->Delete_Element(faction_image);
+		for (std::list<UI_element*>::iterator item = elements_to_show.begin(); item != elements_to_show.end(); ++item) {
+
+			if ((*item)->hover == true)
+			{
+				DoNotShowElement((*item));
+			}
+		}
 		inHover = !inHover;
 	}
-
-
-
+	   
 	return true;
 
 }

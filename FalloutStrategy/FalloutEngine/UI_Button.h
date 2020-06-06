@@ -60,6 +60,7 @@ public:
 	SDL_Rect ghoul_rect;
 
 	BUTTON_STATE current_state;
+	std::list<UI_element*> elements_to_show;
 
 	bool inHover;
 	bool fx_played;

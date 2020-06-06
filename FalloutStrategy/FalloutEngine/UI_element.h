@@ -145,7 +145,7 @@ public:
 	bool destroy;
 
 	bool drawable;
-
+	bool hover;
 
 	//pointer to an element
 	UI_element*	element_UI;

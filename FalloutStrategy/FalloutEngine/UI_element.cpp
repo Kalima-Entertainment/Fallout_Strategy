@@ -11,6 +11,8 @@ UI_element::UI_element(int x, int y, UI_Type type, UI_element* parent, j1Module 
 	this->element_UI = parent;
 	observer = Observer;
 	drawable = true;
+	hover = false;
+
 }
 
 bool UI_element::Update(float dt)
