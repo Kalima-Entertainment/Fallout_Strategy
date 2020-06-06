@@ -185,23 +185,36 @@ bool j1Group::FindFreeAdjacents(iPoint* base_tile)
 
 bool j1Group::IsTileFree(iPoint adjacent)
 {
-	/*
-	std::list <iPoint*>::const_iterator it = Occupied_tiles.begin();
 
-	while (it != Occupied_tiles.end())
 	{
-		if (adjacent->x == (*it)->x && adjacent->y == (*it)->y)
-		{
-			return false;
+		/*
+		//If adjacent tile true means tile occupied then pushback to occupied tiles list(need to be compared anyw.
+		if (App->entities->occupied_tiles[adjacent.x][adjacent.y]) {
+			AddTiletoOccupied(adjacent);
 		}
-
-		it++;
+		else return true;
+		*/
 	}
 
-	AddTiletoOccupied(*adjacent);
+	{
+		/*
+		std::list <iPoint*>::const_iterator it = Occupied_tiles.begin();
 
-	return true;
-	*/
+		while (it != Occupied_tiles.end())
+		{
+			if (adjacent->x == (*it)->x && adjacent->y == (*it)->y)
+			{
+				return false;
+			}
+
+			it++;
+		}
+
+		AddTiletoOccupied(*adjacent);
+
+		return true;
+		*/
+	}
 
 	return !App->entities->occupied_tiles[adjacent.x][adjacent.y];
 }
