@@ -114,15 +114,7 @@ bool Troop::Update(float dt) {
         break;
 
     case WALK:
-		if (info.current_group == nullptr) {
-			Move(dt);
-		}
-		else {
-			if (info.current_group->IsGroupLead(this)) {
-				if (this->faction == App->player->faction)
-					info.current_group->CheckForMovementRequest(target_tile, dt);
-			}
-		}
+		Move(dt);
 
 		if (target_entity) {
 			if (target_entity->is_dynamic) {
@@ -182,6 +174,7 @@ bool Troop::Update(float dt) {
 		}
 		else if (current_tile == target_tile){
 			state = IDLE;
+			//UpdateTile();
 		}
 
 		SpatialAudio(position.x, position.y, faction, state, type);

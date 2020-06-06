@@ -158,7 +158,7 @@ bool DynamicEntity::PostUpdate() {
 		}
 
 		if (App->render->debug) {
-			//App->render->DrawQuad(next_tile_rect, 0, 255, 0, 255);
+			App->render->DrawQuad(next_tile_rect, 0, 255, 0, 255);
 			App->render->DrawQuad({ (int)position.x, (int)position.y, 2, 2 }, 255, 0, 0, 255);
 		}
 	}
@@ -250,6 +250,8 @@ void DynamicEntity::Move(float dt) {
 
 	fPoint auxPos = position; //We use that variable to optimize Fog Of War code 
 
+	UpdateTile();
+
 	switch (direction)
 	{
 	case NO_DIRECTION:
@@ -275,12 +277,14 @@ void DynamicEntity::Move(float dt) {
 
 		if (current_tile == target_tile){
 			direction = last_direction;
-			//target_tile = App->entities->FindFreeAdjacentTile(current_tile, target_tile);
-			//state = IDLE;
 		}
 		else {
+
 			if (path_to_target.size() > 0) {
 				next_tile = path_to_target.front();
+
+				if (App->entities->IsTileOccupied(next_tile))
+					PathfindToPosition(target_tile);
 
 				if (path_to_target.size() > 0)
 					path_to_target.erase(path_to_target.cbegin());
@@ -316,6 +320,7 @@ void DynamicEntity::Move(float dt) {
 
 Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
 
+	//if position is in the middle of the next tile rect
 	if ((ceil(position.x) > next_tile_rect.x) && (floor(position.x) < next_tile_rect.x + next_tile_rect.w)
 		&& (ceil(position.y) > next_tile_rect.y) && (floor(position.y) < next_tile_rect.y + next_tile_rect.h)) {
 		return Direction::NO_DIRECTION;
@@ -333,7 +338,7 @@ Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
 		return Direction::BOTTOM_RIGHT;
 	}
 
-	/*	if ((ceil(position.x) > floor(next_tile_rect.x)) && (floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w))
+	/*if ((ceil(position.x) > floor(next_tile_rect.x)) && (floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w))
 		&& (ceil(position.y) > floor(next_tile_rect.y)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h))) {
 		return Direction::NO_DIRECTION;
 	}

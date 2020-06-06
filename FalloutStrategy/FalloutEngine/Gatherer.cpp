@@ -74,15 +74,17 @@ bool Gatherer::Update(float dt) {
 		}
 		break;
 	case WALK:
-		if (this->info.current_group == nullptr) {
-			Move(dt);
-		}
+		//if (info.current_group == nullptr) {
+		Move(dt);
+		//}
+		/*
 		else {
 			if (info.current_group->IsGroupLead(this)) {
 				if (this->faction == App->player->faction)
 					info.current_group->CheckForMovementRequest(target_tile, dt);
 			}
 		}
+		*/
 		if ((current_tile == target_tile)&&(node_path.size() == 0)) {
 			//gather
 			if (((resource_building != nullptr) && (resource_collected < storage_capacity)) || ((resource_collected > 0) && (base != nullptr))) {

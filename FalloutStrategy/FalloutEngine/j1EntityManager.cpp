@@ -415,6 +415,7 @@ bool j1EntityManager::PostUpdate()
 
 		
 		//occupied tiles
+		/*
 		if (App->render->debug) {
 			iPoint occuppied_tile = { -1,-1 };
 			for(int y = 0; y < 150; y++)
@@ -428,7 +429,7 @@ bool j1EntityManager::PostUpdate()
 				}
 			}
 		}
-		
+		*/
 	}
 
 	return ret;

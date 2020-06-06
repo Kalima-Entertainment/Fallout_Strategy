@@ -165,7 +165,7 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 				}
 				else */
 				if ((*unit)->PathfindToPosition(goal_path)){
-					(*unit)->info.Current_path = (*unit)->path_to_target;
+					//(*unit)->info.Current_path = (*unit)->path_to_target;
 					(*unit)->info.UnitMovementState = MovementState::MovementState_NextStep;
 				}
 				else {
@@ -188,7 +188,7 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 			(*unit)->state = WALK;
 			// --- If a path is created, the unit will start following it ---
 
-			next_tile_world = App->map->fMapToWorld((*unit)->info.next_tile.x, (*unit)->info.next_tile.y);
+			next_tile_world = App->map->fMapToWorld((*unit)->next_tile.x, (*unit)->next_tile.y);
 			next_tile_world.x += 32.0f;
 			next_tile_world.y += 32.0f;
 
@@ -245,7 +245,7 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 			//if we haven't reached our destination
 			if ((*unit)->path_to_target.size() > 0)
 			{
-				(*unit)->info.next_tile = (*unit)->path_to_target.front();
+				(*unit)->next_tile = (*unit)->path_to_target.front();
 				(*unit)->path_to_target.erase((*unit)->path_to_target.begin());
 				(*unit)->info.UnitMovementState = MovementState::MovementState_FollowPath;
 			}
@@ -265,7 +265,7 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 
 					if((*unit)->PathfindToPosition((*unit)->info.goal_tile))
 					{
-						(*unit)->info.next_tile = (*unit)->path_to_target.front();
+						(*unit)->next_tile = (*unit)->path_to_target.front();
 						(*unit)->path_to_target.erase((*unit)->path_to_target.begin());
 						(*unit)->info.UnitMovementState = MovementState::MovementState_FollowPath;
 					}

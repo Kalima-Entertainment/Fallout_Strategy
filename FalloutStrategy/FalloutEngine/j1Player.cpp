@@ -427,6 +427,7 @@ void j1Player::MoveEntity(DynamicEntity* entity){
 	{
 		if (entity->info.current_group != nullptr)
 			entity->info.current_group = nullptr;
+
 		entity->PathfindToPosition(selected_spot);
 		entity->CheckDestination(selected_spot);
 	}
@@ -435,10 +436,8 @@ void j1Player::MoveEntity(DynamicEntity* entity){
 void j1Player::MoveGroup() {
 	for (int i = 0; i < selected_group->GetSize(); i++)
 	{
-		/*
 		MoveEntity(selected_group->Units[i]);
-		*/
-		selected_group->Units[i]->state = WALK;
+		//selected_group->Units[i]->state = WALK;
 	}
 }
 

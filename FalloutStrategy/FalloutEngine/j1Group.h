@@ -59,9 +59,7 @@ struct Group_Unit
 	MovementState UnitMovementState = MovementState::MovementState_NoState;
 
 	// --- Path to follow ---
-	iPoint next_tile = { 0,0 };
 	iPoint goal_tile = { 0,0 };
-	std::vector <iPoint> Current_path;
 };
 
 
