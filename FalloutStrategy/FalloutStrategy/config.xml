@@ -46,7 +46,7 @@
     </boost>
     <radar cost="100" />
     <mr_handy cost="1000" time="50"/>
-    <animation_files base_folder="Assets/textures/characters/">
+    <animation_files base_folder="Assets_Old/textures/characters/">
      <file folder="VaultDwellers/" tmx="VaultDwellers_Melee.tmx"/>
      <file folder="VaultDwellers/" tmx="VaultDwellers_Ranged.tmx"/>
      <file folder="VaultDwellers/" tmx="VaultDwellers_Gatherer.tmx"/>
@@ -88,7 +88,7 @@
   </gui>
 
   <map>
-    <folder>Assets/maps/</folder>
+    <folder>Assets_Old/maps/</folder>
   </map>
   <minimap width="260" corner="bottom_left" margin="35"/>
 </config>
