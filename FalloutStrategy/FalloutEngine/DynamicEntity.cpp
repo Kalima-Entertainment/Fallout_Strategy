@@ -255,7 +255,7 @@ void DynamicEntity::Move(float dt) {
 	switch (direction)
 	{
 	case NO_DIRECTION:
-		UpdateTile();
+		//UpdateTile();
 
 		//we are following a node path
 		if (node_path.size() > 0) {

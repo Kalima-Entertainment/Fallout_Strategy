@@ -63,22 +63,22 @@ iPoint j1PathFinding::FindWalkableAdjacentTile(iPoint point) const {
 
 	//north
 	tile = { point.x, point.y - 1 };
-	if (App->pathfinding->IsWalkable(tile))
+	if (App->pathfinding->IsWalkable(tile) && !App->entities->IsTileOccupied(tile))
 			return tile;
 
 	// south
 	tile = { point.x, point.y + 1 };
-	if (App->pathfinding->IsWalkable(tile))
+	if (App->pathfinding->IsWalkable(tile) && !App->entities->IsTileOccupied(tile))
 		return tile;
 
 	// east
 	tile = { point.x + 1, point.y };
-	if (App->pathfinding->IsWalkable(tile))
+	if (App->pathfinding->IsWalkable(tile) && !App->entities->IsTileOccupied(tile))
 		return tile;
 
 	// west
 	tile = { point.x - 1, point.y };
-	if (App->pathfinding->IsWalkable(tile))
+	if (App->pathfinding->IsWalkable(tile) && !App->entities->IsTileOccupied(tile))
 		return tile;
 
 	return { -1,-1 };
