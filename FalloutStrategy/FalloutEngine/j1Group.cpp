@@ -109,7 +109,7 @@ bool j1Group::FindFreeAdjacents(iPoint* base_tile)
 
 	// north
 	cell.create(base_tile->x, base_tile->y + 1);
-	if (App->pathfinding->IsWalkable(cell) && IsTileFree(&cell))
+	if (App->pathfinding->IsWalkable(cell) && IsTileFree(cell))
 	{
 		ret = true;
 		last_goal = cell;
@@ -118,7 +118,7 @@ bool j1Group::FindFreeAdjacents(iPoint* base_tile)
 
 	// north east
 	cell.create(base_tile->x + 1, base_tile->y + 1);
-	if (App->pathfinding->IsWalkable(cell) && IsTileFree(&cell))
+	if (App->pathfinding->IsWalkable(cell) && IsTileFree(cell))
 	{
 		ret = true;
 		last_goal = cell;
@@ -127,7 +127,7 @@ bool j1Group::FindFreeAdjacents(iPoint* base_tile)
 
 	// north west
 	cell.create(base_tile->x - 1, base_tile->y + 1);
-	if (App->pathfinding->IsWalkable(cell) && IsTileFree(&cell))
+	if (App->pathfinding->IsWalkable(cell) && IsTileFree(cell))
 	{
 		ret = true;
 		last_goal = cell;
@@ -136,7 +136,7 @@ bool j1Group::FindFreeAdjacents(iPoint* base_tile)
 
 	// south
 	cell.create(base_tile->x, base_tile->y - 1);
-	if (App->pathfinding->IsWalkable(cell) && IsTileFree(&cell))
+	if (App->pathfinding->IsWalkable(cell) && IsTileFree(cell))
 	{
 		ret = true;
 		last_goal = cell;
@@ -145,7 +145,7 @@ bool j1Group::FindFreeAdjacents(iPoint* base_tile)
 
 	// south east
 	cell.create(base_tile->x + 1, base_tile->y - 1);
-	if (App->pathfinding->IsWalkable(cell) && IsTileFree(&cell))
+	if (App->pathfinding->IsWalkable(cell) && IsTileFree(cell))
 	{
 		ret = true;
 		last_goal = cell;
@@ -154,7 +154,7 @@ bool j1Group::FindFreeAdjacents(iPoint* base_tile)
 
 	// south west
 	cell.create(base_tile->x - 1, base_tile->y - 1);
-	if (App->pathfinding->IsWalkable(cell) && IsTileFree(&cell))
+	if (App->pathfinding->IsWalkable(cell) && IsTileFree(cell))
 	{
 		ret = true;
 		last_goal = cell;
@@ -163,7 +163,7 @@ bool j1Group::FindFreeAdjacents(iPoint* base_tile)
 
 	// east
 	cell.create(base_tile->x + 1, base_tile->y);
-	if (App->pathfinding->IsWalkable(cell) && IsTileFree(&cell))
+	if (App->pathfinding->IsWalkable(cell) && IsTileFree(cell))
 	{
 		ret = true;
 		last_goal = cell;
@@ -172,7 +172,7 @@ bool j1Group::FindFreeAdjacents(iPoint* base_tile)
 
 	// west
 	cell.create(base_tile->x - 1, base_tile->y);
-	if (App->pathfinding->IsWalkable(cell) && IsTileFree(&cell))
+	if (App->pathfinding->IsWalkable(cell) && IsTileFree(cell))
 	{
 		ret = true;
 		last_goal = cell;
@@ -183,8 +183,9 @@ bool j1Group::FindFreeAdjacents(iPoint* base_tile)
 	return ret;
 }
 
-bool j1Group::IsTileFree(iPoint* adjacent)
+bool j1Group::IsTileFree(iPoint adjacent)
 {
+	/*
 	std::list <iPoint*>::const_iterator it = Occupied_tiles.begin();
 
 	while (it != Occupied_tiles.end())
@@ -200,4 +201,7 @@ bool j1Group::IsTileFree(iPoint* adjacent)
 	AddTiletoOccupied(*adjacent);
 
 	return true;
+	*/
+
+	return App->entities->occupied_tiles[adjacent.x][adjacent.y];
 }

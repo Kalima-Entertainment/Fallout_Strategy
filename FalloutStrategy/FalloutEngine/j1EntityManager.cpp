@@ -746,6 +746,10 @@ ResourceBuilding* j1EntityManager::GetClosestResourceBuilding(iPoint current_pos
 	return closest_building;
 }
 
+bool j1EntityManager::IsTileOccupied(iPoint position) {
+	return occupied_tiles[position.x][position.y];
+}
+
 void j1EntityManager::BubbleSortEntities() {
 	BROFILER_CATEGORY("BubbleSortEntities", Profiler::Color::Blue)
 	int i, j;

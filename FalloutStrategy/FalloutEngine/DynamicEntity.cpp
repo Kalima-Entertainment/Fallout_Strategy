@@ -284,7 +284,6 @@ void DynamicEntity::Move(float dt) {
 
 				if (path_to_target.size() > 0)
 					path_to_target.erase(path_to_target.cbegin());
-
 			}
 		}
 

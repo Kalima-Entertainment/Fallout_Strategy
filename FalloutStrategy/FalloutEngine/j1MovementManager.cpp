@@ -236,6 +236,10 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 		case MovementState::MovementState_NextStep:
 
 			// --- If a path is being followed, the unit will get the next tile in the path ---
+			(*unit)->UpdateTile();
+
+			if (App->entities->IsTileOccupied((*unit)->target_tile))
+				(*unit)->PathfindToPosition((*unit)->target_tile);
 
 			if ((*unit)->info.Current_path.size() > 0)
 			{
@@ -245,7 +249,7 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 			}
 			else
 			{
-				if (group->IsGroupLead((*unit))&&((*unit)->node_path.size() > 0)) {
+				if (((*unit)->node_path.size() > 0)&&((*unit)->current_tile == (*unit)->node_path.back())) {
 					(*unit)->node_path.pop_back();
 					if((*unit)->node_path.size() > 0){
 						(*unit)->info.goal_tile = (*unit)->node_path.back();
@@ -255,11 +259,11 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 					}
 
 					//if (App->pathfinding->CreatePath(Map_Entityposition, (*unit)->info.goal_tile) != -1)
-					if((*unit)->PathfindToPosition(goal_path))
+					if((*unit)->PathfindToPosition((*unit)->target_tile))
 					{
-						(*unit)->info.Current_path = App->pathfinding->GetLastPath();
-						(*unit)->info.Current_path.erase((*unit)->info.Current_path.begin());
-						(*unit)->info.Current_path.erase((*unit)->info.Current_path.begin());
+						(*unit)->info.Current_path = (*unit)->path_to_target;
+						//(*unit)->info.Current_path.erase((*unit)->info.Current_path.begin());
+						//(*unit)->info.Current_path.erase((*unit)->info.Current_path.begin());
 						(*unit)->info.UnitMovementState = MovementState::MovementState_NextStep;
 					}
 				}
@@ -274,7 +278,7 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 
 			// --- The unit reaches the end of the path, thus stopping and returning to NoState ---
 			(*unit)->info.UnitMovementState = MovementState::MovementState_NoState;
-			(*unit)->current_tile = App->map->WorldToMap((*unit)->position.x, (*unit)->position.y);
+			(*unit)->UpdateTile();
 			(*unit)->state = IDLE;
 			(*unit)->commanded = false;
 
