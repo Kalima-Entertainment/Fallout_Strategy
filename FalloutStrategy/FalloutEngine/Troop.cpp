@@ -176,7 +176,7 @@ bool Troop::Update(float dt) {
 			state = IDLE;
 			//UpdateTile();
 		}
-
+		
 		SpatialAudio(position.x, position.y, faction, state, type);
         break;
 

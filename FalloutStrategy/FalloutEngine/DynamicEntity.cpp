@@ -169,7 +169,6 @@ bool DynamicEntity::PostUpdate() {
 bool DynamicEntity::PathfindToPosition(iPoint destination) {
 
 	bool ret = true;
-	//UpdateTile();
 
 	iPoint original_destination = destination;
 
@@ -248,14 +247,17 @@ void DynamicEntity::Move(float dt) {
 	last_direction = direction;
 	direction = GetDirectionToGo(next_tile_rect);
 
-	fPoint auxPos = position; //We use that variable to optimize Fog Of War code 
+	//check if the tile that wants to be occupied is already occupied
+	if (!App->entities->IsTileInPositionOccupied(position))
+		UpdateTile();
+	//else
+		//PathfindToPosition(target_tile);
 
-	UpdateTile();
+	fPoint auxPos = position; //We use that variable to optimize Fog Of War code 
 
 	switch (direction)
 	{
 	case NO_DIRECTION:
-		//UpdateTile();
 
 		//we are following a node path
 		if (node_path.size() > 0) {
@@ -279,14 +281,17 @@ void DynamicEntity::Move(float dt) {
 			direction = last_direction;
 		}
 		else {
-
+			//if the entity has a path to follow
 			if (path_to_target.size() > 0) {
+				//next tile is the first tile in the list
 				next_tile = path_to_target.front();
 
+				//if next tile is occupied create the path again
 				if (App->entities->IsTileOccupied(next_tile))
 					PathfindToPosition(target_tile);
 
-				if (path_to_target.size() > 0)
+				//if there is a new path erase the first element
+				if (path_to_target.size() > 0) 
 					path_to_target.erase(path_to_target.cbegin());
 			}
 		}

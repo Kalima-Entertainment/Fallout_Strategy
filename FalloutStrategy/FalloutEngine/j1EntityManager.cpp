@@ -752,6 +752,11 @@ bool j1EntityManager::IsTileOccupied(iPoint position) {
 	return occupied_tiles[position.x][position.y];
 }
 
+bool j1EntityManager::IsTileInPositionOccupied(fPoint position) {
+	iPoint tile = App->map->fWorldToMap(position.x, position.y);
+	return occupied_tiles[tile.x][tile.y];
+}
+
 void j1EntityManager::BubbleSortEntities() {
 	BROFILER_CATEGORY("BubbleSortEntities", Profiler::Color::Blue)
 	int i, j;
