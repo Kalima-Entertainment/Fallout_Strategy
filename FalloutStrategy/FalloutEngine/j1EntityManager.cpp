@@ -413,7 +413,8 @@ bool j1EntityManager::PostUpdate()
 			}
 		}
 
-		/*
+		
+		//occupied tiles
 		if (App->render->debug) {
 			iPoint occuppied_tile = { -1,-1 };
 			for(int y = 0; y < 150; y++)
@@ -422,12 +423,12 @@ bool j1EntityManager::PostUpdate()
 				{
 					if (occupied_tiles[x][y]) {
 						occuppied_tile = App->map->MapToWorld(x, y);
-						App->render->DrawQuad({ occuppied_tile.x + HALF_TILE,occuppied_tile.y + HALF_TILE,8,8 }, 155, 155, 155, 155);
+						App->render->DrawQuad({ occuppied_tile.x + HALF_TILE, occuppied_tile.y + HALF_TILE,8,8 }, 155, 155, 155, 255);
 					}
 				}
 			}
 		}
-		*/
+		
 	}
 
 	return ret;

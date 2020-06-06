@@ -91,7 +91,7 @@ void j1Group::SetUnitGoalTile(DynamicEntity* entity)
 		if (Goal_found)
 		{
 			entity->info.goal_tile = last_goal;
-			entity->target_tile = last_goal;
+			//entity->target_tile = last_goal;
 			break;
 		}
 
@@ -203,5 +203,5 @@ bool j1Group::IsTileFree(iPoint adjacent)
 	return true;
 	*/
 
-	return App->entities->occupied_tiles[adjacent.x][adjacent.y];
+	return !App->entities->occupied_tiles[adjacent.x][adjacent.y];
 }
