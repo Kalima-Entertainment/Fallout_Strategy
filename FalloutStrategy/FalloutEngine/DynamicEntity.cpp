@@ -239,6 +239,11 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 
 void DynamicEntity::Move(float dt) {
 
+	//check if the tile that wants to be occupied is already occupied
+	if (!App->entities->IsTileInPositionOccupied(position))
+		UpdateTile();
+	//else
+		//PathfindToPosition(target_tile);
 
 	// -- Get next tile center
 	next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
@@ -247,11 +252,8 @@ void DynamicEntity::Move(float dt) {
 	last_direction = direction;
 	direction = GetDirectionToGo(next_tile_rect);
 
-	//check if the tile that wants to be occupied is already occupied
-	if (!App->entities->IsTileInPositionOccupied(position))
-		UpdateTile();
-	//else
-		//PathfindToPosition(target_tile);
+	
+	
 
 	fPoint auxPos = position; //We use that variable to optimize Fog Of War code 
 
