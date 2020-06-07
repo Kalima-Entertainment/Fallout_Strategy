@@ -19,6 +19,7 @@
 #include "DialogManager.h"
 #include "MenuManager.h"
 #include "MainMenu.h"
+#include "AssetsManager.h"
 #include "SDL_mixer\include\SDL_mixer.h"
 
 j1Transition::j1Transition() : j1Module()
@@ -39,8 +40,13 @@ j1Transition::~j1Transition() {
 
 bool j1Transition::LoadAnimations() {
 	bool ret = true;
+
+	char* buffer;
 	pugi::xml_document animation_file;
-	pugi::xml_parse_result result = animation_file.load_file("Assets/gui/loading.tmx");
+
+	int bytesFile = App->assetManager->Load("Assets/gui/loading.tmx", &buffer);
+	pugi::xml_parse_result result = animation_file.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
 
 	std::string image = std::string(animation_file.child("tileset").child("image").attribute("source").as_string());
 

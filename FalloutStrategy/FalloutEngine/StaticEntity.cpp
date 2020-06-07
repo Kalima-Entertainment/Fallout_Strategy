@@ -10,6 +10,7 @@
 #include "SDL_mixer/include/SDL_mixer.h"
 #include "FoWManager.h"
 #include "j1EntityManager.h"
+#include "AssetsManager.h"
 
 #include "ParticleSystem.h"
 #include "Emiter.h"
@@ -321,7 +322,11 @@ bool StaticEntity::LoadAnimations(const char* folder, const char* file_name) {
 	std::string tmx = std::string(folder).append(file_name);
 
 	pugi::xml_document animation_file;
-	pugi::xml_parse_result result = animation_file.load_file(tmx.c_str());
+	
+	char* buffer;
+	int bytesFile = App->assetManager->Load(tmx.c_str(), &buffer);
+	pugi::xml_parse_result result = animation_file.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
 
 	std::string image_path = std::string(folder).append(animation_file.child("map").child("tileset").child("image").attribute("source").as_string());
 

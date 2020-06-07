@@ -27,7 +27,7 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 	position.x += HALF_TILE;
 	position.y += HALF_TILE;
 
-	if (owner) 
+	if (owner)
 		base = owner->base;
 
 	resource_building = nullptr;
@@ -41,7 +41,7 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 		//Enemy
 		visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
 	}
-	
+
 
 	DynaParticle = App->entities->CreateParticle(position);
 	Animation anim;
@@ -196,7 +196,7 @@ void Gatherer::Gather() {
 			gathering = false;
 			return;
 		}
-			
+
 		PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
 		target_entity = base;
 		gathering = true;
@@ -218,11 +218,11 @@ void Gatherer::StoreGatheredResources() {
 	}
 	else {
 		//update owner resources
-		if (resource_type == Resource::CAPS) 
+		if (resource_type == Resource::CAPS)
 			owner->caps += resource_collected;
-		else if (resource_type == Resource::WATER) 
+		else if (resource_type == Resource::WATER)
 			owner->water += resource_collected;
-		else if (resource_type == Resource::FOOD) 
+		else if (resource_type == Resource::FOOD)
 			owner->food += resource_collected;
 	}
 

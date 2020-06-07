@@ -16,6 +16,7 @@
 #include <string>
 #include "SDL_mixer/include/SDL_mixer.h"
 #include "FoWManager.h"
+#include "AssetsManager.h"
 
 #include "Emiter.h"
 #include "ParticleSystem.h"
@@ -96,7 +97,7 @@ bool DynamicEntity::PostUpdate() {
 	iPoint tile_tex_position = App->map->MapToWorld(current_tile.x, current_tile.y);
 
 	//debug
-	if (App->render->debug) 
+	if (App->render->debug)
 	{
 		//pathfinding debug
 		for (uint j = 0; j < path_to_target.size(); ++j) {
@@ -105,7 +106,7 @@ bool DynamicEntity::PostUpdate() {
 			App->render->Blit(App->render->debug_tex, pos.x, pos.y, &tile_rect);
 		}
 
-		//ally 
+		//ally
 		if (faction == App->player->faction) tile_rect = { 0,0,64,64 };
 		//enemy
 		else tile_rect = { 64,0,64,64 };
@@ -123,16 +124,16 @@ bool DynamicEntity::PostUpdate() {
 	if (direction >= NO_DIRECTION) {
 		if (last_direction < NO_DIRECTION)
 			direction = last_direction;
-		else 
+		else
 			direction = BOTTOM_RIGHT;
 	}
 
 
 	//Render character
 	render_position = { (int)(position.x - sprite_size * 0.5f), (int)(position.y - 1.82f * TILE_SIZE)};
-	
+
 	current_animation = &animations[state][direction];
-	
+
 	//Health Bar
 	background_health_bar = { (int)(position.x - HALF_TILE * 0.75f),(int)(position.y - TILE_SIZE * 1.25f), 50, 4 };
 	foreground_health_bar = { (int)(position.x - HALF_TILE * 0.75f),(int)(position.y - TILE_SIZE * 1.25f), (int)(current_health / max_health * 50), 4 };
@@ -153,8 +154,8 @@ bool DynamicEntity::PostUpdate() {
 			if (current_health > 0) {
 				App->render->DrawQuad(background_health_bar, 75, 75, 75, 255);
 				App->render->DrawQuad(foreground_health_bar, 0, 235, 0, 255);
-				App->render->DrawQuad(frame_quad, 200, 200, 200, 185, false);		
-			}	
+				App->render->DrawQuad(frame_quad, 200, 200, 200, 185, false);
+			}
 		}
 
 		if (App->render->debug) {
@@ -255,7 +256,7 @@ void DynamicEntity::Move(float dt) {
 		}
 	}
 
-	
+
 	// -- Get next tile center
 	next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
 	next_tile_rect = { next_tile_position.x + HALF_TILE - 4, next_tile_position.y + HALF_TILE -2, 8, 8 };
@@ -263,7 +264,7 @@ void DynamicEntity::Move(float dt) {
 	last_direction = direction;
 	direction = GetDirectionToGo(next_tile_rect);
 
-	fPoint auxPos = position; //We use that variable to optimize Fog Of War code 
+	fPoint auxPos = position; //We use that variable to optimize Fog Of War code
 
 	switch (direction)
 	{
@@ -302,8 +303,9 @@ void DynamicEntity::Move(float dt) {
 					PathfindToPosition(target_tile);
 
 				//if there is a new path erase the first element
-				if (path_to_target.size() > 0) 
+				if (path_to_target.size() > 0)
 					path_to_target.erase(path_to_target.cbegin());
+
 			}
 		}
 
@@ -394,7 +396,7 @@ void DynamicEntity::Flee() {
 
 		if (rand() % 2 == 1) y_sign = 1;
 		else y_sign = -1;
-		
+
 		possible_tile.x = current_tile.x + (minimum_distance + x) * x_sign;
 		possible_tile.y = current_tile.y + (minimum_distance + y) * y_sign;
 
@@ -406,13 +408,18 @@ void DynamicEntity::Flee() {
 bool DynamicEntity::LoadAnimations(const char* folder, const char* file_name) {
 	bool ret = true;
 	float speed_reducer = 0.065f;
-	
+
 	std::string tmx = std::string(folder).append(file_name);
 
 	pugi::xml_document animation_file;
-	pugi::xml_parse_result result = animation_file.load_file(tmx.c_str());
+
+	char* buffer;
+	int bytesFile = App->assetManager->Load(tmx.c_str(), &buffer);
+	pugi::xml_parse_result result = animation_file.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
 
 	std::string image_path = std::string(folder).append(animation_file.child("map").child("tileset").child("image").attribute("source").as_string());
+
 	texture = App->tex->Load(image_path.c_str());
 
 	if (result == NULL)
@@ -448,13 +455,13 @@ bool DynamicEntity::LoadAnimations(const char* folder, const char* file_name) {
 		bool loop = true;
 
 		//animation
-		if (animation_name == "idle") 
+		if (animation_name == "idle")
 			state = IDLE;
-		else if (animation_name == "walk") 
+		else if (animation_name == "walk")
 			state = WALK;
-		else if (animation_name == "attack") 
+		else if (animation_name == "attack")
 			state = ATTACK;
-		else if (animation_name == "gather") 
+		else if (animation_name == "gather")
 			state = GATHER;
 		else if (animation_name == "hit") {
 			state = HIT;
@@ -462,7 +469,7 @@ bool DynamicEntity::LoadAnimations(const char* folder, const char* file_name) {
 		}
 		else if (animation_name == "die") {
 			state = DIE;
-			loop = false; 
+			loop = false;
 		}
 
 		//animation direction

@@ -30,6 +30,7 @@
 #include "j1Hud.h"
 #include "j1EasingAndSplines.h"
 #include "DialogManager.h"
+#include "AssetsManager.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -37,6 +38,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	PERF_START(ptimer);
 	want_to_save = want_to_load = false;
 
+	assetManager = new ModuleAssetsManager();
 	input = new j1Input();
 	win = new j1Window();
 	render = new j1Render();
@@ -65,6 +67,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
+	AddModule(assetManager);
 	AddModule(input);
 	AddModule(win);
 	AddModule(tex);

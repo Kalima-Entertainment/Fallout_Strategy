@@ -2,7 +2,7 @@
 #include "j1Group.h"
 #include "j1MovementManager.h"
 #include "j1App.h"
-#include "j1EntityManager.h" 
+#include "j1EntityManager.h"
 #include "p2Log.h"
 #include "j1Pathfinding.h"
 #include "j1Scene.h"
@@ -56,7 +56,7 @@ void j1MovementManager::SelectEntities_inRect(SDL_Rect SRect)
 				//Comparing if intersection between Selection Rect and Entity Rect
 				if (SDL_HasIntersection(&entityrect, &SRect))
 					(*entity)->info.IsSelected = true;
-				else 
+				else
 					(*entity)->info.IsSelected = false;
 			}
 		}
@@ -97,7 +97,7 @@ j1Group* j1MovementManager::CreateGroup(std::vector<DynamicEntity*> entities_vec
 	// --- Finally, If the group is Valid add it to our Groups list, else delete it ---
 	if (Validgroup) {
 		Groups.push_back(group);
-		//LOG("Group Created");
+		LOG("Group Created");
 		return group;
 	}
 	else {

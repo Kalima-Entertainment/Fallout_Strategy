@@ -7,7 +7,7 @@ struct SDL_Texture;
 class DynamicEntity;
 class GenericPlayer;
 class Deathclaw;
-#define RECT_MIN_AREA 15
+#define RECT_MIN_AREA 5
 
 enum class StatesMenu
 {

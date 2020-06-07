@@ -53,7 +53,7 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 		//Enemy
 		visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
 	}
-	
+
 	DynaParticle = App->entities->CreateParticle(position);
 	Animation anim;
 	anim.PushBack(SDL_Rect{ 0, 0 , 5, 5 }, 1);
@@ -78,7 +78,7 @@ bool Troop::Update(float dt) {
 	if ((target_entity)&&(!target_entity->is_dynamic)&&(target_entity->state != DIE)) {
 		target_building = (StaticEntity*)target_entity;
 	}
-	
+
 	switch (state)
 	{
     case IDLE:
@@ -107,7 +107,7 @@ bool Troop::Update(float dt) {
 				}
 			}
 			else if ((target_entity)&&(target_entity->is_dynamic)) {
-				
+
 				PathfindToPosition(target_entity->current_tile);
 			}
 		}
@@ -176,7 +176,7 @@ bool Troop::Update(float dt) {
 			state = IDLE;
 			//UpdateTile();
 		}
-		
+
 		SpatialAudio(position.x, position.y, faction, state, type);
         break;
 
@@ -264,9 +264,9 @@ bool Troop::Update(float dt) {
 
 	// -- If there are any particle then move and blits when current state equals hit
 	if (DynaParticle != nullptr) {
-		if (state == HIT) 
+		if (state == HIT)
 			DynaParticle->Activate();
-		else 
+		else
 			DynaParticle->Desactivate();
 	}
 
@@ -368,7 +368,7 @@ bool Troop::LoadDataFromReference() {
 
 bool Troop::LoadReferenceData(pugi::xml_node& node) {
 	bool ret = true;
-	
+
 	max_health = node.attribute("health").as_float();
 	damage = node.attribute("damage").as_int();
 	speed.x = node.attribute("speed").as_int();

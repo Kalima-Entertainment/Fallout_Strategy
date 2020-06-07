@@ -7,7 +7,7 @@
 #include "MenuManager.h"
 #include "MainMenu.h"
 #include "j1Transition.h"
-
+#include "AssetsManager.h"
 MainMenu::MainMenu() : j1Module()
 {
 	name = ("main_menu");
@@ -20,8 +20,13 @@ MainMenu::MainMenu() : j1Module()
 bool MainMenu::LoadAnimations()
 {
 	bool ret = true;
+	
+	char* buffer;
 	pugi::xml_document animation_file;
-	pugi::xml_parse_result result = animation_file.load_file("Assets/gui/textures/LogoIntro.tmx");
+	
+	int bytesFile = App->assetManager->Load("Assets/gui/textures/LogoIntro.tmx", &buffer);
+	pugi::xml_parse_result result = animation_file.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
 
 	std::string image = std::string(animation_file.child("tileset").child("image").attribute("source").as_string());
 
