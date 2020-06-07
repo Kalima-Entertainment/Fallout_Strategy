@@ -36,12 +36,21 @@ j1Hud::j1Hud() :j1Module()
 	melee_amount = 0;
 	ranged_amount = 0;
 	activateTimer = false;
-	timer_text[10] = '0';
-	minutes_text[15] = '0';
 	draw_health = false;
 	cursorRect = { 0,0, 18,25 };
 	cursor_position = { 0,0 };
 	cursor_offset = { 0, 0 };
+
+	for (int i = 0; i <= 9; i++)
+	{
+		timer_text[i] = '0';
+		
+	}
+	for (int i = 0; i <= 14; i++)
+	{
+		minutes_text[i] = '0';
+	}
+	
 }
 
 bool j1Hud::Awake(pugi::xml_node& node)

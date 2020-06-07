@@ -20,12 +20,14 @@ j1Minimap::j1Minimap() : j1Module(), texture(nullptr) {
 	map_height = 0;
 	scale = 1;
 	width = 0;
+	height = 0;
 	margin = 0;
 	corner = Corner::TOP_LEFT;
 	radar_time = 5;
 	radar = false;
 	visible = false;
 	position = {0,0};
+	
 }
 
 j1Minimap::~j1Minimap() {

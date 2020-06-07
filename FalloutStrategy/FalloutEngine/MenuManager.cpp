@@ -43,44 +43,46 @@ MenuManager::MenuManager()
 	gatherer_label = nullptr;
 	melee_label = nullptr;
 	ranged_label = nullptr;
-
-	for(int i = 0; i <= 11; i++) {
+	
+	for(int i = 0; i <= 10; i++) {
 		main_menu[i] = nullptr;
 	}
-	for(int i = 0; i <= 23; i++) {
+	for(int i = 0; i <= 22; i++) {
 		settings_menu[i] = nullptr;
 	}
-	for(int i = 0; i <= 5; i++) {
+	for(int i = 0; i <= 4; i++) {
 		credits_menu[i] = nullptr;
 	}
-	for(int i = 0; i <= 9; i++) {
+	for(int i = 0; i <= 8; i++) {
 		collaborators[i] = nullptr;
 	}
-	for(int i = 0; i <= 10; i++) {
+	for(int i = 0; i <= 9; i++) {
 		select_faction_menu[i] = nullptr;
 	}
-	for(int i = 0; i <= 4; i++) {
+	for(int i = 0; i <= 3; i++) {
 		select_faction_photos[i] = nullptr;
 	}
-	for(int i = 0; i <= 7; i++) {
+	for(int i = 0; i <= 6; i++) {
 		pause_menu[i] = nullptr;
 	}
-	for(int i = 0; i <= 4; i++) {
+	for(int i = 0; i <= 3; i++) {
 		gui_ingame[i] = nullptr;
 	}
-	for(int i = 0; i <= 8; i++) {
+	for(int i = 0; i <= 7; i++) {
 		tutorial[i] = nullptr;
 	}
-	for(int i = 0; i <= 6; i++) {
+	for(int i = 0; i <= 5; i++) {
 		how_to_play[i] = nullptr;
 	}
-	for(int i = 0; i <= 3; i++) {
+	for(int i = 0; i <= 2; i++) {
 		resources[i] = nullptr;
 	}
-	for(int i = 0; i <= 12; i++) {
+	for(int i = 0; i <= 11; i++) {
 		quest[i] = nullptr;
 	}
-
+	for (int i = 0; i <= 6; i++) {
+		radio[i] = nullptr;
+	}
 
 	tutorial_screen = nullptr;
 	info_button2_element = nullptr;
@@ -96,53 +98,53 @@ MenuManager::MenuManager()
 
 	how_to_play_counter = 0;
 
-	for(int i = 0; i <= 14; i++) {
+	for(int i = 0; i <= 13; i++) {
 		brotherhood_base[i] = nullptr;
 	}
-	for(int i = 0; i <= 21; i++) {
+	for(int i = 0; i <= 20; i++) {
 		brotherhood_barrack[i] = nullptr;
 	}
-	for(int i = 0; i <= 19; i++) {
+	for(int i = 0; i <= 18; i++) {
 		brotherhood_lab[i] = nullptr;
 	}
 
 
-	for(int i = 0; i <= 14; i++) {
+	for(int i = 0; i <= 13; i++) {
 		ghoul_base[i] = nullptr;
 	}
-	for(int i = 0; i <= 21; i++) {
+	for(int i = 0; i <= 20; i++) {
 		ghoul_barrack[i] = nullptr;
 	}
-	for(int i = 0; i <= 19; i++) {
+	for(int i = 0; i <= 18; i++) {
 		ghoul_lab[i] = nullptr;
 	}
 
 
-	for(int i = 0; i <= 14; i++) {
+	for(int i = 0; i <= 13; i++) {
 		vault_base[i] = nullptr;
 	}
-	for(int i = 0; i <= 21; i++) {
+	for(int i = 0; i <= 20; i++) {
 		vault_barrack[i] = nullptr;
 	}
-	for(int i = 0; i <= 19; i++) {
+	for(int i = 0; i <= 18; i++) {
 		vault_lab[i] = nullptr;
 	}
 
 
-	for(int i = 0; i <= 14; i++) {
+	for(int i = 0; i <= 13; i++) {
 		supermutant_base[i] = nullptr;
 	}
-	for(int i = 0; i <= 21; i++) {
+	for(int i = 0; i <= 20; i++) {
 		supermutant_barrack[i] = nullptr;
 	}
-	for(int i = 0; i <= 19; i++) {
+	for(int i = 0; i <= 18; i++) {
 		supermutant_lab[i] = nullptr;
 	}
 
-	for(int i = 0; i <= 5; i++) {
+	for(int i = 0; i <= 4; i++) {
 		win_scene[i] = nullptr;
 	}
-	for(int i = 0; i <= 11; i++) {
+	for(int i = 0; i <= 10; i++) {
 		dialogs[i] = nullptr;
 	}
 

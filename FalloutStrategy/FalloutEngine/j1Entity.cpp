@@ -41,6 +41,7 @@ j1Entity::j1Entity() {
 	frame_quad = { 0,0,0,0 };
 
 	last_dt = 0.01;
+	sprite_size = -1;
 
 	Mix_AllocateChannels(32);
 }

@@ -14,6 +14,7 @@ MainMenu::MainMenu() : j1Module()
 
 	title_tex = nullptr;
 	loader = nullptr;
+	last_dt = 0.01;
 }
 
 bool MainMenu::LoadAnimations()
