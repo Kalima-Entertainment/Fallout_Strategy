@@ -659,8 +659,17 @@ bool j1Hud::CleanUp()
 	melee_amount = 0;
 	ranged_amount = 0;
 	activateTimer = false;
-	timer_text[10] = '0';
-	minutes_text[15] = '0';
+
+	for (int i = 0; i <= 9; i++)
+	{
+		timer_text[i] = '0';
+
+	}
+	for (int i = 0; i <= 14; i++)
+	{
+		minutes_text[i] = '0';
+	}
+
 	return true;
 }
 
