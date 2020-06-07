@@ -3,7 +3,6 @@
 
 #include "UI_element.h"
 #include <string>
-#include "p2List.h"
 #include "SDL\include\SDL.h"
 
 class UI_Label : public UI_element

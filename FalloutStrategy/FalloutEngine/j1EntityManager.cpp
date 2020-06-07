@@ -147,7 +147,7 @@ bool j1EntityManager::CleanUp()
 {
 	bool ret = true;
 
-	// -- Instance
+	// -- Reference entities
 	for(int i = 0; i < REFERENCE_ENTITIES; i++)
 	{
 		if (reference_entities[i] != nullptr) {

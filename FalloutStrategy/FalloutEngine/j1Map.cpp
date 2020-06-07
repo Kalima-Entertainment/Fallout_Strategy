@@ -9,7 +9,6 @@
 #include "j1Entity.h"
 #include "StaticEntity.h"
 #include "brofiler/Brofiler/Brofiler.h"
-#include "p2SString.h"
 #include "AI_Manager.h"
 #include "GenericPlayer.h"
 #include "j1Player.h"
@@ -88,13 +87,11 @@ void j1Map::Draw()
 
 int Properties::Get(const char* value, int default_value) const
 {
-	p2List_item<Property*>* item = list.start;
-
-	while(item)
+	for (int i = 0; i < list.size(); i++) 
 	{
-		if(item->data->name == value)
-			return item->data->value;
-		item = item->next;
+		if (list[i]->name == value) {
+			return list[i]->value;
+		}
 	}
 
 	return default_value;
@@ -386,16 +383,17 @@ bool j1Map::LoadMap()
 		data.height = map.attribute("height").as_int() * 2;
 		data.tile_width = map.attribute("tilewidth").as_int();
 		data.tile_height = map.attribute("tileheight").as_int();
-		p2SString bg_color(map.attribute("backgroundcolor").as_string());
+		std::string bg_color(map.attribute("backgroundcolor").as_string());
 
 		data.background_color.r = 0;
 		data.background_color.g = 0;
 		data.background_color.b = 0;
 		data.background_color.a = 0;
 
-		if(bg_color.Length() > 0)
+		/*
+		if(bg_color.size() > 0)
 		{
-			p2SString red, green, blue;
+			std::string red, green, blue;
 			bg_color.SubString(1, 2, red);
 			bg_color.SubString(3, 4, green);
 			bg_color.SubString(5, 6, blue);
@@ -411,6 +409,7 @@ bool j1Map::LoadMap()
 			sscanf_s(blue.GetString(), "%x", &v);
 			if(v >= 0 && v <= 255) data.background_color.b = v;
 		}
+		*/
 
 		std::string orientation = std::string(map.attribute("orientation").as_string());
 
@@ -708,7 +707,7 @@ bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 			p->name = prop.attribute("name").as_string();
 			p->value = prop.attribute("value").as_int();
 
-			properties.list.add(p);
+			properties.list.push_back(p);
 		}
 	}
 
