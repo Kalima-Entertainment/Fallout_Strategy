@@ -9,7 +9,8 @@ h6 {
 }
 
 p{
-    font-size: 1vw;
+    
+   
 }
 
 body,
@@ -32,7 +33,7 @@ html {
 
 .eslogan{
     
-    font-size: 1.5vw;
+    font-size: 2vw;
     font-family:Lucida;
     color:goldenrod;
     background-color:black;
@@ -72,4 +73,23 @@ html {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color:rgb(23, 58, 35);
     
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+    margin-top: 5%;
+    float: left;
+    width: 50%;
+    padding: 10px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
 }
