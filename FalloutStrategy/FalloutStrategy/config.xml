@@ -46,7 +46,7 @@
     </boost>
     <radar cost="100" />
     <mr_handy cost="1000" time="50"/>
-    <animation_files base_folder="Assets_Old/textures/characters/">
+    <animation_files base_folder="Assets/textures/characters/">
      <file folder="VaultDwellers/" tmx="VaultDwellers_Melee.tmx"/>
      <file folder="VaultDwellers/" tmx="VaultDwellers_Ranged.tmx"/>
      <file folder="VaultDwellers/" tmx="VaultDwellers_Gatherer.tmx"/>
@@ -54,9 +54,9 @@
      <file folder="VaultDwellers/" tmx="VaultDwellers_Buildings.tmx"/>
      <file folder="VaultDwellers/" tmx="VaultDwellers_Buildings.tmx"/>
       
-     <file folder="Brotherhood/" tmx="Brotherhood_Melee.tmx"/>
+     <file folder="Brotherhood/" tmx="Brotherhood_melee.tmx"/>
      <file folder="Brotherhood/" tmx="Brotherhood_Ranged.tmx"/>
-     <file folder="Brotherhood/" tmx="Brotherhood_Gatherer.tmx"/>
+     <file folder="Brotherhood/" tmx="Brotherhood_gatherer.tmx"/>
      <file folder="Brotherhood/" tmx="Brotherhood_Buildings.tmx"/>
      <file folder="Brotherhood/" tmx="Brotherhood_Buildings.tmx"/>
      <file folder="Brotherhood/" tmx="Brotherhood_Buildings.tmx"/>
