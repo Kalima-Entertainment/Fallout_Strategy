@@ -366,7 +366,6 @@ bool UI_Button::Update(float dt)
 			{
 				App->gui->Delete_Element(faction_image);
 				App->menu_manager->DestroyMenu(Menu::SELECT_FACTION);
-				current_state = BUTTON_STATE::HOVER_EXIT;
 				App->player->faction = GHOUL;
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
 				App->gui->count = 0;
