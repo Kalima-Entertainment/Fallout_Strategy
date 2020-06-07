@@ -63,7 +63,7 @@ public:
 	UI_element* pause_menu[7];
 	UI_element* gui_ingame[4];
 	UI_element* tutorial[8];
-	UI_element* how_to_play[6];
+	UI_element* how_to_play[7];
 	UI_element* tutorial_screen;
 	UI_element* info_button2_element;
 	UI_element* quest_button2_element;

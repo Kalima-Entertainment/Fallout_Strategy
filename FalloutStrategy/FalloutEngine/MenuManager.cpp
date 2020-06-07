@@ -452,13 +452,16 @@ void MenuManager::CreateMenu(Menu menu) {
 			how_to_play[2] = (j1Image*)App->gui->CreateImage(690, 160, Image, { 2869, 1188, 542, 296 }, NULL, this);
 		}
 		if (how_to_play_counter == 1) {
-			how_to_play[3] = (j1Image*)App->gui->CreateImage(700, 165, Image, { 2231, 1152, 470, 286 }, NULL, this);
+			how_to_play[3] = (j1Image*)App->gui->CreateImage(680, 157, Image, { 1183, 1557, 581, 322 }, NULL, this); 
 		}
 		if (how_to_play_counter == 2) {
-			how_to_play[4] = (j1Image*)App->gui->CreateImage(690, 180, Image, { 1257, 1195, 553, 241 }, NULL, this);
+			how_to_play[4] = (j1Image*)App->gui->CreateImage(720, 165, Image, { 2231, 1152, 470, 286 }, NULL, this); 
 		}
 		if (how_to_play_counter == 3) {
-			how_to_play[5] = (j1Image*)App->gui->CreateImage(690, 165, Image, { 971, 35, 535, 287 }, NULL, this);
+			how_to_play[5] = (j1Image*)App->gui->CreateImage(671, 180, Image, { 1240, 1190, 590, 255 }, NULL, this); 
+		}
+		if (how_to_play_counter == 4) {
+			how_to_play[6] = (j1Image*)App->gui->CreateImage(690, 165, Image, { 971, 35, 535, 287 }, NULL, this);
 		}
 		
 		last_menu = current_menu;
@@ -1196,7 +1199,7 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->gui->Delete_Element(info_button2_element);
 		break;
 	case Menu::HOW_TO_PLAY:
-		App->gui->DeleteArrayElements(how_to_play, 6);
+		App->gui->DeleteArrayElements(how_to_play, 7);
 		break;
 	case Menu::DIALOG:
 		App->gui->DeleteArrayElements(dialogs, 11);

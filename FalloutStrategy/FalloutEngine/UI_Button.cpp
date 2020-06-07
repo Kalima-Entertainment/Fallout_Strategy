@@ -602,8 +602,8 @@ bool UI_Button::Update(float dt)
 			else if (t == how_to_play_next) {
 				App->menu_manager->DestroyMenu(Menu::HOW_TO_PLAY);
 				App->menu_manager->how_to_play_counter++;
-				if (App->menu_manager->how_to_play_counter > 3) {
-					App->menu_manager->how_to_play_counter = 3;
+				if (App->menu_manager->how_to_play_counter > 4) {
+					App->menu_manager->how_to_play_counter = 4;
 				}
 				App->menu_manager->CreateMenu(Menu::HOW_TO_PLAY);
 				App->gui->ingame = false;
@@ -746,7 +746,7 @@ bool UI_Button::Update(float dt)
 		fx_played = false;
 		current_state = BUTTON_STATE::HOVER_EXIT;
 	}
-
+	
 	if (current_state == BUTTON_STATE::HOVER_EXIT) {
 		for (std::list<UI_element*>::iterator item = elements_to_show.begin(); item != elements_to_show.end(); ++item) {
 
@@ -757,6 +757,7 @@ bool UI_Button::Update(float dt)
 		}
 		inHover = !inHover;
 	}
+	
 	   
 	return true;
 
