@@ -701,7 +701,7 @@ bool UI_Button::Update(float dt)
 			else if (t == SlimShadyFM_button)
 			{
 			Mix_PauseMusic();
-			App->audio->PlayMusic("Assets/audio/music/SlimShadyFM/eminem.ogg", 0.0F);
+			App->audio->PlayMusic("Assets/audio/music/SlimShadyFm/eminem.ogg", 0.0F);
 			}
 			else if (t == UltraRADIO_button)
 			{
