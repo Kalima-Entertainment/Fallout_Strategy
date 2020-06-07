@@ -221,7 +221,6 @@ unsigned int j1Audio::LoadFx(const char* path)
 bool j1Audio::PlayFx(int channel, unsigned int id, int repeat)
 {
 	bool ret = false;
-	id += 0;
 
 	if(!active)
 		return false;

@@ -152,15 +152,15 @@ bool DynamicEntity::PostUpdate() {
 
 			//Enemy Health Bar only if visible on fog of war and alive
 			if (current_health > 0) {
-				App->render->DrawQuad(background_health_bar, 75, 75, 75, 255);
-				App->render->DrawQuad(foreground_health_bar, 0, 235, 0, 255);
-				App->render->DrawQuad(frame_quad, 200, 200, 200, 185, false);
+				App->render->DrawQuad(background_health_bar, 75, 75, 75, 255, true, true);
+				App->render->DrawQuad(foreground_health_bar, 0, 235, 0, 255, true, true);
+				App->render->DrawQuad(frame_quad, 200, 200, 200, 185, false, true);
 			}
 		}
 
 		if (App->render->debug) {
-			App->render->DrawQuad(next_tile_rect, 0, 255, 0, 255);
-			App->render->DrawQuad({ (int)position.x, (int)position.y, 2, 2 }, 255, 0, 0, 255);
+			App->render->DrawQuad(next_tile_rect, 0, 255, 0, 255, true, true);
+			App->render->DrawQuad({ (int)position.x, (int)position.y, 2, 2 }, 255, 0, 0, 255, true, true);
 		}
 	}
 
@@ -212,7 +212,6 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 			node_path.pop_back();
 
 		App->pathfinding->CreatePath(current_tile, node_path.back());
-		//target_tile = node_path.back();
 	}
 	else {
 		if (App->pathfinding->CreatePath(current_tile, destination) == -1) {
@@ -242,9 +241,10 @@ void DynamicEntity::Move(float dt) {
 	//check if the tile that wants to be occupied is already occupied
 	if (!App->entities->IsTileInPositionOccupied(position))
 		UpdateTile();
+	
 	else {
 		if (node_path.size() > 0) {
-			if (current_tile.DistanceManhattan(node_path.back()) < 4)
+			if (current_tile.DistanceManhattan(node_path.back()) < 3)
 				node_path.pop_back();
 			if (node_path.size() > 0)
 				PathfindToPosition(node_path.back());
@@ -255,7 +255,6 @@ void DynamicEntity::Move(float dt) {
 			PathfindToPosition(target_tile);
 		}
 	}
-
 
 	// -- Get next tile center
 	next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
