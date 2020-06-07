@@ -397,8 +397,12 @@ j1Entity* j1Player::SelectEntity() {
 	j1Entity* target = App->entities->FindEntityByTile(selected_spot);
 
 	if (target != nullptr) {
-		if (((god_mode) || (target->faction == faction))&&(target->state != DIE)) 
-				return target;
+		if (((god_mode) || (target->faction == faction)) && (target->state != DIE)) {
+			if (target->info.current_group != nullptr) {
+				target->ClearUnitInfo();
+			}
+			return target;
+		}
 	}
 
 	return nullptr;
@@ -428,8 +432,10 @@ void j1Player::MoveEntity(DynamicEntity* entity){
 		if (entity->info.current_group != nullptr)
 			entity->info.current_group = nullptr;
 
+		entity->node_path.clear();
 		entity->PathfindToPosition(selected_spot);
 		entity->CheckDestination(selected_spot);
+		entity->commanded = true;
 	}
 }
 

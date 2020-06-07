@@ -100,13 +100,16 @@ j1Group* j1MovementManager::CreateGroup(std::vector<DynamicEntity*> entities_vec
 		//LOG("Group Created");
 		return group;
 	}
-	else delete group;
+	else {
+		delete group;
+		group = nullptr;
+		return group;
+	}
 
 }
 
 void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 {
-	/*
 	std::vector <DynamicEntity*>::const_iterator unit = group->Units.cbegin();
 
 	// -- We will just check units inside group
@@ -128,5 +131,4 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 		}
 		unit++;
 	}
-	*/
 }

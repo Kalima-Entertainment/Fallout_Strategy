@@ -6,7 +6,7 @@
 #include "j1Timer.h"
 #include <list>
 
-#define DEFAULT_PATH_LENGTH 30
+#define DEFAULT_PATH_LENGTH 40
 #define INVALID_WALK_CODE 255
 #define MAX_PATH_ITERATIONS 200
 

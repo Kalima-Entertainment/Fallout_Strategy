@@ -748,14 +748,16 @@ bool UI_Button::Update(float dt)
 	}
 	
 	if (current_state == BUTTON_STATE::HOVER_EXIT) {
-		for (std::list<UI_element*>::iterator item = elements_to_show.begin(); item != elements_to_show.end(); ++item) {
+		if (elements_to_show.size() > 0) {
+			for (std::list<UI_element*>::const_iterator item = elements_to_show.cbegin(); item != elements_to_show.cend(); item++) {
 
-			if ((*item)->hover == true)
-			{
-				DoNotShowElement((*item));
+				if ((*item)->hover == true)
+				{
+					DoNotShowElement((*item));
+				}
 			}
+			inHover = !inHover;
 		}
-		inHover = !inHover;
 	}
 	
 	   

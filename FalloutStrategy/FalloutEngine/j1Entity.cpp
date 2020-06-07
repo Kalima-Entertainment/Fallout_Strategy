@@ -61,6 +61,13 @@ iPoint j1Entity::MapPosition() {
 	return spot;
 }
 
+void j1Entity::ClearUnitInfo() {
+	info.IsSelected = false;
+	info.current_group = nullptr;
+	info.UnitMovementState = MovementState::MovementState_NoState;
+	info.goal_tile = { 0,0 };
+}
+
 int j1Entity::GetPositionScore() const {
 	return current_tile.x + current_tile.y;
 }

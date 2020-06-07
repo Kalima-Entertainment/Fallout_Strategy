@@ -66,6 +66,7 @@ public:
 	virtual bool LoadReferenceData(pugi::xml_node& ) { return true; };	
 	virtual bool LoadDataFromReference() { return true; }
 
+	void ClearUnitInfo();
 	int GetPositionScore() const;
 
 	iPoint MapPosition();

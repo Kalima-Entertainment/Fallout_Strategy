@@ -214,7 +214,7 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 		//target_tile = node_path.back();
 	}
 	else {
-		if (App->pathfinding->CreatePath(current_tile, destination) == -2) {
+		if (App->pathfinding->CreatePath(current_tile, destination) == -1) {
 			LOG("No");
 			if (!App->pathfinding->IsWalkable(destination))
 				LOG("Unwalkable destination");
@@ -242,8 +242,19 @@ void DynamicEntity::Move(float dt) {
 	//check if the tile that wants to be occupied is already occupied
 	if (!App->entities->IsTileInPositionOccupied(position))
 		UpdateTile();
-	//else
-		//PathfindToPosition(target_tile);
+	else {
+		if (node_path.size() > 0) {
+			if (current_tile.DistanceManhattan(node_path.back()) < 3)
+				node_path.pop_back();
+			if (node_path.size() > 0)
+				PathfindToPosition(node_path.back());
+			else
+				PathfindToPosition(target_tile);
+		}
+		else {
+			PathfindToPosition(target_tile);
+		}
+	}
 
 	// -- Get next tile center
 	next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
@@ -251,9 +262,6 @@ void DynamicEntity::Move(float dt) {
 
 	last_direction = direction;
 	direction = GetDirectionToGo(next_tile_rect);
-
-	
-	
 
 	fPoint auxPos = position; //We use that variable to optimize Fog Of War code 
 
@@ -343,6 +351,9 @@ Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
 	}
 	else if ((floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
 		return Direction::BOTTOM_RIGHT;
+	}
+	else {
+		return last_direction;
 	}
 
 	/*if ((ceil(position.x) > floor(next_tile_rect.x)) && (floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w))
