@@ -88,7 +88,7 @@
   </gui>
 
   <map>
-    <folder>Assets_Old/maps/</folder>
+    <folder>Assets/maps/</folder>
   </map>
   <minimap width="260" corner="bottom_left" margin="35"/>
 </config>

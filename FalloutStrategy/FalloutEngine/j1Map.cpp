@@ -16,6 +16,7 @@
 #include "AI_Player.h"
 #include "j1Scene.h"
 #include "j1Pathfinding.h"
+#include "AssetsManager.h"
 #include "FoWManager.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -269,8 +270,11 @@ bool j1Map::Load(std::string modules[4])
 		std::string tmp = folder;
 		tmp.append(modules[i].c_str());
 
-		pugi::xml_parse_result result = map_file.load_file(tmp.c_str());
-
+		char* buffer;
+		int bytesFile = App->assetManager->Load(tmp.c_str(), &buffer);
+		pugi::xml_parse_result result = map_file.load_buffer(buffer, bytesFile);
+		
+		RELEASE_ARRAY(buffer);
 		if(result == NULL)
 		{
 			LOG("Could not load map xml file %s. pugi error: %s", modules[i].c_str(), result.description());
