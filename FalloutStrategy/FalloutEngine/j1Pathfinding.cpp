@@ -66,8 +66,8 @@ iPoint j1PathFinding::FindWalkableAdjacentTile(iPoint point) const {
 	if (App->pathfinding->IsWalkable(tile) && !App->entities->IsTileOccupied(tile))
 			return tile;
 
-	// south
-	tile = { point.x, point.y + 1 };
+	// west
+	tile = { point.x - 1, point.y };
 	if (App->pathfinding->IsWalkable(tile) && !App->entities->IsTileOccupied(tile))
 		return tile;
 
@@ -76,8 +76,28 @@ iPoint j1PathFinding::FindWalkableAdjacentTile(iPoint point) const {
 	if (App->pathfinding->IsWalkable(tile) && !App->entities->IsTileOccupied(tile))
 		return tile;
 
-	// west
-	tile = { point.x - 1, point.y };
+	// south
+	tile = { point.x, point.y + 1 };
+	if (App->pathfinding->IsWalkable(tile) && !App->entities->IsTileOccupied(tile))
+		return tile;
+
+	//north-west
+	tile = { point.x - 1, point.y - 1 };
+	if (App->pathfinding->IsWalkable(tile) && !App->entities->IsTileOccupied(tile))
+		return tile;
+
+	//north-east
+	tile = { point.x + 1, point.y - 1 };
+	if (App->pathfinding->IsWalkable(tile) && !App->entities->IsTileOccupied(tile))
+		return tile;
+
+	// south-west
+	tile = { point.x - 1, point.y + 1 };
+	if (App->pathfinding->IsWalkable(tile) && !App->entities->IsTileOccupied(tile))
+		return tile;
+
+	// south-east
+	tile = { point.x + 1, point.y + 1 };
 	if (App->pathfinding->IsWalkable(tile) && !App->entities->IsTileOccupied(tile))
 		return tile;
 

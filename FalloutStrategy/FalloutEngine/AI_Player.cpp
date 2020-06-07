@@ -64,10 +64,10 @@ bool AI_Player::Update(float dt) {
 				//if there is at least a resource building left, go there
 				if (gatherers_vector[i]->GetResourceBuilding() != nullptr) {
 					gatherers_vector[i]->PathfindToPosition(App->entities->ClosestTile(gatherers_vector[i]->current_tile, gatherers_vector[i]->GetResourceBuilding()->tiles));
+					gatherers_vector[i]->gathering = true;
 				}
 				//if there are no resource buildings left
-				else
-				{
+				else {
 					gatherers_vector[i]->state = IDLE;
 				}
 			}

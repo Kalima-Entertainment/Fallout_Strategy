@@ -69,7 +69,7 @@ bool AI_Manager::Start() {
 bool AI_Manager::Update(float dt) {
 	BROFILER_CATEGORY("AI_Update", Profiler::Color::Azure)
 	bool ret = true;
-	/*
+	
 	if (players_created) {
 		for(int i = 0; i < 4; i++)
 		{
@@ -78,7 +78,6 @@ bool AI_Manager::Update(float dt) {
 			}
 		}
 	}
-	*/
 	return ret;
 }
 

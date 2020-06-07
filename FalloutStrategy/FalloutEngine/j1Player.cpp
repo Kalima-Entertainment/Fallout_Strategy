@@ -433,8 +433,8 @@ void j1Player::MoveEntity(DynamicEntity* entity){
 			entity->info.current_group = nullptr;
 
 		entity->node_path.clear();
-		entity->PathfindToPosition(selected_spot);
 		entity->CheckDestination(selected_spot);
+		entity->PathfindToPosition(selected_spot);
 		entity->commanded = true;
 	}
 }

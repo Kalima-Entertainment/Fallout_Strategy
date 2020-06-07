@@ -21,6 +21,7 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 	gather_time = 2;
 	storage_capacity = 0;
 	resource_type = Resource::NO_TYPE;
+	gathering = false;
 
 	position = App->map->floatMapToWorld(current_tile.x, current_tile.y);
 	position.x += HALF_TILE;
@@ -56,7 +57,6 @@ Gatherer::~Gatherer() {
 	base = nullptr;
 	visionEntity = nullptr;
 	DynaParticle = nullptr;
-	//App->entities->ReleaseParticle(DynaParticle);
 }
 
 bool Gatherer::Update(float dt) {
@@ -66,28 +66,21 @@ bool Gatherer::Update(float dt) {
 	switch (state)
 	{
 	case IDLE:
-		if ((resource_collected > 0) && (base != nullptr) && (base->state != DIE)) {
-			PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
-		}
-		else if ((resource_building != nullptr) && (resource_building->quantity > 0)) {
-			PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
+		if (!commanded) {
+			if ((resource_collected > 0) && (base != nullptr) && (base->state != DIE)) {
+				PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
+			}
+			else if ((resource_building != nullptr) && (resource_building->quantity > 0)) {
+				PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
+			}
 		}
 		break;
 	case WALK:
-		//if (info.current_group == nullptr) {
 		Move(dt);
-		//}
-		/*
-		else {
-			if (info.current_group->IsGroupLead(this)) {
-				if (this->faction == App->player->faction)
-					info.current_group->CheckForMovementRequest(target_tile, dt);
-			}
-		}
-		*/
+
 		if ((current_tile == target_tile)&&(node_path.size() == 0)) {
 			//gather
-			if (((resource_building != nullptr) && (resource_collected < storage_capacity)) || ((resource_collected > 0) && (base != nullptr))) {
+			if ((((resource_building != nullptr) && (resource_collected < storage_capacity)) || ((resource_collected > 0) && (base != nullptr))) && gathering) {
 				state = GATHER;
 				gathering_timer.Start();
 			}
@@ -183,6 +176,7 @@ void Gatherer::Gather() {
 	if ((resource_collected > 0) && (resource_type != resource_building->resource_type)) {
 		if ((base != nullptr) && (base->state != DIE)) {
 			PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
+			gathering = true;
 			return;
 		}
 	}
@@ -199,11 +193,13 @@ void Gatherer::Gather() {
 	if (base != nullptr) {
 		if (base->state == DIE) {
 			state = IDLE;
+			gathering = false;
 			return;
 		}
 			
 		PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
 		target_entity = base;
+		gathering = true;
 	}
 
 	if (resource_building->quantity <= 0)
@@ -212,6 +208,7 @@ void Gatherer::Gather() {
 
 void Gatherer::AssignResourceBuilding(ResourceBuilding* g_resource_building) {
 	resource_building = g_resource_building;
+	gathering = true;
 }
 
 void Gatherer::StoreGatheredResources() {

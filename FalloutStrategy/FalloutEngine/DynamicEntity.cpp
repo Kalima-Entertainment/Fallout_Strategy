@@ -215,7 +215,7 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 	}
 	else {
 		if (App->pathfinding->CreatePath(current_tile, destination) == -1) {
-			LOG("No");
+			//LOG("No");
 			if (!App->pathfinding->IsWalkable(destination))
 				LOG("Unwalkable destination");
 			ret = false;
@@ -238,13 +238,12 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 }
 
 void DynamicEntity::Move(float dt) {
-
 	//check if the tile that wants to be occupied is already occupied
 	if (!App->entities->IsTileInPositionOccupied(position))
 		UpdateTile();
 	else {
 		if (node_path.size() > 0) {
-			if (current_tile.DistanceManhattan(node_path.back()) < 3)
+			if (current_tile.DistanceManhattan(node_path.back()) < 4)
 				node_path.pop_back();
 			if (node_path.size() > 0)
 				PathfindToPosition(node_path.back());
@@ -256,6 +255,7 @@ void DynamicEntity::Move(float dt) {
 		}
 	}
 
+	
 	// -- Get next tile center
 	next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
 	next_tile_rect = { next_tile_position.x + HALF_TILE - 4, next_tile_position.y + HALF_TILE -2, 8, 8 };
@@ -289,6 +289,7 @@ void DynamicEntity::Move(float dt) {
 
 		if (current_tile == target_tile){
 			direction = last_direction;
+			commanded = false;
 		}
 		else {
 			//if the entity has a path to follow
@@ -548,10 +549,19 @@ void DynamicEntity::CheckDestination(iPoint destination) {
 			if ((resource_building != nullptr) && (resource_building->quantity > 0)) {
 				((Gatherer*)this)->AssignResourceBuilding(resource_building);
 			}
+			else {
+				((Gatherer*)this)->gathering = false;
+				commanded = true;
+			}
 		}
 		else if (is_agressive) {
 			commanded = true;
 		}
+	}
+	else{
+		target_entity = target;
+		if (type == GATHERER)
+			((Gatherer*)this)->gathering = true;
 	}
 }
 
