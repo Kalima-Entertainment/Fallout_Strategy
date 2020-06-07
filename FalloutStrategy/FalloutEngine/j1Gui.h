@@ -2,7 +2,6 @@
 #define __j1GUI_H__
 
 #include "j1Module.h"
-#include "p2List.h"
 #include "p2Point.h"
 #include <vector>
 #include <string>

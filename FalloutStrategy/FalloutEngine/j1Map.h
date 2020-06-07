@@ -2,7 +2,6 @@
 #define __j1MAP_H__
 
 #include "PugiXml/src/pugixml.hpp"
-#include "p2List.h"
 #include "p2Point.h"
 #include "j1Module.h"
 #include <vector>
@@ -26,13 +25,11 @@ struct Properties
 
 	~Properties()
 	{
-		p2List_item<Property*>* item;
-		item = list.start;
 
-		while(item != NULL)
+		for (int i = 0; i < list.size(); i++)
 		{
-			RELEASE(item->data);
-			item = item->next;
+			delete list[i];
+			list[i] = nullptr;
 		}
 
 		list.clear();
@@ -40,7 +37,7 @@ struct Properties
 
 	int Get(const char* name, int default_value = 0) const;
 
-	p2List<Property*>	list;
+	std::vector<Property*>	list;
 };
 
 // ----------------------------------------------------
@@ -96,10 +93,9 @@ struct Object {
 	//ResourceBuilding
 };
 
-
 struct ObjectGroup {
 	std::string name = ("No name");
-	Object* object;
+	Object* object = nullptr;
 	uint size = 0u;
 };
 

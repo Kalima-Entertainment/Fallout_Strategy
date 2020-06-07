@@ -41,9 +41,6 @@ public:
 	void CreateInterface();
 	void DestroyInterface();
 
-	//void CreateCommand(const char* command, j1Module* callback, const char* explanation = "No explanation given");
-	//void CheckCommand(p2SString command);
-
 public:
 	std::vector<std::string> log_record;
 	std::vector<Command> command_vector;

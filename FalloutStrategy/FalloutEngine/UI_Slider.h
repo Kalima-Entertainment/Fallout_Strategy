@@ -4,10 +4,8 @@
 #include "UI_element.h"
 #include "j1Textures.h"
 #include "SDL/include/SDL.h"
-#include "p2SString.h"
 
 struct SDL_Texture;
-
 
 class UI_Slider : public UI_element
 {

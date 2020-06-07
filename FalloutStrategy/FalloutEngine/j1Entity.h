@@ -5,7 +5,6 @@
 #include "SDL/include/SDL.h"
 #include "Animation.h"
 #include "j1EntityManager.h"
-#include "p2DynArray.h"
 #include "p2Log.h"
 #include "j1MovementManager.h"
 #include "j1Group.h"
