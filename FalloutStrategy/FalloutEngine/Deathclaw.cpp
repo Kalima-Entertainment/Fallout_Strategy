@@ -152,7 +152,7 @@ void Deathclaw::Attack() {
 
 bool Deathclaw::LoadDataFromReference() {
 	bool ret = true;
-	Deathclaw* reference_deathclaw = (Deathclaw*)reference_entity;
+	Deathclaw* reference_deathclaw = dynamic_cast<Deathclaw*>(reference_entity);
 
 	//load animations
 	for(int i = 0; i < NO_STATE; i++)

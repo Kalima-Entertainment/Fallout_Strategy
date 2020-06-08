@@ -12,7 +12,7 @@
 #include "p2Log.h"
 #include "j1Console.h"
 
-InputText::InputText(int x, int y, UI_Type type, const std::string &text_input, UI_element* parent, j1Module* Observer, std::string font) : UI_element(x, y, type, parent, Observer) {
+InputText::InputText(int x, int y, UI_Type type, const std::string &text_input, UI_element* parent, j1Module* Observer,const std::string &font) : UI_element(x, y, type, parent, Observer) {
 
 	InputText_Actived = false;
 	texture = nullptr;
@@ -21,7 +21,8 @@ InputText::InputText(int x, int y, UI_Type type, const std::string &text_input, 
 	this->pos.y = y;
 	H = 0;
 	W = 0;
-	text = text_input;
+	text.assign(text_input);
+	//text = text_input;
 	font_text = font;
 	texture = App->font->Print(text.data(), { 255,255,255,255 }, font_text);
 	r = { 0,0,0,0 };
@@ -61,7 +62,7 @@ bool InputText::Update(float dt) {
 			if (text.size() == 0)
 				text = ("Please introduce text");
 
-			if (observer == (j1Module*)App->console) {
+			if (observer == dynamic_cast<j1Module*>(App->console)) {
 				App->console->ProcessCommand(text.data());
 			}
 		}

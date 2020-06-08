@@ -4,13 +4,15 @@
 
 ParticleSystem::ParticleSystem() : j1Entity()
 {
-	position = { 0.0f, 0.0f };
+	position.push_back(0.0f);
+	position.push_back(0.0f);
 	active = true;
 }
 
 ParticleSystem::ParticleSystem(float x, float y) : j1Entity()
 {
-	position = { x, y };
+	position.push_back(x);
+	position.push_back(y);
 	active = true;
 }
 

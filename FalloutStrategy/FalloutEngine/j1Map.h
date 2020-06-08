@@ -44,8 +44,8 @@ struct Properties
 struct MapLayer
 {
 	std::string	name;
-	int			width;
-	int			height;
+	int			width = 0;
+	int			height = 0;
 	uint		data[MAP_LENGTH * MAP_LENGTH];
 	Properties	properties;
 

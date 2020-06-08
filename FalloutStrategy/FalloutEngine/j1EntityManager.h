@@ -31,8 +31,8 @@ enum class Resource {
 };
 
 struct ResourceBuilding {
-	Resource resource_type;
-	int quantity;
+	Resource resource_type = Resource::NO_TYPE;
+	int quantity = 0;
 	std::vector<iPoint> tiles;
 	~ResourceBuilding() {tiles.clear();}
 };

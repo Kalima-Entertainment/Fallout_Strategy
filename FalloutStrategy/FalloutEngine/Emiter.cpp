@@ -10,19 +10,18 @@ Emiter::Emiter(float posX, float posY, float SpeedX, float SpeedY, int Variation
 	float AccelerationX, float AccelerationY, int VariationAccelerationX, int VariationAccelerationY, float AngularSpeed,
 	int VariableAngularSpeed, float Rate, float LifeTime, SDL_Rect* spawn, SDL_Texture* texture, const Animation &partAnim, bool fade) {
 
-	//position = { posX, posY };
 	position.push_back(posX);
 	position.push_back(posY);
-	//particleSpeed = { SpeedX, SpeedY };
+
 	particleSpeed.push_back(SpeedX);
 	particleSpeed.push_back(SpeedY);
-	//particleVariationSpeed = { VariationSpeedX, VariationSpeedY };
+
 	particleVariationSpeed.push_back(VariationSpeedX);
 	particleVariationSpeed.push_back(VariationSpeedY);
-	//particleAcceleration = {AccelerationX, AccelerationY},
+
 	particleAcceleration.push_back(AccelerationX);
 	particleAcceleration.push_back(AccelerationY);
-	//particleVariationAcceleration = { VariationAccelerationX, VariationAccelerationY };
+
 	particleVariationAcceleration.push_back(VariationAccelerationX);
 	particleVariationAcceleration.push_back(VariationAccelerationY);
 

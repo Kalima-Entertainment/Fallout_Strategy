@@ -32,7 +32,7 @@ public:
 	bool CleanUp();
 	void OnCommand(std::vector<std::string> command_parts);
 
-	void CreateCommand(const std::string &name, std::string description, j1Module* callback);
+	void CreateCommand(const std::string &name,const std::string &description, j1Module* callback);
 	void ProcessCommand(std::string command);
 
 	void AddLogText(std::string incoming_text);

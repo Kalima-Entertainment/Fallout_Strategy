@@ -184,7 +184,7 @@ void j1Console::DestroyInterface() {
 	on_screen_log.clear();
 }
 
-void j1Console::CreateCommand(const std::string &name, std::string description, j1Module* callback) {
+void j1Console::CreateCommand(const std::string &name,const std::string &description, j1Module* callback) {
 	Command command;
 
 	command.name = name;
