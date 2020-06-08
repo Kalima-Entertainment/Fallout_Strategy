@@ -7,7 +7,8 @@
 #include "DynamicEntity.h"
 
 j1Group::j1Group() {
-	last_goal = { 0,0 };
+	last_goal.x = 0;
+	last_goal.y = 0;
 }
 
 j1Group::~j1Group()
@@ -95,7 +96,7 @@ void j1Group::SetUnitGoalTile(DynamicEntity* entity)
 			break;
 		}
 
-		it++;
+		++it;
 	}
 }
 
@@ -194,7 +195,7 @@ bool j1Group::IsTileFree(iPoint* adjacent)
 			return false;
 		}
 
-		it++;
+		++it;
 	}
 
 	AddTiletoOccupied(*adjacent);

@@ -26,7 +26,8 @@ j1Minimap::j1Minimap() : j1Module(), texture(nullptr) {
 	radar_time = 5;
 	radar = false;
 	visible = false;
-	position = {0,0};
+	position.x = 0;
+	position.y = 0;
 	
 }
 
