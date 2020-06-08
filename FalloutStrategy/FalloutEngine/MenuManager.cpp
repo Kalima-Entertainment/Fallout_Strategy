@@ -164,21 +164,21 @@ void MenuManager::CreateMenu(Menu menu) {
 	case Menu::MAIN_MENU:
 
 		//Images															
-		main_menu[0] = (j1Image*)App->gui->CreateImage(-5, 0, Image, { 1529, 0, 1502, 775 }, NULL, this);
+		main_menu[0] = dynamic_cast<j1Image*>(App->gui->CreateImage(-5, 0, Image, { 1529, 0, 1502, 775 }, NULL, this));
 
 		//Buttons
-		main_menu[1] = (UI_Button*)App->gui->CreateButton(260, 560, button_new_game, { 1372,927,187,49 }, { 1372,987,187,49 }, { 1372,1046,187,49 }, NULL, this);
-		main_menu[2] = (UI_Button*)App->gui->CreateButton(460, 560, button_load_game, { 1372,927,187,49 }, { 1372,987,187,49 }, { 1372,1046,187,49 }, NULL, this);
-		main_menu[3] = (UI_Button*)App->gui->CreateButton(160, 620, button_settings, { 1372,927,187,49 }, { 1372,987,187,49 }, { 1372,1046,187,49 }, NULL, this);
-		main_menu[4] = (UI_Button*)App->gui->CreateButton(360, 620, button_credits, { 1372,927,187,49 }, { 1372,987,187,49 }, { 1372,1046,187,49 }, NULL, this);
-		main_menu[5] = (UI_Button*)App->gui->CreateButton(560, 620, button_exit, { 1372,927,187,49 }, { 1372,987,187,49 }, { 1372,1046,187,49 }, NULL, this);
+		main_menu[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(260, 560, button_new_game, { 1372,927,187,49 }, { 1372,987,187,49 }, { 1372,1046,187,49 }, NULL, this));
+		main_menu[2] = dynamic_cast<UI_Button*>(App->gui->CreateButton(460, 560, button_load_game, { 1372,927,187,49 }, { 1372,987,187,49 }, { 1372,1046,187,49 }, NULL, this));
+		main_menu[3] = dynamic_cast<UI_Button*>(App->gui->CreateButton(160, 620, button_settings, { 1372,927,187,49 }, { 1372,987,187,49 }, { 1372,1046,187,49 }, NULL, this));
+		main_menu[4] = dynamic_cast<UI_Button*>(App->gui->CreateButton(360, 620, button_credits, { 1372,927,187,49 }, { 1372,987,187,49 }, { 1372,1046,187,49 }, NULL, this));
+		main_menu[5] = dynamic_cast<UI_Button*>(App->gui->CreateButton(560, 620, button_exit, { 1372,927,187,49 }, { 1372,987,187,49 }, { 1372,1046,187,49 }, NULL, this));
 
 		//Labels
-		main_menu[6] = (UI_Label*)App->gui->CreateLabel(305, 575, Label, "NEW GAME", NULL, this, "StackedPixelSmall");
-		main_menu[7] = (UI_Label*)App->gui->CreateLabel(505, 575, Label, "LOAD GAME", NULL, this, "StackedPixelSmall");
-		main_menu[8] = (UI_Label*)App->gui->CreateLabel(210, 635, Label, "SETTINGS", NULL, this, "StackedPixelSmall");
-		main_menu[9] = (UI_Label*)App->gui->CreateLabel(415, 635, Label, "CREDITS", NULL, this, "StackedPixelSmall");
-		main_menu[10] = (UI_Label*)App->gui->CreateLabel(630, 635, Label, "EXIT", NULL, this, "StackedPixelSmall");
+		main_menu[6] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(305, 575, Label, "NEW GAME", NULL, this, "StackedPixelSmall"));
+		main_menu[7] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(505, 575, Label, "LOAD GAME", NULL, this, "StackedPixelSmall"));
+		main_menu[8] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(210, 635, Label, "SETTINGS", NULL, this, "StackedPixelSmall"));
+		main_menu[9] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(415, 635, Label, "CREDITS", NULL, this, "StackedPixelSmall"));
+		main_menu[10] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(630, 635, Label, "EXIT", NULL, this, "StackedPixelSmall"));
 
 		App->render->camera.x = 0;
 		App->render->camera.y = 0;
@@ -190,13 +190,13 @@ void MenuManager::CreateMenu(Menu menu) {
 	case Menu::CREDITS:
 
 		//Images
-		credits_menu[0] = (j1Image*)App->gui->CreateImage(0, 0, Image, { 1287, 2430, 1281, 730 }, NULL, this);
+		credits_menu[0] = dynamic_cast<j1Image*>(App->gui->CreateImage(0, 0, Image, { 1287, 2430, 1281, 730 }, NULL, this));
 
 		//Buttons
-		credits_menu[1] = (UI_Button*)App->gui->CreateButton(65, 65, button_back_credits, { 1243,2014,73,78 }, { 1243,2102,73,79 }, { 1243,2188,73,71 }, NULL, this);
-		credits_menu[2] = (UI_Button*)App->gui->CreateButton(65, 200, button_github_credits, { 2181,841,73,78 }, { 2181,919,73,78 }, { 2181,1005,73,78 }, NULL, this);
-		credits_menu[3] = (UI_Button*)App->gui->CreateButton(65, 300, button_web_credits, { 2268,841,73,78 }, { 2268,919,73,78 }, { 2268,1005,73,78 }, NULL, this);
-		credits_menu[4] = (UI_Button*)App->gui->CreateButton(65, 400, button_twitter_credits, { 2355,841,73,78 }, { 2355,919,73,78 }, { 2355,1005,73,78 }, NULL, this);
+		credits_menu[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(65, 65, button_back_credits, { 1243,2014,73,78 }, { 1243,2102,73,79 }, { 1243,2188,73,71 }, NULL, this));
+		credits_menu[2] = dynamic_cast<UI_Button*>(App->gui->CreateButton(65, 200, button_github_credits, { 2181,841,73,78 }, { 2181,919,73,78 }, { 2181,1005,73,78 }, NULL, this));
+		credits_menu[3] = dynamic_cast<UI_Button*>(App->gui->CreateButton(65, 300, button_web_credits, { 2268,841,73,78 }, { 2268,919,73,78 }, { 2268,1005,73,78 }, NULL, this));
+		credits_menu[4] = dynamic_cast<UI_Button*>(App->gui->CreateButton(65, 400, button_twitter_credits, { 2355,841,73,78 }, { 2355,919,73,78 }, { 2355,1005,73,78 }, NULL, this));
 
 		last_menu = current_menu;
 		current_menu = Menu::CREDITS;
@@ -205,48 +205,48 @@ void MenuManager::CreateMenu(Menu menu) {
 	case Menu::SETTINGS:
 
 		//Images
-		settings_menu[0] = (j1Image*)App->gui->CreateImage(-5, 0, Image, { 1529, 0, 1502, 775 }, NULL, this);
-		settings_menu[1] = (j1Image*)App->gui->CreateImage(310, 125, Image, { 0, 142, 658, 358 }, NULL, this);
-		settings_menu[2] = (j1Image*)App->gui->CreateImage(420, 500, Image, { 1017, 352, 455, 190 }, NULL, this);
-		settings_menu[3] = (j1Image*)App->gui->CreateImage(395, 275, Image, { 1674, 981, 20, 36 }, NULL, this);
-		settings_menu[4] = (j1Image*)App->gui->CreateImage(505, 600, Image, { 1599, 1054, 77, 52 }, NULL, this);
-		settings_menu[19] = (j1Image*)App->gui->CreateImage(740, 600, Image, { 1599, 1054, 77, 52 }, NULL, this);
+		settings_menu[0] = dynamic_cast<j1Image*>(App->gui->CreateImage(-5, 0, Image, { 1529, 0, 1502, 775 }, NULL, this));
+		settings_menu[1] = dynamic_cast<j1Image*>(App->gui->CreateImage(310, 125, Image, { 0, 142, 658, 358 }, NULL, this));
+		settings_menu[2] = dynamic_cast<j1Image*>(App->gui->CreateImage(420, 500, Image, { 1017, 352, 455, 190 }, NULL, this));
+		settings_menu[3] = dynamic_cast<j1Image*>(App->gui->CreateImage(395, 275, Image, { 1674, 981, 20, 36 }, NULL, this));
+		settings_menu[4] = dynamic_cast<j1Image*>(App->gui->CreateImage(505, 600, Image, { 1599, 1054, 77, 52 }, NULL, this));
+		settings_menu[19] =dynamic_cast<j1Image*>(App->gui->CreateImage(740, 600, Image, { 1599, 1054, 77, 52 }, NULL, this));
 		//Labels
-		settings_menu[5] = (UI_Label*)App->gui->CreateLabel(450, 535, Label, "REFRESH RATE", NULL, this, "StackedPixelMedium");
-		settings_menu[6] = (UI_Label*)App->gui->CreateLabel(360, 335, Label, "SOUND EFFECTS VOLUME", NULL, this,"StackedPixel" );
-		settings_menu[7] = (UI_Label*)App->gui->CreateLabel(360, 150, Label, "MUSIC VOLUME", NULL, this, "StackedPixel");
-		settings_menu[8] = (UI_Label*)App->gui->CreateLabel(555, 50, Label, "SETTINGS", NULL, this, "StackedPixel");
-		settings_menu[18] = (UI_Label*)App->gui->CreateLabel(685, 535, Label, "FULLSCREEN", NULL, this, "StackedPixelMedium");
+		settings_menu[5] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(450, 535, Label, "REFRESH RATE", NULL, this, "StackedPixelMedium"));
+		settings_menu[6] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(360, 335, Label, "SOUND EFFECTS VOLUME", NULL, this,"StackedPixel" ));
+		settings_menu[7] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(360, 150, Label, "MUSIC VOLUME", NULL, this, "StackedPixel"));
+		settings_menu[8] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(555, 50, Label, "SETTINGS", NULL, this, "StackedPixel"));
+		settings_menu[18]= dynamic_cast<UI_Label*>(App->gui->CreateLabel(685, 535, Label, "FULLSCREEN", NULL, this, "StackedPixelMedium"));
 
 		if (App->gui->fullscreen == true) {
-			settings_menu[22] = (UI_Label*)App->gui->CreateLabel(756, 613, Label, "YES", NULL, this, "StackedPixelMedium");
+			settings_menu[22] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(756, 613, Label, "YES", NULL, this, "StackedPixelMedium"));
 		}
 		else {
-			settings_menu[22] = (UI_Label*)App->gui->CreateLabel(763, 613, Label, "NO", NULL, this, "StackedPixelMedium");
+			settings_menu[22] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(763, 613, Label, "NO", NULL, this, "StackedPixelMedium"));
 		}
 
 		if (App->gui->cap == true) {
-			settings_menu[21] = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "30", NULL, this,"StackedPixelMedium");
+			settings_menu[21] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(528, 613, Label, "30", NULL, this,"StackedPixelMedium"));
 		}
 		else {
-			settings_menu[21] = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "60", NULL, this, "StackedPixelMedium");
+			settings_menu[21] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(528, 613, Label, "60", NULL, this, "StackedPixelMedium"));
 		}
 
 		//Music Slider
-		settings_menu[9] = (UI_Slider*)App->gui->CreateSlider(465, 220, Slider_music, { 1834,842,329,27 }, { 1792,926,33,16 }, 400, NULL, this);
-		settings_menu[10] = (UI_Button*)App->gui->CreateButton(435, 220, Button_slider_music_left, { 1671,880,26,25 }, { 1738,880,26,25 }, { 1738,880,26,25 }, NULL, this);
-		settings_menu[11] = (UI_Button*)App->gui->CreateButton(787, 220, Button_slider_music_right, { 1704,880,26,25 }, { 1771,880,26,25 }, { 1771,880,26,25 }, NULL, this);
+		settings_menu[9] =  dynamic_cast<UI_Slider*>(App->gui->CreateSlider(465, 220, Slider_music, { 1834,842,329,27 }, { 1792,926,33,16 }, 400, NULL, this));
+		settings_menu[10] = dynamic_cast<UI_Button*>(App->gui->CreateButton(435, 220, Button_slider_music_left, { 1671,880,26,25 }, { 1738,880,26,25 }, { 1738,880,26,25 }, NULL, this));
+		settings_menu[11] = dynamic_cast<UI_Button*>(App->gui->CreateButton(787, 220, Button_slider_music_right, { 1704,880,26,25 }, { 1771,880,26,25 }, { 1771,880,26,25 }, NULL, this));
 
 		//Fx Slider
-		settings_menu[12] = (UI_Slider*)App->gui->CreateSlider(465, 405, Slider_fx, { 1834,842,329,27 }, { 1792,926,33,16 }, 400, NULL, this);
-		settings_menu[13] = (UI_Button*)App->gui->CreateButton(435, 405, Button_slider_fx_left, { 1671,880,26,25 }, { 1738,880,26,25 }, { 1738,880,26,25 }, NULL, this);
-		settings_menu[14] = (UI_Button*)App->gui->CreateButton(796, 405, Button_slider_fx_right, { 1704,880,26,25 }, { 1771,880,26,25 }, { 1771,880,26,25 }, NULL, this);
+		settings_menu[12] = dynamic_cast<UI_Slider*>(App->gui->CreateSlider(465, 405, Slider_fx, { 1834,842,329,27 }, { 1792,926,33,16 }, 400, NULL, this));
+		settings_menu[13] = dynamic_cast<UI_Button*>(App->gui->CreateButton(435, 405, Button_slider_fx_left, { 1671,880,26,25 }, { 1738,880,26,25 }, { 1738,880,26,25 }, NULL, this));
+		settings_menu[14] = dynamic_cast<UI_Button*>(App->gui->CreateButton(796, 405, Button_slider_fx_right, { 1704,880,26,25 }, { 1771,880,26,25 }, { 1771,880,26,25 }, NULL, this));
 
 		//Buttons
-		settings_menu[15] = (UI_Button*)App->gui->CreateButton(470, 615, button_cap, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this);
-		settings_menu[16] = (UI_Button*)App->gui->CreateButton(360, 280, button_mute, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this);
-		settings_menu[17] = (UI_Button*)App->gui->CreateButton(40, 40, button_back, { 1704,1054,48,46 }, { 1765,1054,48,46 }, { 1765,1054,48,46 }, NULL, this);
-		settings_menu[20] = (UI_Button*)App->gui->CreateButton(705, 615, button_fullscreen, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this);
+		settings_menu[15] = dynamic_cast<UI_Button*>(App->gui->CreateButton(470, 615, button_cap, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this));
+		settings_menu[16] = dynamic_cast<UI_Button*>(App->gui->CreateButton(360, 280, button_mute, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this));
+		settings_menu[17] = dynamic_cast<UI_Button*>(App->gui->CreateButton(40, 40, button_back, { 1704,1054,48,46 }, { 1765,1054,48,46 }, { 1765,1054,48,46 }, NULL, this));
+		settings_menu[20] = dynamic_cast<UI_Button*>(App->gui->CreateButton(705, 615, button_fullscreen, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this));
 
 		last_menu = current_menu;
 		current_menu = Menu::SETTINGS;
@@ -256,48 +256,48 @@ void MenuManager::CreateMenu(Menu menu) {
 	case Menu::PAUSE_SETTINGS:
 
 		//Images
-		settings_menu[0] = (j1Image*)App->gui->CreateImage(-5, 0, Image, { 1529, 0, 1502, 775 }, NULL, this);
-		settings_menu[1] = (j1Image*)App->gui->CreateImage(310, 125, Image, { 0, 142, 658, 358 }, NULL, this);
-		settings_menu[2] = (j1Image*)App->gui->CreateImage(420, 500, Image, { 1017, 352, 455, 190 }, NULL, this);
-		settings_menu[3] = (j1Image*)App->gui->CreateImage(395, 275, Image, { 1674, 981, 20, 36 }, NULL, this);
-		settings_menu[4] = (j1Image*)App->gui->CreateImage(505, 600, Image, { 1599, 1054, 77, 52 }, NULL, this);
-		settings_menu[19] = (j1Image*)App->gui->CreateImage(740, 600, Image, { 1599, 1054, 77, 52 }, NULL, this);
+		settings_menu[0] = dynamic_cast<j1Image*>(App->gui->CreateImage(-5, 0, Image, { 1529, 0, 1502, 775 }, NULL, this));
+		settings_menu[1] = dynamic_cast<j1Image*>(App->gui->CreateImage(310, 125, Image, { 0, 142, 658, 358 }, NULL, this));
+		settings_menu[2] = dynamic_cast<j1Image*>(App->gui->CreateImage(420, 500, Image, { 1017, 352, 455, 190 }, NULL, this));
+		settings_menu[3] = dynamic_cast<j1Image*>(App->gui->CreateImage(395, 275, Image, { 1674, 981, 20, 36 }, NULL, this));
+		settings_menu[4] = dynamic_cast<j1Image*>(App->gui->CreateImage(505, 600, Image, { 1599, 1054, 77, 52 }, NULL, this));
+		settings_menu[19]= dynamic_cast<j1Image*>(App->gui->CreateImage(740, 600, Image, { 1599, 1054, 77, 52 }, NULL, this));
 		//Labels
-		settings_menu[5] = (UI_Label*)App->gui->CreateLabel(450, 535, Label, "REFRESH RATE", NULL, this, "StackedPixelMedium");
-		settings_menu[6] = (UI_Label*)App->gui->CreateLabel(360, 335, Label, "SOUND EFFECTS VOLUME", NULL, this, "StackedPixel");
-		settings_menu[7] = (UI_Label*)App->gui->CreateLabel(360, 150, Label, "MUSIC VOLUME", NULL, this, "StackedPixel");
-		settings_menu[8] = (UI_Label*)App->gui->CreateLabel(555, 50, Label, "SETTINGS", NULL, this, "StackedPixel");
-		settings_menu[18] = (UI_Label*)App->gui->CreateLabel(685, 535, Label, "FULLSCREEN", NULL, this, "StackedPixelMedium");
+		settings_menu[5] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(450, 535, Label, "REFRESH RATE", NULL, this, "StackedPixelMedium"));
+		settings_menu[6] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(360, 335, Label, "SOUND EFFECTS VOLUME", NULL, this, "StackedPixel"));
+		settings_menu[7] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(360, 150, Label, "MUSIC VOLUME", NULL, this, "StackedPixel"));
+		settings_menu[8] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(555, 50, Label, "SETTINGS", NULL, this, "StackedPixel"));
+		settings_menu[18]= dynamic_cast<UI_Label*>(App->gui->CreateLabel(685, 535, Label, "FULLSCREEN", NULL, this, "StackedPixelMedium"));
 
 		if (App->gui->fullscreen == true) {
-			settings_menu[22] = (UI_Label*)App->gui->CreateLabel(756, 613, Label, "YES", NULL, this, "StackedPixelMedium");
+			settings_menu[22] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(756, 613, Label, "YES", NULL, this, "StackedPixelMedium"));
 		}
 		else {
-			settings_menu[22] = (UI_Label*)App->gui->CreateLabel(763, 613, Label, "NO", NULL, this, "StackedPixelMedium");
+			settings_menu[22] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(763, 613, Label, "NO", NULL, this, "StackedPixelMedium"));
 		}
 
 		if (App->gui->cap == true) {
-			settings_menu[21] = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "30", NULL, this, "StackedPixelMedium");
+			settings_menu[21] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(528, 613, Label, "30", NULL, this, "StackedPixelMedium"));
 		}
 		else {
-			settings_menu[21] = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "60", NULL, this, "StackedPixelMedium");
+			settings_menu[21] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(528, 613, Label, "60", NULL, this, "StackedPixelMedium"));
 		}
 
 		//Music Slider
-		settings_menu[9] = (UI_Slider*)App->gui->CreateSlider(465, 220, Slider_music, { 1834,842,329,27 }, { 1792,926,33,16 }, 400, NULL, this);
-		settings_menu[10] = (UI_Button*)App->gui->CreateButton(435, 220, Button_slider_music_left, { 1671,880,26,25 }, { 1738,880,26,25 }, { 1738,880,26,25 }, NULL, this);
-		settings_menu[11] = (UI_Button*)App->gui->CreateButton(787, 220, Button_slider_music_right, { 1704,880,26,25 }, { 1771,880,26,25 }, { 1771,880,26,25 }, NULL, this);
+		settings_menu[9] = dynamic_cast<UI_Slider*>(App->gui->CreateSlider(465, 220, Slider_music, { 1834,842,329,27 }, { 1792,926,33,16 }, 400, NULL, this));
+		settings_menu[10] = dynamic_cast<UI_Button*>(App->gui->CreateButton(435, 220, Button_slider_music_left, { 1671,880,26,25 }, { 1738,880,26,25 }, { 1738,880,26,25 }, NULL, this));
+		settings_menu[11] = dynamic_cast<UI_Button*>(App->gui->CreateButton(787, 220, Button_slider_music_right, { 1704,880,26,25 }, { 1771,880,26,25 }, { 1771,880,26,25 }, NULL, this));
 
 		//Fx Slider
-		settings_menu[12] = (UI_Slider*)App->gui->CreateSlider(465, 405, Slider_fx, { 1834,842,329,27 }, { 1792,926,33,16 }, 400, NULL, this);
-		settings_menu[13] = (UI_Button*)App->gui->CreateButton(435, 405, Button_slider_fx_left, { 1671,880,26,25 }, { 1738,880,26,25 }, { 1738,880,26,25 }, NULL, this);
-		settings_menu[14] = (UI_Button*)App->gui->CreateButton(796, 405, Button_slider_fx_right, { 1704,880,26,25 }, { 1771,880,26,25 }, { 1771,880,26,25 }, NULL, this);
+		settings_menu[12] = dynamic_cast<UI_Slider*>(App->gui->CreateSlider(465, 405, Slider_fx, { 1834,842,329,27 }, { 1792,926,33,16 }, 400, NULL, this));
+		settings_menu[13] = dynamic_cast<UI_Button*>(App->gui->CreateButton(435, 405, Button_slider_fx_left, { 1671,880,26,25 }, { 1738,880,26,25 }, { 1738,880,26,25 }, NULL, this));
+		settings_menu[14] = dynamic_cast<UI_Button*>(App->gui->CreateButton(796, 405, Button_slider_fx_right, { 1704,880,26,25 }, { 1771,880,26,25 }, { 1771,880,26,25 }, NULL, this));
 
 		//Buttons
-		settings_menu[15] = (UI_Button*)App->gui->CreateButton(470, 615, button_cap, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this);
-		settings_menu[16] = (UI_Button*)App->gui->CreateButton(360, 280, button_mute, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this);
-		settings_menu[17] = (UI_Button*)App->gui->CreateButton(40, 40, button_back_pause, { 1704,1054,48,46 }, { 1765,1054,48,46 }, { 1765,1054,48,46 }, NULL, this);
-		settings_menu[20] = (UI_Button*)App->gui->CreateButton(705, 615, button_fullscreen, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this);
+		settings_menu[15] = dynamic_cast<UI_Button*>(App->gui->CreateButton(470, 615, button_cap, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this));
+		settings_menu[16] = dynamic_cast<UI_Button*>(App->gui->CreateButton(360, 280, button_mute, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this));
+		settings_menu[17] = dynamic_cast<UI_Button*>(App->gui->CreateButton(40, 40, button_back_pause, { 1704,1054,48,46 }, { 1765,1054,48,46 }, { 1765,1054,48,46 }, NULL, this));
+		settings_menu[20] = dynamic_cast<UI_Button*>(App->gui->CreateButton(705, 615, button_fullscreen, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this));
 
 		last_menu = current_menu;
 		current_menu = Menu::PAUSE_SETTINGS;
@@ -308,20 +308,20 @@ void MenuManager::CreateMenu(Menu menu) {
 
 	case Menu::SELECT_FACTION:
 		//Images
-		select_faction_menu[0] = (j1Image*)App->gui->CreateImage(-5, 0, Image, { 1900, 1531, 1290, 842 }, NULL, this);
+		select_faction_menu[0] = dynamic_cast<j1Image*>(App->gui->CreateImage(-5, 0, Image, { 1900, 1531, 1290, 842 }, NULL, this));
 
 		//Buttons
-		select_faction_menu[1] = (UI_Button*)App->gui->CreateButton(160, 200, button_select_ghoul, { 1900,1144,204,60 }, { 1900,1210,204,60 }, { 1900,1277,204,60 }, NULL, this);
-		select_faction_menu[2] = (UI_Button*)App->gui->CreateButton(160, 290, button_select_vault, { 1900,1144,204,60 }, { 1900,1210,204,60 }, { 1900,1277,204,60 }, NULL, this);
-		select_faction_menu[3] = (UI_Button*)App->gui->CreateButton(160, 380, button_select_brotherhood, { 1900,1144,204,60 }, { 1900,1210,204,60 }, { 1900,1277,204,60 }, NULL, this);
-		select_faction_menu[4] = (UI_Button*)App->gui->CreateButton(160, 470, button_select_supermutant, { 1900,1144,204,60 }, { 1900,1210,204,60 }, { 1900,1277,204,60 }, NULL, this);
-		select_faction_menu[5] = (UI_Button*)App->gui->CreateButton(40, 190, button_back_to_menu, { 1243,2014,73,78 }, { 1243,2102,73,79 }, { 1243,2188,73,71 }, NULL, this);
+		select_faction_menu[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(160, 200, button_select_ghoul, { 1900,1144,204,60 }, { 1900,1210,204,60 }, { 1900,1277,204,60 }, NULL, this));
+		select_faction_menu[2] = dynamic_cast<UI_Button*>(App->gui->CreateButton(160, 290, button_select_vault, { 1900,1144,204,60 }, { 1900,1210,204,60 }, { 1900,1277,204,60 }, NULL, this));
+		select_faction_menu[3] = dynamic_cast<UI_Button*>(App->gui->CreateButton(160, 380, button_select_brotherhood, { 1900,1144,204,60 }, { 1900,1210,204,60 }, { 1900,1277,204,60 }, NULL, this));
+		select_faction_menu[4] = dynamic_cast<UI_Button*>(App->gui->CreateButton(160, 470, button_select_supermutant, { 1900,1144,204,60 }, { 1900,1210,204,60 }, { 1900,1277,204,60 }, NULL, this));
+		select_faction_menu[5] = dynamic_cast<UI_Button*>(App->gui->CreateButton(40, 190, button_back_to_menu, { 1243,2014,73,78 }, { 1243,2102,73,79 }, { 1243,2188,73,71 }, NULL, this));
 
 		//Labels
-		select_faction_menu[6] = (UI_Label*)App->gui->CreateLabel(222, 215, Label, "GHOUL", NULL, this, "StackedPixelMedium");
-		select_faction_menu[7] = (UI_Label*)App->gui->CreateLabel(220, 305, Label, "VAULT", NULL, this, "StackedPixelMedium");
-		select_faction_menu[8] = (UI_Label*)App->gui->CreateLabel(175, 395, Label, "BROTHERHOOD", NULL, this, "StackedPixelMedium");
-		select_faction_menu[9] = (UI_Label*)App->gui->CreateLabel(170, 485, Label, "SUPERMUTANT", NULL, this, "StackedPixelMedium");
+		select_faction_menu[6] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(222, 215, Label, "GHOUL", NULL, this, "StackedPixelMedium"));
+		select_faction_menu[7] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(220, 305, Label, "VAULT", NULL, this, "StackedPixelMedium"));
+		select_faction_menu[8] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(175, 395, Label, "BROTHERHOOD", NULL, this, "StackedPixelMedium"));
+		select_faction_menu[9] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(170, 485, Label, "SUPERMUTANT", NULL, this, "StackedPixelMedium"));
 
 		last_menu = current_menu;
 		current_menu = Menu::SELECT_FACTION;
@@ -329,17 +329,17 @@ void MenuManager::CreateMenu(Menu menu) {
 		break;
 	case Menu::PAUSE_MENU:
 		//Images
-		pause_menu[0] = (j1Image*)App->gui->CreateImage(434, 183, Image, { 3079, 41, 334, 313 }, NULL, this);
+		pause_menu[0] = dynamic_cast<j1Image*>(App->gui->CreateImage(434, 183, Image, { 3079, 41, 334, 313 }, NULL, this));
 
 		//Buttons
-		pause_menu[1] = (UI_Button*)App->gui->CreateButton(480, 210, resume_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-		pause_menu[2] = (UI_Button*)App->gui->CreateButton(480, 300, button_settings_pause, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-		pause_menu[3] = (UI_Button*)App->gui->CreateButton(480, 390, button_pause_to_main, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
+		pause_menu[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(480, 210, resume_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this));
+		pause_menu[2] = dynamic_cast<UI_Button*>(App->gui->CreateButton(480, 300, button_settings_pause, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this));
+		pause_menu[3] = dynamic_cast<UI_Button*>(App->gui->CreateButton(480, 390, button_pause_to_main, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this));
 
 		//Labels
-		pause_menu[4] = (UI_Label*)App->gui->CreateLabel(540, 228, Label, "RESUME", NULL, this, "StackedPixel");
-		pause_menu[5] = (UI_Label*)App->gui->CreateLabel(530, 318, Label, "SETTINGS", NULL, this, "StackedPixel");
-		pause_menu[6] = (UI_Label*)App->gui->CreateLabel(515, 408, Label, "MAIN MENU", NULL, this, "StackedPixel");
+		pause_menu[4] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(540, 228, Label, "RESUME", NULL, this, "StackedPixel"));
+		pause_menu[5] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(530, 318, Label, "SETTINGS", NULL, this, "StackedPixel"));
+		pause_menu[6] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(515, 408, Label, "MAIN MENU", NULL, this, "StackedPixel"));
 
 		last_menu = current_menu;
 		current_menu = Menu::PAUSE_MENU;
@@ -347,17 +347,17 @@ void MenuManager::CreateMenu(Menu menu) {
 		break;
 	case Menu::GUI:
 		//Images
-		gui_ingame[0] = (j1Image*)App->gui->CreateImage(0, 0, Image, { 0, 2428, 1290, 730 }, NULL, this);
-		gui_ingame[1] = (UI_Label*)App->gui->CreateLabel(690, 7, Label, ":", NULL, this, "StackedPixel");
-		timer_item = (UI_Label*)App->gui->CreateLabel(700, 7, Label, "0", NULL, this, "StackedPixel");
-		timer_minutes = (UI_Label*)App->gui->CreateLabel(652, 7, Label, "0", NULL, this, "StackedPixel");
+		gui_ingame[0] = dynamic_cast<j1Image*>(App->gui->CreateImage(0, 0, Image, { 0, 2428, 1290, 730 }, NULL, this));
+		gui_ingame[1] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(690, 7, Label, ":", NULL, this, "StackedPixel"));
+		timer_item    = dynamic_cast<UI_Label*>(App->gui->CreateLabel(700, 7, Label, "0", NULL, this, "StackedPixel"));
+		timer_minutes = dynamic_cast<UI_Label*>(App->gui->CreateLabel(652, 7, Label, "0", NULL, this, "StackedPixel"));
 		
 		//radio
-		radio[6] = (UI_Button*)App->gui->CreateButton(1205, 0, Radio_button, { 1043,1998,74,71 }, { 966,1998,74,71 }, { 889,1998,74,71 }, NULL, this);
+		radio[6] = dynamic_cast<UI_Button*>(App->gui->CreateButton(1205, 0, Radio_button, { 1043,1998,74,71 }, { 966,1998,74,71 }, { 889,1998,74,71 }, NULL, this));
 
 		//Tutorial
-		gui_ingame[2] = (j1Image*)App->gui->CreateImage(1205, 70, Image, { 1037, 2120, 74, 71 }, NULL, this);
-		gui_ingame[3] = (UI_Button*)App->gui->CreateButton(1160, 70, info_button, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this);
+		gui_ingame[2] = dynamic_cast<j1Image*>(App->gui->CreateImage(1205, 70, Image, { 1037, 2120, 74, 71 }, NULL, this));
+		gui_ingame[3] = dynamic_cast<UI_Button*>(App->gui->CreateButton(1160, 70, info_button, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this));
 
 		last_menu = current_menu;
 		current_menu = Menu::GUI;
@@ -369,9 +369,9 @@ void MenuManager::CreateMenu(Menu menu) {
 		food = std::to_string(App->player->food);
 		caps = std::to_string(App->player->caps);
 
-		resources[0] = (UI_Label*)App->gui->CreateLabel(80, 15, Label, food, NULL, this, "StackedPixelSmall");
-		resources[1] = (UI_Label*)App->gui->CreateLabel(250, 15, Label, water, NULL, this, "StackedPixelSmall");
-		resources[2] = (UI_Label*)App->gui->CreateLabel(420, 15, Label, caps, NULL, this, "StackedPixelSmall");
+		resources[0] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(80, 15, Label, food, NULL, this, "StackedPixelSmall"));
+		resources[1] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(250, 15, Label, water, NULL, this, "StackedPixelSmall"));
+		resources[2] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(420, 15, Label, caps, NULL, this, "StackedPixelSmall"));
 
 		/*last_menu = current_menu;
 		current_menu = Menu::RESOURCES;*/
@@ -387,7 +387,7 @@ void MenuManager::CreateMenu(Menu menu) {
 
 			gatherer_quantity = std::to_string(static_entity_gatherer->GetUnitsInStack(GATHERER));
 
-			gatherer_label = (UI_Label*)App->gui->CreateLabel(1010, 668, Label, gatherer_quantity, NULL, this, "StackedPixelSmall");
+			gatherer_label = dynamic_cast<UI_Label*>(App->gui->CreateLabel(1010, 668, Label, gatherer_quantity, NULL, this, "StackedPixelSmall"));
 
 		}
 
@@ -402,7 +402,7 @@ void MenuManager::CreateMenu(Menu menu) {
 
 			ranged_quantity = std::to_string(static_entity_ranged->GetUnitsInStack(RANGED));
 
-			ranged_label = (UI_Label*)App->gui->CreateLabel(1107, 668, Label, ranged_quantity, NULL, this, "StackedPixelSmall");
+			ranged_label = dynamic_cast<UI_Label*>(App->gui->CreateLabel(1107, 668, Label, ranged_quantity, NULL, this, "StackedPixelSmall"));
 
 		}
 
@@ -417,7 +417,7 @@ void MenuManager::CreateMenu(Menu menu) {
 
 			melee_quantity = std::to_string(static_entity_melee->GetUnitsInStack(MELEE));
 
-			melee_label = (UI_Label*)App->gui->CreateLabel(1010, 668, Label, melee_quantity, NULL, this, "StackedPixelSmall");
+			melee_label = dynamic_cast<UI_Label*>(App->gui->CreateLabel(1010, 668, Label, melee_quantity, NULL, this, "StackedPixelSmall"));
 
 		}
 
@@ -426,17 +426,17 @@ void MenuManager::CreateMenu(Menu menu) {
 	case Menu::TUTORIAL:
 
 		//Images
-		tutorial_screen = (j1Image*)App->gui->CreateImage(1334, 133, Image, { 0, 140, 654, 355 }, NULL, this);
+		tutorial_screen = dynamic_cast<j1Image*>(App->gui->CreateImage(1334, 133, Image, { 0, 140, 654, 355 }, NULL, this));
 		
 		//Buttons
-		tutorial[0] = (UI_Button*)App->gui->CreateButton(1380, 360, control_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-		tutorial[1] = (UI_Button*)App->gui->CreateButton(1700, 360, how_to_play_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-		info_button2_element = (UI_Button*)App->gui->CreateButton(1294, 143, info_button2, { 908,2084,43,46 }, { 908,2135,43,46 }, { 908,2185,43,46 }, NULL, this);
+		tutorial[0] = dynamic_cast<UI_Button*>(App->gui->CreateButton(1380, 360, control_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this));
+		tutorial[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(1700, 360, how_to_play_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this));
+		info_button2_element = dynamic_cast<UI_Button*>(App->gui->CreateButton(1294, 143, info_button2, { 908,2084,43,46 }, { 908,2135,43,46 }, { 908,2185,43,46 }, NULL, this));
 		
 		//Text
-		tutorial[2] = (UI_Label*)App->gui->CreateLabel(1600, 220, Label, "TUTORIAL", NULL, this);
-		tutorial[3] = (UI_Label*)App->gui->CreateLabel(1420, 375, Label, "CONTROLS", NULL, this);
-		tutorial[4] = (UI_Label*)App->gui->CreateLabel(1722, 375, Label, "HOW TO PLAY", NULL, this);
+		tutorial[2] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(1600, 220, Label, "TUTORIAL", NULL, this));
+		tutorial[3] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(1420, 375, Label, "CONTROLS", NULL, this));
+		tutorial[4] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(1722, 375, Label, "HOW TO PLAY", NULL, this));
 		tutorial[5] = nullptr;
 		tutorial[6] = nullptr;
 		tutorial[7] = nullptr;
@@ -447,23 +447,23 @@ void MenuManager::CreateMenu(Menu menu) {
 		break; 
 
 	case Menu::HOW_TO_PLAY:
-		how_to_play[0] = (UI_Button*)App->gui->CreateButton(920, 470, how_to_play_previous, { 1671,880,26,26 }, { 1738,880,26,26 }, { 1671,880,26,26 }, NULL, this);
-		how_to_play[1] = (UI_Button*)App->gui->CreateButton(970, 470, how_to_play_next, { 1703,880,26,26 }, { 1770,880,26,26 }, { 1703,880,26,26 }, NULL, this);
+		how_to_play[0] = dynamic_cast<UI_Button*>(App->gui->CreateButton(920, 470, how_to_play_previous, { 1671,880,26,26 }, { 1738,880,26,26 }, { 1671,880,26,26 }, NULL, this));
+		how_to_play[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(970, 470, how_to_play_next, { 1703,880,26,26 }, { 1770,880,26,26 }, { 1703,880,26,26 }, NULL, this));
 
 		if (how_to_play_counter == 0) {
-			how_to_play[2] = (j1Image*)App->gui->CreateImage(690, 160, Image, { 2869, 1188, 542, 296 }, NULL, this);
+			how_to_play[2] = dynamic_cast<j1Image*>(App->gui->CreateImage(690, 160, Image, { 2869, 1188, 542, 296 }, NULL, this));
 		}
 		if (how_to_play_counter == 1) {
-			how_to_play[3] = (j1Image*)App->gui->CreateImage(680, 157, Image, { 1183, 1557, 581, 322 }, NULL, this); 
+			how_to_play[3] = dynamic_cast<j1Image*>(App->gui->CreateImage(680, 157, Image, { 1183, 1557, 581, 322 }, NULL, this));
 		}
 		if (how_to_play_counter == 2) {
-			how_to_play[4] = (j1Image*)App->gui->CreateImage(720, 165, Image, { 2231, 1152, 470, 286 }, NULL, this); 
+			how_to_play[4] = dynamic_cast<j1Image*>(App->gui->CreateImage(720, 165, Image, { 2231, 1152, 470, 286 }, NULL, this));
 		}
 		if (how_to_play_counter == 3) {
-			how_to_play[5] = (j1Image*)App->gui->CreateImage(671, 180, Image, { 1240, 1190, 590, 255 }, NULL, this); 
+			how_to_play[5] = dynamic_cast<j1Image*>(App->gui->CreateImage(671, 180, Image, { 1240, 1190, 590, 255 }, NULL, this));
 		}
 		if (how_to_play_counter == 4) {
-			how_to_play[6] = (j1Image*)App->gui->CreateImage(690, 165, Image, { 971, 35, 535, 287 }, NULL, this);
+			how_to_play[6] = dynamic_cast<j1Image*>(App->gui->CreateImage(690, 165, Image, { 971, 35, 535, 287 }, NULL, this));
 		}
 		
 		last_menu = current_menu;
@@ -507,9 +507,9 @@ void MenuManager::CreateMenu(Menu menu) {
 		break;
 
 	case Menu::QUEST:
-		quest[0] = (UI_Button*)App->gui->CreateButton(307, 100, quest_button, { 973,2084,43,47 }, { 973,2135,43,47 }, { 973,2185,43,47 }, NULL, this);
-		quest[1] = (UI_Button*)App->gui->CreateButton(-50, 146, quest_button2, { 909,2084,43,47 }, { 909,2135,43,47 }, { 909,2185,43,47 }, NULL, this);
-		quest[2] = (j1Image*)App->gui->CreateImage(0, 100, Image, { 3105, 597, 307, 199 }, NULL, this);
+		quest[0] = dynamic_cast<UI_Button*>(App->gui->CreateButton(307, 100, quest_button, { 973,2084,43,47 }, { 973,2135,43,47 }, { 973,2185,43,47 }, NULL, this));
+		quest[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(-50, 146, quest_button2, { 909,2084,43,47 }, { 909,2135,43,47 }, { 909,2185,43,47 }, NULL, this));
+		quest[2] = dynamic_cast<j1Image*>(App->gui->CreateImage(0, 100, Image, { 3105, 597, 307, 199 }, NULL, this));
 		
 		quest[3] = nullptr;
 		quest[4] = nullptr;
@@ -541,12 +541,12 @@ void MenuManager::CreateMenu(Menu menu) {
 
 	case Menu::RADIO:
 
-		radio[0] = (UI_Button*)App->gui->CreateButton( 600, 125, RockFM_button, { 1391,2312,114,114 }, { 1055,2312,114,114 }, { 1712,2312,114,114 }, NULL, this);
-		radio[1] = (UI_Button*)App->gui->CreateButton( 450, 225, AyuwokiFM_button, { 1283,2312,114,114 }, { 941,2312,114,114 }, { 1606,2312,114,114 }, NULL, this);
-		radio[2] = (UI_Button*)App->gui->CreateButton( 750, 225, SlimShadyFM_button, { 1499,2312,114,114 }, { 1169,2312,114,114 }, { 1818,2312,114,114 }, NULL, this);
-		radio[3] = (UI_Button*)App->gui->CreateButton( 450, 375, FiestaLatinaFM_button, { 2274,2312,114,114 }, { 1932,2312,114,114 }, { 602,2312,114,114 }, NULL, this);
-		radio[4] = (UI_Button*)App->gui->CreateButton( 750, 375, FusionCoreFM_button, { 2492,2312,114,114 }, { 2160,2312,114,114 }, { 823,2312,114,114 }, NULL, this);
-		radio[5] = (UI_Button*)App->gui->CreateButton( 600, 475, UltraRADIO_button, { 2383,2312,114,114 }, { 2046,2312,114,114 }, { 712,2312,114,114 }, NULL, this);
+		radio[0] = dynamic_cast<UI_Button*>(App->gui->CreateButton( 600, 125, RockFM_button, { 1391,2312,114,114 }, { 1055,2312,114,114 }, { 1712,2312,114,114 }, NULL, this));
+		radio[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton( 450, 225, AyuwokiFM_button, { 1283,2312,114,114 }, { 941,2312,114,114 }, { 1606,2312,114,114 }, NULL, this));
+		radio[2] = dynamic_cast<UI_Button*>(App->gui->CreateButton( 750, 225, SlimShadyFM_button, { 1499,2312,114,114 }, { 1169,2312,114,114 }, { 1818,2312,114,114 }, NULL, this));
+		radio[3] = dynamic_cast<UI_Button*>(App->gui->CreateButton( 450, 375, FiestaLatinaFM_button, { 2274,2312,114,114 }, { 1932,2312,114,114 }, { 602,2312,114,114 }, NULL, this));
+		radio[4] = dynamic_cast<UI_Button*>(App->gui->CreateButton( 750, 375, FusionCoreFM_button, { 2492,2312,114,114 }, { 2160,2312,114,114 }, { 823,2312,114,114 }, NULL, this));
+		radio[5] = dynamic_cast<UI_Button*>(App->gui->CreateButton( 600, 475, UltraRADIO_button, { 2383,2312,114,114 }, { 2046,2312,114,114 }, { 712,2312,114,114 }, NULL, this));
 
 		//last_menu = current_menu;
 		//current_menu = Menu::RADIO;
