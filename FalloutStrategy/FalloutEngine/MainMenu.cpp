@@ -54,7 +54,7 @@ bool MainMenu::LoadAnimations()
 
 	id = animation.attribute("id").as_int();
 
-	loader = &animationLogo;
+	loader = &animationTitle;
 
 	while (frame != nullptr) {
 		tile_id = frame.attribute("tileid").as_int();

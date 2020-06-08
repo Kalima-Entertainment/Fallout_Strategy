@@ -23,7 +23,7 @@ private:
 
 	float last_dt;
 	Animation* loader;
-	Animation	animationLogo;
+	Animation	animationTitle;
 	SDL_Texture* title_tex;
 
 };

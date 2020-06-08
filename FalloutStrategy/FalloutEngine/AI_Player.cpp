@@ -35,6 +35,7 @@ AI_Player::AI_Player(Faction g_faction) : GenericPlayer(), is_attacking(false), 
 	wave_timer.Start();
 	is_ai = true;
 	is_attacking = false;
+	group = nullptr;
 }
 
 AI_Player::~AI_Player() 

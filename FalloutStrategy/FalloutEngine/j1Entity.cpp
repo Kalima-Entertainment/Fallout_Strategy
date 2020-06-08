@@ -11,8 +11,9 @@
 #include "SDL_mixer/include/SDL_mixer.h"
 
 j1Entity::j1Entity() {
+	
 	spawnPosition = {NULL,NULL};
-
+	sprite_size = -1;
 	max_health = current_health = 0;
 
 	texture = nullptr;
@@ -41,7 +42,7 @@ j1Entity::j1Entity() {
 	frame_quad = { 0,0,0,0 };
 
 	last_dt = 0.01;
-	sprite_size = -1;
+	
 
 	Mix_AllocateChannels(32);
 }
@@ -235,6 +236,6 @@ void j1Entity::SpatialAudio(int positionx, int positiony, Faction faction, State
 		if (volume > 255) { volume = 255; }
 
 		Mix_SetPosition(channel, 0, volume);
-		App->audio->PlayFx(channel, fx, 0);
+ 		App->audio->PlayFx(channel, fx, 0);
 	}
 }

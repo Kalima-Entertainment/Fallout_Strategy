@@ -25,8 +25,6 @@ public:
 	SDL_Texture* text_texture;
 	UI_Type t;
 
-	//Timer
-	int d;
 	char timer[7] = "";
 	int* timer_out;
 	int timer_count;

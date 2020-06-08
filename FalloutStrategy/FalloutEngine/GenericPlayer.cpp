@@ -4,6 +4,9 @@
 
 GenericPlayer::GenericPlayer() : j1Module() {
 	name.assign("GenericPlayer");
+	caps = 500;
+	food = 250;
+	water = 500;
 	melees = 0;
 	rangeds = 0;
 	gatherers = 0;

@@ -24,6 +24,7 @@ InputText::InputText(int x, int y, UI_Type type, std::string text_input, UI_elem
 	text = text_input;
 	font_text = font;
 	texture = App->font->Print(text.data(), { 255,255,255,255 }, font_text);
+	r = { 0,0,0,0 };
 }
 
 InputText::~InputText() {

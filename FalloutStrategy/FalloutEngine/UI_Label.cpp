@@ -25,25 +25,6 @@ UI_Label::~UI_Label()
 bool UI_Label::Update(float dt)
 {
 
-	
-	/*if (t == Label) {
-
-		timer_count = *timer_out;
-		d = 100000;
-
-		for(int i = 0; i < 6; i++) {
-
-			timer[i] = (char)(timer_count/d);
-
-			timer_count = timer_count%d;
-
-			d = d / 10;
-
-		}
-
-		SetTextTimer(timer);
-
-	}*/
 
 	return true;
 }
@@ -56,6 +37,7 @@ bool UI_Label::SetLabelText(std::string text_input, std::string font)
 	if (text.size() > 0){
 
 		text_texture = App->font->Print(text.c_str(), { 244,244,244,255 }, font);
+		App->font->CalcSize(text.c_str(), dimensions.w, dimensions.h);
 	}
 
 	if (text_texture != nullptr)

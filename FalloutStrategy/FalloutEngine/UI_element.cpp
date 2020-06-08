@@ -12,7 +12,7 @@ UI_element::UI_element(int x, int y, UI_Type type, UI_element* parent, j1Module 
 	observer = Observer;
 	drawable = true;
 	hover = false;
-
+	dimensions = { 0,0,0,0 };
 }
 
 bool UI_element::Update(float dt)

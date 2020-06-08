@@ -14,6 +14,10 @@ AI_Manager::AI_Manager() : j1Module(), beaten_ai_players(0) {
 
 	players_created = false;
 	ai_player[0] = ai_player[1] = ai_player[2] = ai_player[3] = nullptr;
+	
+	
+	
+	
 }
 
 AI_Manager::~AI_Manager() {
@@ -34,11 +38,11 @@ bool AI_Manager::Awake(pugi::xml_node& config) {
 		else if (faction_name == "mutant") faction = MUTANT;
 		else if (faction_name == "ghoul") faction = GHOUL; 
 
+		ai_info[faction].minimum_melees = faction_node.attribute("minimum_melees").as_int();
+		ai_info[faction].minimum_rangeds = faction_node.attribute("minimum_rangeds").as_int();
 		ai_info[faction].initial_caps = faction_node.attribute("caps").as_int();
 		ai_info[faction].initial_water = faction_node.attribute("water").as_int();
 		ai_info[faction].initial_food = faction_node.attribute("food").as_int();
-		ai_info[faction].minimum_melees = faction_node.attribute("minimum_melees").as_int();
-		ai_info[faction].minimum_rangeds = faction_node.attribute("minimum_rangeds").as_int();
 		ai_info[faction].wave_time = faction_node.attribute("wave_time").as_int();
 
 		faction_node = faction_node.next_sibling();
