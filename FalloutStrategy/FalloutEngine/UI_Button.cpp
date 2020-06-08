@@ -318,9 +318,9 @@ bool UI_Button::Update(float dt)
 				//Select building to spawn
 				StaticEntity* static_entity;
 				if (App->player->selected_entity == nullptr)
-					static_entity = (StaticEntity*)App->player->last_selected_entity;
+					static_entity = dynamic_cast<StaticEntity*>(App->player->last_selected_entity);
 				else
-					static_entity = (StaticEntity*)App->player->selected_entity;
+					static_entity = dynamic_cast<StaticEntity*>(App->player->selected_entity);
 
 				static_entity->SpawnUnit(GATHERER);
 
@@ -334,9 +334,9 @@ bool UI_Button::Update(float dt)
 
 				StaticEntity* static_entity;
 				if (App->player->selected_entity == nullptr)
-					static_entity = (StaticEntity*)App->player->last_selected_entity;
+					static_entity = dynamic_cast<StaticEntity*>(App->player->last_selected_entity);
 				else
-				static_entity = (StaticEntity*)App->player->selected_entity;
+				static_entity = dynamic_cast<StaticEntity*>(App->player->selected_entity);
 
 				static_entity->SpawnUnit(MELEE);
 
@@ -351,9 +351,9 @@ bool UI_Button::Update(float dt)
 
 				StaticEntity* static_entity;
 				if (App->player->selected_entity == nullptr)
-					static_entity = (StaticEntity*)App->player->last_selected_entity;
+					static_entity = dynamic_cast<StaticEntity*>(App->player->last_selected_entity);
 				else
-				static_entity = (StaticEntity*)App->player->selected_entity;
+				static_entity = dynamic_cast<StaticEntity*>(App->player->selected_entity);
 
 				static_entity->SpawnUnit(RANGED);
 
@@ -415,10 +415,10 @@ bool UI_Button::Update(float dt)
 			{
 				StaticEntity* static_entity;
 				if (App->player->selected_entity == nullptr) {
-					static_entity = (StaticEntity*)App->player->last_selected_entity;
+					static_entity = dynamic_cast<StaticEntity*>(App->player->last_selected_entity);
 				}
 				else{
-					static_entity = (StaticEntity*)App->player->selected_entity;
+					static_entity = dynamic_cast<StaticEntity*>(App->player->selected_entity);
 				}
 				static_entity->Upgrade(App->entities->base_resource_limit[static_entity->faction]);
 				static_entity->Upgrade(App->entities->gatherer_resource_limit[static_entity->faction]);
@@ -445,10 +445,10 @@ bool UI_Button::Update(float dt)
 			{
 				StaticEntity* static_entity;
 				if (App->player->selected_entity == nullptr) {
-					static_entity = (StaticEntity*)App->player->last_selected_entity;
+					static_entity = dynamic_cast<StaticEntity*>(App->player->last_selected_entity);
 				}
 				else {
-					static_entity = (StaticEntity*)App->player->selected_entity;
+					static_entity = dynamic_cast<StaticEntity*>(App->player->selected_entity);
 				}
 				static_entity->Upgrade(App->entities->units_damage[static_entity->faction]);
 				static_entity->Upgrade(App->entities->units_speed[static_entity->faction]);
@@ -474,10 +474,10 @@ bool UI_Button::Update(float dt)
 			{
 				StaticEntity* static_entity;
 				if (App->player->selected_entity == nullptr) {
-					static_entity = (StaticEntity*)App->player->last_selected_entity;
+					static_entity = dynamic_cast<StaticEntity*>(App->player->last_selected_entity);
 				}
 				else {
-					static_entity = (StaticEntity*)App->player->selected_entity;
+					static_entity = dynamic_cast<StaticEntity*>(App->player->selected_entity);
 				}
 				static_entity->Upgrade(App->entities->units_health[static_entity->faction]);
 				static_entity->Upgrade(App->entities->units_creation_time[static_entity->faction]);

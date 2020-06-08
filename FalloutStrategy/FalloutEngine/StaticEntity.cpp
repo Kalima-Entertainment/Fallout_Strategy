@@ -270,7 +270,7 @@ void StaticEntity::GetHit() {
 bool StaticEntity::LoadDataFromReference() {
 	bool ret = true;
 
-	StaticEntity* static_reference = (StaticEntity*)reference_entity;
+	StaticEntity* static_reference = dynamic_cast<StaticEntity*>(reference_entity);
 
 	//load animations
 	for(int i = 0; i < 2; i++)

@@ -76,7 +76,7 @@ bool Troop::Update(float dt) {
 	current_animation = &animations[state][direction];
 
 	if ((target_entity)&&(!target_entity->is_dynamic)&&(target_entity->state != DIE)) {
-		target_building = (StaticEntity*)target_entity;
+		target_building = dynamic_cast<StaticEntity*>(target_entity);
 	}
 
 	switch (state)
@@ -300,7 +300,7 @@ void Troop::Attack() {
 	target_entity->state = HIT;
 
 	if (target_entity->is_dynamic) {
-		DynamicEntity* dynamic_target = (DynamicEntity*)target_entity;
+		DynamicEntity* dynamic_target = dynamic_cast<DynamicEntity*>(target_entity);
 
 		target_entity->attacking_entity = this;
 		if (dynamic_target->state == ATTACK)
@@ -326,7 +326,7 @@ void Troop::Attack() {
 		}
 	}
 	else {
-		StaticEntity* static_entity = (StaticEntity*)target_entity;
+		StaticEntity* static_entity = dynamic_cast<StaticEntity*>(target_entity);
 		static_entity->GetHit();
 	}
 
@@ -345,7 +345,7 @@ void Troop::Attack() {
 
 bool Troop::LoadDataFromReference() {
 	bool ret = true;
-	Troop* reference_troop = (Troop*)reference_entity;
+	Troop* reference_troop = dynamic_cast<Troop*>(reference_entity);
 
 	//load animations
 	for(int i = 0; i < NO_STATE; i++)

@@ -41,7 +41,7 @@ public:
 	int beaten_ai_players;
 
 private:
-	AI_Info ai_info[5];
+	AI_Info ai_info[4];
 };
 
 #endif // !_AI_MANAGER_H_

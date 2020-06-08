@@ -127,7 +127,7 @@ iPoint j1PathFinding::FindNearestWalkableTile(iPoint origin, iPoint destination)
 
 			if ((entity != nullptr) && (!entity->is_dynamic))
 			{
-				StaticEntity* reference_static_entity = (StaticEntity*)App->entities->FindEntityByTile(destination);
+				StaticEntity* reference_static_entity = dynamic_cast<StaticEntity*>(App->entities->FindEntityByTile(destination));
 				{
 					destination = App->entities->ClosestTile(origin, reference_static_entity->tiles);
 					destination = App->pathfinding->FindWalkableAdjacentTile(destination);

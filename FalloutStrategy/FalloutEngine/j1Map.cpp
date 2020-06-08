@@ -658,7 +658,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 				}
 
 				//create building
-				static_entity = (StaticEntity*)App->entities->CreateEntity(building_faction, type, x,y, App->scene->players[building_faction]);
+				static_entity = dynamic_cast<StaticEntity*>(App->entities->CreateEntity(building_faction, type, x,y, App->scene->players[building_faction]));
 				static_entity->tiles = CalculateArea(first_tile_position, width, height);
 				static_entity->CalculateRenderAndSpawnPositions();
 

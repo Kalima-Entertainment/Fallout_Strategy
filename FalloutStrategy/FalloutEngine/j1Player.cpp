@@ -284,10 +284,10 @@ bool j1Player::Update(float dt) {
 				if (reward == 1) App->menu_manager->quest[3] = (j1Image*)App->gui->CreateImage(-257, 261, Image, { 3155, 809, 60, 17 }, NULL, this);
 				if (reward == 2) App->menu_manager->quest[4] = (j1Image*)App->gui->CreateImage(-193, 261, Image, { 3219, 809, 63, 17 }, NULL, this);
 				if (reward == 3) {
-					App->menu_manager->quest[5] = (j1Image*)App->gui->CreateImage(-126, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
-					App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1226, 559, 282, 262 }, NULL, this);
-					App->menu_manager->quest[10] = (UI_Button*)App->gui->CreateButton(500, 450, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-					App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this);
+					App->menu_manager->quest[5] = dynamic_cast<j1Image*>(App->gui->CreateImage(-126, 261, Image, { 3286, 809, 51, 17 }, NULL, this));
+					App->menu_manager->quest[9] = dynamic_cast<j1Image*>(App->gui->CreateImage(480, 180, Image, { 1226, 559, 282, 262 }, NULL, this));
+					App->menu_manager->quest[10] = dynamic_cast<UI_Button*>(App->gui->CreateButton(500, 450, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this));
+					App->menu_manager->quest[11] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this));
 					App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
 				}
 			}
@@ -314,7 +314,7 @@ bool j1Player::Update(float dt) {
 	
 	if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) && ((selected_entity != nullptr)||(selected_group != nullptr))) {
 		if ((selected_entity != nullptr)&&(selected_entity->is_dynamic))
-			MoveEntity((DynamicEntity*)selected_entity);
+			MoveEntity(dynamic_cast<DynamicEntity*>(selected_entity));
 
 		if (selected_group != nullptr)
 			MoveGroup();
@@ -331,39 +331,6 @@ bool j1Player::Update(float dt) {
 			}
 		}
 	}
-	
-	/*
-	// -- Request GroupMovement
-	for(int i = 0; i < App->entities->entities.size(); i++)
-	{
-		//Just our dynamic troops must be checked
-		if (App->entities->entities[i]->is_dynamic && App->entities->entities[i]->faction == this->faction) {
-		
-			DynamicEntity* DynamicEnt = (DynamicEntity*)App->entities->entities[i];
-			if (DynamicEnt->info.current_group != nullptr) {
-				if (DynamicEnt->info.current_group->IsGroupLead(DynamicEnt)) {
-					DynamicEnt->info.current_group->CheckForMovementRequest(Map_mouseposition, dt);
-				}
-			}
-		}
-	}
-	*/
-
-	/*
-	if (reward == 1) {
-		App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1231, 555, 282, 262 }, NULL, this);
-		App->menu_manager->quest[10] = (UI_Button*)App->gui->CreateButton(480, 310, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-		App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(500, 320, Label, "CONTINUE", NULL, this, NULL);
-	}
-	*/
-	
-	/*
-	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
-		App->LoadGame("save_game.xml");
-
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
-		App->SaveGame("save_game.xml");
-	*/
 
 	//Move map
 	if ((App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)&&(App->render->camera.y < App->render->camera.h * 0.25f))
@@ -506,9 +473,9 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 	if (command_beginning == "spawn_units") {
 		StaticEntity* static_entity;
 		if (selected_entity == nullptr)
-			static_entity = (StaticEntity*)last_selected_entity;
+			static_entity = static_cast<StaticEntity*>(last_selected_entity);
 		else
-			static_entity = (StaticEntity*)selected_entity;
+			static_entity = static_cast<StaticEntity*>(selected_entity);
 		
 		if (static_entity != nullptr) {
 			App->entities->CreateEntity(static_entity->faction, GATHERER, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
@@ -523,9 +490,9 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 
 		StaticEntity* static_entity;
 		if (selected_entity == nullptr)
-			static_entity = (StaticEntity*)last_selected_entity;
+			static_entity = dynamic_cast<StaticEntity*>(last_selected_entity);
 		else
-			static_entity = (StaticEntity*)selected_entity;
+			static_entity = dynamic_cast<StaticEntity*>(selected_entity);
 
 		if (static_entity != nullptr)
 		{

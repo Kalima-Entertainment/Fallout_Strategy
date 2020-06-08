@@ -12,12 +12,12 @@ AI_Manager::AI_Manager() : j1Module(), beaten_ai_players(0) {
 
 	name.assign("AI");
 
+	for (int i = 0; i < 4; i++) {
+		ai_info[i] = { 0,0,0,0,0,0 };
+	}
+
 	players_created = false;
 	ai_player[0] = ai_player[1] = ai_player[2] = ai_player[3] = nullptr;
-	
-	
-	
-	
 }
 
 AI_Manager::~AI_Manager() {

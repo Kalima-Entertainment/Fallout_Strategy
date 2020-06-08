@@ -553,10 +553,10 @@ void DynamicEntity::CheckDestination(iPoint destination) {
 
 			//assign a resource building to the entity
 			if ((resource_building != nullptr) && (resource_building->quantity > 0)) {
-				((Gatherer*)this)->AssignResourceBuilding(resource_building);
+				dynamic_cast<Gatherer*>(this)->AssignResourceBuilding(resource_building);
 			}
 			else {
-				((Gatherer*)this)->gathering = false;
+				dynamic_cast<Gatherer*>(this)->gathering = false;
 				commanded = true;
 			}
 		}
@@ -567,7 +567,7 @@ void DynamicEntity::CheckDestination(iPoint destination) {
 	else{
 		target_entity = target;
 		if (type == GATHERER)
-			((Gatherer*)this)->gathering = true;
+			dynamic_cast<Gatherer*>(this)->gathering = true;
 	}
 }
 

@@ -293,7 +293,7 @@ bool j1EntityManager::PostUpdate()
 
 		if (App->player->selected_entity != nullptr)
 		{
-			StaticEntity* static_entity = (StaticEntity*)App->player->selected_entity;
+			StaticEntity* static_entity = dynamic_cast<StaticEntity*>(App->player->selected_entity);
 			//Create HUD for the building
 			switch (static_entity->faction) {
 			case VAULT:
@@ -452,7 +452,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		available_tile = FindSpawnPoint(position_x, position_y);
 		entity = new Troop(MELEE, faction, available_tile, owner);
 		if (owner) {
-			owner->troops.push_back((Troop*)entity);
+			owner->troops.push_back(dynamic_cast<Troop*>(entity));
 			owner->melees++;
 		}
 		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, MELEE)];
@@ -462,7 +462,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		available_tile = FindSpawnPoint(position_x, position_y);
 		entity = new Troop(RANGED, faction, available_tile, owner);
 		if (owner) {
-			owner->troops.push_back((Troop*)entity);
+			owner->troops.push_back(dynamic_cast<Troop*>(entity));
 			owner->rangeds++;
 		}
 		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, RANGED)];
@@ -472,7 +472,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		available_tile = FindSpawnPoint(position_x, position_y);
 		entity = new Gatherer(faction, available_tile, owner);
 		if (owner) {
-			owner->gatherers_vector.push_back((Gatherer*)entity);
+			owner->gatherers_vector.push_back(dynamic_cast<Gatherer*>(entity));
 			owner->gatherers++;
 		}
 		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, GATHERER)];
@@ -481,7 +481,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	case BASE:
 		entity = new StaticEntity(faction, BASE, { position_x, position_y }, owner);
 		if (owner) {
-			owner->base = (StaticEntity*)entity;
+			owner->base = dynamic_cast<StaticEntity*>(entity);
 		}
 		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, BASE)];
 		break;
@@ -489,7 +489,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	case LABORATORY:
 		entity = new StaticEntity(faction, LABORATORY, { position_x, position_y }, owner);
 		if (owner) {
-			owner->laboratory = (StaticEntity*)entity;
+			owner->laboratory = dynamic_cast<StaticEntity*>(entity);
 		}
 		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, LABORATORY)];
 		break;
@@ -498,9 +498,9 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		entity = new StaticEntity(faction, BARRACK, { position_x, position_y }, owner);
 		if (owner) {
 			if (!owner->barrack[0])
-				owner->barrack[0] = (StaticEntity*)entity;
+				owner->barrack[0] = dynamic_cast<StaticEntity*>(entity);
 			else if (!owner->barrack[1])
-				owner->barrack[1] = (StaticEntity*)entity;
+				owner->barrack[1] = dynamic_cast<StaticEntity*>(entity);
 		}
 		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, BARRACK)];
 		break;
@@ -523,7 +523,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	case MR_HANDY:
 		entity = new Troop(MR_HANDY, faction, { position_x, position_y }, owner);
 		if (owner) {
-			owner->troops.push_back((Troop*)entity);
+			owner->troops.push_back(dynamic_cast<Troop*>(entity));
 		}
 		entity->reference_entity = reference_entities[GetReferenceEntityID(NO_FACTION, MR_HANDY)];
 		break;
@@ -665,7 +665,7 @@ j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
 		}
 		else
 		{
-			StaticEntity* static_entity = (StaticEntity*)entities[i];
+			StaticEntity* static_entity = dynamic_cast<StaticEntity*>(entities[i]);
 			for(int j = 0; j < static_entity->tiles.size(); j++)
 			{
 				if (static_entity->tiles[j] == tile)
@@ -1026,7 +1026,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		if (dynamic_entity == false) {
 
 			//create building
-			StaticEntity* entity = (StaticEntity*)App->entities->CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]);
+			StaticEntity* entity = dynamic_cast<StaticEntity*>(App->entities->CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]));
 
 			iPoint tile = current_tile;
 			if (type_name == "base") {
@@ -1067,7 +1067,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 				CreateEntity(faction, type, current_tile.x, current_tile.y);
 			}
 			else {
-				DynamicEntity* entity = (DynamicEntity*)CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]);
+				DynamicEntity* entity = dynamic_cast<DynamicEntity*>(CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]));
 
 			}
 
