@@ -14,7 +14,7 @@ j1Entity::j1Entity() {
 	
 	spawnPosition.x = NULL;
 	spawnPosition.y = NULL;
-	sprite_size = -1;
+	sprite_size = 0;
 	max_health = current_health = 0;
 
 	texture = nullptr;

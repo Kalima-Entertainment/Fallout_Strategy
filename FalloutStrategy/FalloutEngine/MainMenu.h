@@ -19,12 +19,11 @@ public:
 	bool CleanUp();
 	bool MainMenu::LoadAnimations();
 
-	float last_dt;
 private:
 
 	Animation* loader;
 	Animation	animationTitle;
 	SDL_Texture* title_tex;
-
+	float last_dt;
 };
 #endif

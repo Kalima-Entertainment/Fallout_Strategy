@@ -28,8 +28,6 @@ bool MainMenu::LoadAnimations()
 	pugi::xml_parse_result result = animation_file.load_buffer(buffer, bytesFile);
 	RELEASE_ARRAY(buffer);
 
-	std::string image = std::string(animation_file.child("tileset").child("image").attribute("source").as_string());
-
 	title_tex = App->tex->Load("Assets/gui/textures/LogoFallout.png");
 
 	if (result == NULL)
@@ -41,7 +39,6 @@ bool MainMenu::LoadAnimations()
 	int tile_width = animation_file.child("map").child("tileset").attribute("tilewidth").as_int();
 	int tile_height = animation_file.child("map").child("tileset").attribute("tileheight").as_int();
 	int columns = animation_file.child("map").child("tileset").attribute("columns").as_int();
-	int firstgid = animation_file.child("map").child("tileset").attribute("firstgid").as_int();
 	int id, tile_id;
 	float speed;
 
@@ -51,8 +48,6 @@ bool MainMenu::LoadAnimations()
 	SDL_Rect rect;
 	rect.w = tile_width;
 	rect.h = tile_height;
-
-	id = animation.attribute("id").as_int();
 
 	loader = &animationTitle;
 

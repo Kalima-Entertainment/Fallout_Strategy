@@ -34,9 +34,6 @@ j1Transition::j1Transition() : j1Module()
 	transition = false;
 	freeTransitionTex = false;
 	
-	animationLogo.sounded = true;
-	animationLogo.loop = true;
-	animationLogo.current_frame = 0.0f;
 }
 
 j1Transition::~j1Transition() {
