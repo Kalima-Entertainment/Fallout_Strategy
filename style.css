@@ -93,3 +93,9 @@ html {
     display: table;
     clear: both;
 }
+
+.footer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
