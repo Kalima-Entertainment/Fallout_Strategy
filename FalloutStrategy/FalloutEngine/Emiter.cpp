@@ -17,6 +17,7 @@ Emiter::Emiter(std::vector<float>& position, std::vector<float>& particleSpeed, 
 	particleVariationAcceleration(particleVariationAcceleration),
 	particleAngularSpeed(particleAngularSpeed),
 	particleVariationAngularSpeed(particleVariableAngularSpeed),
+	particlesEmited(0.0f),
 
 	particlesRate(particlesRate),
 	particlesLifeTime(particlesLifeTime),
@@ -56,6 +57,8 @@ Emiter::Emiter(float positionX, float positionY, float particleSpeedX, float par
 	particleVariationAcceleration{ particleVariationAccelerationX, particleVariationAccelerationY },
 	particleAngularSpeed(particleAngularSpeed),
 	particleVariationAngularSpeed(particleVariableAngularSpeed),
+	particlesEmited(0.0f),
+
 
 	particlesRate(particlesRate),
 	particlesLifeTime(particlesLifeTime),
