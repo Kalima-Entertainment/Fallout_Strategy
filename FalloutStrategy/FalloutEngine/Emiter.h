@@ -10,9 +10,6 @@ struct SDL_Texture;
 class Emiter
 {
 public:
-	Emiter(std::vector<float>& pos, std::vector<float>& speed, std::vector<int>& VariationSpeed, std::vector<float>& Acceleration, std::vector<int>& VariationAcceleration,
-		float AngularSpeed, int VariableAngularSpeed, float Rate, float LifeTime, SDL_Rect* spawn, SDL_Texture* texture, const Animation &partAnim, bool fade);
-
 	Emiter(float posX, float posY, float SpeedX, float SpeedY, int VariationSpeedX, int VariationSpeedY, float AccelerationX,
 		float AccelerationY, int VariationAccelerationX, int VariationAccelerationY, float AngularSpeed, int VariableAngularSpeed,
 		float Rate, float LifeTime, SDL_Rect* spawn, SDL_Texture* texture,const Animation &particleAnimation, bool fade);

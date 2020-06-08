@@ -6,53 +6,26 @@
 #include "math.h"
 #include "p2Log.h"
 
-Emiter::Emiter(std::vector<float>& pos, std::vector<float>& speed, std::vector<int>& VariationSpeed,
-	std::vector<float>& Acceleration, std::vector<int>& VariationAcceleration, float AngularSpeed,
-	int VariableAngularSpeed, float Rate, float LifeTime, SDL_Rect* spawn, SDL_Texture* texture, const Animation &partAnim, bool fade){
-
-	position = pos;
-	particleSpeed = speed;
-	particleVariationSpeed = VariationSpeed;
-	particleAcceleration = Acceleration;
-	particleVariationAcceleration = VariationAcceleration;
-	particleAngularSpeed = AngularSpeed;
-	particleVariationAngularSpeed = VariableAngularSpeed;
-	particlesEmited = 0.0f;
-
-	particlesRate = Rate;
-	particlesLifeTime = LifeTime;
-
-	areaOfSpawn = spawn;
-	particleTexture = texture;
-	particleAnimation = partAnim;
-
-	randomizePosX = true;
-	randomizePosY = true; 
-
-	randomizeSpeedX = true;
-	randomizeSpeedY = true;
-
-	randomizeAccelerationX = true;
-	randomizeAccelerationY = true;
-
-	randomizeAngularSpeed = true;
-
-	active = true;
-
-	fadeParticles = fade;
-	Start();
-}
-
-
 Emiter::Emiter(float posX, float posY, float SpeedX, float SpeedY, int VariationSpeedX, int VariationSpeedY,
 	float AccelerationX, float AccelerationY, int VariationAccelerationX, int VariationAccelerationY, float AngularSpeed,
 	int VariableAngularSpeed, float Rate, float LifeTime, SDL_Rect* spawn, SDL_Texture* texture, const Animation &partAnim, bool fade) {
 
-	position = { posX, posY };
-	particleSpeed = { SpeedX, SpeedY };
-	particleVariationSpeed = { VariationSpeedX, VariationSpeedY };
-	particleAcceleration = {AccelerationX, AccelerationY},
-	particleVariationAcceleration = { VariationAccelerationX, VariationAccelerationY };
+	//position = { posX, posY };
+	position.push_back(posX);
+	position.push_back(posY);
+	//particleSpeed = { SpeedX, SpeedY };
+	particleSpeed.push_back(SpeedX);
+	particleSpeed.push_back(SpeedY);
+	//particleVariationSpeed = { VariationSpeedX, VariationSpeedY };
+	particleVariationSpeed.push_back(VariationSpeedX);
+	particleVariationSpeed.push_back(VariationSpeedY);
+	//particleAcceleration = {AccelerationX, AccelerationY},
+	particleAcceleration.push_back(AccelerationX);
+	particleAcceleration.push_back(AccelerationY);
+	//particleVariationAcceleration = { VariationAccelerationX, VariationAccelerationY };
+	particleVariationAcceleration.push_back(VariationAccelerationX);
+	particleVariationAcceleration.push_back(VariationAccelerationY);
+
 	particleAngularSpeed = AngularSpeed;
 	particleVariationAngularSpeed = VariableAngularSpeed;
 	particlesEmited = 0.0f;
