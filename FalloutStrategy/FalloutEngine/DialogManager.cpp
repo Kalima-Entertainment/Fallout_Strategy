@@ -130,8 +130,8 @@ bool DialogManager::LoadDialogs() {
 }
 
 void DialogManager::Callback(UI_element* button) {
-	UI_Label* label = (UI_Label*)App->menu_manager->dialogs[0];
-	UI_Label* option = (UI_Label*)App->menu_manager->dialogs[1];
+	UI_Label* label = dynamic_cast<UI_Label*>(App->menu_manager->dialogs[0]);
+	UI_Label* option = dynamic_cast<UI_Label*>(App->menu_manager->dialogs[1]);
 
 	if (dialog_level < dialogs.size())
 	{
@@ -144,7 +144,7 @@ void DialogManager::Callback(UI_element* button) {
 				label->SetLabelText(dialogs[dialog_level]->response[0].c_str(), "StackedPixelSmall");
 				for(int i = 1; i < 4; i++)
 				{
-					label = (UI_Label*)App->menu_manager->dialogs[i];
+					label = dynamic_cast<UI_Label*>(App->menu_manager->dialogs[i]);
 					label->SetLabelText(" ", "StackedPixelSmall");
 				}
 				dialog_level++;
@@ -157,7 +157,7 @@ void DialogManager::Callback(UI_element* button) {
 				label->SetLabelText(dialogs[dialog_level]->response[1].c_str(), "StackedPixelSmall");
 				for(int i = 1; i < 4; i++)
 				{
-					label = (UI_Label*)App->menu_manager->dialogs[i];
+					label = dynamic_cast<UI_Label*>(App->menu_manager->dialogs[i]);
 					label->SetLabelText(" ", "StackedPixelSmall");
 				}
 				dialog_level++;
@@ -170,7 +170,7 @@ void DialogManager::Callback(UI_element* button) {
 				label->SetLabelText(dialogs[dialog_level]->response[2].c_str(), "StackedPixelSmall");
 				for(int i = 1; i < 4; i++)
 				{
-					label = (UI_Label*)App->menu_manager->dialogs[i];
+					label = dynamic_cast<UI_Label*>(App->menu_manager->dialogs[i]);
 					label->SetLabelText(" ", "StackedPixelSmall");
 				}
 				dialog_level++;
@@ -178,12 +178,12 @@ void DialogManager::Callback(UI_element* button) {
 			break;
 		case UI_Type::ADVANCE_DIALOGS:
 			App->audio->PlayFx(1, App->audio->click_fx, 0);
-			label = (UI_Label*)App->menu_manager->dialogs[0];
+			label = dynamic_cast<UI_Label*>(App->menu_manager->dialogs[0]);
 			label->SetLabelText(dialogs[dialog_level]->statement.c_str(), "StackedPixelSmall");
 
 			for(int i = 1; i < 4; i++)
 			{
-				label = (UI_Label*)App->menu_manager->dialogs[i];
+				label = dynamic_cast<UI_Label*>(App->menu_manager->dialogs[i]);
 				label->SetLabelText(dialogs[dialog_level]->options[i-1].c_str(), "StackedPixelSmall");
 			}
 

@@ -584,7 +584,7 @@ bool UI_Button::Update(float dt)
 			else if (t == how_to_play_button) {
 				App->gui->DeleteArrayElements(App->menu_manager->tutorial, 5);
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
-				App->menu_manager->tutorial[7] = (UI_Button*)App->gui->CreateButton(640, 435, back_tutorial_how_to_play, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this);
+				App->menu_manager->tutorial[7] = dynamic_cast<UI_Button*>(App->gui->CreateButton(640, 435, back_tutorial_how_to_play, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this));
 				App->menu_manager->CreateMenu(Menu::HOW_TO_PLAY);
 				App->gui->ingame = false;
 			}
