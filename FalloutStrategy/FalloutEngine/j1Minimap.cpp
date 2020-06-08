@@ -19,8 +19,8 @@ j1Minimap::j1Minimap() : j1Module(), texture(nullptr) {
 
 	map_height = 0;
 	scale = 1;
-	width = 0;
-	height = 0;
+	width = -1;
+	height = -1;
 	margin = 0;
 	corner = Corner::TOP_LEFT;
 	radar_time = 5;

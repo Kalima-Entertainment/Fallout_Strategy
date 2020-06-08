@@ -18,7 +18,11 @@ j1Console::j1Console() : j1Module() {
 	CleanUpStarted = false;
 	l = 0;
 	name = "console";
-	log_box = { 0,0,0,0 };
+	log_box.h = 0;
+	log_box.w = 0;
+	log_box.x = 0;
+	log_box.y = 0;
+
 }
 
 j1Console::~j1Console() {
