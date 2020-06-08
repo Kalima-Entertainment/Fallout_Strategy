@@ -283,12 +283,12 @@ bool UI_Button::Update(float dt)
 				if (App->gui->cap == false) {
 					App->capped_ms = 1000 / 60;
 					App->gui->Delete_Element(App->menu_manager->cap_label);
-					App->menu_manager->cap_label = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "60", NULL, this, NULL, "StackedPixelMedium");
+					App->menu_manager->cap_label = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "60", NULL, this, "StackedPixelMedium");
 				}
 				else if (App->gui->cap == true) {
 					App->capped_ms = 1000 / 30;
 					App->gui->Delete_Element(App->menu_manager->cap_label);
-					App->menu_manager->cap_label = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "30", NULL, this, NULL, "StackedPixelMedium");
+					App->menu_manager->cap_label = (UI_Label*)App->gui->CreateLabel(528, 613, Label, "30", NULL, this, "StackedPixelMedium");
 				}
 
 			}
@@ -301,12 +301,12 @@ bool UI_Button::Update(float dt)
 				if (App->gui->fullscreen == true) {
 					App->win->ChangeFullScreen(true);
 					App->gui->Delete_Element(App->menu_manager->fullscreen_label);
-					App->menu_manager->fullscreen_label = (UI_Label*)App->gui->CreateLabel(756, 613, Label, "YES", NULL, this, NULL, "StackedPixelMedium");
+					App->menu_manager->fullscreen_label = (UI_Label*)App->gui->CreateLabel(756, 613, Label, "YES", NULL, this, "StackedPixelMedium");
 				}
 				else if (App->gui->fullscreen == false) {
 					App->win->ChangeFullScreen(false);
 					App->gui->Delete_Element(App->menu_manager->fullscreen_label);
-					App->menu_manager->fullscreen_label = (UI_Label*)App->gui->CreateLabel(763, 613, Label, "NO", NULL, this, NULL, "StackedPixelMedium");
+					App->menu_manager->fullscreen_label = (UI_Label*)App->gui->CreateLabel(763, 613, Label, "NO", NULL, this,"StackedPixelMedium");
 				}
 
 				App->minimap->Reset();
@@ -425,19 +425,19 @@ bool UI_Button::Update(float dt)
 				/*static_entity->level++;*/
 				if (App->player->faction == BROTHERHOOD) {
 					App->gui->Delete_Element(App->menu_manager->brotherhood_base[5]);
-					App->menu_manager->brotherhood_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->menu_manager->brotherhood_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, "StackedPixelXS");
 				}
 				else if (App->player->faction == VAULT) {
 					App->gui->Delete_Element(App->menu_manager->vault_base[5]);
-					App->menu_manager->vault_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->menu_manager->vault_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, "StackedPixelXS");
 				}
 				else if (App->player->faction == MUTANT) {
 					App->gui->Delete_Element(App->menu_manager->supermutant_base[5]);
-					App->menu_manager->supermutant_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->menu_manager->supermutant_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, "StackedPixelXS");
 				}
 				else if (App->player->faction == GHOUL) {
 					App->gui->Delete_Element(App->menu_manager->ghoul_base[5]);
-					App->menu_manager->ghoul_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->menu_manager->ghoul_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, "StackedPixelXS");
 				}
 			
 			}
@@ -455,19 +455,19 @@ bool UI_Button::Update(float dt)
 				//static_entity->level++;
 				if (App->player->faction == BROTHERHOOD) {
 					App->gui->Delete_Element(App->menu_manager->brotherhood_barrack[7]);
-					App->menu_manager->brotherhood_barrack[7]= (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->menu_manager->brotherhood_barrack[7]= (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, "StackedPixelXS");
 				}
 				else if (App->player->faction == VAULT) {
 					App->gui->Delete_Element(App->menu_manager->vault_barrack[7]);
-					App->menu_manager->vault_barrack[7] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->menu_manager->vault_barrack[7] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, "StackedPixelXS");
 				}
 				else if (App->player->faction == MUTANT) {
 					App->gui->Delete_Element(App->menu_manager->supermutant_barrack[7]);
-					App->menu_manager->supermutant_barrack[7] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->menu_manager->supermutant_barrack[7] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, "StackedPixelXS");
 				}
 				else if (App->player->faction == GHOUL) {
 					App->gui->Delete_Element(App->menu_manager->ghoul_barrack[7]);
-					App->menu_manager->ghoul_barrack[7] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->menu_manager->ghoul_barrack[7] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, "StackedPixelXS");
 				}
 			}
 			else if (t == Boost_lab_button)
@@ -484,19 +484,19 @@ bool UI_Button::Update(float dt)
 				/*static_entity->level++;*/
 				if (App->player->faction == BROTHERHOOD) {
 					App->gui->Delete_Element(App->menu_manager->brotherhood_lab[7]);
-					App->menu_manager->brotherhood_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->menu_manager->brotherhood_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, "StackedPixelXS");
 				}
 				else if (App->player->faction == VAULT) {
 					App->gui->Delete_Element(App->menu_manager->vault_lab[7]);
-					App->menu_manager->vault_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->menu_manager->vault_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, "StackedPixelXS");
 				}
 				else if (App->player->faction == MUTANT) {
 					App->gui->Delete_Element(App->menu_manager->supermutant_lab[7]);
-					App->menu_manager->supermutant_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->menu_manager->supermutant_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, "StackedPixelXS");
 				}
 				else if (App->player->faction == GHOUL) {
 					App->gui->Delete_Element(App->menu_manager->ghoul_lab[7]);
-					App->menu_manager->ghoul_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, NULL, "StackedPixelXS");
+					App->menu_manager->ghoul_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(App->menu_manager->cost * 2), NULL, this, "StackedPixelXS");
 				}
 			}
 			else if (t == Boost_radar_button) {
@@ -577,9 +577,9 @@ bool UI_Button::Update(float dt)
 				App->gui->Delete_Element(App->menu_manager->tutorial[6]);
 				App->menu_manager->tutorial[0] = (UI_Button*)App->gui->CreateButton(680, 360, control_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
 				App->menu_manager->tutorial[1] = (UI_Button*)App->gui->CreateButton(1000, 360, how_to_play_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-				App->menu_manager->tutorial[2] = (UI_Label*)App->gui->CreateLabel(890, 220, Label, "TUTORIAL", NULL, this, NULL);
-				App->menu_manager->tutorial[3] = (UI_Label*)App->gui->CreateLabel(710, 380, Label, "CONTROLS", NULL, this, NULL);
-				App->menu_manager->tutorial[4] = (UI_Label*)App->gui->CreateLabel(1020, 380, Label, "HOW TO PLAY", NULL, this, NULL);
+				App->menu_manager->tutorial[2] = (UI_Label*)App->gui->CreateLabel(890, 220, Label, "TUTORIAL", NULL, this);
+				App->menu_manager->tutorial[3] = (UI_Label*)App->gui->CreateLabel(710, 380, Label, "CONTROLS", NULL, this);
+				App->menu_manager->tutorial[4] = (UI_Label*)App->gui->CreateLabel(1020, 380, Label, "HOW TO PLAY", NULL, this);
 			}
 			else if (t == how_to_play_button) {
 				App->gui->DeleteArrayElements(App->menu_manager->tutorial, 5);
@@ -594,9 +594,9 @@ bool UI_Button::Update(float dt)
 				App->gui->Delete_Element(App->menu_manager->tutorial[7]);
 				App->menu_manager->tutorial[0] = (UI_Button*)App->gui->CreateButton(680, 360, control_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
 				App->menu_manager->tutorial[1] = (UI_Button*)App->gui->CreateButton(1000, 360, how_to_play_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-				App->menu_manager->tutorial[2] = (UI_Label*)App->gui->CreateLabel(890, 220, Label, "TUTORIAL", NULL, this, NULL);
-				App->menu_manager->tutorial[3] = (UI_Label*)App->gui->CreateLabel(710, 380, Label, "CONTROLS", NULL, this, NULL);
-				App->menu_manager->tutorial[4] = (UI_Label*)App->gui->CreateLabel(1020, 380, Label, "HOW TO PLAY", NULL, this, NULL);
+				App->menu_manager->tutorial[2] = (UI_Label*)App->gui->CreateLabel(890, 220, Label, "TUTORIAL", NULL, this);
+				App->menu_manager->tutorial[3] = (UI_Label*)App->gui->CreateLabel(710, 380, Label, "CONTROLS", NULL, this);
+				App->menu_manager->tutorial[4] = (UI_Label*)App->gui->CreateLabel(1020, 380, Label, "HOW TO PLAY", NULL, this);
 			}
 			else if (t == how_to_play_next) {
 				App->menu_manager->DestroyMenu(Menu::HOW_TO_PLAY);

@@ -13,18 +13,27 @@ DialogManager::DialogManager() : j1Module() {
 
 
 	borders[0] = { 58, 355, 1172, 344 };
-	borders[1] =     { 78, 368, 1139, 89 };
+	borders[1] = { 78, 368, 1139, 89 };
 	borders[2] = { 78, 468, 1139, 69 };
 	borders[3] = { 78, 543, 1139, 69 };
 	borders[4] = { 78, 618, 1139, 69 };
 
-	option_box[0] =  { 80, 470, 1135, 65};
-	option_box[1] =  { 80, 545, 1135, 65 };
-	option_box[2] =  { 80, 620, 1135, 65 };
+	option_box[0] = { 80, 470, 1135, 65 };
+	option_box[1] = { 80, 545, 1135, 65 };
+	option_box[2] = { 80, 620, 1135, 65 };
 
 	dialog_level = 0;
 
-}
+	background_box.x = 60;
+	background_box.y = 355;
+	background_box.w = 1170;
+	background_box.h = 340;
+
+	statement_box.x = 80;
+	statement_box.y = 370;
+	statement_box.w = 1135;
+	statement_box.h = 85;
+};
 
 DialogManager::~DialogManager() {
 
@@ -32,9 +41,6 @@ DialogManager::~DialogManager() {
 
 bool DialogManager::Awake(pugi::xml_node&) {
 	bool ret = true;
-
-	background_box = { 60, 355, 1170, 340 };
-	statement_box = { 80, 370, 1135, 85 };
 
 	LoadDialogs();
 

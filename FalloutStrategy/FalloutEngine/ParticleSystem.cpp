@@ -4,7 +4,7 @@
 
 ParticleSystem::ParticleSystem() : j1Entity()
 {
-	position = { 0, 0 };
+	position = { 0.0f, 0.0f };
 	active = true;
 }
 

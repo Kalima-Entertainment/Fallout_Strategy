@@ -158,7 +158,7 @@ void j1Console::CreateInterface() {
 
 	for(int i = log_record.size() -1; i >= 0; i--)
 	{
-		on_screen_log.push_back((UI_Label*)App->gui->CreateLabel(x_margin, log_box.h - (j * (font_size + spacing)) -spacing, Label, log_record[i].c_str(), NULL, this, NULL, "OpenSans-Light"));
+		on_screen_log.push_back((UI_Label*)App->gui->CreateLabel(x_margin, log_box.h - (j * (font_size + spacing)) -spacing, Label, log_record[i].c_str(), NULL, this, "OpenSans-Light"));
 		j++;
 	}
 
