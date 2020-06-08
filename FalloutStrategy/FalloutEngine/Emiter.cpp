@@ -8,7 +8,7 @@
 
 Emiter::Emiter(std::vector<float>& pos, std::vector<float>& speed, std::vector<int>& VariationSpeed,
 	std::vector<float>& Acceleration, std::vector<int>& VariationAcceleration, float AngularSpeed,
-	int VariableAngularSpeed, float Rate, float LifeTime, SDL_Rect* spawn, SDL_Texture* texture, Animation partAnim, bool fade){
+	int VariableAngularSpeed, float Rate, float LifeTime, SDL_Rect* spawn, SDL_Texture* texture, const Animation &partAnim, bool fade){
 
 	position = pos;
 	particleSpeed = speed;
@@ -46,7 +46,7 @@ Emiter::Emiter(std::vector<float>& pos, std::vector<float>& speed, std::vector<i
 
 Emiter::Emiter(float posX, float posY, float SpeedX, float SpeedY, int VariationSpeedX, int VariationSpeedY,
 	float AccelerationX, float AccelerationY, int VariationAccelerationX, int VariationAccelerationY, float AngularSpeed,
-	int VariableAngularSpeed, float Rate, float LifeTime, SDL_Rect* spawn, SDL_Texture* texture, Animation partAnim, bool fade) {
+	int VariableAngularSpeed, float Rate, float LifeTime, SDL_Rect* spawn, SDL_Texture* texture, const Animation &partAnim, bool fade) {
 
 	position = { posX, posY };
 	particleSpeed = { SpeedX, SpeedY };
