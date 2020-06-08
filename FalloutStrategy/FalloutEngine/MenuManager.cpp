@@ -573,35 +573,35 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 				case BASE:
 					current_building_type = BASE;
 					//Buttons
-					vault_base[0] = (UI_Button*)App->gui->CreateButton(670, 593, Vault_ghaterer_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-					vault_base[1] = (UI_Button*)App->gui->CreateButton(670, 653, Boost_base_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+					vault_base[0] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 593, Vault_ghaterer_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
+					vault_base[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 653, Boost_base_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
 
 					//Images
-					vault_base[2] = (j1Image*)App->gui->CreateImage(563, 590, Image, { 319, 1710, 49, 113 }, NULL, this);
-					vault_base[3] = (j1Image*)App->gui->CreateImage(685, 600, Image, { 463, 1871, 25, 29 }, NULL, this);
-					vault_base[4] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
+					vault_base[2] = dynamic_cast<j1Image*>(App->gui->CreateImage(563, 590, Image, { 319, 1710, 49, 113 }, NULL, this));
+					vault_base[3] = dynamic_cast<j1Image*>(App->gui->CreateImage(685, 600, Image, { 463, 1871, 25, 29 }, NULL, this));
+					vault_base[4] = dynamic_cast<j1Image*>(App->gui->CreateImage(675, 665, Image, { 926, 1872, 37, 24 }, NULL, this));
 
 					//Labels
 					if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
 						 cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
 						
-						vault_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS");
+						vault_base[5] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS"));
 						
 					}
 					else
-						vault_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "MAX", NULL, this, "StackedPixelXS");
+						vault_base[5] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 656, Label, "MAX", NULL, this, "StackedPixelXS"));
 
-					vault_base[6] = (j1Image*)App->gui->CreateImage(1020, 600, Image, { 382, 1930, 21, 57 }, NULL, this);
-					vault_base[7] = (j1Image*)App->gui->CreateImage(1102, 600, Image, { 104, 2338, 49, 55 }, NULL, this);
+					vault_base[6] = dynamic_cast<j1Image*>(App->gui->CreateImage(1020, 600, Image, { 382, 1930, 21, 57 }, NULL, this));
+					vault_base[7] = dynamic_cast<j1Image*>(App->gui->CreateImage(1102, 600, Image, { 104, 2338, 49, 55 }, NULL, this));
 
-					vault_base[8] = (UI_Label*)App->gui->CreateLabel(995, 668, Label, "x", NULL, this, "StackedPixelSmall");
+					vault_base[8] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(995, 668, Label, "x", NULL, this, "StackedPixelSmall"));
 
-					vault_base[9] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, "0", NULL, this, "StackedPixelXS");
-					vault_base[10] = (UI_Label*)App->gui->CreateLabel(750, 614, Label, "40", NULL, this, "StackedPixelXS");
-					vault_base[11] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "0", NULL, this, "StackedPixelXS");
+					vault_base[9] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 596, Label, "0", NULL, this, "StackedPixelXS"));
+					vault_base[10] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 614, Label, "40", NULL, this, "StackedPixelXS"));
+					vault_base[11] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 629, Label, "0", NULL, this, "StackedPixelXS"));
 
-					vault_base[12] = (UI_Label*)App->gui->CreateLabel(750, 674, Label, "0", NULL, this,"StackedPixelXS");
-					vault_base[13] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS");
+					vault_base[12] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 674, Label, "0", NULL, this,"StackedPixelXS"));
+					vault_base[13] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS"));
 
 					//Draw initial quantity
 					CreateMenu(Menu::GATHERER_QUANTITY);
@@ -613,43 +613,43 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 				case BARRACK:
 					current_building_type = BARRACK;
 					//Buttons
-					vault_barrack[0] = (UI_Button*)App->gui->CreateButton(670, 593, Vault_melee_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-					vault_barrack[1] = (UI_Button*)App->gui->CreateButton(830, 593, Vault_ranged_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-					vault_barrack[2] = (UI_Button*)App->gui->CreateButton(670, 653, Boost_barrack_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+					vault_barrack[0] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 593, Vault_melee_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
+					vault_barrack[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(830, 593, Vault_ranged_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
+					vault_barrack[2] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 653, Boost_barrack_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
 
 					//Images
-					vault_barrack[3] = (j1Image*)App->gui->CreateImage(530, 600, Image, { 148, 1731, 122, 91 }, NULL, this);
-					vault_barrack[4] = (j1Image*)App->gui->CreateImage(680, 600, Image, { 406, 1866, 32, 34 }, NULL, this);
-					vault_barrack[5] = (j1Image*)App->gui->CreateImage(840, 600, Image, { 355, 1866, 30, 34 }, NULL, this);
-					vault_barrack[6] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 823, 1872, 32, 22 }, NULL, this);
+					vault_barrack[3] = dynamic_cast<j1Image*>(App->gui->CreateImage(530, 600, Image, { 148, 1731, 122, 91 }, NULL, this));
+					vault_barrack[4] = dynamic_cast<j1Image*>(App->gui->CreateImage(680, 600, Image, { 406, 1866, 32, 34 }, NULL, this));
+					vault_barrack[5] = dynamic_cast<j1Image*>(App->gui->CreateImage(840, 600, Image, { 355, 1866, 30, 34 }, NULL, this));
+					vault_barrack[6] = dynamic_cast<j1Image*>(App->gui->CreateImage(675, 665, Image, { 823, 1872, 32, 22 }, NULL, this));
 
 					//Labels
 					if (App->entities->units_damage[App->player->faction].upgrade_num < 4) {
 						 cost = App->entities->units_damage[App->player->faction].first_price + App->entities->units_damage[App->player->faction].price_increment * App->entities->units_damage[App->player->faction].upgrade_num;
-						vault_barrack[7] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS");
+						vault_barrack[7] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS"));
 					}
 					else
-						vault_barrack[7] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "MAX", NULL, this, "StackedPixelXS");
+						vault_barrack[7] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 656, Label, "MAX", NULL, this, "StackedPixelXS"));
 
 					//Carta
-					vault_barrack[8] = (j1Image*)App->gui->CreateImage(1010, 600, Image, { 296, 1930, 44, 61 }, NULL, this);
-					vault_barrack[9] = (j1Image*)App->gui->CreateImage(1110, 600, Image, { 340, 1930, 34, 65 }, NULL, this);
-					vault_barrack[10] = (j1Image*)App->gui->CreateImage(1200, 610, Image, { 0, 2338, 41, 46 }, NULL, this);
+					vault_barrack[8] = dynamic_cast<j1Image*>(App->gui->CreateImage(1010, 600, Image, { 296, 1930, 44, 61 }, NULL, this));
+					vault_barrack[9] = dynamic_cast<j1Image*>(App->gui->CreateImage(1110, 600, Image, { 340, 1930, 34, 65 }, NULL, this));
+					vault_barrack[10] = dynamic_cast<j1Image*>(App->gui->CreateImage(1200, 610, Image, { 0, 2338, 41, 46 }, NULL, this));
 
 					//Cost
-					vault_barrack[11] = (UI_Label*)App->gui->CreateLabel(995, 668, Label, "x", NULL, this, "StackedPixelSmall");
-					vault_barrack[12] = (UI_Label*)App->gui->CreateLabel(1092, 668, Label, "x", NULL, this, "StackedPixelSmall");
+					vault_barrack[11] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(995, 668, Label, "x", NULL, this, "StackedPixelSmall"));
+					vault_barrack[12] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(1092, 668, Label, "x", NULL, this, "StackedPixelSmall"));
 
-					vault_barrack[13] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, "0", NULL, this, "StackedPixelXS");		//Nukas
-					vault_barrack[14] = (UI_Label*)App->gui->CreateLabel(750, 613, Label, "60", NULL, this, "StackedPixelXS");	//Water
-					vault_barrack[15] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "60", NULL, this, "StackedPixelXS");	//Food
+					vault_barrack[13] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 596, Label, "0", NULL, this, "StackedPixelXS"));		//Nukas
+					vault_barrack[14] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 613, Label, "60", NULL, this, "StackedPixelXS"));	//Water
+					vault_barrack[15] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 629, Label, "60", NULL, this, "StackedPixelXS"));	//Food
 					
-					vault_barrack[16] = (UI_Label*)App->gui->CreateLabel(750, 673, Label, "0", NULL, this, "StackedPixelXS");		//Water
-					vault_barrack[17] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS");		//Food
+					vault_barrack[16] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 673, Label, "0", NULL, this, "StackedPixelXS"));		//Water
+					vault_barrack[17] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS"));		//Food
 
-					vault_barrack[18] = (UI_Label*)App->gui->CreateLabel(910, 596, Label, "0", NULL, this, "StackedPixelXS");		//Nukas
-					vault_barrack[19] = (UI_Label*)App->gui->CreateLabel(910, 613, Label, "80", NULL, this, "StackedPixelXS");	//Water
-					vault_barrack[20] = (UI_Label*)App->gui->CreateLabel(910, 629, Label, "80", NULL, this, "StackedPixelXS");	//Food
+					vault_barrack[18] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 596, Label, "0", NULL, this, "StackedPixelXS"));		//Nukas
+					vault_barrack[19] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 613, Label, "80", NULL, this, "StackedPixelXS"));	//Water
+					vault_barrack[20] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 629, Label, "80", NULL, this, "StackedPixelXS"));	//Food
 
 					//Draw initial quantity
 					CreateMenu(Menu::RANGED_QUANTITY);
@@ -663,42 +663,42 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 				case LABORATORY:
 					current_building_type = LABORATORY;
 					//Buttons
-					vault_lab[0] = (UI_Button*)App->gui->CreateButton(670, 593, Boost_lab_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-					vault_lab[1] = (UI_Button*)App->gui->CreateButton(830, 593, Boost_radar_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-					vault_lab[2] = (UI_Button*)App->gui->CreateButton(670, 653, summon_mrhandy_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+					vault_lab[0] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 593, Boost_lab_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
+					vault_lab[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(830, 593, Boost_radar_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
+					vault_lab[2] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 653, summon_mrhandy_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
 
 					//Images
-					vault_lab[3] = (j1Image*)App->gui->CreateImage(555, 600, Image, { 426, 1726, 72, 96 }, NULL, this);
-					vault_lab[4] = (j1Image*)App->gui->CreateImage(677, 607, Image, { 877, 1874, 33, 20 }, NULL, this);
+					vault_lab[3] = dynamic_cast<j1Image*>(App->gui->CreateImage(555, 600, Image, { 426, 1726, 72, 96 }, NULL, this));
+					vault_lab[4] = dynamic_cast<j1Image*>(App->gui->CreateImage(677, 607, Image, { 877, 1874, 33, 20 }, NULL, this));
 
-					vault_lab[5] = (j1Image*)App->gui->CreateImage(840, 600, Image, { 982, 1869, 31, 33 }, NULL, this);
-					vault_lab[6] = (j1Image*)App->gui->CreateImage(680, 660, Image, { 1034, 1869, 35, 33 }, NULL, this);
+					vault_lab[5] = dynamic_cast<j1Image*>(App->gui->CreateImage(840, 600, Image, { 982, 1869, 31, 33 }, NULL, this));
+					vault_lab[6] = dynamic_cast<j1Image*>(App->gui->CreateImage(680, 660, Image, { 1034, 1869, 35, 33 }, NULL, this));
 
 					//Labels
 					if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
 						cost = App->entities->units_creation_time[App->player->faction].first_price + App->entities->units_creation_time[App->player->faction].price_increment * App->entities->units_creation_time[App->player->faction].upgrade_num;
 						
-						vault_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS");
+						vault_lab[7] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 596, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS"));
 					}
 					else
-						vault_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, "MAX", NULL, this, "StackedPixelXS");
+						vault_lab[7] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 596, Label, "MAX", NULL, this, "StackedPixelXS"));
 
 					//Carta
-					vault_lab[8] = (j1Image*)App->gui->CreateImage(995, 590, Image, { 228, 2328, 73, 90 }, NULL, this);
-					vault_lab[9] = (j1Image*)App->gui->CreateImage(1102, 600, Image, { 164, 2336, 55, 58 }, NULL, this);
-					vault_lab[10] = (j1Image*)App->gui->CreateImage(1205, 600, Image, { 52, 2338, 45, 51 }, NULL, this);
+					vault_lab[8] = dynamic_cast<j1Image*>(App->gui->CreateImage(995, 590, Image, { 228, 2328, 73, 90 }, NULL, this));
+					vault_lab[9] = dynamic_cast<j1Image*>(App->gui->CreateImage(1102, 600, Image, { 164, 2336, 55, 58 }, NULL, this));
+					vault_lab[10] = dynamic_cast<j1Image*>(App->gui->CreateImage(1205, 600, Image, { 52, 2338, 45, 51 }, NULL, this));
 
 					//Cost
-					vault_lab[11] = (UI_Label*)App->gui->CreateLabel(750, 613, Label, "0", NULL, this, "StackedPixelXS");
-					vault_lab[12] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "0", NULL, this, "StackedPixelXS");
+					vault_lab[11] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 613, Label, "0", NULL, this, "StackedPixelXS"));
+					vault_lab[12] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 629, Label, "0", NULL, this, "StackedPixelXS"));
 
-					vault_lab[13] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "1000", NULL, this, "StackedPixelXS");
-					vault_lab[14] = (UI_Label*)App->gui->CreateLabel(750, 673, Label, "0", NULL, this, "StackedPixelXS");
-					vault_lab[15] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS");
+					vault_lab[13] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 656, Label, "1000", NULL, this, "StackedPixelXS"));
+					vault_lab[14] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 673, Label, "0", NULL, this, "StackedPixelXS"));
+					vault_lab[15] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS"));
 
-					vault_lab[16] = (UI_Label*)App->gui->CreateLabel(910, 596, Label, "100", NULL, this, "StackedPixelXS");
-					vault_lab[17] = (UI_Label*)App->gui->CreateLabel(910, 613, Label, "0", NULL, this, "StackedPixelXS");
-					vault_lab[18] = (UI_Label*)App->gui->CreateLabel(910, 629, Label, "0", NULL, this, "StackedPixelXS");
+					vault_lab[16] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 596, Label, "100", NULL, this, "StackedPixelXS"));
+					vault_lab[17] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 613, Label, "0", NULL, this, "StackedPixelXS"));
+					vault_lab[18] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 629, Label, "0", NULL, this, "StackedPixelXS"));
 
 					last_menu = current_menu;
 					current_menu = Menu::BUI_BASES;
@@ -716,40 +716,40 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 						case BASE:
 							current_building_type = BASE;
 							//Buttons
-							brotherhood_base[0] = (UI_Button*)App->gui->CreateButton(670, 593, Brotherhood_ghaterer_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-							brotherhood_base[1] = (UI_Button*)App->gui->CreateButton(670, 653, Boost_base_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							brotherhood_base[0] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 593, Brotherhood_ghaterer_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
+							brotherhood_base[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 653, Boost_base_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
 
 							//Images
-							brotherhood_base[2] = (j1Image*)App->gui->CreateImage(530, 589, Image, { 118, 1561, 122, 98 }, NULL, this);
-							brotherhood_base[3] = (j1Image*)App->gui->CreateImage(682, 600, Image, { 138, 1868, 33, 33 }, NULL, this);
-							brotherhood_base[4] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
+							brotherhood_base[2] = dynamic_cast<j1Image*>(App->gui->CreateImage(530, 589, Image, { 118, 1561, 122, 98 }, NULL, this));
+							brotherhood_base[3] = dynamic_cast<j1Image*>(App->gui->CreateImage(682, 600, Image, { 138, 1868, 33, 33 }, NULL, this));
+							brotherhood_base[4] = dynamic_cast<j1Image*>(App->gui->CreateImage(675, 665, Image, { 926, 1872, 37, 24 }, NULL, this));
 
 							//Labels
 							if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
 								 cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
 								
-								brotherhood_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS");
+								brotherhood_base[5] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS"));
 							}
 							else
-								brotherhood_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "MAX", NULL, this, "StackedPixelXS");
+								brotherhood_base[5] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 656, Label, "MAX", NULL, this, "StackedPixelXS"));
 								
 
-							brotherhood_base[6] = (UI_Label*)App->gui->CreateLabel(995, 668, Label, "x", NULL, this, "StackedPixelSmall");
+							brotherhood_base[6] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(995, 668, Label, "x", NULL, this, "StackedPixelSmall"));
 							
 							//Draw initial quantity
 							CreateMenu(Menu::GATHERER_QUANTITY);
 
 							//Carts
-							brotherhood_base[7] = (j1Image*)App->gui->CreateImage(1008, 599, Image, { 242, 1929, 45, 75 }, NULL, this);
-							brotherhood_base[8] = (j1Image*)App->gui->CreateImage(1102, 610, Image, { 104, 2338, 49, 55 }, NULL, this);
+							brotherhood_base[7] = dynamic_cast<j1Image*>(App->gui->CreateImage(1008, 599, Image, { 242, 1929, 45, 75 }, NULL, this));
+							brotherhood_base[8] = dynamic_cast<j1Image*>(App->gui->CreateImage(1102, 610, Image, { 104, 2338, 49, 55 }, NULL, this));
 
 							//Cost
-							brotherhood_base[9] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, "0", NULL, this, "StackedPixelXS");   //Nukas
-							brotherhood_base[10] = (UI_Label*)App->gui->CreateLabel(750, 614, Label, "50", NULL, this, "StackedPixelXS"); //Water
-							brotherhood_base[11] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "0", NULL, this, "StackedPixelXS");  //Food
+							brotherhood_base[9] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 596, Label, "0", NULL, this, "StackedPixelXS"));   //Nukas
+							brotherhood_base[10] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 614, Label, "50", NULL, this, "StackedPixelXS")); //Water
+							brotherhood_base[11] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 629, Label, "0", NULL, this, "StackedPixelXS"));  //Food
 							
-							brotherhood_base[12] = (UI_Label*)App->gui->CreateLabel(750, 674, Label, "0", NULL, this, "StackedPixelXS"); //Water
-							brotherhood_base[13] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS");  //Food
+							brotherhood_base[12] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 674, Label, "0", NULL, this, "StackedPixelXS")); //Water
+							brotherhood_base[13] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS"));  //Food
 
 
 							last_menu = current_menu;
@@ -759,43 +759,43 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 						case BARRACK:
 							current_building_type = BARRACK;
 							//Buttons
-							brotherhood_barrack[0] = (UI_Button*)App->gui->CreateButton(670, 593, Brotherhood_melee_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-							brotherhood_barrack[1] = (UI_Button*)App->gui->CreateButton(830, 593, Brotherhood_ranged_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-							brotherhood_barrack[2] = (UI_Button*)App->gui->CreateButton(670, 653, Boost_barrack_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							brotherhood_barrack[0] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 593, Brotherhood_melee_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
+							brotherhood_barrack[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(830, 593, Brotherhood_ranged_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
+							brotherhood_barrack[2] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 653, Boost_barrack_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
 
 							//Images
-							brotherhood_barrack[3] = (j1Image*)App->gui->CreateImage(555, 590, Image, { 17, 1560, 69, 115 }, NULL, this);
-							brotherhood_barrack[4] = (j1Image*)App->gui->CreateImage(682, 600, Image, { 28, 1869, 35, 33 }, NULL, this);
-							brotherhood_barrack[5] = (j1Image*)App->gui->CreateImage(840, 600, Image, { 83, 1866, 35, 36 }, NULL, this);
-							brotherhood_barrack[6] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 823, 1872, 32, 22 }, NULL, this);
+							brotherhood_barrack[3] = dynamic_cast<j1Image*>(App->gui->CreateImage(555, 590, Image, { 17, 1560, 69, 115 }, NULL, this));
+							brotherhood_barrack[4] = dynamic_cast<j1Image*>(App->gui->CreateImage(682, 600, Image, { 28, 1869, 35, 33 }, NULL, this));
+							brotherhood_barrack[5] = dynamic_cast<j1Image*>(App->gui->CreateImage(840, 600, Image, { 83, 1866, 35, 36 }, NULL, this));
+							brotherhood_barrack[6] = dynamic_cast<j1Image*>(App->gui->CreateImage(675, 665, Image, { 823, 1872, 32, 22 }, NULL, this));
 
 							//Labels
 							if (App->entities->units_damage[App->player->faction].upgrade_num < 4) {
 								cost = App->entities->units_damage[App->player->faction].first_price + App->entities->units_damage[App->player->faction].price_increment * App->entities->units_damage[App->player->faction].upgrade_num;
-								brotherhood_barrack[7] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS");
+								brotherhood_barrack[7] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS"));
 							}
 							else
-								brotherhood_barrack[7] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "MAX", NULL, this, "StackedPixelXS");
+								brotherhood_barrack[7] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 656, Label, "MAX", NULL, this, "StackedPixelXS"));
 
 							//Carta
-							brotherhood_barrack[8] = (j1Image*)App->gui->CreateImage(1010, 600, Image, { 147, 1930, 41, 72 }, NULL, this);
-							brotherhood_barrack[9] = (j1Image*)App->gui->CreateImage(1110, 600, Image, { 194, 1930, 40, 73 }, NULL, this);
-							brotherhood_barrack[10] = (j1Image*)App->gui->CreateImage(1200, 610, Image, { 0, 2338, 41, 46 }, NULL, this);
+							brotherhood_barrack[8] = dynamic_cast<j1Image*>(App->gui->CreateImage(1010, 600, Image, { 147, 1930, 41, 72 }, NULL, this));
+							brotherhood_barrack[9] = dynamic_cast<j1Image*>(App->gui->CreateImage(1110, 600, Image, { 194, 1930, 40, 73 }, NULL, this));
+							brotherhood_barrack[10] = dynamic_cast<j1Image*>(App->gui->CreateImage(1200, 610, Image, { 0, 2338, 41, 46 }, NULL, this));
 
-							brotherhood_barrack[11] = (UI_Label*)App->gui->CreateLabel(995, 668, Label, "x", NULL, this, "StackedPixelSmall");
-							brotherhood_barrack[12] = (UI_Label*)App->gui->CreateLabel(1092, 668, Label, "x", NULL, this, "StackedPixelSmall");
+							brotherhood_barrack[11] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(995, 668, Label, "x", NULL, this, "StackedPixelSmall"));
+							brotherhood_barrack[12] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(1092, 668, Label, "x", NULL, this, "StackedPixelSmall"));
 
 							//Cost
-							brotherhood_barrack[13] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, "0", NULL, this, "StackedPixelXS"); //Nukas
-							brotherhood_barrack[14] = (UI_Label*)App->gui->CreateLabel(750, 613, Label, "100", NULL, this, "StackedPixelXS");	//Water
-							brotherhood_barrack[15] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "80", NULL, this, "StackedPixelXS");	//Food
+							brotherhood_barrack[13] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 596, Label, "0", NULL, this, "StackedPixelXS")); //Nukas
+							brotherhood_barrack[14] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 613, Label, "100", NULL, this, "StackedPixelXS"));	//Water
+							brotherhood_barrack[15] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 629, Label, "80", NULL, this, "StackedPixelXS"));	//Food
 
-							brotherhood_barrack[16] = (UI_Label*)App->gui->CreateLabel(750, 673, Label, "0", NULL, this, "StackedPixelXS");
-							brotherhood_barrack[17] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS");
+							brotherhood_barrack[16] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 673, Label, "0", NULL, this, "StackedPixelXS"));
+							brotherhood_barrack[17] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS"));
 
-							brotherhood_barrack[18] = (UI_Label*)App->gui->CreateLabel(910, 596, Label, "0", NULL, this, "StackedPixelXS");
-							brotherhood_barrack[19] = (UI_Label*)App->gui->CreateLabel(910, 613, Label, "100", NULL, this, "StackedPixelXS");
-							brotherhood_barrack[20] = (UI_Label*)App->gui->CreateLabel(910, 629, Label, "100", NULL, this, "StackedPixelXS");
+							brotherhood_barrack[18] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 596, Label, "0", NULL, this, "StackedPixelXS"));
+							brotherhood_barrack[19] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 613, Label, "100", NULL, this, "StackedPixelXS"));
+							brotherhood_barrack[20] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 629, Label, "100", NULL, this, "StackedPixelXS"));
 
 							//Draw initial quantity
 							CreateMenu(Menu::RANGED_QUANTITY);
@@ -808,41 +808,41 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 						case LABORATORY:
 							current_building_type = LABORATORY;
 							//Buttons
-							brotherhood_lab[0] = (UI_Button*)App->gui->CreateButton(670, 593, Boost_lab_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-							brotherhood_lab[1] = (UI_Button*)App->gui->CreateButton(830, 593, Boost_radar_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-							brotherhood_lab[2] = (UI_Button*)App->gui->CreateButton(670, 653, summon_mrhandy_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							brotherhood_lab[0] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 593, Boost_lab_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
+							brotherhood_lab[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(830, 593, Boost_radar_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
+							brotherhood_lab[2] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 653, summon_mrhandy_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
 
 							//Images
-							brotherhood_lab[3] = (j1Image*)App->gui->CreateImage(530, 590, Image, { 663, 1567, 108, 104 }, NULL, this);// building
+							brotherhood_lab[3] = dynamic_cast<j1Image*>(App->gui->CreateImage(530, 590, Image, { 663, 1567, 108, 104 }, NULL, this));// building
 							
-							brotherhood_lab[4] = (j1Image*)App->gui->CreateImage(677, 607, Image, { 877, 1874, 33, 20 }, NULL, this);//boost
-							brotherhood_lab[5] = (j1Image*)App->gui->CreateImage(840, 600, Image, { 982, 1869, 31, 33 }, NULL, this);//radar
-							brotherhood_lab[6] = (j1Image*)App->gui->CreateImage(680, 660, Image, { 1034, 1869, 35, 33 }, NULL, this);//misterhandy
+							brotherhood_lab[4] = dynamic_cast<j1Image*>(App->gui->CreateImage(677, 607, Image, { 877, 1874, 33, 20 }, NULL, this));//boost
+							brotherhood_lab[5] = dynamic_cast<j1Image*>(App->gui->CreateImage(840, 600, Image, { 982, 1869, 31, 33 }, NULL, this));//radar
+							brotherhood_lab[6] = dynamic_cast<j1Image*>(App->gui->CreateImage(680, 660, Image, { 1034, 1869, 35, 33 }, NULL, this));//misterhandy
 
 							//Labels
 							if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
 								 cost = App->entities->units_creation_time[App->player->faction].first_price + App->entities->units_creation_time[App->player->faction].price_increment * App->entities->units_creation_time[App->player->faction].upgrade_num;
-								brotherhood_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS");
+								brotherhood_lab[7] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 596, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS"));
 							}
 							else
-								brotherhood_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, "MAX", NULL, this, "StackedPixelXS");
+								brotherhood_lab[7] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 596, Label, "MAX", NULL, this, "StackedPixelXS"));
 
 							//Carta
-							brotherhood_lab[8] = (j1Image*)App->gui->CreateImage(995, 590, Image, { 228, 2328, 73, 90 }, NULL, this);
-							brotherhood_lab[9] = (j1Image*)App->gui->CreateImage(1102, 600, Image, { 164, 2336, 55, 58 }, NULL, this);
-							brotherhood_lab[10] = (j1Image*)App->gui->CreateImage(1205, 600, Image, { 52, 2338, 45, 51 }, NULL, this);
+							brotherhood_lab[8] = dynamic_cast<j1Image*>(App->gui->CreateImage(995, 590, Image, { 228, 2328, 73, 90 }, NULL, this));
+							brotherhood_lab[9] = dynamic_cast<j1Image*>(App->gui->CreateImage(1102, 600, Image, { 164, 2336, 55, 58 }, NULL, this));
+							brotherhood_lab[10] = dynamic_cast<j1Image*>(App->gui->CreateImage(1205, 600, Image, { 52, 2338, 45, 51 }, NULL, this));
 
 							//Cost
-							brotherhood_lab[11] = (UI_Label*)App->gui->CreateLabel(750, 613, Label, "0", NULL, this, "StackedPixelXS");
-							brotherhood_lab[12] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "0", NULL, this, "StackedPixelXS");
+							brotherhood_lab[11] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 613, Label, "0", NULL, this, "StackedPixelXS"));
+							brotherhood_lab[12] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 629, Label, "0", NULL, this, "StackedPixelXS"));
 
-							brotherhood_lab[13] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "1000", NULL, this, "StackedPixelXS");
-							brotherhood_lab[14] = (UI_Label*)App->gui->CreateLabel(750, 673, Label, "0", NULL, this, "StackedPixelXS");
-							brotherhood_lab[15] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS");
-
-							brotherhood_lab[16] = (UI_Label*)App->gui->CreateLabel(910, 596, Label, "100", NULL, this, "StackedPixelXS");
-							brotherhood_lab[17] = (UI_Label*)App->gui->CreateLabel(910, 613, Label, "0", NULL, this, "StackedPixelXS");
-							brotherhood_lab[18] = (UI_Label*)App->gui->CreateLabel(910, 629, Label, "0", NULL, this, "StackedPixelXS");
+							brotherhood_lab[13] =  dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 656, Label, "1000", NULL, this, "StackedPixelXS"));
+							brotherhood_lab[14] =  dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 673, Label, "0", NULL, this, "StackedPixelXS"));
+							brotherhood_lab[15] =  dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS"));
+												   
+							brotherhood_lab[16] =  dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 596, Label, "100", NULL, this, "StackedPixelXS"));
+							brotherhood_lab[17] =  dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 613, Label, "0", NULL, this, "StackedPixelXS"));
+							brotherhood_lab[18] =  dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 629, Label, "0", NULL, this, "StackedPixelXS"));
 
 							last_menu = current_menu;
 							current_menu = Menu::BUI_BASES;
@@ -860,38 +860,38 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 						case BASE:
 							current_building_type = BASE;
 							//Buttons
-							supermutant_base[0] = (UI_Button*)App->gui->CreateButton(670, 593, Supermutant_ghaterer_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-							supermutant_base[1] = (UI_Button*)App->gui->CreateButton(670, 653, Boost_base_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							supermutant_base[0] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 593, Supermutant_ghaterer_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
+							supermutant_base[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 653, Boost_base_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
 
 							//Images
-							supermutant_base[2] = (j1Image*)App->gui->CreateImage(530, 600, Image, { 934, 1577, 129, 91 }, NULL, this);
-							supermutant_base[3] = (j1Image*)App->gui->CreateImage(682, 600, Image, { 191, 1868, 34, 32 }, NULL, this);
-							supermutant_base[4] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
+							supermutant_base[2] = dynamic_cast<j1Image*>(App->gui->CreateImage(530, 600, Image, { 934, 1577, 129, 91 }, NULL, this));
+							supermutant_base[3] = dynamic_cast<j1Image*>(App->gui->CreateImage(682, 600, Image, { 191, 1868, 34, 32 }, NULL, this));
+							supermutant_base[4] = dynamic_cast<j1Image*>(App->gui->CreateImage(675, 665, Image, { 926, 1872, 37, 24 }, NULL, this));
 
 							//Labels
 							if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
 								cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
 
-								supermutant_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS");
+								supermutant_base[5] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS"));
 
 							}
 							else
-								supermutant_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "MAX", NULL, this, "StackedPixelXS");
+								supermutant_base[5] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 656, Label, "MAX", NULL, this, "StackedPixelXS"));
 
-							supermutant_base[6] = (UI_Label*)App->gui->CreateLabel(995, 668, Label, "x", NULL, this, "StackedPixelSmall");
+							supermutant_base[6] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(995, 668, Label, "x", NULL, this, "StackedPixelSmall"));
 							
 
 							//Carts
-							supermutant_base[7] = (j1Image*)App->gui->CreateImage(1008, 600, Image, { 92, 1956, 53, 47 }, NULL, this);
-							supermutant_base[8] = (j1Image*)App->gui->CreateImage(1102, 600, Image, { 104, 2338, 49, 55 }, NULL, this);
+							supermutant_base[7] = dynamic_cast<j1Image*>(App->gui->CreateImage(1008, 600, Image, { 92, 1956, 53, 47 }, NULL, this));
+							supermutant_base[8] = dynamic_cast<j1Image*>(App->gui->CreateImage(1102, 600, Image, { 104, 2338, 49, 55 }, NULL, this));
 
 							//Cost
-							supermutant_base[9] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, "0", NULL, this, "StackedPixelXS");   //Nukas
-							supermutant_base[10] = (UI_Label*)App->gui->CreateLabel(750, 614, Label, "50", NULL, this, "StackedPixelXS"); //Water
-							supermutant_base[11] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "0", NULL, this, "StackedPixelXS");  //Food
+							supermutant_base[9] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 596, Label, "0", NULL, this, "StackedPixelXS"));   //Nukas
+							supermutant_base[10] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 614, Label, "50", NULL, this, "StackedPixelXS")); //Water
+							supermutant_base[11] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 629, Label, "0", NULL, this, "StackedPixelXS"));  //Food
 							
-							supermutant_base[12] = (UI_Label*)App->gui->CreateLabel(750, 674, Label, "0", NULL, this, "StackedPixelXS"); //Water
-							supermutant_base[13] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS");  //Food
+							supermutant_base[12] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 674, Label, "0", NULL, this, "StackedPixelXS")); //Water
+							supermutant_base[13] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS"));  //Food
 
 
 							//Draw initial quantity
@@ -904,43 +904,43 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 						case BARRACK:
 							current_building_type = BARRACK;
 							//Buttons
-							supermutant_barrack[0] = (UI_Button*)App->gui->CreateButton(670, 593, Supermutant_melee_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-							supermutant_barrack[1] = (UI_Button*)App->gui->CreateButton(830, 593, Supermutant_ranged_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-							supermutant_barrack[2] = (UI_Button*)App->gui->CreateButton(670, 653, Boost_barrack_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							supermutant_barrack[0] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 593, Supermutant_melee_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
+							supermutant_barrack[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(830, 593, Supermutant_ranged_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
+							supermutant_barrack[2] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 653, Boost_barrack_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
 
 							//Images
-							supermutant_barrack[3] = (j1Image*)App->gui->CreateImage(530, 590, Image, { 6, 1729, 113, 95 }, NULL, this);
-							supermutant_barrack[4] = (j1Image*)App->gui->CreateImage(682, 600, Image, { 246, 1869, 34, 33 }, NULL, this);
-							supermutant_barrack[5] = (j1Image*)App->gui->CreateImage(840, 600, Image, { 301, 1865, 34, 35 }, NULL, this);
-							supermutant_barrack[6] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 823, 1872, 32, 22 }, NULL, this);
+							supermutant_barrack[3] =  dynamic_cast<j1Image*>(App->gui->CreateImage(530, 590, Image, { 6, 1729, 113, 95 }, NULL, this));
+							supermutant_barrack[4] =  dynamic_cast<j1Image*>(App->gui->CreateImage(682, 600, Image, { 246, 1869, 34, 33 }, NULL, this));
+							supermutant_barrack[5] =  dynamic_cast<j1Image*>(App->gui->CreateImage(840, 600, Image, { 301, 1865, 34, 35 }, NULL, this));
+							supermutant_barrack[6] =  dynamic_cast<j1Image*>(App->gui->CreateImage(675, 665, Image, { 823, 1872, 32, 22 }, NULL, this));
 
 							//Labels
 							if (App->entities->units_damage[App->player->faction].upgrade_num < 4) {
 								cost = App->entities->units_damage[App->player->faction].first_price + App->entities->units_damage[App->player->faction].price_increment * App->entities->units_damage[App->player->faction].upgrade_num;
-								supermutant_barrack[7] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS");
+								supermutant_barrack[7] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS"));
 							}
 							else
-								supermutant_barrack[7] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "MAX", NULL, this, "StackedPixelXS");
+								supermutant_barrack[7] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 656, Label, "MAX", NULL, this, "StackedPixelXS"));
 
 							//Carta
-							supermutant_barrack[8] = (j1Image*)App->gui->CreateImage(1010, 600, Image, { 47, 1930, 44, 80 }, NULL, this);
-							supermutant_barrack[9] = (j1Image*)App->gui->CreateImage(1110, 600, Image, { 0, 1930, 44, 80 }, NULL, this);
-							supermutant_barrack[10] = (j1Image*)App->gui->CreateImage(1200, 610, Image, { 0, 2338, 41, 46 }, NULL, this);
+							supermutant_barrack[8] = dynamic_cast<j1Image*>(App->gui->CreateImage(1010, 600, Image, { 47, 1930, 44, 80 }, NULL, this));
+							supermutant_barrack[9] = dynamic_cast<j1Image*>(App->gui->CreateImage(1110, 600, Image, { 0, 1930, 44, 80 }, NULL, this));
+							supermutant_barrack[10] = dynamic_cast<j1Image*>(App->gui->CreateImage(1200, 610, Image, { 0, 2338, 41, 46 }, NULL, this));
 
-							supermutant_barrack[11] = (UI_Label*)App->gui->CreateLabel(995, 668, Label, "x", NULL, this,"StackedPixelSmall");
-							supermutant_barrack[12] = (UI_Label*)App->gui->CreateLabel(1092, 668, Label, "x", NULL, this, "StackedPixelSmall");
+							supermutant_barrack[11] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(995, 668, Label, "x", NULL, this,"StackedPixelSmall"));
+							supermutant_barrack[12] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(1092, 668, Label, "x", NULL, this, "StackedPixelSmall"));
 
 							//Cost
-							supermutant_barrack[13] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, "0", NULL, this, "StackedPixelXS"); //Nukas
-							supermutant_barrack[14] = (UI_Label*)App->gui->CreateLabel(750, 613, Label, "100", NULL, this, "StackedPixelXS");	//Water
-							supermutant_barrack[15] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "100", NULL, this, "StackedPixelXS");	//Food
+							supermutant_barrack[13] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 596, Label, "0", NULL, this, "StackedPixelXS")); //Nukas
+							supermutant_barrack[14] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 613, Label, "100", NULL, this, "StackedPixelXS"));	//Water
+							supermutant_barrack[15] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 629, Label, "100", NULL, this, "StackedPixelXS"));	//Food
 
-							supermutant_barrack[16] = (UI_Label*)App->gui->CreateLabel(750, 673, Label, "0", NULL, this, "StackedPixelXS");
-							supermutant_barrack[17] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS");
+							supermutant_barrack[16] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 673, Label, "0", NULL, this, "StackedPixelXS"));
+							supermutant_barrack[17] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS"));
 
-							supermutant_barrack[18] = (UI_Label*)App->gui->CreateLabel(910, 596, Label, "0", NULL, this, "StackedPixelXS");
-							supermutant_barrack[19] = (UI_Label*)App->gui->CreateLabel(910, 613, Label, "100", NULL, this, "StackedPixelXS");
-							supermutant_barrack[20] = (UI_Label*)App->gui->CreateLabel(910, 629, Label, "120", NULL, this, "StackedPixelXS");
+							supermutant_barrack[18] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 596, Label, "0", NULL, this, "StackedPixelXS"));
+							supermutant_barrack[19] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 613, Label, "100", NULL, this, "StackedPixelXS"));
+							supermutant_barrack[20] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 629, Label, "120", NULL, this, "StackedPixelXS"));
 
 							//Draw initial quantity
 							CreateMenu(Menu::RANGED_QUANTITY);
@@ -953,41 +953,41 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 						case LABORATORY:
 							current_building_type = LABORATORY;
 							//Buttons
-							supermutant_lab[0] = (UI_Button*)App->gui->CreateButton(670, 593, Boost_lab_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-							supermutant_lab[1] = (UI_Button*)App->gui->CreateButton(830, 593, Boost_radar_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-							supermutant_lab[2] = (UI_Button*)App->gui->CreateButton(670, 653, summon_mrhandy_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							supermutant_lab[0] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 593, Boost_lab_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
+							supermutant_lab[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(830, 593, Boost_radar_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
+							supermutant_lab[2] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 653, summon_mrhandy_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
 							
 							//Images
-							supermutant_lab[3] = (j1Image*)App->gui->CreateImage(540, 590, Image, { 801, 1549, 102, 119 }, NULL, this);
-							supermutant_lab[4] = (j1Image*)App->gui->CreateImage(677, 607, Image, { 877, 1874, 33, 20 }, NULL, this);
+							supermutant_lab[3] = dynamic_cast<j1Image*>(App->gui->CreateImage(540, 590, Image, { 801, 1549, 102, 119 }, NULL, this));
+							supermutant_lab[4] = dynamic_cast<j1Image*>(App->gui->CreateImage(677, 607, Image, { 877, 1874, 33, 20 }, NULL, this));
 							
-							supermutant_lab[5] = (j1Image*)App->gui->CreateImage(840, 600, Image, { 982, 1869, 31, 33 }, NULL, this);
-							supermutant_lab[6] = (j1Image*)App->gui->CreateImage(680, 660, Image, { 1034, 1869, 35, 33 }, NULL, this);
+							supermutant_lab[5] = dynamic_cast<j1Image*>(App->gui->CreateImage(840, 600, Image, { 982, 1869, 31, 33 }, NULL, this));
+							supermutant_lab[6] = dynamic_cast<j1Image*>(App->gui->CreateImage(680, 660, Image, { 1034, 1869, 35, 33 }, NULL, this));
 
 							//Labels
 							if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
 								 cost = App->entities->units_creation_time[App->player->faction].first_price + App->entities->units_creation_time[App->player->faction].price_increment * App->entities->units_creation_time[App->player->faction].upgrade_num;
-								supermutant_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS");
+								supermutant_lab[7] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 596, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS"));
 							}
 							else
-								supermutant_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, "MAX", NULL, this, "StackedPixelXS");
+								supermutant_lab[7] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 596, Label, "MAX", NULL, this, "StackedPixelXS"));
 
 							//Carta
-							supermutant_lab[8] = (j1Image*)App->gui->CreateImage(995, 590, Image, { 228, 2328, 73, 90 }, NULL, this);
-							supermutant_lab[9] = (j1Image*)App->gui->CreateImage(1102, 600, Image, { 164, 2336, 55, 58 }, NULL, this);
-							supermutant_lab[10] = (j1Image*)App->gui->CreateImage(1205, 600, Image, { 52, 2338, 45, 51 }, NULL, this);
+							supermutant_lab[8] = dynamic_cast<j1Image*>(App->gui->CreateImage(995, 590, Image, { 228, 2328, 73, 90 }, NULL, this));
+							supermutant_lab[9] = dynamic_cast<j1Image*>(App->gui->CreateImage(1102, 600, Image, { 164, 2336, 55, 58 }, NULL, this));
+							supermutant_lab[10] = dynamic_cast<j1Image*>(App->gui->CreateImage(1205, 600, Image, { 52, 2338, 45, 51 }, NULL, this));
 
 							//Cost
-							supermutant_lab[11] = (UI_Label*)App->gui->CreateLabel(750, 613, Label, "0", NULL, this, "StackedPixelXS");
-							supermutant_lab[12] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "0", NULL, this, "StackedPixelXS");
-
-							supermutant_lab[13] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "1000", NULL, this, "StackedPixelXS");
-							supermutant_lab[14] = (UI_Label*)App->gui->CreateLabel(750, 673, Label, "0", NULL, this, "StackedPixelXS");
-							supermutant_lab[15] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS");
-
-							supermutant_lab[16] = (UI_Label*)App->gui->CreateLabel(910, 596, Label, "100", NULL, this, "StackedPixelXS");
-							supermutant_lab[17] = (UI_Label*)App->gui->CreateLabel(910, 613, Label, "0", NULL, this, "StackedPixelXS");
-							supermutant_lab[18] = (UI_Label*)App->gui->CreateLabel(910, 629, Label, "0", NULL, this, "StackedPixelXS");
+							supermutant_lab[11] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 613, Label, "0", NULL, this, "StackedPixelXS"));
+							supermutant_lab[12] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 629, Label, "0", NULL, this, "StackedPixelXS"));
+												 
+							supermutant_lab[13] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 656, Label, "1000", NULL, this, "StackedPixelXS"));
+							supermutant_lab[14] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 673, Label, "0", NULL, this, "StackedPixelXS"));
+							supermutant_lab[15] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS"));
+												 
+							supermutant_lab[16] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 596, Label, "100", NULL, this, "StackedPixelXS"));
+							supermutant_lab[17] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 613, Label, "0", NULL, this, "StackedPixelXS"));
+							supermutant_lab[18] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 629, Label, "0", NULL, this, "StackedPixelXS"));
 
 							last_menu = current_menu;
 							current_menu = Menu::BUI_BASES;
@@ -1005,36 +1005,36 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 						case BASE:
 							current_building_type = BASE;
 							//Buttons
-							ghoul_base[0] = (UI_Button*)App->gui->CreateButton(670, 593, Ghouls_ghaterer_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-							ghoul_base[1] = (UI_Button*)App->gui->CreateButton(670, 653, Boost_base_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							ghoul_base[0] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 593, Ghouls_ghaterer_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
+							ghoul_base[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 653, Boost_base_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
 							
 
 							//Images
-							ghoul_base[2] = (j1Image*)App->gui->CreateImage(540, 590, Image, { 398, 1564, 99, 108 }, NULL, this);
-							ghoul_base[3] = (j1Image*)App->gui->CreateImage(685, 600, Image, { 624, 1866, 24, 34 }, NULL, this);
-							ghoul_base[4] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 926, 1872, 37, 24 }, NULL, this);
+							ghoul_base[2] = dynamic_cast<j1Image*>(App->gui->CreateImage(540, 590, Image, { 398, 1564, 99, 108 }, NULL, this));
+							ghoul_base[3] = dynamic_cast<j1Image*>(App->gui->CreateImage(685, 600, Image, { 624, 1866, 24, 34 }, NULL, this));
+							ghoul_base[4] = dynamic_cast<j1Image*>(App->gui->CreateImage(675, 665, Image, { 926, 1872, 37, 24 }, NULL, this));
 
 							//Labels
 							if (App->entities->gatherer_resource_limit[App->player->faction].upgrade_num < 4) {
 								 cost = App->entities->gatherer_resource_limit[App->player->faction].first_price + App->entities->gatherer_resource_limit[App->player->faction].price_increment * App->entities->gatherer_resource_limit[App->player->faction].upgrade_num;
-								ghoul_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS");
+								ghoul_base[5] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS"));
 
 							}
 							else
-								ghoul_base[5] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "MAX", NULL, this, "StackedPixelXS");
+								ghoul_base[5] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 656, Label, "MAX", NULL, this, "StackedPixelXS"));
 							
 
-							ghoul_base[6] = (j1Image*)App->gui->CreateImage(1019, 600, Image, { 412, 1930, 28, 62 }, NULL, this);
-							ghoul_base[7] = (j1Image*)App->gui->CreateImage(1102, 600, Image, { 104, 2338, 49, 55 }, NULL, this);
+							ghoul_base[6] = dynamic_cast<j1Image*>(App->gui->CreateImage(1019, 600, Image, { 412, 1930, 28, 62 }, NULL, this));
+							ghoul_base[7] = dynamic_cast<j1Image*>(App->gui->CreateImage(1102, 600, Image, { 104, 2338, 49, 55 }, NULL, this));
 
-							ghoul_base[8] = (UI_Label*)App->gui->CreateLabel(995, 668, Label, "x", NULL, this, "StackedPixelSmall");
+							ghoul_base[8] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(995, 668, Label, "x", NULL, this, "StackedPixelSmall"));
 
 							//Cost
-							ghoul_base[9] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, "0", NULL, this, "StackedPixelXS");		//Nukas
-							ghoul_base[10] = (UI_Label*)App->gui->CreateLabel(750, 613, Label, "40", NULL, this, "StackedPixelXS");	//Water
-							ghoul_base[11] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "0", NULL, this, "StackedPixelXS");	//Food
-							ghoul_base[12] = (UI_Label*)App->gui->CreateLabel(750, 673, Label, "0", NULL, this, "StackedPixelXS");	//Water
-							ghoul_base[13] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS");	//Food
+							ghoul_base[9] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 596, Label, "0", NULL, this, "StackedPixelXS"));		//Nukas
+							ghoul_base[10] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 613, Label, "40", NULL, this, "StackedPixelXS"));	//Water
+							ghoul_base[11] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 629, Label, "0", NULL, this, "StackedPixelXS"));	//Food
+							ghoul_base[12] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 673, Label, "0", NULL, this, "StackedPixelXS"));	//Water
+							ghoul_base[13] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS"));	//Food
 
 							//Draw initial quantity
 							CreateMenu(Menu::GATHERER_QUANTITY);
@@ -1046,43 +1046,43 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 						case BARRACK:
 							current_building_type = BARRACK;
 							//Buttons
-							ghoul_barrack[0] = (UI_Button*)App->gui->CreateButton(670, 593, Ghouls_melee_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-							ghoul_barrack[1] = (UI_Button*)App->gui->CreateButton(830, 593, Ghouls_ranged_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-							ghoul_barrack[2] = (UI_Button*)App->gui->CreateButton(670, 653, Boost_barrack_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							ghoul_barrack[0] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 593, Ghouls_melee_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
+							ghoul_barrack[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(830, 593, Ghouls_ranged_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
+							ghoul_barrack[2] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 653, Boost_barrack_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
 
 							//Images
-							ghoul_barrack[3] = (j1Image*)App->gui->CreateImage(540, 590, Image, { 527, 1563, 105, 105 }, NULL, this);
-							ghoul_barrack[4] = (j1Image*)App->gui->CreateImage(680, 600, Image, { 513, 1865, 33, 34 }, NULL, this);
-							ghoul_barrack[5] = (j1Image*)App->gui->CreateImage(840, 600, Image, { 571, 1866, 28, 33 }, NULL, this);
-							ghoul_barrack[6] = (j1Image*)App->gui->CreateImage(675, 665, Image, { 823, 1872, 32, 22 }, NULL, this);
+							ghoul_barrack[3] = dynamic_cast<j1Image*>(App->gui->CreateImage(540, 590, Image, { 527, 1563, 105, 105 }, NULL, this));
+							ghoul_barrack[4] = dynamic_cast<j1Image*>(App->gui->CreateImage(680, 600, Image, { 513, 1865, 33, 34 }, NULL, this));
+							ghoul_barrack[5] = dynamic_cast<j1Image*>(App->gui->CreateImage(840, 600, Image, { 571, 1866, 28, 33 }, NULL, this));
+							ghoul_barrack[6] = dynamic_cast<j1Image*>(App->gui->CreateImage(675, 665, Image, { 823, 1872, 32, 22 }, NULL, this));
 
 							//Labels
 							if (App->entities->units_damage[App->player->faction].upgrade_num < 4) {
 								 cost = App->entities->units_damage[App->player->faction].first_price + App->entities->units_damage[App->player->faction].price_increment * App->entities->units_damage[App->player->faction].upgrade_num;
 								
-								ghoul_barrack[7] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS");
+								ghoul_barrack[7] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 656, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS"));
 							}
 							else
-								ghoul_barrack[7] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "MAX", NULL, this, "StackedPixelXS");
+								ghoul_barrack[7] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 656, Label, "MAX", NULL, this, "StackedPixelXS"));
 
-							ghoul_barrack[8] = (j1Image*)App->gui->CreateImage(1020, 600, Image, { 486, 1930, 22, 67 }, NULL, this);
-							ghoul_barrack[9] = (j1Image*)App->gui->CreateImage(1110, 600, Image, { 442, 1930, 42, 60 }, NULL, this);
-							ghoul_barrack[10] = (j1Image*)App->gui->CreateImage(1200, 610, Image, { 0, 2338, 41, 46 }, NULL, this);
+							ghoul_barrack[8] = dynamic_cast<j1Image*>(App->gui->CreateImage(1020, 600, Image, { 486, 1930, 22, 67 }, NULL, this));
+							ghoul_barrack[9] = dynamic_cast<j1Image*>(App->gui->CreateImage(1110, 600, Image, { 442, 1930, 42, 60 }, NULL, this));
+							ghoul_barrack[10] = dynamic_cast<j1Image*>(App->gui->CreateImage(1200, 610, Image, { 0, 2338, 41, 46 }, NULL, this));
 
-							ghoul_barrack[11] = (UI_Label*)App->gui->CreateLabel(995, 668, Label, "x", NULL, this, "StackedPixelSmall");
-							ghoul_barrack[12] = (UI_Label*)App->gui->CreateLabel(1092, 668, Label, "x", NULL, this, "StackedPixelSmall");
+							ghoul_barrack[11] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(995, 668, Label, "x", NULL, this, "StackedPixelSmall"));
+							ghoul_barrack[12] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(1092, 668, Label, "x", NULL, this, "StackedPixelSmall"));
 
 							//Cost
-							ghoul_barrack[13] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, "0", NULL, this, "StackedPixelXS");		//Nukas
-							ghoul_barrack[14] = (UI_Label*)App->gui->CreateLabel(750, 613, Label, "80", NULL, this, "StackedPixelXS");	//Water
-							ghoul_barrack[15] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "60", NULL, this, "StackedPixelXS");	//Food
+							ghoul_barrack[13] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 596, Label, "0", NULL, this, "StackedPixelXS"));		//Nukas
+							ghoul_barrack[14] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 613, Label, "80", NULL, this, "StackedPixelXS"));	//Water
+							ghoul_barrack[15] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 629, Label, "60", NULL, this, "StackedPixelXS"));	//Food
 
-							ghoul_barrack[16] = (UI_Label*)App->gui->CreateLabel(750, 673, Label, "0", NULL, this, "StackedPixelXS");	  //Water
-							ghoul_barrack[17] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS");	  //Food
+							ghoul_barrack[16] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 673, Label, "0", NULL, this, "StackedPixelXS"));	  //Water
+							ghoul_barrack[17] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS"));	  //Food
 
-							ghoul_barrack[18] = (UI_Label*)App->gui->CreateLabel(910, 596, Label, "0", NULL, this, "StackedPixelXS");		//Nukas
-							ghoul_barrack[19] = (UI_Label*)App->gui->CreateLabel(910, 613, Label, "80", NULL, this, "StackedPixelXS");	//Water
-							ghoul_barrack[20] = (UI_Label*)App->gui->CreateLabel(910, 629, Label, "80", NULL, this, "StackedPixelXS");	//Food
+							ghoul_barrack[18] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 596, Label, "0", NULL, this, "StackedPixelXS"));		//Nukas
+							ghoul_barrack[19] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 613, Label, "80", NULL, this, "StackedPixelXS"));	//Water
+							ghoul_barrack[20] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 629, Label, "80", NULL, this, "StackedPixelXS"));	//Food
 
 							//Draw initial quantity
 							CreateMenu(Menu::RANGED_QUANTITY);
@@ -1095,41 +1095,41 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 						case LABORATORY:
 							current_building_type = LABORATORY;
 							//Buttons
-							ghoul_lab[0] = (UI_Button*)App->gui->CreateButton(670, 593, Boost_lab_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-							ghoul_lab[1] = (UI_Button*)App->gui->CreateButton(830, 593, Boost_radar_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
-							ghoul_lab[2] = (UI_Button*)App->gui->CreateButton(670, 653, summon_mrhandy_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this);
+							ghoul_lab[0] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 593, Boost_lab_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
+							ghoul_lab[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(830, 593, Boost_radar_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
+							ghoul_lab[2] = dynamic_cast<UI_Button*>(App->gui->CreateButton(670, 653, summon_mrhandy_button, { 1355,2028,149,52 }, { 1355,2112,149,52 }, { 1355,2196,149,52 }, NULL, this));
 							
 
 							//Images
-							ghoul_lab[3] = (j1Image*)App->gui->CreateImage(540, 615, Image, { 536, 1741, 101, 73 }, NULL, this);
-							ghoul_lab[4] = (j1Image*)App->gui->CreateImage(677, 607, Image, { 877, 1874, 33, 20 }, NULL, this);
+							ghoul_lab[3] = dynamic_cast<j1Image*>(App->gui->CreateImage(540, 615, Image, { 536, 1741, 101, 73 }, NULL, this));
+							ghoul_lab[4] = dynamic_cast<j1Image*>(App->gui->CreateImage(677, 607, Image, { 877, 1874, 33, 20 }, NULL, this));
 							
-							ghoul_lab[5] = (j1Image*)App->gui->CreateImage(840, 600, Image, { 982, 1869, 31, 33 }, NULL, this);
-							ghoul_lab[6] = (j1Image*)App->gui->CreateImage(680, 660, Image, { 1034, 1869, 35, 33 }, NULL, this);
+							ghoul_lab[5] = dynamic_cast<j1Image*>(App->gui->CreateImage(840, 600, Image, { 982, 1869, 31, 33 }, NULL, this));
+							ghoul_lab[6] = dynamic_cast<j1Image*>(App->gui->CreateImage(680, 660, Image, { 1034, 1869, 35, 33 }, NULL, this));
 
 							//Labels
 							if (App->entities->units_creation_time[App->player->faction].upgrade_num < 4) {
 								 cost = App->entities->units_creation_time[App->player->faction].first_price + App->entities->units_creation_time[App->player->faction].price_increment * App->entities->units_creation_time[App->player->faction].upgrade_num;
-								ghoul_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS");
+								ghoul_lab[7] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 596, Label, std::to_string(cost * 2), NULL, this, "StackedPixelXS"));
 							}
 							else
-								ghoul_lab[7] = (UI_Label*)App->gui->CreateLabel(750, 596, Label, "MAX", NULL, this, "StackedPixelXS");
+								ghoul_lab[7] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 596, Label, "MAX", NULL, this, "StackedPixelXS"));
 
 							//Carta
-							ghoul_lab[8] = (j1Image*)App->gui->CreateImage(995, 590, Image, { 228, 2328, 73, 90 }, NULL, this);
-							ghoul_lab[9] = (j1Image*)App->gui->CreateImage(1102, 600, Image, { 164, 2336, 55, 58 }, NULL, this);
-							ghoul_lab[10] = (j1Image*)App->gui->CreateImage(1205, 600, Image, { 52, 2338, 45, 51 }, NULL, this);
+							ghoul_lab[8] = dynamic_cast<j1Image*>(App->gui->CreateImage(995, 590, Image, { 228, 2328, 73, 90 }, NULL, this));
+							ghoul_lab[9] = dynamic_cast<j1Image*>(App->gui->CreateImage(1102, 600, Image, { 164, 2336, 55, 58 }, NULL, this));
+							ghoul_lab[10] = dynamic_cast<j1Image*>(App->gui->CreateImage(1205, 600, Image, { 52, 2338, 45, 51 }, NULL, this));
 
-							ghoul_lab[11] = (UI_Label*)App->gui->CreateLabel(750, 613, Label, "0", NULL, this, "StackedPixelXS");
-							ghoul_lab[12] = (UI_Label*)App->gui->CreateLabel(750, 629, Label, "0", NULL, this, "StackedPixelXS");
+							ghoul_lab[11] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 613, Label, "0", NULL, this, "StackedPixelXS"));
+							ghoul_lab[12] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 629, Label, "0", NULL, this, "StackedPixelXS"));
 						
-							ghoul_lab[13] = (UI_Label*)App->gui->CreateLabel(750, 656, Label, "1000", NULL, this, "StackedPixelXS");
-							ghoul_lab[14] = (UI_Label*)App->gui->CreateLabel(750, 673, Label, "0", NULL, this, "StackedPixelXS");
-							ghoul_lab[15] = (UI_Label*)App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS");
+							ghoul_lab[13] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 656, Label, "1000", NULL, this, "StackedPixelXS"));
+							ghoul_lab[14] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 673, Label, "0", NULL, this, "StackedPixelXS"));
+							ghoul_lab[15] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 689, Label, "0", NULL, this, "StackedPixelXS"));
 							
-							ghoul_lab[16] = (UI_Label*)App->gui->CreateLabel(910, 596, Label, "100", NULL, this, "StackedPixelXS");
-							ghoul_lab[17] = (UI_Label*)App->gui->CreateLabel(910, 613, Label, "0", NULL, this, "StackedPixelXS");
-							ghoul_lab[18] = (UI_Label*)App->gui->CreateLabel(910, 629, Label, "0", NULL, this, "StackedPixelXS");
+							ghoul_lab[16] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 596, Label, "100", NULL, this, "StackedPixelXS"));
+							ghoul_lab[17] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 613, Label, "0", NULL, this, "StackedPixelXS"));
+							ghoul_lab[18] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(910, 629, Label, "0", NULL, this, "StackedPixelXS"));
 
 							last_menu = current_menu;
 							current_menu = Menu::BUI_BASES;
