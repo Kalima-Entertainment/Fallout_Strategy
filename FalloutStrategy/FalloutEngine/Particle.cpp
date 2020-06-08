@@ -3,13 +3,8 @@
 #include "j1App.h"
 #include "j1Render.h"
 
-
-Particle::Particle()
-{}
-
-
 Particle::Particle(std::vector<float>& position, std::vector<float>& speed, std::vector<float>& acceleration,
-	float angle, float angularSpeed, float life, SDL_Texture* texture, Animation animation, bool fade) :
+	float angle, float angularSpeed, float life, SDL_Texture* texture, const Animation &animation, bool fade) :
 
 	position(position),
 	speed(speed),
@@ -29,7 +24,7 @@ Particle::Particle(std::vector<float>& position, std::vector<float>& speed, std:
 {}
 
 
-Particle::Particle(float life, SDL_Texture* texture, Animation animation, bool fade) :
+Particle::Particle(float life, SDL_Texture* texture, const Animation &animation, bool fade) :
 
 	position{ NULL, NULL },
 	speed{ NULL, NULL },
@@ -50,7 +45,7 @@ Particle::Particle(float life, SDL_Texture* texture, Animation animation, bool f
 
 
 Particle::Particle(float positionX, float positionY, float speedX, float speedY, float accelerationX, float accelerationY,
-	float angle, float angularSpeed, float life, SDL_Texture* texture, Animation animation, bool fade) :
+	float angle, float angularSpeed, float life, SDL_Texture* texture, const Animation &animation, bool fade) :
 
 	position{ positionX, positionY },
 	speed{ speedX, speedY },
