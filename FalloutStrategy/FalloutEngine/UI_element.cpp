@@ -12,6 +12,7 @@ UI_element::UI_element(int x, int y, UI_Type type, UI_element* parent, j1Module 
 	observer = Observer;
 	drawable = true;
 	hover = false;
+
 	dimensions.x = 0;
 	dimensions.y = 0;
 	dimensions.w = 0;
