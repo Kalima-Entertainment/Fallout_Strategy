@@ -156,7 +156,7 @@ bool j1Scene::Update(float dt)
 	{
 		if (players[0]->base != nullptr && deathclaw1 == false)
 		{
-			Deathclaws[0] = (Deathclaw*)App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 75, 75);
+			Deathclaws[0] = dynamic_cast<Deathclaw*>(App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 75, 75));
 			iPoint pos = App->entities->ClosestTile(Deathclaws[0]->current_tile, players[0]->base->tiles);
 			Deathclaws[0]->PathfindToPosition(pos);
 			Deathclaws[0]->target_building = players[0]->base;
@@ -164,7 +164,7 @@ bool j1Scene::Update(float dt)
 		}
 		if (players[1]->base != nullptr && deathclaw2 == false)
 		{
-			Deathclaws[1] = (Deathclaw*)App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 76, 75);
+			Deathclaws[1] = dynamic_cast<Deathclaw*>(App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 76, 75));
 			iPoint pos = App->entities->ClosestTile(Deathclaws[1]->current_tile, players[1]->base->tiles);
 			Deathclaws[1]->PathfindToPosition(pos);
 			Deathclaws[1]->target_building = players[1]->base;
@@ -172,7 +172,7 @@ bool j1Scene::Update(float dt)
 		}
 		if (players[2]->base != nullptr && deathclaw3 == false)
 		{
-			Deathclaws[2] =  (Deathclaw*) App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 75, 76);
+			Deathclaws[2] = dynamic_cast<Deathclaw*>(App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 75, 76));
 			iPoint pos = App->entities->ClosestTile(Deathclaws[2]->current_tile, players[2]->base->tiles);
 			Deathclaws[2]->PathfindToPosition(pos);
 			Deathclaws[2]->target_building = players[2]->base;
@@ -180,7 +180,7 @@ bool j1Scene::Update(float dt)
 		}
 		if (players[3]->base != nullptr && deathclaw4 == false)
 		{
-			Deathclaws[3] = (Deathclaw*)App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 76, 76);
+			Deathclaws[3] = dynamic_cast<Deathclaw*>(App->entities->CreateEntity(NO_FACTION, DEATHCLAW, 76, 76));
 			iPoint pos = App->entities->ClosestTile(Deathclaws[3]->current_tile, players[3]->base->tiles);
 			Deathclaws[3]->PathfindToPosition(pos);
 			Deathclaws[3]->target_building = players[3]->base;

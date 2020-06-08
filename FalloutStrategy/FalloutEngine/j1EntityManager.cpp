@@ -98,7 +98,7 @@ bool j1EntityManager::Start() {
 	BROFILER_CATEGORY("EntitiesStart", Profiler::Color::Linen)
 	bool ret = true;
 
-	App->console->CreateCommand("destroy_all_entities", "remove all dynamic entities", (j1Module*)this);
+	App->console->CreateCommand("destroy_all_entities", "remove all dynamic entities", dynamic_cast<j1Module*>(this));
 
 	loading_reference_entities = true;
 	loading_faction = VAULT;
@@ -1115,8 +1115,6 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 		entities_pugi.append_attribute("position_y") = entities[i]->position.y;
 		entities_pugi.append_attribute("current_tile_x") = entities[i]->current_tile.x;
 		entities_pugi.append_attribute("current_tile_y") = entities[i]->current_tile.y;
-		//entities_pugi.append_attribute("target_tile_x:") = entities[i]->target_tile.x;
-		//entities_pugi.append_attribute("target_tile_x:") = entities[i]->target_tile.y;
 		entities_pugi.append_attribute("current_health") = entities[i]->current_health;
 
 
