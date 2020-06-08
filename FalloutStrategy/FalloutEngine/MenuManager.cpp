@@ -383,7 +383,7 @@ void MenuManager::CreateMenu(Menu menu) {
 		if (App->player->selected_entity != nullptr)
 		{
 
-			StaticEntity* static_entity_gatherer = (StaticEntity*)App->player->selected_entity;
+			StaticEntity* static_entity_gatherer = dynamic_cast<StaticEntity*>(App->player->selected_entity);
 
 			gatherer_quantity = std::to_string(static_entity_gatherer->GetUnitsInStack(GATHERER));
 
@@ -398,7 +398,7 @@ void MenuManager::CreateMenu(Menu menu) {
 		if (App->player->selected_entity != nullptr)
 		{
 
-			StaticEntity* static_entity_ranged = (StaticEntity*)App->player->selected_entity;
+			StaticEntity* static_entity_ranged = dynamic_cast<StaticEntity*>(App->player->selected_entity);
 
 			ranged_quantity = std::to_string(static_entity_ranged->GetUnitsInStack(RANGED));
 
@@ -413,7 +413,7 @@ void MenuManager::CreateMenu(Menu menu) {
 		if (App->player->selected_entity != nullptr)
 		{
 
-			StaticEntity* static_entity_melee = (StaticEntity*)App->player->selected_entity;
+			StaticEntity* static_entity_melee = dynamic_cast<StaticEntity*>(App->player->selected_entity);
 
 			melee_quantity = std::to_string(static_entity_melee->GetUnitsInStack(MELEE));
 

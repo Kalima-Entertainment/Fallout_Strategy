@@ -232,7 +232,7 @@ void Gatherer::StoreGatheredResources() {
 
 bool Gatherer::LoadDataFromReference() {
 	bool ret = true;
-	Gatherer* reference_gatherer = (Gatherer*)reference_entity;
+	Gatherer* reference_gatherer = dynamic_cast<Gatherer*>(reference_entity);
 
 	//load animations
 	for(int i = 0; i < NO_STATE; i++)

@@ -131,7 +131,7 @@ bool j1Hud::PostUpdate()
 	//INGAME HUD
 	if (App->player->selected_entity != nullptr && App->gui->ingame == true)
 	{
-		StaticEntity* static_entity = (StaticEntity*)App->player->selected_entity;
+		StaticEntity* static_entity = dynamic_cast<StaticEntity*>(App->player->selected_entity);
 
 		//Create HUD for the building
 		switch (static_entity->faction) {

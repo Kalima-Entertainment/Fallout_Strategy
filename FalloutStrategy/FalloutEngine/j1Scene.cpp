@@ -310,7 +310,7 @@ void j1Scene::RectangleSelection()
 		for(int i = 0; i < App->entities->entities.size(); i++)
 		{
 			if (App->entities->entities[i]->info.IsSelected && App->entities->entities[i]->is_dynamic) {
-				selected_entities.push_back((DynamicEntity*)App->entities->entities[i]);
+				selected_entities.push_back(dynamic_cast<DynamicEntity*>(App->entities->entities[i]));
 			}
 		}
 		if(selected_entities.size() > 0)
