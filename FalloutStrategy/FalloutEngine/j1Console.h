@@ -32,11 +32,11 @@ public:
 	bool CleanUp();
 	void OnCommand(std::vector<std::string> command_parts);
 
-	void CreateCommand(std::string name, std::string description, j1Module* callback);
+	void CreateCommand(const std::string &name, std::string description, j1Module* callback);
 	void ProcessCommand(std::string command);
 
 	void AddLogText(std::string incoming_text);
-	j1Module* FindModule(std::string command_parts);
+	j1Module* FindModule(const std::string &command_parts);
 
 	void CreateInterface();
 	void DestroyInterface();
