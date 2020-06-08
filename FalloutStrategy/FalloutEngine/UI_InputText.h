@@ -11,7 +11,7 @@ private:
 
 public:
 
-	InputText(int x, int y, UI_Type type, const std::string &text_input, UI_element* parent, j1Module* Observer, std::string font);
+	InputText(int x, int y, UI_Type type, const std::string &text_input, UI_element* parent, j1Module* Observer, const std::string &font);
 	~InputText();
 
 	bool Update(float dt);
