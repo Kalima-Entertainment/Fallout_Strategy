@@ -6,82 +6,77 @@
 #include "math.h"
 #include "p2Log.h"
 
-Emiter::Emiter(std::vector<float>& position, std::vector<float>& particleSpeed, std::vector<int>& particleVariationSpeed,
-	std::vector<float>& particleAcceleration, std::vector<int>& particleVariationAcceleration, float particleAngularSpeed,
-	int particleVariableAngularSpeed, float particlesRate, float particlesLifeTime, SDL_Rect* areaOfSpawn, SDL_Texture* texture, Animation particleAnimation, bool fade) :
+Emiter::Emiter(std::vector<float>& pos, std::vector<float>& speed, std::vector<int>& VariationSpeed,
+	std::vector<float>& Acceleration, std::vector<int>& VariationAcceleration, float AngularSpeed,
+	int VariableAngularSpeed, float Rate, float LifeTime, SDL_Rect* spawn, SDL_Texture* texture, Animation partAnim, bool fade){
 
-	position(position),
-	particleSpeed(particleSpeed),
-	particleVariationSpeed(particleVariationSpeed),
-	particleAcceleration(particleAcceleration),
-	particleVariationAcceleration(particleVariationAcceleration),
-	particleAngularSpeed(particleAngularSpeed),
-	particleVariationAngularSpeed(particleVariableAngularSpeed),
-	particlesEmited(0.0f),
+	position = pos;
+	particleSpeed = speed;
+	particleVariationSpeed = VariationSpeed;
+	particleAcceleration = Acceleration;
+	particleVariationAcceleration = VariationAcceleration;
+	particleAngularSpeed = AngularSpeed;
+	particleVariationAngularSpeed = VariableAngularSpeed;
+	particlesEmited = 0.0f;
 
-	particlesRate(particlesRate),
-	particlesLifeTime(particlesLifeTime),
+	particlesRate = Rate;
+	particlesLifeTime = LifeTime;
 
-	areaOfSpawn(areaOfSpawn),
-	particleTexture(texture),
-	particleAnimation(particleAnimation),
+	areaOfSpawn = spawn;
+	particleTexture = texture;
+	particleAnimation = partAnim;
 
-	randomizePosX(true),
-	randomizePosY(true),
+	randomizePosX = true;
+	randomizePosY = true; 
 
-	randomizeSpeedX(true),
-	randomizeSpeedY(true),
+	randomizeSpeedX = true;
+	randomizeSpeedY = true;
 
-	randomizeAccelerationX(true),
-	randomizeAccelerationY(true),
+	randomizeAccelerationX = true;
+	randomizeAccelerationY = true;
 
-	randomizeAngularSpeed(true),
+	randomizeAngularSpeed = true;
 
-	active(true),
+	active = true;
 
-	fadeParticles(fade)
-
-{
+	fadeParticles = fade;
 	Start();
 }
 
 
-Emiter::Emiter(float positionX, float positionY, float particleSpeedX, float particleSpeedY, int particleVariationSpeedX, int particleVariationSpeedY,
-	float particleAccelerationX, float particleAccelerationY, int particleVariationAccelerationX, int particleVariationAccelerationY, float particleAngularSpeed,
-	int particleVariableAngularSpeed, float particlesRate, float particlesLifeTime, SDL_Rect* areaOfSpawn, SDL_Texture* texture, Animation particleAnimation, bool fade) :
+Emiter::Emiter(float posX, float posY, float SpeedX, float SpeedY, int VariationSpeedX, int VariationSpeedY,
+	float AccelerationX, float AccelerationY, int VariationAccelerationX, int VariationAccelerationY, float AngularSpeed,
+	int VariableAngularSpeed, float Rate, float LifeTime, SDL_Rect* spawn, SDL_Texture* texture, Animation partAnim, bool fade) {
 
-	position{ positionX, positionY },
-	particleSpeed{ particleSpeedX, particleSpeedY },
-	particleVariationSpeed{ particleVariationSpeedX, particleVariationSpeedY },
-	particleAcceleration{ particleAccelerationX, particleAccelerationY },
-	particleVariationAcceleration{ particleVariationAccelerationX, particleVariationAccelerationY },
-	particleAngularSpeed(particleAngularSpeed),
-	particleVariationAngularSpeed(particleVariableAngularSpeed),
-	particlesEmited(0.0f),
+	position = { posX, posY };
+	particleSpeed = { SpeedX, SpeedY };
+	particleVariationSpeed = { VariationSpeedX, VariationSpeedY };
+	particleAcceleration = {AccelerationX, AccelerationY},
+	particleVariationAcceleration = { VariationAccelerationX, VariationAccelerationY };
+	particleAngularSpeed = AngularSpeed;
+	particleVariationAngularSpeed = VariableAngularSpeed;
+	particlesEmited = 0.0f;
 
+	particlesRate = Rate;
+	particlesLifeTime = LifeTime;
 
-	particlesRate(particlesRate),
-	particlesLifeTime(particlesLifeTime),
+	areaOfSpawn = spawn;
+	particleTexture= texture;
+	particleAnimation = partAnim;
 
-	areaOfSpawn(areaOfSpawn),
-	particleTexture(texture),
-	particleAnimation(particleAnimation),
+	randomizePosX = true;
+	randomizePosY = true;
 
-	randomizePosX(true),
-	randomizePosY(true),
+	randomizeSpeedX = true;
+	randomizeSpeedY = true;
 
-	randomizeSpeedX(true),
-	randomizeSpeedY(true),
+	randomizeAccelerationX = true;
+	randomizeAccelerationY = true;
 
-	randomizeAccelerationX(true),
-	randomizeAccelerationY(true),
+	randomizeAngularSpeed = true;
+	active = true;
+	fadeParticles = fade;
 
-	randomizeAngularSpeed(true),
-
-	active(true),
-
-	fadeParticles(fade)
-{
 	Start();
 }
 
