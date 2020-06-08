@@ -22,6 +22,7 @@
 #include "Gatherer.h"
 #include "Deathclaw.h"
 #include "GenericPlayer.h"
+#include "j1Entity.h"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -102,6 +103,10 @@ bool j1EntityManager::Start() {
 	loading_reference_entities = true;
 	loading_faction = VAULT;
 	loading_entity = MELEE;
+
+	background_health_bar = { 0,0,0,0 };
+	foreground_health_bar = { 0,0,0,0 };
+	frame_quad = { 0,0,0,0 };
 
 	for(int y = 0; y < 150; y++)
 	{

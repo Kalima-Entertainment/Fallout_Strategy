@@ -82,7 +82,7 @@ void j1Group::SetUnitGoalTile(DynamicEntity* entity)
 	{
 		if (*it == entity)
 		{
-			it++;
+			++it;
 			continue;
 		}
 

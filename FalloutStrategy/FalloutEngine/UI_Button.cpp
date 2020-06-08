@@ -36,16 +36,16 @@ UI_Button::UI_Button(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, 
 
 	faction_image = nullptr;
 
-	brotherhood_rect = { 2600, 2351, 580, 185 };
-	vault_rect = { 2600, 2886, 656, 180 };
-	ghoul_rect = { 2600, 835, 591, 180 };
-	supermutant_rect = { 2600, 2649, 602, 181 };
-
 	current_state = BUTTON_STATE::NONE;
 
 	inHover = true;
 	fx_played = false;
 	radio = false;
+}
+
+bool UI_Button::Start() {
+
+	return true;
 }
 
 UI_Button::~UI_Button() {
@@ -91,7 +91,7 @@ bool UI_Button::Update(float dt)
 		if (t == button_select_ghoul)
 		{
 			if (inHover) {
-				faction_image = (j1Image*)App->gui->CreateImage(510, 300, Image, ghoul_rect, NULL, this);
+				faction_image = (j1Image*)App->gui->CreateImage(510, 300, Image, { 2600, 835, 591, 180 }, NULL, this);
 				faction_image->hover = true;
 				elements_to_show.push_back(faction_image);
 				current_state = BUTTON_STATE::HOVER;
@@ -101,7 +101,7 @@ bool UI_Button::Update(float dt)
 		else if (t == button_select_vault)
 		{
 			if (inHover) {
-				faction_image = (j1Image*)App->gui->CreateImage(510, 300, Image, vault_rect, NULL, this);
+				faction_image = (j1Image*)App->gui->CreateImage(510, 300, Image, { 2600, 2886, 656, 180 }, NULL, this);
 				faction_image->hover = true;
 				elements_to_show.push_back(faction_image);
 				current_state = BUTTON_STATE::HOVER;
@@ -111,7 +111,7 @@ bool UI_Button::Update(float dt)
 		else if (t == button_select_brotherhood)
 		{
 			if (inHover) {
-				faction_image = (j1Image*)App->gui->CreateImage(510, 300, Image, brotherhood_rect, NULL, this);
+				faction_image = (j1Image*)App->gui->CreateImage(510, 300, Image, { 2600, 2351, 580, 185 }, NULL, this);
 				faction_image->hover = true;
 				elements_to_show.push_back(faction_image);
 				current_state = BUTTON_STATE::HOVER;
@@ -121,7 +121,7 @@ bool UI_Button::Update(float dt)
 		else if (t == button_select_supermutant)
 		{
 			if (inHover) {
-				faction_image = (j1Image*)App->gui->CreateImage(510, 300, Image, supermutant_rect, NULL, this);
+				faction_image = (j1Image*)App->gui->CreateImage(510, 300, Image, { 2600, 2649, 602, 181 }, NULL, this);
 				faction_image->hover = true;
 				elements_to_show.push_back(faction_image);
 				current_state = BUTTON_STATE::HOVER;
@@ -748,7 +748,7 @@ bool UI_Button::Update(float dt)
 	
 	if (current_state == BUTTON_STATE::HOVER_EXIT) {
 		if (elements_to_show.size() > 0) {
-			for (std::list<UI_element*>::const_iterator item = elements_to_show.cbegin(); item != elements_to_show.cend(); item++) {
+			for (std::list<UI_element*>::const_iterator item = elements_to_show.cbegin(); item != elements_to_show.cend(); ++item) {
 
 				if ((*item)->hover == true)
 				{

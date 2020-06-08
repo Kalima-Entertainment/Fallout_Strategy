@@ -153,6 +153,12 @@ public:
 	SDL_Texture* smoke;
 	SDL_Texture* hit;
 
+	//HealthBar
+
+	SDL_Rect background_health_bar;
+	SDL_Rect foreground_health_bar;
+	SDL_Rect frame_quad;
+
 private:
 	int loading_faction;
 	int loading_entity;

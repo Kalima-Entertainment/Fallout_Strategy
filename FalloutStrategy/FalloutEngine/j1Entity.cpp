@@ -37,10 +37,6 @@ j1Entity::j1Entity() {
 
 	info = { false, nullptr, MovementState::MovementState_NoState,{0,0} };
 
-	background_health_bar = { 0,0,0,0 };
-	foreground_health_bar = { 0,0,0,0 };
-	frame_quad = { 0,0,0,0 };
-
 	last_dt = 0.01;
 	
 

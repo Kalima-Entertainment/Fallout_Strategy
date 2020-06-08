@@ -10,8 +10,7 @@
 #include "j1Hud.h"
 
 DialogManager::DialogManager() : j1Module() {
-	background_box = { 60, 355, 1170, 340};
-	statement_box =  { 80, 370, 1135, 85};
+
 
 	borders[0] = { 58, 355, 1172, 344 };
 	borders[1] =     { 78, 368, 1139, 89 };
@@ -33,6 +32,9 @@ DialogManager::~DialogManager() {
 
 bool DialogManager::Awake(pugi::xml_node&) {
 	bool ret = true;
+
+	background_box = { 60, 355, 1170, 340 };
+	statement_box = { 80, 370, 1135, 85 };
 
 	LoadDialogs();
 

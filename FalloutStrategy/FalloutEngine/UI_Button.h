@@ -29,7 +29,7 @@ public:
 
 	// Called each loop iteration
 	bool Update(float dt);
-
+	bool Start();
 	// Called each loop iteration
 	bool Draw();
 
@@ -53,11 +53,6 @@ public:
 	void DoNotShowElement(UI_element*);
 
 	j1Image* faction_image;
-
-	SDL_Rect supermutant_rect;
-	SDL_Rect brotherhood_rect;
-	SDL_Rect vault_rect;
-	SDL_Rect ghoul_rect;
 
 	BUTTON_STATE current_state;
 	std::list<UI_element*> elements_to_show;

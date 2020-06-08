@@ -6,7 +6,7 @@
 #include "UI_element.h"
 #include <string.h>
 
-UI_Label::UI_Label(int x, int y, UI_Type type, std::string text_input, UI_element * parent, j1Module * Observer, int* counter) : UI_element(x, y, type, parent, Observer)
+UI_Label::UI_Label(int x, int y, UI_Type type, const std::string text_input, UI_element * parent, j1Module * Observer, int* counter) : UI_element(x, y, type, parent, Observer)
 {
 	text_texture = nullptr;
 	t = type;
@@ -29,7 +29,7 @@ bool UI_Label::Update(float dt)
 	return true;
 }
 
-bool UI_Label::SetLabelText(std::string text_input, std::string font)
+bool UI_Label::SetLabelText(const std::string text_input, std::string font)
 {
 	bool ret = false;
 	text = text_input;

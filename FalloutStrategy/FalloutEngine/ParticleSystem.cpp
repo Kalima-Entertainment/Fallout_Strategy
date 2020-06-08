@@ -3,7 +3,6 @@
 #include "Particle.h"
 
 ParticleSystem::ParticleSystem() : j1Entity()
-
 {
 	position = { 0, 0 };
 	active = true;
