@@ -36,7 +36,11 @@ j1Entity::j1Entity() {
 	channel = 0;
 	fx = 0;
 
-	info = { false, nullptr, MovementState::MovementState_NoState,{0,0} };
+	info.IsSelected = false;
+	info.current_group = nullptr;
+	info.UnitMovementState = MovementState::MovementState_NoState;
+	info.goal_tile.x = 0;
+	info.goal_tile.y = 0;
 
 	last_dt = 0.01;
 	

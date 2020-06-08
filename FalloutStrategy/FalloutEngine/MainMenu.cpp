@@ -62,7 +62,6 @@ bool MainMenu::LoadAnimations()
 	loader->loop = true;
 
 	animation = animation.next_sibling();
-	frame = animation.child("animation").child("frame");
 
 	return ret;
 }

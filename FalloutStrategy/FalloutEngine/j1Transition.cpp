@@ -33,7 +33,6 @@ j1Transition::j1Transition() : j1Module()
 	lastdt = 0.01f;
 	transition = false;
 	freeTransitionTex = false;
-	
 }
 
 j1Transition::~j1Transition() {
@@ -48,8 +47,6 @@ bool j1Transition::LoadAnimations() {
 	int bytesFile = App->assetManager->Load("Assets/gui/loading.tmx", &buffer);
 	pugi::xml_parse_result result = animation_file.load_buffer(buffer, bytesFile);
 	RELEASE_ARRAY(buffer);
-
-	std::string image = std::string(animation_file.child("tileset").child("image").attribute("source").as_string());
 
 	logo_tex = App->tex->Load("Assets/gui/logo_spritesheet.png");
 	gif_tex = App->tex->Load("Assets/gui/gifwheel.png");

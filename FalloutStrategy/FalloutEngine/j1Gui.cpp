@@ -174,7 +174,7 @@ UI_element* j1Gui::CreateLabel(int x, int y, UI_Type type, const std::string &te
 }
 
 
-UI_element* j1Gui::CreateInputBox(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer, std::string font)
+UI_element* j1Gui::CreateInputBox(int x, int y, UI_Type type, const std::string &text_input, UI_element* parent, j1Module* Observer, std::string font)
 {
 	InputText* inputtext = new InputText(x, y, type, text_input, parent, Observer, font);
 

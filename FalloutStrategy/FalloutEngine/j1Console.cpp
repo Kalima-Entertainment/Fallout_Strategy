@@ -184,7 +184,7 @@ void j1Console::DestroyInterface() {
 	on_screen_log.clear();
 }
 
-void j1Console::CreateCommand(std::string name, std::string description, j1Module* callback) {
+void j1Console::CreateCommand(const std::string &name, std::string description, j1Module* callback) {
 	Command command;
 
 	command.name = name;
@@ -229,7 +229,7 @@ void j1Console::ProcessCommand(std::string command_text) {
 		AddLogText("Invalid command");
 }
 
-j1Module* j1Console::FindModule(std::string command_beginning) {
+j1Module* j1Console::FindModule(const std::string &command_beginning) {
 	for(int i = 0; i < command_vector.size(); i++)
 	{
 		if (command_vector[i].name == command_beginning)
