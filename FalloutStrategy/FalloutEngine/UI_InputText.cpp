@@ -61,7 +61,7 @@ bool InputText::Update(float dt) {
 			if (text.size() == 0)
 				text = ("Please introduce text");
 
-			if (observer == (j1Module*)App->console) {
+			if (observer == dynamic_cast<j1Module*>(App->console)) {
 				App->console->ProcessCommand(text.data());
 			}
 		}
