@@ -6,7 +6,7 @@
 #include "j1Timer.h"
 #include "j1PerfTimer.h"
 
-#define PI 3.1415
+#define Pi 3.1415
 
 struct Line {
 	int x1;

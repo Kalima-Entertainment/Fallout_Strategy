@@ -21,7 +21,7 @@
 #include "Emiter.h"
 #include "ParticleSystem.h"
 
-DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile, GenericPlayer* g_owner) : j1Entity() {
+DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile, GenericPlayer* g_owner) : j1Entity(), is_agressive(false) {
 	owner = g_owner;
 	type = g_type;
 	faction = g_faction;
@@ -50,7 +50,7 @@ DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_curr
 	visionEntity = nullptr;
 }
 
-DynamicEntity::DynamicEntity() {
+DynamicEntity::DynamicEntity() : j1Entity() {
 	target_entity = nullptr;
 	target_tile = {-1,-1};
 	next_tile = {-1,-1};

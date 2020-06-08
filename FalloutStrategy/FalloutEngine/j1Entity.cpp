@@ -14,6 +14,7 @@ j1Entity::j1Entity() {
 	
 	spawnPosition.x = NULL;
 	spawnPosition.y = NULL;
+
 	sprite_size = 0;
 	max_health = current_health = 0;
 
@@ -107,7 +108,7 @@ void j1Entity::SpatialAudio(int positionx, int positiony, Faction faction, State
 				channel = 16;
 				fx = App->audio->pistol;
 			}
-			else if (type != RANGED) {
+			else{
 				channel = 4;
 				fx = App->audio->Vault_attack;
 			}
@@ -117,7 +118,7 @@ void j1Entity::SpatialAudio(int positionx, int positiony, Faction faction, State
 				channel = 15;
 				fx = App->audio->minigun;
 			}
-			else if (type != RANGED) {
+			else{
 				channel = 5;
 				fx = App->audio->Brotherhood_attack;
 			}
@@ -127,7 +128,7 @@ void j1Entity::SpatialAudio(int positionx, int positiony, Faction faction, State
 				channel = 15;
 				fx = App->audio->minigun;
 			}
-			else if (type != RANGED) {
+			else{
 				channel = 3;
 				fx = App->audio->Mutant_attack;
 			}
@@ -137,7 +138,7 @@ void j1Entity::SpatialAudio(int positionx, int positiony, Faction faction, State
 				channel = 20;
 				fx = App->audio->pistol2;
 			}
-			else if (type != RANGED) {
+			else{
 				channel = 6;
 				fx = App->audio->Ghoul_attack;
 			}
