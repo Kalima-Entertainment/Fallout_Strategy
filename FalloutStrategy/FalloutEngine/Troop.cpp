@@ -328,6 +328,7 @@ void Troop::Attack() {
 	else {
 		StaticEntity* static_entity = dynamic_cast<StaticEntity*>(target_entity);
 		static_entity->GetHit();
+		direction = GetBuildingDirection(static_entity->tiles);
 	}
 
 	if (target_entity->current_health <= 0) {

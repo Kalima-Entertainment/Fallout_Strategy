@@ -108,8 +108,7 @@ bool j1Scene::Start()
 
 	// --------------------------------------
 
-	if (App->map->Load(modules) == true)
-	{
+	if (App->map->Load(modules) == true) {
 		App->map->CreateWalkabilityMap();
 	}
 
@@ -225,7 +224,7 @@ bool j1Scene::Update(float dt)
 	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
 
 	//Used to select units and groups
-	if ((!App->player->TouchingUI(x, y))&&(!App->isPaused)) {
+	if (!App->isPaused) {
 		RectangleSelection();
 	}
 
@@ -304,8 +303,7 @@ void j1Scene::RectangleSelection()
 		// --- Check for Units in the rectangle, select them ---
 		App->Mmanager->SelectEntities_inRect(SRect);
 	}
-
-	else if (((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT)==KEY_REPEAT)&&(App->player->TouchingUI(mouse_pos.x, mouse_pos.y)))||(App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)) {
+	else if (((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) && (App->player->TouchingUI(mouse_pos.x, mouse_pos.y))) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)) {
 		std::vector<DynamicEntity*> selected_entities;
 		for(int i = 0; i < App->entities->entities.size(); i++)
 		{

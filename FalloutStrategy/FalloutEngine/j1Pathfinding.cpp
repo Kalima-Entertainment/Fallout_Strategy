@@ -344,7 +344,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	last_path.clear();
 
 	if (!IsWalkable(origin)) {
-		LOG("Unwalkable origin");
+		//LOG("Unwalkable origin");
 		return -2;
 	}
 

@@ -254,9 +254,12 @@ bool j1EntityManager::Update(float dt)
 		{
 			if(!entities[i]->to_delete)
 				entities[i]->Update(dt);
+			
+		}
 
-			if ((entities.size() == 0)||(i > entities.size()))
-				LOG("Break");
+		if (sort_timer.Read() > 500) {
+			BubbleSortEntities();
+			sort_timer.Start();
 		}
 	}
 
@@ -292,7 +295,7 @@ bool j1EntityManager::PostUpdate()
 			}
 		}
 
-		if (App->player->selected_entity != nullptr)
+		if ((App->player->selected_entity != nullptr)&&(!App->player->selected_entity->is_dynamic))
 		{
 			StaticEntity* static_entity = dynamic_cast<StaticEntity*>(App->player->selected_entity);
 			//Create HUD for the building
@@ -400,12 +403,7 @@ bool j1EntityManager::PostUpdate()
 				break;
 			}
 		}
-
-		if (sort_timer.Read() > 500) {
-			BubbleSortEntities();
-			sort_timer.Start();
-		}
-
+		
 		for(int i = 0; i < entities.size(); i++)
 		{
 			//camera culling
@@ -768,10 +766,9 @@ bool j1EntityManager::IsTileInPositionOccupied(fPoint position) {
 
 void j1EntityManager::BubbleSortEntities() {
 	BROFILER_CATEGORY("BubbleSortEntities", Profiler::Color::Blue)
-	int i, j;
 	int n = entities.size();
-	for (i = 0; i < n - 1; i++) {
-		for (j = 0; j < n - i - 1; j++) {
+	for (int i = 0; i < n - 1; i++) {
+		for (int j = 0; j < n - i - 1; j++) {
 		  if (entities[j]->position.y > entities[j + 1]->position.y)
 			std::swap(entities[j], entities[j + 1]);
 		}

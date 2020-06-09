@@ -376,6 +376,17 @@ Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
 	}*/
 }
 
+Direction DynamicEntity::GetBuildingDirection(std::vector<iPoint> building_tiles) const {
+	//we get the closest tile to the entity
+	iPoint closest_tile = App->entities->ClosestTile(current_tile, building_tiles);
+
+	//We get the center of the tile in world position and create it
+	closest_tile = App->map->MapToWorld(closest_tile.x, closest_tile.y);
+	SDL_Rect closest_tile_center = { closest_tile.x + 30, closest_tile.y + 30, 4, 4 };
+
+	return GetDirectionToGo(closest_tile_center);
+}
+
 void DynamicEntity::Flee() {
 	int minimum_distance = 5;
 	int max_distance = 10;
