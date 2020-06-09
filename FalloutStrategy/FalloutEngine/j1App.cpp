@@ -433,7 +433,10 @@ bool j1App::LoadGameNow()
 	pugi::xml_document data;
 	pugi::xml_node root;
 
-	pugi::xml_parse_result result = data.load_file(load_game.c_str());
+	char* buffer;
+	int bytesFile = App->assetManager->Load(load_game.c_str(), &buffer);
+	pugi::xml_parse_result result = data.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
 
 	if(result != NULL)
 	{
@@ -471,6 +474,11 @@ bool j1App::SavegameNow() const
 	// xml object were we will store all data
 	pugi::xml_document data;
 	pugi::xml_node root;
+
+	char* buffer;
+	int bytesFile = App->assetManager->Load(save_game.c_str(), &buffer);
+	pugi::xml_parse_result result = data.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
 
 	root = data.append_child("game_state");
 
