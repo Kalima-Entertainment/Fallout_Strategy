@@ -23,6 +23,7 @@
 #include "Deathclaw.h"
 #include "GenericPlayer.h"
 #include "j1Entity.h"
+#include "AssetsManager.h"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -553,7 +554,11 @@ bool j1EntityManager::LoadReferenceEntityData() {
 	bool ret = true;
 	pugi::xml_document entities_file;
 	pugi::xml_node entities_node;
-	pugi::xml_parse_result result = entities_file.load_file("entities.xml");
+
+	char* buffer;
+	int bytesFile = App->assetManager->Load("entities.xml", &buffer);
+	pugi::xml_parse_result result = entities_file.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
 
 	if (result == NULL)
 		LOG("Could not load map xml file entities.xml. pugi error: %s", result.description());
@@ -858,7 +863,11 @@ void j1EntityManager::LoadUnitCosts() {
 
 	pugi::xml_document entities_file;
 	pugi::xml_node entities_node;
-	pugi::xml_parse_result result = entities_file.load_file("entities.xml");
+	
+	char* buffer;
+	int bytesFile = App->assetManager->Load("entities.xml", &buffer);
+	pugi::xml_parse_result result = entities_file.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
 
 	if (result == NULL)
 		LOG("Could not load map xml file entities.xml. pugi error: %s", result.description());

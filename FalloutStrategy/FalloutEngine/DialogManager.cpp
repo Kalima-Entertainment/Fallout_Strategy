@@ -5,6 +5,7 @@
 #include "j1Gui.h"
 #include "UI_element.h"
 #include "MenuManager.h"
+#include "AssetsManager.h"
 #include "j1Audio.h"
 #include "UI_Label.h"
 #include "j1Hud.h"
@@ -97,7 +98,11 @@ bool DialogManager::LoadDialogs() {
 
 	pugi::xml_document dialogs_file;
 	pugi::xml_node dialogs_node;
-	pugi::xml_parse_result result = dialogs_file.load_file("dialogs.xml");
+	
+	char* buffer;
+	int bytesFile = App->assetManager->Load("dialogs.xml", &buffer);
+	pugi::xml_parse_result result = dialogs_file.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
 
 	if (result == NULL)
 		LOG("Could not load xml file dialogs.xml pugi error: %s", result.description());
