@@ -171,7 +171,7 @@ void Particle::Move(float dt)
 	speed[0] += acceleration[0] * dt * 60;
 	speed[1] += acceleration[1] * dt * 60;
 
-	//TODO 1: Do the same with position and angles
+	// Do the same with position and angles
 	position[0] += speed[0] * dt * 60;
 	position[1] += speed[1] * dt * 60;
 

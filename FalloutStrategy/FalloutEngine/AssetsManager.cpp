@@ -6,8 +6,8 @@ ModuleAssetsManager::ModuleAssetsManager() : j1Module()
 {
 	name = ("assetsManager");
 
-	// TODO 0 (Solved): Open the following link and check it: https://icculus.org/physfs/docs/html/physfs_8h.html
-	// TODO 1 (Solved): You must initialize and de-initialize the PhysFS API.
+	// Open the following link and check it: https://icculus.org/physfs/docs/html/physfs_8h.html
+	// You must initialize and de-initialize the PhysFS API.
 
 	// Initialize the PhysicsFS library
 	// This must be called before any other PhysicsFS function
@@ -35,7 +35,7 @@ bool ModuleAssetsManager::Awake(pugi::xml_node& config)
 	else
 		LOG("Failed loading Asset Manager");
 
-	// TODO 2 (Solved): Mount the desired ZIP with PhysFS.
+	// Mount the desired ZIP with PhysFS.
 
 	// Add an archive or directory to the search path.
 	// If this is a duplicate, the entry is not added again, even though the function succeeds.
@@ -57,7 +57,7 @@ SDL_RWops* ModuleAssetsManager::Load(const char* path) const
 	char* buffer;
 	uint bytes = Load(path, &buffer);
 
-	// TODO 5 (Solved): Check what is: https://wiki.libsdl.org/SDL_RWops
+	// Check what is: https://wiki.libsdl.org/SDL_RWops
 	// We will need a new method to load Music, FX and Textures from the memory.
 	// Try to investigate SDL_RWops and Related Functions.
 
@@ -73,7 +73,7 @@ uint ModuleAssetsManager::Load(const char* path, char** buffer) const
 {
 	uint ret = 0;
 
-	// TODO 3 (Solved): You want to return the number of bytes it has read from the file that we passed to this function. 
+	// You want to return the number of bytes it has read from the file that we passed to this function. 
 	// Maybe you want to search readBytes in the documentation, and investigate from there how to build the function.
 
 	// The reading offset is set to the first byte of the file.

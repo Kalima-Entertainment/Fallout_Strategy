@@ -242,8 +242,7 @@ SDL_Rect TileSet::GetTileRect(int id) const
 
 // Called before quitting
 bool j1Map::CleanUp()
-{
-	//TODO
+{	
 	LOG("Unloading map");
 
 	//remove all tilesets

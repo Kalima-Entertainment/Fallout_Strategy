@@ -227,7 +227,7 @@ void FoWManager::CreateFoWMap(uint w, uint h)
 	width = w;
 	height = h;
 
-	//TODO 1: Complete this function to create a FoWMap. EASY!
+	// Complete this function to create a FoWMap. EASY!
 	//If a map has already been created you will need to delete it first, hint: there's a function for that :) 
 	//Note that the map will be a 1 dimensional array and you might need the 2 variables above to set it up. The map should be stored in the variable "fowMap"
 	//Don't forget to reset it once is creeated, hint: there's another function for that :)
@@ -369,7 +369,7 @@ FoWEntity* FoWManager::CreateFoWEntity(iPoint pos, bool providesVisibility)
 }
 
 
-//TODO 5: Complete the following function: it shoud return the tile visibility (true if visible, otherwise false)
+// Complete the following function: it shoud return the tile visibility (true if visible, otherwise false)
 //This function will be used to check if we need to draw a certain entity
 bool FoWManager::CheckTileVisibility(iPoint mapPos)const
 {
