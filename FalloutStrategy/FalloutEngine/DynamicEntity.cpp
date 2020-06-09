@@ -177,18 +177,17 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 		return ret;
 
 	if (!App->pathfinding->IsWalkable(current_tile)) {
-		destination = App->pathfinding->FindWalkableAdjacentTile(current_tile);
-		if(!App->pathfinding->IsWalkable(destination))
-			LOG("unwalkable origin");
-		ret = false;
+		next_tile = App->pathfinding->FindNearestWalkableTile(current_tile, destination);
+		ret = App->pathfinding->IsWalkable(next_tile);
 	}
 
 	//if the tile is in the map but it's not walkable
 	if (!App->pathfinding->IsWalkable(destination)) {
 		destination = App->pathfinding->FindNearestWalkableTile(current_tile, destination);
-		if (!App->pathfinding->IsWalkable(destination))
+		ret = App->pathfinding->IsWalkable(destination);
+
+		if(!ret)
 			LOG("unwalkable destination");
-		ret = false;
 	}
 
 	if (App->entities->occupied_tiles[destination.x][destination.y]) {
@@ -304,7 +303,9 @@ void DynamicEntity::Move(float dt) {
 				//if there is a new path erase the first element
 				if (path_to_target.size() > 0)
 					path_to_target.erase(path_to_target.cbegin());
-
+			}
+			else {
+				PathfindToPosition(target_tile);
 			}
 		}
 
@@ -382,7 +383,7 @@ Direction DynamicEntity::GetBuildingDirection(std::vector<iPoint> building_tiles
 
 	//We get the center of the tile in world position and create it
 	closest_tile = App->map->MapToWorld(closest_tile.x, closest_tile.y);
-	SDL_Rect closest_tile_center = { closest_tile.x + 30, closest_tile.y + 30, 4, 4 };
+	SDL_Rect closest_tile_center = { closest_tile.x + 31, closest_tile.y + 31, 2, 2 };
 
 	return GetDirectionToGo(closest_tile_center);
 }

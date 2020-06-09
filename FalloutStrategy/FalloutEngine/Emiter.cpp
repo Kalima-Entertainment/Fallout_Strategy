@@ -55,7 +55,7 @@ Emiter::Emiter(float posX, float posY, float SpeedX, float SpeedY, int Variation
 
 void Emiter::Start()
 {
-	//TODO 3: Just calculate the max number of particles you will have in screen
+	// Just calculate the max number of particles you will have in screen
 	//particles rate * particles life time
 	int maxParticles = particlesRate * particlesLifeTime + 1;
 
@@ -191,7 +191,7 @@ void Emiter::ThrowParticles() {
 
 		for(int i = 0; i < particleVector.size(); i++)
 		{
-			//TODO 2: Call Activate(), use Generate...() functions to get the parameters Activate() needs.
+			// Call Activate(), use Generate...() functions to get the parameters Activate() needs.
 			//Activate returns false if the particle is already active, and true if we activate it.
 
 			if (particleVector[i].Activate())

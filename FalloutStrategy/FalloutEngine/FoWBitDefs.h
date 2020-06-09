@@ -1,7 +1,7 @@
 #ifndef __FOW_BIT_DEFS__
 #define __FOW_BIT_DEFS__
 
-//TODO 3.1: You don't have to do anything in here! If you are interested in how we store each tile fog state read below, otherwise feel free to go to the next TODO
+// You don't have to do anything in here! If you are interested in how we store each tile fog state read below, otherwise feel free to go to the next TODO
 
 //Imagine that we divide the tile into 9 subtiles (like in TIC TAC TOE). These first 9 defines store a value for each one of the subtiles
 //If we want a certain shape we just add the numbers of the subtiles involved

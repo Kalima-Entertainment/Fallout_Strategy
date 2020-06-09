@@ -174,7 +174,7 @@ bool Troop::Update(float dt) {
 		}
 		else if (current_tile == target_tile){
 			state = IDLE;
-			//UpdateTile();
+			commanded = false;
 		}
 
 		SpatialAudio(position.x, position.y, faction, state, type);

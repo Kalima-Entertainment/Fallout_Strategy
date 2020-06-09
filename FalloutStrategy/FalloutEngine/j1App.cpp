@@ -433,7 +433,10 @@ bool j1App::LoadGameNow()
 	pugi::xml_document data;
 	pugi::xml_node root;
 
-	pugi::xml_parse_result result = data.load_file(load_game.c_str());
+	char* buffer;
+	int bytesFile = App->assetManager->Load(load_game.c_str(), &buffer);
+	pugi::xml_parse_result result = data.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
 
 	if(result != NULL)
 	{
@@ -465,12 +468,34 @@ bool j1App::LoadGameNow()
 bool j1App::SavegameNow() const
 {
 	bool ret = true;
-	save_game.assign("save_file.xml");
+	//save_game.assign("save_file.xml");
 	LOG("Saving Game State to %s...", save_game.c_str());
 
 	// xml object were we will store all data
 	pugi::xml_document data;
 	pugi::xml_node root;
+
+	char* buffer;
+	int bytesFile = App->assetManager->Load(save_game.c_str(), &buffer);
+	pugi::xml_parse_result result = data.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
+
+	if (result == NULL)
+		LOG("Could not load %s to save", save_game.c_str());
+	else
+		LOG("Properly loaded %s to save", save_game.c_str());
+
+	root = data.first_child();
+
+	while (root)
+	{
+		while (root.first_child().first_child())
+		{
+			root.remove_child(root.first_child().name());
+		}
+
+		root = root.next_sibling();
+	}
 
 	root = data.append_child("game_state");
 
@@ -482,6 +507,7 @@ bool j1App::SavegameNow() const
 		pModule = modules[i];
 	}
 
+	/*
 	if(ret == true)
 	{
 		std::stringstream stream;
@@ -494,6 +520,7 @@ bool j1App::SavegameNow() const
 	else{
 		LOG("Save process halted from an error in module %s", (pModule != NULL) ? pModule->name.c_str() : "unknown");
 	}
+	*/
 
 	data.reset();
 	want_to_save = false;

@@ -68,7 +68,7 @@ void j1Map::Draw()
 					TileSet* tileset = GetTilesetFromTileId(tile_id);
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 
-					if (CheckVisibleArea(x, y) == true || App->render->debug == true) { //Check Fog Of War visibility
+					if (CheckVisibleArea(x, y) == true || App->render->fog_of_war == false) { //Check Fog Of War visibility
 						//camera culling
 						if ((pos.x + r.w + tileset->offset_x > -(App->render->camera.x))
 							&& (pos.x < -App->render->camera.x + App->render->camera.w)
@@ -242,8 +242,7 @@ SDL_Rect TileSet::GetTileRect(int id) const
 
 // Called before quitting
 bool j1Map::CleanUp()
-{
-	//TODO
+{	
 	LOG("Unloading map");
 
 	//remove all tilesets
