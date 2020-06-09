@@ -61,8 +61,6 @@ bool MainMenu::LoadAnimations()
 	}
 	loader->loop = true;
 
-	animation = animation.next_sibling();
-
 	return ret;
 }
 
