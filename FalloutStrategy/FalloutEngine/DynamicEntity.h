@@ -46,6 +46,7 @@ public:
 
 	bool PathfindToPosition(iPoint target);
 	Direction GetDirectionToGo(SDL_Rect next_tile_rect) const;
+	Direction GetBuildingDirection(std::vector<iPoint> building_tiles) const;
 	void UpdateTile();
 
 	bool LoadAnimations(const char* folder, const char* file_name);

@@ -129,7 +129,7 @@ bool j1Hud::PostUpdate()
 	App->render->Blit((SDL_Texture*)App->gui->GetAtlas(), cursor_position.x * App->win->GetScale() + cursor_offset.x, cursor_position.y * App->win->GetScale() + cursor_offset.y, &cursorRect, 1.0f, 0.0f);
 
 	//INGAME HUD
-	if (App->player->selected_entity != nullptr && App->gui->ingame == true)
+	if (App->player->selected_entity != nullptr && !App->player->selected_entity->is_dynamic && App->gui->ingame == true)
 	{
 		StaticEntity* static_entity = dynamic_cast<StaticEntity*>(App->player->selected_entity);
 
