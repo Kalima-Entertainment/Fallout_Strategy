@@ -41,8 +41,11 @@ void j1Group::ClearGroup()
 {
 	for (int i = 0; i < Units.size(); i++)
 	{
-		Units[i]->info.IsSelected = false;
-		Units[i]->info.current_group = nullptr;
+		// -- If we have any unit info inside the vector we ensure that will be cleaned.
+		if (Units[i] != nullptr) {
+			Units[i]->info.IsSelected = false;
+			Units[i]->info.current_group = nullptr;
+		}
 	}
 	Units.clear();
 }
