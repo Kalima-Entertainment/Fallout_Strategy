@@ -64,7 +64,7 @@ std::vector<iPoint> FoWEntity::GetTilesInsideRadius()const
 	return ret;
 }
 
-//TODO 3: Comprehend and complete this function: (this is the function that does the magic for us)
+// Comprehend and complete this function: (this is the function that does the magic for us)
 void FoWEntity::ApplyMaskToTiles(std::vector<iPoint>tilesAffected)
 {
 
