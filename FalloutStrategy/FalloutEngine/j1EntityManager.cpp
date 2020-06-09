@@ -39,6 +39,8 @@ j1EntityManager::j1EntityManager(){
 
 	name.assign("entities");
 
+	randomFaction[0] = randomFaction[1] = randomFaction[2] = randomFaction[3] = 0;
+
 	loading_faction = VAULT;
 	loading_entity = MELEE;
 	blocked_movement = false;

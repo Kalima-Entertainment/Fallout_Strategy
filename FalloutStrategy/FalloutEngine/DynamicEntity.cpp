@@ -382,7 +382,7 @@ Direction DynamicEntity::GetBuildingDirection(std::vector<iPoint> building_tiles
 
 	//We get the center of the tile in world position and create it
 	closest_tile = App->map->MapToWorld(closest_tile.x, closest_tile.y);
-	SDL_Rect closest_tile_center = { closest_tile.x + 30, closest_tile.y + 30, 4, 4 };
+	SDL_Rect closest_tile_center = { closest_tile.x + 31, closest_tile.y + 31, 2, 2 };
 
 	return GetDirectionToGo(closest_tile_center);
 }
