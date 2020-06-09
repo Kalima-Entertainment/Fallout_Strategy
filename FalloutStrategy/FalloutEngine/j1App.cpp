@@ -133,6 +133,11 @@ bool j1App::Awake()
 
 	bool ret = false;
 
+	std::vector<j1Module*>::iterator item_list;
+	item_list = modules.begin();
+	j1Module* it = *item_list;
+	it->Awake(config.child(it->name.c_str()));
+	
 	config = LoadConfig(config_file);
 
 	if(config.empty() == false)
@@ -217,8 +222,10 @@ bool j1App::Update()
 pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file) const
 {
 	pugi::xml_node ret;
-
-	pugi::xml_parse_result result = config_file.load_file("config.xml");
+	char* buffer;
+	int bytesFile = App->assetManager->Load("config.xml", &buffer);
+	pugi::xml_parse_result result = config_file.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
 
 	if(result == NULL)
 		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
