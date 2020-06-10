@@ -128,7 +128,7 @@ bool j1Minimap::PostUpdate() {
 			DrawFogOfWar();
 
 		//entities
-		for(int i = 0; i < App->entities->entities.size(); i++)
+		for(size_t i = 0; i < App->entities->entities.size(); i++)
 		{
 			SDL_Rect entity_rect = { 0,0,3,3 };
 			iPoint entity_position = App->minimap->WorldToMinimap(static_cast<int>(App->entities->entities[i]->position.x), static_cast<int>(App->entities->entities[i]->position.y));
@@ -175,7 +175,7 @@ bool j1Minimap::PostUpdate() {
 bool j1Minimap::CreateMinimap() {
 
 	PERF_START(ptimer);
-	int half_width = map_width * 0.5f;
+	int half_width = static_cast<int>(map_width * 0.5f);
 		
 	if (texture != nullptr) {
 		App->tex->UnLoad(texture);

@@ -352,6 +352,9 @@ Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
 	else if ((floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
 		return Direction::BOTTOM_RIGHT;
 	}
+	else {
+		return Direction::NO_DIRECTION;
+	}
 }
 
 Direction DynamicEntity::GetBuildingDirection(std::vector<iPoint> building_tiles) const {

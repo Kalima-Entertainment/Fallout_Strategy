@@ -43,7 +43,7 @@ j1Entity::j1Entity() {
 	info.goal_tile.x = 0;
 	info.goal_tile.y = 0;
 
-	last_dt = 0.01;
+	last_dt = 0.01f;
 	
 
 	Mix_AllocateChannels(32);

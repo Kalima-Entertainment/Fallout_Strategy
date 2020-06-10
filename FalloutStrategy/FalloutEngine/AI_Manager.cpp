@@ -88,7 +88,6 @@ bool AI_Manager::Update(float dt) {
 bool AI_Manager::PostUpdate() {
 	bool ret = true;
 	iPoint node_world_position;
-	SDL_Rect node;
 
 	return ret;
 }
