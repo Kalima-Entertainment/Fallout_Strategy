@@ -79,6 +79,12 @@ bool Troop::Update(float dt) {
 		target_building = dynamic_cast<StaticEntity*>(target_entity);
 	}
 
+	if ((target_entity != nullptr) && (target_entity->state == DIE))
+		target_entity = nullptr;
+
+	if ((target_building != nullptr) && (target_building->state == DIE))
+		target_building = nullptr;
+
 	switch (state)
 	{
     case IDLE:

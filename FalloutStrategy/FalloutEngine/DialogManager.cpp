@@ -73,6 +73,7 @@ bool DialogManager::PostUpdate() {
 
 bool DialogManager::CleanUp() {
 	bool ret = true;
+
 	if (App->quitGame) {
 		for(int i = 0; i < dialogs.size(); i++)
 		{
@@ -82,6 +83,7 @@ bool DialogManager::CleanUp() {
 
 		dialogs.clear();
 	}
+
 	App->menu_manager->DestroyMenu(Menu::QUEST);
 	App->menu_manager->DestroyMenu(Menu::DIALOG);
 	App->menu_manager->CreateMenu(Menu::GUI);
