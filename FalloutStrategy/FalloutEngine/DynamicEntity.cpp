@@ -192,10 +192,12 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 	}
 	else {
 		if (App->pathfinding->CreatePath(current_tile, destination) == -1) {
-			//LOG("No");
-			if (!App->pathfinding->IsWalkable(destination))
+			LOG("No");
+			if (!App->pathfinding->IsWalkable(destination)) {
 				LOG("Unwalkable destination");
-			ret = false;
+
+				ret = false;
+			}
 		}
 	}
 
@@ -208,7 +210,8 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 		if (path_to_target.front() == current_tile)
 			path_to_target.erase(path_to_target.begin());
 
-		next_tile = path_to_target.front();
+		if (path_to_target.size() > 0)
+			next_tile = path_to_target.front();
 	}
 
 	return ret;

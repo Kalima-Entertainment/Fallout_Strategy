@@ -61,7 +61,7 @@ bool AI_Player::Update(float dt) {
 		{
 			//authomatic gathering
 			if (gatherers_vector[i]->GetResourceBuilding() == nullptr) {
-				gatherers_vector[i]->AssignResourceBuilding(App->entities->GetClosestResourceBuilding(gatherers_vector[i]->current_tile));
+				gatherers_vector[i]->AssignResourceBuilding(App->entities->GetClosestResourceBuilding(gatherers_vector[i]->current_tile, gatherers_vector[i]->resource_type));
 				//if there is at least a resource building left, go there
 				if (gatherers_vector[i]->GetResourceBuilding() != nullptr) {
 					gatherers_vector[i]->PathfindToPosition(App->entities->ClosestTile(gatherers_vector[i]->current_tile, gatherers_vector[i]->GetResourceBuilding()->tiles));

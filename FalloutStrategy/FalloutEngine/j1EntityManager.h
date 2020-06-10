@@ -92,7 +92,7 @@ public:
 	//Find entities
 	j1Entity*		  FindEntityByTile(iPoint tile);
 	ResourceBuilding* FindResourceBuildingByTile(iPoint tile);
-	ResourceBuilding* GetClosestResourceBuilding(iPoint current_position);
+	ResourceBuilding* GetClosestResourceBuilding(iPoint current_position, Resource resource_type);
 	bool IsTileOccupied(iPoint position);
 	bool IsTileInPositionOccupied(fPoint position);
 

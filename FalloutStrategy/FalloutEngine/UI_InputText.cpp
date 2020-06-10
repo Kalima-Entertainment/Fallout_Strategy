@@ -70,16 +70,11 @@ bool InputText::Update(float dt) {
 		if(!text.empty()){
 			App->render->Blit_UI(texture, pos.x, pos.y, &r, SDL_FLIP_NONE, 0.0f);
 		}
-
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN || App->console->isVisible) {
-		
 		InputText_Actived = !InputText_Actived;
-	
 	}
-
-	
 
 	return true;
 }

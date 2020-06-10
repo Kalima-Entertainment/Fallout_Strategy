@@ -743,14 +743,16 @@ iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) 
 	return possible_tile;
 }
 
-ResourceBuilding* j1EntityManager::GetClosestResourceBuilding(iPoint current_position) {
+ResourceBuilding* j1EntityManager::GetClosestResourceBuilding(iPoint current_position, Resource resource_type) {
 	ResourceBuilding* closest_building = nullptr;
 	int min_distance = 1000;
+	int building_distance = 0;
+
 	for(size_t i = 0; i < resource_buildings.size(); i++)
 	{
-		if (resource_buildings[i]->quantity > 0)
+		if ((resource_buildings[i]->quantity > 0)&&((resource_type == Resource::NO_TYPE)||(resource_buildings[i]->resource_type == resource_type)))
 		{
-			int building_distance = ClosestTile(current_position, resource_buildings[i]->tiles).DistanceManhattan(current_position);
+			building_distance = ClosestTile(current_position, resource_buildings[i]->tiles).DistanceManhattan(current_position);
 			if (building_distance < min_distance) {
 				closest_building = resource_buildings[i];
 				min_distance = building_distance;
