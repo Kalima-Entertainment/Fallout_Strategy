@@ -262,6 +262,7 @@ void j1Minimap::EnableRadar() {
 
 void j1Minimap::DrawFogOfWar() {
 	SDL_Rect fog_of_war_rect = { 0,0,1,1 };
+	//SDL_Rect fow_rect = { 51,0, fog_of_war_rect.w, fog_of_war_rect.h };
 	fPoint rect_pos = {0,0};
 
 	int tile_width = width / 150;
@@ -269,6 +270,7 @@ void j1Minimap::DrawFogOfWar() {
 	int y = 0;
 	int j = 0;
 	int counter = 0;
+	
 
 	for(int i = 0; i < 300; i++)
 	{
@@ -291,12 +293,14 @@ void j1Minimap::DrawFogOfWar() {
 			}
 			else {
 				fog_of_war_rect.w = round(1.75f * tile_width * counter);
+				//App->render->Blit(App->entities->life_bars, fog_of_war_rect.x, fog_of_war_rect.y, &fow_rect, 1.0f, 0.0f);
 				App->render->DrawQuad(fog_of_war_rect, 0, 0,0, 255, true, false);
 				fog_of_war_rect.x += round(fog_of_war_rect.w + 1.75f * tile_width);
 				counter = 0;
 			}
 		}
 		fog_of_war_rect.w = round(1.75f * tile_width * counter);
+		//App->render->Blit(App->entities->life_bars, fog_of_war_rect.x, fog_of_war_rect.y, &fow_rect, );
 		App->render->DrawQuad(fog_of_war_rect, 0, 0, 0, 255, true, false);
 	}
 }
