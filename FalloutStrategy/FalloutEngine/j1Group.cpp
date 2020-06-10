@@ -39,14 +39,6 @@ void j1Group::AddTiletoOccupied(iPoint to_add)
 
 void j1Group::ClearGroup()
 {
-	for (size_t i = 0; i < Units.size(); i++)
-	{
-		// -- If we have any unit info inside the vector we ensure that will be cleaned.
-		if (Units[i] != nullptr) {
-			Units[i]->info.IsSelected = false;
-			Units[i]->info.current_group = nullptr;
-		}
-	}
 	Units.clear();
 }
 
