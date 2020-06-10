@@ -174,6 +174,7 @@ bool Troop::Update(float dt) {
 		}
 		else if (current_tile == target_tile){
 			state = IDLE;
+			path_to_target.clear();
 			commanded = false;
 		}
 

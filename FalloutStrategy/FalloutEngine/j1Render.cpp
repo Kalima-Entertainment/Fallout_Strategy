@@ -233,7 +233,12 @@ bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a
 		rec.h *= scale;
 	}
 
-	int result = (filled) ? SDL_RenderFillRect(renderer, &rec) : SDL_RenderDrawRect(renderer, &rec);
+	//int result = (filled) ? SDL_RenderFillRect(renderer, &rec) : SDL_RenderDrawRect(renderer, &rec);
+	int result = 0;
+	if (filled)
+		result = SDL_RenderFillRect(renderer, &rec);
+	else
+		result = SDL_RenderDrawRect(renderer, &rec);
 
 	if(result != 0)
 	{

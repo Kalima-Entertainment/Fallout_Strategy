@@ -106,18 +106,15 @@ bool DynamicEntity::PostUpdate() {
 			App->render->Blit(App->render->debug_tex, pos.x, pos.y, &tile_rect);
 		}
 
+		//selected entity or selected group
+		if((App->player->selected_entity == this)||(info.IsSelected))
+			tile_rect = { 320,0,64,64 };
 		//ally
-		if (faction == App->player->faction) tile_rect = { 0,0,64,64 };
+		else if ((faction == App->player->faction)&&(!info.IsSelected)) 
+			tile_rect = { 0,0,64,64 };
 		//enemy
 		else tile_rect = { 64,0,64,64 };
 
-		if(App->player->selected_entity != this)
-			App->render->Blit(App->render->debug_tex, tile_tex_position.x, tile_tex_position.y, &tile_rect);
-	}
-
-	//selected entity
-	if (App->player->selected_entity == this || this->info.IsSelected) {
-		tile_rect = { 320,0,64,64 };
 		App->render->Blit(App->render->debug_tex, tile_tex_position.x, tile_tex_position.y, &tile_rect);
 	}
 
@@ -135,8 +132,8 @@ bool DynamicEntity::PostUpdate() {
 	current_animation = &animations[state][direction];
 
 	//Health Bar
-	App->entities->background_health_bar = { (int)(position.x - HALF_TILE * 0.75f),(int)(position.y - TILE_SIZE * 1.25f), 50, 4 };
-	App->entities->foreground_health_bar = { (int)(position.x - HALF_TILE * 0.75f),(int)(position.y - TILE_SIZE * 1.25f), (int)(current_health / max_health * 50), 4 };
+	App->entities->background_health_bar = { static_cast<int>(position.x - HALF_TILE * 0.75f),static_cast<int>(position.y - TILE_SIZE * 1.25f), 50, 4 };
+	App->entities->foreground_health_bar = { static_cast<int>(position.x - HALF_TILE * 0.75f),static_cast<int>(position.y - TILE_SIZE * 1.25f), static_cast<int>(current_health / max_health * 50), 4 };
 	if (App->entities->foreground_health_bar.w < 0) {
 		App->entities->foreground_health_bar.w = 0;
 	}
@@ -237,23 +234,6 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 }
 
 void DynamicEntity::Move(float dt) {
-	//check if the tile that wants to be occupied is already occupied
-	if (!App->entities->IsTileInPositionOccupied(position))
-		UpdateTile();
-	
-	else {
-		if (node_path.size() > 0) {
-			if (current_tile.DistanceManhattan(node_path.back()) < 3)
-				node_path.pop_back();
-			if (node_path.size() > 0)
-				PathfindToPosition(node_path.back());
-			else
-				PathfindToPosition(target_tile);
-		}
-		else {
-			PathfindToPosition(target_tile);
-		}
-	}
 
 	// -- Get next tile center
 	next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
@@ -267,6 +247,23 @@ void DynamicEntity::Move(float dt) {
 	switch (direction)
 	{
 	case NO_DIRECTION:
+
+		//check if the tile that wants to be occupied is already occupied
+		if (!App->entities->IsTileInPositionOccupied(position))
+			UpdateTile();
+		else {
+			if (node_path.size() > 0) {
+				if (current_tile.DistanceManhattan(node_path.back()) < 3)
+					node_path.pop_back();
+				if (node_path.size() > 0)
+					PathfindToPosition(node_path.back());
+				else
+					PathfindToPosition(target_tile);
+			}
+			else {
+				PathfindToPosition(target_tile);
+			}
+		}
 
 		//we are following a node path
 		if (node_path.size() > 0) {
@@ -288,6 +285,7 @@ void DynamicEntity::Move(float dt) {
 
 		if (current_tile == target_tile){
 			direction = last_direction;
+			path_to_target.clear();
 			commanded = false;
 		}
 		else {
@@ -339,24 +337,24 @@ void DynamicEntity::Move(float dt) {
 Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
 
 	//if position is in the middle of the next tile rect
-	if ((ceil(position.x) > next_tile_rect.x) && (floor(position.x) < next_tile_rect.x + next_tile_rect.w)
-		&& (ceil(position.y) > next_tile_rect.y) && (floor(position.y) < next_tile_rect.y + next_tile_rect.h)) {
+	if ((position.x > next_tile_rect.x) && (position.x < next_tile_rect.x + next_tile_rect.w)
+		&& (position.y > next_tile_rect.y) && (position.y < next_tile_rect.y + next_tile_rect.h)) {
 		return Direction::NO_DIRECTION;
 	}
-	if ((ceil(position.x) > floor(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (ceil(position.y) > floor(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+	if ((position.x > next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y > next_tile_rect.y + next_tile_rect.h * 0.5f)) {
 		return Direction::TOP_LEFT;
 	}
-	else if ((ceil(position.x) > floor(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+	else if ((position.x > next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y < next_tile_rect.y + next_tile_rect.h * 0.5f)) {
 		return Direction::BOTTOM_LEFT;
 	}
-	else if ((floor(position.x < ceil(next_tile_rect.x + next_tile_rect.w * 0.5f))) && (ceil(position.y) > floor(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+	else if ((position.x < next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y) > next_tile_rect.y + next_tile_rect.h * 0.5f) {
 		return Direction::TOP_RIGHT;
 	}
-	else if ((floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+	else if ((position.x < next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y < next_tile_rect.y + next_tile_rect.h * 0.5f)) {
 		return Direction::BOTTOM_RIGHT;
 	}
 	else {
-		return last_direction;
+		return NO_DIRECTION;
 	}
 
 	/*if ((ceil(position.x) > floor(next_tile_rect.x)) && (floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w))

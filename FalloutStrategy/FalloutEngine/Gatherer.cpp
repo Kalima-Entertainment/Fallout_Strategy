@@ -122,6 +122,8 @@ bool Gatherer::Update(float dt) {
 			}
 			else {
 				state = IDLE;
+				path_to_target.clear();
+				commanded = false;
 			}
 		}
 		break;
