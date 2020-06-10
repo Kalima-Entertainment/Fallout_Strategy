@@ -111,6 +111,8 @@ bool j1EntityManager::Start() {
 	foreground_health_bar = { 0,0,0,0 };
 	frame_quad = { 0,0,0,0 };
 
+	
+
 	for(int y = 0; y < 150; y++)
 	{
 		for(int x = 0; x < 150; x++)
@@ -147,6 +149,8 @@ bool j1EntityManager::Start() {
 	blood = App->tex->Load("Assets/textures/particles/blood.png");
 	smoke = App->tex->Load("Assets/textures/particles/smoke.png");
 	hit = App->tex->Load("Assets/textures/particles/HitParticle.png");
+
+	life_bars = App->tex->Load("Assets/textures/life_bar/bars.png");
 
 	return ret;
 }

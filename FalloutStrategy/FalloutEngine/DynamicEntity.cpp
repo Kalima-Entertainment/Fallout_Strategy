@@ -133,12 +133,13 @@ bool DynamicEntity::PostUpdate() {
 	current_animation = &animations[state][direction];
 
 	//Health Bar
-	App->entities->background_health_bar = { static_cast<int>(position.x - HALF_TILE * 0.75f),static_cast<int>(position.y - TILE_SIZE * 1.25f), 50, 4 };
-	App->entities->foreground_health_bar = { static_cast<int>(position.x - HALF_TILE * 0.75f),static_cast<int>(position.y - TILE_SIZE * 1.25f), static_cast<int>(current_health / max_health * 50), 4 };
+	App->entities->background_health_bar = { 0, 4, 50, 4 };
+	App->entities->foreground_health_bar = { 0, 0,  static_cast<int>(current_health / max_health * 50), 4 };
+
 	if (App->entities->foreground_health_bar.w < 0) {
 		App->entities->foreground_health_bar.w = 0;
 	}
-	App->entities->frame_quad = { (int)(position.x - HALF_TILE * 0.75f - 1), (int)(position.y - TILE_SIZE * 1.25f - 1), 52, 6 };
+	//App->entities->frame_quad = { (int)(position.x - HALF_TILE * 0.75f - 1), (int)(position.y - TILE_SIZE * 1.25f - 1), 52, 6 };
 
 	//Fog Of War Rendering Based
 	if (current_tile.x >= 0 && current_tile.y >= 0)
@@ -150,9 +151,13 @@ bool DynamicEntity::PostUpdate() {
 
 			//Enemy Health Bar only if visible on fog of war and alive
 			if (current_health > 0) {
-				App->render->DrawQuad(App->entities->background_health_bar, 75, 75, 75, 255, true, true);
-				App->render->DrawQuad(App->entities->foreground_health_bar, 0, 235, 0, 255, true, true);
-				App->render->DrawQuad(App->entities->frame_quad, 200, 200, 200, 185, false, true);
+				
+				App->render->Blit(App->entities->life_bars, static_cast<int>(position.x - HALF_TILE * 0.75f), static_cast<int>(position.y - TILE_SIZE * 1.25f), &App->entities->background_health_bar);
+				App->render->Blit(App->entities->life_bars, static_cast<int>(position.x - HALF_TILE * 0.75f), static_cast<int>(position.y - TILE_SIZE * 1.25f), &App->entities->foreground_health_bar);
+				//App->render->DrawQuad(App->entities->background_health_bar, 75, 75, 75, 255, true, true);
+				//App->render->DrawQuad(App->entities->foreground_health_bar, 0, 235, 0, 255, true, true);
+				//App->render->DrawQuad(App->entities->frame_quad, 200, 200, 200, 185, false, true);
+			
 			}
 		}
 

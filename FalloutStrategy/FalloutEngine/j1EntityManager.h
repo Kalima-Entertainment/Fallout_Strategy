@@ -154,7 +154,7 @@ public:
 	SDL_Texture* hit;
 
 	//HealthBar
-
+	SDL_Texture* life_bars;
 	SDL_Rect background_health_bar;
 	SDL_Rect foreground_health_bar;
 	SDL_Rect frame_quad;
