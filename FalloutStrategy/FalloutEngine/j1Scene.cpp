@@ -305,7 +305,7 @@ void j1Scene::RectangleSelection()
 	}
 	else if (((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) && (App->player->TouchingUI(mouse_pos.x, mouse_pos.y))) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)) {
 		std::vector<DynamicEntity*> selected_entities;
-		for(int i = 0; i < App->entities->entities.size(); i++)
+		for(size_t i = 0; i < App->entities->entities.size(); i++)
 		{
 			if (App->entities->entities[i]->info.IsSelected && App->entities->entities[i]->is_dynamic) {
 				selected_entities.push_back(dynamic_cast<DynamicEntity*>(App->entities->entities[i]));

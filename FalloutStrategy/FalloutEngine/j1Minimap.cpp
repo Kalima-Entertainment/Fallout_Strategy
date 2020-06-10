@@ -131,7 +131,7 @@ bool j1Minimap::PostUpdate() {
 		for(int i = 0; i < App->entities->entities.size(); i++)
 		{
 			SDL_Rect entity_rect = { 0,0,3,3 };
-			iPoint entity_position = App->minimap->WorldToMinimap(App->entities->entities[i]->position.x, App->entities->entities[i]->position.y);
+			iPoint entity_position = App->minimap->WorldToMinimap(static_cast<int>(App->entities->entities[i]->position.x), static_cast<int>(App->entities->entities[i]->position.y));
 			entity_rect.x = entity_position.x-1;
 			entity_rect.y = entity_position.y-1;
 

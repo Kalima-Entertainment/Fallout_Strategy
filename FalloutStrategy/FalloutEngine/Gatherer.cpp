@@ -88,7 +88,7 @@ bool Gatherer::Update(float dt) {
 				state = IDLE;
 			}
 		}
-		SpatialAudio(position.x, position.y, faction, state, type);
+		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
 		break;
 	case GATHER:
 		if (gathering_timer.ReadSec() > gather_time) {
@@ -133,7 +133,7 @@ bool Gatherer::Update(float dt) {
 			//state = IDLE;
 			Flee();
 		}
-		SpatialAudio(position.x, position.y, faction, state, type);
+		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
 		break;
 	case DIE:
 		direction = TOP_LEFT;
@@ -151,7 +151,7 @@ bool Gatherer::Update(float dt) {
 			to_delete = true;
 			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
 		}
-		SpatialAudio(position.x, position.y, faction, state, type);
+		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
 		break;
 	default:
 		break;
@@ -164,7 +164,7 @@ bool Gatherer::Update(float dt) {
 	}
 
 	if (DynaParticle->IsActive()) {
-		DynaParticle->Move(position.x, position.y);
+		DynaParticle->Move(static_cast<int>(position.x), static_cast<int>(position.y));
 		DynaParticle->Update(dt);
 	}
 
@@ -259,7 +259,7 @@ bool Gatherer::LoadReferenceData(pugi::xml_node& node) {
 	bool ret = true;
 
 	max_health = node.attribute("health").as_float();
-	speed.x = node.attribute("speed").as_int();
+	speed.x = node.attribute("speed").as_float();
 	speed.y = speed.x * 0.5f;
 	storage_capacity = node.attribute("storage_capacity").as_int();
 

@@ -60,7 +60,7 @@ j1Entity::~j1Entity() {
 
 // to be updated
 iPoint j1Entity::MapPosition() {
-	iPoint spot = App->render->ScreenToWorld(position.x, position.y);
+	iPoint spot = App->render->ScreenToWorld(static_cast<int>(position.x), static_cast<int>(position.y));
 	spot = App->map->WorldToMap(spot.x, spot.y);
 	return spot;
 }

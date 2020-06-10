@@ -154,7 +154,7 @@ bool StaticEntity::Update(float dt) {
 		if ((delete_timer.ReadSec() > 5)||(current_animation->Finished()))
 			to_delete = true;
 
-		SpatialAudio(position.x, position.y, faction, state, type);
+		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
 		break;
 	default:
 		break;
@@ -252,12 +252,12 @@ bool StaticEntity::PostUpdate() {
 
 	//Blit particles forward buildings
 	if (StaticParticle->IsActive()) {
-		StaticParticle->Move(position.x, position.y);
+		StaticParticle->Move(static_cast<int>(position.x), static_cast<int>(position.y));
 		StaticParticle->Update(last_dt);
 	}	
 
 	if (HitParticle->IsActive()) {
-		HitParticle->Move(position.x, position.y);
+		HitParticle->Move(static_cast<int>(position.x), static_cast<int>(position.y));
 		HitParticle->Update(last_dt);
 	}	
 
