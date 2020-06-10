@@ -70,7 +70,7 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 		Animation anim;
 		anim.PushBack(SDL_Rect{ 0, 0 , 128, 128 }, 1);
 		anim.Reset();
-		Emiter emitter(position.x - 40, position.y, 0, -0.7f, 0.1f, NULL, 0.0080f, 0, 0, 0, 0, 0, 0, 3.0f, nullptr, App->entities->smoke, anim, true);
+		Emiter emitter(static_cast<int>(position.x - 40), static_cast<int>(position.y), 0, -0.7f, 0.1f, NULL, 0.0080f, 0, 0, 0, 0, 0, 0, 3.0f, nullptr, App->entities->smoke, anim, true);
 		StaticParticle->PushEmiter(emitter);
 		StaticParticle->Desactivate();
 	}
@@ -550,7 +550,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 			int cost = App->entities->base_resource_limit[faction].first_price + (App->entities->base_resource_limit[faction].price_increment * App->entities->base_resource_limit[faction].upgrade_num);
 
 			float value_increment = App->entities->base_resource_limit[faction].value_increment;
-			storage_capacity += (int)storage_capacity * value_increment;
+			storage_capacity += static_cast<int>(storage_capacity * value_increment);
 
 			if (storage_capacity > max_capacity)
 				storage_capacity = max_capacity;
@@ -878,7 +878,7 @@ void StaticEntity::CalculateRenderAndSpawnPositions() {
 		}
 
 		//Spawn position is just below render position
-		spawnPosition = { App->map->WorldToMap(render_position.x + sprite_size * 0.5f, render_position.y + sprite_size) };
+		spawnPosition = { App->map->WorldToMap(static_cast<int>(render_position.x + sprite_size * 0.5f), static_cast<int>(render_position.y + sprite_size)) };
 		
 	}
 }

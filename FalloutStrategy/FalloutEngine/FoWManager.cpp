@@ -95,7 +95,7 @@ bool FoWManager::PreUpdate()
 	bool ret = true;
 
 	//deletes all the entities that request to do so
-	for(int i = 0; i < fowEntities.size(); i++)
+	for(size_t i = 0; i < fowEntities.size(); i++)
 	{
 		if (fowEntities[i]->deleteEntity)
 		{

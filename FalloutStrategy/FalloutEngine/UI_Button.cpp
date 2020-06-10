@@ -520,41 +520,41 @@ bool UI_Button::Update(float dt)
 					App->scene->create_tutorial = true;
 					App->gui->ingame = false;
 				
-					App->easing_splines->CreateSpline(&App->menu_manager->tutorial_screen->pos.x, App->menu_manager->tutorial_screen->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[0]->pos.x, App->menu_manager->tutorial[0]->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[1]->pos.x, App->menu_manager->tutorial[1]->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[2]->pos.x, App->menu_manager->tutorial[2]->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[3]->pos.x, App->menu_manager->tutorial[3]->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[4]->pos.x, App->menu_manager->tutorial[4]->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
-					App->easing_splines->CreateSpline(&App->menu_manager->info_button2_element->pos.x, App->menu_manager->info_button2_element->pos.x - 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->tutorial_screen->pos.x, static_cast<int>(App->menu_manager->tutorial_screen->pos.x - 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[0]->pos.x, static_cast<int>(App->menu_manager->tutorial[0]->pos.x - 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[1]->pos.x, static_cast<int>(App->menu_manager->tutorial[1]->pos.x - 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[2]->pos.x, static_cast<int>(App->menu_manager->tutorial[2]->pos.x - 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[3]->pos.x, static_cast<int>(App->menu_manager->tutorial[3]->pos.x - 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[4]->pos.x, static_cast<int>(App->menu_manager->tutorial[4]->pos.x - 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->info_button2_element->pos.x, static_cast<int>(App->menu_manager->info_button2_element->pos.x - 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
 
 				}
 			}
 			else if (t == info_button2) {
 				if (App->scene->create_tutorial == true) {
-					App->easing_splines->CreateSpline(&App->menu_manager->tutorial_screen->pos.x, App->menu_manager->tutorial_screen->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->tutorial_screen->pos.x, static_cast<int>(App->menu_manager->tutorial_screen->pos.x + 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
 					if (App->menu_manager->tutorial[0] != nullptr) {
-						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[0]->pos.x, App->menu_manager->tutorial[0]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[0]->pos.x, static_cast<int>(App->menu_manager->tutorial[0]->pos.x + 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
 					}
 					if (App->menu_manager->tutorial[1] != nullptr) {
-						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[1]->pos.x, App->menu_manager->tutorial[1]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[1]->pos.x, static_cast<int>(App->menu_manager->tutorial[1]->pos.x + 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
 					}
 					if (App->menu_manager->tutorial[2] != nullptr) {
-						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[2]->pos.x, App->menu_manager->tutorial[2]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[2]->pos.x, static_cast<int>(App->menu_manager->tutorial[2]->pos.x + 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
 					}
 					if (App->menu_manager->tutorial[3] != nullptr) {
-						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[3]->pos.x, App->menu_manager->tutorial[3]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[3]->pos.x, static_cast<int>(App->menu_manager->tutorial[3]->pos.x + 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
 					}
 					if (App->menu_manager->tutorial[4] != nullptr) {
-						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[4]->pos.x, App->menu_manager->tutorial[4]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[4]->pos.x, static_cast<int>(App->menu_manager->tutorial[4]->pos.x + 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
 					}
 					if (App->menu_manager->tutorial[6] != nullptr) {
-						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[6]->pos.x, App->menu_manager->tutorial[6]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[6]->pos.x, static_cast<int>(App->menu_manager->tutorial[6]->pos.x + 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
 					}
 					if (App->menu_manager->tutorial[7] != nullptr) {
-						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[7]->pos.x, App->menu_manager->tutorial[7]->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[7]->pos.x, static_cast<int>(App->menu_manager->tutorial[7]->pos.x + 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
 					}
-					App->easing_splines->CreateSpline(&App->menu_manager->info_button2_element->pos.x, App->menu_manager->info_button2_element->pos.x + 700.0f, 1000, Spline_Type::EASE_IN_OUT_QUAD);
+					App->easing_splines->CreateSpline(&App->menu_manager->info_button2_element->pos.x, static_cast<int>(App->menu_manager->info_button2_element->pos.x + 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
 					//App->menu_manager->DestroyMenu(Menu::TUTORIAL);
 					App->menu_manager->DestroyMenu(Menu::HOW_TO_PLAY);
 					App->gui->Delete_Element(App->menu_manager->tutorial[5]);

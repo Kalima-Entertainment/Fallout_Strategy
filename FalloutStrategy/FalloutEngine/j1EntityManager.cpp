@@ -170,7 +170,7 @@ bool j1EntityManager::CleanUp()
 	}
 
 	// -- Entities
-	for(int i = 0; i < entities.size(); i++)
+	for(size_t i = 0; i < entities.size(); i++)
 	{
 		if (entities[i] != nullptr) {
 			delete entities[i];
@@ -181,7 +181,7 @@ bool j1EntityManager::CleanUp()
 	entities.clear();
 
 	// -- Particles
-	for(int i = 0; i < particles.size(); i++)
+	for(size_t i = 0; i < particles.size(); i++)
 	{
 		if (particles[i] != nullptr) {
 			delete particles[i];
@@ -199,7 +199,7 @@ bool j1EntityManager::CleanUp()
 	hit = nullptr;
 
 	// -- Buildings
-	for(int j = 0; j < resource_buildings.size(); j++)
+	for(size_t j = 0; j < resource_buildings.size(); j++)
 	{
 		delete resource_buildings[j];
 		resource_buildings[j] = nullptr;
@@ -212,7 +212,7 @@ bool j1EntityManager::CleanUp()
 bool j1EntityManager::PreUpdate() {
 	bool ret = true;
 
-	for(int i = 0; i < entities.size(); i++)
+	for(size_t i = 0; i < entities.size(); i++)
 	{
 		if ((entities[i]->target_entity != nullptr) && (entities[i]->target_entity->to_delete)) {
 			entities[i]->target_entity = nullptr;
@@ -256,7 +256,7 @@ bool j1EntityManager::Update(float dt)
 	}
 	else if (!App->isPaused)
 	{
-		for(int i = 0; i < entities.size(); i++)
+		for(size_t i = 0; i < entities.size(); i++)
 		{
 			if(!entities[i]->to_delete)
 				entities[i]->Update(dt);
@@ -283,9 +283,9 @@ bool j1EntityManager::PostUpdate()
 	{
 		if (App->render->debug) {
 			//resource buildings debug
-			for(int i = 0; i < resource_buildings.size(); i++)
+			for(size_t i = 0; i < resource_buildings.size(); i++)
 			{
-				for(int j = 0; j < resource_buildings[i]->tiles.size(); j++)
+				for(size_t j = 0; j < resource_buildings[i]->tiles.size(); j++)
 				{
 					SDL_Rect rect = { 128,0,64,64 };
 					tex_position = App->map->MapToWorld(resource_buildings[i]->tiles[j].x, resource_buildings[i]->tiles[j].y);
@@ -410,7 +410,7 @@ bool j1EntityManager::PostUpdate()
 			}
 		}
 		
-		for(int i = 0; i < entities.size(); i++)
+		for(size_t i = 0; i < entities.size(); i++)
 		{
 			//camera culling
 			if ((entities[i]->position.x + entities[i]->sprite_size * 0.5f > -App->render->camera.x)
@@ -649,14 +649,14 @@ bool j1EntityManager::LoadReferenceEntityData() {
 void j1EntityManager::DestroyEntity(j1Entity* entity) { entity->to_delete = true;}
 
 void j1EntityManager::DestroyAllEntities() {
-	for(int i = 0; i < entities.size(); i++)
+	for(size_t i = 0; i < entities.size(); i++)
 	{
 		entities[i]->to_delete = true;
 	}
 }
 
 void j1EntityManager::DestroyAllEntitiesNow() {
-	for(int i = 0; i < entities.size(); i++)
+	for(size_t i = 0; i < entities.size(); i++)
 	{
 		delete entities[i];
 		entities[i] = nullptr;
@@ -665,7 +665,7 @@ void j1EntityManager::DestroyAllEntitiesNow() {
 }
 
 j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
-	for(int i = 0; i < entities.size(); i++)
+	for(size_t i = 0; i < entities.size(); i++)
 	{
 		if (entities[i]->is_dynamic)
 		{
@@ -675,7 +675,7 @@ j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
 		else
 		{
 			StaticEntity* static_entity = dynamic_cast<StaticEntity*>(entities[i]);
-			for(int j = 0; j < static_entity->tiles.size(); j++)
+			for(size_t j = 0; j < static_entity->tiles.size(); j++)
 			{
 				if (static_entity->tiles[j] == tile)
 					return entities[i];
@@ -686,9 +686,9 @@ j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
 }
 
 ResourceBuilding* j1EntityManager::FindResourceBuildingByTile(iPoint tile) {
-	for(int i = 0; i < resource_buildings.size(); i++)
+	for(size_t i = 0; i < resource_buildings.size(); i++)
 	{
-		for(int j = 0; j < resource_buildings[i]->tiles.size(); j++)
+		for(size_t j = 0; j < resource_buildings[i]->tiles.size(); j++)
 		{
 			if (resource_buildings[i]->tiles[j] == tile)
 				return resource_buildings[i];
@@ -699,7 +699,7 @@ ResourceBuilding* j1EntityManager::FindResourceBuildingByTile(iPoint tile) {
 
 iPoint j1EntityManager::ClosestTile(iPoint position, std::vector<iPoint> entity_tiles) {
 	iPoint pivot = entity_tiles[0];
-	for(int i = 0; i < entity_tiles.size(); i++)
+	for(size_t i = 0; i < entity_tiles.size(); i++)
 	{
 		if (position.DistanceManhattan(entity_tiles[i]) < position.DistanceManhattan(pivot))
 			pivot = entity_tiles[i];
@@ -746,7 +746,7 @@ iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) 
 ResourceBuilding* j1EntityManager::GetClosestResourceBuilding(iPoint current_position) {
 	ResourceBuilding* closest_building = nullptr;
 	int min_distance = 1000;
-	for(int i = 0; i < resource_buildings.size(); i++)
+	for(size_t i = 0; i < resource_buildings.size(); i++)
 	{
 		if (resource_buildings[i]->quantity > 0)
 		{
@@ -810,7 +810,7 @@ void j1EntityManager::RandomFactions() {
 
 void j1EntityManager::OnCommand(std::vector<std::string> command_parts) {
 	if (command_parts[0] == "destroy_all_entities") {
-		for(int i = 0; i < entities.size(); i++)
+		for(size_t i = 0; i < entities.size(); i++)
 		{
 			if (entities[i]->is_dynamic)
 				entities[i]->to_delete = true;
@@ -935,7 +935,7 @@ ResourceBuilding* j1EntityManager::CreateResourceSpot(int position_x, int positi
 }
 
 void j1EntityManager::DestroyResourceSpot(ResourceBuilding* resource_spot) {
-	for(int i = 0; i < resource_buildings.size(); i++)
+	for(size_t i = 0; i < resource_buildings.size(); i++)
 	{
 		if (resource_spot == resource_buildings[i]) {
 			delete resource_buildings[i];
@@ -1099,7 +1099,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 // Save Game State
 bool j1EntityManager::Save(pugi::xml_node& data) const
 {
-	for(int i = 0; i < entities.size(); i++)
+	for(size_t i = 0; i < entities.size(); i++)
 	{
 		pugi::xml_node entities_pugi = data.append_child("entity");
 		entities_pugi.append_attribute("number") = i;
@@ -1280,7 +1280,7 @@ ParticleSystem* j1EntityManager::CreateParticle(fPoint pos) {
 }
 
 void j1EntityManager::DeleteParticles(){
-	for(int i = 0; i < particles.size(); i++)
+	for(size_t i = 0; i < particles.size(); i++)
 	{
 		delete particles[i];
 		particles[i] = nullptr;

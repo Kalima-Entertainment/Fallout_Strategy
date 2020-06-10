@@ -22,7 +22,7 @@ void j1Group::addUnit(DynamicEntity* unit_toadd)
 
 void j1Group::removeUnit(DynamicEntity* unit_toremove)
 {
-	for (int i = 0; i < Units.size(); i++)
+	for (size_t i = 0; i < Units.size(); i++)
 	{
 		if (unit_toremove == Units[i])
 			Units.erase(Units.cbegin() + i);
@@ -39,7 +39,7 @@ void j1Group::AddTiletoOccupied(iPoint to_add)
 
 void j1Group::ClearGroup()
 {
-	for (int i = 0; i < Units.size(); i++)
+	for (size_t i = 0; i < Units.size(); i++)
 	{
 		// -- If we have any unit info inside the vector we ensure that will be cleaned.
 		if (Units[i] != nullptr) {
@@ -56,7 +56,7 @@ void j1Group::ClearOccupiedlist()
 }
 
 void j1Group::DeselectGroup() {
-	for (int i = 0; i < Units.size(); i++)
+	for (size_t i = 0; i < Units.size(); i++)
 	{
 		Units[i]->info.IsSelected = false;
 	}
