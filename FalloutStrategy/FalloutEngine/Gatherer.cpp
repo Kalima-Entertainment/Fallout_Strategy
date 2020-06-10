@@ -89,6 +89,7 @@ bool Gatherer::Update(float dt) {
 			}
 		}
 		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
+
 		break;
 	case GATHER:
 		if (gathering_timer.ReadSec() > gather_time) {
@@ -107,7 +108,7 @@ bool Gatherer::Update(float dt) {
 				}
 				//find another building
 				else {
-					resource_building = App->entities->GetClosestResourceBuilding(current_tile);
+					resource_building = App->entities->GetClosestResourceBuilding(current_tile, resource_type);
 					//if there is at least a resource building left, go there
 					if (resource_building != nullptr) {
 						PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
