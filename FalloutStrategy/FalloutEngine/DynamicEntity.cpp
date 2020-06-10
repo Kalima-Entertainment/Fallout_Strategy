@@ -93,7 +93,7 @@ DynamicEntity::~DynamicEntity() {
 bool DynamicEntity::PostUpdate() {
 
 	//tile debug
-	SDL_Rect tile_rect = {0,0,0,0};
+	SDL_Rect position_rect = {0,0,0,0};
 	iPoint tile_tex_position = App->map->MapToWorld(current_tile.x, current_tile.y);
 
 	//debug
@@ -102,20 +102,21 @@ bool DynamicEntity::PostUpdate() {
 		//pathfinding debug
 		for (uint j = 0; j < path_to_target.size(); ++j) {
 			iPoint pos = App->map->MapToWorld(path_to_target[j].x, path_to_target[j].y);
-			tile_rect = { 192, 0, 64,64 };
-			App->render->Blit(App->render->debug_tex, pos.x, pos.y, &tile_rect);
+			position_rect = { 192, 0, 64,64 };
+			App->render->Blit(App->render->debug_tex, pos.x, pos.y, &position_rect);
 		}
 
-		//selected entity or selected group
-		if((App->player->selected_entity == this)||(info.IsSelected))
-			tile_rect = { 320,0,64,64 };
 		//ally
-		else if ((faction == App->player->faction)&&(!info.IsSelected)) 
-			tile_rect = { 0,0,64,64 };
+		if ((faction == App->player->faction)&&(!info.IsSelected)) 
+			position_rect = { 0,0,64,64 };
 		//enemy
-		else tile_rect = { 64,0,64,64 };
+		else position_rect = { 64,0,64,64 };
 
-		App->render->Blit(App->render->debug_tex, tile_tex_position.x, tile_tex_position.y, &tile_rect);
+		App->render->Blit(App->render->debug_tex, tile_tex_position.x, tile_tex_position.y, &position_rect);
+	}
+	else if ((App->player->selected_entity == this)||(info.IsSelected)) {
+		position_rect = {394, 24, 42, 26};
+		App->render->Blit(App->render->debug_tex, position.x - 21, position.y - 13, &position_rect);
 	}
 
 	if (direction >= NO_DIRECTION) {
@@ -235,80 +236,76 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 
 void DynamicEntity::Move(float dt) {
 
-	// -- Get next tile center
-	next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
-	next_tile_rect = { next_tile_position.x + HALF_TILE - 4, next_tile_position.y + HALF_TILE -2, 8, 8 };
-
 	last_direction = direction;
 	direction = GetDirectionToGo(next_tile_rect);
 
 	fPoint auxPos = position; //We use that variable to optimize Fog Of War code
 
-	switch (direction)
-	{
-	case NO_DIRECTION:
-
-		//check if the tile that wants to be occupied is already occupied
-		if (!App->entities->IsTileInPositionOccupied(position))
-			UpdateTile();
-		else {
-			if (node_path.size() > 0) {
-				if (current_tile.DistanceManhattan(node_path.back()) < 3)
-					node_path.pop_back();
-				if (node_path.size() > 0)
-					PathfindToPosition(node_path.back());
-				else
-					PathfindToPosition(target_tile);
-			}
-			else {
-				PathfindToPosition(target_tile);
-			}
-		}
-
-		//we are following a node path
+	//check if the tile that wants to be occupied is already occupied
+	if (!App->entities->IsTileInPositionOccupied(position))
+		UpdateTile();
+	else {
 		if (node_path.size() > 0) {
-			//if we have reached the closest node
-			if (current_tile == node_path.back()) {
-				//forget it
+			if (current_tile.DistanceManhattan(node_path.back()) < 3)
 				node_path.pop_back();
-				//if we have more nodes to go to
-				if (node_path.size() > 0) {
-					//pathfind to the next one
-					PathfindToPosition(node_path.back());
-				}
-				else {
-					//if not pathfind to the destination
-					PathfindToPosition(target_tile);
-				}
-			}
-		}
-
-		if (current_tile == target_tile){
-			direction = last_direction;
-			path_to_target.clear();
-			commanded = false;
+			if (node_path.size() > 0)
+				PathfindToPosition(node_path.back());
+			else
+				PathfindToPosition(target_tile);
 		}
 		else {
-			//if the entity has a path to follow
-			if (path_to_target.size() > 0) {
-				//next tile is the first tile in the list
-				next_tile = path_to_target.front();
+			PathfindToPosition(target_tile);
+		}
+	}
 
-				//if next tile is occupied create the path again
-				if (App->entities->IsTileOccupied(next_tile))
-					PathfindToPosition(target_tile);
+	// -- Get next tile center
+	next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
+	next_tile_rect = { next_tile_position.x + HALF_TILE - 4, next_tile_position.y + HALF_TILE - 2, 8, 8 };
 
-				//if there is a new path erase the first element
-				if (path_to_target.size() > 0)
-					path_to_target.erase(path_to_target.cbegin());
+	//we are following a node path
+	if (node_path.size() > 0) {
+		//if we have reached the closest node
+		if (current_tile == node_path.back()) {
+			//forget it
+			node_path.pop_back();
+			//if we have more nodes to go to
+			if (node_path.size() > 0) {
+				//pathfind to the next one
+				PathfindToPosition(node_path.back());
 			}
 			else {
+				//if not pathfind to the destination
 				PathfindToPosition(target_tile);
 			}
 		}
+	}
 
-		break;
+	if (current_tile == target_tile) {
+		direction = last_direction;
+		path_to_target.clear();
+		commanded = false;
+	}
+	else {
+		//if the entity has a path to follow
+		if (path_to_target.size() > 0) {
+			//next tile is the first tile in the list
+			next_tile = path_to_target.front();
 
+			//if next tile is occupied create the path again
+			if (App->entities->IsTileOccupied(next_tile))
+				PathfindToPosition(target_tile);
+
+			//if there is a new path erase the first element
+			if (path_to_target.size() > 0)
+				path_to_target.erase(path_to_target.cbegin());
+		}
+		else {
+			PathfindToPosition(target_tile);
+		}
+	}
+
+	switch (direction) 
+	{
 	case TOP_LEFT:
 		position.x -= speed.x * dt;
 		position.y -= speed.y * dt;
