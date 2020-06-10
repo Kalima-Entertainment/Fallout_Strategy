@@ -178,7 +178,7 @@ bool Troop::Update(float dt) {
 			commanded = false;
 		}
 
-		SpatialAudio(position.x, position.y, faction, state, type);
+		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
         break;
 
     case ATTACK:
@@ -211,7 +211,7 @@ bool Troop::Update(float dt) {
 			}
 		}
 
-		SpatialAudio(position.x, position.y, faction, state, type);
+		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
 
         break;
 
@@ -226,7 +226,7 @@ bool Troop::Update(float dt) {
 				state = IDLE;
 		}
 
-		SpatialAudio(position.x, position.y, faction, state, type);
+		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
         break;
 
     case DIE:
@@ -256,7 +256,7 @@ bool Troop::Update(float dt) {
 			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
 		}
 
-		SpatialAudio(position.x, position.y, faction, state, type);
+		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
         break;
 
     default:
@@ -272,7 +272,7 @@ bool Troop::Update(float dt) {
 	}
 
 	if (DynaParticle->IsActive()) {
-		DynaParticle->Move(position.x, position.y);
+		DynaParticle->Move(static_cast<int>(position.x), static_cast<int>(position.y));
 		DynaParticle->Update(dt);
 	}
 
@@ -373,7 +373,7 @@ bool Troop::LoadReferenceData(pugi::xml_node& node) {
 
 	max_health = node.attribute("health").as_float();
 	damage = node.attribute("damage").as_int();
-	speed.x = node.attribute("speed").as_int();
+	speed.x = node.attribute("speed").as_float();
 	speed.y = speed.x * 0.5f;
 
 	return ret;

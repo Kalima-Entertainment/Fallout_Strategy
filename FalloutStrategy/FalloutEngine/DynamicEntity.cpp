@@ -21,35 +21,6 @@
 #include "Emiter.h"
 #include "ParticleSystem.h"
 
-DynamicEntity::DynamicEntity(Faction g_faction, EntityType g_type, iPoint g_current_tile, GenericPlayer* g_owner) : j1Entity(), is_agressive(false) {
-	owner = g_owner;
-	type = g_type;
-	faction = g_faction;
-	current_tile = g_current_tile;
-
-	position = App->map->floatMapToWorld(current_tile.x, current_tile.y);
-	position.x += HALF_TILE;
-	position.y += HALF_TILE;
-
-	is_dynamic = true;
-
-	state = IDLE;
-	direction = BOTTOM_RIGHT;
-
-	target_entity = nullptr;
-	attacking_entity = nullptr;
-
-	target_tile = { -1,-1 };
-	speed = { 0, 0 };
-	sprite_size = 128;
-
-	detection_radius = 6;
-	detection_timer.Start();
-
-	DynaParticle = nullptr;
-	visionEntity = nullptr;
-}
-
 DynamicEntity::DynamicEntity() : j1Entity() {
 	target_entity = nullptr;
 	target_tile = {-1,-1};
@@ -107,16 +78,20 @@ bool DynamicEntity::PostUpdate() {
 		}
 
 		//ally
-		if ((faction == App->player->faction)&&(!info.IsSelected)) 
+		if (faction == App->player->faction) {
+			if((App->player->selected_entity != this)&&(!info.IsSelected))
 			position_rect = { 0,0,64,64 };
+		}
 		//enemy
-		else position_rect = { 64,0,64,64 };
+		else 
+			position_rect = { 64,0,64,64 };
 
 		App->render->Blit(App->render->debug_tex, tile_tex_position.x, tile_tex_position.y, &position_rect);
 	}
-	else if ((App->player->selected_entity == this)||(info.IsSelected)) {
+	
+	if ((App->player->selected_entity == this)||(info.IsSelected)) {
 		position_rect = {394, 24, 42, 26};
-		App->render->Blit(App->render->debug_tex, position.x - 21, position.y - 13, &position_rect);
+		App->render->Blit(App->render->debug_tex, static_cast<int>(position.x - 21), static_cast<int>(position.y - 13), &position_rect);
 	}
 
 	if (direction >= NO_DIRECTION) {
@@ -338,6 +313,7 @@ void DynamicEntity::Move(float dt) {
 
 Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
 
+	/*
 	//if position is in the middle of the next tile rect
 	if ((position.x > next_tile_rect.x) && (position.x < next_tile_rect.x + next_tile_rect.w)
 		&& (position.y > next_tile_rect.y) && (position.y < next_tile_rect.y + next_tile_rect.h)) {
@@ -358,23 +334,24 @@ Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
 	else {
 		return NO_DIRECTION;
 	}
+	*/
 
-	/*if ((ceil(position.x) > floor(next_tile_rect.x)) && (floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w))
+	if ((ceil(position.x) > floor(next_tile_rect.x)) && (floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w))
 		&& (ceil(position.y) > floor(next_tile_rect.y)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h))) {
 		return Direction::NO_DIRECTION;
 	}
-	if ((position.x > next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y > next_tile_rect.y + next_tile_rect.h * 0.5f)) {
+	if ((ceil(position.x) > floor(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (ceil(position.y) > floor(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
 		return Direction::TOP_LEFT;
 	}
-	else if ((position.x > next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y < next_tile_rect.y + next_tile_rect.h * 0.5f)) {
+	else if ((ceil(position.x) > floor(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
 		return Direction::BOTTOM_LEFT;
 	}
-	else if ((position.x < next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y > next_tile_rect.y + next_tile_rect.h * 0.5f)) {
+	else if ((floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (ceil(position.y) > floor(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
 		return Direction::TOP_RIGHT;
 	}
-	else if ((position.x < next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y < next_tile_rect.y + next_tile_rect.h * 0.5f)) {
+	else if ((floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
 		return Direction::BOTTOM_RIGHT;
-	}*/
+	}
 }
 
 Direction DynamicEntity::GetBuildingDirection(std::vector<iPoint> building_tiles) const {
@@ -511,7 +488,7 @@ bool DynamicEntity::LoadAnimations(const char* folder, const char* file_name) {
 
 void DynamicEntity::UpdateTile() {
 	App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
-	current_tile = App->map->WorldToMap(position.x, position.y);
+	current_tile = App->map->fWorldToMap(position.x, position.y);
 	App->entities->occupied_tiles[current_tile.x][current_tile.y] = true;
 }
 

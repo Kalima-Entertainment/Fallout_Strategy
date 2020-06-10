@@ -26,7 +26,7 @@ bool j1MovementManager::Update(float dt)
 
 bool j1MovementManager::CleanUp()
 {
-	for (int i = 0; i < Groups.size(); i++)
+	for (size_t i = 0; i < Groups.size(); i++)
 	{
 		Groups[i]->ClearGroup();
 		delete Groups[i];

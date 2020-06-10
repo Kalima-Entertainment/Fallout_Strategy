@@ -33,7 +33,6 @@ public:
 	friend class j1Group;
 
 	DynamicEntity();
-	DynamicEntity(Faction faction, EntityType type, iPoint current_tile, GenericPlayer* owner = nullptr);
 	~DynamicEntity();
 
 	bool PostUpdate();
