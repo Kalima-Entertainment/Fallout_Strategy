@@ -39,7 +39,7 @@ j1Scene::j1Scene() : j1Module()
 
 	create = false;
 	load_game = false;
-	create_tutorial = false;
+	create_tutorial = true;
 	menu_state = StatesMenu::NONE;
 	mouse_pos = { 0,0 };
 	rectangle_origin = { 0,0 };
@@ -230,8 +230,12 @@ bool j1Scene::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 	{
 		win = true;
-		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+		App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
 		App->menu_manager->DestroyMenu(Menu::RESOURCES);
+		App->menu_manager->DestroyMenu(Menu::TUTORIAL);
+		App->menu_manager->DestroyMenu(Menu::RADIO);
+		App->menu_manager->DestroyMenu(Menu::GUI);
+		App->menu_manager->DestroyMenu(Menu::QUEST);
 		App->logo_scene->playsound = true;
 		App->gui->ingame = false;
 		App->isPaused = true;
@@ -242,8 +246,12 @@ bool j1Scene::Update(float dt)
 	else if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 	{
 		lose = true;
-		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+		App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
 		App->menu_manager->DestroyMenu(Menu::RESOURCES);
+		App->menu_manager->DestroyMenu(Menu::TUTORIAL);
+		App->menu_manager->DestroyMenu(Menu::RADIO);
+		App->menu_manager->DestroyMenu(Menu::GUI);
+		App->menu_manager->DestroyMenu(Menu::QUEST);
 		App->logo_scene->playsound = true;
 		App->gui->ingame = false;
 		App->isPaused = true;
@@ -256,9 +264,13 @@ bool j1Scene::Update(float dt)
 	{
 		lose = true;
 		App->logo_scene->Loop = true;
-		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+		App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
+		App->menu_manager->DestroyMenu(Menu::RESOURCES);
+		App->menu_manager->DestroyMenu(Menu::TUTORIAL);
+		App->menu_manager->DestroyMenu(Menu::RADIO);
 		App->menu_manager->DestroyMenu(Menu::GUI);
-		App->hud->CleanUp();
+		App->menu_manager->DestroyMenu(Menu::QUEST);
+		App->hud->Disable();
 		App->gui->ingame = false;
 		App->isPaused = true;
 		App->logo_scene->playsound = true;
@@ -337,9 +349,13 @@ void j1Scene::CheckWinner() {
 					//LOSE
 					lose = true;
 					App->logo_scene->Loop = true;
-					App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+					App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
+					App->menu_manager->DestroyMenu(Menu::RESOURCES);
+					App->menu_manager->DestroyMenu(Menu::TUTORIAL);
+					App->menu_manager->DestroyMenu(Menu::RADIO);
 					App->menu_manager->DestroyMenu(Menu::GUI);
-					App->hud->CleanUp();
+					App->menu_manager->DestroyMenu(Menu::QUEST);
+					App->hud->Disable();
 					App->gui->ingame = false;
 					App->isPaused = true;
 					App->logo_scene->playsound = true;
@@ -361,9 +377,13 @@ void j1Scene::CheckWinner() {
 				//LOSE
 				lose = true;
 				App->logo_scene->Loop = true;
-				App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
+				App->menu_manager->DestroyMenu(Menu::RESOURCES);
+				App->menu_manager->DestroyMenu(Menu::TUTORIAL);
+				App->menu_manager->DestroyMenu(Menu::RADIO);
 				App->menu_manager->DestroyMenu(Menu::GUI);
-				App->hud->CleanUp();
+				App->menu_manager->DestroyMenu(Menu::QUEST);
+				App->hud->Disable();
 				App->gui->ingame = false;
 				App->isPaused = true;
 				App->logo_scene->playsound = true;
@@ -376,7 +396,12 @@ void j1Scene::CheckWinner() {
 	if (((beaten_enemies == 3) && (Deathclaws[App->player->faction] == nullptr)) || ((Deathclaws[App->player->faction] != nullptr) && (Deathclaws [App->player->faction]->state == DIE) && (App->player->base != nullptr))) {
 		LOG("You won!");
 		win = true;
-		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+		App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
+		App->menu_manager->DestroyMenu(Menu::RESOURCES);
+		App->menu_manager->DestroyMenu(Menu::TUTORIAL);
+		App->menu_manager->DestroyMenu(Menu::RADIO);
+		App->menu_manager->DestroyMenu(Menu::GUI);
+		App->menu_manager->DestroyMenu(Menu::QUEST);
 		App->gui->ingame = false;
 		App->isPaused = true;
 		App->logo_scene->Loop = true;
@@ -430,7 +455,7 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 		App->menu_manager->DestroyMenu(Menu::RESOURCES);
 		App->menu_manager->DestroyMenu(Menu::GUI);
-		App->hud->CleanUp();
+		App->hud->Disable();
 		App->logo_scene->playsound = true;
 		App->gui->ingame = false;
 		App->isPaused = true;

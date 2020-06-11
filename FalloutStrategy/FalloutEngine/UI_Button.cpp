@@ -40,7 +40,7 @@ UI_Button::UI_Button(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, 
 
 	inHover = true;
 	fx_played = false;
-	radio = true;
+	radio = false;
 }
 
 bool UI_Button::Start() {
@@ -514,13 +514,15 @@ bool UI_Button::Update(float dt)
 
 				}
 			}
-			else if (t == info_button) {
-				if (App->scene->create_tutorial == false) {
+			else if (t == info_button)
+			{
+				App->scene->create_tutorial = !App->scene->create_tutorial;
+
+				if (App->scene->create_tutorial == false) 
+				{
 					App->menu_manager->CreateMenu(Menu::TUTORIAL);
 					App->audio->PlayFx(1, App->audio->character_fx, 0);
-					App->scene->create_tutorial = true;
 					App->gui->ingame = false;
-				
 					App->easing_splines->CreateSpline(&App->menu_manager->tutorial_screen->pos.x, static_cast<int>(App->menu_manager->tutorial_screen->pos.x - 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
 					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[0]->pos.x, static_cast<int>(App->menu_manager->tutorial[0]->pos.x - 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
 					App->easing_splines->CreateSpline(&App->menu_manager->tutorial[1]->pos.x, static_cast<int>(App->menu_manager->tutorial[1]->pos.x - 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
@@ -531,8 +533,12 @@ bool UI_Button::Update(float dt)
 
 				}
 			}
-			else if (t == info_button2) {
-				if (App->scene->create_tutorial == true) {
+			else if (t == info_button2) 
+			{
+				App->scene->create_tutorial = !App->scene->create_tutorial;
+
+				if (App->scene->create_tutorial == true) 
+				{
 					App->easing_splines->CreateSpline(&App->menu_manager->tutorial_screen->pos.x, static_cast<int>(App->menu_manager->tutorial_screen->pos.x + 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
 					if (App->menu_manager->tutorial[0] != nullptr) {
 						App->easing_splines->CreateSpline(&App->menu_manager->tutorial[0]->pos.x, static_cast<int>(App->menu_manager->tutorial[0]->pos.x + 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
@@ -560,7 +566,6 @@ bool UI_Button::Update(float dt)
 					App->menu_manager->DestroyMenu(Menu::HOW_TO_PLAY);
 					App->gui->Delete_Element(App->menu_manager->tutorial[5]);
 					App->audio->PlayFx(1, App->audio->back_fx, 0);
-					App->scene->create_tutorial = false;
 					App->gui->ingame = true;
 				}
 
@@ -689,14 +694,16 @@ bool UI_Button::Update(float dt)
 			}
 			else if (t == Radio_button) {
 				
+				radio = !radio;
+
 				if (radio == true)
 				{
 					App->menu_manager->CreateMenu(Menu::RADIO);
-					radio = false;
-				}else
+					
+				}
+				else
 				{
 					App->menu_manager->DestroyMenu(Menu::RADIO);
-					radio = true;
 				}
 						
 			}
