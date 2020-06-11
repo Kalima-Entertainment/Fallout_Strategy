@@ -36,6 +36,7 @@ class j1Video;
 class j1Hud;
 class j1EasingAndSplines;
 class DialogManager;
+class j1Cursor;
 
 class j1App
 {
@@ -130,6 +131,7 @@ public:
 	j1Hud*				hud = NULL;
 	j1EasingAndSplines*	easing_splines = NULL;
 	DialogManager*		dialog_manager = NULL;
+	j1Cursor*			cursor = NULL;
 
 	bool isPaused;
 	bool quitGame = false;

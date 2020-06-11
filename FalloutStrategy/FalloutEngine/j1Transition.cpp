@@ -65,7 +65,7 @@ bool j1Transition::LoadAnimations() {
 		int tile_height = tileset.attribute("tileheight").as_int();
 		int columns = tileset.attribute("columns").as_int();
 		int firstgid = tileset.attribute("firstgid").as_int();
-		int id, tile_id;
+		int tile_id;
 		float speed;
 
 		pugi::xml_node animation = tileset.child("tile");
@@ -75,7 +75,6 @@ bool j1Transition::LoadAnimations() {
 		rect.w = tile_width;
 		rect.h = tile_height;
 
-		id = animation.attribute("id").as_int();
 		loader = nullptr;
 
 		if (tileset.attribute("firstgid").as_int() == 1)
@@ -163,7 +162,7 @@ void j1Transition::Transition()
 		App->Mmanager->Enable();
 		App->scene->Enable();
 		App->main_menu->Disable();
-		//App->minimap->Enable();
+		App->hud->Enable();
 		if(App->gui->load==false){
 			App->dialog_manager->Enable();
 			App->menu_manager->CreateMenu(Menu::DIALOG); 
@@ -183,7 +182,7 @@ void j1Transition::Transition()
 		App->map->Disable();
 		App->minimap->Disable();
 		App->Mmanager->Disable();
-		App->hud->CleanUp();
+		App->hud->Disable();
 		transition = false;
 		App->gui->ingame = false;		
 		App->menu_manager->CreateMenu(Menu::MAIN_MENU);

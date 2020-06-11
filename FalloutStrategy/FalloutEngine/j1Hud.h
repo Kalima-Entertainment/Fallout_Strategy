@@ -35,10 +35,6 @@ public:
 
 public:
 
-	SDL_Rect cursorRect;
-	iPoint	cursor_position;
-	iPoint	cursor_offset;
-
 	j1Timer	timer_game;
 	bool activateTimer;
 	bool draw_health;

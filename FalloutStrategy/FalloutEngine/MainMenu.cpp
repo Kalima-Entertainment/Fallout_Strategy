@@ -39,7 +39,7 @@ bool MainMenu::LoadAnimations()
 	int tile_width = animation_file.child("map").child("tileset").attribute("tilewidth").as_int();
 	int tile_height = animation_file.child("map").child("tileset").attribute("tileheight").as_int();
 	int columns = animation_file.child("map").child("tileset").attribute("columns").as_int();
-	int id, tile_id;
+	int tile_id;
 	float speed;
 
 	pugi::xml_node animation = animation_file.child("map").child("tileset").child("tile");

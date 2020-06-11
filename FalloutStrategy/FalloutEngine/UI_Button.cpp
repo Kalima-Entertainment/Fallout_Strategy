@@ -40,7 +40,7 @@ UI_Button::UI_Button(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, 
 
 	inHover = true;
 	fx_played = false;
-	radio = false;
+	radio = true;
 }
 
 bool UI_Button::Start() {
@@ -262,6 +262,7 @@ bool UI_Button::Update(float dt)
 				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
 				App->menu_manager->DestroyMenu(Menu::RESOURCES);
 				App->menu_manager->DestroyMenu(Menu::TUTORIAL);
+				App->menu_manager->DestroyMenu(Menu::RADIO);
 				App->menu_manager->DestroyMenu(Menu::GUI);
 				App->menu_manager->DestroyMenu(Menu::QUEST);
 				if ((App->player->selected_entity) && (!App->player->selected_entity->is_dynamic)) {
@@ -567,8 +568,8 @@ bool UI_Button::Update(float dt)
 			else if (t == control_button) {
 				App->audio->PlayFx(1, App->audio->character_fx, 0);
 				App->gui->DeleteArrayElements(App->menu_manager->tutorial, 5);
-				App->menu_manager->tutorial[6] = dynamic_cast<UI_Button*>(App->gui->CreateButton(640, 435, back_tutorial_controls, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this));
 				App->menu_manager->tutorial[5] = dynamic_cast<j1Image*>(App->gui->CreateImage(670, 160, Image, { 0, 2028, 605, 305 }, NULL, this));
+				App->menu_manager->tutorial[6] = dynamic_cast<UI_Button*>(App->gui->CreateButton(640, 435, back_tutorial_controls, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this));
 				App->gui->ingame = false;
 			}
 			else if (t == back_tutorial_controls) {
@@ -690,15 +691,14 @@ bool UI_Button::Update(float dt)
 				
 				if (radio == true)
 				{
-					App->menu_manager->DestroyMenu(Menu::RADIO);
-					radio = false;
-				}
-				
-				else if (radio == false)
-				{
 					App->menu_manager->CreateMenu(Menu::RADIO);
+					radio = false;
+				}else
+				{
+					App->menu_manager->DestroyMenu(Menu::RADIO);
 					radio = true;
-				}			
+				}
+						
 			}
 			else if (t == RockFM_button)
 			{

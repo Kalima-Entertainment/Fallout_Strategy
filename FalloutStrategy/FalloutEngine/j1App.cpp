@@ -31,6 +31,7 @@
 #include "j1EasingAndSplines.h"
 #include "DialogManager.h"
 #include "AssetsManager.h"
+#include "j1Cursor.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -64,6 +65,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	hud = new j1Hud();
 	easing_splines = new j1EasingAndSplines();
 	dialog_manager = new DialogManager();
+	cursor = new j1Cursor();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -95,6 +97,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(logo_scene);
 	AddModule(transition);	
 	AddModule(hud);
+	AddModule(cursor);
 	// render last to swap buffer
 	AddModule(render);
 
