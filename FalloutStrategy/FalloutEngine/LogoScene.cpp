@@ -127,7 +127,7 @@ bool LogoScene::PostUpdate()
 
 		if (my_video == 0 && Loop)
 		{
-			my_video = App->video->Load("Assets_Old/video/intro.ogv", App->render->renderer);
+			my_video = App->video->Load("video/intro.ogv", App->render->renderer);
 
 		}
 
@@ -161,7 +161,7 @@ bool LogoScene::PostUpdate()
 		}
 		if (win_video == 0 && Loop)
 		{
-			win_video = App->video->Load("Assets_Old/video/win.ogv", App->render->renderer);
+			win_video = App->video->Load("video/win.ogv", App->render->renderer);
 		}
 
 	}
@@ -194,7 +194,7 @@ bool LogoScene::PostUpdate()
 		}
 		if (lose_video == 0 && Loop)
 		{
-			lose_video = App->video->Load("Assets_Old/video/lose.ogv", App->render->renderer);
+			lose_video = App->video->Load("video/lose.ogv", App->render->renderer);
 		}
 
 	}
