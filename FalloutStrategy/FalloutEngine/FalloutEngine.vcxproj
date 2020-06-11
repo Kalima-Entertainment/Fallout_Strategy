@@ -14,7 +14,7 @@
     <ProjectGuid>{2AF9969B-F202-497B-AF30-7BEF9CE8005E}</ProjectGuid>
     <RootNamespace>programacio_2</RootNamespace>
     <ProjectName>Fallout_Strategy</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -28,7 +28,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -81,6 +81,7 @@
     <ClCompile Include="AI_Player.cpp" />
     <ClCompile Include="Animal.cpp" />
     <ClCompile Include="AssetsManager.cpp" />
+    <ClCompile Include="j1Cursor.cpp" />
     <ClCompile Include="Deathclaw.cpp" />
     <ClCompile Include="DialogManager.cpp" />
     <ClCompile Include="DynamicEntity.cpp" />
@@ -137,6 +138,7 @@
     <ClInclude Include="Animal.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AssetsManager.h" />
+    <ClInclude Include="j1Cursor.h" />
     <ClInclude Include="Deathclaw.h" />
     <ClInclude Include="DialogManager.h" />
     <ClInclude Include="DynamicEntity.h" />

@@ -37,9 +37,6 @@ j1Hud::j1Hud() :j1Module()
 	ranged_amount = 0;
 	activateTimer = false;
 	draw_health = false;
-	cursorRect = { 0,0, 18,25 };
-	cursor_position = { 0,0 };
-	cursor_offset = { 0, 0 };
 
 	for (int i = 0; i <= 9; i++)
 	{
@@ -123,10 +120,6 @@ bool j1Hud::Update(float dt) {
 bool j1Hud::PostUpdate() 
 {
 	BROFILER_CATEGORY("Hud PostUpdate", Profiler::Color::Red);
-
-	//CURSOR
-	App->input->GetMousePosition(cursor_position.x, cursor_position.y);
-	App->render->Blit((SDL_Texture*)App->gui->GetAtlas(), cursor_position.x * App->win->GetScale() + cursor_offset.x, cursor_position.y * App->win->GetScale() + cursor_offset.y, &cursorRect, 1.0f, 0.0f);
 
 	//INGAME HUD
 	if (App->player->selected_entity != nullptr && !App->player->selected_entity->is_dynamic && App->gui->ingame == true)

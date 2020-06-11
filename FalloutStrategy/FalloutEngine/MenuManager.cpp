@@ -349,15 +349,14 @@ void MenuManager::CreateMenu(Menu menu) {
 		//Images
 		gui_ingame[0] = dynamic_cast<j1Image*>(App->gui->CreateImage(0, 0, Image, { 0, 2428, 1290, 730 }, NULL, this));
 		gui_ingame[1] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(690, 7, Label, ":", NULL, this, "StackedPixel"));
-		timer_item    = dynamic_cast<UI_Label*>(App->gui->CreateLabel(700, 7, Label, "0", NULL, this, "StackedPixel"));
-		timer_minutes = dynamic_cast<UI_Label*>(App->gui->CreateLabel(652, 7, Label, "0", NULL, this, "StackedPixel"));
 		
-		//radio
-		radio[6] = dynamic_cast<UI_Button*>(App->gui->CreateButton(1205, 0, Radio_button, { 1043,1998,74,71 }, { 966,1998,74,71 }, { 889,1998,74,71 }, NULL, this));
-
 		//Tutorial
 		gui_ingame[2] = dynamic_cast<j1Image*>(App->gui->CreateImage(1205, 70, Image, { 1037, 2120, 74, 71 }, NULL, this));
 		gui_ingame[3] = dynamic_cast<UI_Button*>(App->gui->CreateButton(1160, 70, info_button, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this));
+		gui_ingame[4] = dynamic_cast<UI_Button*>(App->gui->CreateButton(1205, 0, Radio_button, { 1043,1998,74,71 }, { 966,1998,74,71 }, { 889,1998,74,71 }, NULL, this));
+
+		timer_item = dynamic_cast<UI_Label*>(App->gui->CreateLabel(700, 7, Label, "0", NULL, this, "StackedPixel"));
+		timer_minutes = dynamic_cast<UI_Label*>(App->gui->CreateLabel(652, 7, Label, "0", NULL, this, "StackedPixel"));
 
 		last_menu = current_menu;
 		current_menu = Menu::GUI;
@@ -435,7 +434,7 @@ void MenuManager::CreateMenu(Menu menu) {
 		
 		//Text
 		tutorial[2] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(1600, 220, Label, "TUTORIAL", NULL, this));
-		tutorial[3] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(1420, 375, Label, "CONTROLS", NULL, this));
+		tutorial[3] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(1430, 375, Label, "CONTROLS", NULL, this));
 		tutorial[4] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(1722, 375, Label, "HOW TO PLAY", NULL, this));
 		tutorial[5] = nullptr;
 		tutorial[6] = nullptr;
@@ -523,20 +522,6 @@ void MenuManager::CreateMenu(Menu menu) {
 		quest[10] = nullptr;
 		quest[11] = nullptr;
 
-
-		/*
-		quest[3] = (j1Image*)App->gui->CreateImage(50, 261, Image, { 3155, 809, 60, 17 }, NULL, this);
-		quest[4] = (j1Image*)App->gui->CreateImage(114, 261, Image, { 3219, 809, 63, 17 }, NULL, this);
-		quest[5] = (j1Image*)App->gui->CreateImage(181, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
-		
-		
-		quest[6] = (j1Image*)App->gui->CreateImage(33, 120, Image, { 3061, 619, 30, 27 }, NULL, this);
-		quest[7] = (j1Image*)App->gui->CreateImage(33, 160, Image, { 3061, 619, 30, 27 }, NULL, this);
-		quest[8] = (j1Image*)App->gui->CreateImage(33, 200, Image, { 3061, 619, 30, 27 }, NULL, this);
-		*/
-		//last_menu = current_menu;
-		//current_menu = Menu::QUEST;
-
 		break;
 
 	case Menu::RADIO:
@@ -547,9 +532,6 @@ void MenuManager::CreateMenu(Menu menu) {
 		radio[3] = dynamic_cast<UI_Button*>(App->gui->CreateButton( 450, 375, FiestaLatinaFM_button, { 2274,2312,114,114 }, { 1932,2312,114,114 }, { 602,2312,114,114 }, NULL, this));
 		radio[4] = dynamic_cast<UI_Button*>(App->gui->CreateButton( 750, 375, FusionCoreFM_button, { 2492,2312,114,114 }, { 2160,2312,114,114 }, { 823,2312,114,114 }, NULL, this));
 		radio[5] = dynamic_cast<UI_Button*>(App->gui->CreateButton( 600, 475, UltraRADIO_button, { 2383,2312,114,114 }, { 2046,2312,114,114 }, { 712,2312,114,114 }, NULL, this));
-
-		//last_menu = current_menu;
-		//current_menu = Menu::RADIO;
 
 		break;
 	case Menu::NO_MENU:
@@ -1179,7 +1161,7 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->gui->DeleteArrayElements(pause_menu, 7);
 		break;
 	case Menu::GUI:
-		App->gui->DeleteArrayElements(gui_ingame, 4);
+		App->gui->DeleteArrayElements(gui_ingame, 5);
 		App->gui->Delete_Element(timer_item);
 		App->gui->Delete_Element(timer_minutes);
 		break;
