@@ -117,15 +117,22 @@ bool j1Scene::Start()
 
 	App->minimap->Enable();
 
+	/*
 	//top_left
 	App->entities->CreateEntity(VAULT, MELEE, 20, 20, App->player);
+	App->entities->CreateEntity(VAULT, MELEE, 21, 20, App->player);
+	App->entities->CreateEntity(VAULT, RANGED, 20, 21, App->player);
+	App->entities->CreateEntity(VAULT, RANGED, 21, 21, App->player);
 	//top_right
 	App->entities->CreateEntity(VAULT, MELEE, 130, 20, App->player);
 	//bottom_left
 	App->entities->CreateEntity(VAULT, MELEE, 20, 130, App->player);
 	//bottom_right
 	App->entities->CreateEntity(VAULT, MELEE, 130,110, App->player);
-
+	App->entities->CreateEntity(VAULT, MELEE, 131, 110, App->player);
+	App->entities->CreateEntity(VAULT, MELEE, 130, 111, App->player);
+	App->entities->CreateEntity(VAULT, MELEE, 131, 111, App->player);
+	*/
 	//Set camera to player's base position
 	App->render->camera.x -= (int)(App->player->base->position.x - App->render->camera.w * 0.5f);
 	App->render->camera.y -= (int)(App->player->base->position.y - App->render->camera.h * 0.5f);

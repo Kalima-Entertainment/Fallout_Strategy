@@ -345,14 +345,13 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 	if (!IsWalkable(origin)) {
 		LOG("Unwalkable origin");
-		return -2;
+		return -1;
 	}
 
 	if ((!IsWalkable(destination))) {
 		LOG("Unwalkable destination");
-		return -2;
+		return -1;
 	}
-
 
 	PathList open;
 	PathList close;

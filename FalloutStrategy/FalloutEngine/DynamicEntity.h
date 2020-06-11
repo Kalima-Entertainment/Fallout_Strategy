@@ -44,8 +44,8 @@ public:
 	void CheckDestination(iPoint destination);
 
 	bool PathfindToPosition(iPoint target);
-	Direction GetDirectionToGo(SDL_Rect next_tile_rect) const;
-	Direction GetBuildingDirection(std::vector<iPoint> building_tiles) const;
+	Direction GetDirectionToGo(iPoint next_tile_center);
+	Direction GetBuildingDirection(std::vector<iPoint> building_tiles);
 	void UpdateTile();
 
 	bool LoadAnimations(const char* folder, const char* file_name);
@@ -54,7 +54,6 @@ protected:
 	iPoint target_tile;
 	iPoint next_tile;
 	iPoint next_tile_position;
-	SDL_Rect next_tile_rect;
 	int detection_radius;
 
 	j1Timer detection_timer;
