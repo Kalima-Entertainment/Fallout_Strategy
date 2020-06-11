@@ -40,7 +40,6 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 	time_left_upgrade = 0;
 	level = 0;
 
-	target_entity = nullptr;
 	reference_entity = nullptr;
 	attacking_entity = nullptr;
 	current_animation = nullptr;
@@ -105,7 +104,6 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 }
 
 StaticEntity::~StaticEntity() {
-	target_entity = nullptr;
 	reference_entity = nullptr;
 	owner = nullptr;
 	attacking_entity = nullptr;

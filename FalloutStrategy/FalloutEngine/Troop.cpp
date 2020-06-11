@@ -72,34 +72,36 @@ Troop::~Troop() {
 bool Troop::Update(float dt) {
 
 	bool ret = true;
-	j1Entity* enemy_in_range = nullptr;
+	DynamicEntity* enemy_in_range = nullptr;
 	current_animation = &animations[state][direction];
 
-	if ((target_entity)&&(!target_entity->is_dynamic)&&(target_entity->state != DIE)) {
-		target_building = dynamic_cast<StaticEntity*>(target_entity);
-	}
-
-	if ((target_entity != nullptr) && (target_entity->state == DIE))
-		target_entity = nullptr;
+	/*
+	if ((dynamic_target != nullptr) && (dynamic_target->state == DIE))
+		dynamic_target = nullptr;
 
 	if ((target_building != nullptr) && (target_building->state == DIE))
 		target_building = nullptr;
+	*/
 
 	switch (state)
 	{
     case IDLE:
 		enemy_in_range = DetectEntitiesInRange();
 
-		if ((enemy_in_range) && (enemy_in_range != target_entity) && (!commanded)) {
-			target_entity = enemy_in_range;
-			PathfindToPosition(enemy_in_range->current_tile);
+		//if is not commanded and there is no building to attack
+		if ((!commanded)&&(target_building == nullptr)) {
+			dynamic_target = enemy_in_range;
+			if(dynamic_target != nullptr)
+				PathfindToPosition(enemy_in_range->current_tile);
 		}
 		else {
-			if (target_building) {
-				if ((target_building->to_delete)||(target_building->state == DIE)) {
+			if (target_building != nullptr) {
+				//if the building is being destroyed
+				if (target_building->state == DIE) {
+					//find another one
 					target_building = RequestTargetBuilding(target_building->faction);
-					target_entity = target_building;
 
+					//if there are no buildings left idle or attack surrounding entities in next frame
 					if (target_building == nullptr)
 						break;
 				}
@@ -112,9 +114,11 @@ bool Troop::Update(float dt) {
 					}
 				}
 			}
-			else if ((target_entity)&&(target_entity->is_dynamic)) {
-
-				PathfindToPosition(target_entity->current_tile);
+			else if (dynamic_target != nullptr) {
+				if (dynamic_target->state == DIE) 
+					dynamic_target = nullptr;
+				else 
+					PathfindToPosition(dynamic_target->current_tile);
 			}
 		}
         break;
@@ -122,60 +126,70 @@ bool Troop::Update(float dt) {
     case WALK:
 		Move(dt);
 
-		if (target_entity) {
-			if (target_entity->is_dynamic) {
-				if (current_tile.DistanceManhattan(target_entity->current_tile) <= range) {
-					UpdateTile();
-					if (target_entity->faction != faction) {
-						state = ATTACK;
-					}
-					else {
-						state = IDLE;
-					}
+		//if we have a target building to attack
+		if (target_building != nullptr) {
+			//if the building is about to be destroyed find another one
+			if (target_building->state == DIE) {
+				target_building = RequestTargetBuilding(target_building->faction);
+
+				if (target_building != nullptr)
+					PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
+				else
+					commanded = false;
+			}
+			//if teh building is still standing still and close enough attack it
+			else if (current_tile.DistanceManhattan(App->entities->ClosestTile(current_tile, target_building->tiles)) <= range) {
+				UpdateTile();
+				path_to_target.clear();
+				if (target_building->faction != faction) {
+					state = ATTACK;
 				}
-				else if (current_tile.DistanceManhattan(target_entity->current_tile) > range){
-					PathfindToPosition(target_entity->current_tile);
+				else {
+					state = IDLE;
+					commanded = false;
 				}
 			}
-			else if (target_building == target_entity){
-				if (target_building->state == DIE) {
-					target_building = RequestTargetBuilding(target_building->faction);
-					target_entity = target_building;
-
-					if (target_building)
-						PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
-					else
-						commanded = false;
-				}
-				else if (current_tile.DistanceManhattan(App->entities->ClosestTile(current_tile, target_building->tiles)) <= range) {
+			//if we are too far away to attack go where the building is
+			else if (path_to_target.size() == 0)
+				PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
+		}
+		if (dynamic_target != nullptr) {
+			//if the entitiy is in range
+			if (dynamic_target->state != DIE) {
+				if (current_tile.DistanceManhattan(dynamic_target->current_tile) <= range) {
 					UpdateTile();
 					path_to_target.clear();
-					if (target_building->faction != faction) {
+					if (dynamic_target->faction != faction) {
 						state = ATTACK;
 					}
 					else {
 						state = IDLE;
+						commanded = false;
 					}
-					//commanded = false;
 				}
-				else if (path_to_target.size() == 0)
-					PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
+				//if the entity is too far away
+				else if (target_tile != dynamic_target->current_tile) {
+					PathfindToPosition(dynamic_target->current_tile);
+				}
+			}
+			else {
+				dynamic_target = nullptr;
 			}
 		}
+		//atack closest enemies in range
 		else if(!commanded){
 			enemy_in_range = DetectEntitiesInRange();
 
-			if ((enemy_in_range) && (enemy_in_range != target_entity)) {
-				target_entity = enemy_in_range;
+			if (enemy_in_range != nullptr) {
+				dynamic_target = enemy_in_range;
 				PathfindToPosition(enemy_in_range->current_tile);
 			}
-			else if ((target_building) && (target_entity != target_building))
-			{
-				target_entity = target_building;
+			else if (target_building) {
 				PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
 			}
 			else {
 				state = IDLE;
+				commanded = false;
 			}
 		}
 		else if (current_tile == target_tile){
@@ -188,23 +202,36 @@ bool Troop::Update(float dt) {
         break;
 
     case ATTACK:
-		if ((target_entity) && (target_entity->state == DIE)) {
-			if (target_entity == target_building) {
-				target_entity = target_building = RequestTargetBuilding(target_building->faction);
-				if(target_building)
-					PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
+		if ((target_building != nullptr) && (target_building->state == DIE)) {
+			target_building = RequestTargetBuilding(target_building->faction);
+
+			if(target_building)
+				PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
+		}
+
+		if ((dynamic_target != nullptr) && (dynamic_target->state == DIE)) {
+			dynamic_target = DetectEntitiesInRange();
+			if (dynamic_target != nullptr) {
+				if (current_tile.DistanceManhattan(dynamic_target->current_tile) > range)
+					PathfindToPosition(dynamic_target->current_tile);
 			}
-			else {
-				target_entity = nullptr;
-				state = IDLE;
-			}
-			break;
 		}
 
 		if (attack_timer.ReadSec() > attack_time) {
-			if (target_entity) {
-				if ((current_tile.DistanceNoSqrt(target_entity->current_tile) > range) && (target_entity->is_dynamic)) {
-					PathfindToPosition(target_entity->current_tile);
+			if (target_building) {
+				iPoint closest_tile = App->entities->ClosestTile(current_tile, target_building->tiles);
+				if (current_tile.DistanceManhattan(closest_tile) <= range) {
+					UpdateTile();
+					path_to_target.clear();
+					Attack();
+				}
+				else {
+					PathfindToPosition(closest_tile);
+				}
+			}
+			else if (dynamic_target != nullptr) {
+				if (current_tile.DistanceNoSqrt(dynamic_target->current_tile) > range) {
+					PathfindToPosition(dynamic_target->current_tile);
 				}
 				else {
 					UpdateTile();
@@ -214,6 +241,7 @@ bool Troop::Update(float dt) {
 			}
 			else {
 				state = IDLE;
+				commanded = false;
 			}
 		}
 
@@ -226,7 +254,7 @@ bool Troop::Update(float dt) {
 			current_animation->Reset();
 			if (attacking_entity != nullptr) {
 				state = ATTACK;
-				target_entity = attacking_entity;
+				dynamic_target = attacking_entity;
 			}
 			else
 				state = IDLE;
@@ -241,11 +269,12 @@ bool Troop::Update(float dt) {
 			delete_timer.Start();
 			direction = TOP_LEFT;
 
-			if ((attacking_entity)&&(attacking_entity->target_entity == this)) {
-				attacking_entity->target_entity = nullptr;
+			if ((attacking_entity)&&(attacking_entity->dynamic_target == this)) {
+				attacking_entity->dynamic_target = nullptr;
 				attacking_entity->state = IDLE;
 			}
 
+			//Mr Handy explode
 			if (type == MR_HANDY) {
 				DetectEntitiesInRange();
 				for(int i = 0; i < entities_in_range.size(); i++)
@@ -299,55 +328,59 @@ void Troop::Attack() {
 
 	attack_timer.Start();
 
-	//damage unit if god_mode isn't activated
-	if ((target_entity->faction == App->player->faction) && (App->player->god_mode))
-		return;
+	//avoid damagin player's units if in god mode
+	if (App->player->god_mode) {
+		if ((dynamic_target != nullptr) && (dynamic_target->faction == App->player->faction))
+			return;
+		if ((target_building != nullptr) && (target_building->faction == App->player->faction))
+			return;
+	}
 
-	target_entity->current_health -= damage;
-	target_entity->state = HIT;
+	if (dynamic_target != nullptr) {
 
-	if (target_entity->is_dynamic) {
-		DynamicEntity* dynamic_target = dynamic_cast<DynamicEntity*>(target_entity);
+		dynamic_target->current_health -= damage;
+		dynamic_target->state = HIT;
+		dynamic_target->attacking_entity = this;
 
-		target_entity->attacking_entity = this;
 		if (dynamic_target->state == ATTACK)
 			dynamic_target->current_animation->Reset();
 
-		dynamic_target->state = HIT;
-
-		if ((current_tile.x > target_entity->current_tile.x) && (current_tile.y == target_entity->current_tile.y)) {
+		if ((current_tile.x > dynamic_target->current_tile.x) && (current_tile.y == dynamic_target->current_tile.y)) {
 			direction = TOP_LEFT;
 			dynamic_target->direction = BOTTOM_RIGHT;
 		}
-		else if ((current_tile.x == target_entity->current_tile.x) && (current_tile.y > target_entity->current_tile.y)) {
+		else if ((current_tile.x == dynamic_target->current_tile.x) && (current_tile.y > dynamic_target->current_tile.y)) {
 			direction = TOP_RIGHT;
 			dynamic_target->direction = BOTTOM_LEFT;
 		}
-		else if ((current_tile.x == target_entity->current_tile.x) && (current_tile.y < target_entity->current_tile.y)) {
+		else if ((current_tile.x == dynamic_target->current_tile.x) && (current_tile.y < dynamic_target->current_tile.y)) {
 			direction = BOTTOM_LEFT;
 			dynamic_target->direction = TOP_RIGHT;
 		}
-		else if ((current_tile.x < target_entity->current_tile.x) && (current_tile.y == target_entity->current_tile.y)) {
+		else if ((current_tile.x < dynamic_target->current_tile.x) && (current_tile.y == dynamic_target->current_tile.y)) {
 			direction = BOTTOM_RIGHT;
 			dynamic_target->direction = TOP_LEFT;
 		}
+
+		//kill entity
+		if (dynamic_target->current_health <= 0) {
+			dynamic_target->state = DIE;
+			dynamic_target->direction = TOP_LEFT;
+			path_to_target.clear();
+			state = IDLE;
+		}
 	}
-	else {
-		StaticEntity* static_entity = dynamic_cast<StaticEntity*>(target_entity);
-		static_entity->GetHit();
-		direction = GetBuildingDirection(static_entity->tiles);
-	}
+	else if(target_building != nullptr){
+		target_building->current_health -= damage;
+		target_building->GetHit();
+		direction = GetBuildingDirection(target_building->tiles);
 
-	if (target_entity->current_health <= 0) {
-		target_entity->state = DIE;
-		path_to_target.clear();
-		state = IDLE;
-
-		if (attacking_entity == target_entity)
-			attacking_entity = nullptr;
-
-		target_entity = nullptr;
-		target_building = nullptr;
+		//destroy building
+		if (target_building->current_health <= 0) {
+			target_building->state = DIE;
+			path_to_target.clear();
+			state = IDLE;
+		}
 	}
 }
 

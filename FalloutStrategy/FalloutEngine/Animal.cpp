@@ -94,7 +94,6 @@ bool Animal::Update(float dt) {
 			SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
 			App->audio->die_sound = true;
 		}
-
         break;
 
     default:
@@ -119,7 +118,7 @@ bool Animal::Update(float dt) {
 
 bool Animal::LoadDataFromReference() {
 	bool ret = true;
-	Animal* reference_animal = (Animal*)reference_entity;
+	Animal* reference_animal = dynamic_cast<Animal*>(reference_entity);
 
 	//load animations
 	for(int i = 0; i < NO_STATE; i++)

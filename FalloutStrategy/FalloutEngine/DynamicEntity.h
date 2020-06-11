@@ -40,7 +40,7 @@ public:
 	void Move(float dt);
 	void Flee();
 
-	j1Entity* DetectEntitiesInRange();
+	DynamicEntity* DetectEntitiesInRange();
 	void CheckDestination(iPoint destination);
 
 	bool PathfindToPosition(iPoint target);
@@ -64,6 +64,8 @@ public:
 	Animation animations[NO_STATE][NO_DIRECTION];
 	Direction direction;
 	Direction last_direction;
+
+	DynamicEntity* dynamic_target;
 
 	bool is_agressive;
 	bool commanded;

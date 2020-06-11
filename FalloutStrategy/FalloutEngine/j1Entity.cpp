@@ -51,7 +51,6 @@ j1Entity::j1Entity() {
 
 j1Entity::~j1Entity() {
 	reference_entity = nullptr;
-	target_entity = nullptr;
 	attacking_entity = nullptr;
 	owner = nullptr;
 	current_animation = nullptr;

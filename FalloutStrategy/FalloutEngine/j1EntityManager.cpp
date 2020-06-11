@@ -214,23 +214,6 @@ bool j1EntityManager::PreUpdate() {
 
 	for(size_t i = 0; i < entities.size(); i++)
 	{
-		if ((entities[i]->target_entity != nullptr) && (entities[i]->target_entity->to_delete)) {
-			entities[i]->target_entity = nullptr;
-		}
-
-		//delete entities to destroy
-		if (entities[i]->to_delete)
-		{
-			if(entities[i]->owner != nullptr)
-				entities[i]->owner->DeleteEntity(entities[i]);
-
-			if ((!entities[i]->is_dynamic)&&(!App->IsLoading()))
-				App->scene->CheckWinner();
-
-			delete entities[i];
-			entities[i] = nullptr;
-			entities.erase(entities.begin() + i);
-		}
 	}
 
 	return ret;
@@ -420,6 +403,20 @@ bool j1EntityManager::PostUpdate()
 
 				//sort and blit entities
 				entities[i]->PostUpdate();
+			}
+
+			//delete entities to destroy
+			if (entities[i]->to_delete)
+			{
+				if (entities[i]->owner != nullptr)
+					entities[i]->owner->DeleteEntity(entities[i]);
+
+				if ((!entities[i]->is_dynamic) && (!App->IsLoading()))
+					App->scene->CheckWinner();
+
+				delete entities[i];
+				entities[i] = nullptr;
+				entities.erase(entities.begin() + i);
 			}
 		}
 
@@ -745,7 +742,7 @@ iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) 
 
 ResourceBuilding* j1EntityManager::GetClosestResourceBuilding(iPoint current_position, Resource resource_type) {
 	ResourceBuilding* closest_building = nullptr;
-	int min_distance = 1000;
+	int min_distance = 10000;
 	int building_distance = 0;
 
 	for(size_t i = 0; i < resource_buildings.size(); i++)

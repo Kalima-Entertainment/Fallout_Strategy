@@ -136,9 +136,6 @@ bool AI_Player::Update(float dt) {
 				ChooseRandomPlayerEnemy();
 				target_building = ChooseTargetBuilding();
 			}
-			//and find its position
-			if(target_building != nullptr)
-				target_building_position = target_building->current_tile;
 		}
 		else {
 			for (size_t i = 0; i < troops.size(); i++)

@@ -141,8 +141,8 @@ bool Gatherer::Update(float dt) {
 		if (!delete_timer.Started()) {
 			delete_timer.Start();
 			direction = TOP_LEFT;
-			if ((attacking_entity)&&(attacking_entity->target_entity == this)) {
-				attacking_entity->target_entity = nullptr;
+			if ((attacking_entity)&&(attacking_entity->dynamic_target == this)) {
+				attacking_entity->dynamic_target = nullptr;
 				attacking_entity->state = IDLE;
 			}
 		}
@@ -201,7 +201,6 @@ void Gatherer::Gather() {
 		}
 
 		PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
-		target_entity = base;
 		gathering = true;
 	}
 
@@ -230,7 +229,6 @@ void Gatherer::StoreGatheredResources() {
 	}
 
 	resource_collected = 0;
-	target_entity = nullptr;
 }
 
 bool Gatherer::LoadDataFromReference() {

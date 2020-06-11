@@ -99,7 +99,6 @@ public:
 	Faction faction;
 
 	j1Entity* reference_entity;
-	j1Entity* target_entity;
 	DynamicEntity* attacking_entity;
 	GenericPlayer* owner;
 	State state;

@@ -158,7 +158,7 @@
       <Filter>Desenvolupament  ========\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="AssetsManager.cpp">
-      <Filter>Desenvolupament  ========\Entities</Filter>
+      <Filter>Desenvolupament  ========\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -337,7 +337,7 @@
       <Filter>Desenvolupament  ========\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="AssetsManager.h">
-      <Filter>Desenvolupament  ========\Entities</Filter>
+      <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

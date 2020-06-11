@@ -22,7 +22,7 @@
 #include "ParticleSystem.h"
 
 DynamicEntity::DynamicEntity() : j1Entity() {
-	target_entity = nullptr;
+	dynamic_target = nullptr;
 	target_tile = {-1,-1};
 	next_tile = {-1,-1};
 	next_tile_position = {-1,-1};
@@ -47,7 +47,7 @@ DynamicEntity::~DynamicEntity() {
 
 	direction = last_direction = TOP_LEFT;
 
-	target_entity = nullptr;
+	dynamic_target = nullptr;
 	DynaParticle = nullptr;
 	visionEntity = nullptr;
 	reference_entity = nullptr;
@@ -192,7 +192,7 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 	}
 	else {
 		if (App->pathfinding->CreatePath(current_tile, destination) == -1) {
-			LOG("No");
+			//LOG("No path");
 			if (!App->pathfinding->IsWalkable(destination)) {
 				LOG("Unwalkable destination");
 
@@ -498,10 +498,10 @@ void DynamicEntity::UpdateTile() {
 	App->entities->occupied_tiles[current_tile.x][current_tile.y] = true;
 }
 
-j1Entity* DynamicEntity::DetectEntitiesInRange() {
+DynamicEntity* DynamicEntity::DetectEntitiesInRange() {
 	iPoint checked_tile = { -1,-1 };
 	j1Entity* detected_entity = nullptr;
-	j1Entity* closest_enemy = nullptr;
+	DynamicEntity* closest_enemy = nullptr;
 
 	entities_in_range.clear();
 
@@ -522,11 +522,11 @@ j1Entity* DynamicEntity::DetectEntitiesInRange() {
 
 						if (detected_entity->faction != faction)
 							if (closest_enemy == nullptr) {
-								closest_enemy = detected_entity;
+								closest_enemy = dynamic_cast<DynamicEntity*>(detected_entity);
 							}
 							else {
 								if (detected_entity->current_tile.DistanceManhattan(current_tile) < closest_enemy->current_tile.DistanceManhattan(current_tile)) {
-									closest_enemy = detected_entity;
+									closest_enemy = dynamic_cast<DynamicEntity*>(detected_entity);
 								}
 							}
 					}
@@ -534,13 +534,12 @@ j1Entity* DynamicEntity::DetectEntitiesInRange() {
 			}
 		}
 	}
+
 	return closest_enemy;
 }
 
 void DynamicEntity::CheckDestination(iPoint destination) {
 	j1Entity* target = App->entities->FindEntityByTile(destination);
-
-	target_entity = target;
 
 	if (target == nullptr) {
 		if (type == GATHERER) {
@@ -560,7 +559,9 @@ void DynamicEntity::CheckDestination(iPoint destination) {
 		}
 	}
 	else{
-		target_entity = target;
+		if (target->is_dynamic)
+			dynamic_target = dynamic_cast<DynamicEntity*>(target);
+
 		if (type == GATHERER)
 			dynamic_cast<Gatherer*>(this)->gathering = true;
 	}
