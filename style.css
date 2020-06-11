@@ -8,11 +8,6 @@ h6 {
     font-family: "Raleway", sans-serif
 }
 
-p{
-    
-   
-}
-
 body,
 html {
     height: 100%;
@@ -64,6 +59,15 @@ html {
     font-size: 35px;
     font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     color:goldenrod;
+    
+}
+
+.titlet{
+    
+    font-size: 60px;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color:goldenrod;
+    text-align: center;
     
 }
 
