@@ -10,9 +10,13 @@ j1Cursor::j1Cursor() : j1Module()
 {
 	name = ("cursor");
 
-	cursorRect = { 0,0, 18,25 };
-	cursor_position = { 0,0 };
-	cursor_offset = { 0, 0 };
+	cursorRect.x = 0;
+	cursorRect.y = 0;
+	cursorRect.w = 18;
+	cursorRect.h = 25;
+	
+	cursor_position.x = 0;
+	cursor_position.y = 0;
 }
 
 j1Cursor::~j1Cursor() {
@@ -43,7 +47,7 @@ bool j1Cursor::PostUpdate()
 {
 	//CURSOR
 	App->input->GetMousePosition(cursor_position.x, cursor_position.y);
-	App->render->Blit((SDL_Texture*)App->gui->GetAtlas(), cursor_position.x * App->win->GetScale() + cursor_offset.x, cursor_position.y * App->win->GetScale() + cursor_offset.y, &cursorRect, 1.0f, 0.0f);
+	App->render->Blit((SDL_Texture*)App->gui->GetAtlas(), cursor_position.x * App->win->GetScale(), cursor_position.y * App->win->GetScale(), &cursorRect, 1.0f, 0.0f);
 
 	return true;
 }
