@@ -17,6 +17,8 @@
 #include "SDL_mixer/include/SDL_mixer.h"
 #include "FoWManager.h"
 #include "AssetsManager.h"
+#include "Troop.h"
+#include "Deathclaw.h"
 
 #include "Emiter.h"
 #include "ParticleSystem.h"
@@ -551,16 +553,20 @@ void DynamicEntity::CheckDestination(iPoint destination) {
 			}
 			else {
 				dynamic_cast<Gatherer*>(this)->gathering = false;
-				commanded = true;
 			}
 		}
-		else if (is_agressive) {
-			commanded = true;
-		}
+
+		commanded = true;
 	}
 	else{
 		if (target->is_dynamic)
 			dynamic_target = dynamic_cast<DynamicEntity*>(target);
+		else if (is_agressive) {
+			if ((type == MELEE)||(type == RANGED)||(type == MR_HANDY))
+				dynamic_cast<Troop*>(this)->target_building = dynamic_cast<StaticEntity*>(target);
+			else if(type == DEATHCLAW)
+				dynamic_cast<Deathclaw*>(this)->target_building = dynamic_cast<StaticEntity*>(target);
+		}
 
 		if (type == GATHERER)
 			dynamic_cast<Gatherer*>(this)->gathering = true;

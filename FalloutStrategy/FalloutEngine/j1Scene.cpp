@@ -119,12 +119,24 @@ bool j1Scene::Start()
 
 	//top_left
 	App->entities->CreateEntity(VAULT, MELEE, 20, 20, App->player);
+	App->entities->CreateEntity(VAULT, MELEE, 21, 20, App->player);
+	App->entities->CreateEntity(VAULT, RANGED, 20, 21, App->player);
+	App->entities->CreateEntity(VAULT, RANGED, 21, 21, App->player);
 	//top_right
 	App->entities->CreateEntity(VAULT, MELEE, 130, 20, App->player);
+	App->entities->CreateEntity(VAULT, MELEE, 131, 20, App->player);
+	App->entities->CreateEntity(VAULT, RANGED, 130, 21, App->player);
+	App->entities->CreateEntity(VAULT, RANGED, 131, 21, App->player);
 	//bottom_left
 	App->entities->CreateEntity(VAULT, MELEE, 20, 130, App->player);
+	App->entities->CreateEntity(VAULT, MELEE, 21, 130, App->player);
+	App->entities->CreateEntity(VAULT, RANGED, 20, 131, App->player);
+	App->entities->CreateEntity(VAULT, RANGED, 21, 131, App->player);
 	//bottom_right
 	App->entities->CreateEntity(VAULT, MELEE, 130,110, App->player);
+	App->entities->CreateEntity(VAULT, MELEE, 131, 110, App->player);
+	App->entities->CreateEntity(VAULT, RANGED, 130, 111, App->player);
+	App->entities->CreateEntity(VAULT, RANGED, 131, 111, App->player);
 
 	//Set camera to player's base position
 	App->render->camera.x -= (int)(App->player->base->position.x - App->render->camera.w * 0.5f);

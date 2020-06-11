@@ -75,13 +75,11 @@ bool Troop::Update(float dt) {
 	DynamicEntity* enemy_in_range = nullptr;
 	current_animation = &animations[state][direction];
 
-	/*
-	if ((dynamic_target != nullptr) && (dynamic_target->state == DIE))
+	if ((dynamic_target != nullptr) && (dynamic_target->state >= NO_STATE))
 		dynamic_target = nullptr;
 
-	if ((target_building != nullptr) && (target_building->state == DIE))
+	if ((target_building != nullptr) && (target_building->state >= NO_STATE))
 		target_building = nullptr;
-	*/
 
 	switch (state)
 	{
@@ -153,7 +151,7 @@ bool Troop::Update(float dt) {
 			else if (path_to_target.size() == 0)
 				PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
 		}
-		if (dynamic_target != nullptr) {
+		else if (dynamic_target != nullptr) {
 			//if the entitiy is in range
 			if (dynamic_target->state != DIE) {
 				if (current_tile.DistanceManhattan(dynamic_target->current_tile) <= range) {
