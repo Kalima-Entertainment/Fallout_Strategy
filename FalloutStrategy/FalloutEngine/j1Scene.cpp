@@ -222,7 +222,6 @@ bool j1Scene::Update(float dt)
 	int x, y;
 	App->input->GetMousePosition(x, y);
 	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
-
 	//Used to select units and groups
 	if (!App->isPaused) {
 		RectangleSelection();
@@ -252,7 +251,19 @@ bool j1Scene::Update(float dt)
 		App->hud->activateTimer = false;
 		App->transition->freeTransitionTex = false;
 	}
-
+	//LOSE BY TIME
+	if (App->hud->minutes <= 0 && App->hud->timer < 2)
+	{
+		lose = true;
+		App->logo_scene->Loop = true;
+		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
+		App->menu_manager->DestroyMenu(Menu::GUI);
+		App->hud->CleanUp();
+		App->gui->ingame = false;
+		App->isPaused = true;
+		App->logo_scene->playsound = true;
+		App->transition->freeTransitionTex = false;
+	}
 	return true;
 }
 
