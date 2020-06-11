@@ -17,7 +17,6 @@
 #include "SDL_mixer/include/SDL_mixer.h"
 #include "FoWManager.h"
 #include "AssetsManager.h"
-#include "Troop.h"
 
 #include "Emiter.h"
 #include "ParticleSystem.h"
@@ -27,6 +26,7 @@ DynamicEntity::DynamicEntity() : j1Entity() {
 	target_tile = {-1,-1};
 	next_tile = {-1,-1};
 	next_tile_position = {-1,-1};
+	next_tile_rect = {0,0,0,0};
 	detection_radius = 0;
 	is_dynamic = true;
 	commanded = false;
@@ -42,6 +42,7 @@ DynamicEntity::~DynamicEntity() {
 	target_tile = { -1,-1 };
 	next_tile = { -1,-1 };
 	next_tile_position = { -1,-1 };
+	next_tile_rect = { 0,0,0,0 };
 	detection_radius = 0;
 
 	direction = last_direction = TOP_LEFT;
@@ -136,7 +137,7 @@ bool DynamicEntity::PostUpdate() {
 		}
 
 		if (App->render->debug) {
-			App->render->DrawQuad({next_tile_position.x-2, next_tile_position.y-2, 4,4}, 0, 255, 0, 255, true, true);
+			App->render->DrawQuad(next_tile_rect, 0, 255, 0, 255, true, true);
 			App->render->DrawQuad({ (int)position.x, (int)position.y, 2, 2 }, 255, 0, 0, 255, true, true);
 		}
 	}
@@ -219,6 +220,7 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 void DynamicEntity::Move(float dt) {
 
 	last_direction = direction;
+	direction = GetDirectionToGo(next_tile_rect);
 
 	fPoint auxPos = position; //We use that variable to optimize Fog Of War code
 
@@ -241,53 +243,49 @@ void DynamicEntity::Move(float dt) {
 
 	// -- Get next tile center
 	next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
-	next_tile_position.y += TILE_QUARTER;
+	next_tile_rect = { next_tile_position.x + HALF_TILE - 4, next_tile_position.y + HALF_TILE - 2, 8, 8 };
 
-	direction = GetDirectionToGo(next_tile_position);
-
-	//if (current_tile == next_tile) {
-		//we are following a node path
-		if (node_path.size() > 0) {
-			//if we have reached the closest node
-			if (current_tile == node_path.back()) {
-				//forget it
-				node_path.pop_back();
-				//if we have more nodes to go to
-				if (node_path.size() > 0) {
-					//pathfind to the next one
-					PathfindToPosition(node_path.back());
-				}
-				else {
-					//if not pathfind to the destination
-					PathfindToPosition(target_tile);
-				}
-			}
-		}
-
-		if (current_tile == target_tile) {
-			direction = last_direction;
-			path_to_target.clear();
-			commanded = false;
-		}
-		else {
-			//if there is a new path erase the first element
-			if (path_to_target.size() > 0)
-				path_to_target.erase(path_to_target.cbegin());
-
-			//if the entity has a path to follow
-			if (path_to_target.size() > 0) {
-				//next tile is the first tile in the list
-				next_tile = path_to_target.front();
-
-				//if next tile is occupied create the path again
-				if (App->entities->IsTileOccupied(next_tile))
-					PathfindToPosition(target_tile);
+	//we are following a node path
+	if (node_path.size() > 0) {
+		//if we have reached the closest node
+		if (current_tile == node_path.back()) {
+			//forget it
+			node_path.pop_back();
+			//if we have more nodes to go to
+			if (node_path.size() > 0) {
+				//pathfind to the next one
+				PathfindToPosition(node_path.back());
 			}
 			else {
+				//if not pathfind to the destination
 				PathfindToPosition(target_tile);
 			}
 		}
-	//}
+	}
+
+	if (current_tile == target_tile) {
+		direction = last_direction;
+		path_to_target.clear();
+		commanded = false;
+	}
+	else {
+		//if the entity has a path to follow
+		if (path_to_target.size() > 0) {
+			//next tile is the first tile in the list
+			next_tile = path_to_target.front();
+
+			//if next tile is occupied create the path again
+			if (App->entities->IsTileOccupied(next_tile))
+				PathfindToPosition(target_tile);
+
+			//if there is a new path erase the first element
+			if (path_to_target.size() > 0)
+				path_to_target.erase(path_to_target.cbegin());
+		}
+		else {
+			PathfindToPosition(target_tile);
+		}
+	}
 
 	switch (direction) 
 	{
@@ -316,7 +314,7 @@ void DynamicEntity::Move(float dt) {
 		visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
 }
 
-Direction DynamicEntity::GetDirectionToGo(iPoint next_tile_center) {
+Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
 
 	/*
 	//if position is in the middle of the next tile rect
@@ -341,28 +339,36 @@ Direction DynamicEntity::GetDirectionToGo(iPoint next_tile_center) {
 	}
 	*/
 
-	if ((position.x > next_tile_center.x) && (position.y > next_tile_center.y))
-		return TOP_LEFT;
-	else if ((position.x > next_tile_center.x) && (position.y < next_tile_center.y))
-		return BOTTOM_LEFT;
-	else if ((position.x < next_tile_center.x) && (position.y > next_tile_center.y))
-		return TOP_RIGHT;
-	else if ((position.x < next_tile_center.x) && (position.y < next_tile_center.y))
-		return BOTTOM_RIGHT;
+	if ((ceil(position.x) > floor(next_tile_rect.x)) && (floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w))
+		&& (ceil(position.y) > floor(next_tile_rect.y)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h))) {
+		return Direction::NO_DIRECTION;
+	}
+	if ((ceil(position.x) > floor(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (ceil(position.y) > floor(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+		return Direction::TOP_LEFT;
+	}
+	else if ((ceil(position.x) > floor(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+		return Direction::BOTTOM_LEFT;
+	}
+	else if ((floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (ceil(position.y) > floor(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+		return Direction::TOP_RIGHT;
+	}
+	else if ((floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
+		return Direction::BOTTOM_RIGHT;
+	}
 	else {
-		//UpdateTile();
-		return NO_DIRECTION;
+		return Direction::NO_DIRECTION;
 	}
 }
 
-Direction DynamicEntity::GetBuildingDirection(std::vector<iPoint> building_tiles) {
+Direction DynamicEntity::GetBuildingDirection(std::vector<iPoint> building_tiles) const {
 	//we get the closest tile to the entity
 	iPoint closest_tile = App->entities->ClosestTile(current_tile, building_tiles);
 
 	//We get the center of the tile in world position and create it
 	closest_tile = App->map->MapToWorld(closest_tile.x, closest_tile.y);
+	SDL_Rect closest_tile_center = { closest_tile.x + 31, closest_tile.y + 31, 2, 2 };
 
-	return GetDirectionToGo(closest_tile);
+	return GetDirectionToGo(closest_tile_center);
 }
 
 void DynamicEntity::Flee() {
@@ -555,8 +561,6 @@ void DynamicEntity::CheckDestination(iPoint destination) {
 	else{
 		if (target->is_dynamic)
 			dynamic_target = dynamic_cast<DynamicEntity*>(target);
-		else if (is_agressive)
-			dynamic_cast<Troop*>(this)->target_building = dynamic_cast<StaticEntity*>(target);
 
 		if (type == GATHERER)
 			dynamic_cast<Gatherer*>(this)->gathering = true;

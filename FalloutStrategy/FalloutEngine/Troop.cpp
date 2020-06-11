@@ -218,9 +218,9 @@ bool Troop::Update(float dt) {
 		}
 
 		if (attack_timer.ReadSec() > attack_time) {
-			if (target_building != nullptr) {
+			if (target_building) {
 				iPoint closest_tile = App->entities->ClosestTile(current_tile, target_building->tiles);
-				if (current_tile.DistanceNoSqrt(closest_tile) <= range) {
+				if (current_tile.DistanceManhattan(closest_tile) <= range) {
 					UpdateTile();
 					path_to_target.clear();
 					Attack();

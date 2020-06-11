@@ -281,8 +281,6 @@ bool j1EntityManager::PostUpdate()
 							App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &rect);
 						}
 				}
-
-				//Blit
 			}
 		}
 
@@ -700,7 +698,7 @@ iPoint j1EntityManager::ClosestTile(iPoint position, std::vector<iPoint> entity_
 	iPoint pivot = entity_tiles[0];
 	for(size_t i = 0; i < entity_tiles.size(); i++)
 	{
-		if (position.DistanceNoSqrt(entity_tiles[i]) < position.DistanceNoSqrt(pivot))
+		if (position.DistanceManhattan(entity_tiles[i]) < position.DistanceManhattan(pivot))
 			pivot = entity_tiles[i];
 	}
 	return pivot;

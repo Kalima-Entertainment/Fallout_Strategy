@@ -80,7 +80,7 @@ MenuManager::MenuManager()
 	for(int i = 0; i <= 11; i++) {
 		quest[i] = nullptr;
 	}
-	for (int i = 0; i <= 5; i++) {
+	for (int i = 0; i <= 6; i++) {
 		radio[i] = nullptr;
 	}
 
