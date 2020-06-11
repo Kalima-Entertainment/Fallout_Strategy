@@ -31,14 +31,13 @@ html {
     font-size: 2vw;
     font-family:Lucida;
     color:goldenrod;
-    
     position: relative;
-    top: 90px;
+    top: 20px;
 }
 
 #button_eslogan{
     position: relative;
-    top: 60px;
+    top: 0px;
 }
 
 #download_button{
