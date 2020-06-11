@@ -29,9 +29,6 @@ LogoScene::LogoScene() : j1Module()
 	win_video = -1;
 	lose_video = -1;
 	quit = false;
-	logo_tex = nullptr;
-	start_game_tex = nullptr;
-	start_game_rect = { 0,0,0,0 };
 	last_dt = 0.01f;
 }
 
@@ -39,66 +36,13 @@ LogoScene::LogoScene() : j1Module()
 LogoScene::~LogoScene() {
 }
 
-bool LogoScene::LoadAnimations()
-{
-	bool ret = true;
-	pugi::xml_document animation_file;
-	pugi::xml_parse_result result = animation_file.load_file("Assets/gui/textures/LogoIntro.tmx");
-
-	std::string image = std::string(animation_file.child("tileset").child("image").attribute("source").as_string());
-
-	logo_tex = App->tex->Load("Assets/gui/textures/LogoFallout.png");
-	start_game_tex = App->tex->Load("Assets/gui/textures/StartGameTex.png");
-
-	if (result == NULL)
-	{
-		LOG("Could not load animation tmx file %s. pugi error: %s", "gui/LogoIntro.tmx", result.description());
-		ret = false;
-	}
-
-	int tile_width = animation_file.child("map").child("tileset").attribute("tilewidth").as_int();
-	int tile_height = animation_file.child("map").child("tileset").attribute("tileheight").as_int();
-	int columns = animation_file.child("map").child("tileset").attribute("columns").as_int();
-	int firstgid = animation_file.child("map").child("tileset").attribute("firstgid").as_int();
-	int id, tile_id;
-	float speed;
-
-	pugi::xml_node animation = animation_file.child("map").child("tileset").child("tile");
-	pugi::xml_node frame = animation.child("animation").child("frame");
-
-	SDL_Rect rect;
-	rect.w = tile_width;
-	rect.h = tile_height;
-
-	id = animation.attribute("id").as_int();
-
-	loader = &animationLogo;
-	while (frame != nullptr) {
-		tile_id = frame.attribute("tileid").as_int();
-		speed = frame.attribute("duration").as_int();
-		rect.x = rect.w * ((tile_id) % columns);
-		rect.y = rect.h * ((tile_id) / columns);
-		loader->PushBack(rect, speed);
-		frame = frame.next_sibling();
-	}
-	loader->loop = true;
-
-	animation = animation.next_sibling();
-	frame = animation.child("animation").child("frame");
-
-	return ret;
-}
-
 bool LogoScene::Start()
 {
 	App->audio->PlayFx(1, App->audio->intro_fx, 0);
-	my_video = App->video->Load("Assets/video/intro.ogv", App->render->renderer);
-	// Win and lose video
-	win_video = App->video->Load("Assets/video/win.ogv", App->render->renderer);
-	lose_video = App->video->Load("Assets/video/lose.ogv", App->render->renderer);
+	my_video = App->video->Load("Assets_Old/video/intro.ogv", App->render->renderer);
+	win_video = App->video->Load("Assets_Old/video/win.ogv", App->render->renderer);
+	lose_video = App->video->Load("Assets_Old/video/lose.ogv", App->render->renderer);
 
-	start_game_rect = { 0, 0,561,30 };
-	LoadAnimations();
 	quit = false;
 	Loop = true;
 	Timer.Start();
@@ -109,11 +53,6 @@ bool LogoScene::Start()
 bool LogoScene::CleanUp() {
 
 	bool ret = true;
-	ret = App->tex->UnLoad(logo_tex);
-	logo_tex = nullptr;
-	ret = App->tex->UnLoad(start_game_tex);
-	start_game_tex = nullptr;
-	loader = nullptr;
 	win_tex = nullptr;
 	lose_tex = nullptr;
 	return ret;
@@ -131,6 +70,7 @@ bool LogoScene::Update(float dt) {
 		my_video = 0;
 		Loop = false;
 		quit = true;
+		App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && App->scene->win == true)
 	{
@@ -142,13 +82,11 @@ bool LogoScene::Update(float dt) {
 		if ((App->player->selected_entity) && (!App->player->selected_entity->is_dynamic)) {
 			App->menu_manager->DestroyFaction(Menu::BUI_BASES, App->player->selected_entity->faction, App->player->selected_entity->type);
 		}
-		App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 		App->audio->PlayFx(1, App->audio->back_fx, 0);
 		App->gui->ingame = false;
 		App->transition->StartTimer();
 		App->transition->transition = true;
 		App->transition->fadetimer.Start();
-		Mix_PauseMusic();
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && App->scene->lose == true)
 	{
@@ -160,7 +98,6 @@ bool LogoScene::Update(float dt) {
 		if ((App->player->selected_entity) && (!App->player->selected_entity->is_dynamic)) {
 			App->menu_manager->DestroyFaction(Menu::BUI_BASES, App->player->selected_entity->faction, App->player->selected_entity->type);
 		}
-		App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 		App->audio->PlayFx(1, App->audio->back_fx, 0);
 		App->gui->ingame = false;
 		App->transition->StartTimer();
@@ -190,15 +127,7 @@ bool LogoScene::PostUpdate()
 
 		if (my_video == 0 && Loop)
 		{
-			my_video = App->video->Load("Assets/video/intro.ogv", App->render->renderer);
-
-
-		}
-
-		if (!Loop && App->menu_manager->current_menu == Menu::MAIN_MENU)
-		{
-
-			App->render->Blit(logo_tex, 70, -130, &loader->GetCurrentFrame(last_dt), 1.0f, 0.0f);
+			my_video = App->video->Load("Assets_Old/video/intro.ogv", App->render->renderer);
 
 		}
 
@@ -232,7 +161,7 @@ bool LogoScene::PostUpdate()
 		}
 		if (win_video == 0 && Loop)
 		{
-			win_video = App->video->Load("Assets/video/win.ogv", App->render->renderer);
+			win_video = App->video->Load("Assets_Old/video/win.ogv", App->render->renderer);
 		}
 
 	}
@@ -265,7 +194,7 @@ bool LogoScene::PostUpdate()
 		}
 		if (lose_video == 0 && Loop)
 		{
-			lose_video = App->video->Load("Assets/video/lose.ogv", App->render->renderer);
+			lose_video = App->video->Load("Assets_Old/video/lose.ogv", App->render->renderer);
 		}
 
 	}

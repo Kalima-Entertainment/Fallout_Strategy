@@ -4,9 +4,7 @@
 #include "SDL/include/SDL_rect.h"
 #include "j1App.h"
 #include <math.h>
-#define MAX_FRAMES 200
-
-struct Collider;
+#define MAX_FRAMES 400
 
 struct Frame {
 
@@ -40,7 +38,7 @@ public:
 	}
 
 	void SetWidth(const int & width) {
-		for (int i = 0; i < num_frames; ++i) {
+		for(int i = 0; i < num_frames; ++i) {
 			frames[i].rect.w = width;
 		}
 	}

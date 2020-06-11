@@ -16,13 +16,14 @@ public:
 	~j1Group();
 
 	// --- Add/Remove ---
-	void addUnit(j1Entity* unit_toadd);
-	void removeUnit(j1Entity* unit_toremove);
+	void addUnit(DynamicEntity* unit_toadd);
+	void removeUnit(DynamicEntity* unit_toremove);
 	void AddTiletoOccupied(iPoint to_add);
 
 	// --- Clear Stuff ---
 	void ClearGroup();
 	void ClearOccupiedlist();
+	void DeselectGroup();
 
 	// --- Getters ---
 	int GetSize();
@@ -31,8 +32,8 @@ public:
 	void CheckForMovementRequest(iPoint destiny ,float dt);
 	
 	// --- Enquiries ---
-	bool IsGroupLead(j1Entity* entity);
-	void SetUnitGoalTile(j1Entity* entity);
+	bool IsGroupLead(DynamicEntity* entity);
+	void SetUnitGoalTile(DynamicEntity* entity);
 	bool FindFreeAdjacents(iPoint* base_tile);
 	bool IsTileFree(iPoint* adjacent);
 
@@ -41,9 +42,10 @@ public:
 	bool Save(pugi::xml_node&) const;
 
 public:
-	std::list <j1Entity*> Units;
+	std::vector<DynamicEntity*> Units;
+
 private:
-	iPoint last_goal = { 0,0 };
+	iPoint last_goal;
 
 	std::list <iPoint*> Occupied_tiles;
 };
@@ -52,14 +54,12 @@ struct Group_Unit
 {
 	bool IsSelected = false;
 
-	// --- Path to follow ---
-	std::vector <iPoint> Current_path;
-	iPoint next_tile = { 0,0 };
-	iPoint goal_tile = { 0,0 };
-
 	// --- Group Movement stuff ---
 	j1Group* current_group = nullptr;
 	MovementState UnitMovementState = MovementState::MovementState_NoState;
+
+	// --- Path to follow ---
+	iPoint goal_tile = { 0,0 };
 };
 
 

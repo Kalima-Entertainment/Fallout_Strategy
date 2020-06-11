@@ -1,20 +1,21 @@
 #include "j1Entity.h"
 #include "j1App.h"
 #include "j1Render.h"
-#include "j1Collision.h"
 #include "j1EntityManager.h"
 #include "j1Audio.h"
 #include "j1Map.h"
 #include "p2Log.h"
-#include "j1Collision.h"
 #include "FoWManager.h"
 #include "j1Player.h"
 #include "j1Scene.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
 j1Entity::j1Entity() {
-	spawnPosition = {NULL,NULL};
+	
+	spawnPosition.x = NULL;
+	spawnPosition.y = NULL;
 
+	sprite_size = 0;
 	max_health = current_health = 0;
 
 	texture = nullptr;
@@ -36,18 +37,20 @@ j1Entity::j1Entity() {
 	channel = 0;
 	fx = 0;
 
-	background_health_bar = { 0,0,0,0 };
-	foreground_health_bar = { 0,0,0,0 };
-	//frame_quad = { 0,0,0,0 };
+	info.IsSelected = false;
+	info.current_group = nullptr;
+	info.UnitMovementState = MovementState::MovementState_NoState;
+	info.goal_tile.x = 0;
+	info.goal_tile.y = 0;
 
-	last_dt = 0.01;
+	last_dt = 0.01f;
+	
 
 	Mix_AllocateChannels(32);
 }
 
 j1Entity::~j1Entity() {
 	reference_entity = nullptr;
-	target_entity = nullptr;
 	attacking_entity = nullptr;
 	owner = nullptr;
 	current_animation = nullptr;
@@ -56,9 +59,16 @@ j1Entity::~j1Entity() {
 
 // to be updated
 iPoint j1Entity::MapPosition() {
-	iPoint spot = App->render->ScreenToWorld(position.x, position.y);
+	iPoint spot = App->render->ScreenToWorld(static_cast<int>(position.x), static_cast<int>(position.y));
 	spot = App->map->WorldToMap(spot.x, spot.y);
 	return spot;
+}
+
+void j1Entity::ClearUnitInfo() {
+	info.IsSelected = false;
+	info.current_group = nullptr;
+	info.UnitMovementState = MovementState::MovementState_NoState;
+	info.goal_tile = { 0,0 };
 }
 
 int j1Entity::GetPositionScore() const {
@@ -97,7 +107,7 @@ void j1Entity::SpatialAudio(int positionx, int positiony, Faction faction, State
 				channel = 16;
 				fx = App->audio->pistol;
 			}
-			else if (type != RANGED) {
+			else{
 				channel = 4;
 				fx = App->audio->Vault_attack;
 			}
@@ -107,7 +117,7 @@ void j1Entity::SpatialAudio(int positionx, int positiony, Faction faction, State
 				channel = 15;
 				fx = App->audio->minigun;
 			}
-			else if (type != RANGED) {
+			else{
 				channel = 5;
 				fx = App->audio->Brotherhood_attack;
 			}
@@ -117,7 +127,7 @@ void j1Entity::SpatialAudio(int positionx, int positiony, Faction faction, State
 				channel = 15;
 				fx = App->audio->minigun;
 			}
-			else if (type != RANGED) {
+			else{
 				channel = 3;
 				fx = App->audio->Mutant_attack;
 			}
@@ -127,7 +137,7 @@ void j1Entity::SpatialAudio(int positionx, int positiony, Faction faction, State
 				channel = 20;
 				fx = App->audio->pistol2;
 			}
-			else if (type != RANGED) {
+			else{
 				channel = 6;
 				fx = App->audio->Ghoul_attack;
 			}
@@ -227,6 +237,6 @@ void j1Entity::SpatialAudio(int positionx, int positiony, Faction faction, State
 		if (volume > 255) { volume = 255; }
 
 		Mix_SetPosition(channel, 0, volume);
-		App->audio->PlayFx(channel, fx, 0);
+ 		App->audio->PlayFx(channel, fx, 0);
 	}
 }

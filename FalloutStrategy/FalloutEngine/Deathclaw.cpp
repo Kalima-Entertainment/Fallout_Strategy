@@ -20,8 +20,8 @@ Deathclaw::Deathclaw(iPoint g_current_tile) : DynamicEntity() {
 	range = 1;
 	attack_timer.Start();
 	target_building = nullptr;
-	target_entity = nullptr;
 	DynaParticle = nullptr;
+	type = DEATHCLAW;
 
 	DynaParticle = App->entities->CreateParticle(position);
 	Animation anim;
@@ -33,7 +33,6 @@ Deathclaw::Deathclaw(iPoint g_current_tile) : DynamicEntity() {
 }
 
 Deathclaw::~Deathclaw() {
-	target_entity = nullptr;
 	DynaParticle = nullptr;
 	target_building = nullptr;
 	//App->entities->ReleaseParticle(DynaParticle);
@@ -47,7 +46,6 @@ bool Deathclaw::Update(float dt) {
 	switch (state)
 	{
     case IDLE:
-		
 		if (target_building) {
 			PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
 		}
@@ -59,7 +57,7 @@ bool Deathclaw::Update(float dt) {
 			//path_to_target.clear();
 			state = ATTACK;
 		}
-		SpatialAudio(position.x, position.y, faction, state, type);
+		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
 
         break;
     case ATTACK:
@@ -68,11 +66,17 @@ bool Deathclaw::Update(float dt) {
 			UpdateTile();
 			Attack();
 		}
-		SpatialAudio(position.x, position.y, faction, state, type);
+		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
         break;
     case HIT:
 		current_animation = &animations[HIT][direction];
-		SpatialAudio(position.x, position.y, faction, state, type);
+		if (current_animation->Finished()) {
+			current_animation->Reset();
+			//PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
+			state = WALK;
+		}
+
+		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
         break;
     case DIE:
 		direction = TOP_LEFT;
@@ -80,7 +84,7 @@ bool Deathclaw::Update(float dt) {
 			delete_timer.Start();
 			direction = TOP_LEFT;
 			if (attacking_entity) {
-				attacking_entity->target_entity = nullptr;
+				attacking_entity->dynamic_target = nullptr;
 				attacking_entity->state = IDLE;
 			}
 		}
@@ -89,7 +93,7 @@ bool Deathclaw::Update(float dt) {
 			to_delete = true;
 			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
 		}
-		SpatialAudio(position.x, position.y, faction, state, type);
+		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
 
         break;
     default:
@@ -103,7 +107,7 @@ bool Deathclaw::Update(float dt) {
 	}
 
 	if (DynaParticle->IsActive()) {
-		DynaParticle->Move(position.x, position.y);
+		DynaParticle->Move(static_cast<int>(position.x), static_cast<int>(position.y));
 		DynaParticle->Update(dt);
 	}
 
@@ -115,6 +119,11 @@ bool Deathclaw::Update(float dt) {
 void Deathclaw::Attack() {
 
 	attack_timer.Start();
+
+	if (target_building == nullptr) {
+		state = DIE;
+		return;
+	}
 
 	//damage unit if god_mode isn't activated
 	if ((target_building->faction == App->player->faction) && (App->player->god_mode))
@@ -140,12 +149,12 @@ void Deathclaw::Attack() {
 
 bool Deathclaw::LoadDataFromReference() {
 	bool ret = true;
-	Deathclaw* reference_deathclaw = (Deathclaw*)reference_entity;
+	Deathclaw* reference_deathclaw = dynamic_cast<Deathclaw*>(reference_entity);
 
 	//load animations
-	for (int i = 0; i < NO_STATE; i++)
+	for(int i = 0; i < NO_STATE; i++)
 	{
-		for (int j = 0; j < NO_DIRECTION; j++)
+		for(int j = 0; j < NO_DIRECTION; j++)
 		{
 			animations[i][j] = reference_deathclaw->animations[i][j];
 		}
@@ -166,7 +175,7 @@ bool Deathclaw::LoadReferenceData(pugi::xml_node& node) {
 
 	max_health = node.attribute("health").as_float();
 	damage = node.attribute("damage").as_int();
-	speed.x = node.attribute("speed").as_int();
+	speed.x = node.attribute("speed").as_float();
 	speed.y = speed.x * 0.5f;
 
 	return ret;

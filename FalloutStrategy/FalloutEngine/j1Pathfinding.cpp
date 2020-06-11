@@ -6,9 +6,10 @@
 #include "StaticEntity.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
-j1PathFinding::j1PathFinding() : j1Module(), last_path(DEFAULT_PATH_LENGTH), width(150), height(150), node_map_divisions(15)
+j1PathFinding::j1PathFinding() : j1Module(), last_path(DEFAULT_PATH_LENGTH), width(150), height(150)
 {
 	name = ("pathfinding");
+	node_map_divisions = 15;
 	node_map = CreateNodeMap();
 	path_timer.Start();
 }
@@ -31,9 +32,9 @@ bool j1PathFinding::CleanUp()
 // Sets up the walkability map
 void j1PathFinding::SetMap()
 {
-	for (int y = 0; y < 150; y++)
+	for(int y = 0; y < 150; y++)
 	{
-		for (int x = 0; x < 150; x++)
+		for(int x = 0; x < 150; x++)
 		{
 			map[x][y] = true;
 		}
@@ -59,25 +60,45 @@ void j1PathFinding::SetTileAsUnwalkable(int tile_x, int tile_y) {
 
 iPoint j1PathFinding::FindWalkableAdjacentTile(iPoint point) const {
 	iPoint tile;
-	
+
 	//north
 	tile = { point.x, point.y - 1 };
-	if (App->pathfinding->IsWalkable(tile))
+	if (App->pathfinding->IsWalkable(tile) && !App->entities->IsTileOccupied(tile))
 			return tile;
-
-	// south
-	tile = { point.x, point.y + 1 };
-	if (App->pathfinding->IsWalkable(tile))
-		return tile;
-	
-	// east
-	tile = { point.x + 1, point.y };
-	if (App->pathfinding->IsWalkable(tile))
-		return tile;
 
 	// west
 	tile = { point.x - 1, point.y };
-	if (App->pathfinding->IsWalkable(tile))
+	if (App->pathfinding->IsWalkable(tile) && !App->entities->IsTileOccupied(tile))
+		return tile;
+
+	// east
+	tile = { point.x + 1, point.y };
+	if (App->pathfinding->IsWalkable(tile) && !App->entities->IsTileOccupied(tile))
+		return tile;
+
+	// south
+	tile = { point.x, point.y + 1 };
+	if (App->pathfinding->IsWalkable(tile) && !App->entities->IsTileOccupied(tile))
+		return tile;
+
+	//north-west
+	tile = { point.x - 1, point.y - 1 };
+	if (App->pathfinding->IsWalkable(tile) && !App->entities->IsTileOccupied(tile))
+		return tile;
+
+	//north-east
+	tile = { point.x + 1, point.y - 1 };
+	if (App->pathfinding->IsWalkable(tile) && !App->entities->IsTileOccupied(tile))
+		return tile;
+
+	// south-west
+	tile = { point.x - 1, point.y + 1 };
+	if (App->pathfinding->IsWalkable(tile) && !App->entities->IsTileOccupied(tile))
+		return tile;
+
+	// south-east
+	tile = { point.x + 1, point.y + 1 };
+	if (App->pathfinding->IsWalkable(tile) && !App->entities->IsTileOccupied(tile))
 		return tile;
 
 	return { -1,-1 };
@@ -85,7 +106,7 @@ iPoint j1PathFinding::FindWalkableAdjacentTile(iPoint point) const {
 
 iPoint j1PathFinding::FindNearestWalkableTile(iPoint origin, iPoint destination) const
 {
-	if (!IsWalkable(origin)) 
+	if (!IsWalkable(origin))
 		origin = FindWalkableAdjacentTile(origin);
 
 	if (!IsWalkable(destination)) {
@@ -106,7 +127,7 @@ iPoint j1PathFinding::FindNearestWalkableTile(iPoint origin, iPoint destination)
 
 			if ((entity != nullptr) && (!entity->is_dynamic))
 			{
-				StaticEntity* reference_static_entity = (StaticEntity*)App->entities->FindEntityByTile(destination);
+				StaticEntity* reference_static_entity = dynamic_cast<StaticEntity*>(entity);
 				{
 					destination = App->entities->ClosestTile(origin, reference_static_entity->tiles);
 					destination = App->pathfinding->FindWalkableAdjacentTile(destination);
@@ -124,7 +145,7 @@ iPoint j1PathFinding::FindNearestWalkableTile(iPoint origin, iPoint destination)
 	}
 
 	if (!IsWalkable(destination))
-		LOG("Unwalkable destination");
+		LOG("Unwalkable destination 3");
 
 	return destination;
 }
@@ -132,7 +153,7 @@ iPoint j1PathFinding::FindNearestWalkableTile(iPoint origin, iPoint destination)
 std::vector<iPoint> j1PathFinding::GetLastPath() const
 {
 	std::vector<iPoint> vector;
-	for (int i = 0; i < last_path.size(); i++)
+	for(int i = 0; i < last_path.size(); i++)
 	{
 		vector.push_back(last_path[i]);
 	}
@@ -149,9 +170,9 @@ std::vector<iPoint> j1PathFinding::CreateNodeMap() {
 	std::vector<iPoint> map;
 	int distance = 150 / node_map_divisions;
 
-	for (int y = distance; y < 150; y += distance)
+	for(int y = distance; y < 150; y += distance)
 	{
-		for (int x = distance; x < 150; x += distance)
+		for(int x = distance; x < 150; x += distance)
 		{
 			map.push_back(iPoint(x, y));
 		}
@@ -164,40 +185,37 @@ std::vector<iPoint>j1PathFinding::GetNodeMap() const { return node_map; }
 std::vector<iPoint> j1PathFinding::CreateNodePath(iPoint origin, iPoint destination) {
 	BROFILER_CATEGORY("CreateNodePath", Profiler::Color::Azure)
 	std::vector<iPoint> path;
-	iPoint current_node;
-	iPoint origin_node;
-	iPoint destination_node;
 	int node_distance = GetDistanceBetweenNodes();
 
-	origin_node = node_map[0];
-	destination_node = node_map[0];
+	iPoint origin_node = node_map[0];
+	iPoint destination_node = node_map[0];
 
 	//closest origin node
-	for (int i = 0; i < node_map.size(); i++)
+	for(int i = 0; i < node_map.size(); i++)
 	{
 		if (node_map[i].DistanceTo(origin) < origin_node.DistanceTo(origin))
 			origin_node = node_map[i];
 	}
 
 	//closest destination node
-	for (int i = 0; i < node_map.size(); i++)
+	for(int i = 0; i < node_map.size(); i++)
 	{
 		if (node_map[i].DistanceTo(destination) < destination_node.DistanceTo(destination))
 			destination_node = node_map[i];
 	}
 
-	current_node = origin_node;
+	iPoint current_node = origin_node;
 	path.push_back(current_node);
 
 	//iterate nodes to create the path
 	while (current_node != destination_node)
 	{
-		iPoint possible_node;
-		iPoint best_node;
+		iPoint possible_node = {0,0};
+		iPoint best_node = current_node;
 		//find neighbour nodes
-		for (int y = -node_distance; y <= node_distance; y += node_distance)
+		for(int y = -node_distance; y <= node_distance; y += node_distance)
 		{
-			for (int x = -node_distance; x <= node_distance; x += node_distance)
+			for(int x = -node_distance; x <= node_distance; x += node_distance)
 			{
 				possible_node.x = current_node.x + x;
 				possible_node.y = current_node.y + y;
@@ -212,7 +230,7 @@ std::vector<iPoint> j1PathFinding::CreateNodePath(iPoint origin, iPoint destinat
 		path.push_back(best_node);
 	}
 
-	//flip final path 
+	//flip final path
 	std::reverse(path.begin(), path.end());
 
 	return path;
@@ -327,12 +345,12 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 	if (!IsWalkable(origin)) {
 		LOG("Unwalkable origin");
-		return -1;
+		return -2;
 	}
 
 	if ((!IsWalkable(destination))) {
 		LOG("Unwalkable destination");
-		return -1;
+		return -2;
 	}
 
 
@@ -358,7 +376,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 			last_path.push_back(path_item->pos);
 			std::reverse(last_path.begin(), last_path.end());
-			
+
 			path_timer.Start();
 			return last_path.size();
 		}
@@ -374,14 +392,14 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 		PathList childs;
 		close.list.back().FindWalkableAdjacents(childs);
-			
+
 		std::list<PathNode>::iterator child_node = childs.list.begin();
 		while (child_node != childs.list.end())
 		{
-			if (!close.Find((*child_node).pos) != NULL)	
+			if (!close.Find((*child_node).pos) != NULL)
 			{
-				(*child_node).CalculateF(destination); 
-				if (open.Find((*child_node).pos) != NULL) 
+				(*child_node).CalculateF(destination);
+				if (open.Find((*child_node).pos) != NULL)
 				{
 					if ((*open.Find((*child_node).pos)).g > (*child_node).g)
 					{
@@ -397,24 +415,24 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 	path_timer.Start();
 
-	return -2;
+	return -1;
 }
 
 iPoint j1PathFinding::ExpandTile(iPoint target_tile) const {
 
 	iPoint pivot = target_tile;
 	int max = 1;
-	
+
 	while (!IsWalkable(pivot) && (max < 50))
 	{
-		for (int y = -max; y < max; y++)
+		for(int y = -max; y <= max; y++)
 		{
-			for (int x = -max; x < max; x++)
+			for(int x = -max; x <= max; x++)
 			{
 				pivot.x = target_tile.x + x;
 				pivot.y = target_tile.y + y;
 
-				if (IsWalkable(pivot)) 
+				if (IsWalkable(pivot))
 					return pivot;
 			}
 		}
@@ -422,4 +440,8 @@ iPoint j1PathFinding::ExpandTile(iPoint target_tile) const {
 	}
 
 	return pivot;
+}
+
+int j1PathFinding::GetDistanceBetweenNodes() const {
+	return 150 / node_map_divisions;
 }

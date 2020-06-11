@@ -17,21 +17,24 @@
 j1Minimap::j1Minimap() : j1Module(), texture(nullptr) {
 	name = ("minimap");
 
-	map_height = 200;
+	map_height = 0;
 	scale = 1;
-	width = 100;
+	width = 0;
+	height = 0;
 	margin = 0;
 	corner = Corner::TOP_LEFT;
 	radar_time = 5;
 	radar = false;
 	visible = false;
+	position.x = 0;
+	position.y = 0;
+	
 }
 
 j1Minimap::~j1Minimap() {
 }
 
 bool j1Minimap::Awake(pugi::xml_node& config) {
-	uint window_width, window_height;
 
 	width = config.attribute("width").as_int();
 
@@ -91,9 +94,9 @@ bool j1Minimap::Start() {
 	radar_line.x1 = minimap_x_center;
 	radar_line.y1 = position.y + height * 0.5f;
 
-	for (int y = 0; y < 150; y++) 
+	for(int y = 0; y < 150; y++) 
 	{
-		for (int x = 0; x < 150; x++) 
+		for(int x = 0; x < 150; x++) 
 		{
 			grid[x][y] = 1;
 		}
@@ -117,16 +120,18 @@ bool j1Minimap::PostUpdate() {
 
  	if (visible) {
 
+		//texture
 		App->render->Blit(texture, position.x, position.y, NULL, 1.0, 0);
 
-		if (App->render->fog_of_war) {
+		//fog of war
+		if (App->render->fog_of_war) 
 			DrawFogOfWar();
-		}
 
-		for (int i = 0; i < App->entities->entities.size(); i++)
+		//entities
+		for(size_t i = 0; i < App->entities->entities.size(); i++)
 		{
 			SDL_Rect entity_rect = { 0,0,3,3 };
-			iPoint entity_position = App->minimap->WorldToMinimap(App->entities->entities[i]->position.x, App->entities->entities[i]->position.y);
+			iPoint entity_position = App->minimap->WorldToMinimap(static_cast<int>(App->entities->entities[i]->position.x), static_cast<int>(App->entities->entities[i]->position.y));
 			entity_rect.x = entity_position.x-1;
 			entity_rect.y = entity_position.y-1;
 
@@ -151,12 +156,13 @@ bool j1Minimap::PostUpdate() {
 			if (radar_timer.ReadSec() > radar_time) 
 				radar = false;
 
-			radar_line.x2 = radar_line.x1 + width * 0.5f * cos(radar_timer.Read() * 0.1 * PI / 180);
-			radar_line.y2 = radar_line.y1 + height * 0.5f * sin(radar_timer.Read() * 0.1 * PI / 180);
+			radar_line.x2 = radar_line.x1 + width * 0.5f * cos(radar_timer.Read() * 0.1 * Pi / 180);
+			radar_line.y2 = radar_line.y1 + height * 0.5f * sin(radar_timer.Read() * 0.1 * Pi / 180);
 
 			App->render->DrawLine(radar_line.x1, radar_line.y1, radar_line.x2, radar_line.y2, 0,255,0,255,false);
 		}
 
+		//white rect
 		SDL_Rect rect = { 0,0,0,0 };
 		iPoint rect_position = WorldToMinimap(-App->render->camera.x, -App->render->camera.y);
 		App->render->DrawQuad({ rect_position.x, rect_position.y, (int)(App->render->camera.w * scale),(int)(App->render->camera.h * scale) }, 255, 255, 255, 255, false, false);
@@ -169,21 +175,33 @@ bool j1Minimap::PostUpdate() {
 bool j1Minimap::CreateMinimap() {
 
 	PERF_START(ptimer);
-	int half_width = map_width * 0.5f;
-
+	int half_width = static_cast<int>(map_width * 0.5f);
+		
+	if (texture != nullptr) {
+		App->tex->UnLoad(texture);
+		texture = nullptr;
+	}
+	
 	texture = SDL_CreateTexture(App->render->renderer, SDL_GetWindowPixelFormat(App->win->window), SDL_TEXTUREACCESS_TARGET, width, height);
-	SDL_SetRenderTarget(App->render->renderer, texture);
 
-	for (int l = 0; l < MAX_LAYERS; l++)
+	if(texture == NULL)
+		LOG("Error creating texture %s", SDL_GetError());
+	
+	if(SDL_SetRenderTarget(App->render->renderer, texture) != 0)
+		LOG("Error setting rendering target %s", SDL_GetError());
+
+	App->render->ResetCameraPosition();
+
+	for(int l = 0; l < MAX_LAYERS; l++)
 	{
 		MapLayer* layer = &App->map->data.layers[l];
 
 		if (layer->properties.Get("Nodraw") != 0)
 			continue;
 
-		for (int y = 0; y < MAP_LENGTH; ++y)
+		for(int y = 0; y < MAP_LENGTH; ++y)
 		{
-			for (int x = 0; x < MAP_LENGTH; ++x)
+			for(int x = 0; x < MAP_LENGTH; ++x)
 			{
 				int tile_id = layer->Get(x, y);
 				if (tile_id > 0)
@@ -199,7 +217,9 @@ bool j1Minimap::CreateMinimap() {
 		}
 	}
 
-	SDL_SetRenderTarget(App->render->renderer, NULL);
+	if (SDL_SetRenderTarget(App->render->renderer, NULL) != 0)
+		LOG("Error setting rendering target %s", SDL_GetError());
+	//SDL_SetRenderTarget(App->render->renderer, NULL);
 
 	PERF_PEEK(ptimer);
 
@@ -221,17 +241,17 @@ iPoint j1Minimap::ScreenToMinimapToWorld(int x, int y) {
 	return minimap_position;
 }
 
-iPoint j1Minimap::MapToMinimap(int x, int y) {
-	iPoint minimap_position;
+fPoint j1Minimap::MapToMinimap(int x, int y) {
+	fPoint minimap_position;
 	minimap_position.x = minimap_x_center + (x - y) * HALF_TILE * scale;
-	minimap_position.y = position.y + (x + y) * HALF_TILE * 0.5f * scale;
+	minimap_position.y = position.y + (x + y) * TILE_QUARTER * scale;
 	return minimap_position;
 }
 
 iPoint j1Minimap::MinimapToMap(int x, int y) {
 	iPoint map_position;
 	map_position.x = (x - minimap_x_center) / (HALF_TILE * scale) + y;
-	map_position.y = (y - position.y) / (HALF_TILE * 0.5f * scale) - x;
+	map_position.y = (y - position.y) / (TILE_QUARTER * scale) - x;
 	return map_position;
 }
 
@@ -241,16 +261,17 @@ void j1Minimap::EnableRadar() {
 }
 
 void j1Minimap::DrawFogOfWar() {
-	SDL_Rect fog_of_war_rect = { 0,0,1,1 };
-	iPoint rect_pos = {0,0};
+	SDL_Rect fog_of_war_rect = { 51,0,1,1 };
+	fPoint rect_pos = {0,0};
 
 	int tile_width = width / 150;
 	fog_of_war_rect.h = 1;
 	int y = 0;
 	int j = 0;
 	int counter = 0;
+	
 
-	for (int i = 0; i < 300; i++)
+	for(int i = 0; i < 300; i++)
 	{
 		y = i - j;
 
@@ -260,24 +281,22 @@ void j1Minimap::DrawFogOfWar() {
 		}
 
 		rect_pos = MapToMinimap(j, y);
-		fog_of_war_rect.x = rect_pos.x;
-		fog_of_war_rect.y = rect_pos.y;
 		counter = 0;
 
-		for (int x = j; x < i + 1, y >= j; x++, y--)
+		for(int x = j; x < i + 1, y >= j; x++, y--)
 		{
 			if (grid[x][y] != 0) {
 				counter++;
 			}
 			else {
 				fog_of_war_rect.w = round(1.75f * tile_width * counter);
-				App->render->DrawQuad(fog_of_war_rect, 0, 0, 0, 255, true, false);
-				fog_of_war_rect.x += round(fog_of_war_rect.w + 1.75f * tile_width);
+				App->render->Blit(App->entities->life_bars, rect_pos.x, rect_pos.y, &fog_of_war_rect, 1.0f, 0.0f);
+				rect_pos.x += round(fog_of_war_rect.w + 1.75f * tile_width);
 				counter = 0;
 			}
 		}
 		fog_of_war_rect.w = round(1.75f * tile_width * counter);
-		App->render->DrawQuad(fog_of_war_rect, 0, 0, 0, 255, true, false);
+		App->render->Blit(App->entities->life_bars, rect_pos.x, rect_pos.y, &fog_of_war_rect, 1.0f, 0.0f);
 	}
 }
 
@@ -291,4 +310,16 @@ void j1Minimap::Hide() {
 
 bool j1Minimap::IsVisible() {
 	return visible;
+}
+
+bool j1Minimap::Reset() {
+	bool ret = true;
+	iPoint last_camera_position = { 0,0 };
+	last_camera_position.x = App->render->camera.x;
+	last_camera_position.y = App->render->camera.y;
+	ret = CleanUp();
+	ret = Start();
+	App->render->camera.x = last_camera_position.x;
+	App->render->camera.y = last_camera_position.y;
+	return ret;
 }

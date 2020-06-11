@@ -13,10 +13,13 @@
 #include "Troop.h"
 #include "Gatherer.h"
 #include "j1Audio.h"
+
+#include "j1Hud.h"
+
 #include <vector>
 #include <math.h>
 
-AI_Player::AI_Player(Faction g_faction) : GenericPlayer(), is_attacking(false), last_barrack_to_spawn(1), gatherers_commanded(false) {
+AI_Player::AI_Player(Faction g_faction) : GenericPlayer(), is_attacking(false), last_barrack_to_spawn(0), gatherers_commanded(false) {
 	
 	name.assign("AI");
 
@@ -32,14 +35,15 @@ AI_Player::AI_Player(Faction g_faction) : GenericPlayer(), is_attacking(false), 
 	wave_timer.Start();
 	is_ai = true;
 	is_attacking = false;
+	group = nullptr;
 }
 
 AI_Player::~AI_Player() 
 {
-	for (int t = 0; t < troops.size(); t++) { troops[t] = nullptr;}
+	for(size_t t = 0; t < troops.size(); t++) { troops[t] = nullptr;}
 	troops.clear();
 
-	for (int g = 0; g < gatherers_vector.size(); g++) { gatherers_vector[g] = nullptr; }
+	for(size_t g = 0; g < gatherers_vector.size(); g++) { gatherers_vector[g] = nullptr; }
 	gatherers_vector.clear();
 
 	target_player = nullptr;
@@ -53,19 +57,19 @@ bool AI_Player::Update(float dt) {
 	// Gather -----------------------------------------------------
 
 	if (!gatherers_commanded) {
-		for (int i = 0; i < gatherers_vector.size(); i++)
+		for(size_t i = 0; i < gatherers_vector.size(); i++)
 		{
 			//authomatic gathering
 			if (gatherers_vector[i]->GetResourceBuilding() == nullptr) {
-				gatherers_vector[i]->AssignResourceBuilding(App->entities->GetClosestResourceBuilding(gatherers_vector[i]->current_tile));
+				gatherers_vector[i]->AssignResourceBuilding(App->entities->GetClosestResourceBuilding(gatherers_vector[i]->current_tile, gatherers_vector[i]->resource_type));
 				//if there is at least a resource building left, go there
 				if (gatherers_vector[i]->GetResourceBuilding() != nullptr) {
 					gatherers_vector[i]->PathfindToPosition(App->entities->ClosestTile(gatherers_vector[i]->current_tile, gatherers_vector[i]->GetResourceBuilding()->tiles));
+					gatherers_vector[i]->gathering = true;
 				}
 				//if there are no resource buildings left
-				else
-				{
-					gatherers_vector[i]->state = IDLE;
+				else {
+					gatherers_vector[i]->state = State::IDLE;
 				}
 			}
 		}
@@ -83,7 +87,7 @@ bool AI_Player::Update(float dt) {
 		mr_proportion = melees / rangeds;
 
 	//spawn melee
-	if ((barrack[0] != nullptr) &&(water > App->entities->unit_data[faction][MELEE].cost_water)&&(food > App->entities->unit_data[faction][MELEE].cost_meat) && (last_barrack_to_spawn == 1)&&(melees > melee_minimum) && (mr_proportion < 2)) {
+	if ((barrack[0] != nullptr) &&(water >= App->entities->unit_data[faction][MELEE].cost_water)&&(food >= App->entities->unit_data[faction][MELEE].cost_meat) && (last_barrack_to_spawn == 1) && (mr_proportion < 2)) {
 		barrack[0]->SpawnUnit(MELEE);
 		water -= App->entities->unit_data[faction][MELEE].cost_water;
 		food -= App->entities->unit_data[faction][MELEE].cost_meat;
@@ -91,7 +95,7 @@ bool AI_Player::Update(float dt) {
 	}
 
 	//spawn ranged
-	if ((barrack[1] != nullptr) && (water > App->entities->unit_data[faction][RANGED].cost_water) && (food > App->entities->unit_data[faction][RANGED].cost_meat) && (rangeds > ranged_minimum) && (last_barrack_to_spawn == 0)) {
+	if ((barrack[1] != nullptr) && (water >= App->entities->unit_data[faction][RANGED].cost_water)&&(food >= App->entities->unit_data[faction][RANGED].cost_meat) && (last_barrack_to_spawn == 0)) {
 		barrack[1]->SpawnUnit(RANGED);
 		water -= App->entities->unit_data[faction][RANGED].cost_water;
 		food -= App->entities->unit_data[faction][RANGED].cost_meat;
@@ -108,7 +112,7 @@ bool AI_Player::Update(float dt) {
 			}
 			is_attacking = true;
 			wave_timer.Start();
-			//LOG("attacking");
+			LOG("Attacking %i:%i", App->hud->minutes, App->hud->timer);
 		}
 	}
 
@@ -132,14 +136,13 @@ bool AI_Player::Update(float dt) {
 				ChooseRandomPlayerEnemy();
 				target_building = ChooseTargetBuilding();
 			}
-			//and find its position
-			if(target_building != nullptr)
-				target_building_position = target_building->current_tile;
 		}
-
-		for (int i = 0; i < troops.size(); i++)
-		{
-			troops[i]->target_building = target_building;
+		else {
+			for (size_t i = 0; i < troops.size(); i++)
+			{
+				if (troops[i]->target_building == nullptr)
+					troops[i]->target_building = target_building;
+			}
 		}
 
 		is_attacking = false;
@@ -150,7 +153,7 @@ bool AI_Player::Update(float dt) {
 
 void AI_Player::ChooseRandomPlayerEnemy() {
 	srand(time(NULL));
-	int enemy_faction;
+	int enemy_faction = NO_FACTION;
 
 	do
 	{
@@ -159,14 +162,14 @@ void AI_Player::ChooseRandomPlayerEnemy() {
 	} while (enemy_faction == faction);
 
 	if (target_player == nullptr)
-		target_player = (GenericPlayer*)App->player;
+		target_player = dynamic_cast<GenericPlayer*>(App->player);
 }
 
 DynamicEntity* AI_Player::GetClosestDynamicEntity() {
 	DynamicEntity* target_entity = nullptr;
 	int distance = 1000000;
 
-	for (int i = 0; i < target_player->troops.size(); i++)
+	for(size_t i = 0; i < target_player->troops.size(); i++)
 	{
 		if ((target_player->troops[i]->current_tile.DistanceManhattan(base->current_tile) < distance)&&(target_player->troops[i])) {
 			target_entity = target_player->troops[i];
@@ -179,7 +182,6 @@ DynamicEntity* AI_Player::GetClosestDynamicEntity() {
 StaticEntity* AI_Player::ChooseTargetBuilding() {
 
 	//choose a building to attack in preference order
-
 	if (target_player->barrack[0] != nullptr)
 		target_building = target_player->barrack[0];
 	else if (target_player->laboratory != nullptr)
@@ -194,7 +196,7 @@ StaticEntity* AI_Player::ChooseTargetBuilding() {
 
 void AI_Player::GatherFood(ResourceBuilding* resource_spot) {
 
-	for (int i = 0; i < gatherers; i++)
+	for(int i = 0; i < gatherers; i++)
 	{
 		if ((gatherers_vector[i]->GetResourceBuilding() == nullptr)||(gatherers_vector[i]->GetResourceCollected() == 0)) {
 			gatherers_vector[i]->AssignResourceBuilding(resource_spot);

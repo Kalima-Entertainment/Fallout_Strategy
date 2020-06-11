@@ -14,19 +14,19 @@ UI_Slider::UI_Slider(int x, int y, UI_Type type, SDL_Rect scrollbar, SDL_Rect bu
 	
 	dimensions.w = button.w + 265;
 	dimensions.h = button.h + 25;
-
+	mouse_position_in_button = -1.0;
 	//App->audio->Change_Volume_Music(get_valors());
 
 	t = type;
 
 	if (t == Slider_music) {
 		
-		initial_v = x;
+		initial_v = static_cast<float>(x);
 		Scrollbar_volume = scrollbar;
 
 		max_v = initial_v + (Scrollbar_volume.w + 34);
 
-		actual_pos_v = x + 89;
+		actual_pos_v = static_cast<float>(x + 89);
 
 		Button_Scrollbar_volume = button;
 
@@ -36,12 +36,12 @@ UI_Slider::UI_Slider(int x, int y, UI_Type type, SDL_Rect scrollbar, SDL_Rect bu
 	}
 	if (t == Slider_fx) {
 		
-		initial_f = x;
+		initial_f = static_cast<float>(x);
 		Scrollbar_fx = scrollbar;
 
 		max_f = initial_f + (Scrollbar_fx.w + 34);
 
-		actual_pos_f = x + 89;
+		actual_pos_f = static_cast<float>(x + 89);
 
 		Button_Scrollbar_fx = button;
 		//actual_pos_f = ((App->audio->Get_Music_Volume()*(max_f - initial_f)) / 128) + initial_f;
@@ -53,6 +53,7 @@ UI_Slider::UI_Slider(int x, int y, UI_Type type, SDL_Rect scrollbar, SDL_Rect bu
 
 UI_Slider::~UI_Slider() {
 	texture = nullptr;
+	observer = nullptr;
 }
 
 bool UI_Slider::Update(float dt)
@@ -153,12 +154,12 @@ bool UI_Slider::Mouse_Is_Moving() {
 
 	if (t == Slider_music) {
 		App->input->GetMousePosition(new_mouse_pos_music.x, new_mouse_pos_music.y);
-		actual_pos_v = new_mouse_pos_music.x;
+		actual_pos_v = static_cast<float>(new_mouse_pos_music.x);
 	}
 
 	if (t == Slider_fx) {
 		App->input->GetMousePosition(new_mouse_pos_fx.x, new_mouse_pos_fx.y);
-		actual_pos_f = new_mouse_pos_fx.x;
+		actual_pos_f = static_cast<float>(new_mouse_pos_fx.x);
 	}
 		
 	/*if (new_mouse_pos.x < actual_pos) {
@@ -182,13 +183,13 @@ bool UI_Slider::Draw() {
 	
 	if (t == Slider_music) {
 		App->render->Blit_UI(texture, pos.x, pos.y, &Scrollbar_volume, SDL_FLIP_NONE, 0.0f);
-		App->render->Blit_UI(texture, actual_pos_v, pos.y - 4, &Button_Scrollbar_volume, SDL_FLIP_NONE, 0.0f);
+		App->render->Blit_UI(texture, static_cast<int>(actual_pos_v), static_cast<int>(pos.y - 4), &Button_Scrollbar_volume, SDL_FLIP_NONE, 0.0f);
 		Debug();
 	}
 
 	if (t == Slider_fx) {
 		App->render->Blit_UI(texture, pos.x, pos.y, &Scrollbar_fx, SDL_FLIP_NONE, 0.0f);
-		App->render->Blit_UI(texture, actual_pos_f, pos.y - 4, &Button_Scrollbar_fx, SDL_FLIP_NONE, 0.0f);
+		App->render->Blit_UI(texture, static_cast<int>(actual_pos_f), static_cast<int>(pos.y - 4), &Button_Scrollbar_fx, SDL_FLIP_NONE, 0.0f);
 		Debug();
 	}
 	
@@ -200,7 +201,7 @@ float UI_Slider::get_valors()
 {
 	
 	if (t == Slider_music) {
-		int max_valor = max_v - initial_v;
+		int max_valor = static_cast<int>(max_v - initial_v);
 		float min_valor = max_valor / 100.0f;
 		float current;
 
@@ -214,7 +215,7 @@ float UI_Slider::get_valors()
 	}
 
 	if (t == Slider_fx) {
-		int max_valor = max_f - initial_f;
+		int max_valor = static_cast<int>(max_f - initial_f);
 		float min_valor = max_valor / 100.0f;
 		float current;
 
@@ -241,7 +242,7 @@ void UI_Slider::Debug() {
 
 			App->render->DrawQuad(bar, 255, 0, 0, 255, false, 0.0f);
 
-			SDL_Rect button_scrollbar{ actual_pos_v, pos.y - 4, Button_Scrollbar_volume.w, Button_Scrollbar_volume.h };
+			SDL_Rect button_scrollbar{ static_cast<int>(actual_pos_v), static_cast<int>(pos.y - 4), Button_Scrollbar_volume.w, Button_Scrollbar_volume.h };
 
 			App->render->DrawQuad(button_scrollbar, 255, 0, 0, 255, false, 0.0f);
 		}
@@ -256,7 +257,7 @@ void UI_Slider::Debug() {
 
 			App->render->DrawQuad(bar, 255, 0, 0, 255, false, 0.0f);
 
-			SDL_Rect button_scrollbar2{ actual_pos_f, pos.y - 4, Button_Scrollbar_fx.w, Button_Scrollbar_fx.h };
+			SDL_Rect button_scrollbar2{ static_cast<int>(actual_pos_f), static_cast<int>(pos.y - 4), Button_Scrollbar_fx.w, Button_Scrollbar_fx.h };
 
 			App->render->DrawQuad(button_scrollbar2, 255, 0, 0, 255, false, 0.0f);
 		}

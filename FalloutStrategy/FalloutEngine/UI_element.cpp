@@ -11,6 +11,12 @@ UI_element::UI_element(int x, int y, UI_Type type, UI_element* parent, j1Module 
 	this->element_UI = parent;
 	observer = Observer;
 	drawable = true;
+	hover = false;
+
+	dimensions.x = 0;
+	dimensions.y = 0;
+	dimensions.w = 0;
+	dimensions.h = 0;
 }
 
 bool UI_element::Update(float dt)
@@ -34,20 +40,8 @@ bool UI_element::Draw()
 
 bool UI_element::IsIntersection() {
 
-	bool ret;
-
 	App->input->GetMousePosition(mouse_pos.x, mouse_pos.y);
 
-	if (mouse_pos.x > pos.x && mouse_pos.x<pos.x + dimensions.w && mouse_pos.y > pos.y && mouse_pos.y < pos.y + dimensions.h) {
-
-		ret = true;
-	}
-	
-	else {
-
-		ret = false;
-
-	}
-
-	return ret;
+	return ((mouse_pos.x > pos.x) && (mouse_pos.x < pos.x + dimensions.w)
+		&& (mouse_pos.y > pos.y) && (mouse_pos.y < pos.y + dimensions.h));
 }

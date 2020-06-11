@@ -10,6 +10,7 @@
 class UI_Label;
 struct SDL_Rect;
 class InputText;
+class UI_Label;
 
 struct Command {
 	std::string name;
@@ -31,17 +32,14 @@ public:
 	bool CleanUp();
 	void OnCommand(std::vector<std::string> command_parts);
 
-	void CreateCommand(std::string name, std::string description, j1Module* callback);
+	void CreateCommand(const std::string &name,const std::string &description, j1Module* callback);
 	void ProcessCommand(std::string command);
 
 	void AddLogText(std::string incoming_text);
-	j1Module* FindModule(std::string command_parts);
+	j1Module* FindModule(const std::string &command_parts);
 
 	void CreateInterface();
 	void DestroyInterface();
-
-	//void CreateCommand(const char* command, j1Module* callback, const char* explanation = "No explanation given");
-	//void CheckCommand(p2SString command);
 
 public:
 	std::vector<std::string> log_record;
@@ -54,6 +52,8 @@ public:
 	SDL_Rect command_background;
 	bool CleanUpStarted;
 	float last_dt;
+
+	UI_Label* labelInputText;
 
 private:
 	SDL_Color log_box_color;

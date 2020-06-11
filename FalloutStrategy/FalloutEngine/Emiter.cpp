@@ -6,86 +6,56 @@
 #include "math.h"
 #include "p2Log.h"
 
-Emiter::Emiter(std::vector<float>& position, std::vector<float>& particleSpeed, std::vector<int>& particleVariationSpeed,
-	std::vector<float>& particleAcceleration, std::vector<int>& particleVariationAcceleration, float particleAngularSpeed,
-	int particleVariableAngularSpeed, float particlesRate, float particlesLifeTime, SDL_Rect* areaOfSpawn, SDL_Texture* texture, Animation particleAnimation, bool fade) :
+Emiter::Emiter(float posX, float posY, float SpeedX, float SpeedY, int VariationSpeedX, int VariationSpeedY,
+	float AccelerationX, float AccelerationY, int VariationAccelerationX, int VariationAccelerationY, float AngularSpeed,
+	int VariableAngularSpeed, float Rate, float LifeTime, SDL_Rect* spawn, SDL_Texture* texture, const Animation &partAnim, bool fade) {
 
-	position(position),
-	particleSpeed(particleSpeed),
-	particleVariationSpeed(particleVariationSpeed),
-	particleAcceleration(particleAcceleration),
-	particleVariationAcceleration(particleVariationAcceleration),
-	particleAngularSpeed(particleAngularSpeed),
-	particleVariationAngularSpeed(particleVariableAngularSpeed),
+	position.push_back(posX);
+	position.push_back(posY);
 
-	particlesRate(particlesRate),
-	particlesLifeTime(particlesLifeTime),
+	particleSpeed.push_back(SpeedX);
+	particleSpeed.push_back(SpeedY);
 
-	areaOfSpawn(areaOfSpawn),
-	particleTexture(texture),
-	particleAnimation(particleAnimation),
+	particleVariationSpeed.push_back(VariationSpeedX);
+	particleVariationSpeed.push_back(VariationSpeedY);
 
-	randomizePosX(true),
-	randomizePosY(true),
+	particleAcceleration.push_back(AccelerationX);
+	particleAcceleration.push_back(AccelerationY);
 
-	randomizeSpeedX(true),
-	randomizeSpeedY(true),
+	particleVariationAcceleration.push_back(VariationAccelerationX);
+	particleVariationAcceleration.push_back(VariationAccelerationY);
 
-	randomizeAccelerationX(true),
-	randomizeAccelerationY(true),
+	particleAngularSpeed = AngularSpeed;
+	particleVariationAngularSpeed = VariableAngularSpeed;
+	particlesEmited = 0.0f;
 
-	randomizeAngularSpeed(true),
+	particlesRate = Rate;
+	particlesLifeTime = LifeTime;
 
-	active(true),
+	areaOfSpawn = spawn;
+	particleTexture= texture;
+	particleAnimation = partAnim;
 
-	fadeParticles(fade)
+	randomizePosX = true;
+	randomizePosY = true;
 
-{
-	Start();
-}
+	randomizeSpeedX = true;
+	randomizeSpeedY = true;
 
+	randomizeAccelerationX = true;
+	randomizeAccelerationY = true;
 
-Emiter::Emiter(float positionX, float positionY, float particleSpeedX, float particleSpeedY, int particleVariationSpeedX, int particleVariationSpeedY,
-	float particleAccelerationX, float particleAccelerationY, int particleVariationAccelerationX, int particleVariationAccelerationY, float particleAngularSpeed,
-	int particleVariableAngularSpeed, float particlesRate, float particlesLifeTime, SDL_Rect* areaOfSpawn, SDL_Texture* texture, Animation particleAnimation, bool fade) :
+	randomizeAngularSpeed = true;
+	active = true;
+	fadeParticles = fade;
 
-	position{ positionX, positionY },
-	particleSpeed{ particleSpeedX, particleSpeedY },
-	particleVariationSpeed{ particleVariationSpeedX, particleVariationSpeedY },
-	particleAcceleration{ particleAccelerationX, particleAccelerationY },
-	particleVariationAcceleration{ particleVariationAccelerationX, particleVariationAccelerationY },
-	particleAngularSpeed(particleAngularSpeed),
-	particleVariationAngularSpeed(particleVariableAngularSpeed),
-
-	particlesRate(particlesRate),
-	particlesLifeTime(particlesLifeTime),
-
-	areaOfSpawn(areaOfSpawn),
-	particleTexture(texture),
-	particleAnimation(particleAnimation),
-
-	randomizePosX(true),
-	randomizePosY(true),
-
-	randomizeSpeedX(true),
-	randomizeSpeedY(true),
-
-	randomizeAccelerationX(true),
-	randomizeAccelerationY(true),
-
-	randomizeAngularSpeed(true),
-
-	active(true),
-
-	fadeParticles(fade)
-{
 	Start();
 }
 
 
 void Emiter::Start()
 {
-	//TODO 3: Just calculate the max number of particles you will have in screen
+	// Just calculate the max number of particles you will have in screen
 	//particles rate * particles life time
 	int maxParticles = particlesRate * particlesLifeTime + 1;
 
@@ -94,7 +64,7 @@ void Emiter::Start()
 
 	particleVector.reserve(maxParticles);
 
-	for (int i = 0; i < maxParticles; i++)
+	for(int i = 0; i < maxParticles; i++)
 	{
 		CreateParticle();
 	}
@@ -179,7 +149,7 @@ void Emiter::Update(float dt) {
 	int numParticles = particleVector.size();
 
 
-	for (int i = 0; i < numParticles; i++)
+	for(int i = 0; i < numParticles; i++)
 	{
 		particleVector[i].Update(dt);
 	}
@@ -190,7 +160,7 @@ void Emiter::PostUpdate(float dt) {
 
 	int numParticles = particleVector.size();
 
-	for (int i = 0; i < numParticles; i++)
+	for(int i = 0; i < numParticles; i++)
 	{
 		particleVector[i].PostUpdate(dt);
 	}
@@ -219,9 +189,9 @@ void Emiter::ThrowParticles() {
 	{
 		int emited = 0;
 
-		for (int i = 0; i < particleVector.size(); i++)
+		for(int i = 0; i < particleVector.size(); i++)
 		{
-			//TODO 2: Call Activate(), use Generate...() functions to get the parameters Activate() needs.
+			// Call Activate(), use Generate...() functions to get the parameters Activate() needs.
 			//Activate returns false if the particle is already active, and true if we activate it.
 
 			if (particleVector[i].Activate())
@@ -284,7 +254,7 @@ void Emiter::SetMaxTime(float NewTime)
 
 	particleVector.reserve(maxParticles);
 
-	for (int i = 0; i < maxParticles; i++)
+	for(int i = 0; i < maxParticles; i++)
 	{
 		CreateParticle();
 	}*/

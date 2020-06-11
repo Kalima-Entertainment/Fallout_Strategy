@@ -8,11 +8,11 @@ class AI_Player;
 enum Faction;
 
 struct AI_Info {
+	int minimum_melees;
+	int minimum_rangeds;
 	int initial_caps;
 	int initial_water;
 	int initial_food;
-	int minimum_melees;
-	int minimum_rangeds;
 	int wave_time;
 };
 

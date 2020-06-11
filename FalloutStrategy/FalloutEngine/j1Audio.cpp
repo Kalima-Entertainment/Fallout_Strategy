@@ -2,7 +2,7 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Audio.h"
-
+#include "AssetsManager.h"
 #include "SDL/include/SDL.h"
 #include "SDL_mixer\include\SDL_mixer.h"
 #pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
@@ -20,7 +20,7 @@ j1Audio::j1Audio() : j1Module()
 
 // Destructor
 j1Audio::~j1Audio(){
-delete music;
+
 }
 
 // Called before render is available
@@ -56,14 +56,14 @@ bool j1Audio::Awake(pugi::xml_node& config)
 		ret = true;
 	}
 
-	Animal_walk = LoadFx("Assets/audio/fx/CharactersSounds/Animals/Brahmin/Walk.wav");
-	Animal_hit = LoadFx("Assets/audio/fx/CharactersSounds/Animals/Brahmin/Hit1.wav");
-	Animal_die = LoadFx("Assets/audio/fx/CharactersSounds/Animals/Brahmin/Death1.wav");
+	Animal_walk = LoadFx("Assets/audio/fx/CharactersSounds/Animals/Brahmin/Walk.WAV");
+	Animal_hit = LoadFx("Assets/audio/fx/CharactersSounds/Animals/Brahmin/Hit1.WAV");
+	Animal_die = LoadFx("Assets/audio/fx/CharactersSounds/Animals/Brahmin/Death1.WAV");
 
-	Deathclaw_walk = LoadFx("Assets/audio/fx/CharactersSounds/Deathclaw/babWalk.wav");
-	Deathclaw_hit = LoadFx("Assets/audio/fx/CharactersSounds/Deathclaw/babHit2.wav");
-	Deathclaw_attack = LoadFx("Assets/audio/fx/CharactersSounds/Deathclaw/Attack2.wav");
-	Deathclaw_die = LoadFx("Assets/audio/fx/CharactersSounds/Deathclaw/babDeath1.wav");
+	Deathclaw_walk = LoadFx("Assets/audio/fx/CharactersSounds/Deathclaw/babWalk.WAV");
+	Deathclaw_hit = LoadFx("Assets/audio/fx/CharactersSounds/Deathclaw/babHit2.WAV");
+	Deathclaw_attack = LoadFx("Assets/audio/fx/CharactersSounds/Deathclaw/Attack1.WAV");
+	Deathclaw_die = LoadFx("Assets/audio/fx/CharactersSounds/Deathclaw/babDeath1.WAV");
 
 	Mr_Handy_walk = LoadFx("Assets/audio/fx/CharactersSounds/Mr_Handy/Mr_Handy_walk.wav");
 	Mr_Handy_hit = LoadFx("Assets/audio/fx/CharactersSounds/Mr_Handy/Mr_Handy_hit.wav");
@@ -71,21 +71,21 @@ bool j1Audio::Awake(pugi::xml_node& config)
 	Mr_Handy_die = LoadFx("Assets/audio/fx/CharactersSounds/Mr_Handy/Mr_Handy_die.wav");
 
 	Brotherhood_walk = LoadFx("Assets/audio/fx/CharactersSounds/Brotherhood/Brotherhood_Walk.wav");
-	Brotherhood_die = LoadFx("Assets/audio/fx/CharactersSounds/Brotherhood/Brotherhood_Die.wav");
-	Brotherhood_hit = LoadFx("Assets/audio/fx/CharactersSounds/Brotherhood/Brotherhood_Hit.wav");
-	Brotherhood_attack = LoadFx("Assets/audio/fx/CharactersSounds/Brotherhood/Brotherhood_Attack.wav");
+	Brotherhood_die = LoadFx("Assets/audio/fx/CharactersSounds/Brotherhood/Brotherhood_Die.WAV");
+	Brotherhood_hit = LoadFx("Assets/audio/fx/CharactersSounds/Brotherhood/Brotherhood_Hit.WAV");
+	Brotherhood_attack = LoadFx("Assets/audio/fx/CharactersSounds/Brotherhood/Brotherhood_Attack.WAV");
 
-	Mutant_die = LoadFx("Assets/audio/fx/CharactersSounds/Mutants/SuperMutant_Die.wav");
-	Mutant_hit = LoadFx("Assets/audio/fx/CharactersSounds/Mutants/SuperMutant_Hit.wav");
-	Mutant_attack = LoadFx("Assets/audio/fx/CharactersSounds/Mutants/SuperMutant_Attack.wav");
+	Mutant_die = LoadFx("Assets/audio/fx/CharactersSounds/Mutants/SuperMutant_Die.WAV");
+	Mutant_hit = LoadFx("Assets/audio/fx/CharactersSounds/Mutants/SuperMutant_Hit.WAV");
+	Mutant_attack = LoadFx("Assets/audio/fx/CharactersSounds/Mutants/SuperMutant_Attack.WAV");
 
-	Vault_die = LoadFx("Assets/audio/fx/CharactersSounds/VaultDwellers/VaultDwellers_Die.wav");
-	Vault_hit = LoadFx("Assets/audio/fx/CharactersSounds/VaultDwellers/VaultDwellers_Hit.wav");
-	Vault_attack = LoadFx("Assets/audio/fx/CharactersSounds/VaultDwellers/VaultDwellers_Attack.wav");
+	Vault_die = LoadFx("Assets/audio/fx/CharactersSounds/VaultDwellers/VaultDwellers_Die.WAV");
+	Vault_hit = LoadFx("Assets/audio/fx/CharactersSounds/VaultDwellers/VaultDwellers_Hit.WAV");
+	Vault_attack = LoadFx("Assets/audio/fx/CharactersSounds/VaultDwellers/VaultDwellers_Attack.WAV");
 
-	Ghoul_die = LoadFx("Assets/audio/fx/CharactersSounds/Ghouls/Ghouls_Die.wav");
-	Ghoul_hit = LoadFx("Assets/audio/fx/CharactersSounds/Ghouls/Ghouls_Hit.wav");
-	Ghoul_attack = LoadFx("Assets/audio/fx/CharactersSounds/Ghouls/Ghouls_Attack.wav");
+	Ghoul_die = LoadFx("Assets/audio/fx/CharactersSounds/Ghouls/Ghouls_Die.WAV");
+	Ghoul_hit = LoadFx("Assets/audio/fx/CharactersSounds/Ghouls/Ghouls_Hit.WAV");
+	Ghoul_attack = LoadFx("Assets/audio/fx/CharactersSounds/Ghouls/Ghouls_Attack.WAV");
 
 	pistol = LoadFx("Assets/audio/fx/Others/Weapons/pistolheavySingle1.wav");
 	pistol2 = LoadFx("Assets/audio/fx/Others/Weapons/pistolrevolverSingle1.wav");
@@ -94,21 +94,21 @@ bool j1Audio::Awake(pugi::xml_node& config)
 	factory = LoadFx("Assets/audio/fx/Others/Weapons/factory_working.wav");
 
 	intro_fx = App->audio->LoadFx("Assets/audio/fx/Intro/Intro_fx.wav");
-	F_press = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_CheckBox.wav");
-	Press_F_to_start = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Text.wav");
+	F_press = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_CheckBox.WAV");
+	Press_F_to_start = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Text.WAV");
 	loading = App->audio->LoadFx("Assets/audio/fx/Intro/loading.wav");
 	win = App->audio->LoadFx("Assets/audio/fx/WinLose/WinSound.wav");
 	lose = App->audio->LoadFx("Assets/audio/fx/WinLose/LoseSound.wav");
 	you_win = App->audio->LoadFx("Assets/audio/fx/WinLose/you_win.wav");
 	you_lose = App->audio->LoadFx("Assets/audio/fx/WinLose/you_lose.wav");
-	upgrade_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Mission.wav");
+	upgrade_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Mission.WAV");
 	
-	click_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Arrow.wav");
-	hover_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Slider.wav");
-	back_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_ReadyOff.wav");
-	volume_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Text.wav");
-	members_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Skill.wav");
-	character_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Character.wav");
+	click_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Arrow.WAV");
+	hover_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Slider.WAV");
+	back_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_ReadyOff.WAV");
+	volume_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Text.WAV");
+	members_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Skill.WAV");
+	character_fx = App->audio->LoadFx("Assets/audio/fx/UISounds/Butn_Character.WAV");
 
 	return ret;
 }
@@ -126,7 +126,7 @@ bool j1Audio::CleanUp()
 		Mix_FreeMusic(music);
 	}
 
-	for (int i = 0; i < fx.size(); i++) {
+	for(int i = 0; i < fx.size(); i++) {
 		Mix_FreeChunk(fx[i]);
 	}
 
@@ -163,7 +163,7 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 		Mix_FreeMusic(music);
 	}
 
-	music = Mix_LoadMUS(path);
+	music = Mix_LoadMUS_RW(App->assetManager->Load(path), 1);
 
 	if(music == NULL)
 	{
@@ -202,7 +202,7 @@ unsigned int j1Audio::LoadFx(const char* path)
 	if(!active)
 		return 0;
 
-	Mix_Chunk* chunk = Mix_LoadWAV(path);
+	Mix_Chunk* chunk = Mix_LoadWAV_RW(App->assetManager->Load(path), 1);
 
 	if(chunk == NULL)
 	{
@@ -221,7 +221,6 @@ unsigned int j1Audio::LoadFx(const char* path)
 bool j1Audio::PlayFx(int channel, unsigned int id, int repeat)
 {
 	bool ret = false;
-	id += 0;
 
 	if(!active)
 		return false;
@@ -257,6 +256,7 @@ void j1Audio::Change_Volume_Music(float value)
 	//LOG("%f", total_volume);
 
 }
+
 void j1Audio::Change_Volume_FX(float value)
 {
 	value = value / 50;

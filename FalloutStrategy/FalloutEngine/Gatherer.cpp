@@ -20,12 +20,14 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 	is_agressive = false;
 	gather_time = 2;
 	storage_capacity = 0;
+	resource_type = Resource::NO_TYPE;
+	gathering = false;
 
 	position = App->map->floatMapToWorld(current_tile.x, current_tile.y);
 	position.x += HALF_TILE;
 	position.y += HALF_TILE;
 
-	if (owner) 
+	if (owner)
 		base = owner->base;
 
 	resource_building = nullptr;
@@ -39,7 +41,7 @@ Gatherer::Gatherer(Faction g_faction, iPoint g_current_tile, GenericPlayer* g_ow
 		//Enemy
 		visionEntity = App->fowManager->CreateFoWEntity({ this->current_tile.x, this->current_tile.y }, false);
 	}
-	
+
 
 	DynaParticle = App->entities->CreateParticle(position);
 	Animation anim;
@@ -55,7 +57,6 @@ Gatherer::~Gatherer() {
 	base = nullptr;
 	visionEntity = nullptr;
 	DynaParticle = nullptr;
-	//App->entities->ReleaseParticle(DynaParticle);
 }
 
 bool Gatherer::Update(float dt) {
@@ -65,24 +66,30 @@ bool Gatherer::Update(float dt) {
 	switch (state)
 	{
 	case IDLE:
-		if ((resource_collected > 0) && (base != nullptr) && (base->state != DIE)) {
-			PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
-		}
-		else if ((resource_building != nullptr) && (resource_building->quantity > 0)) {
-			PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
+		if (!commanded) {
+			if ((resource_collected > 0) && (base != nullptr) && (base->state != DIE)) {
+				PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
+			}
+			else if ((resource_building != nullptr) && (resource_building->quantity > 0)) {
+				PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
+			}
 		}
 		break;
 	case WALK:
 		Move(dt);
 
-		if ((next_tile == target_tile)&&(node_path.size() == 0)) {
+		if ((current_tile == target_tile)&&(node_path.size() == 0)) {
 			//gather
-			if (((resource_building != nullptr) && (resource_collected < storage_capacity)) || ((resource_collected > 0) && (base != nullptr))) {
+			if ((((resource_building != nullptr) && (resource_collected < storage_capacity)) || ((resource_collected > 0) && (base != nullptr))) && gathering) {
 				state = GATHER;
 				gathering_timer.Start();
 			}
+			else {
+				state = IDLE;
+			}
 		}
-		SpatialAudio(position.x, position.y, faction, state, type);
+		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
+
 		break;
 	case GATHER:
 		if (gathering_timer.ReadSec() > gather_time) {
@@ -101,7 +108,7 @@ bool Gatherer::Update(float dt) {
 				}
 				//find another building
 				else {
-					resource_building = App->entities->GetClosestResourceBuilding(current_tile);
+					resource_building = App->entities->GetClosestResourceBuilding(current_tile, resource_type);
 					//if there is at least a resource building left, go there
 					if (resource_building != nullptr) {
 						PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
@@ -109,29 +116,33 @@ bool Gatherer::Update(float dt) {
 					}
 					//if there are no resource buildings left
 					else {
+						LOG("No more resource buildings");
 						state = IDLE;
 					}
 				}
 			}
 			else {
 				state = IDLE;
+				path_to_target.clear();
+				commanded = false;
 			}
 		}
 		break;
 	case HIT:
 		if (current_animation->Finished()) {
 			current_animation->Reset();
-			state = IDLE;
+			//state = IDLE;
+			Flee();
 		}
-		SpatialAudio(position.x, position.y, faction, state, type);
+		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
 		break;
 	case DIE:
 		direction = TOP_LEFT;
 		if (!delete_timer.Started()) {
 			delete_timer.Start();
 			direction = TOP_LEFT;
-			if ((attacking_entity)&&(attacking_entity->target_entity == this)) {
-				attacking_entity->target_entity = nullptr;
+			if ((attacking_entity)&&(attacking_entity->dynamic_target == this)) {
+				attacking_entity->dynamic_target = nullptr;
 				attacking_entity->state = IDLE;
 			}
 		}
@@ -141,7 +152,7 @@ bool Gatherer::Update(float dt) {
 			to_delete = true;
 			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
 		}
-		SpatialAudio(position.x, position.y, faction, state, type);
+		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
 		break;
 	default:
 		break;
@@ -154,7 +165,7 @@ bool Gatherer::Update(float dt) {
 	}
 
 	if (DynaParticle->IsActive()) {
-		DynaParticle->Move(position.x, position.y);
+		DynaParticle->Move(static_cast<int>(position.x), static_cast<int>(position.y));
 		DynaParticle->Update(dt);
 	}
 
@@ -164,6 +175,15 @@ bool Gatherer::Update(float dt) {
 }
 
 void Gatherer::Gather() {
+	//go back to base if resource building type is differrent from resource collected
+	if ((resource_collected > 0) && (resource_type != resource_building->resource_type)) {
+		if ((base != nullptr) && (base->state != DIE)) {
+			PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
+			gathering = true;
+			return;
+		}
+	}
+
 	uint resource = storage_capacity - resource_collected;
 
 	if ((resource_building->quantity -= resource) < 0)
@@ -176,11 +196,12 @@ void Gatherer::Gather() {
 	if (base != nullptr) {
 		if (base->state == DIE) {
 			state = IDLE;
+			gathering = false;
 			return;
 		}
-			
+
 		PathfindToPosition(App->entities->ClosestTile(current_tile, base->tiles));
-		target_entity = base;
+		gathering = true;
 	}
 
 	if (resource_building->quantity <= 0)
@@ -189,6 +210,7 @@ void Gatherer::Gather() {
 
 void Gatherer::AssignResourceBuilding(ResourceBuilding* g_resource_building) {
 	resource_building = g_resource_building;
+	gathering = true;
 }
 
 void Gatherer::StoreGatheredResources() {
@@ -198,26 +220,25 @@ void Gatherer::StoreGatheredResources() {
 	}
 	else {
 		//update owner resources
-		if (resource_type == Resource::CAPS) 
+		if (resource_type == Resource::CAPS)
 			owner->caps += resource_collected;
-		else if (resource_type == Resource::WATER) 
+		else if (resource_type == Resource::WATER)
 			owner->water += resource_collected;
-		else if (resource_type == Resource::FOOD) 
+		else if (resource_type == Resource::FOOD)
 			owner->food += resource_collected;
 	}
 
 	resource_collected = 0;
-	target_entity = nullptr;
 }
 
 bool Gatherer::LoadDataFromReference() {
 	bool ret = true;
-	Gatherer* reference_gatherer = (Gatherer*)reference_entity;
+	Gatherer* reference_gatherer = dynamic_cast<Gatherer*>(reference_entity);
 
 	//load animations
-	for (int i = 0; i < NO_STATE; i++)
+	for(int i = 0; i < NO_STATE; i++)
 	{
-		for (int j = 0; j < NO_DIRECTION; j++)
+		for(int j = 0; j < NO_DIRECTION; j++)
 		{
 			animations[i][j] = reference_gatherer->animations[i][j];
 		}
@@ -237,7 +258,7 @@ bool Gatherer::LoadReferenceData(pugi::xml_node& node) {
 	bool ret = true;
 
 	max_health = node.attribute("health").as_float();
-	speed.x = node.attribute("speed").as_int();
+	speed.x = node.attribute("speed").as_float();
 	speed.y = speed.x * 0.5f;
 	storage_capacity = node.attribute("storage_capacity").as_int();
 

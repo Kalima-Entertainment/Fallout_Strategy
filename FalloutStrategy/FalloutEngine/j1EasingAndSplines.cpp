@@ -27,13 +27,13 @@ bool SplineInfo::Update(float dt)
 
 	bool ret = true;
 
-	//Todo 2: Calculate time since spline start and save the value in FLOAT
+	// Calculate time since spline start and save the value in FLOAT
 	float time_passed = SDL_GetTicks() - start_time;
 
-	//Todo 3: Check if the spline has finished using time_passed, to Update end we need to return false, look Todo 1
+	// Check if the spline has finished using time_passed, to Update end we need to return false, look Todo 1
 	if (time_passed < time_to_travel) {
 
-		//Todo 4: Make a switch for every case of spline and call its function, save the position (select three of one group to do the proof)
+		// Make a switch for every case of spline and call its function, save the position (select three of one group to do the proof)
 
 		switch (type) {
 
@@ -278,10 +278,10 @@ bool SplineInfo::Update(float dt)
 bool j1EasingAndSplines::Update(float dt)
 {
 	
-	//Todo 1: We want to delete spline when it's over. For this we have to:
+	// We want to delete spline when it's over. For this we have to:
 	//Check the easing_splines list and removes those that Update return false. This means that Spline has finished.
 
-	for (int i=0; i < easing_splines.size(); i++) {
+	for(int i=0; i < easing_splines.size(); i++) {
 		
 		if (easing_splines[i] != nullptr) {
 			
@@ -478,7 +478,7 @@ bool j1EasingAndSplines::CleanUp()
 {
 	LOG("Freeing scene");
 
-	for (int i = 0; i < easing_splines.size(); i++) {
+	for(int i = 0; i < easing_splines.size(); i++) {
 
 		if (easing_splines[i] != nullptr) {
 

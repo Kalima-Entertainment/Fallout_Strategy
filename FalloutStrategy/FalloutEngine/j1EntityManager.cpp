@@ -4,7 +4,6 @@
 #include "j1Textures.h"
 #include "j1Render.h"
 #include "j1Input.h"
-#include "j1Collision.h"
 #include "j1Window.h"
 #include "j1Scene.h"
 #include "j1Map.h"
@@ -23,6 +22,8 @@
 #include "Gatherer.h"
 #include "Deathclaw.h"
 #include "GenericPlayer.h"
+#include "j1Entity.h"
+#include "AssetsManager.h"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -38,14 +39,17 @@ j1EntityManager::j1EntityManager(){
 
 	name.assign("entities");
 
+	randomFaction[0] = randomFaction[1] = randomFaction[2] = randomFaction[3] = 0;
+
 	loading_faction = VAULT;
 	loading_entity = MELEE;
 	blocked_movement = false;
 	showing_building_menu = false;
 	blood = nullptr;
 	smoke = nullptr;
+	hit = nullptr;
 	entities_loaded = false;
-	
+
 	mr_handy_cost = NULL;
 	mr_handy_time = NULL;
 
@@ -69,7 +73,7 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 	std::string base_folder = animation_node.attribute("base_folder").as_string();
 	pugi::xml_node file_node = animation_node.child("file");
 
-	for (int i = 0; i < REFERENCE_ENTITIES; i++)
+	for(int i = 0; i < REFERENCE_ENTITIES; i++)
 	{
 		texture_folders[i] = base_folder;
 		texture_folders[i].append(file_node.attribute("folder").as_string());
@@ -78,9 +82,9 @@ bool j1EntityManager::Awake(pugi::xml_node& config){
 		reference_entities[i] = nullptr;
 	}
 
-	for (int y = 0; y < 150; y++)
+	for(int y = 0; y < 150; y++)
 	{
-		for (int x = 0; x < 150; x++)
+		for(int x = 0; x < 150; x++)
 		{
 			occupied_tiles[x][y] = false;
 		}
@@ -97,15 +101,21 @@ bool j1EntityManager::Start() {
 	BROFILER_CATEGORY("EntitiesStart", Profiler::Color::Linen)
 	bool ret = true;
 
-	App->console->CreateCommand("destroy_all_entities", "remove all dynamic entities", (j1Module*)this);
+	App->console->CreateCommand("destroy_all_entities", "remove all dynamic entities", dynamic_cast<j1Module*>(this));
 
 	loading_reference_entities = true;
 	loading_faction = VAULT;
 	loading_entity = MELEE;
 
-	for (int y = 0; y < 150; y++)
+	background_health_bar = { 0,0,0,0 };
+	foreground_health_bar = { 0,0,0,0 };
+	frame_quad = { 0,0,0,0 };
+
+	
+
+	for(int y = 0; y < 150; y++)
 	{
-		for (int x = 0; x < 150; x++)
+		for(int x = 0; x < 150; x++)
 		{
 			occupied_tiles[x][y] = false;
 		}
@@ -113,9 +123,9 @@ bool j1EntityManager::Start() {
 
 	//automatic entities loading
 	int i = 0;
-	for (int faction = VAULT; faction < NO_FACTION; faction++)
+	for(int faction = VAULT; faction < NO_FACTION; faction++)
 	{
-		for (int type = MELEE; type < BIGHORNER; type++)
+		for(int type = MELEE; type < BIGHORNER; type++)
 		{
 			reference_entities[i] = CreateEntity((Faction)faction, (EntityType)type, faction, type);
 			i++;
@@ -138,6 +148,9 @@ bool j1EntityManager::Start() {
 	// -- Loading Particle textures
 	blood = App->tex->Load("Assets/textures/particles/blood.png");
 	smoke = App->tex->Load("Assets/textures/particles/smoke.png");
+	hit = App->tex->Load("Assets/textures/particles/HitParticle.png");
+
+	life_bars = App->tex->Load("Assets/textures/life_bar/bars.png");
 
 	return ret;
 }
@@ -146,8 +159,8 @@ bool j1EntityManager::CleanUp()
 {
 	bool ret = true;
 
-	// -- Instance
-	for (int i = 0; i < REFERENCE_ENTITIES; i++)
+	// -- Reference entities
+	for(int i = 0; i < REFERENCE_ENTITIES; i++)
 	{
 		if (reference_entities[i] != nullptr) {
 			App->tex->UnLoad(reference_entities[i]->texture);
@@ -157,7 +170,7 @@ bool j1EntityManager::CleanUp()
 	}
 
 	// -- Entities
-	for (int i = 0; i < entities.size(); i++)
+	for(size_t i = 0; i < entities.size(); i++)
 	{
 		if (entities[i] != nullptr) {
 			delete entities[i];
@@ -168,7 +181,7 @@ bool j1EntityManager::CleanUp()
 	entities.clear();
 
 	// -- Particles
-	for (int i = 0; i < particles.size(); i++)
+	for(size_t i = 0; i < particles.size(); i++)
 	{
 		if (particles[i] != nullptr) {
 			delete particles[i];
@@ -179,11 +192,14 @@ bool j1EntityManager::CleanUp()
 	particles.clear();
 	App->tex->UnLoad(blood);
 	App->tex->UnLoad(smoke);
+	App->tex->UnLoad(hit);
+
 	blood = nullptr;
 	smoke = nullptr;
+	hit = nullptr;
 
 	// -- Buildings
-	for (int j = 0; j < resource_buildings.size(); j++)
+	for(size_t j = 0; j < resource_buildings.size(); j++)
 	{
 		delete resource_buildings[j];
 		resource_buildings[j] = nullptr;
@@ -196,25 +212,8 @@ bool j1EntityManager::CleanUp()
 bool j1EntityManager::PreUpdate() {
 	bool ret = true;
 
-	for (int i = 0; i < entities.size(); i++)
+	for(size_t i = 0; i < entities.size(); i++)
 	{
-		if ((entities[i]->target_entity != nullptr) && (entities[i]->target_entity->to_delete)) {
-			entities[i]->target_entity = nullptr;
-		}
-
-		//delete entities to destroy
-		if (entities[i]->to_delete)
-		{
-			if(entities[i]->owner != nullptr)
-				entities[i]->owner->DeleteEntity(entities[i]);
-
-			if ((!entities[i]->is_dynamic)&&(!App->IsLoading()))
-				App->scene->CheckWinner();
-
-			delete entities[i];
-			entities[i] = nullptr;
-			entities.erase(entities.begin() + i);
-		}
 	}
 
 	return ret;
@@ -238,13 +237,18 @@ bool j1EntityManager::Update(float dt)
 			}
 		}
 	}
-
-	if (!App->isPaused)
+	else if (!App->isPaused)
 	{
-		for (int i = 0; i < entities.size(); i++)
+		for(size_t i = 0; i < entities.size(); i++)
 		{
 			if(!entities[i]->to_delete)
 				entities[i]->Update(dt);
+			
+		}
+
+		if (sort_timer.Read() > 500) {
+			BubbleSortEntities();
+			sort_timer.Start();
 		}
 	}
 
@@ -262,9 +266,9 @@ bool j1EntityManager::PostUpdate()
 	{
 		if (App->render->debug) {
 			//resource buildings debug
-			for (int i = 0; i < resource_buildings.size(); i++)
+			for(size_t i = 0; i < resource_buildings.size(); i++)
 			{
-				for (int j = 0; j < resource_buildings[i]->tiles.size(); j++)
+				for(size_t j = 0; j < resource_buildings[i]->tiles.size(); j++)
 				{
 					SDL_Rect rect = { 128,0,64,64 };
 					tex_position = App->map->MapToWorld(resource_buildings[i]->tiles[j].x, resource_buildings[i]->tiles[j].y);
@@ -280,9 +284,9 @@ bool j1EntityManager::PostUpdate()
 			}
 		}
 
-		if (App->player->selected_entity != nullptr)
+		if ((App->player->selected_entity != nullptr)&&(!App->player->selected_entity->is_dynamic))
 		{
-			StaticEntity* static_entity = (StaticEntity*)App->player->selected_entity;
+			StaticEntity* static_entity = dynamic_cast<StaticEntity*>(App->player->selected_entity);
 			//Create HUD for the building
 			switch (static_entity->faction) {
 			case VAULT:
@@ -388,13 +392,8 @@ bool j1EntityManager::PostUpdate()
 				break;
 			}
 		}
-
-		if (sort_timer.Read() > 500) {
-			BubbleSortEntities();
-			sort_timer.Start();
-		}
-
-		for (int i = 0; i < entities.size(); i++)
+		
+		for(size_t i = 0; i < entities.size(); i++)
 		{
 			//camera culling
 			if ((entities[i]->position.x + entities[i]->sprite_size * 0.5f > -App->render->camera.x)
@@ -405,21 +404,39 @@ bool j1EntityManager::PostUpdate()
 				//sort and blit entities
 				entities[i]->PostUpdate();
 			}
+
+			//delete entities to destroy
+			if (entities[i]->to_delete)
+			{
+				if (entities[i]->owner != nullptr)
+					entities[i]->owner->DeleteEntity(entities[i]);
+
+				if ((!entities[i]->is_dynamic) && (!App->IsLoading()))
+					App->scene->CheckWinner();
+
+				delete entities[i];
+				entities[i] = nullptr;
+				entities.erase(entities.begin() + i);
+			}
 		}
 
+		/*
+		//occupied tiles
 		if (App->render->debug) {
 			iPoint occuppied_tile = { -1,-1 };
-			for (int y = 0; y < 150; y++)
+			for(int y = 0; y < 150; y++)
 			{
-				for (int x = 0; x < 150; x++)
+				for(int x = 0; x < 150; x++)
 				{
 					if (occupied_tiles[x][y]) {
 						occuppied_tile = App->map->MapToWorld(x, y);
-						App->render->DrawQuad({ occuppied_tile.x + HALF_TILE,occuppied_tile.y + HALF_TILE,8,8 }, 155, 155, 155, 255);
+						App->render->DrawQuad({ occuppied_tile.x + HALF_TILE,occuppied_tile.y + HALF_TILE,8,8 }, 255, 155, 155, 175);
 					}
 				}
 			}
 		}
+		*/
+		
 	}
 
 	return ret;
@@ -430,6 +447,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 
 	j1Entity* entity = nullptr;
 	iPoint available_tile;
+	bool default_case = false;
 
 	switch (type)
 	{
@@ -437,7 +455,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		available_tile = FindSpawnPoint(position_x, position_y);
 		entity = new Troop(MELEE, faction, available_tile, owner);
 		if (owner) {
-			owner->troops.push_back((Troop*)entity);
+			owner->troops.push_back(dynamic_cast<Troop*>(entity));
 			owner->melees++;
 		}
 		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, MELEE)];
@@ -447,7 +465,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		available_tile = FindSpawnPoint(position_x, position_y);
 		entity = new Troop(RANGED, faction, available_tile, owner);
 		if (owner) {
-			owner->troops.push_back((Troop*)entity);
+			owner->troops.push_back(dynamic_cast<Troop*>(entity));
 			owner->rangeds++;
 		}
 		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, RANGED)];
@@ -457,7 +475,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		available_tile = FindSpawnPoint(position_x, position_y);
 		entity = new Gatherer(faction, available_tile, owner);
 		if (owner) {
-			owner->gatherers_vector.push_back((Gatherer*)entity);
+			owner->gatherers_vector.push_back(dynamic_cast<Gatherer*>(entity));
 			owner->gatherers++;
 		}
 		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, GATHERER)];
@@ -466,7 +484,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	case BASE:
 		entity = new StaticEntity(faction, BASE, { position_x, position_y }, owner);
 		if (owner) {
-			owner->base = (StaticEntity*)entity;
+			owner->base = dynamic_cast<StaticEntity*>(entity);
 		}
 		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, BASE)];
 		break;
@@ -474,7 +492,7 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	case LABORATORY:
 		entity = new StaticEntity(faction, LABORATORY, { position_x, position_y }, owner);
 		if (owner) {
-			owner->laboratory = (StaticEntity*)entity;
+			owner->laboratory = dynamic_cast<StaticEntity*>(entity);
 		}
 		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, LABORATORY)];
 		break;
@@ -483,9 +501,9 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 		entity = new StaticEntity(faction, BARRACK, { position_x, position_y }, owner);
 		if (owner) {
 			if (!owner->barrack[0])
-				owner->barrack[0] = (StaticEntity*)entity;
+				owner->barrack[0] = dynamic_cast<StaticEntity*>(entity);
 			else if (!owner->barrack[1])
-				owner->barrack[1] = (StaticEntity*)entity;
+				owner->barrack[1] = dynamic_cast<StaticEntity*>(entity);
 		}
 		entity->reference_entity = reference_entities[GetReferenceEntityID(faction, BARRACK)];
 		break;
@@ -508,15 +526,16 @@ j1Entity* j1EntityManager::CreateEntity(Faction faction, EntityType type, int po
 	case MR_HANDY:
 		entity = new Troop(MR_HANDY, faction, { position_x, position_y }, owner);
 		if (owner) {
-			owner->troops.push_back((Troop*)entity);
+			owner->troops.push_back(dynamic_cast<Troop*>(entity));
 		}
 		entity->reference_entity = reference_entities[GetReferenceEntityID(NO_FACTION, MR_HANDY)];
 		break;
 	default:
+		default_case = true; //Potential bug. If the program comes here and this variable didn't exist -> It would crash
 		break;
 	}
 
-	if (entity->reference_entity != nullptr) {
+	if (default_case == false && entity->reference_entity != nullptr) {
 		if(entity->is_dynamic)
 			occupied_tiles[entity->current_tile.x][entity->current_tile.y] = true;
 
@@ -537,7 +556,11 @@ bool j1EntityManager::LoadReferenceEntityData() {
 	bool ret = true;
 	pugi::xml_document entities_file;
 	pugi::xml_node entities_node;
-	pugi::xml_parse_result result = entities_file.load_file("entities.xml");
+
+	char* buffer;
+	int bytesFile = App->assetManager->Load("entities.xml", &buffer);
+	pugi::xml_parse_result result = entities_file.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
 
 	if (result == NULL)
 		LOG("Could not load map xml file entities.xml. pugi error: %s", result.description());
@@ -552,7 +575,7 @@ bool j1EntityManager::LoadReferenceEntityData() {
 	std::string faction_name;
 	std::string type_name;
 
-	while (class_node) 
+	while (class_node)
 	{
 		faction_node = class_node.first_child();
 
@@ -624,14 +647,14 @@ bool j1EntityManager::LoadReferenceEntityData() {
 void j1EntityManager::DestroyEntity(j1Entity* entity) { entity->to_delete = true;}
 
 void j1EntityManager::DestroyAllEntities() {
-	for (int i = 0; i < entities.size(); i++)
+	for(size_t i = 0; i < entities.size(); i++)
 	{
 		entities[i]->to_delete = true;
 	}
 }
 
 void j1EntityManager::DestroyAllEntitiesNow() {
-	for (int i = 0; i < entities.size(); i++)
+	for(size_t i = 0; i < entities.size(); i++)
 	{
 		delete entities[i];
 		entities[i] = nullptr;
@@ -640,7 +663,7 @@ void j1EntityManager::DestroyAllEntitiesNow() {
 }
 
 j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
-	for (int i = 0; i < entities.size(); i++)
+	for(size_t i = 0; i < entities.size(); i++)
 	{
 		if (entities[i]->is_dynamic)
 		{
@@ -649,8 +672,8 @@ j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
 		}
 		else
 		{
-			StaticEntity* static_entity = (StaticEntity*)entities[i];
-			for (int j = 0; j < static_entity->tiles.size(); j++)
+			StaticEntity* static_entity = dynamic_cast<StaticEntity*>(entities[i]);
+			for(size_t j = 0; j < static_entity->tiles.size(); j++)
 			{
 				if (static_entity->tiles[j] == tile)
 					return entities[i];
@@ -661,9 +684,9 @@ j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
 }
 
 ResourceBuilding* j1EntityManager::FindResourceBuildingByTile(iPoint tile) {
-	for (int i = 0; i < resource_buildings.size(); i++)
+	for(size_t i = 0; i < resource_buildings.size(); i++)
 	{
-		for (int j = 0; j < resource_buildings[i]->tiles.size(); j++)
+		for(size_t j = 0; j < resource_buildings[i]->tiles.size(); j++)
 		{
 			if (resource_buildings[i]->tiles[j] == tile)
 				return resource_buildings[i];
@@ -674,7 +697,7 @@ ResourceBuilding* j1EntityManager::FindResourceBuildingByTile(iPoint tile) {
 
 iPoint j1EntityManager::ClosestTile(iPoint position, std::vector<iPoint> entity_tiles) {
 	iPoint pivot = entity_tiles[0];
-	for (int i = 0; i < entity_tiles.size(); i++)
+	for(size_t i = 0; i < entity_tiles.size(); i++)
 	{
 		if (position.DistanceManhattan(entity_tiles[i]) < position.DistanceManhattan(pivot))
 			pivot = entity_tiles[i];
@@ -690,16 +713,16 @@ iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) 
 	int distance_to_destination = 100000;
 
 	while (max < 5) {
-		for (int y = -max; y <= max; y++)
+		for(int y = -max; y <= max; y++)
 		{
-			for (int x = -max; x <= max; x++)
+			for(int x = -max; x <= max; x++)
 			{
 				if (x != 0 || y != 0) {
 					possible_tile.x = destination.x + x;
 					possible_tile.y = destination.y + y;
 
 					if ((!occupied_tiles[possible_tile.x][possible_tile.y])&&(App->pathfinding->IsWalkable(possible_tile))) {
-						if ((possible_tile.DistanceManhattan(origin) <= distance_to_origin)&& (possible_tile.DistanceNoSqrt(destination) <= distance_to_destination)) {
+						if ((possible_tile.DistanceManhattan(destination) < distance_to_destination)&&(possible_tile.DistanceManhattan(origin) <= distance_to_origin)) {
 								distance_to_origin = possible_tile.DistanceManhattan(origin);
 								distance_to_destination = possible_tile.DistanceManhattan(destination);
 								closest_possible_tile = possible_tile;
@@ -718,14 +741,16 @@ iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) 
 	return possible_tile;
 }
 
-ResourceBuilding* j1EntityManager::GetClosestResourceBuilding(iPoint current_position) {
+ResourceBuilding* j1EntityManager::GetClosestResourceBuilding(iPoint current_position, Resource resource_type) {
 	ResourceBuilding* closest_building = nullptr;
-	int min_distance = 1000;
-	for (int i = 0; i < resource_buildings.size(); i++)
+	int min_distance = 10000;
+	int building_distance = 0;
+
+	for(size_t i = 0; i < resource_buildings.size(); i++)
 	{
-		if (resource_buildings[i]->quantity > 0)
+		if ((resource_buildings[i]->quantity > 0)&&((resource_type == Resource::NO_TYPE)||(resource_buildings[i]->resource_type == resource_type)))
 		{
-			int building_distance = ClosestTile(current_position, resource_buildings[i]->tiles).DistanceManhattan(current_position);
+			building_distance = ClosestTile(current_position, resource_buildings[i]->tiles).DistanceManhattan(current_position);
 			if (building_distance < min_distance) {
 				closest_building = resource_buildings[i];
 				min_distance = building_distance;
@@ -736,12 +761,20 @@ ResourceBuilding* j1EntityManager::GetClosestResourceBuilding(iPoint current_pos
 	return closest_building;
 }
 
+bool j1EntityManager::IsTileOccupied(iPoint position) {
+	return occupied_tiles[position.x][position.y];
+}
+
+bool j1EntityManager::IsTileInPositionOccupied(fPoint position) {
+	iPoint tile = App->map->fWorldToMap(position.x, position.y);
+	return occupied_tiles[tile.x][tile.y];
+}
+
 void j1EntityManager::BubbleSortEntities() {
 	BROFILER_CATEGORY("BubbleSortEntities", Profiler::Color::Blue)
-	int i, j;
 	int n = entities.size();
-	for (i = 0; i < n - 1; i++) {
-		for (j = 0; j < n - i - 1; j++) {
+	for (int i = 0; i < n - 1; i++) {
+		for (int j = 0; j < n - i - 1; j++) {
 		  if (entities[j]->position.y > entities[j + 1]->position.y)
 			std::swap(entities[j], entities[j + 1]);
 		}
@@ -758,12 +791,12 @@ void j1EntityManager::RandomFactions() {
 	//Randomize faction order
 	//std::random_shuffle(&randomFaction[0], &randomFaction[3]);
 
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 
 	int temp = 0;
 	int randomIndex = 0;
 
-	for (int i = 0; i < 4; i++) {
+	for(int i = 0; i < 4; i++) {
 		randomIndex = rand() % 4;
 		temp = randomFaction[i];
 		randomFaction[i] = randomFaction[randomIndex];
@@ -771,13 +804,13 @@ void j1EntityManager::RandomFactions() {
 	}
 
 
-	for (int i = 0; i < 4; i++)
+	for(int i = 0; i < 4; i++)
 		LOG("faction %i", randomFaction[i]);
 }
 
 void j1EntityManager::OnCommand(std::vector<std::string> command_parts) {
 	if (command_parts[0] == "destroy_all_entities") {
-		for (int i = 0; i < entities.size(); i++)
+		for(size_t i = 0; i < entities.size(); i++)
 		{
 			if (entities[i]->is_dynamic)
 				entities[i]->to_delete = true;
@@ -791,8 +824,8 @@ void j1EntityManager::LoadUpgradeCosts(pugi::xml_node& config)
 	Faction faction = NO_FACTION;
 	std::string faction_name;
 
-	for (int j = 0; j < 3; j++) {
-		for (int i = 0; i < 4; i++) {
+	for(int j = 0; j < 3; j++) {
+		for(int i = 0; i < 4; i++) {
 			if (i == 0)faction = VAULT;
 			else if (i == 1)faction = BROTHERHOOD;
 			else if (i == 2)faction = MUTANT;
@@ -833,7 +866,11 @@ void j1EntityManager::LoadUnitCosts() {
 
 	pugi::xml_document entities_file;
 	pugi::xml_node entities_node;
-	pugi::xml_parse_result result = entities_file.load_file("entities.xml");
+	
+	char* buffer;
+	int bytesFile = App->assetManager->Load("entities.xml", &buffer);
+	pugi::xml_parse_result result = entities_file.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
 
 	if (result == NULL)
 		LOG("Could not load map xml file entities.xml. pugi error: %s", result.description());
@@ -864,7 +901,7 @@ void j1EntityManager::LoadUnitCosts() {
 			{
 				std::string type_string = std::string(entity_node.name());
 
-				if (faction != NO_FACTION) { //Load costs only for players					
+				if (faction != NO_FACTION) { //Load costs only for players
 				//check type
 					if (type_string == "melee") type = MELEE;
 					else if (type_string == "ranged") type = RANGED;
@@ -877,7 +914,7 @@ void j1EntityManager::LoadUnitCosts() {
 					if (time != 0) //Bug fix
 						unit_data[faction][type] = { water, food, time }; //load into unit_data
 				}
-				
+
 				entity_node = entity_node.next_sibling();
 			}
 			faction_node = faction_node.next_sibling();
@@ -898,7 +935,7 @@ ResourceBuilding* j1EntityManager::CreateResourceSpot(int position_x, int positi
 }
 
 void j1EntityManager::DestroyResourceSpot(ResourceBuilding* resource_spot) {
-	for (int i = 0; i < resource_buildings.size(); i++)
+	for(size_t i = 0; i < resource_buildings.size(); i++)
 	{
 		if (resource_spot == resource_buildings[i]) {
 			delete resource_buildings[i];
@@ -915,7 +952,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 	App->ai_manager->CleanUp();
 	App->ai_manager->Start();
 	RestartOccupiedTiles();
-	
+
 	std::string player_faction = "NO_FACTION_ASSIGNED";
 	Faction faction = NO_FACTION;
 	std::string type_name = "NO_TYPE";
@@ -954,15 +991,15 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		if (type_name == "melee") { type = MELEE;}
 		else if (type_name == "ranged") { type = RANGED;}
 		else if (type_name == "gatherer") { type = GATHERER;}
-		else if (type_name == "base") { 
-			type = BASE; 
+		else if (type_name == "base") {
+			type = BASE;
 			dynamic_entity = false;
 		}
-		else if (type_name == "laboratory") { 
-			type = LABORATORY; 
+		else if (type_name == "laboratory") {
+			type = LABORATORY;
 			dynamic_entity = false;
 		}
-		else if (type_name == "barrack") { 
+		else if (type_name == "barrack") {
 			type = BARRACK;
 			dynamic_entity = false;
 		}
@@ -977,8 +1014,8 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		else if (faction_name == "ghoul") { faction = GHOUL; }
 		else if (faction_name == "no_faction") { faction = NO_FACTION; }
 
-		
-		if (type_name == "base") { 
+
+		if (type_name == "base") {
 			upgrade_gath =iterator.attribute("level_gatherer_resource_limit").as_int();
 			upgrade_base = iterator.attribute("level_base_resource_limit").as_int();
 		}
@@ -999,10 +1036,10 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 
 		LOG("%f %f %i %i", position.x, position.y , current_tile.x, current_tile.y);
 		if (dynamic_entity == false) {
-			
+
 			//create building
-			StaticEntity* entity = (StaticEntity*)App->entities->CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]);
-			
+			StaticEntity* entity = dynamic_cast<StaticEntity*>(App->entities->CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]));
+
 			iPoint tile = current_tile;
 			if (type_name == "base") {
 				entity = App->scene->players[faction]->base;
@@ -1023,9 +1060,9 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 				width = height = 3;
 			}
 
-			for (int y = 0; y < height; y++)
+			for(int y = 0; y < height; y++)
 			{
-				for (int x = 0; x < width; x++)
+				for(int x = 0; x < width; x++)
 				{
 					tile.x = current_tile.x + x;
 					tile.y = current_tile.y + y;
@@ -1042,17 +1079,17 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 				CreateEntity(faction, type, current_tile.x, current_tile.y);
 			}
 			else {
-				DynamicEntity* entity = (DynamicEntity*)CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]);
-			
+				DynamicEntity* entity = dynamic_cast<DynamicEntity*>(CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]));
+
 			}
 
 		}
-	
+
 
 		iterator = iterator.next_sibling();
 	}
-	
-	
+
+
 
 	LOG("%i", entities.size());
 
@@ -1062,10 +1099,8 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 // Save Game State
 bool j1EntityManager::Save(pugi::xml_node& data) const
 {
-	
-	for (int i = 0; i < entities.size(); i++)
+	for(size_t i = 0; i < entities.size(); i++)
 	{
-
 		pugi::xml_node entities_pugi = data.append_child("entity");
 		entities_pugi.append_attribute("number") = i;
 
@@ -1086,17 +1121,15 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 		else if (entities[i]->faction == GHOUL) { entities_pugi.append_attribute("faction") = "ghoul"; }
 		else if (entities[i]->faction == NO_FACTION) { entities_pugi.append_attribute("faction") = "no_faction"; }
 
-		
+
 
 		entities_pugi.append_attribute("position_x") = entities[i]->position.x;
 		entities_pugi.append_attribute("position_y") = entities[i]->position.y;
 		entities_pugi.append_attribute("current_tile_x") = entities[i]->current_tile.x;
 		entities_pugi.append_attribute("current_tile_y") = entities[i]->current_tile.y;
-		//entities_pugi.append_attribute("target_tile_x:") = entities[i]->target_tile.x;
-		//entities_pugi.append_attribute("target_tile_x:") = entities[i]->target_tile.y;
 		entities_pugi.append_attribute("current_health") = entities[i]->current_health;
 
-		
+
 		if (entities[i]->type == BASE) {
 			entities_pugi.append_attribute("level_gatherer_resource_limit") = App->entities->gatherer_resource_limit[entities[i]->faction].upgrade_num;
 			entities_pugi.append_attribute("level_base_resource_limit") = App->entities->base_resource_limit[entities[i]->faction].upgrade_num;
@@ -1106,21 +1139,21 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 		entities_pugi.append_attribute("level_units_health") = App->entities->units_health[entities[i]->faction].upgrade_num;
 		entities_pugi.append_attribute("level_units_creation_time") = App->entities->units_creation_time[entities[i]->faction].upgrade_num;
 		}
-		
+
 		if (entities[i]->type == BARRACK) {
 		entities_pugi.append_attribute("level_units_damage") = App->entities->units_damage[entities[i]->faction].upgrade_num;
 		entities_pugi.append_attribute("level_units_speed") = App->entities-> units_speed[entities[i]->faction].upgrade_num;
 		}
 
 	}
-	
+
 	pugi::xml_node player_pugi = data.append_child("player");
 
 	if (App->player->faction == BROTHERHOOD) { player_pugi.append_attribute("player_faction") = "brotherhood"; }
 	else if (App->player->faction == MUTANT) { player_pugi.append_attribute("player_faction") = "supermutant"; }
 	else if (App->player->faction == VAULT) { player_pugi.append_attribute("player_faction") = "vault"; }
 	else if (App->player->faction == GHOUL) { player_pugi.append_attribute("player_faction") = "ghoul"; }
-	
+
 	LOG("%i", entities.size());
 
 	return true;
@@ -1132,8 +1165,8 @@ iPoint j1EntityManager::FindSpawnPoint(int position_x, int position_y) {
 		bool spawnPointFound = false;
 
 		while (occupied_tiles[position_x][position_y]) {
-			for (int k = 0; k < 10; k++) {
-				for (int i = 0; i <= 5; i++) {
+			for(int k = 0; k < 10; k++) {
+				for(int i = 0; i <= 5; i++) {
 					if (spawnPointFound == false) {
 						if (!occupied_tiles[position_x - i][position_y + k]) {
 							position_x -= i;
@@ -1143,7 +1176,7 @@ iPoint j1EntityManager::FindSpawnPoint(int position_x, int position_y) {
 					}
 				}
 				if (spawnPointFound == false) {
-					for (int j = 0; j <= 5; j++) {
+					for(int j = 0; j <= 5; j++) {
 						if (spawnPointFound == false) {
 							if (!occupied_tiles[position_x + k][position_y - j]) {
 								position_y -= j;
@@ -1210,12 +1243,12 @@ int j1EntityManager::GetReferenceEntityID(Faction faction, EntityType type) {
 }
 
 void j1EntityManager::SpawnAnimals() {
-	
+
 	int randomAnimal = 0;
 
-	for (int i = 0; i < 15; i++)
+	for(int i = 0; i < 15; i++)
 	{
-		srand(time(NULL)+i);
+		srand((unsigned int)time(NULL)+i);
 		randomAnimal = rand() % 2;
 
 		if(randomAnimal == 1)
@@ -1224,7 +1257,7 @@ void j1EntityManager::SpawnAnimals() {
 			{
 				CreateEntity(NO_FACTION, BIGHORNER, App->map->spawnPoint[i].x, App->map->spawnPoint[i].y);
 			}
-			
+
 		}
 		else
 		{
@@ -1247,7 +1280,7 @@ ParticleSystem* j1EntityManager::CreateParticle(fPoint pos) {
 }
 
 void j1EntityManager::DeleteParticles(){
-	for (int i = 0; i < particles.size(); i++)
+	for(size_t i = 0; i < particles.size(); i++)
 	{
 		delete particles[i];
 		particles[i] = nullptr;
@@ -1257,7 +1290,7 @@ void j1EntityManager::DeleteParticles(){
 
 void j1EntityManager::ReleaseParticle(ParticleSystem* particle) {
 
-	/*for (int i = 0; i < particles.size(); i++)
+	/*for(int i = 0; i < particles.size(); i++)
 	{
 		Deleting particles from vector
 		if (particles[i] == particle)
@@ -1267,13 +1300,12 @@ void j1EntityManager::ReleaseParticle(ParticleSystem* particle) {
 			entities.erase(entities.begin() + i);
 		}
 	}*/
-
 }
 
 void j1EntityManager::RestartOccupiedTiles() {
-	for (int y = 0; y < 150; y++)
+	for(int y = 0; y < 150; y++)
 	{
-		for (int x = 0; x < 150; x++)
+		for(int x = 0; x < 150; x++)
 		{
 			occupied_tiles[x][y] = false;
 		}

@@ -5,27 +5,36 @@
 #include "j1Gui.h"
 #include "UI_element.h"
 #include "MenuManager.h"
+#include "AssetsManager.h"
 #include "j1Audio.h"
 #include "UI_Label.h"
 #include "j1Hud.h"
 
 DialogManager::DialogManager() : j1Module() {
-	background_box = { 60, 355, 1170, 340};
-	statement_box =  { 80, 370, 1135, 85};
+
 
 	borders[0] = { 58, 355, 1172, 344 };
-	borders[1] =     { 78, 368, 1139, 89 };
+	borders[1] = { 78, 368, 1139, 89 };
 	borders[2] = { 78, 468, 1139, 69 };
 	borders[3] = { 78, 543, 1139, 69 };
 	borders[4] = { 78, 618, 1139, 69 };
 
-	option_box[0] =  { 80, 470, 1135, 65};
-	option_box[1] =  { 80, 545, 1135, 65 };
-	option_box[2] =  { 80, 620, 1135, 65 };
+	option_box[0] = { 80, 470, 1135, 65 };
+	option_box[1] = { 80, 545, 1135, 65 };
+	option_box[2] = { 80, 620, 1135, 65 };
 
 	dialog_level = 0;
 
-}
+	background_box.x = 60;
+	background_box.y = 355;
+	background_box.w = 1170;
+	background_box.h = 340;
+
+	statement_box.x = 80;
+	statement_box.y = 370;
+	statement_box.w = 1135;
+	statement_box.h = 85;
+};
 
 DialogManager::~DialogManager() {
 
@@ -64,8 +73,9 @@ bool DialogManager::PostUpdate() {
 
 bool DialogManager::CleanUp() {
 	bool ret = true;
+
 	if (App->quitGame) {
-		for (int i = 0; i < dialogs.size(); i++)
+		for(int i = 0; i < dialogs.size(); i++)
 		{
 			delete dialogs[i];
 			dialogs[i] = nullptr;
@@ -73,6 +83,7 @@ bool DialogManager::CleanUp() {
 
 		dialogs.clear();
 	}
+
 	App->menu_manager->DestroyMenu(Menu::QUEST);
 	App->menu_manager->DestroyMenu(Menu::DIALOG);
 	App->menu_manager->CreateMenu(Menu::GUI);
@@ -89,7 +100,11 @@ bool DialogManager::LoadDialogs() {
 
 	pugi::xml_document dialogs_file;
 	pugi::xml_node dialogs_node;
-	pugi::xml_parse_result result = dialogs_file.load_file("dialogs.xml");
+	
+	char* buffer;
+	int bytesFile = App->assetManager->Load("dialogs.xml", &buffer);
+	pugi::xml_parse_result result = dialogs_file.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
 
 	if (result == NULL)
 		LOG("Could not load xml file dialogs.xml pugi error: %s", result.description());
@@ -122,8 +137,8 @@ bool DialogManager::LoadDialogs() {
 }
 
 void DialogManager::Callback(UI_element* button) {
-	UI_Label* label = (UI_Label*)App->menu_manager->dialogs[0];
-	UI_Label* option = (UI_Label*)App->menu_manager->dialogs[1];
+	UI_Label* label = dynamic_cast<UI_Label*>(App->menu_manager->dialogs[0]);
+	UI_Label* option = dynamic_cast<UI_Label*>(App->menu_manager->dialogs[1]);
 
 	if (dialog_level < dialogs.size())
 	{
@@ -134,9 +149,9 @@ void DialogManager::Callback(UI_element* button) {
 			if (option->text != " ") {
 				//LOG("Option A");
 				label->SetLabelText(dialogs[dialog_level]->response[0].c_str(), "StackedPixelSmall");
-				for (int i = 1; i < 4; i++)
+				for(int i = 1; i < 4; i++)
 				{
-					label = (UI_Label*)App->menu_manager->dialogs[i];
+					label = dynamic_cast<UI_Label*>(App->menu_manager->dialogs[i]);
 					label->SetLabelText(" ", "StackedPixelSmall");
 				}
 				dialog_level++;
@@ -147,9 +162,9 @@ void DialogManager::Callback(UI_element* button) {
 			if (option->text != " ") {
 				//LOG("Option B");
 				label->SetLabelText(dialogs[dialog_level]->response[1].c_str(), "StackedPixelSmall");
-				for (int i = 1; i < 4; i++)
+				for(int i = 1; i < 4; i++)
 				{
-					label = (UI_Label*)App->menu_manager->dialogs[i];
+					label = dynamic_cast<UI_Label*>(App->menu_manager->dialogs[i]);
 					label->SetLabelText(" ", "StackedPixelSmall");
 				}
 				dialog_level++;
@@ -160,9 +175,9 @@ void DialogManager::Callback(UI_element* button) {
 			if (option->text != " ") {
 				//LOG("Option C");
 				label->SetLabelText(dialogs[dialog_level]->response[2].c_str(), "StackedPixelSmall");
-				for (int i = 1; i < 4; i++)
+				for(int i = 1; i < 4; i++)
 				{
-					label = (UI_Label*)App->menu_manager->dialogs[i];
+					label = dynamic_cast<UI_Label*>(App->menu_manager->dialogs[i]);
 					label->SetLabelText(" ", "StackedPixelSmall");
 				}
 				dialog_level++;
@@ -170,12 +185,12 @@ void DialogManager::Callback(UI_element* button) {
 			break;
 		case UI_Type::ADVANCE_DIALOGS:
 			App->audio->PlayFx(1, App->audio->click_fx, 0);
-			label = (UI_Label*)App->menu_manager->dialogs[0];
+			label = dynamic_cast<UI_Label*>(App->menu_manager->dialogs[0]);
 			label->SetLabelText(dialogs[dialog_level]->statement.c_str(), "StackedPixelSmall");
 
-			for (int i = 1; i < 4; i++)
+			for(int i = 1; i < 4; i++)
 			{
-				label = (UI_Label*)App->menu_manager->dialogs[i];
+				label = dynamic_cast<UI_Label*>(App->menu_manager->dialogs[i]);
 				label->SetLabelText(dialogs[dialog_level]->options[i-1].c_str(), "StackedPixelSmall");
 			}
 

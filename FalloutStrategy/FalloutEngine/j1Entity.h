@@ -5,7 +5,6 @@
 #include "SDL/include/SDL.h"
 #include "Animation.h"
 #include "j1EntityManager.h"
-#include "p2DynArray.h"
 #include "p2Log.h"
 #include "j1MovementManager.h"
 #include "j1Group.h"
@@ -14,6 +13,7 @@
 
 #define TILE_SIZE 64
 #define HALF_TILE 32
+#define TILE_QUARTER 16
 
 enum EntityType {
 	MELEE,
@@ -59,13 +59,13 @@ public:
 	virtual bool Update(float dt) { return true; }
 	virtual bool PostUpdate() { return true; };
 	virtual bool CleanUp() { return true; }
-	virtual void OnCollision(Collider* c1, Collider* c2) {};
 
 	virtual bool LoadAnimations(const char* folder, const char* file_name) { return true; };
 	virtual bool LoadFx() { return true; };
 	virtual bool LoadReferenceData(pugi::xml_node& ) { return true; };	
 	virtual bool LoadDataFromReference() { return true; }
 
+	void ClearUnitInfo();
 	int GetPositionScore() const;
 
 	iPoint MapPosition();
@@ -99,7 +99,6 @@ public:
 	Faction faction;
 
 	j1Entity* reference_entity;
-	j1Entity* target_entity;
 	DynamicEntity* attacking_entity;
 	GenericPlayer* owner;
 	State state;
@@ -116,10 +115,7 @@ public:
 	Group_Unit info;
 	j1Timer delete_timer;
 
-protected:
-	SDL_Rect background_health_bar;
-	SDL_Rect foreground_health_bar;
-	//SDL_Rect frame_quad;
+
 };
 
 #endif // !_j1ENTITY_H

@@ -50,7 +50,11 @@ bool Animal::Update(float dt) {
         break;
     case WALK:
         Move(dt);
-		SpatialAudio(position.x, position.y, faction, state, type);
+
+		if (current_tile == target_tile)
+			state = IDLE;
+
+		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
 
         break;
     case HIT:
@@ -61,7 +65,7 @@ bool Animal::Update(float dt) {
 			else
 				state = IDLE;
 		}
-		SpatialAudio(position.x, position.y, faction, state, type);
+		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
         break;
 
     case DIE:
@@ -71,7 +75,8 @@ bool Animal::Update(float dt) {
 
 			resource_spot = App->entities->CreateResourceSpot(current_tile.x, current_tile.y, Resource::FOOD, food_quantity);
 			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
-			current_tile.x += 1;
+			path_to_target.clear();
+			current_tile = { 149, 149 };
 			next_tile = { -1,-1 };
 
 			if ((attacking_entity != nullptr)&&(attacking_entity->owner->is_ai)) {
@@ -86,11 +91,9 @@ bool Animal::Update(float dt) {
 			to_delete = true;
 		}
 		if (App->audio->die_sound == false) {
-			SpatialAudio(position.x, position.y, faction, state, type);
+			SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
 			App->audio->die_sound = true;
 		}
-		
-
         break;
 
     default:
@@ -104,7 +107,7 @@ bool Animal::Update(float dt) {
 	}
 
 	if (DynaParticle->IsActive()) {
-		DynaParticle->Move(position.x, position.y);
+		DynaParticle->Move(static_cast<int>(position.x), static_cast<int>(position.y));
 		DynaParticle->Update(dt);
 	}
 
@@ -115,12 +118,12 @@ bool Animal::Update(float dt) {
 
 bool Animal::LoadDataFromReference() {
 	bool ret = true;
-	Animal* reference_animal = (Animal*)reference_entity;
+	Animal* reference_animal = dynamic_cast<Animal*>(reference_entity);
 
 	//load animations
-	for (int i = 0; i < NO_STATE; i++)
+	for(int i = 0; i < NO_STATE; i++)
 	{
-		for (int j = 0; j < NO_DIRECTION; j++)
+		for(int j = 0; j < NO_DIRECTION; j++)
 		{
 			animations[i][j] = reference_animal->animations[i][j];
 		}
@@ -141,7 +144,7 @@ bool Animal::LoadReferenceData(pugi::xml_node& node) {
 
 	max_health = node.attribute("health").as_float();
 	food_quantity = node.attribute("resource_quantity").as_int();
-	speed.x = node.attribute("speed").as_int();
+	speed.x = node.attribute("speed").as_float();
 	speed.y = speed.x * 0.5f;
 
 	return ret;

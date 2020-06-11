@@ -49,6 +49,7 @@ bool j1Gui::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Gui::Start()
 {
+	SDL_ShowCursor(SDL_DISABLE);
 	texture = App->tex->Load(PATH(folder.c_str(), UI_file_name.c_str()));
 
 	return true;
@@ -63,7 +64,7 @@ bool j1Gui::PreUpdate()
 
 bool j1Gui::Update(float dt) {
 	BROFILER_CATEGORY("GuiUpdate", Profiler::Color::Yellow)
-		for (int i = 0; i < ui_element.size(); i++) {
+		for(int i = 0; i < ui_element.size(); i++) {
 			if (ui_element[i] != nullptr) {
 
 				ui_element[i]->Update(dt);
@@ -83,7 +84,7 @@ bool j1Gui::Update(float dt) {
 // Called after all Updates
 bool j1Gui::PostUpdate() {
 	BROFILER_CATEGORY("GuiPostUpdate", Profiler::Color::LightGreen)
-		for (int i = 0; i < ui_element.size(); i++) {
+		for(int i = 0; i < ui_element.size(); i++) {
 
 			if (ui_element[i] != nullptr) {
 				ui_element[i]->Draw();
@@ -97,7 +98,7 @@ bool j1Gui::CleanUp()
 {
 	LOG("Freeing GUI");
 
-	for (int i = 0; i < ui_element.size(); i++)
+	for(int i = 0; i < ui_element.size(); i++)
 	{
 		Delete_Element(ui_element[i]);
 	}
@@ -108,7 +109,7 @@ bool j1Gui::CleanUp()
 void j1Gui::DeleteArrayElements(UI_element* array[], int size) {
 
 	if (size != NULL) {
-		for (int i = 0; i < size; i++)
+		for(int i = 0; i < size; i++)
 		{
 			Delete_Element(array[i]);
 			array[i] = nullptr;
@@ -118,7 +119,7 @@ void j1Gui::DeleteArrayElements(UI_element* array[], int size) {
 
 bool j1Gui::Delete_Element(UI_element* element) {
 
-	for (int i = 0; i < ui_element.size(); i++)
+	for(int i = 0; i < ui_element.size(); i++)
 	{
 		if (element == ui_element[i]) {
 			delete ui_element[i];
@@ -162,9 +163,9 @@ UI_element* j1Gui::CreateSlider(int x, int y, UI_Type type, SDL_Rect scrollbar, 
 	return slider;
 }
 
-UI_element* j1Gui::CreateLabel(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer, int* counter, std::string font)
+UI_element* j1Gui::CreateLabel(int x, int y, UI_Type type, const std::string &text_input, UI_element* parent, j1Module* Observer, std::string font)
 {
-	UI_Label* label = new UI_Label(x, y, type, text_input, parent, Observer, counter);
+	UI_Label* label = new UI_Label(x, y, type, text_input, parent, Observer);
 
 	label->SetLabelText(text_input, font);
 	ui_element.push_back(label);
@@ -173,7 +174,7 @@ UI_element* j1Gui::CreateLabel(int x, int y, UI_Type type, std::string text_inpu
 }
 
 
-UI_element* j1Gui::CreateInputBox(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer, std::string font)
+UI_element* j1Gui::CreateInputBox(int x, int y, UI_Type type, const std::string &text_input, UI_element* parent, j1Module* Observer, std::string font)
 {
 	InputText* inputtext = new InputText(x, y, type, text_input, parent, Observer, font);
 

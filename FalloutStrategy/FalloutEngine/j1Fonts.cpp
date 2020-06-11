@@ -3,7 +3,8 @@
 #include "j1App.h"
 #include "j1Textures.h"
 #include "j1Fonts.h"
-
+#include "j1Render.h"
+#include "AssetsManager.h"
 #include "SDL\include\SDL.h"
 #include "SDL_TTF\include\SDL_ttf.h"
 #pragma comment( lib, "SDL_ttf/libx86/SDL2_ttf.lib" )
@@ -60,7 +61,7 @@ bool j1Fonts::CleanUp()
 {
 	LOG("Freeing True Type fonts and library");
 
-	for (int i = 0; i < fonts.size(); i++)
+	for(int i = 0; i < fonts.size(); i++)
 	{
 		TTF_CloseFont(fonts[i].font);
 	}
@@ -73,7 +74,8 @@ bool j1Fonts::CleanUp()
 // Load new texture from file path
 TTF_Font* const j1Fonts::Load(const char* path, int size)
 {
-	TTF_Font* font = TTF_OpenFont(path, size);
+	
+	TTF_Font* font = TTF_OpenFontRW(App->assetManager->Load(path), 1, size);
 
 	if (font == NULL)
 	{
@@ -93,10 +95,13 @@ SDL_Texture* j1Fonts::Print(const char* text, SDL_Color color, std::string font_
 	SDL_Texture* ret = NULL;
 	_TTF_Font* font = NULL;
 
-	for (int i = 0; i < fonts.size(); i++)
+	for(int i = 0; i < fonts.size(); i++)
 	{
-		if (fonts[i].name == font_name)
+		if (fonts[i].name == font_name) {
 			font = fonts[i].font;
+		}
+			
+		
 	}
 
 	SDL_Surface* surface = TTF_RenderText_Blended((font) ? font : default, text, color);
@@ -107,7 +112,7 @@ SDL_Texture* j1Fonts::Print(const char* text, SDL_Color color, std::string font_
 	}
 	else
 	{
-		ret = App->tex->LoadSurface(surface);
+		ret = SDL_CreateTextureFromSurface(App->render->renderer, surface);
 		SDL_FreeSurface(surface);
 	}
 

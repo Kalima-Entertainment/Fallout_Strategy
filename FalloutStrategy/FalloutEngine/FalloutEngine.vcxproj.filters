@@ -46,9 +46,6 @@
     <ClCompile Include="j1EntityManager.cpp">
       <Filter>Desenvolupament  ========\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="j1Collision.cpp">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="DynamicEntity.cpp">
       <Filter>Desenvolupament  ========\Entities</Filter>
     </ClCompile>
@@ -160,6 +157,12 @@
     <ClCompile Include="j1Map.cpp">
       <Filter>Desenvolupament  ========\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="AssetsManager.cpp">
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Cursor.cpp">
+      <Filter>Desenvolupament  ========\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -186,19 +189,10 @@
     <ClInclude Include="p2Defs.h">
       <Filter>Programacio 2 ===========</Filter>
     </ClInclude>
-    <ClInclude Include="p2List.h">
-      <Filter>Programacio 2 ===========</Filter>
-    </ClInclude>
     <ClInclude Include="p2Log.h">
       <Filter>Programacio 2 ===========</Filter>
     </ClInclude>
-    <ClInclude Include="p2SString.h">
-      <Filter>Programacio 2 ===========</Filter>
-    </ClInclude>
     <ClInclude Include="p2Point.h">
-      <Filter>Programacio 2 ===========</Filter>
-    </ClInclude>
-    <ClInclude Include="p2DynArray.h">
       <Filter>Programacio 2 ===========</Filter>
     </ClInclude>
     <ClInclude Include="j1Scene.h">
@@ -227,9 +221,6 @@
     </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>Desenvolupament  ========\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Collision.h">
-      <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
     <ClInclude Include="DynamicEntity.h">
       <Filter>Desenvolupament  ========\Entities</Filter>
@@ -347,6 +338,12 @@
     </ClInclude>
     <ClInclude Include="j1Map.h">
       <Filter>Desenvolupament  ========\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetsManager.h">
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Cursor.h">
+      <Filter>Desenvolupament  ========\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

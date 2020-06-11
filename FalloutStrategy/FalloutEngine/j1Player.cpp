@@ -24,12 +24,9 @@ j1Player::j1Player() : GenericPlayer() {
 	name.assign("Player");
 
 	selected_entity = last_selected_entity = nullptr;
+	selected_group = nullptr;
 	border_scroll = false;
 	mouse_speed_multiplier = 1.5f;
-
-	caps = 100;
-	food = 100;
-	water = 100;
 
 	god_mode = false;
 
@@ -48,10 +45,10 @@ j1Player::~j1Player() {
 	selected_entity = nullptr;
 	last_selected_entity = nullptr;
 
-	for (int t = 0; t < troops.size(); t++) { troops[t] = nullptr; }
+	for(size_t t = 0; t < troops.size(); t++) { troops[t] = nullptr; }
 	troops.clear();
 
-	for (int g = 0; g < gatherers_vector.size(); g++) { gatherers_vector[g] = nullptr; }
+	for(size_t g = 0; g < gatherers_vector.size(); g++) { gatherers_vector[g] = nullptr; }
 	gatherers_vector.clear();
 
 	base = barrack[0] = barrack[1] = laboratory = nullptr;
@@ -72,7 +69,7 @@ bool j1Player::Start() {
 bool j1Player::PreUpdate() {
 	bool ret = true;
 
-	//debug keys
+	//debug keys -------------------------------------------------------
 
 	//enable/disable debug mode
 	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
@@ -89,30 +86,42 @@ bool j1Player::PreUpdate() {
 
 	}
 
-	//block border scroll
-	if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
-		border_scroll = !border_scroll;
-
-	//center camera
-	if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
-	{
-		if (selected_entity != nullptr)
-		{
-			App->render->camera.x = -selected_entity->position.x + (App->render->camera.w * 0.5f);
-			App->render->camera.y = -selected_entity->position.y + (App->render->camera.h * 0.5f);
-		}
-		else
-		{
-			App->render->camera.x = 0;
-			App->render->camera.y = 0;
-		}
-	}
-
 	if (!App->isPaused)
 	{
+		//keyboard keys ------------------------------------------------------
+		//block border scroll
+		if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
+			border_scroll = !border_scroll;
+
+		//center camera
+		if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+		{
+			if (selected_entity != nullptr)
+			{
+				App->render->camera.x = (int)(-selected_entity->position.x + (App->render->camera.w * 0.5f));
+				App->render->camera.y = (int)(-selected_entity->position.y + (App->render->camera.h * 0.5f));
+			}
+			else
+			{
+				App->render->camera.x = 0;
+				App->render->camera.y = 0;
+			}
+		}
+
+		//use radar
+		if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+			App->minimap->EnableRadar();
+
+		//mouse --------------------------------------------------------------------------
+		App->input->GetMousePosition(mouse_position.x, mouse_position.y);
 		//entity selection and interaction
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
 			selected_entity = SelectEntity();
+			if ((selected_entity == nullptr) && (selected_group != nullptr)) {
+				selected_group->DeselectGroup();
+				selected_group = nullptr;
+			}
+
 
 			if (App->entities->showing_building_menu) {
 				if (selected_entity == nullptr) {
@@ -130,17 +139,12 @@ bool j1Player::PreUpdate() {
 			}
 		}
 
-		if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)&&(selected_entity != nullptr)) {
-			if(selected_entity->is_dynamic)
-				MoveEntity();
-		}
-
 		//move camera
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_REPEAT) {
 			int x, y;
 			App->input->GetMouseMotion(x, y);
-			App->render->camera.x += x * mouse_speed_multiplier;
-			App->render->camera.y += y * mouse_speed_multiplier;
+			App->render->camera.x += (int)(x * mouse_speed_multiplier);
+			App->render->camera.y += (int)(y * mouse_speed_multiplier);
 			// CAMERA LIMITS X
 			if (App->render->camera.x >= 5070)
 			{
@@ -162,24 +166,19 @@ bool j1Player::PreUpdate() {
 		}
 
 		//move camera through minimap
-		int mouse_x, mouse_y;
+
 		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) && (App->minimap->IsVisible()))
 		{
-			App->input->GetMousePosition(mouse_x, mouse_y);
 			SDL_Rect minimap = { App->minimap->position.x, App->minimap->position.y, App->minimap->width, App->minimap->height };
 
-			if ((mouse_x > minimap.x) && (mouse_x < minimap.x + minimap.w) && (mouse_y > minimap.y) && (mouse_y < minimap.y + minimap.h))
+			if ((mouse_position.x > minimap.x) && (mouse_position.x < minimap.x + minimap.w) && (mouse_position.y > minimap.y) && (mouse_position.y < minimap.y + minimap.h))
 			{
 				iPoint minimap_mouse_position;
-				minimap_mouse_position = App->minimap->ScreenToMinimapToWorld(mouse_x, mouse_y);
-				App->render->camera.x = -(minimap_mouse_position.x - App->render->camera.w * 0.5f);
-				App->render->camera.y = -(minimap_mouse_position.y - App->render->camera.h * 0.5f);
+				minimap_mouse_position = App->minimap->ScreenToMinimapToWorld(mouse_position.x, mouse_position.y);
+				App->render->camera.x = (int)(-(minimap_mouse_position.x - App->render->camera.w * 0.5f));
+				App->render->camera.y = (int)(-(minimap_mouse_position.y - App->render->camera.h * 0.5f));
 			}
 		}
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
-		App->minimap->EnableRadar();
 	}
 
 	return ret;
@@ -196,10 +195,10 @@ bool j1Player::Update(float dt) {
 
 	if (border_scroll)
 	{
-		if (x < 40) App->render->camera.x += floor(600.0f * dt);
-		if (x > width - 40) App->render->camera.x -= floor(600.0f * dt);
-		if (y < 40) App->render->camera.y += floor(600.0f * dt);
-		if (y > height - 40) App->render->camera.y -= floor(600.0f * dt);
+		if (x < 40) App->render->camera.x += (int)(floor(600.0f * dt));
+		if (x > width - 40) App->render->camera.x -= (int)(floor(600.0f * dt));
+		if (y < 40) App->render->camera.y += (int)(floor(600.0f * dt));
+		if (y > height - 40) App->render->camera.y -= (int)(floor(600.0f * dt));
 	}
 
 	// --- We get the map coords of the mouse ---
@@ -218,7 +217,7 @@ bool j1Player::Update(float dt) {
 					App->menu_manager->quest[5] = (j1Image*)App->gui->CreateImage(-126, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
 					App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1226, 559, 282, 262 }, NULL, this);
 					App->menu_manager->quest[10] = (UI_Button*)App->gui->CreateButton(500, 450, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-					App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this, NULL);
+					App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this);
 					App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
 				}
 			}
@@ -231,7 +230,7 @@ bool j1Player::Update(float dt) {
 					App->menu_manager->quest[5] = (j1Image*)App->gui->CreateImage(181, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
 					App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1226, 559, 282, 262 }, NULL, this);
 					App->menu_manager->quest[10] = (UI_Button*)App->gui->CreateButton(500, 450, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-					App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this, NULL);
+					App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this);
 					App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
 				}
 			}
@@ -253,7 +252,7 @@ bool j1Player::Update(float dt) {
 					App->menu_manager->quest[5] = (j1Image*)App->gui->CreateImage(-126, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
 					App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1226, 559, 282, 262 }, NULL, this);
 					App->menu_manager->quest[10] = (UI_Button*)App->gui->CreateButton(500, 450, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-					App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this, NULL);
+					App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this);
 					App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
 				}
 			}
@@ -266,7 +265,7 @@ bool j1Player::Update(float dt) {
 					App->menu_manager->quest[5] = (j1Image*)App->gui->CreateImage(181, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
 					App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1226, 559, 282, 262 }, NULL, this);
 					App->menu_manager->quest[10] = (UI_Button*)App->gui->CreateButton(500, 450, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-					App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this, NULL);
+					App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this);
 					App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
 				}
 			}
@@ -285,10 +284,10 @@ bool j1Player::Update(float dt) {
 				if (reward == 1) App->menu_manager->quest[3] = (j1Image*)App->gui->CreateImage(-257, 261, Image, { 3155, 809, 60, 17 }, NULL, this);
 				if (reward == 2) App->menu_manager->quest[4] = (j1Image*)App->gui->CreateImage(-193, 261, Image, { 3219, 809, 63, 17 }, NULL, this);
 				if (reward == 3) {
-					App->menu_manager->quest[5] = (j1Image*)App->gui->CreateImage(-126, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
-					App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1226, 559, 282, 262 }, NULL, this);
-					App->menu_manager->quest[10] = (UI_Button*)App->gui->CreateButton(500, 450, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-					App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this, NULL);
+					App->menu_manager->quest[5] = dynamic_cast<j1Image*>(App->gui->CreateImage(-126, 261, Image, { 3286, 809, 51, 17 }, NULL, this));
+					App->menu_manager->quest[9] = dynamic_cast<j1Image*>(App->gui->CreateImage(480, 180, Image, { 1226, 559, 282, 262 }, NULL, this));
+					App->menu_manager->quest[10] = dynamic_cast<UI_Button*>(App->gui->CreateButton(500, 450, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this));
+					App->menu_manager->quest[11] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this));
 					App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
 				}
 			}
@@ -301,7 +300,7 @@ bool j1Player::Update(float dt) {
 					App->menu_manager->quest[5] = (j1Image*)App->gui->CreateImage(181, 261, Image, { 3286, 809, 51, 17 }, NULL, this);
 					App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1226, 559, 282, 262 }, NULL, this);
 					App->menu_manager->quest[10] = (UI_Button*)App->gui->CreateButton(500, 450, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-					App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this, NULL);
+					App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(550, 470, Label, "CONTINUE", NULL, this);
 					App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
 				}
 			}
@@ -309,10 +308,18 @@ bool j1Player::Update(float dt) {
 			qfood = true;
 		}
 	}
-	
+
 	iPoint selected_spot;
 	App->input->GetMousePosition(selected_spot.x, selected_spot.y);
 	
+	if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) && ((selected_entity != nullptr)||(selected_group != nullptr))) {
+		if ((selected_entity != nullptr)&&(selected_entity->is_dynamic))
+			MoveEntity(dynamic_cast<DynamicEntity*>(selected_entity));
+
+		if (selected_group != nullptr)
+			MoveGroup();
+	}
+
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
 		if (TouchingUI(selected_spot.x, selected_spot.y)) {
 			if ((selected_spot.x > App->minimap->position.x) && (selected_spot.x < App->minimap->position.x + App->minimap->width)
@@ -324,75 +331,39 @@ bool j1Player::Update(float dt) {
 			}
 		}
 	}
-	
-	// -- Request GroupMovement
-	for (int i = 0; i < App->entities->entities.size(); i++)
-	{
-		//Just our dynamic troops must be checked
-		if (App->entities->entities[i]->is_dynamic && App->entities->entities[i]->faction == this->faction) {
-		
-			DynamicEntity* DynamicEnt = (DynamicEntity*)App->entities->entities[i];
-			if (DynamicEnt->info.current_group != nullptr) {
-				if (DynamicEnt->info.current_group->IsGroupLead(DynamicEnt)) {
-					DynamicEnt->info.current_group->CheckForMovementRequest(Map_mouseposition, dt);
-				}
-			}
-		}
-	}
-
-	/*
-	if (reward == 1) {
-		App->menu_manager->quest[9] = (j1Image*)App->gui->CreateImage(480, 180, Image, { 1231, 555, 282, 262 }, NULL, this);
-		App->menu_manager->quest[10] = (UI_Button*)App->gui->CreateButton(480, 310, continue_button, { 1900,895,244,72 }, { 1900,974,244,72 }, { 1900,1054,244,64 }, NULL, this);
-		App->menu_manager->quest[11] = (UI_Label*)App->gui->CreateLabel(500, 320, Label, "CONTINUE", NULL, this, NULL);
-	}
-	*/
-	
-	/*
-	//Zoom in, zoom out
-	uint zoom;
-	App->input->GetMouseWheel(zoom);
-	if (zoom != 0)App->win->SetScale(zoom);	//Check this condition
-	//LOG("WHEEL VALUE %i", zoom);
-
-	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
-		App->LoadGame("save_game.xml");
-
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
-		App->SaveGame("save_game.xml");
-	*/
 
 	//Move map
 	if ((App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)&&(App->render->camera.y < App->render->camera.h * 0.25f))
-		App->render->camera.y += floor(200.0f * dt);
+		App->render->camera.y += (int)(floor(200.0f * dt));
 
 	if ((App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)&&(App->render->camera.y > -MAP_LENGTH * HALF_TILE + App->render->camera.h * 0.75f))
-		App->render->camera.y -= floor(200.0f * dt);
+		App->render->camera.y -= (int)(floor(200.0f * dt));
 
 	if ((App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) && (App->render->camera.x < MAP_LENGTH * HALF_TILE + App->render->camera.w * 0.25f))
-		App->render->camera.x += floor(200.0f * dt);
+		App->render->camera.x += (int)(floor(200.0f * dt));
 
 	if ((App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) && (App->render->camera.x > -MAP_LENGTH* HALF_TILE + App->render->camera.w * 0.75f))
-		App->render->camera.x -= floor(200.0f * dt);
+		App->render->camera.x -= (int)(floor(200.0f * dt));
 
 	return ret;
 }
 
 j1Entity* j1Player::SelectEntity() {
-	int tx, ty;
 	iPoint selected_spot;
-	App->input->GetMousePosition(tx, ty);
-	if (TouchingUI(tx, ty))
+	if (TouchingUI(mouse_position.x, mouse_position.y))
 		return selected_entity;
 
-	selected_spot = App->render->ScreenToWorld(tx, ty);
+	selected_spot = App->render->ScreenToWorld(mouse_position.x, mouse_position.y);
 	selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
 
 	//check if there's an entity in the selected spot
 	j1Entity* target = App->entities->FindEntityByTile(selected_spot);
 
 	if (target != nullptr) {
-		if (((god_mode) || (target->faction == faction))&&(target->state != DIE)) {
+		if (((god_mode) || (target->faction == faction)) && (target->state != DIE)) {
+			if (target->info.current_group != nullptr) {
+				target->ClearUnitInfo();
+			}
 			return target;
 		}
 	}
@@ -400,67 +371,42 @@ j1Entity* j1Player::SelectEntity() {
 	return nullptr;
 }
 
-void j1Player::MoveEntity(){
-	int tx, ty;
+void j1Player::MoveEntity(DynamicEntity* entity){
 	iPoint selected_spot;
 
-	App->input->GetMousePosition(tx, ty);
-
-	if (TouchingUI(tx, ty)) { 
-		if ((tx > App->minimap->position.x) && (tx < App->minimap->position.x + App->minimap->width)
-			&& (ty > App->minimap->position.y) && (ty < App->minimap->position.y + App->minimap->height)) {
-			selected_spot = App->minimap->ScreenToMinimapToWorld(tx, ty);
+	if (TouchingUI(mouse_position.x, mouse_position.y)) {
+		if ((mouse_position.x > App->minimap->position.x) && (mouse_position.x < App->minimap->position.x + App->minimap->width)
+			&& (mouse_position.y > App->minimap->position.y) && (mouse_position.y < App->minimap->position.y + App->minimap->height)) {
+			selected_spot = App->minimap->ScreenToMinimapToWorld(mouse_position.x, mouse_position.y);
 			selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
 		}
 		else {
 			return;
 		}
 	}
-	else
-	{
-		selected_spot = App->render->ScreenToWorld(tx, ty);
+	else {
+		selected_spot = App->render->ScreenToWorld(mouse_position.x, mouse_position.y);
 		selected_spot = App->map->WorldToMap(selected_spot.x, selected_spot.y);
 	}
 
-	j1Entity* target = App->entities->FindEntityByTile(selected_spot);
-
 	//dynamic entities
-	if (selected_entity->state != DIE) 
+	if (entity->state != DIE) 
 	{
-		if (selected_entity->is_dynamic)
-		{
-			DynamicEntity* dynamic_entity;
-			dynamic_entity = (DynamicEntity*)selected_entity;
-			dynamic_entity->PathfindToPosition(selected_spot);
-			dynamic_entity->state = WALK;
+		if (entity->info.current_group != nullptr)
+			entity->info.current_group = nullptr;
 
-			if (target != nullptr) {
-				dynamic_entity->target_entity = target;
-			}
-			else {
-				dynamic_entity->target_entity = nullptr;
+		entity->node_path.clear();
+		entity->CheckDestination(selected_spot);
+		entity->PathfindToPosition(selected_spot);
+		entity->commanded = true;
+	}
+}
 
-				if (dynamic_entity->type == GATHERER) {
-					ResourceBuilding* resource_building;
-					resource_building = App->entities->FindResourceBuildingByTile(selected_spot);
-
-					//assign a resource building to the entity
-					if ((resource_building != nullptr) && (resource_building->quantity > 0) && (dynamic_entity->type == GATHERER)) {
-						((Gatherer*)dynamic_entity)->AssignResourceBuilding(resource_building);
-					}
-				}
-				else if (dynamic_entity->is_agressive) {
-					dynamic_entity->target_entity = nullptr;
-					dynamic_entity->commanded = true;
-				}
-			}
-		}
-		//static entities
-		else
-		{
-			StaticEntity* static_entity;
-			static_entity = (StaticEntity*)selected_entity;
-		}
+void j1Player::MoveGroup() {
+	for (int i = 0; i < selected_group->GetSize(); i++)
+	{
+		MoveEntity(selected_group->Units[i]);
+		//selected_group->Units[i]->state = WALK;
 	}
 }
 
@@ -527,9 +473,9 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 	if (command_beginning == "spawn_units") {
 		StaticEntity* static_entity;
 		if (selected_entity == nullptr)
-			static_entity = (StaticEntity*)last_selected_entity;
+			static_entity = static_cast<StaticEntity*>(last_selected_entity);
 		else
-			static_entity = (StaticEntity*)selected_entity;
+			static_entity = static_cast<StaticEntity*>(selected_entity);
 		
 		if (static_entity != nullptr) {
 			App->entities->CreateEntity(static_entity->faction, GATHERER, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
@@ -544,9 +490,9 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 
 		StaticEntity* static_entity;
 		if (selected_entity == nullptr)
-			static_entity = (StaticEntity*)last_selected_entity;
+			static_entity = dynamic_cast<StaticEntity*>(last_selected_entity);
 		else
-			static_entity = (StaticEntity*)selected_entity;
+			static_entity = dynamic_cast<StaticEntity*>(selected_entity);
 
 		if (static_entity != nullptr)
 		{
@@ -557,7 +503,7 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 			if (command_parts[1] == "ranged")
 				App->entities->CreateEntity(static_entity->faction, RANGED, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
 			if (command_parts[1] == "army")
-				for (int i = 0; i < 10; i++) {
+				for(int i = 0; i < 10; i++) {
 					App->entities->CreateEntity(static_entity->faction, MELEE, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
 					App->entities->CreateEntity(static_entity->faction, RANGED, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
 				}

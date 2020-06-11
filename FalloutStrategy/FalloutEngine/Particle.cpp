@@ -3,13 +3,8 @@
 #include "j1App.h"
 #include "j1Render.h"
 
-
-Particle::Particle()
-{}
-
-
 Particle::Particle(std::vector<float>& position, std::vector<float>& speed, std::vector<float>& acceleration,
-	float angle, float angularSpeed, float life, SDL_Texture* texture, Animation animation, bool fade) :
+	float angle, float angularSpeed, float life, SDL_Texture* texture, const Animation &animation, bool fade) :
 
 	position(position),
 	speed(speed),
@@ -29,7 +24,7 @@ Particle::Particle(std::vector<float>& position, std::vector<float>& speed, std:
 {}
 
 
-Particle::Particle(float life, SDL_Texture* texture, Animation animation, bool fade) :
+Particle::Particle(float life, SDL_Texture* texture, const Animation &animation, bool fade) :
 
 	position{ NULL, NULL },
 	speed{ NULL, NULL },
@@ -50,7 +45,7 @@ Particle::Particle(float life, SDL_Texture* texture, Animation animation, bool f
 
 
 Particle::Particle(float positionX, float positionY, float speedX, float speedY, float accelerationX, float accelerationY,
-	float angle, float angularSpeed, float life, SDL_Texture* texture, Animation animation, bool fade) :
+	float angle, float angularSpeed, float life, SDL_Texture* texture, const Animation &animation, bool fade) :
 
 	position{ positionX, positionY },
 	speed{ speedX, speedY },
@@ -176,7 +171,7 @@ void Particle::Move(float dt)
 	speed[0] += acceleration[0] * dt * 60;
 	speed[1] += acceleration[1] * dt * 60;
 
-	//TODO 1: Do the same with position and angles
+	// Do the same with position and angles
 	position[0] += speed[0] * dt * 60;
 	position[1] += speed[1] * dt * 60;
 

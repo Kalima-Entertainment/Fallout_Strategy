@@ -30,6 +30,8 @@
 #include "j1Hud.h"
 #include "j1EasingAndSplines.h"
 #include "DialogManager.h"
+#include "AssetsManager.h"
+#include "j1Cursor.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -37,6 +39,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	PERF_START(ptimer);
 	want_to_save = want_to_load = false;
 
+	assetManager = new ModuleAssetsManager();
 	input = new j1Input();
 	win = new j1Window();
 	render = new j1Render();
@@ -62,9 +65,11 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	hud = new j1Hud();
 	easing_splines = new j1EasingAndSplines();
 	dialog_manager = new DialogManager();
+	cursor = new j1Cursor();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
+	AddModule(assetManager);
 	AddModule(input);
 	AddModule(win);
 	AddModule(tex);
@@ -75,7 +80,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(player);
 	AddModule(pathfinding);
-	AddModule(main_menu);
 	//AddModule(entities); Changed after scene because particles drawn behind map
 	AddModule(font);
 	AddModule(scene);
@@ -88,10 +92,12 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(menu_manager);
 	AddModule(gui);
 	AddModule(minimap);
-	AddModule(console);
+	//AddModule(console);
+	AddModule(main_menu);
 	AddModule(logo_scene);
 	AddModule(transition);	
 	AddModule(hud);
+	AddModule(cursor);
 	// render last to swap buffer
 	AddModule(render);
 
@@ -105,7 +111,7 @@ j1App::~j1App()
 {
 	// release modules
 
-	for (int i = 0; i < modules.size(); i++)
+	for(size_t i = 0; i < modules.size(); i++)
 	{
 		RELEASE(modules[i]);
 	}
@@ -130,6 +136,11 @@ bool j1App::Awake()
 
 	bool ret = false;
 
+	std::vector<j1Module*>::iterator item_list;
+	item_list = modules.begin();
+	j1Module* it = *item_list;
+	it->Awake(config.child(it->name.c_str()));
+	
 	config = LoadConfig(config_file);
 
 	if(config.empty() == false)
@@ -150,7 +161,7 @@ bool j1App::Awake()
 
 	if(ret == true)
 	{
-		for (int i = 0; i < modules.size() && ret == true; i++)
+		for(size_t i = 0; i < modules.size() && ret == true; i++)
 		{
 			ret = modules[i]->Awake(config.child(modules[i]->name.c_str()));
 		}
@@ -174,7 +185,7 @@ bool j1App::Start()
 	minimap->active = false;
 	dialog_manager->active = false;
 
-	for (int i = 0; i < modules.size() && ret == true; i++)
+	for(size_t i = 0; i < modules.size() && ret == true; i++)
 	{
 		if(modules[i]->active)
 			ret = modules[i]->Start();
@@ -182,7 +193,6 @@ bool j1App::Start()
 
 	startup_time.Start();
 
-	//console->CreateCommand("quit", "Quit the game", (j1Module*)this);
 
 	PERF_PEEK(ptimer);
 
@@ -215,8 +225,10 @@ bool j1App::Update()
 pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file) const
 {
 	pugi::xml_node ret;
-
-	pugi::xml_parse_result result = config_file.load_file("config.xml");
+	char* buffer;
+	int bytesFile = App->assetManager->Load("config.xml", &buffer);
+	pugi::xml_parse_result result = config_file.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
 
 	if(result == NULL)
 		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
@@ -264,7 +276,7 @@ void j1App::FinishUpdate()
 		prev_last_sec_frame_count, dt, App->render->camera.x, App->render->camera.y);
 	App->win->SetTitle(title);
 	*/
-	sprintf_s(title, 256, " Fallout Strategy 0.8 - Kalima Entertainment | FPS: %d",
+	sprintf_s(title, 256, " Fallout Strategy 0.9 - Kalima Entertainment | FPS: %d",
 		prev_last_sec_frame_count);
 	App->win->SetTitle(title);
 
@@ -289,7 +301,7 @@ bool j1App::PreUpdate()
 	bool ret = true;
 	j1Module* pModule = NULL;
 
-	for (int i = 0; i < modules.size() && ret == true; i++)
+	for(size_t i = 0; i < modules.size() && ret == true; i++)
 	{
 		pModule = modules[i];
 		if (pModule->active == false) {
@@ -307,7 +319,7 @@ bool j1App::DoUpdate()
 	bool ret = true;
 	j1Module* pModule = NULL;
 
-	for(int i = 0; i < modules.size() && ret == true; i++)
+	for(size_t i = 0; i < modules.size() && ret == true; i++)
 	{
 		pModule = modules[i];
 
@@ -327,7 +339,7 @@ bool j1App::PostUpdate()
 	bool ret = true;
 	j1Module* pModule = NULL;
 
-	for (int i = 0;i < modules.size() && ret == true; i++)
+	for(size_t i = 0;i < modules.size() && ret == true; i++)
 	{
 		pModule = modules[i];
 
@@ -347,7 +359,7 @@ bool j1App::CleanUp()
 	PERF_START(ptimer);
 	bool ret = true;
 
-	for (int i = 0; i < modules.size() && ret == true; i++)
+	for(size_t i = 0; i < modules.size() && ret == true; i++)
 	{
 		ret = modules[i]->CleanUp();
 	}
@@ -426,6 +438,7 @@ bool j1App::LoadGameNow()
 
 	pugi::xml_parse_result result = data.load_file(load_game.c_str());
 
+
 	if(result != NULL)
 	{
 		LOG("Loading new Game State from %s...", load_game.c_str());
@@ -434,7 +447,7 @@ bool j1App::LoadGameNow()
 		j1Module* pModule = modules[0];
 		ret = true;
 
-		for (int i = 0; i < modules.size() && ret == true; i++)
+		for(size_t i = 0; i < modules.size() && ret == true; i++)
 		{
 			ret = modules[i]->Load(root.child(modules[i]->name.c_str()));
 			pModule = modules[i];
@@ -467,7 +480,7 @@ bool j1App::SavegameNow() const
 
 	j1Module* pModule = modules[0];
 
-	for (int i = 0; i < modules.size() && ret == true; i++)
+	for(size_t i = 0; i < modules.size() && ret == true; i++)
 	{
 		ret = modules[i]->Save(root.append_child(modules[i]->name.c_str()));
 		pModule = modules[i];

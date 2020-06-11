@@ -12,6 +12,10 @@ AI_Manager::AI_Manager() : j1Module(), beaten_ai_players(0) {
 
 	name.assign("AI");
 
+	for (int i = 0; i < 4; i++) {
+		ai_info[i] = { 0,0,0,0,0,0 };
+	}
+
 	players_created = false;
 	ai_player[0] = ai_player[1] = ai_player[2] = ai_player[3] = nullptr;
 }
@@ -26,7 +30,7 @@ bool AI_Manager::Awake(pugi::xml_node& config) {
 	Faction faction = NO_FACTION;
 	std::string faction_name;
 
-	for (int i = 0; i < 4; i++)
+	for(int i = 0; i < 4; i++)
 	{
 		faction_name = faction_node.name();
 		if (faction_name == "vault") faction = VAULT;
@@ -34,11 +38,11 @@ bool AI_Manager::Awake(pugi::xml_node& config) {
 		else if (faction_name == "mutant") faction = MUTANT;
 		else if (faction_name == "ghoul") faction = GHOUL; 
 
+		ai_info[faction].minimum_melees = faction_node.attribute("minimum_melees").as_int();
+		ai_info[faction].minimum_rangeds = faction_node.attribute("minimum_rangeds").as_int();
 		ai_info[faction].initial_caps = faction_node.attribute("caps").as_int();
 		ai_info[faction].initial_water = faction_node.attribute("water").as_int();
 		ai_info[faction].initial_food = faction_node.attribute("food").as_int();
-		ai_info[faction].minimum_melees = faction_node.attribute("minimum_melees").as_int();
-		ai_info[faction].minimum_rangeds = faction_node.attribute("minimum_rangeds").as_int();
 		ai_info[faction].wave_time = faction_node.attribute("wave_time").as_int();
 
 		faction_node = faction_node.next_sibling();
@@ -50,7 +54,7 @@ bool AI_Manager::Awake(pugi::xml_node& config) {
 bool AI_Manager::Start() {
 	bool ret = true;	
 
-	for (int i = 0; i < 4; i++)
+	for(int i = 0; i < 4; i++)
 	{
 		if (App->player->faction != (Faction) i) {
 			ai_player[i] = new AI_Player((Faction) i);
@@ -69,9 +73,9 @@ bool AI_Manager::Start() {
 bool AI_Manager::Update(float dt) {
 	BROFILER_CATEGORY("AI_Update", Profiler::Color::Azure)
 	bool ret = true;
-
+	
 	if (players_created) {
-		for (int i = 0; i < 4; i++)
+		for(int i = 0; i < 4; i++)
 		{
 			if ((ai_player[i] != nullptr)&&(!ai_player[i]->defeated)) {
 				ai_player[i]->Update(dt);
@@ -84,7 +88,6 @@ bool AI_Manager::Update(float dt) {
 bool AI_Manager::PostUpdate() {
 	bool ret = true;
 	iPoint node_world_position;
-	SDL_Rect node;
 
 	return ret;
 }
@@ -92,7 +95,7 @@ bool AI_Manager::PostUpdate() {
 bool AI_Manager::CleanUp() {
 	bool ret = true;
 
-	for (int i = 0; i < 4; i++)
+	for(int i = 0; i < 4; i++)
 	{
 		if (ai_player[i] != nullptr) {
 			delete ai_player[i];

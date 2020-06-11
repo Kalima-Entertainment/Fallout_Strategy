@@ -26,12 +26,13 @@ class Emiter;
 enum class Resource {
 	CAPS,
 	WATER,
-	FOOD
+	FOOD,
+	NO_TYPE
 };
 
 struct ResourceBuilding {
-	Resource resource_type;
-	int quantity;
+	Resource resource_type = Resource::NO_TYPE;
+	int quantity = 0;
 	std::vector<iPoint> tiles;
 	~ResourceBuilding() {tiles.clear();}
 };
@@ -91,7 +92,9 @@ public:
 	//Find entities
 	j1Entity*		  FindEntityByTile(iPoint tile);
 	ResourceBuilding* FindResourceBuildingByTile(iPoint tile);
-	ResourceBuilding* GetClosestResourceBuilding(iPoint current_position);
+	ResourceBuilding* GetClosestResourceBuilding(iPoint current_position, Resource resource_type);
+	bool IsTileOccupied(iPoint position);
+	bool IsTileInPositionOccupied(fPoint position);
 
 	iPoint ClosestTile(iPoint position, std::vector<iPoint> entity_tiles);
 	iPoint FindFreeAdjacentTile(iPoint origin, iPoint destination);
@@ -148,6 +151,13 @@ public:
 	// -- Particle textures
 	SDL_Texture* blood;
 	SDL_Texture* smoke;
+	SDL_Texture* hit;
+
+	//HealthBar
+	SDL_Texture* life_bars;
+	SDL_Rect background_health_bar;
+	SDL_Rect foreground_health_bar;
+	SDL_Rect frame_quad;
 
 private:
 	int loading_faction;

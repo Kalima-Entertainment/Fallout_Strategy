@@ -35,7 +35,6 @@ public:
 
 public:
 
-
 	j1Timer	timer_game;
 	bool activateTimer;
 	bool draw_health;

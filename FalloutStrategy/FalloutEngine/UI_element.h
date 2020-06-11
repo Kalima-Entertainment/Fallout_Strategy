@@ -92,6 +92,16 @@ enum UI_Type {
 	quest_button2,
 	continue_button,
 
+	//Radio
+	Radio_button,
+	RockFM_button,
+	AyuwokiFM_button,
+	SlimShadyFM_button,
+	UltraRADIO_button,
+	FiestaLatinaFM_button,
+	FusionCoreFM_button,
+
+
 	UI_NONE
 };
 
@@ -135,7 +145,7 @@ public:
 	bool destroy;
 
 	bool drawable;
-
+	bool hover;
 
 	//pointer to an element
 	UI_element*	element_UI;

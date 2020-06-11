@@ -10,6 +10,7 @@
 #include "SDL_mixer/include/SDL_mixer.h"
 #include "FoWManager.h"
 #include "j1EntityManager.h"
+#include "AssetsManager.h"
 
 #include "ParticleSystem.h"
 #include "Emiter.h"
@@ -28,7 +29,7 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 
 	is_dynamic = false;
 
-	for (int i = 0; i < 10; i++)
+	for(int i = 0; i < 10; i++)
 		spawn_stack[i].type = NO_TYPE;
 
 	spawning = false;
@@ -39,7 +40,6 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 	time_left_upgrade = 0;
 	level = 0;
 
-	target_entity = nullptr;
 	reference_entity = nullptr;
 	attacking_entity = nullptr;
 	current_animation = nullptr;
@@ -47,6 +47,7 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 	//App->entities->ReleaseParticle(StaticParticle);
 
 	StaticParticle = nullptr;
+	HitParticle = nullptr;
 	visionEntity = nullptr;
 	spawnPosition = {-1,-1};
 
@@ -63,24 +64,54 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 	}	
 
 	// -- Smoke particles
-	StaticParticle = App->entities->CreateParticle(position);
-	Animation anim;
-	anim.PushBack(SDL_Rect{ 0, 0 , 128, 128 }, 1);
-	anim.Reset();
-	Emiter emitter(position.x - 40, position.y, 0, -0.7f , 0.1f, NULL , 0.0080f, 0, 0, 0, 0, 0, 0, 3.0f, nullptr, App->entities->smoke, anim, true);
-	StaticParticle->PushEmiter(emitter);
-	StaticParticle->Desactivate();
+	{
+		StaticParticle = App->entities->CreateParticle(position);
+		Animation anim;
+		anim.PushBack(SDL_Rect{ 0, 0 , 128, 128 }, 1);
+		anim.Reset();
+		Emiter emitter(static_cast<int>(position.x - 40), static_cast<int>(position.y), 0, -0.7f, 0.1f, NULL, 0.0080f, 0, 0, 0, 0, 0, 0, 3.0f, nullptr, App->entities->smoke, anim, true);
+		StaticParticle->PushEmiter(emitter);
+		StaticParticle->Desactivate();
+	}
+
+	//Hit Particle
+	{
+		HitParticle = App->entities->CreateParticle(position);
+		Animation hit;
+
+		//First Row hardcoded because i dont even care about that :D
+		hit.PushBack(SDL_Rect{ 0,0,64,64 }, 20);
+		hit.PushBack(SDL_Rect{ 64,0,64,64 }, 20);
+		hit.PushBack(SDL_Rect{ 128,0,64,64 }, 20);
+		hit.PushBack(SDL_Rect{ 192,0,64,64 }, 20);
+		
+		//Second row
+		hit.PushBack(SDL_Rect{ 0,64,64,64 }, 20);
+		hit.PushBack(SDL_Rect{ 64,64,64,64 }, 20);
+		hit.PushBack(SDL_Rect{ 128,64,64,64 }, 20);
+		hit.PushBack(SDL_Rect{ 192,64,64,64 }, 20);
+
+		hit.Reset();
+
+		Emiter Hit(position.x, position.y, 0 , 0, 0 , 0, 0, 0, 0, 0, 0, 0, 1, 2.0f, nullptr, App->entities->hit, hit, true);
+		HitParticle->PushEmiter(Hit);
+		HitParticle->Desactivate();
+	}
+
+	current_animation = &animations[IDLE];
+	hit_particles_time = 2000;
+
 }
 
 StaticEntity::~StaticEntity() {
-	target_entity = nullptr;
 	reference_entity = nullptr;
 	owner = nullptr;
 	attacking_entity = nullptr;
 	current_animation = nullptr;
 	texture = nullptr;
 	StaticParticle = nullptr;
-	//App->entities->ReleaseParticle(StaticParticle);
+	HitParticle = nullptr;
+
 	visionEntity = nullptr;
 	tiles.clear();
 
@@ -88,7 +119,7 @@ StaticEntity::~StaticEntity() {
 	visionEntity = nullptr;
 
 	//Clean Unit Spawn Stacks
-	for (size_t i = 0; i < 10; i++)
+	for(int i = 0; i < 10; i++)
 	{
 		spawn_stack[i].type = NO_TYPE;
 		spawn_stack[i].spawn_seconds = 0;
@@ -101,19 +132,27 @@ bool StaticEntity::Update(float dt) {
 
 	switch (state) {
 	case IDLE:
+		current_animation = &animations[IDLE];
+		break;
+	case HIT:
+		current_animation = &animations[IDLE];
+		if (hit_particles_timer.Read() > hit_particles_time)
+			state = IDLE;
 		break;
 	case DIE:
+		current_animation = &animations[DIE];
 		if (!delete_timer.Started())
 			delete_timer.Start();
 
-		visionEntity->SetNewPosition(App->map->MapToWorld(-10, -10));
+		if ((App->player->selected_entity != nullptr) && (App->player->selected_entity == this))
+			App->player->selected_entity = nullptr;
 
-		StaticParticle->Desactivate();
+		visionEntity->SetNewPosition(App->map->MapToWorld(-10, -10));
 
 		if ((delete_timer.ReadSec() > 5)||(current_animation->Finished()))
 			to_delete = true;
 
-		SpatialAudio(position.x, position.y, faction, state, type);
+		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
 		break;
 	default:
 		break;
@@ -129,10 +168,20 @@ bool StaticEntity::Update(float dt) {
 	//Select a building and press 1, 2, 3 or 4 to spawn or investigate
 	DebugSpawnsUpgrades();
 
-	// -- Active particle when health its lower or equal than half
+	//Smoke Particles if half life or less
 	if (StaticParticle != nullptr) {
-		if (current_health <= (max_health/2))
+		if (current_health <= max_health / 2)
 			StaticParticle->Activate();
+		else
+			StaticParticle->Desactivate();
+	}
+		
+	//Hit particles
+	if (HitParticle != nullptr) {
+		if (state == HIT)
+			HitParticle->Activate();
+		else
+			HitParticle->Desactivate();
 	}
 
 	last_dt = dt;
@@ -141,7 +190,6 @@ bool StaticEntity::Update(float dt) {
 }
 
 bool StaticEntity::PostUpdate() {
-	current_animation = &animations[state];
 
 	SDL_Rect tile_rect = { 256,0,64,64 };
 	iPoint tex_position;
@@ -150,17 +198,18 @@ bool StaticEntity::PostUpdate() {
 	if (App->player->selected_entity == this)
 	{
 		tile_rect = { 128,0,64,64 };
-		for (int i = 0; i < tiles.size(); i++)
+		for(int i = 0; i < tiles.size(); i++)
 		{
 			tex_position = App->map->MapToWorld(tiles[i].x, tiles[i].y);
 			App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
 		}
 	}
 
+	
 	//debug tiles
 	else if (App->render->debug) 
 	{
-		for (int i = 0; i < tiles.size(); i++)
+		for(int i = 0; i < tiles.size(); i++)
 		{
 			tex_position = App->map->MapToWorld(tiles[i].x, tiles[i].y);
 			App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
@@ -169,7 +218,7 @@ bool StaticEntity::PostUpdate() {
 
 	App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
 
-	for (int i = 0; i < level; i++)
+	for(int i = 0; i < level; i++)
 	{
 		App->render->Blit(texture, render_position.x + upgrade_sprite[i].position.x, render_position.y + upgrade_sprite[i].position.y, &upgrade_sprite[i].rect);
 	}
@@ -198,28 +247,38 @@ bool StaticEntity::PostUpdate() {
 		App->render->DrawQuad(spawn_bar_foreground, 230, 165, 30, 255);
 	}
 	*/
+
 	//Blit particles forward buildings
-	if (StaticParticle != nullptr) {
-		StaticParticle->Move(position.x, position.y);
+	if (StaticParticle->IsActive()) {
+		StaticParticle->Move(static_cast<int>(position.x), static_cast<int>(position.y));
 		StaticParticle->Update(last_dt);
-	}
-	
+	}	
+
+	if (HitParticle->IsActive()) {
+		HitParticle->Move(static_cast<int>(position.x), static_cast<int>(position.y));
+		HitParticle->Update(last_dt);
+	}	
 
 	return true;
+}
+
+void StaticEntity::GetHit() {
+	state = HIT;
+	hit_particles_timer.Start();
 }
 
 bool StaticEntity::LoadDataFromReference() {
 	bool ret = true;
 
-	StaticEntity* static_reference = (StaticEntity*)reference_entity;
+	StaticEntity* static_reference = dynamic_cast<StaticEntity*>(reference_entity);
 
 	//load animations
-	for (int i = 0; i < 2; i++)
+	for(int i = 0; i < 2; i++)
 	{
 		animations[i] = static_reference->animations[i];
 	}
 	
-	for (int i = 0; i < 4; i++)
+	for(int i = 0; i < 4; i++)
 	{
 		upgrade_sprite[i] = static_reference->upgrade_sprite[i];
 	}
@@ -241,7 +300,7 @@ bool StaticEntity::LoadReferenceData(pugi::xml_node& node) {
 	max_health = node.attribute("health").as_float();
 	pugi::xml_node upgrade_node = node.child("upgrade");
 
-	for (int i = 0; i < 4; i++)
+	for(int i = 0; i < 4; i++)
 	{
 		upgrade_sprite[i].position.x = upgrade_node.attribute("x").as_int();
 		upgrade_sprite[i].position.y = upgrade_node.attribute("y").as_int();
@@ -263,7 +322,11 @@ bool StaticEntity::LoadAnimations(const char* folder, const char* file_name) {
 	std::string tmx = std::string(folder).append(file_name);
 
 	pugi::xml_document animation_file;
-	pugi::xml_parse_result result = animation_file.load_file(tmx.c_str());
+	
+	char* buffer;
+	int bytesFile = App->assetManager->Load(tmx.c_str(), &buffer);
+	pugi::xml_parse_result result = animation_file.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
 
 	std::string image_path = std::string(folder).append(animation_file.child("map").child("tileset").child("image").attribute("source").as_string());
 
@@ -485,7 +548,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 			int cost = App->entities->base_resource_limit[faction].first_price + (App->entities->base_resource_limit[faction].price_increment * App->entities->base_resource_limit[faction].upgrade_num);
 
 			float value_increment = App->entities->base_resource_limit[faction].value_increment;
-			storage_capacity += (int)storage_capacity * value_increment;
+			storage_capacity += static_cast<int>(storage_capacity * value_increment);
 
 			if (storage_capacity > max_capacity)
 				storage_capacity = max_capacity;
@@ -499,7 +562,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 		float value_increment = App->entities->gatherer_resource_limit[faction].value_increment;
 
 		//Upgrade gatherers that are currently alive
-		for (int i = 0; i < App->entities->entities.size(); i++) {
+		for(int i = 0; i < App->entities->entities.size(); i++) {
 			if (App->entities->entities[i]->faction == faction)
 				if (App->entities->entities[i]->type == GATHERER)
 					App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * value_increment);
@@ -513,7 +576,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 		float value_increment = App->entities->units_damage[faction].value_increment;
 
 		//Upgrade melees and ranged that are currently alive
-		for (int i = 0; i < App->entities->entities.size(); i++) {
+		for(int i = 0; i < App->entities->entities.size(); i++) {
 			if (App->entities->entities[i]->faction == faction)
 				if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED)
 					App->entities->entities[i]->damage += (int)(App->entities->entities[i]->damage * value_increment);
@@ -528,7 +591,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 		float value_increment = App->entities->units_speed[faction].value_increment;
 
 		//Upgrade units that are currently alive
-		for (int i = 0; i < App->entities->entities.size(); i++) {
+		for(int i = 0; i < App->entities->entities.size(); i++) {
 			if (App->entities->entities[i]->faction == faction) {
 				App->entities->entities[i]->speed.x += App->entities->entities[i]->speed.x * value_increment;
 				App->entities->entities[i]->speed.y += App->entities->entities[i]->speed.y * value_increment;
@@ -550,7 +613,7 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 		float value_increment = App->entities->units_health[faction].value_increment;
 
 		//Upgrade melees and ranged that are currently alive
-		for (int i = 0; i < App->entities->entities.size(); i++) {
+		for(int i = 0; i < App->entities->entities.size(); i++) {
 			if (App->entities->entities[i]->faction == faction)
 				if (App->entities->entities[i]->type == MELEE || App->entities->entities[i]->type == RANGED) {
 					App->entities->entities[i]->max_health += (int)(App->entities->entities[i]->max_health * value_increment);
@@ -604,7 +667,7 @@ void StaticEntity::SpawnUnit(EntityType type, bool no_cost) {
 		}
 
 		//Add to stack
-		for (int i = 0; i < 10; i++) {
+		for(int i = 0; i < 10; i++) {
 			if (spawn_stack[i].type == NO_TYPE) {
 
 				spawn_stack[i].type = type;
@@ -619,7 +682,7 @@ void StaticEntity::SpawnUnit(EntityType type, bool no_cost) {
 void StaticEntity::UpdateSpawnStack() {
 	//First entity in queue has been spawned
 	//Now let's start timer for the next entity
-	for (int i = 0; i < 9; i++) {
+	for(int i = 0; i < 9; i++) {
 		spawn_stack[i] = spawn_stack[i + 1];
 	}
 	spawn_stack[9] = { NO_TYPE, 0 };
@@ -746,14 +809,20 @@ int StaticEntity::GetUnitsInStack(EntityType type)
 	int num = 0;
 
 	if (type == MELEE) {
-		for (int i = 0; i < 10; i++) {
+		for(int i = 0; i < 10; i++) {
 			if (spawn_stack[i].type == MELEE)
 				num++;
 		}
 	}
 	else if (type == RANGED) {
-		for (int i = 0; i < 10; i++) {
+		for(int i = 0; i < 10; i++) {
 			if (spawn_stack[i].type == RANGED)
+				num++;
+		}
+	}
+	else if (type == GATHERER) {
+		for (int i = 0; i < 10; i++) {
+			if (spawn_stack[i].type == GATHERER)
 				num++;
 		}
 	}
@@ -807,7 +876,7 @@ void StaticEntity::CalculateRenderAndSpawnPositions() {
 		}
 
 		//Spawn position is just below render position
-		spawnPosition = { App->map->WorldToMap(render_position.x + sprite_size * 0.5f, render_position.y + sprite_size) };
+		spawnPosition = { App->map->WorldToMap(static_cast<int>(render_position.x + sprite_size * 0.5f), static_cast<int>(render_position.y + sprite_size)) };
 		
 	}
 }

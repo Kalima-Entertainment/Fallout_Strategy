@@ -21,9 +21,11 @@ public:
 	int GetResourceCollected() { return resource_collected; }
 	ResourceBuilding* GetResourceBuilding() { return resource_building; }
 
+public: 
+	bool gathering;
+	Resource resource_type;
 private:
 	ResourceBuilding* resource_building;
-	Resource resource_type;
 	int resource_collected;
 	j1Timer gathering_timer;
 	int gather_time;

@@ -12,6 +12,7 @@
 // Modules
 class j1Window;
 class j1Input;
+class ModuleAssetsManager;
 class j1Render;
 class j1Textures;
 class j1Audio;
@@ -35,6 +36,7 @@ class j1Video;
 class j1Hud;
 class j1EasingAndSplines;
 class DialogManager;
+class j1Cursor;
 
 class j1App
 {
@@ -105,6 +107,7 @@ public:
 	// Modules
 	j1Window*			win = NULL;
 	j1Input*			input = NULL;
+	ModuleAssetsManager* assetManager = NULL;
 	j1Render*			render = NULL;
 	j1Textures*			tex = NULL;
 	j1Audio*			audio = NULL;
@@ -128,6 +131,7 @@ public:
 	j1Hud*				hud = NULL;
 	j1EasingAndSplines*	easing_splines = NULL;
 	DialogManager*		dialog_manager = NULL;
+	j1Cursor*			cursor = NULL;
 
 	bool isPaused;
 	bool quitGame = false;

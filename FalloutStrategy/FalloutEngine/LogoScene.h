@@ -21,7 +21,6 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
-	bool LogoScene::LoadAnimations();
 	
 	SDL_Texture* video_texture;
 	SDL_Texture* win_tex;
@@ -31,15 +30,10 @@ public:
 	int lose_video;
 	bool Loop;
 	bool playsound;
-private:
-	Animation	animationLogo;
-	Animation	animationStartGameText;
-	Animation* loader;
-	SDL_Texture* logo_tex;
-	SDL_Texture* start_game_tex;
-	SDL_Rect start_game_rect;
-	float last_dt;
 
+private:
+	
+	float last_dt;
 	j1Timer Timer;
 	bool drawable;
 	bool sound_end;

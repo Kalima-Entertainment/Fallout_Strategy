@@ -201,7 +201,7 @@ PUGI__NS_BEGIN
 	// Compare lhs with [rhs_begin, rhs_end)
 	PUGI__FN bool strequalrange(const char_t* lhs, const char_t* rhs, size_t count)
 	{
-		for (size_t i = 0; i < count; ++i)
+		for(int i = 0; i < count; ++i)
 			if (lhs[i] != rhs[i])
 				return false;
 	
@@ -1166,7 +1166,7 @@ PUGI__NS_BEGIN
 
 		static inline typename Traits::value_type decode_latin1_block(const uint8_t* data, size_t size, typename Traits::value_type result)
 		{
-			for (size_t i = 0; i < size; ++i)
+			for(int i = 0; i < size; ++i)
 			{
 				result = Traits::low(result, data[i]);
 			}
@@ -1192,13 +1192,13 @@ PUGI__NS_BEGIN
 
 	template <typename T> PUGI__FN void convert_utf_endian_swap(T* result, const T* data, size_t length)
 	{
-		for (size_t i = 0; i < length; ++i) result[i] = endian_swap(data[i]);
+		for(int i = 0; i < length; ++i) result[i] = endian_swap(data[i]);
 	}
 
 #ifdef PUGIXML_WCHAR_MODE
 	PUGI__FN void convert_wchar_endian_swap(wchar_t* result, const wchar_t* data, size_t length)
 	{
-		for (size_t i = 0; i < length; ++i) result[i] = static_cast<wchar_t>(endian_swap(static_cast<wchar_selector<sizeof(wchar_t)>::type>(data[i])));
+		for(int i = 0; i < length; ++i) result[i] = static_cast<wchar_t>(endian_swap(static_cast<wchar_selector<sizeof(wchar_t)>::type>(data[i])));
 	}
 #endif
 PUGI__NS_END
@@ -1600,7 +1600,7 @@ PUGI__NS_BEGIN
 
 	PUGI__FN size_t get_latin1_7bit_prefix_length(const uint8_t* data, size_t size)
 	{
-		for (size_t i = 0; i < size; ++i)
+		for(int i = 0; i < size; ++i)
 			if (data[i] > 127)
 				return i;
 
@@ -3050,7 +3050,7 @@ PUGI__NS_BEGIN
 	{
 		if (length < 5) return 0;
 
-		for (size_t i = 1; i <= 4; ++i)
+		for(int i = 1; i <= 4; ++i)
 		{
 			uint8_t ch = static_cast<uint8_t>(data[length - i]);
 
@@ -3966,8 +3966,8 @@ PUGI__NS_BEGIN
 
 	PUGI__FN bool set_value_convert(char_t*& dest, uintptr_t& header, uintptr_t header_mask, int value)
 	{
-		char buf[128];
-		sprintf(buf, "%d", value);
+		char buf[128];		
+		snprintf(buf, sizeof(buf), "%d", value);
 	
 		return set_value_buffer(dest, header, header_mask, buf);
 	}
@@ -3975,7 +3975,7 @@ PUGI__NS_BEGIN
 	PUGI__FN bool set_value_convert(char_t*& dest, uintptr_t& header, uintptr_t header_mask, unsigned int value)
 	{
 		char buf[128];
-		sprintf(buf, "%u", value);
+		snprintf(buf, sizeof(buf), "%u", value);
 
 		return set_value_buffer(dest, header, header_mask, buf);
 	}
@@ -3983,7 +3983,7 @@ PUGI__NS_BEGIN
 	PUGI__FN bool set_value_convert(char_t*& dest, uintptr_t& header, uintptr_t header_mask, float value)
 	{
 		char buf[128];
-		sprintf(buf, "%.9g", value);
+		snprintf(buf, sizeof(buf), "%.9g", value);
 
 		return set_value_buffer(dest, header, header_mask, buf);
 	}
@@ -3991,7 +3991,7 @@ PUGI__NS_BEGIN
 	PUGI__FN bool set_value_convert(char_t*& dest, uintptr_t& header, uintptr_t header_mask, double value)
 	{
 		char buf[128];
-		sprintf(buf, "%.17g", value);
+		snprintf(buf, sizeof(buf), "%.17g", value);
 
 		return set_value_buffer(dest, header, header_mask, buf);
 	}
@@ -4005,7 +4005,7 @@ PUGI__NS_BEGIN
 	PUGI__FN bool set_value_convert(char_t*& dest, uintptr_t& header, uintptr_t header_mask, long long value)
 	{
 		char buf[128];
-		sprintf(buf, "%lld", value);
+		snprintf(buf, sizeof(buf), "%lld", value);
 	
 		return set_value_buffer(dest, header, header_mask, buf);
 	}
@@ -4013,7 +4013,7 @@ PUGI__NS_BEGIN
 	PUGI__FN bool set_value_convert(char_t*& dest, uintptr_t& header, uintptr_t header_mask, unsigned long long value)
 	{
 		char buf[128];
-		sprintf(buf, "%llu", value);
+		snprintf(buf, sizeof(buf), "%llu", value);
 	
 		return set_value_buffer(dest, header, header_mask, buf);
 	}
@@ -4306,7 +4306,7 @@ PUGI__NS_BEGIN
 
 		// convert mode to ASCII (we mirror _wfopen interface)
 		char mode_ascii[4] = {0};
-		for (size_t i = 0; mode[i]; ++i) mode_ascii[i] = static_cast<char>(mode[i]);
+		for(int i = 0; mode[i]; ++i) mode_ascii[i] = static_cast<char>(mode[i]);
 
 		// try to open the utf8 path
 		FILE* result = fopen(path_utf8, mode_ascii);
@@ -7536,7 +7536,7 @@ PUGI__NS_BEGIN
 			if (tc) to++;
 		}
 
-		for (int i = 0; i < 128; ++i)
+		for(int i = 0; i < 128; ++i)
 			if (!table[i])
 				table[i] = static_cast<unsigned char>(i);
 
@@ -9514,7 +9514,7 @@ PUGI__NS_BEGIN
 
 			// get total length
 			size_t length = 0;
-			for (size_t i = 0; i < count; ++i) length += buffer[i].length();
+			for(int i = 0; i < count; ++i) length += buffer[i].length();
 
 			// create final string
 			char_t* result = static_cast<char_t*>(stack.result->allocate((length + 1) * sizeof(char_t)));
@@ -9522,7 +9522,7 @@ PUGI__NS_BEGIN
 
 			char_t* ri = result;
 
-			for (size_t j = 0; j < count; ++j)
+			for(int j = 0; j < count; ++j)
 				for (const char_t* bi = buffer[j].c_str(); *bi; ++bi)
 					*ri++ = *bi;
 
@@ -11211,12 +11211,12 @@ namespace pugi
 
 	PUGI__FN xpath_variable_set::xpath_variable_set()
 	{
-		for (size_t i = 0; i < sizeof(_data) / sizeof(_data[0]); ++i) _data[i] = 0;
+		for(int i = 0; i < sizeof(_data) / sizeof(_data[0]); ++i) _data[i] = 0;
 	}
 
 	PUGI__FN xpath_variable_set::~xpath_variable_set()
 	{
-		for (size_t i = 0; i < sizeof(_data) / sizeof(_data[0]); ++i)
+		for(int i = 0; i < sizeof(_data) / sizeof(_data[0]); ++i)
 		{
 			xpath_variable* var = _data[i];
 

@@ -15,7 +15,7 @@ j1Render::j1Render() : j1Module()
 	background.g = 0;
 	background.b = 0;
 	background.a = 0;
-	debug = false;
+	debug = true;
 	fog_of_war = true;
 
 	viewport.x = 0;
@@ -135,6 +135,12 @@ void j1Render::ResetViewPort()
 	SDL_RenderSetViewport(renderer, &viewport);
 }
 
+void j1Render::ResetCameraPosition() 
+{
+	camera.x = 0;
+	camera.y = 0;
+}
+
 iPoint j1Render::ScreenToWorld(int x, int y) const
 {
 	iPoint ret;
@@ -165,7 +171,7 @@ fPoint j1Render::fWorldToScreen(int x, int y) const
 }
 
 // Blit to screen
-bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale, float speed, double angle, int pivot_x, int pivot_y, Uint8 alpha) const
+bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale, float speed, bool color, double angle, int pivot_x, int pivot_y, Uint8 alpha) const
 {
 	bool ret = true;
 	//float scale = App->win->GetScale();
@@ -212,8 +218,7 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, bool use_camera) const
 {
 	bool ret = true;
-	//uint scale = App->win->GetScale();
-	uint scale = 1;
+	uint scale = App->win->GetScale();
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
@@ -228,7 +233,12 @@ bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a
 		rec.h *= scale;
 	}
 
-	int result = (filled) ? SDL_RenderFillRect(renderer, &rec) : SDL_RenderDrawRect(renderer, &rec);
+	//int result = (filled) ? SDL_RenderFillRect(renderer, &rec) : SDL_RenderDrawRect(renderer, &rec);
+	int result = 0;
+	if (filled)
+		result = SDL_RenderFillRect(renderer, &rec);
+	else
+		result = SDL_RenderDrawRect(renderer, &rec);
 
 	if(result != 0)
 	{

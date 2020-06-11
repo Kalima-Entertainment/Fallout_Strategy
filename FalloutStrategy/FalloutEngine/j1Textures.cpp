@@ -2,6 +2,7 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Render.h"
+#include "AssetsManager.h"
 #include "j1Textures.h"
 
 #include "SDL_image/include/SDL_image.h"
@@ -47,7 +48,7 @@ bool j1Textures::CleanUp()
 {
 	LOG("Freeing textures and Image library");
 
-	for (int i = 0; i < textures.size(); i++)
+	for(int i = 0; i < textures.size(); i++)
 	{
 		SDL_DestroyTexture(textures[i]);
 	}
@@ -61,7 +62,7 @@ bool j1Textures::CleanUp()
 SDL_Texture* const j1Textures::Load(const char* path)
 {
 	SDL_Texture* texture = NULL;
-	SDL_Surface* surface = IMG_Load(path);
+	SDL_Surface* surface = IMG_Load_RW(App->assetManager->Load(path), 1);
 
 	if(surface == NULL)
 	{
@@ -79,7 +80,7 @@ SDL_Texture* const j1Textures::Load(const char* path)
 // Unload texture
 bool j1Textures::UnLoad(SDL_Texture* texture)
 {
-	for (int i = 0; i < textures.size(); i++)
+	for(int i = 0; i < textures.size(); i++)
 	{
 		if (texture == textures[i])
 		{

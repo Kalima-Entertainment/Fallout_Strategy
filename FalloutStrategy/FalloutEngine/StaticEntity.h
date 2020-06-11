@@ -45,6 +45,7 @@ public:
 
 	void DebugSpawnsUpgrades();
 	void CalculateRenderAndSpawnPositions();
+	void GetHit();
 	int GetUnitsInStack(EntityType type);
 
 	// Load / Save
@@ -78,7 +79,10 @@ private:
 	//SDL_Rect spawn_bar_foreground;
 
 	ParticleSystem* StaticParticle;
+	ParticleSystem* HitParticle;
 	FoWEntity* visionEntity;
+	j1Timer hit_particles_timer;
+	int hit_particles_time;
 };
 
 #endif // !_STATIC_ENTITY_H

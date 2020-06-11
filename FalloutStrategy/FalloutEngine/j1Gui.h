@@ -2,7 +2,6 @@
 #define __j1GUI_H__
 
 #include "j1Module.h"
-#include "p2List.h"
 #include "p2Point.h"
 #include <vector>
 #include <string>
@@ -52,8 +51,8 @@ public:
 	UI_element* CreateButton(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, SDL_Rect click, UI_element* parent, j1Module* Observer);
 	UI_element* CreateImage(int x, int y, UI_Type type, SDL_Rect rect, UI_element* parent, j1Module* Observer);
 	UI_element* CreateSlider(int x, int y, UI_Type type, SDL_Rect scrollbar, SDL_Rect button, float width, UI_element* parent, j1Module* Observer);
-	UI_element* CreateLabel(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer, int* counter, std::string font = "StackedPixel");
-	UI_element* CreateInputBox(int x, int y, UI_Type type, std::string text_input, UI_element* parent, j1Module* Observer, std::string font = "StackedPixel");
+	UI_element* CreateLabel(int x, int y, UI_Type type, const std::string &text_input, UI_element* parent, j1Module* Observer, std::string font = "StackedPixel");
+	UI_element* CreateInputBox(int x, int y, UI_Type type, const std::string &text_input, UI_element* parent, j1Module* Observer, std::string font = "StackedPixel");
 
 
 

@@ -6,11 +6,10 @@
 #include "UI_element.h"
 #include <string.h>
 
-UI_Label::UI_Label(int x, int y, UI_Type type, std::string text_input, UI_element * parent, j1Module * Observer, int* counter) : UI_element(x, y, type, parent, Observer)
+UI_Label::UI_Label(int x, int y, UI_Type type, const std::string &text_input, UI_element * parent, j1Module * Observer) : UI_element(x, y, type, parent, Observer)
 {
 	text_texture = nullptr;
 	t = type;
-	timer_out = counter;
 }
 
 UI_Label::~UI_Label()
@@ -19,35 +18,17 @@ UI_Label::~UI_Label()
 	texture = nullptr;
 	App->tex->UnLoad(text_texture);
 	text_texture = nullptr;
+	observer = nullptr;
 }
 
 bool UI_Label::Update(float dt)
 {
 
-	
-	/*if (t == Label) {
-
-		timer_count = *timer_out;
-		d = 100000;
-
-		for (int i = 0; i < 6; i++) {
-
-			timer[i] = (char)(timer_count/d);
-
-			timer_count = timer_count%d;
-
-			d = d / 10;
-
-		}
-
-		SetTextTimer(timer);
-
-	}*/
 
 	return true;
 }
 
-bool UI_Label::SetLabelText(std::string text_input, std::string font)
+bool UI_Label::SetLabelText(const std::string &text_input, std::string font)
 {
 	bool ret = false;
 	text = text_input;
@@ -55,6 +36,7 @@ bool UI_Label::SetLabelText(std::string text_input, std::string font)
 	if (text.size() > 0){
 
 		text_texture = App->font->Print(text.c_str(), { 244,244,244,255 }, font);
+		App->font->CalcSize(text.c_str(), dimensions.w, dimensions.h);
 	}
 
 	if (text_texture != nullptr)

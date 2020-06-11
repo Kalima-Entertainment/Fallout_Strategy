@@ -30,21 +30,22 @@ class DynamicEntity : public j1Entity
 public:
 
 	friend class j1MovementManager;
+	friend class j1Group;
 
 	DynamicEntity();
-	DynamicEntity(Faction faction, EntityType type, iPoint current_tile, GenericPlayer* owner = nullptr);
 	~DynamicEntity();
 
-	//Core
-	//bool Update(float dt);
 	bool PostUpdate();
 
 	void Move(float dt);
 	void Flee();
 
-	j1Entity* DetectEntitiesInRange();
-	void PathfindToPosition(iPoint target);
+	DynamicEntity* DetectEntitiesInRange();
+	void CheckDestination(iPoint destination);
+
+	bool PathfindToPosition(iPoint target);
 	Direction GetDirectionToGo(SDL_Rect next_tile_rect) const;
+	Direction GetBuildingDirection(std::vector<iPoint> building_tiles) const;
 	void UpdateTile();
 
 	bool LoadAnimations(const char* folder, const char* file_name);
@@ -63,6 +64,8 @@ public:
 	Animation animations[NO_STATE][NO_DIRECTION];
 	Direction direction;
 	Direction last_direction;
+
+	DynamicEntity* dynamic_target;
 
 	bool is_agressive;
 	bool commanded;

@@ -9,13 +9,13 @@
 #include "j1Entity.h"
 #include "StaticEntity.h"
 #include "brofiler/Brofiler/Brofiler.h"
-#include "p2SString.h"
 #include "AI_Manager.h"
 #include "GenericPlayer.h"
 #include "j1Player.h"
 #include "AI_Player.h"
 #include "j1Scene.h"
 #include "j1Pathfinding.h"
+#include "AssetsManager.h"
 #include "FoWManager.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -68,7 +68,7 @@ void j1Map::Draw()
 					TileSet* tileset = GetTilesetFromTileId(tile_id);
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 
-					if (CheckVisibleArea(x, y) == true || App->render->debug == true) { //Check Fog Of War visibility
+					if (CheckVisibleArea(x, y) == true || App->render->fog_of_war == false) { //Check Fog Of War visibility
 						//camera culling
 						if ((pos.x + r.w + tileset->offset_x > -(App->render->camera.x))
 							&& (pos.x < -App->render->camera.x + App->render->camera.w)
@@ -87,13 +87,11 @@ void j1Map::Draw()
 
 int Properties::Get(const char* value, int default_value) const
 {
-	p2List_item<Property*>* item = list.start;
-
-	while(item)
+	for (size_t i = 0; i < list.size(); i++)
 	{
-		if(item->data->name == value)
-			return item->data->value;
-		item = item->next;
+		if (list[i]->name == value) {
+			return list[i]->value;
+		}
 	}
 
 	return default_value;
@@ -102,7 +100,7 @@ int Properties::Get(const char* value, int default_value) const
 TileSet* j1Map::GetTilesetFromTileId(int id) const
 {
 	TileSet* set = (TileSet*)&data.tilesets[0];
-	for (int i = 0; i < MAX_TILESETS; i++){
+	for(int i = 0; i < MAX_TILESETS; i++){
 		set = (TileSet*)&data.tilesets[i];
 		if (id < data.tilesets[i + 1].firstgid)
 		{
@@ -141,6 +139,31 @@ iPoint j1Map::MapToWorld(int x, int y) const
 	{
 //		LOG("Unknown map type");
 		ret.x = x; 
+		ret.y = y;
+	}
+
+	return ret;
+}
+
+
+fPoint j1Map::fMapToWorld(int x, int y) const
+{
+	fPoint ret;
+
+	if (data.type == MAPTYPE_ORTHOGONAL)
+	{
+		ret.x = x * data.tile_width;
+		ret.y = y * data.tile_height;
+	}
+	else if (data.type == MAPTYPE_ISOMETRIC)
+	{
+		ret.x = (x - y) * (data.tile_width * 0.5f);
+		ret.y = (x + y) * (data.tile_height * 0.5f);
+	}
+	else
+	{
+		//		LOG("Unknown map type");
+		ret.x = x;
 		ret.y = y;
 	}
 
@@ -219,12 +242,11 @@ SDL_Rect TileSet::GetTileRect(int id) const
 
 // Called before quitting
 bool j1Map::CleanUp()
-{
-	//TODO
+{	
 	LOG("Unloading map");
 
 	//remove all tilesets
-	for (int i = 0; i < MAX_TILESETS; i++)
+	for(int i = 0; i < MAX_TILESETS; i++)
 	{
 		App->tex->UnLoad(data.tilesets[i].texture);
 	}
@@ -240,12 +262,15 @@ bool j1Map::CleanUp()
 bool j1Map::Load(std::string modules[4])
 {
 	bool ret = true;
-	for (int i = 0; i < 4; i++) {
+	for(int i = 0; i < 4; i++) {
 		std::string tmp = folder;
 		tmp.append(modules[i].c_str());
 
-		pugi::xml_parse_result result = map_file.load_file(tmp.c_str());
-
+		char* buffer;
+		int bytesFile = App->assetManager->Load(tmp.c_str(), &buffer);
+		pugi::xml_parse_result result = map_file.load_buffer(buffer, bytesFile);
+		
+		RELEASE_ARRAY(buffer);
 		if(result == NULL)
 		{
 			LOG("Could not load map xml file %s. pugi error: %s", modules[i].c_str(), result.description());
@@ -263,7 +288,7 @@ bool j1Map::Load(std::string modules[4])
 			// Load all tilesets info ----------------------------------------------
 			pugi::xml_node tileset = map_file.child("map").child("tileset");
 
-			for (int t = 0; t < MAX_TILESETS && ret; t++)
+			for(int t = 0; t < MAX_TILESETS && ret; t++)
 			{
 				TileSet* set = new TileSet();
 				if (ret == true)
@@ -289,7 +314,7 @@ bool j1Map::Load(std::string modules[4])
 
 		// Load layer info ----------------------------------------------
 		pugi::xml_node layer = map_file.child("map").child("layer");
-		for (int l = 0; l < MAX_LAYERS && ret; l++)
+		for(int l = 0; l < MAX_LAYERS && ret; l++)
 		{
 			ret = LoadLayer(layer, &data.layers[l], i);
 			layer = layer.next_sibling("layer");
@@ -314,7 +339,7 @@ bool j1Map::Load(std::string modules[4])
 			LOG("tile_width: %d tile_height: %d", data.tile_width, data.tile_height);
 
 			if (i == 0) {
-				for (int t = 0; t < MAX_TILESETS; t++)
+				for(int t = 0; t < MAX_TILESETS; t++)
 				{
 					LOG("Tileset ----");
 					LOG("name: %s firstgid: %d", data.tilesets[t].name.c_str(), data.tilesets[t].firstgid);
@@ -323,7 +348,7 @@ bool j1Map::Load(std::string modules[4])
 				}
 			}
 
-			for (int l = 0; l < MAX_LAYERS; l++)
+			for(int l = 0; l < MAX_LAYERS; l++)
 			{
 				LOG("Layer ----");
 				LOG("name: %s", data.layers[l].name.c_str());
@@ -357,16 +382,17 @@ bool j1Map::LoadMap()
 		data.height = map.attribute("height").as_int() * 2;
 		data.tile_width = map.attribute("tilewidth").as_int();
 		data.tile_height = map.attribute("tileheight").as_int();
-		p2SString bg_color(map.attribute("backgroundcolor").as_string());
+		std::string bg_color(map.attribute("backgroundcolor").as_string());
 
 		data.background_color.r = 0;
 		data.background_color.g = 0;
 		data.background_color.b = 0;
 		data.background_color.a = 0;
 
-		if(bg_color.Length() > 0)
+		/*
+		if(bg_color.size() > 0)
 		{
-			p2SString red, green, blue;
+			std::string red, green, blue;
 			bg_color.SubString(1, 2, red);
 			bg_color.SubString(3, 4, green);
 			bg_color.SubString(5, 6, blue);
@@ -382,6 +408,7 @@ bool j1Map::LoadMap()
 			sscanf_s(blue.GetString(), "%x", &v);
 			if(v >= 0 && v <= 255) data.background_color.b = v;
 		}
+		*/
 
 		std::string orientation = std::string(map.attribute("orientation").as_string());
 
@@ -630,7 +657,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 				}
 
 				//create building
-				static_entity = (StaticEntity*)App->entities->CreateEntity(building_faction, type, x,y, App->scene->players[building_faction]);
+				static_entity = dynamic_cast<StaticEntity*>(App->entities->CreateEntity(building_faction, type, x,y, App->scene->players[building_faction]));
 				static_entity->tiles = CalculateArea(first_tile_position, width, height);
 				static_entity->CalculateRenderAndSpawnPositions();
 
@@ -644,7 +671,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 				else if (object_type == "Bighorner") App->entities->CreateEntity(NO_FACTION, BIGHORNER, position.x, position.y);
 				else if (object_type == "SpawnPoint")
 				{
-					for (int i = 0; i < 15; i++)
+					for(int i = 0; i < 15; i++)
 					{
 						spawnPoint[i].x = object_node.attribute("x").as_float() + offset[module_number].x;
 						spawnPoint[i].y = object_node.attribute("y").as_float() + offset[module_number].y;
@@ -679,7 +706,7 @@ bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 			p->name = prop.attribute("name").as_string();
 			p->value = prop.attribute("value").as_int();
 
-			properties.list.add(p);
+			properties.list.push_back(p);
 		}
 	}
 
@@ -689,20 +716,6 @@ bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 bool j1Map::CheckVisibleArea(int x, int y)
 {
 	bool ret = false;
-
-	//Fog
-	/*switch (App->fowManager->GetFoWTileState({ x, y })->tileFogBits) {
-	case fow_ALL:
-		ret = false;
-		break;
-	}
-
-	//Shroud
-	switch (App->fowManager->GetFoWTileState({ x, y })->tileShroudBits) {
-	case fow_ALL://Covered totally by shroud
-		ret = false;
-		break;
-	}*/
 
 	if (App->fowManager->GetFoWTileState({ x, y })->tileFogBits != fow_ALL) 
 		ret = true;
@@ -720,9 +733,9 @@ bool j1Map::CreateWalkabilityMap() const
 
 	MapLayer* layer = (MapLayer*)&data.layers[MAX_LAYERS -1];
 
-	for (int y = 0; y < data.height; ++y)
+	for(int y = 0; y < data.height; ++y)
 	{
-		for (int x = 0; x < data.width; ++x)
+		for(int x = 0; x < data.width; ++x)
 		{
 			int i = (y * layer->width) + x;
 
@@ -746,9 +759,9 @@ std::vector<iPoint> j1Map::CalculateArea(iPoint first_tile_position, int width, 
 
 	first_tile_position = IsometricWorldToMap(first_tile_position.x, first_tile_position.y);
 
-	for (int i = 0; i < width; i++)
+	for(int i = 0; i < width; i++)
 	{
-		for (int j = 0; j < height; j++)
+		for(int j = 0; j < height; j++)
 		{
 			//get tile position
 			iPoint tile_position = { first_tile_position.x + i,first_tile_position.y + j };

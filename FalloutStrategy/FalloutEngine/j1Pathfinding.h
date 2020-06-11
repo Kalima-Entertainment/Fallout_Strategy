@@ -8,7 +8,7 @@
 
 #define DEFAULT_PATH_LENGTH 50
 #define INVALID_WALK_CODE 255
-#define MAX_PATH_ITERATIONS 500
+#define MAX_PATH_ITERATIONS 200
 
 class j1PathFinding : public j1Module
 {
@@ -45,7 +45,7 @@ public:
 
 	std::vector<iPoint> CreateNodeMap();
 	std::vector<iPoint> GetNodeMap() const;
-	int GetDistanceBetweenNodes() const { return 150 / node_map_divisions; }
+	int GetDistanceBetweenNodes() const;
 	std::vector<iPoint> CreateNodePath(iPoint origin, iPoint destination);
 
 	float GetLastPathRequestTime() const;

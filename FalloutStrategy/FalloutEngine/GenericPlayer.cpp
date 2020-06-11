@@ -1,9 +1,15 @@
 #include "GenericPlayer.h"
 #include "j1Entity.h"
+#include "Gatherer.h"
+#include "Troop.h"
+#include "StaticEntity.h"
 #include <vector>
 
-GenericPlayer::GenericPlayer() : j1Module() {
+GenericPlayer::GenericPlayer() : j1Module(), is_ai(false) {
 	name.assign("GenericPlayer");
+	caps = 500;
+	food = 250;
+	water = 500;
 	melees = 0;
 	rangeds = 0;
 	gatherers = 0;
@@ -30,26 +36,26 @@ bool GenericPlayer::DeleteEntity(j1Entity* entity) {
 	switch (entity->type)
 	{
 	case MELEE:
-		for (int m = 0; m < troops.size(); m++)
+		for(int m = 0; m < troops.size(); m++)
 		{
-			if (troops[m] == (Troop*)entity) {
+			if (troops[m] == dynamic_cast<Troop*>(entity)) {
 				troops.erase(troops.begin() + m);
 			}
 		}
 		melees--;
 		break;
 	case RANGED:
-		for (int r = 0; r < troops.size(); r++)
+		for(int r = 0; r < troops.size(); r++)
 		{
-			if (troops[r] == (Troop*)entity) {
+			if (troops[r] == dynamic_cast<Troop*>(entity)) {
 				troops.erase(troops.begin() + r);
 			}
 		}
 		rangeds--;
 		break;
 	case GATHERER:
-		for (int g = 0; g < gatherers_vector.size(); g++) {
-			if (gatherers_vector[g] == (Gatherer*)entity) {
+		for(int g = 0; g < gatherers_vector.size(); g++) {
+			if (gatherers_vector[g] ==  dynamic_cast<Gatherer*>(entity)) {
 				gatherers_vector.erase(gatherers_vector.begin() + g);
 			}
 		}
@@ -59,9 +65,9 @@ bool GenericPlayer::DeleteEntity(j1Entity* entity) {
 		base = nullptr;
 		break;
 	case BARRACK:
-		if (barrack[0] == (StaticEntity*)entity)
+		if (barrack[0] == dynamic_cast<StaticEntity*>(entity))
 			barrack[0] = nullptr;
-		else if (barrack[1] == (StaticEntity*)entity)
+		else if (barrack[1] == dynamic_cast<StaticEntity*>(entity))
 			barrack[1] = nullptr;
 		break;
 	case LABORATORY:

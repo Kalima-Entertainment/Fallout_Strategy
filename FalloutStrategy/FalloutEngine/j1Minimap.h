@@ -6,7 +6,7 @@
 #include "j1Timer.h"
 #include "j1PerfTimer.h"
 
-#define PI 3.1415
+#define Pi 3.1415
 
 struct Line {
 	int x1;
@@ -31,11 +31,12 @@ public:
 	bool Awake(pugi::xml_node& config);
 	bool PostUpdate();
 	bool CleanUp();
+	bool Reset();
 
 	bool CreateMinimap();
 	iPoint WorldToMinimap(int x, int y);
 	iPoint ScreenToMinimapToWorld(int x, int y);
-	iPoint MapToMinimap(int x, int y);
+	fPoint MapToMinimap(int x, int y);
 	iPoint MinimapToMap(int x, int y);
 	void EnableRadar();
 	void DrawFogOfWar();

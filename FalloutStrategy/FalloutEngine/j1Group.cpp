@@ -4,23 +4,29 @@
 #include "j1App.h"
 #include "j1Input.h"
 #include "j1Pathfinding.h"
+#include "DynamicEntity.h"
 
-j1Group::j1Group()
-{
+j1Group::j1Group() {
+	last_goal.x = 0;
+	last_goal.y = 0;
 }
 
 j1Group::~j1Group()
 {
 }
 
-void j1Group::addUnit(j1Entity* unit_toadd)
+void j1Group::addUnit(DynamicEntity* unit_toadd)
 {
 	Units.push_back(unit_toadd);
 }
 
-void j1Group::removeUnit(j1Entity* unit_toremove)
+void j1Group::removeUnit(DynamicEntity* unit_toremove)
 {
-	Units.remove(unit_toremove);
+	for (size_t i = 0; i < Units.size(); i++)
+	{
+		if (unit_toremove == Units[i])
+			Units.erase(Units.cbegin() + i);
+	}
 }
 
 void j1Group::AddTiletoOccupied(iPoint to_add)
@@ -41,6 +47,13 @@ void j1Group::ClearOccupiedlist()
 	Occupied_tiles.clear();
 }
 
+void j1Group::DeselectGroup() {
+	for (size_t i = 0; i < Units.size(); i++)
+	{
+		Units[i]->info.IsSelected = false;
+	}
+}
+
 int j1Group::GetSize()
 {
 	return Units.size();
@@ -51,21 +64,21 @@ void j1Group::CheckForMovementRequest(iPoint destiny, float dt)
 	App->Mmanager->Move(this, destiny, dt);
 }
 
-bool j1Group::IsGroupLead(j1Entity* entity)
+bool j1Group::IsGroupLead(DynamicEntity* entity)
 {
 	return (*Units.begin()) == entity;
 }
 
-void j1Group::SetUnitGoalTile(j1Entity* entity)
+void j1Group::SetUnitGoalTile(DynamicEntity* entity)
 {
-	std::list <j1Entity*>::const_iterator it = Units.begin();
+	std::vector<DynamicEntity*>::const_iterator it = Units.cbegin();
 	bool Goal_found = false;
 
-	while (it != Units.end())
+	while (it != Units.cend())
 	{
 		if (*it == entity)
 		{
-			it++;
+			++it;
 			continue;
 		}
 
@@ -74,13 +87,12 @@ void j1Group::SetUnitGoalTile(j1Entity* entity)
 		if (Goal_found)
 		{
 			entity->info.goal_tile = last_goal;
-			//entity->target_tile = last_goal;
+			entity->target_tile = last_goal;
 			break;
 		}
 
-		it++;
+		++it;
 	}
-
 }
 
 bool j1Group::FindFreeAdjacents(iPoint* base_tile)
@@ -178,30 +190,10 @@ bool j1Group::IsTileFree(iPoint* adjacent)
 			return false;
 		}
 
-		it++;
+		++it;
 	}
 
 	AddTiletoOccupied(*adjacent);
-
-	return true;
-}
-
-// Load Game State
-bool j1Group::Load(pugi::xml_node& data)
-{
-	//camera.x = data.child("camera").attribute("x").as_int();
-	//camera.y = data.child("camera").attribute("y").as_int();
-
-	return true;
-}
-
-// Save Game State
-bool j1Group::Save(pugi::xml_node& data) const
-{
-	//pugi::xml_node cam = data.append_child("camera");
-
-	//cam.append_attribute("x") = camera.x;
-	//cam.append_attribute("y") = camera.y;
 
 	return true;
 }
