@@ -9,6 +9,7 @@
 #include "j1Scene.h"
 #include "j1Textures.h"
 #include "j1EntityManager.h"
+#include "FoWManager.h"
 #include "AI_Manager.h"
 #include "j1Gui.h"
 #include "j1Minimap.h"
@@ -119,10 +120,13 @@ bool j1Transition::CleanUp()
 {
 	App->tex->UnLoad(logo_tex);
 	logo_tex = nullptr;
+	
 	App->tex->UnLoad(gif_tex);
 	gif_tex = nullptr;
+	
 	App->tex->UnLoad(background);
 	background = nullptr;
+	
 	loader = nullptr;
 	return true;
 }
@@ -154,6 +158,7 @@ void j1Transition::Transition()
 	App->render->Blit(gif_tex, 536, 191, &animationGif.GetCurrentFrame(lastdt), 1.0F, 0);
 	App->render->Blit(logo_tex, 470, 400, &animationLogo.GetCurrentFrame(lastdt), 1.0F, 0);
 
+
 	if ((!App->entities->loading_reference_entities) && (App->gui->ingame == true) && (fadetimer.Read() > 2500))
 	{
 		Mix_HaltChannel(1);
@@ -178,6 +183,7 @@ void j1Transition::Transition()
 		App->ai_manager->Disable();
 		App->player->Disable();
 		App->entities->Disable();
+		App->fowManager->CleanUp();
 		App->scene->Disable();
 		App->map->Disable();
 		App->minimap->Disable();
