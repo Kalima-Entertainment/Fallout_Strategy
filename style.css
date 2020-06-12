@@ -70,11 +70,28 @@ html {
     
 }
 
+.war{
+    
+    font-size: 60px;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color:rgb(255, 255, 255);
+    text-align: center;
+    
+}
+
+.turn{
+    
+    font-size: 25px;
+    color:black;
+    text-align: left;
+    
+}
+
 .par{
     
     font-size: 65px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    color:rgb(23, 58, 35);
+    color:rgb(194, 88, 88);
     
 }
 
