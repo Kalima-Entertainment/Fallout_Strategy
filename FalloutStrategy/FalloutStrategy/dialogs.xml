@@ -1,0 +1,24 @@
+<!-- Entities file for the game -->
+<dialogs>
+ <dialog statement="It seems that some factions have set their bases around here. We must act now before it is too late.">
+  <option text="We must get them out of here right now." response="That is the spirit! Go get your troops."/>
+  <option text="I do not want to. My life is too precious to be risked." response="You better get going or I will get you out of our faction."/>
+  <option text="I have nothing more to do, I will do it." response="Damn, risking your life for boredom, you really don’t care about your own life."/>
+ </dialog>
+ <dialog statement="First of all we need to feed our people or they will die of hunger before seeing the first bullet.">
+  <option text="There are some brahms and bighorners around here, I can send my troops." response="Great! We need at least 200 of food to feed them all."/>
+  <option text="Water and caps are our main priority right now. We can survive with what we already have." response="That is good, but caps are not good to eat. Trust me."/>
+  <option text="No way I am risking my troops for such a silly reason. If needed they will eat stones but we will stand here." response="If you do not get out there and get at least 200 of food you won’t get your daily ration of food."/>
+ </dialog>
+ <dialog statement="People are also bone-dry we should get some water before they die because of thirst">
+  <option text="Be sure that my troops and I will do the impossible to get the water we need." response="Our people will be grateful for your courage. If you get 300 of water they  will see another day."/>
+  <option text="Then they should swallow saliva. They have plenty of it. " response="If you keep walking in that path, you will be excluded from the faction, get the 300 of water and shut up."/>
+  <option text="Going out there to get more water? They can stand drinking half the normal amount" response="Do you want to be the one to tell our people you're not getting the 300 of water for pure lazyness?"/>
+ </dialog>
+ <dialog statement="We need 1000 caps to try our new weapon">
+  <option text="Ok, I will gather the resources required. Then, I will RELEASE THE HANDY." response="Well said boy!!!"/>
+  <option text="We will build one when we really need it, I am not risking my men just for your stupid games." response="It is not a stupid game, It is called strategy boy. Go out there and get some caps."/>
+  <option text="Man is the best weapon nowadays. Thanks to him, we are living in this graveyard called world." response="It is a pity but you are right. However, with this weapon the blood of your men will not paint the battlefield."/>
+ </dialog>
+ <dialog statement="Get the resources we need within 10 minutes or those damn Deathclaws will get to us before we realise."/>
+</dialogs>
