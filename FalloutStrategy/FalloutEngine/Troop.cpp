@@ -192,7 +192,7 @@ bool Troop::Update(float dt) {
 		}
 		else if (current_tile == target_tile){
 			state = IDLE;
-			path_to_target.clear();
+			//path_to_target.clear();
 			commanded = false;
 		}
 
@@ -228,7 +228,7 @@ bool Troop::Update(float dt) {
 				}
 			}
 			else if (dynamic_target != nullptr) {
-				if (current_tile.DistanceNoSqrt(dynamic_target->current_tile) > range) {
+				if (current_tile.DistanceManhattan(dynamic_target->current_tile) > range) {
 					PathfindToPosition(dynamic_target->current_tile);
 				}
 				else {

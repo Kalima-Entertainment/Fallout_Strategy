@@ -728,7 +728,7 @@ iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) 
 	int distance_to_origin = 100000;
 	int distance_to_destination = 100000;
 
-	while (max < 5) {
+	while (max < 10) {
 		for(int y = -max; y <= max; y++)
 		{
 			for(int x = -max; x <= max; x++)

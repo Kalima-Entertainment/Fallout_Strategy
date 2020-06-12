@@ -111,6 +111,7 @@ StaticEntity::~StaticEntity() {
 	texture = nullptr;
 	StaticParticle = nullptr;
 	HitParticle = nullptr;
+	state = NO_STATE;
 
 	visionEntity = nullptr;
 	tiles.clear();

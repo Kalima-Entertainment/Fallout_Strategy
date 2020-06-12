@@ -97,7 +97,7 @@ j1Group* j1MovementManager::CreateGroup(std::vector<DynamicEntity*> entities_vec
 	// --- Finally, If the group is Valid add it to our Groups list, else delete it ---
 	if (Validgroup) {
 		Groups.push_back(group);
-		LOG("Group Created");
+		//LOG("Group Created");
 		return group;
 	}
 	else {

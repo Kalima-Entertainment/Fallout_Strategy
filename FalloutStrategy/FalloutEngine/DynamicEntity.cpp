@@ -158,7 +158,7 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 
 	if (!App->pathfinding->IsWalkable(current_tile)) {
 		next_tile = App->pathfinding->FindNearestWalkableTile(current_tile, destination);
-		ret = App->pathfinding->IsWalkable(next_tile);
+		return App->pathfinding->IsWalkable(next_tile);
 	}
 
 	//if the tile is in the map but it's not walkable
