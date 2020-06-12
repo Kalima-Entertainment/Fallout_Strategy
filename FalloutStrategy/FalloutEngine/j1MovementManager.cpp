@@ -91,7 +91,7 @@ j1Group* j1MovementManager::CreateGroup(std::vector<DynamicEntity*> entities_vec
 		// --- Add the entity to the new group, update its current group pointer ---
 		group->addUnit(*entity);
 		(*entity)->info.current_group = group;
-		entity++;
+		++entity;
 	}
 
 	// --- Finally, If the group is Valid add it to our Groups list, else delete it ---
