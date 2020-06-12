@@ -59,7 +59,7 @@ public:
 	UI_element* credits_menu[5];
 	UI_element* collaborators[9];
 	UI_element* select_faction_menu[10];
-	UI_element* select_faction_photos[4];
+	UI_element* group_photos[8];
 	UI_element* pause_menu[7];
 	UI_element* gui_ingame[5];
 	UI_element* tutorial[8];

@@ -35,6 +35,7 @@ UI_Button::UI_Button(int x, int y, UI_Type type, SDL_Rect idle, SDL_Rect hover, 
 	dimensions = idle;
 
 	faction_image = nullptr;
+	group_image = nullptr;
 
 	current_state = BUTTON_STATE::NONE;
 
@@ -124,6 +125,86 @@ bool UI_Button::Update(float dt)
 				faction_image = dynamic_cast<j1Image*>(App->gui->CreateImage(510, 300, Image, { 2600, 2649, 602, 181 }, NULL, this));
 				faction_image->hover = true;
 				elements_to_show.push_back(faction_image);
+				current_state = BUTTON_STATE::HOVER;
+				inHover = !inHover;
+			}
+		}
+		else if (t == marc_photo)
+		{
+			if (inHover) {
+				group_image = dynamic_cast<j1Image*>(App->gui->CreateImage(820, 125, Image, { 3091, 424, 136, 124 }, NULL, this));
+				group_image->hover = true;
+				elements_to_show.push_back(group_image);
+				current_state = BUTTON_STATE::HOVER;
+				inHover = !inHover;
+			}
+		}
+		else if (t == javi_photo)
+		{
+			if (inHover) {
+				group_image = dynamic_cast<j1Image*>(App->gui->CreateImage(820, 125, Image, { 3255, 422, 138, 126 }, NULL, this));
+				group_image->hover = true;
+				elements_to_show.push_back(group_image);
+				current_state = BUTTON_STATE::HOVER;
+				inHover = !inHover;
+			}
+		}
+		else if (t == pablo_photo)
+		{
+			if (inHover) {
+				group_image = dynamic_cast<j1Image*>(App->gui->CreateImage(820, 125, Image, { 64, 12, 131, 122 }, NULL, this));
+				group_image->hover = true;
+				elements_to_show.push_back(group_image);
+				current_state = BUTTON_STATE::HOVER;
+				inHover = !inHover;
+			}
+		}
+		else if (t == german_photo)
+		{
+			if (inHover) {
+				group_image = dynamic_cast<j1Image*>(App->gui->CreateImage(835, 125, Image, { 242, 0, 105, 135 }, NULL, this));
+				group_image->hover = true;
+				elements_to_show.push_back(group_image);
+				current_state = BUTTON_STATE::HOVER;
+				inHover = !inHover;
+			}
+		}
+		else if (t == macia_photo)
+		{
+			if (inHover) {
+				group_image = dynamic_cast<j1Image*>(App->gui->CreateImage(820, 125, Image, { 1836, 1395, 138, 120 }, NULL, this));
+				group_image->hover = true;
+				elements_to_show.push_back(group_image);
+				current_state = BUTTON_STATE::HOVER;
+				inHover = !inHover;
+			}
+		}
+		else if (t == pol_photo)
+		{
+			if (inHover) {
+				group_image = dynamic_cast<j1Image*>(App->gui->CreateImage(820, 125, Image, { 2001, 1378, 130, 137 }, NULL, this));
+				group_image->hover = true;
+				elements_to_show.push_back(group_image);
+				current_state = BUTTON_STATE::HOVER;
+				inHover = !inHover;
+			}
+		}
+		else if (t == silvino_photo)
+		{
+			if (inHover) {
+				group_image = dynamic_cast<j1Image*>(App->gui->CreateImage(820, 125, Image, { 392, 8, 116, 124 }, NULL, this));
+				group_image->hover = true;
+				elements_to_show.push_back(group_image);
+				current_state = BUTTON_STATE::HOVER;
+				inHover = !inHover;
+			}
+		}
+		else if (t == christian_photo)
+		{
+			if (inHover) {
+				group_image = dynamic_cast<j1Image*>(App->gui->CreateImage(820, 125, Image, { 555, 0, 139, 135 }, NULL, this));
+				group_image->hover = true;
+				elements_to_show.push_back(group_image);
 				current_state = BUTTON_STATE::HOVER;
 				inHover = !inHover;
 			}

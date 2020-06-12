@@ -101,6 +101,15 @@ enum UI_Type {
 	FiestaLatinaFM_button,
 	FusionCoreFM_button,
 
+	//Group Photos
+	marc_photo,
+	silvino_photo,
+	pol_photo,
+	german_photo,
+	pablo_photo,
+	javi_photo,
+	christian_photo,
+	macia_photo,
 
 	UI_NONE
 };

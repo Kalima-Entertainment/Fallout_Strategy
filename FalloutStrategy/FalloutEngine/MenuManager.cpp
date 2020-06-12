@@ -59,8 +59,8 @@ MenuManager::MenuManager()
 	for(int i = 0; i <= 9; i++) {
 		select_faction_menu[i] = nullptr;
 	}
-	for(int i = 0; i <= 3; i++) {
-		select_faction_photos[i] = nullptr;
+	for(int i = 0; i <= 8; i++) {
+		group_photos[i] = nullptr;
 	}
 	for(int i = 0; i <= 6; i++) {
 		pause_menu[i] = nullptr;
@@ -197,6 +197,15 @@ void MenuManager::CreateMenu(Menu menu) {
 		credits_menu[2] = dynamic_cast<UI_Button*>(App->gui->CreateButton(65, 200, button_github_credits, { 2181,841,73,78 }, { 2181,919,73,78 }, { 2181,1005,73,78 }, NULL, this));
 		credits_menu[3] = dynamic_cast<UI_Button*>(App->gui->CreateButton(65, 300, button_web_credits, { 2268,841,73,78 }, { 2268,919,73,78 }, { 2268,1005,73,78 }, NULL, this));
 		credits_menu[4] = dynamic_cast<UI_Button*>(App->gui->CreateButton(65, 400, button_twitter_credits, { 2355,841,73,78 }, { 2355,919,73,78 }, { 2355,1005,73,78 }, NULL, this));
+
+		group_photos[0] = dynamic_cast<UI_Button*>(App->gui->CreateButton(450, 127, marc_photo, { 11, 541, 166, 25 }, { 11, 541,166, 25 }, { 11, 541, 166, 25 }, NULL, this));
+		group_photos[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(450, 172, javi_photo, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, NULL, this));
+		group_photos[2] = dynamic_cast<UI_Button*>(App->gui->CreateButton(450, 217, pablo_photo, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, NULL, this));
+		group_photos[3] = dynamic_cast<UI_Button*>(App->gui->CreateButton(450, 262, german_photo, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, NULL, this));
+		group_photos[4] = dynamic_cast<UI_Button*>(App->gui->CreateButton(450, 307, macia_photo, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, NULL, this));
+		group_photos[5] = dynamic_cast<UI_Button*>(App->gui->CreateButton(450, 352, pol_photo, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, NULL, this));
+		group_photos[6] = dynamic_cast<UI_Button*>(App->gui->CreateButton(450, 397, silvino_photo, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, NULL, this));
+		group_photos[7] = dynamic_cast<UI_Button*>(App->gui->CreateButton(450, 442, christian_photo, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, NULL, this));
 
 		last_menu = current_menu;
 		current_menu = Menu::CREDITS;
@@ -1153,6 +1162,7 @@ void MenuManager::DestroyMenu(Menu menu) {
 		break;
 	case Menu::CREDITS:
 		App->gui->DeleteArrayElements(credits_menu, 5);
+		App->gui->DeleteArrayElements(group_photos, 8);
 		break;
 	case Menu::SELECT_FACTION:
 		App->gui->DeleteArrayElements(select_faction_menu, 10);
