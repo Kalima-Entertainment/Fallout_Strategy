@@ -270,7 +270,11 @@ void DynamicEntity::Move(float dt) {
 		path_to_target.clear();
 		commanded = false;
 	}
-	else {
+	else if (current_tile == next_tile){
+		//if there is a new path erase the first element
+		if (path_to_target.size() > 0)
+			path_to_target.erase(path_to_target.cbegin());
+
 		//if the entity has a path to follow
 		if (path_to_target.size() > 0) {
 			//next tile is the first tile in the list
@@ -279,10 +283,6 @@ void DynamicEntity::Move(float dt) {
 			//if next tile is occupied create the path again
 			if (App->entities->IsTileOccupied(next_tile))
 				PathfindToPosition(target_tile);
-
-			//if there is a new path erase the first element
-			if (path_to_target.size() > 0)
-				path_to_target.erase(path_to_target.cbegin());
 		}
 		else {
 			PathfindToPosition(target_tile);
@@ -562,7 +562,7 @@ void DynamicEntity::CheckDestination(iPoint destination) {
 		if (target->is_dynamic)
 			dynamic_target = dynamic_cast<DynamicEntity*>(target);
 		else if (is_agressive) {
-			if ((type == MELEE)||(type == RANGED)||(type == MR_HANDY))
+			if (((type == MELEE)||(type == RANGED)||(type == MR_HANDY))&&(faction != target->faction))
 				dynamic_cast<Troop*>(this)->target_building = dynamic_cast<StaticEntity*>(target);
 			else if(type == DEATHCLAW)
 				dynamic_cast<Deathclaw*>(this)->target_building = dynamic_cast<StaticEntity*>(target);

@@ -516,9 +516,7 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 }
 
 bool j1Player::TouchingUI(int x, int y) {
-	bool ret = false;
-	if (y > App->minimap->position.y - 8) { ret = true; }
-	return ret;
+	return y > App->minimap->position.y - 8;
 }
 
 // Load Game State

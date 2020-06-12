@@ -314,8 +314,14 @@ void j1Scene::RectangleSelection()
 	rectangle_width = mouse_pos.x - rectangle_origin.x;
 	rectangle_height = mouse_pos.y - rectangle_origin.y;
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) rectangle_origin = mouse_pos;
-	else if (std::abs(rectangle_width) >= RECT_MIN_AREA && std::abs(rectangle_height) >= RECT_MIN_AREA && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) {
+	int mouse_x;
+	int mouse_y;
+
+	App->input->GetMousePosition(mouse_x, mouse_y);
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+		rectangle_origin = mouse_pos;
+	else if (std::abs(rectangle_width) >= RECT_MIN_AREA && std::abs(rectangle_height) >= RECT_MIN_AREA && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && !App->player->TouchingUI(mouse_x, mouse_y)) {
 
 		// --- Rectangle size ---
 		int width = mouse_pos.x - rectangle_origin.x;
@@ -338,7 +344,7 @@ void j1Scene::RectangleSelection()
 		// --- Check for Units in the rectangle, select them ---
 		App->Mmanager->SelectEntities_inRect(SRect);
 	}
-	else if (((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) && (App->player->TouchingUI(mouse_pos.x, mouse_pos.y))) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)) {
+	else if ((App->player->TouchingUI(mouse_x, mouse_y)) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)) {
 		std::vector<DynamicEntity*> selected_entities;
 		for(size_t i = 0; i < App->entities->entities.size(); i++)
 		{

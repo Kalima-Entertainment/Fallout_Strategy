@@ -186,6 +186,9 @@ std::vector<iPoint> j1PathFinding::CreateNodePath(iPoint origin, iPoint destinat
 	BROFILER_CATEGORY("CreateNodePath", Profiler::Color::Azure)
 	std::vector<iPoint> path;
 	int node_distance = GetDistanceBetweenNodes();
+	srand(time(NULL));
+	int x_delay = (rand() % 3) - 1;
+	int y_delay = (rand() % 3) - 1;
 
 	iPoint origin_node = node_map[0];
 	iPoint destination_node = node_map[0];
@@ -228,6 +231,12 @@ std::vector<iPoint> j1PathFinding::CreateNodePath(iPoint origin, iPoint destinat
 		}
 		current_node = best_node;
 		path.push_back(best_node);
+	}
+
+	for (size_t i = 0; i < path.size(); i++)
+	{
+		path[i].x += x_delay;
+		path[i].y += y_delay;
 	}
 
 	//flip final path

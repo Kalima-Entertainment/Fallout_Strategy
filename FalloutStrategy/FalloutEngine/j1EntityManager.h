@@ -90,7 +90,7 @@ public:
 	void DestroyResourceSpot(ResourceBuilding* resource_spot);
 
 	//Find entities
-	j1Entity*		  FindEntityByTile(iPoint tile);
+	j1Entity*		  FindEntityByTile(iPoint tile, j1Entity* entity_to_skip = nullptr);
 	ResourceBuilding* FindResourceBuildingByTile(iPoint tile);
 	ResourceBuilding* GetClosestResourceBuilding(iPoint current_position, Resource resource_type);
 	bool IsTileOccupied(iPoint position);

@@ -676,21 +676,23 @@ void j1EntityManager::DestroyAllEntitiesNow() {
 	entities.clear();
 }
 
-j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
+j1Entity* j1EntityManager::FindEntityByTile(iPoint tile, j1Entity* entity_to_skip) {
 	for(size_t i = 0; i < entities.size(); i++)
 	{
-		if (entities[i]->is_dynamic)
-		{
-			if (entities[i]->current_tile == tile)
-				return entities[i];
-		}
-		else
-		{
-			StaticEntity* static_entity = dynamic_cast<StaticEntity*>(entities[i]);
-			for(size_t j = 0; j < static_entity->tiles.size(); j++)
+		if (entities[i] != entity_to_skip) {
+			if (entities[i]->is_dynamic)
 			{
-				if (static_entity->tiles[j] == tile)
+				if (entities[i]->current_tile == tile)
 					return entities[i];
+			}
+			else
+			{
+				StaticEntity* static_entity = dynamic_cast<StaticEntity*>(entities[i]);
+				for (size_t j = 0; j < static_entity->tiles.size(); j++)
+				{
+					if (static_entity->tiles[j] == tile)
+						return entities[i];
+				}
 			}
 		}
 	}
