@@ -21,7 +21,7 @@
 #include "FoWManager.h"
 
 j1Player::j1Player() : GenericPlayer() {
-	
+
 	name.assign("Player");
 
 	selected_entity = last_selected_entity = nullptr;
@@ -46,6 +46,7 @@ j1Player::j1Player() : GenericPlayer() {
 j1Player::~j1Player() {
 	selected_entity = nullptr;
 	last_selected_entity = nullptr;
+	selected_group = nullptr;
 
 	for(size_t t = 0; t < troops.size(); t++) { troops[t] = nullptr; }
 	troops.clear();
@@ -62,9 +63,9 @@ bool j1Player::Start() {
 	App->console->CreateCommand("water+", "increase the amount of water", this);
 	App->console->CreateCommand("resources+", "increase all resources", this);
 	App->console->CreateCommand("god_mode", "turn god mode on and off", this);
-	App->console->CreateCommand("spawn_units", "spawn 1 gatherer, 1 melee and 1 ranged. Must have a building selected", this);	
+	App->console->CreateCommand("spawn_units", "spawn 1 gatherer, 1 melee and 1 ranged. Must have a building selected", this);
 	App->console->CreateCommand("spawn", "<spawn gatherer><spawn melee><spawn ranged><spawn army>. Spawn one unit or an army. Must have a building selected", this);
-	defeated = false;	
+	defeated = false;
 
 	return true;
 }
@@ -125,8 +126,10 @@ bool j1Player::PreUpdate() {
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
 			selected_entity = SelectEntity();
 			if ((selected_entity == nullptr) && (selected_group != nullptr)) {
-				selected_group->DeselectGroup();
-				selected_group = nullptr;
+				if (!TouchingUI(mouse_position.x, mouse_position.y)) {
+					selected_group->DeselectGroup();
+					selected_group = nullptr;
+				}
 			}
 
 
@@ -212,9 +215,9 @@ bool j1Player::Update(float dt) {
 	Map_mouseposition = App->map->WorldToMap((int)App->scene->mouse_pos.x, (int)App->scene->mouse_pos.y);
 
 	if (qcaps == false) {
-		
+
 		if (caps >= 1000) {
-			
+
 			if (App->gui->open == false) {
 				App->menu_manager->quest[8] = (j1Image*)App->gui->CreateImage(-274, 200, Image, { 3061, 619, 30, 27 }, NULL, this);
 				reward++;
@@ -241,7 +244,7 @@ bool j1Player::Update(float dt) {
 					App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
 				}
 			}
-		
+
 			qcaps = true;
 		}
 	}
@@ -276,13 +279,13 @@ bool j1Player::Update(float dt) {
 					App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
 				}
 			}
-			
+
 			qwater = true;
 		}
 	}
 
 	if (qfood == false) {
-		
+
 		if (food >= 400) {
 
 			if (App->gui->open == false) {
@@ -311,14 +314,14 @@ bool j1Player::Update(float dt) {
 					App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
 				}
 			}
-			
+
 			qfood = true;
 		}
 	}
 
 	iPoint selected_spot;
 	App->input->GetMousePosition(selected_spot.x, selected_spot.y);
-	
+
 	if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) && ((selected_entity != nullptr)||(selected_group != nullptr))) {
 		if ((selected_entity != nullptr)&&(selected_entity->is_dynamic))
 			MoveEntity(dynamic_cast<DynamicEntity*>(selected_entity));
@@ -397,7 +400,7 @@ void j1Player::MoveEntity(DynamicEntity* entity){
 	}
 
 	//dynamic entities
-	if (entity->state != DIE) 
+	if (entity->state != DIE)
 	{
 		if (entity->info.current_group != nullptr)
 			entity->info.current_group = nullptr;
@@ -467,14 +470,14 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 	}
 
 	if (command_beginning == "god_mode") {
-		if (command_parts[1] == "on") { 
+		if (command_parts[1] == "on") {
 			god_mode = true;
 			LOG("God mode turned on");
 		}
-		if (command_parts[1] == "off") { 
-			god_mode = false; 
+		if (command_parts[1] == "off") {
+			god_mode = false;
 			LOG("God mode turned off");
-		}		
+		}
 	}
 
 	if (command_beginning == "spawn_units") {
@@ -483,14 +486,14 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 			static_entity = static_cast<StaticEntity*>(last_selected_entity);
 		else
 			static_entity = static_cast<StaticEntity*>(selected_entity);
-		
+
 		if (static_entity != nullptr) {
 			App->entities->CreateEntity(static_entity->faction, GATHERER, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
 			App->entities->CreateEntity(static_entity->faction, MELEE, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
 			App->entities->CreateEntity(static_entity->faction, RANGED, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
 
 			LOG("1 unit from each type spawned successfully");
-		}		
+		}
 	}
 
 	if (command_beginning == "spawn") {

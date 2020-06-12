@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <map version="1.0" orientation="isometric" renderorder="right-down" width="75" height="75" tilewidth="64" tileheight="32" nextobjectid="78">
+=======
+<map version="1.0" orientation="isometric" renderorder="right-down" width="75" height="75" tilewidth="64" tileheight="32" nextobjectid="25">
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
  <tileset firstgid="1" name="Floors" tilewidth="64" tileheight="32" tilecount="512" columns="16">
   <image source="Floors64x32.png" width="1024" height="1024"/>
  </tileset>
@@ -23151,7 +23155,11 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="0"/>
+=======
+   <tile gid="874"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -23233,7 +23241,11 @@
    <tile gid="0"/>
    <tile gid="877"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="0"/>
+=======
+   <tile gid="879"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -24038,7 +24050,11 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="0"/>
+=======
+   <tile gid="879"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="877"/>
    <tile gid="0"/>
@@ -24740,7 +24756,11 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="0"/>
+=======
+   <tile gid="880"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -24961,7 +24981,11 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="0"/>
+=======
+   <tile gid="865"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -24970,7 +24994,11 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="0"/>
+=======
+   <tile gid="865"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -25190,7 +25218,11 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="0"/>
+=======
+   <tile gid="880"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -25289,13 +25321,21 @@
    <tile gid="0"/>
    <tile gid="877"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="0"/>
+=======
+   <tile gid="879"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="877"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="0"/>
+=======
+   <tile gid="865"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -27389,7 +27429,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="3"/>
+=======
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -27692,6 +27735,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
+=======
+   <tile gid="881"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -45059,6 +45106,7 @@
    <property name="Navigation" value="1"/>
    <property name="Nodraw" value="1"/>
   </properties>
+<<<<<<< HEAD
   <object id="16" name="Static" type="Barrack" x="867.5" y="2010.5" width="50.6667" height="106.833">
    <properties>
     <property name="faction" type="int" value="1"/>
@@ -45220,5 +45268,69 @@
    </properties>
   </object>
   <object id="77" name="Resources" x="1866" y="935" width="43" height="35"/>
+=======
+  <object id="1" name="Resources" x="150.667" y="882" width="191.333" height="306">
+   <properties>
+    <property name="Water" type="int" value="1000"/>
+   </properties>
+  </object>
+  <object id="3" name="Resources" x="18.6667" y="390.667" width="196" height="321.333">
+   <properties>
+    <property name="Nuka-Cola" type="int" value="1000"/>
+   </properties>
+  </object>
+  <object id="4" name="Resources" x="472" y="50" width="315.333" height="315.333">
+   <properties>
+    <property name="Nuka-Cola" type="int" value="1000"/>
+   </properties>
+  </object>
+  <object id="5" name="Resources" x="1814.67" y="74" width="308.667" height="327.333">
+   <properties>
+    <property name="Water" type="int" value="1000"/>
+   </properties>
+  </object>
+  <object id="9" name="Resources" x="760" y="775" width="401" height="329">
+   <properties>
+    <property name="Nuka-Cola" type="int" value="1000"/>
+   </properties>
+  </object>
+  <object id="10" name="Resources" x="1562" y="903" width="407" height="323">
+   <properties>
+    <property name="Nuka-Cola" type="int" value="1000"/>
+   </properties>
+  </object>
+  <object id="11" name="Resources" x="1625" y="1909" width="402" height="322">
+   <properties>
+    <property name="Water" type="int" value="1000"/>
+   </properties>
+  </object>
+  <object id="16" name="Static" type="Barrack" x="867.5" y="2010.5" width="50.6667" height="106.833">
+   <properties>
+    <property name="faction" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="17" name="Static" type="Base" x="214.834" y="1923.34" width="113.833" height="118.309">
+   <properties>
+    <property name="faction" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="18" name="Static" type="Barrack" x="582.334" y="2002.84" width="50.6667" height="108.333">
+   <properties>
+    <property name="faction" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="19" name="Static" type="Laboratory" x="127.667" y="1649.34" width="74.8333" height="75.8333">
+   <properties>
+    <property name="faction" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="20" name="Animal" type="Braham" x="1022" y="1614" width="24" height="21.5"/>
+  <object id="21" name="Animal" type="Braham" x="168" y="209" width="24" height="21.5"/>
+  <object id="22" name="Animal" type="Bighorner" x="1150" y="560" width="24" height="21.5"/>
+  <object id="24" name="Animal" type="Bighorner" x="674" y="474" width="24" height="21.5"/>
+  <object id="25" name="Animal" type="SpawnPoint" x="1022" y="1614" width="24" height="21.5"/>
+  <object id="26" name="Animal" type="SpawnPoint" x="168" y="209" width="24" height="21.5"/>
+  <object id="27" name="Animal" type="SpawnPoint" x="1150" y="560" width="24" height="21.5"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
  </objectgroup>
 </map>

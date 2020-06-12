@@ -73,6 +73,12 @@ bool Gatherer::Update(float dt) {
 			else if ((resource_building != nullptr) && (resource_building->quantity > 0)) {
 				PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
 			}
+			else if (faction != App->player->faction){
+				resource_building = App->entities->GetClosestResourceBuilding(current_tile, resource_type);
+
+				if (resource_building != nullptr) 
+					PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
+			}
 		}
 		break;
 	case WALK:
@@ -109,6 +115,7 @@ bool Gatherer::Update(float dt) {
 				//find another building
 				else {
 					resource_building = App->entities->GetClosestResourceBuilding(current_tile, resource_type);
+
 					//if there is at least a resource building left, go there
 					if (resource_building != nullptr) {
 						PathfindToPosition(App->entities->ClosestTile(current_tile, resource_building->tiles));
@@ -228,6 +235,7 @@ void Gatherer::StoreGatheredResources() {
 			owner->food += resource_collected;
 	}
 
+	resource_type = Resource::NO_TYPE;
 	resource_collected = 0;
 }
 

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <map version="1.0" orientation="isometric" renderorder="right-down" width="75" height="75" tilewidth="64" tileheight="32" nextobjectid="59">
+=======
+<map version="1.0" orientation="isometric" renderorder="right-down" width="75" height="75" tilewidth="64" tileheight="32" nextobjectid="17">
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
  <tileset firstgid="1" name="Floors" tilewidth="64" tileheight="32" tilecount="512" columns="16">
   <image source="Floors64x32.png" width="1024" height="1024"/>
  </tileset>
@@ -2606,7 +2610,11 @@
    <tile gid="117"/>
    <tile gid="130"/>
    <tile gid="99"/>
+<<<<<<< HEAD
    <tile gid="99"/>
+=======
+   <tile gid="116"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="146"/>
    <tile gid="99"/>
    <tile gid="84"/>
@@ -3566,8 +3574,13 @@
    <tile gid="4"/>
    <tile gid="5"/>
    <tile gid="1"/>
+<<<<<<< HEAD
    <tile gid="36"/>
    <tile gid="36"/>
+=======
+   <tile gid="2"/>
+   <tile gid="3"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="4"/>
    <tile gid="5"/>
    <tile gid="1"/>
@@ -3641,8 +3654,13 @@
    <tile gid="20"/>
    <tile gid="21"/>
    <tile gid="17"/>
+<<<<<<< HEAD
    <tile gid="36"/>
    <tile gid="36"/>
+=======
+   <tile gid="18"/>
+   <tile gid="19"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="20"/>
    <tile gid="21"/>
    <tile gid="17"/>
@@ -23195,6 +23213,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="867"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -23206,6 +23225,19 @@
    <tile gid="0"/>
    <tile gid="867"/>
    <tile gid="0"/>
+=======
+   <tile gid="0"/>
+   <tile gid="869"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="869"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="869"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -23572,12 +23604,20 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="0"/>
+=======
+   <tile gid="879"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="877"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
+=======
+   <tile gid="879"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -23697,6 +23737,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
+=======
+   <tile gid="895"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -23794,6 +23838,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="0"/>
    <tile gid="867"/>
    <tile gid="0"/>
@@ -23802,10 +23847,15 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+=======
+   <tile gid="869"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="869"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="869"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -23846,6 +23896,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
+=======
+   <tile gid="888"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -23879,7 +23933,14 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="867"/>
+=======
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -24673,7 +24734,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="870"/>
+=======
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -24738,7 +24802,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="870"/>
+=======
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -24823,6 +24890,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
+=======
+   <tile gid="868"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -25047,6 +25118,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
+=======
+   <tile gid="867"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -25114,12 +25189,17 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+=======
+   <tile gid="865"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="878"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -25272,7 +25352,14 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+=======
+   <tile gid="867"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -25338,7 +25425,11 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="870"/>
+=======
+   <tile gid="0"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -25423,7 +25514,11 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="870"/>
+=======
+   <tile gid="0"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -26922,6 +27017,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
+=======
+   <tile gid="878"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -26964,11 +27063,19 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="877"/>
    <tile gid="0"/>
+=======
+   <tile gid="879"/>
+   <tile gid="0"/>
+   <tile gid="877"/>
+   <tile gid="0"/>
+   <tile gid="879"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -26992,7 +27099,11 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="0"/>
+=======
+   <tile gid="879"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -27264,7 +27375,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="0"/>
+=======
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="868"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -27295,7 +27409,11 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="0"/>
+=======
+   <tile gid="873"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -30723,7 +30841,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="21"/>
+=======
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -33106,6 +33227,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
+=======
+   <tile gid="894"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -45055,6 +45180,7 @@
   </data>
  </layer>
  <objectgroup name="resources">
+<<<<<<< HEAD
   <object id="8" name="Static" type="Barrack" x="605.834" y="136.249" width="50.6667" height="101.333">
    <properties>
     <property name="faction" type="int" value="3"/>
@@ -45231,5 +45357,68 @@
     <property name="Water" type="int" value="333"/>
    </properties>
   </object>
+=======
+  <object id="1" name="Resources" x="1846.97" y="1809.09" width="374.242" height="416.667">
+   <properties>
+    <property name="Water" type="int" value="1000"/>
+   </properties>
+  </object>
+  <object id="2" name="Resources" x="889.394" y="3.0303" width="410.606" height="428.788">
+   <properties>
+    <property name="Water" type="int" value="1000"/>
+   </properties>
+  </object>
+  <object id="3" name="Resources" x="53.0303" y="854.545" width="383.333" height="353.03">
+   <properties>
+    <property name="Water" type="int" value="1000"/>
+   </properties>
+  </object>
+  <object id="4" name="Resources" x="1901" y="171" width="384" height="352">
+   <properties>
+    <property name="Nuka-Cola" type="int" value="1000"/>
+   </properties>
+  </object>
+  <object id="5" name="Resources" x="880.303" y="842.424" width="380.303" height="362.121">
+   <properties>
+    <property name="Nuka-Cola" type="int" value="1000"/>
+   </properties>
+  </object>
+  <object id="6" name="Resources" x="945.455" y="1689.39" width="389.394" height="346.97">
+   <properties>
+    <property name="Nuka-Cola" type="int" value="1000"/>
+   </properties>
+  </object>
+  <object id="7" name="Resources" x="121.212" y="1684.85" width="206.061" height="351.515">
+   <properties>
+    <property name="Nuka-Cola" type="int" value="1000"/>
+   </properties>
+  </object>
+  <object id="8" name="Static" type="Barrack" x="605.834" y="136.249" width="50.6667" height="101.333">
+   <properties>
+    <property name="faction" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="9" name="Static" type="Base" x="160" y="224" width="113.833" height="118.309">
+   <properties>
+    <property name="faction" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="10" name="Static" type="Laboratory" x="189.5" y="567.417" width="78.3333" height="73.3333">
+   <properties>
+    <property name="faction" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="11" name="Static" type="Barrack" x="352" y="128" width="50.6667" height="102.333">
+   <properties>
+    <property name="faction" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="12" name="Animal" type="Braham" x="594" y="316" width="24.25" height="21.5"/>
+  <object id="13" name="Animal" type="Braham" x="425" y="557" width="24.25" height="21.5"/>
+  <object id="14" name="Animal" type="Bighorner" x="2107" y="632" width="24.25" height="21.5"/>
+  <object id="15" name="Animal" type="Bighorner" x="1586" y="2051" width="24.25" height="21.5"/>
+  <object id="16" name="Animal" type="SpawnPoint" x="594" y="316" width="24.25" height="21.5"/>
+  <object id="17" name="Animal" type="SpawnPoint" x="425" y="557" width="24.25" height="21.5"/>
+>>>>>>> d6a691795d5b479ed363b7b8e8399b00503e7878
  </objectgroup>
 </map>

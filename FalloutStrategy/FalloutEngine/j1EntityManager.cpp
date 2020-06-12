@@ -775,7 +775,8 @@ iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) 
 
 	for (int i = 0; i < 4; i++)
 	{
-		if ((occupied_tiles[adjacent_tiles[i].x][adjacent_tiles[i].y] == false) && (adjacent_tiles[i].DistanceManhattan(origin) < distance))
+		if ((occupied_tiles[adjacent_tiles[i].x][adjacent_tiles[i].y] == false) && (App->pathfinding->IsWalkable(adjacent_tiles[i])) 
+			&& (adjacent_tiles[i].DistanceManhattan(origin) < distance))
 			closest_adjacent_tile = adjacent_tiles[i];
 	}
 
@@ -788,7 +789,7 @@ ResourceBuilding* j1EntityManager::GetClosestResourceBuilding(iPoint current_pos
 
 	for(size_t i = 0; i < resource_buildings.size(); i++)
 	{
-		if ((resource_buildings[i]->quantity > 0)&&((resource_type == Resource::NO_TYPE)||(resource_buildings[i]->resource_type == resource_type)))
+		if ((resource_buildings[i]->quantity > 0) && ((resource_type == Resource::NO_TYPE)||(resource_buildings[i]->resource_type == resource_type)))
 		{
 			int building_distance = ClosestTile(current_position, resource_buildings[i]->tiles).DistanceManhattan(current_position);
 			if (building_distance < min_distance) {
