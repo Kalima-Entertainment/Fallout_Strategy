@@ -60,7 +60,7 @@ void j1MovementManager::SelectEntities_inRect(SDL_Rect SRect)
 					(*entity)->info.IsSelected = false;
 			}
 		}
-		entity++;
+		++entity;
 	}
 }
 
@@ -129,6 +129,6 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 			(*unit)->info.goal_tile = goal_path;
 			group->Occupied_tiles.push_back(&(*unit)->info.goal_tile);
 		}
-		unit++;
+		++unit;
 	}
 }
