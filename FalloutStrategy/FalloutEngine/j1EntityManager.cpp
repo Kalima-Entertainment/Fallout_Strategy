@@ -999,6 +999,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 	fPoint position = { -1.0f,-1.0f };
 	iPoint current_tile = { 0,0 }, target_tile = { 0,0 };
 	GenericPlayer* owner = nullptr;
+	int width = 0, height = 0;
 
 	player_faction = data.child("player").attribute("player_faction").as_string();
 
@@ -1018,7 +1019,6 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		int upgrade_creat = 0;
 		int upgrade_dama = 0;
 		int upgrade_speed = 0;
-		int width = 0, height = 0;
 
 		bool dynamic_entity = true;
 
