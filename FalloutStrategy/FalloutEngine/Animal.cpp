@@ -76,7 +76,7 @@ bool Animal::Update(float dt) {
 			resource_spot = App->entities->CreateResourceSpot(current_tile.x, current_tile.y, Resource::FOOD, food_quantity);
 			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
 			path_to_target.clear();
-			current_tile = { 149, 149 };
+			//current_tile = { 149, 149 };
 			next_tile = { -1,-1 };
 
 			if ((attacking_entity != nullptr)&&(attacking_entity->owner->is_ai)) {

@@ -276,17 +276,17 @@ bool j1Scene::Update(float dt)
 	if (App->hud->minutes <= 0 && App->hud->timer < 2)
 	{
 		lose = true;
-		App->logo_scene->Loop = true;
 		App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
 		App->menu_manager->DestroyMenu(Menu::RESOURCES);
 		App->menu_manager->DestroyMenu(Menu::TUTORIAL);
 		App->menu_manager->DestroyMenu(Menu::RADIO);
 		App->menu_manager->DestroyMenu(Menu::GUI);
 		App->menu_manager->DestroyMenu(Menu::QUEST);
-		App->hud->Disable();
+		App->logo_scene->playsound = true;
 		App->gui->ingame = false;
 		App->isPaused = true;
-		App->logo_scene->playsound = true;
+		App->logo_scene->Loop = true;
+		App->hud->activateTimer = false;
 		App->transition->freeTransitionTex = false;
 	}
 	return true;

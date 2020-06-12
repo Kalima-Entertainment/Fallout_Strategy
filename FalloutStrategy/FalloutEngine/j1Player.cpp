@@ -126,8 +126,10 @@ bool j1Player::PreUpdate() {
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
 			selected_entity = SelectEntity();
 			if ((selected_entity == nullptr) && (selected_group != nullptr)) {
-				selected_group->DeselectGroup();
-				selected_group = nullptr;
+				if (!TouchingUI(mouse_position.x, mouse_position.y)) {
+					selected_group->DeselectGroup();
+					selected_group = nullptr;
+				}
 			}
 
 

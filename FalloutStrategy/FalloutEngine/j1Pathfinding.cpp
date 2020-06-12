@@ -443,7 +443,7 @@ iPoint j1PathFinding::ExpandTile(iPoint target_tile) const {
 				pivot.x = target_tile.x + x;
 				pivot.y = target_tile.y + y;
 
-				if (IsWalkable(pivot))
+				if (IsWalkable(pivot)) // && !App->entities->IsTileOccupied(pivot))
 					return pivot;
 			}
 		}

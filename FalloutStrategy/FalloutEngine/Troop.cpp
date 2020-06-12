@@ -75,12 +75,12 @@ bool Troop::Update(float dt) {
 	DynamicEntity* enemy_in_range = nullptr;
 	current_animation = &animations[state][direction];
 
-	if ((dynamic_target != nullptr) && (dynamic_target->state >= NO_STATE)) {
+	if ((dynamic_target != nullptr) && ((dynamic_target->state >= NO_STATE)||(dynamic_target->state < IDLE))) {
 		state = IDLE;
 		dynamic_target = nullptr;
 	}
 
-	if ((target_building != nullptr) && (target_building->state >= NO_STATE)) {
+	if ((target_building != nullptr) && ((target_building->state >= NO_STATE)||(target_building->state < IDLE))) {
 		state = IDLE;
 		target_building = nullptr;
 	}
