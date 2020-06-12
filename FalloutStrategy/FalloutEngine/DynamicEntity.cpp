@@ -587,8 +587,15 @@ void DynamicEntity::CheckDestination(iPoint destination) {
 				dynamic_cast<Deathclaw*>(this)->target_building = dynamic_cast<StaticEntity*>(target);
 		}
 
-		if (type == GATHERER)
+		if (type == GATHERER) {
 			dynamic_cast<Gatherer*>(this)->gathering = true;
+			ResourceBuilding* resource_building = App->entities->FindResourceBuildingByTile(destination);
+
+			//assign a resource building to the entity
+			if ((resource_building != nullptr) && (resource_building->quantity > 0)) {
+				dynamic_cast<Gatherer*>(this)->AssignResourceBuilding(resource_building);
+			}
+		}
 	}
 }
 

@@ -17,6 +17,7 @@
 #include "MenuManager.h"
 #include "j1Scene.h"
 #include "j1Console.h"
+#include "j1Console.h"
 #include "Gatherer.h"
 #include "FoWManager.h"
 
