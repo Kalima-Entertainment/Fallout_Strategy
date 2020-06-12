@@ -8,6 +8,8 @@
 #include "p2Log.h"
 #include "j1Minimap.h"
 #include "brofiler/Brofiler/Brofiler.h"
+#include "j1EntityManager.h"
+#include "j1Player.h"
 
 FoWManager::FoWManager()
 {
@@ -104,7 +106,6 @@ bool FoWManager::PreUpdate()
 			fowEntities.erase(fowEntities.begin() + i);
 			i--;
 		}
-
 	}
 
 	//debug input handling
@@ -382,7 +383,6 @@ bool FoWManager::CheckTileVisibility(iPoint mapPos)const
 
 	if (tileState != nullptr)
 	{
-
 		//Entity will only be visible in visible areas (no fog nor shroud)
 		//Think about what happens with the smooth borders, are the considered visble or fogged?
 		//Also, do you need to check both the fog and shroud states?
@@ -391,6 +391,25 @@ bool FoWManager::CheckTileVisibility(iPoint mapPos)const
 	}
 
 	return ret;
+}
+
+void FoWManager::AddFowToResourceBuildings(iPoint basePos)
+{
+	//App->entities->GetClosestResourceBuilding(App->player->base);
+	ResourceBuilding* resource_building[2];
+	
+	//We get the two buildings
+	resource_building[0] = App->entities->GetClosestResourceBuilding(basePos, Resource::WATER);
+	resource_building[1] = App->entities->GetClosestResourceBuilding(basePos, Resource::CAPS);
+	
+	//We add the vision entity to them
+	//Water Resource Building
+	visionEntity = App->fowManager->CreateFoWEntity({ resource_building[0]->tiles[20] }, true);
+	visionEntity->SetNewVisionRadius(7);
+
+	//Caps Resource Building
+	visionEntity = App->fowManager->CreateFoWEntity({ resource_building[1]->tiles[20] }, true);
+	visionEntity->SetNewVisionRadius(7);
 }
 
 void FoWManager::MapNeedsUpdate()

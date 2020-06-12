@@ -18,6 +18,7 @@
 #include "j1Scene.h"
 #include "j1Console.h"
 #include "Gatherer.h"
+#include "FoWManager.h"
 
 j1Player::j1Player() : GenericPlayer() {
 	
@@ -27,6 +28,7 @@ j1Player::j1Player() : GenericPlayer() {
 	selected_group = nullptr;
 	border_scroll = false;
 	mouse_speed_multiplier = 1.5f;
+	resource_fow_added = false;
 
 	god_mode = false;
 
@@ -62,7 +64,8 @@ bool j1Player::Start() {
 	App->console->CreateCommand("god_mode", "turn god mode on and off", this);
 	App->console->CreateCommand("spawn_units", "spawn 1 gatherer, 1 melee and 1 ranged. Must have a building selected", this);	
 	App->console->CreateCommand("spawn", "<spawn gatherer><spawn melee><spawn ranged><spawn army>. Spawn one unit or an army. Must have a building selected", this);
-	defeated = false;
+	defeated = false;	
+
 	return true;
 }
 
@@ -83,7 +86,11 @@ bool j1Player::PreUpdate() {
 
 	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) {
 		App->entities->CreateEntity(faction, MR_HANDY, 1, 1, this);
+	}
 
+	if (base != nullptr && resource_fow_added == false) {
+		App->fowManager->AddFowToResourceBuildings(base->current_tile);
+		resource_fow_added = true;
 	}
 
 	if (!App->isPaused)

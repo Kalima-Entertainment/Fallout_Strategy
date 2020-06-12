@@ -11,6 +11,7 @@
 #include "FoWManager.h"
 #include "j1EntityManager.h"
 #include "AssetsManager.h"
+#include "FoWManager.h"
 
 #include "ParticleSystem.h"
 #include "Emiter.h"
@@ -878,6 +879,5 @@ void StaticEntity::CalculateRenderAndSpawnPositions() {
 
 		//Spawn position is just below render position
 		spawnPosition = { App->map->WorldToMap(static_cast<int>(render_position.x + sprite_size * 0.5f), static_cast<int>(render_position.y + sprite_size)) };
-		
 	}
 }
