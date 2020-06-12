@@ -31,7 +31,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
-
+#include "j1Gui.h"
 #include "ParticleSystem.h"
 #include "Emiter.h"
 
@@ -52,6 +52,12 @@ j1EntityManager::j1EntityManager(){
 
 	mr_handy_cost = NULL;
 	mr_handy_time = NULL;
+
+	no_reso.x = 2757;
+	no_reso.y = 3086;
+	no_reso.w = 106;
+	no_reso.h = 104;
+
 
 	radar_cost = NULL;
 }
@@ -261,6 +267,7 @@ bool j1EntityManager::PostUpdate()
 	bool ret = true;
 	SDL_Rect tex_rect = {128,0,64,64 };
 	iPoint tex_position;
+	
 
 	if (!loading_reference_entities)
 	{
@@ -271,6 +278,7 @@ bool j1EntityManager::PostUpdate()
 				for(size_t j = 0; j < resource_buildings[i]->tiles.size(); j++)
 				{
 					SDL_Rect rect = { 128,0,64,64 };
+					
 					tex_position = App->map->MapToWorld(resource_buildings[i]->tiles[j].x, resource_buildings[i]->tiles[j].y);
 
 					if ((tex_position.x + rect.w > -(App->render->camera.x))
@@ -279,8 +287,14 @@ bool j1EntityManager::PostUpdate()
 						&& (tex_position.y < (-App->render->camera.y + App->render->camera.h)))
 						{
 							App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &rect);
+
 						}
 				}
+				if (resource_buildings[i]->quantity <= 0) {
+					SDL_Rect rect2 = { 2757,3086,106,104 };
+					App->render->Blit((SDL_Texture*)App->gui->GetAtlas(), tex_position.x, tex_position.y, &rect2);
+				}
+
 			}
 		}
 

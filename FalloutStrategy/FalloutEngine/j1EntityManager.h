@@ -158,7 +158,8 @@ public:
 	SDL_Rect background_health_bar;
 	SDL_Rect foreground_health_bar;
 	SDL_Rect frame_quad;
-
+	//No Resourecs
+	SDL_Rect no_reso;
 private:
 	int loading_faction;
 	int loading_entity;
