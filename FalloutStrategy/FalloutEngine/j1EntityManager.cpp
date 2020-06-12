@@ -39,7 +39,9 @@ j1EntityManager::j1EntityManager(){
 
 	name.assign("entities");
 
-	randomFaction[0] = randomFaction[1] = randomFaction[2] = randomFaction[3] = 0;
+	for (int i = 0; i < 4;i++) {
+		randomFaction[i] = 0;
+	}
 
 	loading_faction = VAULT;
 	loading_entity = MELEE;
@@ -585,7 +587,7 @@ bool j1EntityManager::LoadReferenceEntityData() {
 	pugi::xml_node type_node;
 	pugi::xml_node faction_node;
 	Faction faction = NO_FACTION;
-	EntityType type = NO_TYPE;
+	//EntityType type = NO_TYPE;
 	std::string faction_name;
 	std::string type_name;
 
@@ -783,13 +785,12 @@ iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) 
 ResourceBuilding* j1EntityManager::GetClosestResourceBuilding(iPoint current_position, Resource resource_type) {
 	ResourceBuilding* closest_building = nullptr;
 	int min_distance = 10000;
-	int building_distance = 0;
 
 	for(size_t i = 0; i < resource_buildings.size(); i++)
 	{
 		if ((resource_buildings[i]->quantity > 0)&&((resource_type == Resource::NO_TYPE)||(resource_buildings[i]->resource_type == resource_type)))
 		{
-			building_distance = ClosestTile(current_position, resource_buildings[i]->tiles).DistanceManhattan(current_position);
+			int building_distance = ClosestTile(current_position, resource_buildings[i]->tiles).DistanceManhattan(current_position);
 			if (building_distance < min_distance) {
 				closest_building = resource_buildings[i];
 				min_distance = building_distance;
@@ -832,12 +833,10 @@ void j1EntityManager::RandomFactions() {
 
 	srand((unsigned int)time(NULL));
 
-	int temp = 0;
-	int randomIndex = 0;
-
 	for(int i = 0; i < 4; i++) {
-		randomIndex = rand() % 4;
-		temp = randomFaction[i];
+
+		int randomIndex = rand() % 4;
+		int temp = randomFaction[i];
 		randomFaction[i] = randomFaction[randomIndex];
 		randomFaction[randomIndex] = temp;
 	}
@@ -1001,16 +1000,6 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 	iPoint current_tile = { 0,0 }, target_tile = { 0,0 };
 	GenericPlayer* owner = nullptr;
 
-	int current_health = 0;
-	int upgrade_gath = 0;
-	int upgrade_base = 0;
-	int upgrade_health = 0;
-	int upgrade_creat = 0;
-	int upgrade_dama = 0;
-	int upgrade_speed = 0;
-	int width, height;
-	bool dynamic_entity = true;
-
 	player_faction = data.child("player").attribute("player_faction").as_string();
 
 	if (player_faction == "brotherhood") { App->player->faction = BROTHERHOOD; }
@@ -1022,7 +1011,16 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 	pugi::xml_node iterator = data.first_child();
 	while (iterator)
 	{
-		dynamic_entity = true;
+		int current_health = 0;
+		int upgrade_gath = 0;
+		int upgrade_base = 0;
+		int upgrade_health = 0;
+		int upgrade_creat = 0;
+		int upgrade_dama = 0;
+		int upgrade_speed = 0;
+		int width = 0, height = 0;
+
+		bool dynamic_entity = true;
 
 		type_name = iterator.attribute("type").as_string();
 		faction_name = iterator.attribute("faction").as_string();

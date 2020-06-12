@@ -39,8 +39,6 @@ bool MainMenu::LoadAnimations()
 	int tile_width = animation_file.child("map").child("tileset").attribute("tilewidth").as_int();
 	int tile_height = animation_file.child("map").child("tileset").attribute("tileheight").as_int();
 	int columns = animation_file.child("map").child("tileset").attribute("columns").as_int();
-	int tile_id;
-	float speed;
 
 	pugi::xml_node animation = animation_file.child("map").child("tileset").child("tile");
 	pugi::xml_node frame = animation.child("animation").child("frame");
@@ -52,8 +50,8 @@ bool MainMenu::LoadAnimations()
 	loader = &animationTitle;
 
 	while (frame != nullptr) {
-		tile_id = frame.attribute("tileid").as_int();
-		speed = frame.attribute("duration").as_int();
+		int tile_id = frame.attribute("tileid").as_int();
+		float speed = frame.attribute("duration").as_int();
 		rect.x = rect.w * ((tile_id) % columns);
 		rect.y = rect.h * ((tile_id) / columns);
 		loader->PushBack(rect, speed);
