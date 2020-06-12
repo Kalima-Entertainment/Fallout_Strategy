@@ -721,7 +721,7 @@ iPoint j1EntityManager::ClosestTile(iPoint position, std::vector<iPoint> entity_
 	return pivot;
 }
 
-iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) {
+iPoint j1EntityManager::FindClosestFreeTile(iPoint origin, iPoint destination) {
 	int max = 1;
 	iPoint possible_tile;
 	iPoint closest_possible_tile = {-1,-1};
@@ -755,6 +755,29 @@ iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) 
 		max++;
 	}
 	return possible_tile;
+}
+
+iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) {
+	iPoint closest_adjacent_tile = { -1,-1 };
+	iPoint adjacent_tiles[4];
+	int distance = 10000;
+
+	//east
+	adjacent_tiles[0] = { destination.x - 1, destination.y };
+	//north
+	adjacent_tiles[1] = { destination.x , destination.y -1 };
+	//east
+	adjacent_tiles[2] = { destination.x + 1, destination.y };
+	//south
+	adjacent_tiles[3] = { destination.x, destination.y + 1 };
+
+	for (int i = 0; i < 4; i++)
+	{
+		if ((occupied_tiles[adjacent_tiles[i].x][adjacent_tiles[i].y] == false) && (adjacent_tiles[i].DistanceManhattan(origin) < distance))
+			closest_adjacent_tile = adjacent_tiles[i];
+	}
+
+	return closest_adjacent_tile;
 }
 
 ResourceBuilding* j1EntityManager::GetClosestResourceBuilding(iPoint current_position, Resource resource_type) {

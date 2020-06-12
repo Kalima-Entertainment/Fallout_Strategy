@@ -75,11 +75,15 @@ bool Troop::Update(float dt) {
 	DynamicEntity* enemy_in_range = nullptr;
 	current_animation = &animations[state][direction];
 
-	if ((dynamic_target != nullptr) && (dynamic_target->state >= NO_STATE))
+	if ((dynamic_target != nullptr) && (dynamic_target->state >= NO_STATE)) {
+		state = IDLE;
 		dynamic_target = nullptr;
+	}
 
-	if ((target_building != nullptr) && (target_building->state >= NO_STATE))
+	if ((target_building != nullptr) && (target_building->state >= NO_STATE)) {
+		state = IDLE;
 		target_building = nullptr;
+	}
 
 	switch (state)
 	{
@@ -140,6 +144,7 @@ bool Troop::Update(float dt) {
 				UpdateTile();
 				path_to_target.clear();
 				if (target_building->faction != faction) {
+					direction = GetBuildingDirection(target_building->tiles);
 					state = ATTACK;
 				}
 				else {
@@ -158,6 +163,7 @@ bool Troop::Update(float dt) {
 					UpdateTile();
 					path_to_target.clear();
 					if (dynamic_target->faction != faction) {
+						direction = GetDirectionToGo({static_cast<int>(dynamic_target->position.x), static_cast<int>(dynamic_target->position.y), 2, 2});
 						state = ATTACK;
 					}
 					else {
@@ -165,9 +171,17 @@ bool Troop::Update(float dt) {
 						commanded = false;
 					}
 				}
-				//if the entity is too far away
+				//if the entity has changed its position
 				else if (target_tile != dynamic_target->current_tile) {
-					PathfindToPosition(dynamic_target->current_tile);
+					//check that the entity is not surrounded
+					if ((type == MELEE) && (App->entities->FindFreeAdjacentTile(current_tile, dynamic_target->current_tile) == iPoint(-1, -1))) {
+						state = IDLE;
+						dynamic_target = nullptr;
+						commanded = false;
+					}
+					else {
+						PathfindToPosition(dynamic_target->current_tile);
+					}
 				}
 			}
 			else {
