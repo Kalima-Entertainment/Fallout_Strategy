@@ -309,6 +309,7 @@ bool Troop::Update(float dt) {
 		DynaParticle->Update(dt);
 	}
 
+	/*
 	if (this->info.current_group != nullptr)
 	{
 		if (info.current_group->IsGroupLead(this)) {
@@ -316,7 +317,7 @@ bool Troop::Update(float dt) {
 				info.current_group->CheckForMovementRequest(App->player->Map_mouseposition, dt);
 		}
 	}
-
+	*/
 	last_dt = dt;
 
 	return ret;

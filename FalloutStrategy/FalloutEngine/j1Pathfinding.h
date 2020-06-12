@@ -8,7 +8,7 @@
 
 #define DEFAULT_PATH_LENGTH 50
 #define INVALID_WALK_CODE 255
-#define MAX_PATH_ITERATIONS 200
+#define MAX_PATH_ITERATIONS 400
 
 class j1PathFinding : public j1Module
 {

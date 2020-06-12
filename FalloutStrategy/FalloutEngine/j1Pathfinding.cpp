@@ -9,7 +9,7 @@
 j1PathFinding::j1PathFinding() : j1Module(), last_path(DEFAULT_PATH_LENGTH), width(150), height(150)
 {
 	name = ("pathfinding");
-	node_map_divisions = 15;
+	node_map_divisions = 10;
 	node_map = CreateNodeMap();
 	path_timer.Start();
 }
@@ -187,8 +187,8 @@ std::vector<iPoint> j1PathFinding::CreateNodePath(iPoint origin, iPoint destinat
 	std::vector<iPoint> path;
 	int node_distance = GetDistanceBetweenNodes();
 	srand(time(NULL));
-	int x_delay = (rand() % 3) - 1;
-	int y_delay = (rand() % 3) - 1;
+	//int x_delay = (rand() % 3) - 1;
+	//int y_delay = (rand() % 3) - 1;
 
 	iPoint origin_node = node_map[0];
 	iPoint destination_node = node_map[0];
@@ -233,12 +233,13 @@ std::vector<iPoint> j1PathFinding::CreateNodePath(iPoint origin, iPoint destinat
 		path.push_back(best_node);
 	}
 
+	/*
 	for (size_t i = 0; i < path.size(); i++)
 	{
 		path[i].x += x_delay;
 		path[i].y += y_delay;
 	}
-
+	*/
 	//flip final path
 	std::reverse(path.begin(), path.end());
 
@@ -422,6 +423,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 		}
 	}
 
+	LOG("Impossible path");
 	path_timer.Start();
 
 	return -1;

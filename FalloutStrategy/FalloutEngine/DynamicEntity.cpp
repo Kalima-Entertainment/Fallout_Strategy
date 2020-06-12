@@ -220,33 +220,29 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 }
 
 void DynamicEntity::Move(float dt) {
-
-	last_direction = direction;
-	direction = GetDirectionToGo(next_tile_rect);
-
 	fPoint auxPos = position; //We use that variable to optimize Fog Of War code
 
 	//check if the tile that wants to be occupied is already occupied
 	if (!App->entities->IsTileInPositionOccupied(position))
 		UpdateTile();
 	else {
-		if (node_path.size() > 0) {
-			if (current_tile.DistanceManhattan(node_path.back()) < 3)
-				node_path.pop_back();
-			if (node_path.size() > 0)
-				PathfindToPosition(node_path.back());
-			else
+		//iPoint tile = App->map->fWorldToMap(position.x, position.y);
+		//if (App->entities->FindEntityByTile(tile, this) != nullptr) {
+			if (node_path.size() > 0) {
+				if (current_tile.DistanceManhattan(node_path.back()) < 3)
+					node_path.pop_back();
+				if (node_path.size() > 0)
+					PathfindToPosition(node_path.back());
+				else
+					PathfindToPosition(target_tile);
+			}
+			else {
 				PathfindToPosition(target_tile);
-		}
-		else {
-			PathfindToPosition(target_tile);
-		}
+			}
+		//}
 	}
 
-	// -- Get next tile center
-	next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
-	next_tile_rect = { next_tile_position.x + HALF_TILE - 4, next_tile_position.y + HALF_TILE - 2, 8, 8 };
-
+	//Follow node path -----------------------------------
 	//we are following a node path
 	if (node_path.size() > 0) {
 		//if we have reached the closest node
@@ -265,6 +261,7 @@ void DynamicEntity::Move(float dt) {
 		}
 	}
 
+	//Follow normal path ---------------------------------
 	if (current_tile == target_tile) {
 		direction = last_direction;
 		path_to_target.clear();
@@ -289,6 +286,14 @@ void DynamicEntity::Move(float dt) {
 		}
 	}
 
+	// -- Get next tile center
+	next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
+	next_tile_rect = { next_tile_position.x + HALF_TILE - 4, next_tile_position.y + HALF_TILE - 2, 8, 8 };
+
+	//direction movement ---------------------------------
+	last_direction = direction;
+	direction = GetDirectionToGo(next_tile_rect);
+
 	switch (direction) 
 	{
 	case TOP_LEFT:
@@ -310,6 +315,7 @@ void DynamicEntity::Move(float dt) {
 	default:
 		break;
 	}
+	//---------------------------------------------------
 
 	//Update Fog Of War Position
 	if (auxPos != position && visionEntity != NULL)
@@ -555,7 +561,15 @@ void DynamicEntity::CheckDestination(iPoint destination) {
 				dynamic_cast<Gatherer*>(this)->gathering = false;
 			}
 		}
-
+		else if (is_agressive) {
+			if ((type == MELEE) || (type == RANGED) || (type == MR_HANDY)) {
+				dynamic_cast<Troop*>(this)->target_building = nullptr;
+				dynamic_cast<Troop*>(this)->dynamic_target = nullptr;
+			}
+			else if (type == DEATHCLAW) {
+				dynamic_cast<Deathclaw*>(this)->target_building = dynamic_cast<StaticEntity*>(target);
+			}
+		}
 		commanded = true;
 	}
 	else{

@@ -117,6 +117,7 @@ bool j1Scene::Start()
 
 	App->minimap->Enable();
 
+	/*
 	//top_left
 	App->entities->CreateEntity(VAULT, MELEE, 20, 20, App->player);
 	App->entities->CreateEntity(VAULT, MELEE, 21, 20, App->player);
@@ -137,6 +138,7 @@ bool j1Scene::Start()
 	App->entities->CreateEntity(VAULT, MELEE, 131, 110, App->player);
 	App->entities->CreateEntity(VAULT, RANGED, 130, 111, App->player);
 	App->entities->CreateEntity(VAULT, RANGED, 131, 111, App->player);
+	*/
 
 	//Set camera to player's base position
 	App->render->camera.x -= (int)(App->player->base->position.x - App->render->camera.w * 0.5f);
@@ -344,7 +346,7 @@ void j1Scene::RectangleSelection()
 		// --- Check for Units in the rectangle, select them ---
 		App->Mmanager->SelectEntities_inRect(SRect);
 	}
-	else if ((App->player->TouchingUI(mouse_x, mouse_y)) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)) {
+	else if (((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) && (App->player->TouchingUI(mouse_x, mouse_y))) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)) {
 		std::vector<DynamicEntity*> selected_entities;
 		for(size_t i = 0; i < App->entities->entities.size(); i++)
 		{
