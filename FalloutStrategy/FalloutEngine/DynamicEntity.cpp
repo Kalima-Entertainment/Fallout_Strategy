@@ -171,7 +171,7 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 	}
 
 	if (App->entities->occupied_tiles[destination.x][destination.y]) {
-		destination = App->entities->FindFreeAdjacentTile(current_tile, destination);
+		destination = App->entities->FindClosestFreeTile(current_tile, destination);
 		if (App->entities->occupied_tiles[destination.x][destination.y])
 			LOG("occupied destination");
 	}
@@ -570,14 +570,19 @@ void DynamicEntity::CheckDestination(iPoint destination) {
 				dynamic_cast<Deathclaw*>(this)->target_building = dynamic_cast<StaticEntity*>(target);
 			}
 		}
-		commanded = true;
 	}
 	else{
-		if (target->is_dynamic)
+		if (target->is_dynamic) {
 			dynamic_target = dynamic_cast<DynamicEntity*>(target);
-		else if (is_agressive) {
-			if (((type == MELEE)||(type == RANGED)||(type == MR_HANDY))&&(faction != target->faction))
+			if (((type == MELEE) || (type == RANGED) || (type == MR_HANDY)) && (faction != target->faction)) {
+				dynamic_cast<Troop*>(this)->target_building = nullptr;
+			}
+		}
+		else {
+			if (((type == MELEE) || (type == RANGED) || (type == MR_HANDY)) && (faction != target->faction)) {
 				dynamic_cast<Troop*>(this)->target_building = dynamic_cast<StaticEntity*>(target);
+				dynamic_cast<Troop*>(this)->dynamic_target = nullptr;
+			}
 			else if(type == DEATHCLAW)
 				dynamic_cast<Deathclaw*>(this)->target_building = dynamic_cast<StaticEntity*>(target);
 		}
