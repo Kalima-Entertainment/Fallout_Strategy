@@ -66,8 +66,6 @@ bool j1Transition::LoadAnimations() {
 		int tile_height = tileset.attribute("tileheight").as_int();
 		int columns = tileset.attribute("columns").as_int();
 		int firstgid = tileset.attribute("firstgid").as_int();
-		int tile_id;
-		float speed;
 
 		pugi::xml_node animation = tileset.child("tile");
 		pugi::xml_node frame = animation.child("animation").child("frame");
@@ -88,8 +86,8 @@ bool j1Transition::LoadAnimations() {
 		}
 
 		while (frame != nullptr) {
-			tile_id = frame.attribute("tileid").as_int();
-			speed = frame.attribute("duration").as_int() * speed_reducer;
+			int tile_id = frame.attribute("tileid").as_int();
+			float speed = frame.attribute("duration").as_int() * speed_reducer;
 			rect.x = rect.w * ((tile_id) % columns);
 			rect.y = rect.h * ((tile_id) / columns);
 			loader->PushBack(rect, speed);
@@ -195,6 +193,7 @@ void j1Transition::Transition()
 		App->isPaused = false;
 		App->scene->win = false;
 		App->scene->lose = false;
+		App->gui->open = true;
 		App->main_menu->Enable();
 		if (App->entities->showing_building_menu == true) {
 			App->menu_manager->DestroyFaction(Menu::BUI_BASES, App->menu_manager->current_building_faction, App->menu_manager->current_building_type);

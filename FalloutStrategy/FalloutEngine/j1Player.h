@@ -27,7 +27,6 @@ public:
 	// Load / Save
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
-
 public:
 	j1Entity* selected_entity;
 	j1Entity* last_selected_entity;
@@ -43,6 +42,7 @@ public:
 private:
 	float mouse_speed_multiplier;
 	bool border_scroll;
+	bool resource_fow_added;
 };
 
 
