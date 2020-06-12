@@ -44,6 +44,7 @@ j1Player::j1Player() : GenericPlayer() {
 j1Player::~j1Player() {
 	selected_entity = nullptr;
 	last_selected_entity = nullptr;
+	selected_group = nullptr;
 
 	for(size_t t = 0; t < troops.size(); t++) { troops[t] = nullptr; }
 	troops.clear();
@@ -83,7 +84,6 @@ bool j1Player::PreUpdate() {
 
 	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) {
 		App->entities->CreateEntity(faction, MR_HANDY, 1, 1, this);
-
 	}
 
 	if (!App->isPaused)
