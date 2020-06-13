@@ -205,12 +205,18 @@ bool Troop::Update(float dt) {
 					}
 				}
 				//if the entity has changed its position
-				else if (target_tile != dynamic_target->current_tile) {
+				else if (App->entities->IsTileOccupied(target_tile)) {
 					//check that the entity is not surrounded
-					if ((type == MELEE) && (App->entities->FindFreeAdjacentTile(current_tile, dynamic_target->current_tile) == iPoint(-1, -1))) {
-						state = IDLE;
-						dynamic_target = nullptr;
-						commanded = false;
+					if (type == MELEE) {
+						iPoint free_adjacent_tile = App->entities->FindFreeAdjacentTile(current_tile, dynamic_target->current_tile);
+						if (free_adjacent_tile == iPoint(-1, -1)) {
+							state = IDLE;
+							dynamic_target = nullptr;
+							commanded = false;
+						}
+						else {
+							PathfindToPosition(free_adjacent_tile);
+						}
 					}
 					else {
 						PathfindToPosition(dynamic_target->current_tile);
@@ -234,11 +240,13 @@ bool Troop::Update(float dt) {
 			}
 			else {
 				state = IDLE;
+				UpdateTile();
 				commanded = false;
 			}
 		}
 		else if (current_tile == target_tile){
 			state = IDLE;
+			UpdateTile();
 			//path_to_target.clear();
 			commanded = false;
 		}

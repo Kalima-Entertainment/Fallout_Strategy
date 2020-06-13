@@ -165,9 +165,6 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 	if (!App->pathfinding->IsWalkable(destination)) {
 		destination = App->pathfinding->FindNearestWalkableTile(current_tile, destination);
 		ret = App->pathfinding->IsWalkable(destination);
-
-		if(!ret)
-			LOG("unwalkable destination");
 	}
 
 	if (App->entities->occupied_tiles[destination.x][destination.y]) {

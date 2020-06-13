@@ -725,7 +725,7 @@ iPoint j1EntityManager::ClosestTile(iPoint position, std::vector<iPoint> entity_
 
 iPoint j1EntityManager::FindClosestFreeTile(iPoint origin, iPoint destination) {
 	int max = 1;
-	iPoint possible_tile;
+	iPoint possible_tile = {-1,-1};
 	iPoint closest_possible_tile = {-1,-1};
 	int distance_to_origin = 100000;
 	int distance_to_destination = 100000;
@@ -740,7 +740,7 @@ iPoint j1EntityManager::FindClosestFreeTile(iPoint origin, iPoint destination) {
 					possible_tile.y = destination.y + y;
 
 					if ((!occupied_tiles[possible_tile.x][possible_tile.y])&&(App->pathfinding->IsWalkable(possible_tile))) {
-						if ((possible_tile.DistanceManhattan(destination) < distance_to_destination)&&(possible_tile.DistanceManhattan(origin) <= distance_to_origin)) {
+						if ((possible_tile.DistanceManhattan(destination) <= distance_to_destination)&&(possible_tile.DistanceManhattan(origin) <= distance_to_origin)) {
 								distance_to_origin = possible_tile.DistanceManhattan(origin);
 								distance_to_destination = possible_tile.DistanceManhattan(destination);
 								closest_possible_tile = possible_tile;
@@ -756,6 +756,7 @@ iPoint j1EntityManager::FindClosestFreeTile(iPoint origin, iPoint destination) {
 
 		max++;
 	}
+
 	return possible_tile;
 }
 
