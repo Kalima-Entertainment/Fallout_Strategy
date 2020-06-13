@@ -175,6 +175,7 @@ void j1Transition::Transition()
 		}				
 		App->gui->load = false;
 		freeTransitionTex = true;
+		App->player->resource_fow_added = false;
 	}
 	else if ((fadetimer.Read() > 2500)&&(!App->gui->ingame)) {
 		Mix_PauseMusic();

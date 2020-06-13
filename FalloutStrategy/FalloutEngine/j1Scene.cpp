@@ -78,7 +78,6 @@ bool j1Scene::Start()
 
 	if (App->render->fog_of_war)App->fowManager->Enable();
 
-
 	App->console->CreateCommand("win", "Automatically win the game", this);
 	App->console->CreateCommand("lose", "Automatically lose the game", this);
 
@@ -117,7 +116,6 @@ bool j1Scene::Start()
 	if (App->render->fog_of_war)App->fowManager->CreateFoWMap(App->map->data.width, App->map->data.height);
 
 	App->minimap->Enable();
-
 	
 	//top_left
 	App->entities->CreateEntity(VAULT, MELEE, 20, 20, App->player);
