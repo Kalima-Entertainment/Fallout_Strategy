@@ -6,6 +6,7 @@
 
 class j1Group;
 
+
 class j1Player : public GenericPlayer
 {
 public:
@@ -43,6 +44,7 @@ private:
 	float mouse_speed_multiplier;
 	bool border_scroll;
 	bool resource_fow_added;
+
 };
 
 

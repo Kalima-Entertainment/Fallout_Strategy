@@ -59,6 +59,8 @@ j1Player::~j1Player() {
 }
 
 bool j1Player::Start() {
+
+
 	App->console->CreateCommand("caps+", "increase the amount of caps", this);
 	App->console->CreateCommand("food+", "increase the amount of food", this);
 	App->console->CreateCommand("water+", "increase the amount of water", this);
@@ -157,6 +159,7 @@ bool j1Player::PreUpdate() {
 				last_selected_entity = selected_entity;
 			}
 		}
+
 
 		//move camera
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_REPEAT) {
@@ -332,6 +335,9 @@ bool j1Player::Update(float dt) {
 	App->input->GetMousePosition(selected_spot.x, selected_spot.y);
 
 	if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) && ((selected_entity != nullptr)||(selected_group != nullptr))) {
+
+		App->scene->blit_destination = true;
+
 		if ((selected_entity != nullptr)&&(selected_entity->is_dynamic))
 			MoveEntity(dynamic_cast<DynamicEntity*>(selected_entity));
 

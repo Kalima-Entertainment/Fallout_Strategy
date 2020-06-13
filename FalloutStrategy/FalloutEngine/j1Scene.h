@@ -2,6 +2,7 @@
 #define __j1SCENE_H__
 
 #include "j1Module.h"
+#include "Animation.h"
 
 struct SDL_Texture;
 class DynamicEntity;
@@ -80,6 +81,10 @@ public:
 	bool deathclaw2;
 	bool deathclaw3;
 	bool deathclaw4;
+
+	SDL_Texture* destination_texture;
+	Animation destination;
+	bool blit_destination;
 	
 private:
 	int SongPlaying;
