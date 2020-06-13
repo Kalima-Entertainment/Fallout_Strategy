@@ -57,6 +57,8 @@ public:
 
 	void OnCommand(std::vector<std::string> command_parts);
 
+	void closeGame();
+
 public:
 
 	bool create;

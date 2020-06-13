@@ -32,6 +32,7 @@
 #include "FoWManager.h"
 #include "j1Hud.h"
 #include "Deathclaw.h"
+#include "j1Video.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -243,51 +244,18 @@ bool j1Scene::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 	{
 		win = true;
-		App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
-		App->menu_manager->DestroyMenu(Menu::RESOURCES);
-		App->menu_manager->DestroyMenu(Menu::TUTORIAL);
-		App->menu_manager->DestroyMenu(Menu::RADIO);
-		App->menu_manager->DestroyMenu(Menu::GUI);
-		App->menu_manager->DestroyMenu(Menu::QUEST);
-		App->logo_scene->playsound = true;
-		App->gui->ingame = false;
-		App->isPaused = true;
-		App->logo_scene->Loop = true;
-		App->hud->activateTimer = false;
-		App->transition->freeTransitionTex = false;
+		closeGame();
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 	{
 		lose = true;
-		App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
-		App->menu_manager->DestroyMenu(Menu::RESOURCES);
-		App->menu_manager->DestroyMenu(Menu::TUTORIAL);
-		App->menu_manager->DestroyMenu(Menu::RADIO);
-		App->menu_manager->DestroyMenu(Menu::GUI);
-		App->menu_manager->DestroyMenu(Menu::QUEST);
-		App->logo_scene->playsound = true;
-		App->gui->ingame = false;
-		App->isPaused = true;
-		App->logo_scene->Loop = true;
-		App->hud->activateTimer = false;
-		App->transition->freeTransitionTex = false;
+		closeGame();
 	}
 	//LOSE BY TIME
-	if (App->hud->minutes <= 0 && App->hud->timer < 2)
+	if (App->hud->minutes == 0 && App->hud->timer == 1)
 	{
 		lose = true;
-		App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
-		App->menu_manager->DestroyMenu(Menu::RESOURCES);
-		App->menu_manager->DestroyMenu(Menu::TUTORIAL);
-		App->menu_manager->DestroyMenu(Menu::RADIO);
-		App->menu_manager->DestroyMenu(Menu::GUI);
-		App->menu_manager->DestroyMenu(Menu::QUEST);
-		App->logo_scene->playsound = true;
-		App->gui->ingame = false;
-		App->isPaused = true;
-		App->logo_scene->Loop = true;
-		App->hud->Disable();
-		App->transition->freeTransitionTex = false;
+		closeGame();
 	}
 	return true;
 }
@@ -367,18 +335,7 @@ void j1Scene::CheckWinner() {
 				if (players[i]->faction == App->player->faction) {
 					//LOSE
 					lose = true;
-					App->logo_scene->Loop = true;
-					App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
-					App->menu_manager->DestroyMenu(Menu::RESOURCES);
-					App->menu_manager->DestroyMenu(Menu::TUTORIAL);
-					App->menu_manager->DestroyMenu(Menu::RADIO);
-					App->menu_manager->DestroyMenu(Menu::GUI);
-					App->menu_manager->DestroyMenu(Menu::QUEST);
-					App->hud->Disable();
-					App->gui->ingame = false;
-					App->isPaused = true;
-					App->logo_scene->playsound = true;
-					App->transition->freeTransitionTex = false;
+					closeGame();
 				}
 				else {
 					beaten_enemies++;
@@ -395,18 +352,7 @@ void j1Scene::CheckWinner() {
 			else if ((players[App->player->faction]->base == nullptr) && (Deathclaws[App->player->faction] != nullptr)) {
 				//LOSE
 				lose = true;
-				App->logo_scene->Loop = true;
-				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
-				App->menu_manager->DestroyMenu(Menu::RESOURCES);
-				App->menu_manager->DestroyMenu(Menu::TUTORIAL);
-				App->menu_manager->DestroyMenu(Menu::RADIO);
-				App->menu_manager->DestroyMenu(Menu::GUI);
-				App->menu_manager->DestroyMenu(Menu::QUEST);
-				App->hud->Disable();
-				App->gui->ingame = false;
-				App->isPaused = true;
-				App->logo_scene->playsound = true;
-				App->transition->freeTransitionTex = false;
+				closeGame();
 			}
 		}
 	}
@@ -415,18 +361,7 @@ void j1Scene::CheckWinner() {
 	if (((beaten_enemies == 3) && (Deathclaws[App->player->faction] == nullptr)) || ((Deathclaws[App->player->faction] != nullptr) && (Deathclaws [App->player->faction]->state == DIE) && (App->player->base != nullptr))) {
 		LOG("You won!");
 		win = true;
-		App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
-		App->menu_manager->DestroyMenu(Menu::RESOURCES);
-		App->menu_manager->DestroyMenu(Menu::TUTORIAL);
-		App->menu_manager->DestroyMenu(Menu::RADIO);
-		App->menu_manager->DestroyMenu(Menu::GUI);
-		App->menu_manager->DestroyMenu(Menu::QUEST);
-		App->gui->ingame = false;
-		App->isPaused = true;
-		App->logo_scene->Loop = true;
-		App->logo_scene->playsound = true;
-		App->hud->Disable();
-		App->transition->freeTransitionTex = false;
+		closeGame();
 	}
 }
 
@@ -523,4 +458,21 @@ bool j1Scene::Save(pugi::xml_node& data) const
 
 	}
 	return true;
+}
+
+void j1Scene::closeGame()
+{
+	App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
+	App->menu_manager->DestroyMenu(Menu::RESOURCES);
+	App->menu_manager->DestroyMenu(Menu::TUTORIAL);
+	App->menu_manager->DestroyMenu(Menu::RADIO);
+	App->menu_manager->DestroyMenu(Menu::GUI);
+	App->menu_manager->DestroyMenu(Menu::QUEST);
+	App->gui->ingame = false;
+	App->isPaused = true;
+	App->logo_scene->Loop = true;
+	App->logo_scene->playsound = true;
+	App->hud->Disable();
+	App->video->Enable();
+	App->transition->freeTransitionTex = false;
 }
