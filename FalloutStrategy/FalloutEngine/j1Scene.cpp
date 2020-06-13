@@ -286,7 +286,7 @@ bool j1Scene::Update(float dt)
 		App->gui->ingame = false;
 		App->isPaused = true;
 		App->logo_scene->Loop = true;
-		App->hud->activateTimer = false;
+		App->hud->Disable();
 		App->transition->freeTransitionTex = false;
 	}
 	return true;
@@ -425,6 +425,8 @@ void j1Scene::CheckWinner() {
 		App->isPaused = true;
 		App->logo_scene->Loop = true;
 		App->logo_scene->playsound = true;
+		App->hud->Disable();
+		App->transition->freeTransitionTex = false;
 	}
 }
 
