@@ -48,7 +48,7 @@
   <no_faction>
     <bighorner health="300" speed="40" resource_quantity="800"/>
     <braham health="150" speed="25" resource_quantity="300"/>
-    <deathclaw health="1000" damage="100" speed="200" resource_quantity="2000"/>
+    <deathclaw health="2000" damage="170" speed="200" resource_quantity="2000"/>
     <mr_handy health="900" speed="50" damage="60">
       <cost caps="1000" time="50"/>
     </mr_handy>
