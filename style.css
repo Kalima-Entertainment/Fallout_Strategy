@@ -42,6 +42,9 @@ html {
 
 #download_button{
     font-size: 200%;
+    top: 50%;
+    left: 50%;
+    transform: translate(50%, 50%);
 }
 
 .exp{
@@ -67,6 +70,7 @@ html {
     font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     color:goldenrod;
     text-align: center;
+    text-shadow: 2px 2px #000000;
     
 }
 
@@ -76,6 +80,7 @@ html {
     font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     color:rgb(255, 255, 255);
     text-align: center;
+    text-shadow: 2px 2px #000000;
     
 }
 
