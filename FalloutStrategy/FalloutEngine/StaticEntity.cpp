@@ -112,13 +112,14 @@ StaticEntity::~StaticEntity() {
 	texture = nullptr;
 	StaticParticle = nullptr;
 	HitParticle = nullptr;
-	state = NO_STATE;
-
 	visionEntity = nullptr;
-	tiles.clear();
-
 	StaticParticle = nullptr;
 	visionEntity = nullptr;
+
+	tiles.clear();
+	surrounding_tiles.clear();
+
+	state = NO_STATE;
 
 	//Clean Unit Spawn Stacks
 	for(int i = 0; i < 10; i++)

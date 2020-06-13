@@ -63,6 +63,11 @@ bool Gatherer::Update(float dt) {
 	bool ret = true;
 	current_animation = &animations[state][direction];
 
+	if ((base != nullptr) && ((base->state >= NO_STATE) || (base->state < IDLE))) {
+		state = IDLE;
+		base = nullptr;
+	}
+
 	switch (state)
 	{
 	case IDLE:

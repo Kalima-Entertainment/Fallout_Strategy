@@ -770,9 +770,6 @@ iPoint j1EntityManager::FindClosestFreeTileFromVector(iPoint origin, std::vector
 		}
 	}
 
-	if (closest_free_tile == iPoint(-1, -1))
-		LOG("No free surrounding tiles");
-
 	return closest_free_tile;
 }
 
@@ -859,9 +856,10 @@ void j1EntityManager::RandomFactions() {
 		randomFaction[randomIndex] = temp;
 	}
 
-
+	/*
 	for(int i = 0; i < 4; i++)
 		LOG("faction %i", randomFaction[i]);
+	*/
 }
 
 void j1EntityManager::OnCommand(std::vector<std::string> command_parts) {

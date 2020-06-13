@@ -180,7 +180,7 @@ bool Troop::Update(float dt) {
 							state = IDLE;
 							target_building = nullptr;
 							commanded = false;
-							LOG("building surrounded");
+							//LOG("building surrounded");
 						}
 					}
 				}
