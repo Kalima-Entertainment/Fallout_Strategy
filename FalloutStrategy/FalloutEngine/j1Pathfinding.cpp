@@ -59,7 +59,7 @@ void j1PathFinding::SetTileAsUnwalkable(int tile_x, int tile_y) {
 }
 
 iPoint j1PathFinding::FindWalkableAdjacentTile(iPoint point) const {
-	iPoint tile;
+	iPoint tile = {-1, -1};
 
 	//north
 	tile = { point.x, point.y - 1 };
@@ -101,7 +101,7 @@ iPoint j1PathFinding::FindWalkableAdjacentTile(iPoint point) const {
 	if (App->pathfinding->IsWalkable(tile) && !App->entities->IsTileOccupied(tile))
 		return tile;
 
-	return { -1,-1 };
+	return tile;
 }
 
 iPoint j1PathFinding::FindNearestWalkableTile(iPoint origin, iPoint destination) const
@@ -129,7 +129,7 @@ iPoint j1PathFinding::FindNearestWalkableTile(iPoint origin, iPoint destination)
 					destination = App->entities->ClosestTile(origin, reference_static_entity->tiles);
 					destination = App->pathfinding->FindWalkableAdjacentTile(destination);
 					if (!IsWalkable(destination))
-						LOG("Unwalkable building tile");
+						destination = ExpandTile(destination);
 				}
 			}
 			else
@@ -142,7 +142,7 @@ iPoint j1PathFinding::FindNearestWalkableTile(iPoint origin, iPoint destination)
 	}
 
 	if (!IsWalkable(destination))
-		LOG("Unwalkable destination 3");
+		destination = ExpandTile(destination);
 
 	return destination;
 }
@@ -351,13 +351,13 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	last_path.clear();
 
 	if (!IsWalkable(origin)) {
-		LOG("Unwalkable origin");
-		return -2;
+		//LOG("Unwalkable origin");
+		return -1;
 	}
 
 	if ((!IsWalkable(destination))) {
-		//LOG("Unwalkable destination");
-		return -2;
+		LOG("Unwalkable destination");
+		return -1;
 	}
 
 
@@ -444,7 +444,7 @@ iPoint j1PathFinding::ExpandTile(iPoint target_tile) const {
 					return pivot;
 			}
 		}
-		max++;
+		++max;
 	}
 
 	return pivot;

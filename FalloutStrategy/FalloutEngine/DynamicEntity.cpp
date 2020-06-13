@@ -159,12 +159,13 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 
 	if (!App->pathfinding->IsWalkable(current_tile)) {
 		next_tile = App->pathfinding->FindNearestWalkableTile(current_tile, destination);
-		return App->pathfinding->IsWalkable(next_tile);
+		ret = App->pathfinding->IsWalkable(next_tile);
 	}
 
 	//if the tile is in the map but it's not walkable
 	if (!App->pathfinding->IsWalkable(destination)) {
 		destination = App->pathfinding->FindNearestWalkableTile(current_tile, destination);
+
 		ret = App->pathfinding->IsWalkable(destination);
 	}
 
@@ -188,17 +189,15 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 		if (node_path.back() == current_tile)
 			node_path.pop_back();
 
+		if (!App->pathfinding->IsWalkable(node_path.back()))
+			node_path.back() = App->pathfinding->ExpandTile(node_path.back());
+
 		if(node_path.size() > 0)
 			App->pathfinding->CreatePath(current_tile, node_path.back());
 	}
 	else {
 		if (App->pathfinding->CreatePath(current_tile, destination) == -1) {
-			//LOG("No path");
-			if (!App->pathfinding->IsWalkable(destination)) {
-				LOG("Unwalkable destination");
-
-				ret = false;
-			}
+			ret = App->pathfinding->IsWalkable(destination);
 		}
 	}
 

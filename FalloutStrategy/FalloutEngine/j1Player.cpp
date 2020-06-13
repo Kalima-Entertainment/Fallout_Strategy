@@ -378,7 +378,7 @@ j1Entity* j1Player::SelectEntity() {
 	j1Entity* target = App->entities->FindEntityByTile(selected_spot);
 
 	if (target != nullptr) {
-		if (((god_mode) || (target->faction == faction)) && (target->state != DIE)) {
+		if (((god_mode) || (target->faction == faction)) && (target->state >= IDLE) && (target->state < NO_STATE)) {
 			if (target->info.current_group != nullptr) {
 				target->ClearUnitInfo();
 			}
