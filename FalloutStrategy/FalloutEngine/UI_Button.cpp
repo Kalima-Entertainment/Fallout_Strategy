@@ -597,8 +597,6 @@ bool UI_Button::Update(float dt)
 			}
 			else if (t == info_button)
 			{
-				App->scene->create_tutorial = !App->scene->create_tutorial;
-
 				if (App->scene->create_tutorial == false) 
 				{
 					App->menu_manager->CreateMenu(Menu::TUTORIAL);
@@ -613,11 +611,10 @@ bool UI_Button::Update(float dt)
 					App->easing_splines->CreateSpline(&App->menu_manager->info_button2_element->pos.x, static_cast<int>(App->menu_manager->info_button2_element->pos.x - 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
 
 				}
+				App->scene->create_tutorial = true;
 			}
 			else if (t == info_button2) 
 			{
-				App->scene->create_tutorial = !App->scene->create_tutorial;
-
 				if (App->scene->create_tutorial == true) 
 				{
 					App->easing_splines->CreateSpline(&App->menu_manager->tutorial_screen->pos.x, static_cast<int>(App->menu_manager->tutorial_screen->pos.x + 700.0f), 1000, Spline_Type::EASE_IN_OUT_QUAD);
@@ -649,6 +646,7 @@ bool UI_Button::Update(float dt)
 					App->audio->PlayFx(1, App->audio->back_fx, 0);
 					App->gui->ingame = true;
 				}
+				App->scene->create_tutorial = false;
 
 			}
 			else if (t == control_button) {
@@ -780,16 +778,18 @@ bool UI_Button::Update(float dt)
 				if (radio == true)
 				{
 					App->menu_manager->CreateMenu(Menu::RADIO);
-					
+					App->audio->PlayFx(1, App->audio->character_fx, 0);
 				}
 				else
 				{
 					App->menu_manager->DestroyMenu(Menu::RADIO);
+					App->audio->PlayFx(1, App->audio->character_fx, 0);
 				}
 						
 			}
 			else if (t == Radio_off_button) {
 				Mix_PauseMusic();
+				App->audio->PlayFx(1, App->audio->back_fx, 0);
 			}
 			else if (t == RockFM_button)
 			{
