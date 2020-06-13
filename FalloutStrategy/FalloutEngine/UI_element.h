@@ -94,6 +94,7 @@ enum UI_Type {
 
 	//Radio
 	Radio_button,
+	Radio_off_button,
 	RockFM_button,
 	AyuwokiFM_button,
 	SlimShadyFM_button,

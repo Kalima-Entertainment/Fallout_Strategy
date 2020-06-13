@@ -788,6 +788,9 @@ bool UI_Button::Update(float dt)
 				}
 						
 			}
+			else if (t == Radio_off_button) {
+				Mix_PauseMusic();
+			}
 			else if (t == RockFM_button)
 			{
 			Mix_PauseMusic();
