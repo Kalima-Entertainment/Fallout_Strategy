@@ -39,9 +39,9 @@ LogoScene::~LogoScene() {
 bool LogoScene::Start()
 {
 	App->audio->PlayFx(1, App->audio->intro_fx, 0);
-	my_video = App->video->Load("video/intro.ogv", App->render->renderer);
-	win_video = App->video->Load("video/win.ogv", App->render->renderer);
-	lose_video = App->video->Load("video/lose.ogv", App->render->renderer);
+	my_video = App->video->Load("data/intro.ogv", App->render->renderer);
+	win_video = App->video->Load("data/win.ogv", App->render->renderer);
+	lose_video = App->video->Load("data/lose.ogv", App->render->renderer);
 
 	quit = false;
 	Loop = true;
@@ -123,7 +123,7 @@ bool LogoScene::PostUpdate()
 
 		if (my_video == 0 && Loop)
 		{
-			my_video = App->video->Load("video/intro.ogv", App->render->renderer);
+			my_video = App->video->Load("data/intro.ogv", App->render->renderer);
 
 		}
 
@@ -157,7 +157,7 @@ bool LogoScene::PostUpdate()
 		}
 		if (win_video == 0 && Loop)
 		{
-			win_video = App->video->Load("video/win.ogv", App->render->renderer);
+			win_video = App->video->Load("data/win.ogv", App->render->renderer);
 		}
 
 	}
@@ -190,7 +190,7 @@ bool LogoScene::PostUpdate()
 		}
 		if (lose_video == 0 && Loop)
 		{
-			lose_video = App->video->Load("video/lose.ogv", App->render->renderer);
+			lose_video = App->video->Load("data/lose.ogv", App->render->renderer);
 		}
 
 	}
