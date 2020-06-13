@@ -305,7 +305,7 @@ bool j1EntityManager::PostUpdate()
 				noresu_position.x = (finalposition.x - firstposition.x) / 2;
 				noresu_position.y = (finalposition.y - firstposition.y) / 2;
 				if (resource_buildings[i]->quantity <= 0) {
-					SDL_Rect rect2 = { 2757,3086,106,104 };
+					SDL_Rect rect2 = { 2680,3123,68,67 };
 					App->render->Blit((SDL_Texture*)App->gui->GetAtlas(), firstposition.x + noresu_position.x, firstposition.y + noresu_position.y, &rect2);
 				}
 			}

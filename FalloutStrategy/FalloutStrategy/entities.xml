@@ -8,7 +8,7 @@
      <ranged health="150" damage="30" speed="100">
      <cost food="80" water="80" time="30"/>
        </ranged>
-     <gatherer health="120" storage_capacity="1000" speed="100">
+     <gatherer health="120" storage_capacity="60" speed="100">
       <cost food="0"  water="40" time="10"/>
      </gatherer>
    </vault>
