@@ -24,7 +24,8 @@ j1Player::j1Player() : GenericPlayer() {
 
 	name.assign("Player");
 
-	selected_entity = last_selected_entity = nullptr;
+	selected_entity = nullptr;
+	last_selected_entity = nullptr;
 	selected_group = nullptr;
 	border_scroll = false;
 	mouse_speed_multiplier = 1.5f;
@@ -408,7 +409,7 @@ void j1Player::MoveEntity(DynamicEntity* entity){
 	}
 
 	//dynamic entities
-	if (entity->state != DIE)
+	if ((entity->state != DIE)&&(entity->state != NO_STATE))
 	{
 		if (entity->info.current_group != nullptr)
 			entity->info.current_group = nullptr;

@@ -253,11 +253,6 @@ bool j1EntityManager::Update(float dt)
 				entities[i]->Update(dt);
 			
 		}
-
-		if (sort_timer.Read() > 500) {
-			BubbleSortEntities();
-			sort_timer.Start();
-		}
 	}
 
 	return ret;
@@ -430,10 +425,27 @@ bool j1EntityManager::PostUpdate()
 				if ((!entities[i]->is_dynamic) && (!App->IsLoading()))
 					App->scene->CheckWinner();
 
+				for (int j = 0; j < entities.size(); j++)
+				{
+					if (entities[j]->is_dynamic) {
+						if ((entities[j]->type == MELEE) || (entities[j]->type == RANGED) || (entities[j]->type == MR_HANDY)) {
+							if (entities[i]->is_dynamic)
+								dynamic_cast<Troop*>(entities[j])->dynamic_target = nullptr;
+							else
+								dynamic_cast<Troop*>(entities[j])->target_building = nullptr;
+						}
+					}
+				}
+
 				delete entities[i];
 				entities[i] = nullptr;
 				entities.erase(entities.begin() + i);
 			}
+		}
+
+		if (sort_timer.Read() > 500) {
+			BubbleSortEntities();
+			sort_timer.Start();
 		}
 
 		/*

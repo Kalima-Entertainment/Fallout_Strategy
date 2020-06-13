@@ -39,9 +39,9 @@ LogoScene::~LogoScene() {
 bool LogoScene::Start()
 {
 	App->audio->PlayFx(1, App->audio->intro_fx, 0);
-	my_video = App->video->Load("Assets_Old/video/intro.ogv", App->render->renderer);
-	win_video = App->video->Load("Assets_Old/video/win.ogv", App->render->renderer);
-	lose_video = App->video->Load("Assets_Old/video/lose.ogv", App->render->renderer);
+	my_video = App->video->Load("data/intro.ogv", App->render->renderer);
+	win_video = App->video->Load("data/win.ogv", App->render->renderer);
+	lose_video = App->video->Load("data/lose.ogv", App->render->renderer);
 
 	quit = false;
 	Loop = true;
@@ -77,8 +77,6 @@ bool LogoScene::Update(float dt) {
 		Loop = false;
 		App->audio->PlayFx(2, App->audio->F_press, 0);
 		win_video = 0;
-		App->menu_manager->DestroyMenu(Menu::RESOURCES);
-		App->menu_manager->DestroyMenu(Menu::QUEST);
 		if ((App->player->selected_entity) && (!App->player->selected_entity->is_dynamic)) {
 			App->menu_manager->DestroyFaction(Menu::BUI_BASES, App->player->selected_entity->faction, App->player->selected_entity->type);
 		}
@@ -93,8 +91,6 @@ bool LogoScene::Update(float dt) {
 		Loop = false;
 		App->audio->PlayFx(2, App->audio->F_press, 0);
 		lose_video = 0;
-		App->menu_manager->DestroyMenu(Menu::RESOURCES);
-		App->menu_manager->DestroyMenu(Menu::QUEST);
 		if ((App->player->selected_entity) && (!App->player->selected_entity->is_dynamic)) {
 			App->menu_manager->DestroyFaction(Menu::BUI_BASES, App->player->selected_entity->faction, App->player->selected_entity->type);
 		}
@@ -127,7 +123,7 @@ bool LogoScene::PostUpdate()
 
 		if (my_video == 0 && Loop)
 		{
-			my_video = App->video->Load("Assets_Old/video/intro.ogv", App->render->renderer);
+			my_video = App->video->Load("data/intro.ogv", App->render->renderer);
 
 		}
 
@@ -161,7 +157,7 @@ bool LogoScene::PostUpdate()
 		}
 		if (win_video == 0 && Loop)
 		{
-			win_video = App->video->Load("Assets_Old/video/win.ogv", App->render->renderer);
+			win_video = App->video->Load("data/win.ogv", App->render->renderer);
 		}
 
 	}
@@ -194,7 +190,7 @@ bool LogoScene::PostUpdate()
 		}
 		if (lose_video == 0 && Loop)
 		{
-			lose_video = App->video->Load("Assets_Old/video/lose.ogv", App->render->renderer);
+			lose_video = App->video->Load("data/lose.ogv", App->render->renderer);
 		}
 
 	}

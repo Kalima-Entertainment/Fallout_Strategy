@@ -20,6 +20,7 @@
 #include "DialogManager.h"
 #include "MenuManager.h"
 #include "MainMenu.h"
+#include "j1Video.h"
 #include "AssetsManager.h"
 #include "SDL_mixer\include\SDL_mixer.h"
 
@@ -166,6 +167,7 @@ void j1Transition::Transition()
 		App->scene->Enable();
 		App->main_menu->Disable();
 		App->hud->Enable();
+		App->video->Disable();
 		if(App->gui->load==false){
 			App->dialog_manager->Enable();
 			App->menu_manager->CreateMenu(Menu::DIALOG); 
@@ -181,14 +183,13 @@ void j1Transition::Transition()
 		App->ai_manager->Disable();
 		App->player->Disable();
 		App->entities->Disable();
-		App->fowManager->CleanUp();
+		App->fowManager->Disable();
 		App->scene->Disable();
 		App->map->Disable();
 		App->minimap->Disable();
 		App->Mmanager->Disable();
-		App->hud->Disable();
 		transition = false;
-		App->gui->ingame = false;		
+		App->gui->ingame = false;
 		App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 		App->isPaused = false;
 		App->scene->win = false;
