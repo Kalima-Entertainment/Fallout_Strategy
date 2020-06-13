@@ -53,13 +53,14 @@ j1Scene::j1Scene() : j1Module()
 	players[0] = players[1] = players[2] = players[3] = nullptr;
 	SongPlaying = 0;
 	beaten_enemies = 0;
+
 	destination_texture = nullptr;
-	destination.PushBack(SDL_Rect{ 0, 0 , 64, 32 }, 1);
-	destination.PushBack(SDL_Rect{ 64, 0 , 64, 32 }, 1);
-	destination.PushBack(SDL_Rect{ 0, 32 , 64, 32 }, 1);
-	destination.PushBack(SDL_Rect{ 64, 32 , 64, 32 }, 1);
-	destination.PushBack(SDL_Rect{ 0, 32 , 64, 32 }, 1);
-	destination.PushBack(SDL_Rect{ 64, 0 , 64, 32 }, 1);
+	destination.PushBack(SDL_Rect{ 0, 0 , 64, 32 }, 3.0f);
+	destination.PushBack(SDL_Rect{ 64, 0 , 64, 32 }, 3.0f);
+	destination.PushBack(SDL_Rect{ 0, 32 , 64, 32 }, 3.0f);
+	destination.PushBack(SDL_Rect{ 64, 32 , 64, 32 }, 3.0f);
+	destination.PushBack(SDL_Rect{ 0, 32 , 64, 32 }, 3.0f);
+	destination.PushBack(SDL_Rect{ 64, 0 , 64, 32 }, 3.0f);
 	destination.Reset();
 	blit_destination = false;
 }
@@ -77,8 +78,6 @@ bool j1Scene::Awake()
 	LOG("Loading Scene");
 	bool ret = true;
 
-	destination_texture = App->tex->Load("Assets/textures/player/destination_debug.png");
-
 	return ret;
 }
 
@@ -90,6 +89,8 @@ bool j1Scene::Start()
 	beaten_enemies = 0;
 
 	if (App->render->fog_of_war)App->fowManager->Enable();
+	destination_texture = App->tex->Load("Assets/textures/player/destination_debug.png");
+
 
 	App->console->CreateCommand("win", "Automatically win the game", this);
 	App->console->CreateCommand("lose", "Automatically lose the game", this);
@@ -177,10 +178,8 @@ bool j1Scene::Update(float dt)
 	App->map->Draw();
 
 	// -- Blit cursor destination
-	iPoint tile = App->map->WorldToMap((int)App->player->mouse_position.x, (int)App->player->mouse_position.y);
-	//tile = App->map->MapToWorld(tile.x, tile.y);
-	if (blit_destination) App->render->Blit(destination_texture, tile.x, tile.y, &destination.GetCurrentFrame(dt));
-//	if (destination.Finished()) blit_destination = false;
+	if(blit_destination)App->render->Blit(destination_texture, debug_destiny.x, debug_destiny.y, &destination.GetCurrentFrame(dt), 1.0f, 0.0f);
+	if (destination.Finished()) blit_destination = false;
 
 
 	if ((App->hud->minutes == 5) && (deathclaw1 == false))
