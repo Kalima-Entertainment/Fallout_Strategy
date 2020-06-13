@@ -47,6 +47,7 @@ DynamicEntity::~DynamicEntity() {
 	next_tile_rect = { 0,0,0,0 };
 	detection_radius = 0;
 
+	state = NO_STATE;
 	direction = last_direction = TOP_LEFT;
 
 	dynamic_target = nullptr;
@@ -187,7 +188,8 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 		if (node_path.back() == current_tile)
 			node_path.pop_back();
 
-		App->pathfinding->CreatePath(current_tile, node_path.back());
+		if(node_path.size() > 0)
+			App->pathfinding->CreatePath(current_tile, node_path.back());
 	}
 	else {
 		if (App->pathfinding->CreatePath(current_tile, destination) == -1) {
