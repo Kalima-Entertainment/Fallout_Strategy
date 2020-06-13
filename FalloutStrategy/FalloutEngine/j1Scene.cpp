@@ -40,7 +40,7 @@ j1Scene::j1Scene() : j1Module()
 
 	create = false;
 	load_game = false;
-	create_tutorial = true;
+	create_tutorial = false;
 	menu_state = StatesMenu::NONE;
 	mouse_pos = { 0,0 };
 	rectangle_origin = { 0,0 };
