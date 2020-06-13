@@ -659,6 +659,7 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 				//create building
 				static_entity = dynamic_cast<StaticEntity*>(App->entities->CreateEntity(building_faction, type, x,y, App->scene->players[building_faction]));
 				static_entity->tiles = CalculateArea(first_tile_position, width, height);
+				static_entity->surrounding_tiles = CalculateSurroundingTiles(first_tile_position, width, height);
 				static_entity->CalculateRenderAndSpawnPositions();
 
 				App->entities->CreateEntity(building_faction, dynamic_type, x + 1, y + 1, App->scene->players[building_faction]);
@@ -773,4 +774,30 @@ std::vector<iPoint> j1Map::CalculateArea(iPoint first_tile_position, int width, 
 	}
 
 	return area;
+}
+
+std::vector<iPoint> j1Map::CalculateSurroundingTiles(iPoint first_tile, int width, int height) {
+	std::vector<iPoint> surrounding_tiles;
+
+	first_tile = IsometricWorldToMap(first_tile.x, first_tile.y);
+	first_tile.x -= 1;
+	first_tile.y -= 1;
+
+	//north tiles
+	for (int i = 1; i <= width; i++) {
+		surrounding_tiles.push_back({ first_tile.x + i, first_tile.y });}
+
+	//west tiles
+	for (int i = 1; i <= height; i++) {
+		surrounding_tiles.push_back({ first_tile.x, first_tile.y + i});}
+
+	//east tiles
+	for (int i = 1; i <= height; i++) {
+		surrounding_tiles.push_back({ first_tile.x + width + 1, first_tile.y + i });}
+
+	//south tiles
+	for (int i = 1; i <= width; i++) {
+		surrounding_tiles.push_back({ first_tile.x + i, first_tile.y + height + 1});}
+
+	return surrounding_tiles;
 }

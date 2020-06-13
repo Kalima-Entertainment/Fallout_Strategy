@@ -206,8 +206,6 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 	path_to_target.clear();
 	path_to_target = App->pathfinding->GetLastPath();
 
-	state = WALK;
-
 	if (path_to_target.size() > 0) {
 		if (path_to_target.front() == current_tile)
 			path_to_target.erase(path_to_target.begin());
@@ -215,6 +213,9 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 		if (path_to_target.size() > 0)
 			next_tile = path_to_target.front();
 	}
+
+	if (ret == true)
+		state = WALK;
 
 	return ret;
 }

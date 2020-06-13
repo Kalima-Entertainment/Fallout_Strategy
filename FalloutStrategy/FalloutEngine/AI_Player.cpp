@@ -112,7 +112,18 @@ bool AI_Player::Update(float dt) {
 			}
 			is_attacking = true;
 			wave_timer.Start();
-			LOG("Attacking %i:%i", App->hud->minutes, App->hud->timer);
+
+			std::string faction_name;
+			if (faction == VAULT)
+				faction_name = "vault";
+			else if (faction == BROTHERHOOD)
+				faction_name = "brotherhood";
+			else if (faction == MUTANT)
+				faction_name = "mutant";
+			else if (faction == GHOUL)
+				faction_name = "ghoul";
+
+			LOG("%s attacking %i:%i", faction_name.c_str(), App->hud->minutes, App->hud->timer);
 		}
 	}
 
@@ -137,13 +148,13 @@ bool AI_Player::Update(float dt) {
 				target_building = ChooseTargetBuilding();
 			}
 		}
-		else {
-			for (size_t i = 0; i < troops.size(); i++)
-			{
-				if (troops[i]->target_building == nullptr)
-					troops[i]->target_building = target_building;
-			}
+		//else {
+		for (size_t i = 0; i < troops.size(); i++)
+		{
+			if (troops[i]->target_building == nullptr)
+				troops[i]->target_building = target_building;
 		}
+		//}
 
 		is_attacking = false;
 	}

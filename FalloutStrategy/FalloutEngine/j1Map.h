@@ -144,7 +144,7 @@ public:
 	iPoint IsometricWorldToMap(int x, int y) const;
 	bool CreateWalkabilityMap() const;
 	std::vector<iPoint> CalculateArea(iPoint first_tile_position, int width, int height);
-	void SetBuildingTilesUnwalkable(std::vector<iPoint> tiles);
+	std::vector<iPoint> CalculateSurroundingTiles(iPoint first_tile, int width, int height);
 	int GetWidth() const { return data.width * data.tile_width; };
 	TileSet* GetTilesetFromTileId(int id) const;
 	bool CheckVisibleArea(int x, int y); //Checks if area is visible in Fog Of War

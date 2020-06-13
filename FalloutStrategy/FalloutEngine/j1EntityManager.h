@@ -97,8 +97,8 @@ public:
 	bool IsTileInPositionOccupied(fPoint position);
 
 	iPoint ClosestTile(iPoint position, std::vector<iPoint> entity_tiles);
-
 	iPoint FindClosestFreeTile(iPoint origin, iPoint destination);
+	iPoint FindClosestFreeTileFromVector(iPoint origin, std::vector<iPoint> tiles);
 	iPoint FindFreeAdjacentTile(iPoint origin, iPoint destination);
 
 	bool LoadReferenceEntityAnimations();

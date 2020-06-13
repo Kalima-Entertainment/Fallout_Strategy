@@ -54,6 +54,7 @@ public:
 
 public:
 	std::vector<iPoint> tiles;
+	std::vector<iPoint>surrounding_tiles;
 	float time_left;
 	float time_left_upgrade;
 	Spawn_Stack spawn_stack[10];

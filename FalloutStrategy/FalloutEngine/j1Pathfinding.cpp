@@ -131,21 +131,21 @@ iPoint j1PathFinding::FindNearestWalkableTile(iPoint origin, iPoint destination)
 				{
 					destination = App->entities->ClosestTile(origin, reference_static_entity->tiles);
 					destination = App->pathfinding->FindWalkableAdjacentTile(destination);
-					if (!IsWalkable(destination))
-						LOG("Unwalkable building tile");
+					//if (!IsWalkable(destination))
+						//LOG("Unwalkable building tile");
 				}
 			}
 			else
 			{
 				destination = App->pathfinding->ExpandTile(destination);
-				if (!IsWalkable(destination))
-					LOG("Unwalkable tile 2");
+				//if (!IsWalkable(destination))
+					//LOG("Unwalkable tile 2");
 			}
 		}
 	}
 
-	if (!IsWalkable(destination))
-		LOG("Unwalkable destination 3");
+	//if (!IsWalkable(destination))
+		//LOG("Unwalkable destination 3");
 
 	return destination;
 }

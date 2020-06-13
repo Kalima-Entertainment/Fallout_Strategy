@@ -759,6 +759,18 @@ iPoint j1EntityManager::FindClosestFreeTile(iPoint origin, iPoint destination) {
 	return possible_tile;
 }
 
+iPoint j1EntityManager::FindClosestFreeTileFromVector(iPoint origin, std::vector<iPoint> tiles) {
+	iPoint closest_free_tile = {-1, -1};
+
+	for (size_t i = 0; i < tiles.size(); i++) {
+		if ((occupied_tiles[tiles[i].x][tiles[i].x] == false) &&
+			((closest_free_tile == iPoint(-1, -1)) || (origin.DistanceManhattan(tiles[i]) < origin.DistanceManhattan(closest_free_tile)))) {
+			closest_free_tile = tiles[i];
+		}
+	}
+	return closest_free_tile;
+}
+
 iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) {
 	iPoint closest_adjacent_tile = { -1,-1 };
 	iPoint adjacent_tiles[4];

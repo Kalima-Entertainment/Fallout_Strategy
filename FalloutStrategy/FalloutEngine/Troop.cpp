@@ -88,13 +88,12 @@ bool Troop::Update(float dt) {
 	switch (state)
 	{
     case IDLE:
-		enemy_in_range = DetectEntitiesInRange();
 
 		//if is not commanded and there is no building to attack
 		if ((!commanded)&&(target_building == nullptr)) {
-			dynamic_target = enemy_in_range;
+			dynamic_target = DetectEntitiesInRange();
 			if(dynamic_target != nullptr)
-				PathfindToPosition(enemy_in_range->current_tile);
+				PathfindToPosition(dynamic_target->current_tile);
 		}
 		else {
 			if (target_building != nullptr) {
@@ -134,8 +133,25 @@ bool Troop::Update(float dt) {
 			if (target_building->state == DIE) {
 				target_building = RequestTargetBuilding(target_building->faction);
 
-				if (target_building != nullptr)
-					PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
+				if (target_building != nullptr){
+					if (type == MELEE) {
+						if (App->entities->IsTileOccupied(target_tile)) {
+							iPoint free_surrounding_tile = App->entities->FindClosestFreeTileFromVector(current_tile, target_building->surrounding_tiles);
+							if (free_surrounding_tile != iPoint(-1, -1)) {
+								PathfindToPosition(free_surrounding_tile);
+							}
+							else {
+								state = IDLE;
+								target_building = nullptr;
+								commanded = false;
+								LOG("building surrounded");
+							}
+						}
+					}
+					else {
+						PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
+					}
+				}
 				else
 					commanded = false;
 			}
