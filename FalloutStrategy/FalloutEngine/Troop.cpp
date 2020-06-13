@@ -155,7 +155,7 @@ bool Troop::Update(float dt) {
 				else
 					commanded = false;
 			}
-			//if teh building is still standing still and close enough attack it
+			//if the building is still standing still and close enough attack it
 			else if (current_tile.DistanceManhattan(App->entities->ClosestTile(current_tile, target_building->tiles)) <= range) {
 				UpdateTile();
 				path_to_target.clear();
@@ -169,8 +169,25 @@ bool Troop::Update(float dt) {
 				}
 			}
 			//if we are too far away to attack go where the building is
-			else if (path_to_target.size() == 0)
-				PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
+			else {
+				if (type == MELEE) {
+					if (App->entities->IsTileOccupied(target_tile)) {
+						iPoint free_surrounding_tile = App->entities->FindClosestFreeTileFromVector(current_tile, target_building->surrounding_tiles);
+						if (free_surrounding_tile != iPoint(-1, -1)) {
+							PathfindToPosition(free_surrounding_tile);
+						}
+						else {
+							state = IDLE;
+							target_building = nullptr;
+							commanded = false;
+							LOG("building surrounded");
+						}
+					}
+				}
+				else {
+					PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
+				}
+			}
 		}
 		else if (dynamic_target != nullptr) {
 			//if the entitiy is in range
