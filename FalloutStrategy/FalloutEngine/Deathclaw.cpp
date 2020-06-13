@@ -94,7 +94,7 @@ bool Deathclaw::Update(float dt) {
 			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
 		}
 		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
-
+		App->scene->CheckWinner();
         break;
     default:
         break;
