@@ -251,7 +251,6 @@ bool j1Map::CleanUp()
 		App->tex->UnLoad(data.tilesets[i].texture);
 	}
 
-
 	// Clean up the pugui tree
 	map_file.reset();
 

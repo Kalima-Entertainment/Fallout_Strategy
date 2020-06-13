@@ -416,7 +416,7 @@ void j1Player::MoveEntity(DynamicEntity* entity){
 	}
 
 	//dynamic entities
-	if ((entity->state != DIE)&&(entity->state != NO_STATE))
+	if ((entity->state != DIE)&&((entity->state >= IDLE)&&(entity->state < NO_STATE)))
 	{
 		if (entity->info.current_group != nullptr)
 			entity->info.current_group = nullptr;

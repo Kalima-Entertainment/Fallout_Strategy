@@ -76,12 +76,9 @@ bool AI_Player::Update(float dt) {
 		gatherers_commanded = true;
 	}
 
-	// ------------------------------------------------------------
-
 	//Spawn Units -------------------------------------------------
 
 	//melee-ranged proportion
-
 	float mr_proportion = 0;
 	if (rangeds > 0)
 		mr_proportion = melees / rangeds;
@@ -105,7 +102,7 @@ bool AI_Player::Update(float dt) {
 	//Choose enemy player -----------------------------------------
 
 	//if the ai_player is ready choose a player to attack
-	if ((wave_timer.ReadSec() > wave_time)&&(!is_attacking)) {
+	if ((wave_timer.ReadSec() >= wave_time) && (!is_attacking)) {
 		if ((rangeds >= ranged_minimum) && (melees >= melee_minimum)) {
 			if (target_player == nullptr) {
 				ChooseRandomPlayerEnemy();
