@@ -363,6 +363,7 @@ void MenuManager::CreateMenu(Menu menu) {
 		gui_ingame[2] = dynamic_cast<j1Image*>(App->gui->CreateImage(1205, 70, Image, { 1037, 2120, 74, 71 }, NULL, this));
 		gui_ingame[3] = dynamic_cast<UI_Button*>(App->gui->CreateButton(1160, 70, info_button, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this));
 		gui_ingame[4] = dynamic_cast<UI_Button*>(App->gui->CreateButton(1205, 0, Radio_button, { 1043,1998,74,71 }, { 966,1998,74,71 }, { 889,1998,74,71 }, NULL, this));
+		gui_ingame[5] = dynamic_cast<UI_Button*>(App->gui->CreateButton(1180, 0, Radio_off_button, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this));
 
 		timer_item = dynamic_cast<UI_Label*>(App->gui->CreateLabel(700, 7, Label, "0", NULL, this, "StackedPixel"));
 		timer_minutes = dynamic_cast<UI_Label*>(App->gui->CreateLabel(652, 7, Label, "0", NULL, this, "StackedPixel"));
@@ -1171,7 +1172,7 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->gui->DeleteArrayElements(pause_menu, 7);
 		break;
 	case Menu::GUI:
-		App->gui->DeleteArrayElements(gui_ingame, 5);
+		App->gui->DeleteArrayElements(gui_ingame, 6);
 		App->gui->Delete_Element(timer_item);
 		App->gui->Delete_Element(timer_minutes);
 		break;
