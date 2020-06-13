@@ -397,19 +397,34 @@ void FoWManager::AddFowToResourceBuildings(iPoint basePos)
 {
 	//App->entities->GetClosestResourceBuilding(App->player->base);
 	ResourceBuilding* resource_building[2];
-	
+
 	//We get the two buildings
 	resource_building[0] = App->entities->GetClosestResourceBuilding(basePos, Resource::WATER);
-	resource_building[1] = App->entities->GetClosestResourceBuilding(basePos, Resource::CAPS);
-	
+	resource_building[1] = App->entities->GetClosestResourceBuilding(basePos, Resource::CAPS);	
+
 	//We add the vision entity to them
+
 	//Water Resource Building
-	visionEntity = App->fowManager->CreateFoWEntity({ resource_building[0]->tiles[20] }, true);
-	visionEntity->SetNewVisionRadius(7);
+	{
+		//Initial Position
+		visionEntity = App->fowManager->CreateFoWEntity({ resource_building[0]->tiles[0] }, true);
+		visionEntity->SetNewVisionRadius(7);
+
+		//Last Position
+		visionEntity = App->fowManager->CreateFoWEntity({ resource_building[0]->tiles[7] }, true);
+		visionEntity->SetNewVisionRadius(7);
+	}
 
 	//Caps Resource Building
-	visionEntity = App->fowManager->CreateFoWEntity({ resource_building[1]->tiles[20] }, true);
-	visionEntity->SetNewVisionRadius(7);
+	{
+		//Initial Position
+		visionEntity = App->fowManager->CreateFoWEntity({ resource_building[1]->tiles[0] }, true);
+		visionEntity->SetNewVisionRadius(7);
+
+		//Last Position
+		visionEntity = App->fowManager->CreateFoWEntity({ resource_building[1]->tiles[7] }, true);
+		visionEntity->SetNewVisionRadius(7);
+	}
 }
 
 void FoWManager::MapNeedsUpdate()
