@@ -83,6 +83,7 @@ public:
 	bool deathclaw4;
 
 	SDL_Texture* destination_texture;
+	iPoint debug_destiny;
 	Animation destination;
 	bool blit_destination;
 	

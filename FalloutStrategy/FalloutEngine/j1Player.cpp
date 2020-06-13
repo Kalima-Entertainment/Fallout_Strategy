@@ -337,6 +337,7 @@ bool j1Player::Update(float dt) {
 	if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) && ((selected_entity != nullptr)||(selected_group != nullptr))) {
 
 		App->scene->blit_destination = true;
+		App->scene->debug_destiny = mouse_position;
 
 		if ((selected_entity != nullptr)&&(selected_entity->is_dynamic))
 			MoveEntity(dynamic_cast<DynamicEntity*>(selected_entity));
