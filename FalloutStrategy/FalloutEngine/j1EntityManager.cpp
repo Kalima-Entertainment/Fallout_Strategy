@@ -1154,6 +1154,14 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 // Save Game State
 bool j1EntityManager::Save(pugi::xml_node& data) const
 {
+
+	pugi::xml_node player_pugi = data.append_child("player");
+
+	if (App->player->faction == BROTHERHOOD) { player_pugi.append_attribute("player_faction") = "brotherhood"; }
+	else if (App->player->faction == MUTANT) { player_pugi.append_attribute("player_faction") = "supermutant"; }
+	else if (App->player->faction == VAULT) { player_pugi.append_attribute("player_faction") = "vault"; }
+	else if (App->player->faction == GHOUL) { player_pugi.append_attribute("player_faction") = "ghoul"; }
+
 	for(size_t i = 0; i < entities.size(); i++)
 	{
 		pugi::xml_node entities_pugi = data.append_child("entity");
@@ -1202,12 +1210,7 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 
 	}
 
-	pugi::xml_node player_pugi = data.append_child("player");
-
-	if (App->player->faction == BROTHERHOOD) { player_pugi.append_attribute("player_faction") = "brotherhood"; }
-	else if (App->player->faction == MUTANT) { player_pugi.append_attribute("player_faction") = "supermutant"; }
-	else if (App->player->faction == VAULT) { player_pugi.append_attribute("player_faction") = "vault"; }
-	else if (App->player->faction == GHOUL) { player_pugi.append_attribute("player_faction") = "ghoul"; }
+	
 
 	LOG("%i", entities.size());
 
