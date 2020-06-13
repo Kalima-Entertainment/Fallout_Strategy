@@ -8,7 +8,7 @@
      <ranged health="150" damage="30" speed="100">
      <cost food="80" water="80" time="30"/>
        </ranged>
-     <gatherer health="120" storage_capacity="60" speed="100">
+     <gatherer health="120" storage_capacity="1000" speed="100">
       <cost food="0"  water="40" time="10"/>
      </gatherer>
    </vault>
@@ -48,7 +48,7 @@
   <no_faction>
     <bighorner health="300" speed="40" resource_quantity="800"/>
     <braham health="150" speed="25" resource_quantity="300"/>
-    <deathclaw health="2000" damage="170" speed="200" resource_quantity="2000"/>
+    <deathclaw health="1000" damage="170" speed="200" resource_quantity="2000"/>
     <mr_handy health="900" speed="50" damage="60">
       <cost caps="1000" time="50"/>
     </mr_handy>
