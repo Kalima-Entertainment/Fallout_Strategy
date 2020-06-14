@@ -702,6 +702,13 @@ void j1EntityManager::DestroyAllEntitiesNow() {
 		entities[i] = nullptr;
 	}
 	entities.clear();
+
+	for (size_t i = 0; i < resource_buildings.size(); i++)
+	{
+		delete resource_buildings[i];
+		resource_buildings[i] = nullptr;
+	}
+	resource_buildings.clear();
 }
 
 j1Entity* j1EntityManager::FindEntityByTile(iPoint tile, j1Entity* entity_to_skip) {
@@ -1192,8 +1199,6 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 		}
 
 	}
-
-	
 
 	LOG("%i", entities.size());
 

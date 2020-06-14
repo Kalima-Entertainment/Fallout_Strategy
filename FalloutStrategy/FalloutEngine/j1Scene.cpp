@@ -88,7 +88,10 @@ bool j1Scene::Start()
 	menu_state = StatesMenu::NONE;
 	beaten_enemies = 0;
 
-	if (App->render->fog_of_war)App->fowManager->Enable();
+	if (App->render->fog_of_war)
+		App->fowManager->Enable();
+
+	deathclaw1 = deathclaw2 = deathclaw3 = deathclaw4 = false;
 
 	destination_texture = App->tex->Load("Assets/textures/player/destination_debug.png");
 
@@ -499,9 +502,7 @@ void j1Scene::closeGame()
 	App->menu_manager->DestroyMenu(Menu::TUTORIAL);
 	App->menu_manager->DestroyMenu(Menu::RADIO);
 	App->menu_manager->DestroyMenu(Menu::GUI);
-	App->menu_manager->DestroyMenu(Menu::QUEST);
-	App->fowManager->CleanUp();
-	App->fowManager->Disable();
+	App->menu_manager->DestroyMenu(Menu::QUEST);	
 	App->gui->ingame = false;
 	App->isPaused = true;
 	App->logo_scene->Loop = true;
