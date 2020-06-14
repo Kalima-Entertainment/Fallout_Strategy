@@ -18,7 +18,7 @@ html {
 .bgimg-1 {
     background-position: center;
     background-size: cover;
-    background-image: url("./Assets/fondo.png");
+    background-image: url("./Photos/fondo.png");
     min-height: 100%;
 }
 
