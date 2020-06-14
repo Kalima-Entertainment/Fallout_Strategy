@@ -894,17 +894,11 @@ void j1EntityManager::RandomFactions() {
 	srand((unsigned int)time(NULL));
 
 	for(int i = 0; i < 4; i++) {
-
 		int randomIndex = rand() % 4;
 		int temp = randomFaction[i];
 		randomFaction[i] = randomFaction[randomIndex];
 		randomFaction[randomIndex] = temp;
 	}
-
-	/*
-	for(int i = 0; i < 4; i++)
-		LOG("faction %i", randomFaction[i]);
-	*/
 }
 
 void j1EntityManager::OnCommand(std::vector<std::string> command_parts) {
