@@ -171,7 +171,7 @@ fPoint j1Render::fWorldToScreen(int x, int y) const
 }
 
 // Blit to screen
-bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale, float speed, bool color, double angle, int pivot_x, int pivot_y, Uint8 alpha) const
+bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale, float speed, bool color, Color_Code code,  double angle, int pivot_x, int pivot_y, Uint8 alpha) const
 {
 	bool ret = true;
 	//float scale = App->win->GetScale();
@@ -182,6 +182,25 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 
 	if (alpha != 255)
 		SDL_SetTextureAlphaMod(texture,alpha);
+
+
+	// -- Modify texture base color
+	if (color) {
+		switch (code) {
+		case RED:
+			SDL_SetTextureColorMod(texture, 255, 0, 0);
+			break;
+		case GREEN:
+			SDL_SetTextureColorMod(texture, 0, 255, 0);
+			break;
+		case BLUE:
+			SDL_SetTextureColorMod(texture, 0, 0, 255);
+			break;
+		case BLACK:
+			SDL_SetTextureColorMod(texture, 255, 255, 255);
+			break;
+		}
+	}
 
 	if (section != NULL)
 	{

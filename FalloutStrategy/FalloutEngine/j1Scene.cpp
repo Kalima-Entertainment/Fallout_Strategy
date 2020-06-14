@@ -189,7 +189,7 @@ bool j1Scene::Update(float dt)
 	App->map->Draw();
 
 	// -- Blit cursor destination
-	if(blit_destination)App->render->Blit(destination_texture, debug_destiny.x, debug_destiny.y, &destination.GetCurrentFrame(dt));
+	if(blit_destination)App->render->Blit(destination_texture, debug_destiny.x, debug_destiny.y, &destination.GetCurrentFrame(dt), 1.0f, 1.0f, true, Color_Code::GREEN);
 	
 	// If finished restart animation and set again blit to false, just to be rendered when mouse right click with any entitie able to move.
 	if (destination.Finished()) { 

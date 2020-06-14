@@ -651,7 +651,7 @@ void StaticEntity::SpawnUnit(EntityType type, bool no_cost) {
 	int cost_water, cost_meat;
 	int spawn_seconds;	
 
-	if (((faction == App->player->faction) && (App->player->god_mode))||(no_cost == true)) {
+	if (App->player->god_mode||no_cost == true) {
 		cost_water = 0;
 		cost_meat = 0;
 		spawn_seconds = 0;
@@ -885,6 +885,6 @@ void StaticEntity::CalculateRenderAndSpawnPositions() {
 		}
 
 		//Spawn position is just below render position
-		spawnPosition = { App->map->WorldToMap(static_cast<int>(render_position.x + sprite_size * 0.5f), static_cast<int>(render_position.y + sprite_size)) };
+		spawnPosition = { tiles.back().x + 1, tiles.back().y + 1 };
 	}
 }
