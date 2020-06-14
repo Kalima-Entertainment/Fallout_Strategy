@@ -153,8 +153,6 @@ bool FoWManager::CleanUp()
 	int i = 0;
 	while (fowEntities.size() > 0)
 	{
-
-
 		if (fowEntities[i] != nullptr)
 		{
 			delete fowEntities[i];
