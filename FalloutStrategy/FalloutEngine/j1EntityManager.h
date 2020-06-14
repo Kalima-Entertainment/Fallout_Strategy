@@ -34,6 +34,7 @@ struct ResourceBuilding {
 	Resource resource_type = Resource::NO_TYPE;
 	int quantity = 0;
 	std::vector<iPoint> tiles;
+	iPoint no_resources_blit_position;
 	~ResourceBuilding() {tiles.clear();}
 };
 

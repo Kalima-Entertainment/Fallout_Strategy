@@ -272,10 +272,6 @@ bool j1EntityManager::PostUpdate()
 	bool ret = true;
 	SDL_Rect tex_rect = {128,0,64,64 };
 	iPoint tex_position;
-	iPoint finalposition;
-	iPoint firstposition;
-	iPoint noresu_position;
-
 
 	if (!loading_reference_entities)
 	{
@@ -299,8 +295,6 @@ bool j1EntityManager::PostUpdate()
 
 						}
 				}
-				
-
 			}
 		}
 
@@ -308,13 +302,9 @@ bool j1EntityManager::PostUpdate()
 		{
 			for (size_t j = 0; j < resource_buildings[i]->tiles.size(); j++)
 			{
-				finalposition = App->map->MapToWorld(resource_buildings[i]->tiles.back().x, resource_buildings[i]->tiles.back().y);
-				firstposition = App->map->MapToWorld(resource_buildings[i]->tiles.front().x, resource_buildings[i]->tiles.front().y);
-				noresu_position.x = (finalposition.x - firstposition.x) / 2;
-				noresu_position.y = (finalposition.y - firstposition.y) / 2;
 				if (resource_buildings[i]->quantity <= 0) {
 					SDL_Rect rect2 = { 2680,3123,68,67 };
-					App->render->Blit((SDL_Texture*)App->gui->GetAtlas(), firstposition.x + noresu_position.x, firstposition.y + noresu_position.y, &rect2);
+					App->render->Blit((SDL_Texture*)App->gui->GetAtlas(), resource_buildings[i]->no_resources_blit_position.x, resource_buildings[i]->no_resources_blit_position.y, &rect2);
 				}
 			}
 		}

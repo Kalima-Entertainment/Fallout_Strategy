@@ -127,22 +127,15 @@ bool j1Player::PreUpdate() {
 		App->input->GetMousePosition(mouse_position.x, mouse_position.y);
 		//entity selection and interaction
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
-			if (selected_group != nullptr) 
-			{
-				selected_group->DeselectGroup();
-				selected_group = nullptr;
-			}
-
 			selected_entity = SelectEntity();
 
-			if ((selected_entity == nullptr) && (selected_group != nullptr)) 
+			if ((selected_group != nullptr)) 
 			{
 				if (!TouchingUI(mouse_position.x, mouse_position.y)) {
 					selected_group->DeselectGroup();
 					selected_group = nullptr;
 				}
 			}
-
 
 			if (App->entities->showing_building_menu) {
 				if (selected_entity == nullptr) {

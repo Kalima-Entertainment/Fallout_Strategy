@@ -71,6 +71,7 @@ public:
 	iPoint MapPosition();
 
 	void SpatialAudio(int positionx, int positiony, Faction faction, State state, EntityType type);
+	bool isValidTarget();
 
 	//Check if mouse pointer its inside the same spot than the entity and if pressed returns any advice
 

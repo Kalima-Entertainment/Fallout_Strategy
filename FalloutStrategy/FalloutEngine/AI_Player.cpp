@@ -192,14 +192,16 @@ DynamicEntity* AI_Player::GetClosestDynamicEntity() {
 StaticEntity* AI_Player::ChooseTargetBuilding() {
 
 	//choose a building to attack in preference order
-	if (target_player->barrack[0] != nullptr)
+	if ((target_player->barrack[0] != nullptr) && (target_player->barrack[0]->isValidTarget()))
 		target_building = target_player->barrack[0];
-	else if (target_player->laboratory != nullptr)
+	else if ((target_player->laboratory != nullptr) && (target_player->laboratory->isValidTarget()))
 		target_building = target_player->laboratory;
-	else if (target_player->barrack[1] != nullptr)
+	else if ((target_player->barrack[1] != nullptr) && (target_player->barrack[1]->isValidTarget()))
 		target_building = target_player->barrack[1];
-	else if (target_player->base != nullptr)
+	else if ((target_player->base != nullptr) && (target_player->base->isValidTarget()))
 		target_building = target_player->base;
+	else
+		return nullptr;
 
 	return target_building;
 }

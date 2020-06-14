@@ -583,6 +583,12 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup objectgroup, int m
 					property = property.next_sibling();
 				}
 				resource_building->tiles = CalculateArea(first_tile_position, width, height);
+
+				iPoint finalposition = App->map->MapToWorld(resource_building->tiles.back().x, resource_building->tiles.back().y);
+				iPoint firstposition = App->map->MapToWorld(resource_building->tiles.front().x, resource_building->tiles.front().y);
+				resource_building->no_resources_blit_position.x = firstposition.x + (finalposition.x - firstposition.x) * 0.5f;
+				resource_building->no_resources_blit_position.y = firstposition.y + (finalposition.y - firstposition.y) * 0.5f;
+
 				App->entities->resource_buildings.push_back(resource_building);
 			}
 			else if (object_name == "Static") {
