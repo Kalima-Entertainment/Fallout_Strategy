@@ -702,6 +702,13 @@ void j1EntityManager::DestroyAllEntitiesNow() {
 		entities[i] = nullptr;
 	}
 	entities.clear();
+
+	for (size_t i = 0; i < resource_buildings.size(); i++)
+	{
+		delete resource_buildings[i];
+		resource_buildings[i] = nullptr;
+	}
+	resource_buildings.clear();
 }
 
 j1Entity* j1EntityManager::FindEntityByTile(iPoint tile, j1Entity* entity_to_skip) {
@@ -1028,9 +1035,7 @@ void j1EntityManager::DestroyResourceSpot(ResourceBuilding* resource_spot) {
 // Load Game State
 bool j1EntityManager::Load(pugi::xml_node& data)
 {
-	DestroyAllEntitiesNow();
-	App->ai_manager->CleanUp();
-	App->ai_manager->Start();
+
 	RestartOccupiedTiles();
 
 	std::string player_faction = "NO_FACTION_ASSIGNED";
@@ -1114,45 +1119,8 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		current_health = iterator.attribute("current_health").as_int();
 
 		LOG("%f %f %i %i", position.x, position.y , current_tile.x, current_tile.y);
-		if (dynamic_entity == false) {
-
-			//create building
-			StaticEntity* entity = dynamic_cast<StaticEntity*>(App->entities->CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]));
-
-			iPoint tile = current_tile;
-			if (type_name == "base") {
-				entity = App->scene->players[faction]->base;
-				width = height = 4;
-			}
-			else if (type_name == "barrack") {
-				if (App->scene->players[faction]->barrack[0] == nullptr) {
-					App->scene->players[faction]->barrack[0] = entity;
-				}
-				else {
-					App->scene->players[faction]->barrack[1] = entity;
-				}
-				width = 2;
-				height = 4;
-			}
-			else if (type_name == "laboratory") {
-				entity = App->scene->players[faction]->laboratory;
-				width = height = 3;
-			}
-
-			for(int y = 0; y < height; y++)
-			{
-				for(int x = 0; x < width; x++)
-				{
-					tile.x = current_tile.x + x;
-					tile.y = current_tile.y + y;
-					entity->tiles.push_back(tile);
-				}
-			}
-
-			entity->CalculateRenderAndSpawnPositions();
-
-		}
-		else if(dynamic_entity){
+		
+		if(dynamic_entity){
 
 			if (faction_name == "no_faction") {
 				CreateEntity(faction, type, current_tile.x, current_tile.y);
@@ -1167,8 +1135,6 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 
 		iterator = iterator.next_sibling();
 	}
-
-
 
 	LOG("%i", entities.size());
 
@@ -1233,8 +1199,6 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 		}
 
 	}
-
-	
 
 	LOG("%i", entities.size());
 

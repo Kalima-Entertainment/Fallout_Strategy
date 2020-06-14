@@ -88,7 +88,8 @@ bool j1Scene::Start()
 	menu_state = StatesMenu::NONE;
 	beaten_enemies = 0;
 
-	if (App->render->fog_of_war)App->fowManager->Enable();
+	if (App->render->fog_of_war)
+		App->fowManager->Enable();
 
 	deathclaw1 = deathclaw2 = deathclaw3 = deathclaw4 = false;
 
@@ -444,14 +445,23 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 // Load Game State
 bool j1Scene::Load(pugi::xml_node& data)
 {
+	App->entities->DestroyAllEntitiesNow();
+	App->ai_manager->CleanUp();
 	App->map->CleanUp();
 	App->minimap->CleanUp();
+
+	App->ai_manager->Start();
+
 	pugi::xml_node iterator = data.first_child();
 	int i = 0;
 
 	while(iterator){
 		modules[i] = iterator.attribute("map").as_string();
 		LOG("%s", modules[i]);
+		iterator = iterator.next_sibling();
+
+		App->entities->randomFaction[i] = iterator.attribute("value").as_int();
+		LOG("%i", App->entities->randomFaction[i]);
 		iterator = iterator.next_sibling();
 		i++;
 	}
@@ -465,6 +475,7 @@ bool j1Scene::Load(pugi::xml_node& data)
 
 	App->minimap->Start();
 	App->minimap->Show();
+	
 
 	return true;
 }
@@ -476,6 +487,9 @@ bool j1Scene::Save(pugi::xml_node& data) const
 
 		pugi::xml_node module = data.append_child("modules");
 		module.append_attribute("map") = modules[i].c_str();
+		
+		pugi::xml_node randomfaction = data.append_child("randomfaction");
+		randomfaction.append_attribute("value") = App->entities->randomFaction[i];
 
 	}
 	return true;

@@ -412,29 +412,32 @@ void Troop::Attack() {
 	if (dynamic_target != nullptr) {
 
 		dynamic_target->current_health -= damage;
-		dynamic_target->state = HIT;
 		dynamic_target->attacking_entity = this;
 
-		if (dynamic_target->state == ATTACK)
-			dynamic_target->current_animation->Reset();
+		if (dynamic_target->type != DEATHCLAW) 
+		{
+			dynamic_target->state = HIT;
 
-		if ((current_tile.x > dynamic_target->current_tile.x) && (current_tile.y == dynamic_target->current_tile.y)) {
-			direction = TOP_LEFT;
-			dynamic_target->direction = BOTTOM_RIGHT;
-		}
-		else if ((current_tile.x == dynamic_target->current_tile.x) && (current_tile.y > dynamic_target->current_tile.y)) {
-			direction = TOP_RIGHT;
-			dynamic_target->direction = BOTTOM_LEFT;
-		}
-		else if ((current_tile.x == dynamic_target->current_tile.x) && (current_tile.y < dynamic_target->current_tile.y)) {
-			direction = BOTTOM_LEFT;
-			dynamic_target->direction = TOP_RIGHT;
-		}
-		else if ((current_tile.x < dynamic_target->current_tile.x) && (current_tile.y == dynamic_target->current_tile.y)) {
-			direction = BOTTOM_RIGHT;
-			dynamic_target->direction = TOP_LEFT;
-		}
+			if (dynamic_target->state == ATTACK)
+				dynamic_target->current_animation->Reset();
 
+			if ((current_tile.x > dynamic_target->current_tile.x) && (current_tile.y == dynamic_target->current_tile.y)) {
+				direction = TOP_LEFT;
+				dynamic_target->direction = BOTTOM_RIGHT;
+			}
+			else if ((current_tile.x == dynamic_target->current_tile.x) && (current_tile.y > dynamic_target->current_tile.y)) {
+				direction = TOP_RIGHT;
+				dynamic_target->direction = BOTTOM_LEFT;
+			}
+			else if ((current_tile.x == dynamic_target->current_tile.x) && (current_tile.y < dynamic_target->current_tile.y)) {
+				direction = BOTTOM_LEFT;
+				dynamic_target->direction = TOP_RIGHT;
+			}
+			else if ((current_tile.x < dynamic_target->current_tile.x) && (current_tile.y == dynamic_target->current_tile.y)) {
+				direction = BOTTOM_RIGHT;
+				dynamic_target->direction = TOP_LEFT;
+			}
+		}
 		//kill entity
 		if (dynamic_target->current_health <= 0) {
 			dynamic_target->state = DIE;
