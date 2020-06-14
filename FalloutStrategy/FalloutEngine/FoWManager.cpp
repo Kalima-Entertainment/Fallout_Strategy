@@ -178,6 +178,19 @@ bool FoWManager::CleanUp()
 	return ret;
 }
 
+void FoWManager::ResetFoWEntities() {
+	
+	for (size_t i = 0; i < fowEntities.size(); i++)
+	{
+
+			delete fowEntities[i];
+			fowEntities[i] = nullptr;
+			fowEntities.erase(fowEntities.begin() + i);
+			i--;
+
+	}
+
+}
 void FoWManager::ResetFoWMap()
 {
 	if (fowMap != nullptr)

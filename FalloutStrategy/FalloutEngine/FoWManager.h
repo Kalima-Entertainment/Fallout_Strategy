@@ -39,6 +39,7 @@ public:
 
 	//Resets the map to its shrouded state
 	void ResetFoWMap();
+	void ResetFoWEntities();
 	void CreateFoWMap(uint width, uint height);
 	void DeleteFoWMap();
 	//Updates the data on the FoWMap based on the FoWEntities position and mask shape
