@@ -75,7 +75,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(video);
-	
+
 	AddModule(ai_manager);
 	AddModule(map);
 	AddModule(player);
@@ -95,7 +95,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	//AddModule(console);
 	AddModule(main_menu);
 	AddModule(logo_scene);
-	AddModule(transition);	
+	AddModule(transition);
 	AddModule(hud);
 	AddModule(cursor);
 	// render last to swap buffer
@@ -140,7 +140,7 @@ bool j1App::Awake()
 	item_list = modules.begin();
 	j1Module* it = *item_list;
 	it->Awake(config.child(it->name.c_str()));
-	
+
 	config = LoadConfig(config_file);
 
 	if(config.empty() == false)
@@ -272,7 +272,7 @@ void j1App::FinishUpdate()
 	static char title[256];
 
 	sprintf_s(title, 256, " Fallout Strategy 0.9.5 - Kalima Entertainment | FPS: %d",
-		prev_last_sec_frame_count);
+		prev_last_sec_frame_count, dt, App->render->camera.x, App->render->camera.y);
 	App->win->SetTitle(title);
 
 	if(capped_ms > 0 && last_frame_ms < capped_ms)
