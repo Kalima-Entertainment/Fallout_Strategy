@@ -59,7 +59,6 @@ public:
 	SDL_Rect		viewport;
 	SDL_Color		background;
 
-	SDL_Texture*	debug_tex;
 	bool			debug;
 	bool			fog_of_war;
 };

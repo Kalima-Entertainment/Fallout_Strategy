@@ -107,6 +107,7 @@ bool j1Transition::LoadAnimations() {
 bool j1Transition::Start()
 {
 	speed_reducer = 0.01f;
+
 	if (loader == nullptr)
 	{
 		LoadAnimations();

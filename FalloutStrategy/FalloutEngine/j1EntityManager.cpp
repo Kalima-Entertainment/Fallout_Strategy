@@ -153,6 +153,8 @@ bool j1EntityManager::Start() {
 	sort_timer.Start();
 	load_timer.Start();
 
+	debug_tex = App->tex->Load("Assets/maps/debug_textures.png");
+
 	// -- Loading Particle textures
 	blood = App->tex->Load("Assets/textures/particles/blood.png");
 	smoke = App->tex->Load("Assets/textures/particles/smoke.png");
@@ -197,6 +199,9 @@ bool j1EntityManager::CleanUp()
 		}
 	}
 
+	App->tex->UnLoad(debug_tex);
+	debug_tex = nullptr;
+
 	particles.clear();
 	App->tex->UnLoad(blood);
 	App->tex->UnLoad(smoke);
@@ -213,6 +218,9 @@ bool j1EntityManager::CleanUp()
 		resource_buildings[j] = nullptr;
 	}
 	resource_buildings.clear();
+
+	App->tex->UnLoad(life_bars);
+	life_bars = nullptr;
 
 	return ret;
 }
@@ -287,7 +295,7 @@ bool j1EntityManager::PostUpdate()
 						&& (tex_position.y + rect.h > -(App->render->camera.y))
 						&& (tex_position.y < (-App->render->camera.y + App->render->camera.h)))
 						{
-							App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &rect);
+							App->render->Blit(debug_tex, tex_position.x, tex_position.y, &rect);
 
 						}
 				}

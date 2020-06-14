@@ -374,6 +374,22 @@ bool j1Player::Update(float dt) {
 	return ret;
 }
 
+bool j1Player::CleanUp() {
+	bool ret = true;
+	selected_entity = nullptr;
+	last_selected_entity = nullptr;
+	selected_group = nullptr;
+
+	for (size_t t = 0; t < troops.size(); t++) { troops[t] = nullptr; }
+	troops.clear();
+
+	for (size_t g = 0; g < gatherers_vector.size(); g++) { gatherers_vector[g] = nullptr; }
+	gatherers_vector.clear();
+
+	base = barrack[0] = barrack[1] = laboratory = nullptr;
+	return ret;
+}
+
 j1Entity* j1Player::SelectEntity() {
 	iPoint selected_spot;
 	if (TouchingUI(mouse_position.x, mouse_position.y))

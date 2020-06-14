@@ -16,6 +16,7 @@ public:
 	bool Start();
 	bool PreUpdate();
 	bool Update(float dt);
+	bool CleanUp();
 
 	void OnCommand(std::vector<std::string> command_parts);
 

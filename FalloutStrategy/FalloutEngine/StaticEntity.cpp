@@ -204,7 +204,7 @@ bool StaticEntity::PostUpdate() {
 		for(int i = 0; i < tiles.size(); i++)
 		{
 			tex_position = App->map->MapToWorld(tiles[i].x, tiles[i].y);
-			App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
+			App->render->Blit(App->entities->debug_tex, tex_position.x, tex_position.y, &tile_rect);
 		}
 	}
 
@@ -215,14 +215,14 @@ bool StaticEntity::PostUpdate() {
 		for(int i = 0; i < tiles.size(); i++)
 		{
 			tex_position = App->map->MapToWorld(tiles[i].x, tiles[i].y);
-			App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
+			App->render->Blit(App->entities->debug_tex, tex_position.x, tex_position.y, &tile_rect);
 		}
 
 		tile_rect = { 128,0,64,64 };
 		for (int i = 0; i < surrounding_tiles.size(); i++)
 		{
 			tex_position = App->map->MapToWorld(surrounding_tiles[i].x, surrounding_tiles[i].y);
-			App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
+			App->render->Blit(App->entities->debug_tex, tex_position.x, tex_position.y, &tile_rect);
 		}
 	}
 

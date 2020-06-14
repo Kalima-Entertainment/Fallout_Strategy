@@ -77,7 +77,7 @@ bool DynamicEntity::PostUpdate() {
 		for (uint j = 0; j < path_to_target.size(); ++j) {
 			iPoint pos = App->map->MapToWorld(path_to_target[j].x, path_to_target[j].y);
 			position_rect = { 192, 0, 64,64 };
-			App->render->Blit(App->render->debug_tex, pos.x, pos.y, &position_rect);
+			App->render->Blit(App->entities->debug_tex, pos.x, pos.y, &position_rect);
 		}
 
 		//ally
@@ -89,12 +89,12 @@ bool DynamicEntity::PostUpdate() {
 		else 
 			position_rect = { 64,0,64,64 };
 
-		App->render->Blit(App->render->debug_tex, tile_tex_position.x, tile_tex_position.y, &position_rect);
+		App->render->Blit(App->entities->debug_tex, tile_tex_position.x, tile_tex_position.y, &position_rect);
 	}
 	
 	if ((App->player->selected_entity == this)||(info.IsSelected)) {
 		position_rect = {394, 24, 42, 26};
-		App->render->Blit(App->render->debug_tex, static_cast<int>(position.x - 21), static_cast<int>(position.y - 13), &position_rect);
+		App->render->Blit(App->entities->debug_tex, static_cast<int>(position.x - 21), static_cast<int>(position.y - 13), &position_rect);
 	}
 
 	if (direction >= NO_DIRECTION) {
@@ -122,7 +122,7 @@ bool DynamicEntity::PostUpdate() {
 	//Fog Of War Rendering Based
 	if (current_tile.x >= 0 && current_tile.y >= 0)
 	{
-		if ((App->fowManager->GetFoWTileState({ this->current_tile })->tileFogBits != fow_ALL)||(App->render->debug))
+		if ((App->fowManager->GetFoWTileState({ this->current_tile })->tileFogBits != fow_ALL)||(!App->render->fog_of_war))
 		{
 			//Character Render
 			App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
@@ -228,7 +228,7 @@ void DynamicEntity::Move(float dt) {
 		//iPoint tile = App->map->fWorldToMap(position.x, position.y);
 		//if (App->entities->FindEntityByTile(tile, this) != nullptr) {
 			if (node_path.size() > 0) {
-				if (current_tile.DistanceManhattan(node_path.back()) < 3)
+				if (current_tile.DistanceManhattan(node_path.back()) <= 4)
 					node_path.pop_back();
 				if (node_path.size() > 0)
 					PathfindToPosition(node_path.back());

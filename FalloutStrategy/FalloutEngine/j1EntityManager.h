@@ -162,6 +162,9 @@ public:
 	SDL_Rect frame_quad;
 	//No Resourecs
 	SDL_Rect no_reso;
+
+	SDL_Texture* debug_tex;
+
 private:
 	int loading_faction;
 	int loading_entity;

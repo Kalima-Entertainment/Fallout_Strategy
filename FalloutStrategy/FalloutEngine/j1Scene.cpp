@@ -281,6 +281,8 @@ bool j1Scene::Update(float dt)
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
+	App->tex->UnLoad(destination_texture);
+	destination_texture = nullptr;
 	players[0] = players[1] = players[2] = players[3] = nullptr;
 	return true;
 }

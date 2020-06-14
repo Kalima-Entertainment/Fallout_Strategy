@@ -184,7 +184,7 @@ bool Troop::Update(float dt) {
 						}
 					}
 				}
-				else {
+				else if (App->entities->IsTileOccupied(target_tile)) {
 					PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
 				}
 			}
