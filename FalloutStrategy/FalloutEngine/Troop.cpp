@@ -20,6 +20,7 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 	attack_timer.Start();
 
 	attack_time = 3;
+	attack_time = 3;
 	detection_radius = 4;
 
 	position = App->map->floatMapToWorld(current_tile.x, current_tile.y);
@@ -356,7 +357,7 @@ bool Troop::Update(float dt) {
 				}
 			}
 		}
-		visionEntity = nullptr;
+		visionEntity->deleteEntity = true;
 
 		if (delete_timer.ReadSec() > 4) {
 			to_delete = true;

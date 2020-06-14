@@ -148,13 +148,13 @@ BROFILER_CATEGORY("Fog of War PostUpdate", Profiler::Color::Black)
 bool FoWManager::CleanUp()
 {
 	bool ret = true;
-	DeleteFoWMap();	
-
+	DeleteFoWMap();		
+	
 	int i = 0;
 	while (fowEntities.size() > 0)
 	{
 		if (fowEntities[i] != nullptr)
-		{
+		{			
 			delete fowEntities[i];
 			fowEntities[i] = nullptr;
 			fowEntities.erase(fowEntities.begin() + i);

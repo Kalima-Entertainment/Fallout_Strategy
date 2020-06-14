@@ -149,7 +149,7 @@ bool StaticEntity::Update(float dt) {
 		if ((App->player->selected_entity != nullptr) && (App->player->selected_entity == this))
 			App->player->selected_entity = nullptr;
 
-		visionEntity = nullptr;
+		visionEntity->deleteEntity = true;
 
 		if ((delete_timer.ReadSec() > 5)||(current_animation->Finished()))
 			to_delete = true;
