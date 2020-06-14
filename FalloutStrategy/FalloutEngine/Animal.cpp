@@ -23,9 +23,28 @@ Animal::Animal(EntityType g_type, iPoint g_current_tile) : DynamicEntity() {
 
 	DynaParticle = App->entities->CreateParticle(position);
 	Animation anim;
-	anim.PushBack(SDL_Rect{ 0, 0 , 5, 5 }, 1);
+
+	//First Row
+	anim.PushBack(SDL_Rect{ 0, 0 , 64 , 64 }, 10);
+	anim.PushBack(SDL_Rect{ 64, 0 , 64 , 64 }, 10);
+	anim.PushBack(SDL_Rect{ 128, 0 , 64 , 64 }, 10);
+	anim.PushBack(SDL_Rect{ 192, 0 , 64 , 64 }, 10);
+
+	//Second Row
+	anim.PushBack(SDL_Rect{ 0, 64,  64 , 64 }, 10);
+	anim.PushBack(SDL_Rect{ 64,  64, 64 , 64 }, 10);
+	anim.PushBack(SDL_Rect{ 128, 64, 64 , 64 }, 10);
+	anim.PushBack(SDL_Rect{ 192, 64, 64 , 64 }, 10);
+
+	//Third Row
+	anim.PushBack(SDL_Rect{ 0,  128,64 , 64 }, 10);
+	anim.PushBack(SDL_Rect{ 64, 128 ,64 , 64 }, 10);
+	anim.PushBack(SDL_Rect{ 128, 128, 64 , 64 }, 10);
+	anim.PushBack(SDL_Rect{ 192, 128, 64 , 64 }, 10);
+
 	anim.Reset();
-	Emiter Blood(position.x, position.y - 20, 0.2f, 0.2f, 5, 5, 0, 0, 0, 0, 2.0f, 2, 20, 0.4f, nullptr, App->entities->blood, anim, true);
+
+	Emiter Blood(position.x, position.y, 0.0f, 0.0f, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2.5f, nullptr, App->entities->blood, anim, true);
 	DynaParticle->PushEmiter(Blood);
 	DynaParticle->Desactivate();
 }
@@ -107,7 +126,7 @@ bool Animal::Update(float dt) {
 	}
 
 	if (DynaParticle->IsActive()) {
-		DynaParticle->Move(static_cast<int>(position.x), static_cast<int>(position.y));
+		DynaParticle->Move(static_cast<int>(position.x) - 38, static_cast<int>(position.y) - 55);
 		DynaParticle->Update(dt);
 	}
 
