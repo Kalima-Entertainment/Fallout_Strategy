@@ -158,7 +158,7 @@ bool Gatherer::Update(float dt) {
 				attacking_entity->state = IDLE;
 			}
 		}
-		visionEntity = nullptr;
+		visionEntity->deleteEntity = true;
 
 		if (delete_timer.ReadSec() > 4) {
 			to_delete = true;

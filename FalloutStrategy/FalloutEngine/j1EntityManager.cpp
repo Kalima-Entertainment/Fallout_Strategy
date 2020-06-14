@@ -24,6 +24,7 @@
 #include "GenericPlayer.h"
 #include "j1Entity.h"
 #include "AssetsManager.h"
+#include "FoWManager.h"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -690,6 +691,7 @@ bool j1EntityManager::LoadReferenceEntityData() {
 void j1EntityManager::DestroyEntity(j1Entity* entity) { entity->to_delete = true;}
 
 void j1EntityManager::DestroyDynamicEntities() {
+	
 	for (size_t i = 0; i < entities.size(); i++)
 	{
 		if (entities[i]->is_dynamic) {
@@ -1042,6 +1044,9 @@ void j1EntityManager::DestroyResourceSpot(ResourceBuilding* resource_spot) {
 bool j1EntityManager::Load(pugi::xml_node& data)
 {
 	DestroyDynamicEntities();
+	App->player->resource_fow_added = false;
+	App->fowManager->ResetFoWEntities();
+	App->fowManager->ResetFoWMap();
 	App->ai_manager->CleanUp();
 	App->ai_manager->Start();
 	RestartOccupiedTiles();
@@ -1133,15 +1138,20 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 			if (faction_name == "no_faction") {
 				CreateEntity(faction, type, current_tile.x, current_tile.y);
 			}
-			else {
+			else{
 				DynamicEntity* entity = dynamic_cast<DynamicEntity*>(CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]));
-
 			}
+		
 
 		}
 
 
 		iterator = iterator.next_sibling();
+	}
+
+	if (App->player->base != nullptr && App->player->resource_fow_added == false) {
+		App->fowManager->AddFowToResourceBuildings(App->player->base->current_tile);
+		App->player->resource_fow_added = true;
 	}
 
 	LOG("%i", entities.size());

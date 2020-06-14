@@ -137,10 +137,10 @@ bool AI_Player::Update(float dt) {
 			target_building = nullptr;
 
 		//if there is no target building find one
-		if (target_building == nullptr) {
+		if ((target_building == nullptr)||(!target_building->isValidTarget())) {
 			target_building = ChooseTargetBuilding();
 			//if the enemy player has no buildings left choose another player
-			if (target_building == nullptr) {
+			if ((target_building == nullptr) || (!target_building->isValidTarget())) {
 				ChooseRandomPlayerEnemy();
 				target_building = ChooseTargetBuilding();
 			}
@@ -148,7 +148,7 @@ bool AI_Player::Update(float dt) {
 		//else {
 		for (size_t i = 0; i < troops.size(); i++)
 		{
-			if (troops[i]->target_building == nullptr) {
+			if ((target_building == nullptr) || (!target_building->isValidTarget())) {
 				troops[i]->target_building = target_building;
 				troops[i]->PathfindToPosition(App->entities->ClosestTile(troops[i]->current_tile, target_building->surrounding_tiles));
 			}

@@ -291,8 +291,8 @@ bool j1Audio::Load(pugi::xml_node& data)
 	music_volume = data.child("volume").attribute("music").as_float();
 	fx_volume = data.child("volume").attribute("fx").as_float();
 
-	Change_Volume_FX(fx_volume);
-	Change_Volume_Music(music_volume);
+	//Change_Volume_FX(fx_volume);
+	//Change_Volume_Music(music_volume);
 
 	return true;
 }
@@ -301,6 +301,7 @@ bool j1Audio::Load(pugi::xml_node& data)
 bool j1Audio::Save(pugi::xml_node& data) const
 {
 	pugi::xml_node volume = data.append_child("volume");
+	LOG("%f %f", music_volume, fx_volume);
 
 	volume.append_attribute("music") = music_volume;
 	volume.append_attribute("fx") = fx_volume;
