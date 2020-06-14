@@ -261,47 +261,45 @@
     </div>
 
     <!-- Work Section -->
-    <div class="w3-container" style="padding:128px 16px" id="work">
-        <h3 class="titlet">OUR WORK</h3>
-        <div class="w3-row-padding" style="margin-top:64px">
-            <div class="w3-col l3 m6">
-                <img src="./Photos/twitter.jpg" style="width:100% ; height:410px;" onclick="onClick(this)" class="w3-hover-opacity"
-                    alt="Our first presentation">
+    <h3 class="titlet">OUR WORK</h3>
+        <div class="slidershow middle">
+            <div class="slides">
+            <input type="radio" name="r" id="r1" checked>
+            <input type="radio" name="r" id="r2">
+            <input type="radio" name="r" id="r3">
+            <input type="radio" name="r" id="r4">
+            <input type="radio" name="r" id="r5">
+            <div class="slide s1">
+                <img src="./Photos/twitter.jpg" style="width:100%;" onclick="onClick(this)" class="w3-hover-opacity"
+                        alt="Our first presentation">
             </div>
-            <div class="w3-col l3 m6">
-                <img src="./Photos/photo8.PNG" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity"
-                    alt="Transitiion screen">
+            <div class="slide">
+                <img src="./Photos/menu.PNG" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity"
+                    alt="Logo">
             </div>
-            <div class="w3-col l3 m6">
-                <img src="./Photos/musica.PNG" style="width:100%; height:410px;" onclick="onClick(this)" class="w3-hover-opacity"
+            <div class="slide">
+                <img src="./Photos/musica.PNG" style="width:100%;" onclick="onClick(this)" class="w3-hover-opacity"
                     alt="Radio">
             </div>
-            <div class="w3-col l3 m6">
-                <img src="./Photos/factions.png" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity"
-                    alt="factions">
-            </div>
-        </div>
-
-        <div class="w3-row-padding w3-section">
-            <div class="w3-col l3 m6">
-                <img src="./Photos/mapa.PNG" style="width:100%; height:305px;" onclick="onClick(this)" class="w3-hover-opacity"
-                    alt="Map">
-            </div>
-            <div class="w3-col l3 m6">
-                <img src="./Photos/death.PNG" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity"
+            <div class="slide">
+                <img src="./Photos/death.png" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity"
                     alt="Gameplay">
             </div>
-            <div class="w3-col l3 m6">
-                <img src="./Photos/dialogs.PNG" style="width:100%" onclick="onClick(this)"
-                    class="w3-hover-opacity" alt="Dialogs">
+            <div class="slide">
+                <img src="./Photos/mapa.PNG" style="width:100%;" onclick="onClick(this)" class="w3-hover-opacity"
+                    alt="Map">
             </div>
-            <div class="w3-col l3 m6">
-                <img src="./Photos/menu.PNG" style="width:100%" onclick="onClick(this)"
-                    class="w3-hover-opacity" alt="principal screen">
+            </div>
+    
+            <div class="navigation">
+            <label for="r1" class="bar"></label>
+            <label for="r2" class="bar"></label>
+            <label for="r3" class="bar"></label>
+            <label for="r4" class="bar"></label>
+            <label for="r5" class="bar"></label>
             </div>
         </div>
-    </div>
-
+    
     <!-- Modal for full size images on click-->
     <div id="modal01" class="w3-modal w3-black" onclick="this.style.display='none'">
         <span class="w3-button w3-xxlarge w3-black w3-padding-large w3-display-topright"
@@ -313,7 +311,7 @@
     </div>   
 
     <!-- Contact Section -->
-    <div class="w3-container w3-light-grey" style="padding:128px 30px" id="contact">
+    <div class="w3-container w3-light-grey" style="padding:100px 30px" id="contact">
         <h3 class="titlet">CONTACT</h3>
         <p class="w3-center w3-xlarge">Lets get in touch. Find Us On Social Media:</p>
         <div style="margin-top:48px">
