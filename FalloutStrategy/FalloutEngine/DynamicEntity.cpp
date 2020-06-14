@@ -228,7 +228,8 @@ void DynamicEntity::Move(float dt) {
 		//iPoint tile = App->map->fWorldToMap(position.x, position.y);
 		//if (App->entities->FindEntityByTile(tile, this) != nullptr) {
 			if (node_path.size() > 0) {
-				if (current_tile.DistanceManhattan(node_path.back()) <= 4)
+				if ((current_tile.DistanceManhattan(node_path.back()) <= 4)
+					||(current_tile.DistanceManhattan(node_path.back()) <= 8) && !App->pathfinding->IsWalkable(node_path.back()))
 					node_path.pop_back();
 				if (node_path.size() > 0)
 					PathfindToPosition(node_path.back());
@@ -287,7 +288,7 @@ void DynamicEntity::Move(float dt) {
 
 	// -- Get next tile center
 	next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
-	next_tile_rect = { next_tile_position.x + HALF_TILE - 4, next_tile_position.y + HALF_TILE - 2, 8, 8 };
+	next_tile_rect = { next_tile_position.x + HALF_TILE - 1, next_tile_position.y + HALF_TILE - 1, 2, 2 };
 
 	//direction movement ---------------------------------
 	last_direction = direction;
@@ -348,7 +349,7 @@ Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
 
 	if ((ceil(position.x) > floor(next_tile_rect.x)) && (floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w))
 		&& (ceil(position.y) > floor(next_tile_rect.y)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h))) {
-		return Direction::NO_DIRECTION;
+		return last_direction;
 	}
 	if ((ceil(position.x) > floor(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (ceil(position.y) > floor(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
 		return Direction::TOP_LEFT;
@@ -363,7 +364,7 @@ Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
 		return Direction::BOTTOM_RIGHT;
 	}
 	else {
-		return Direction::NO_DIRECTION;
+		return last_direction;
 	}
 }
 

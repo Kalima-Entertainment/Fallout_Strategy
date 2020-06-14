@@ -89,8 +89,8 @@ bool j1Scene::Start()
 	beaten_enemies = 0;
 
 	if (App->render->fog_of_war)App->fowManager->Enable();
-	destination_texture = App->tex->Load("Assets/textures/player/destination_debug.png");
 
+	destination_texture = App->tex->Load("Assets/textures/player/destination_debug.png");
 
 	App->console->CreateCommand("win", "Automatically win the game", this);
 	App->console->CreateCommand("lose", "Automatically lose the game", this);

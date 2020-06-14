@@ -22,13 +22,11 @@ FoWManager::~FoWManager()
 	CleanUp();
 }
 
-
 bool FoWManager::Awake(pugi::xml_node&)
 {
 	bool ret = true;
 	return ret;
 }
-
 
 bool FoWManager::Start()
 {
@@ -91,7 +89,6 @@ bool FoWManager::Start()
 	return ret;
 }
 
-
 bool FoWManager::PreUpdate()
 {
 	bool ret = true;
@@ -127,7 +124,6 @@ bool FoWManager::PreUpdate()
 	return ret;
 }
 
-
 bool FoWManager::Update(float dt) {
 	BROFILER_CATEGORY("Fog of War Update", Profiler::Color::Gray)
 	bool ret = true;
@@ -141,7 +137,6 @@ bool FoWManager::Update(float dt) {
 	return ret;
 }
 
-
 bool FoWManager::PostUpdate() {
 BROFILER_CATEGORY("Fog of War PostUpdate", Profiler::Color::Black)
 	bool ret = true;
@@ -149,7 +144,6 @@ BROFILER_CATEGORY("Fog of War PostUpdate", Profiler::Color::Black)
 		DrawFoWMap();
 	return ret;
 }
-
 
 bool FoWManager::CleanUp()
 {
@@ -200,7 +194,6 @@ void FoWManager::ResetFoWMap()
 		}
 	}
 }
-
 
 FoWDataStruct* FoWManager::GetFoWTileState(iPoint mapPos)const
 {

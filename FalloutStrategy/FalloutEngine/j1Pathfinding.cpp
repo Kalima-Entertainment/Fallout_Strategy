@@ -240,6 +240,9 @@ std::vector<iPoint> j1PathFinding::CreateNodePath(iPoint origin, iPoint destinat
 	//flip final path
 	std::reverse(path.begin(), path.end());
 
+	if (origin.DistanceManhattan(destination) < path.back().DistanceManhattan(destination))
+		path.pop_back();
+
 	return path;
 }
 
