@@ -330,7 +330,10 @@ bool j1Player::Update(float dt) {
 	if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) && ((selected_entity != nullptr)||(selected_group != nullptr))) {
 
 		App->scene->blit_destination = true;
-		App->scene->debug_destiny = selected_spot;
+		App->scene->debug_destiny = App->render->ScreenToWorld(selected_spot.x, selected_spot.y);
+		App->scene->debug_destiny = App->map->WorldToMap(App->scene->debug_destiny.x, App->scene->debug_destiny.y);
+		App->scene->debug_destiny = App->map->MapToWorld(App->scene->debug_destiny.x, App->scene->debug_destiny.y);
+		App->scene->debug_destiny.y += 18;
 
 		if ((selected_entity != nullptr)&&(selected_entity->is_dynamic))
 			MoveEntity(dynamic_cast<DynamicEntity*>(selected_entity));
