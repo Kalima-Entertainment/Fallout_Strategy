@@ -55,12 +55,13 @@ j1Scene::j1Scene() : j1Module()
 	beaten_enemies = 0;
 
 	destination_texture = nullptr;
-	destination.PushBack(SDL_Rect{ 0, 0 , 64, 32 }, 3.0f);
-	destination.PushBack(SDL_Rect{ 64, 0 , 64, 32 }, 3.0f);
-	destination.PushBack(SDL_Rect{ 0, 32 , 64, 32 }, 3.0f);
-	destination.PushBack(SDL_Rect{ 64, 32 , 64, 32 }, 3.0f);
-	destination.PushBack(SDL_Rect{ 0, 32 , 64, 32 }, 3.0f);
-	destination.PushBack(SDL_Rect{ 64, 0 , 64, 32 }, 3.0f);
+	destination.PushBack(SDL_Rect{ 0, 0 , 64, 32 }, 12.0f);
+	destination.PushBack(SDL_Rect{ 64, 0 , 64, 32 }, 12.0f);
+	destination.PushBack(SDL_Rect{ 0, 32 , 64, 32 }, 12.0f);
+	destination.PushBack(SDL_Rect{ 64, 32 , 64, 32 }, 12.0f);
+	destination.PushBack(SDL_Rect{ 0, 32 , 64, 32 }, 12.0f);
+	destination.PushBack(SDL_Rect{ 64, 0 , 64, 32 }, 12.0f);
+	destination.loop = false;
 	destination.Reset();
 	blit_destination = false;
 }
@@ -84,6 +85,12 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
+	App->player->caps = 500;
+	App->player->food = 250;
+	App->player->water = 500;
+
+
+
 	srand(time(NULL));
 	menu_state = StatesMenu::NONE;
 	beaten_enemies = 0;
@@ -182,7 +189,12 @@ bool j1Scene::Update(float dt)
 
 	// -- Blit cursor destination
 	if(blit_destination)App->render->Blit(destination_texture, debug_destiny.x, debug_destiny.y, &destination.GetCurrentFrame(dt), 1.0f, 0.0f);
-	if (destination.Finished()) blit_destination = false;
+	
+	// If finished restart animation and set again blit to false, just to be rendered when mouse right click with any entitie able to move.
+	if (destination.Finished()) { 
+		destination.Reset();
+		blit_destination = false; 
+	}
 
 
 	if ((App->hud->minutes == 4) && (deathclaw1 == false))

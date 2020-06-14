@@ -337,7 +337,7 @@ void DynamicEntity::Move(float dt) {
 	//---------------------------------------------------
 
 	//Update Fog Of War Position
-	if (auxPos != position && visionEntity != NULL)
+	if (auxPos != position && visionEntity != nullptr)
 		visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
 }
 

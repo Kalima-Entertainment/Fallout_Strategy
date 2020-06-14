@@ -12,6 +12,7 @@
 #include "j1EntityManager.h"
 #include "AssetsManager.h"
 #include "FoWManager.h"
+#include <math.h>
 
 #include "ParticleSystem.h"
 #include "Emiter.h"
@@ -45,7 +46,6 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 	attacking_entity = nullptr;
 	current_animation = nullptr;
 	texture = nullptr;
-	//App->entities->ReleaseParticle(StaticParticle);
 
 	StaticParticle = nullptr;
 	HitParticle = nullptr;
@@ -94,7 +94,7 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 
 		hit.Reset();
 
-		Emiter Hit(position.x, position.y, 0 , 0, 0 , 0, 0, 0, 0, 0, 0, 0, 1, 2.0f, nullptr, App->entities->hit, hit, true);
+		Emiter Hit(position.x, position.y, 0 , 0, 0 , 0, 0, 0, 0, 0, 0, 0, 2, 2.0f, nullptr, App->entities->hit, hit, true);
 		HitParticle->PushEmiter(Hit);
 		HitParticle->Desactivate();
 	}
