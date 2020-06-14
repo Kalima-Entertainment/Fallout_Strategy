@@ -89,7 +89,7 @@ bool j1Scene::Start()
 	beaten_enemies = 0;
 
 	if (App->render->fog_of_war)App->fowManager->Enable();
-
+	deathclaw1 = deathclaw2 = deathclaw3 = deathclaw4 = false;
 	destination_texture = App->tex->Load("Assets/textures/player/destination_debug.png");
 
 	App->console->CreateCommand("win", "Automatically win the game", this);
