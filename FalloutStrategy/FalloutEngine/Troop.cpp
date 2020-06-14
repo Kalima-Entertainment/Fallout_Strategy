@@ -59,7 +59,7 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 	Animation anim;
 
 	//First Row
-	anim.PushBack(SDL_Rect{   0, 0 , 64 , 64 }, 10);
+	anim.PushBack(SDL_Rect{ 0, 0 , 64 , 64 }, 10);
 	anim.PushBack(SDL_Rect{ 64, 0 , 64 , 64 }, 10);
 	anim.PushBack(SDL_Rect{ 128, 0 , 64 , 64 }, 10);
 	anim.PushBack(SDL_Rect{ 192, 0 , 64 , 64 }, 10);
