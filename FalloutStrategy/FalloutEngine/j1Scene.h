@@ -86,6 +86,7 @@ public:
 	iPoint debug_destiny;
 	Animation destination;
 	bool blit_destination;
+	bool attack_destination;
 	
 private:
 	int SongPlaying;

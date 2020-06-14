@@ -64,6 +64,7 @@ j1Scene::j1Scene() : j1Module()
 	destination.loop = false;
 	destination.Reset();
 	blit_destination = false;
+	attack_destination = false;
 }
 
 // Destructor
@@ -189,11 +190,14 @@ bool j1Scene::Update(float dt)
 
 	// -- Blit cursor destination
 	if(blit_destination)App->render->Blit(destination_texture, debug_destiny.x, debug_destiny.y, &destination.GetCurrentFrame(dt), 1.0f, 1.0f, true, Color_Code::GREEN);
+	if (attack_destination)App->render->Blit(destination_texture, debug_destiny.x, debug_destiny.y, &destination.GetCurrentFrame(dt), 1.0f, 1.0f, true, Color_Code::RED);
+
 	
 	// If finished restart animation and set again blit to false, just to be rendered when mouse right click with any entitie able to move.
 	if (destination.Finished()) { 
 		destination.Reset();
 		blit_destination = false; 
+		attack_destination = false;
 	}
 
 

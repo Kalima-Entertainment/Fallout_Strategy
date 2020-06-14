@@ -329,11 +329,28 @@ bool j1Player::Update(float dt) {
 
 	if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) && ((selected_entity != nullptr)||(selected_group != nullptr))) {
 
-		App->scene->blit_destination = true;
+		// -- Check wich tile does the player select
 		App->scene->debug_destiny = App->render->ScreenToWorld(selected_spot.x, selected_spot.y);
 		App->scene->debug_destiny = App->map->WorldToMap(App->scene->debug_destiny.x, App->scene->debug_destiny.y);
+
+		// -- Save tile info to check later if tile belongs to an enemy
+		iPoint enemy_tile = App->scene->debug_destiny;
+		j1Entity* dynamic = App->entities->FindEntityByTile(enemy_tile);
+
+		//Convert from tile/map to world again to be blited
 		App->scene->debug_destiny = App->map->MapToWorld(App->scene->debug_destiny.x, App->scene->debug_destiny.y);
 		App->scene->debug_destiny.y += 18;
+
+		//Verify blit depending if enemy entity is placed there
+		if (dynamic != nullptr) {
+			if (dynamic->is_dynamic && dynamic->faction != faction)
+				App->scene->attack_destination = true;
+		}
+		else {
+			App->scene->blit_destination = true;
+		}
+		
+
 
 		if ((selected_entity != nullptr)&&(selected_entity->is_dynamic))
 			MoveEntity(dynamic_cast<DynamicEntity*>(selected_entity));
