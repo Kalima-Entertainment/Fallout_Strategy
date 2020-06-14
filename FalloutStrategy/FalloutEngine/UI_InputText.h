@@ -16,6 +16,8 @@ public:
 
 	bool Update(float dt);
 
+	UI_Type GetType();
+
 public:
 
 	bool InputText_Actived;

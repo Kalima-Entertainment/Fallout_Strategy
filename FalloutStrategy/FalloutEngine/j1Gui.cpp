@@ -65,10 +65,8 @@ bool j1Gui::PreUpdate()
 bool j1Gui::Update(float dt) {
 	BROFILER_CATEGORY("GuiUpdate", Profiler::Color::Yellow)
 		for(int i = 0; i < ui_element.size(); i++) {
-			if (ui_element[i] != nullptr) {
-
+			if ((ui_element[i] != nullptr)&&(ui_element[i]->GetType() != InputBox)) {
 				ui_element[i]->Update(dt);
-
 			}
 		}
 

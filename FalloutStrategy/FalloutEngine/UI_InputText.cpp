@@ -77,3 +77,7 @@ bool InputText::Update(float dt) {
 
 	return true;
 }
+
+UI_Type InputText::GetType() { 
+	return InputBox; 
+};
