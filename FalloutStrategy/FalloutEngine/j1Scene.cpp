@@ -85,6 +85,12 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
+	App->player->caps = 500;
+	App->player->food = 250;
+	App->player->water = 500;
+
+
+
 	srand(time(NULL));
 	menu_state = StatesMenu::NONE;
 	beaten_enemies = 0;
