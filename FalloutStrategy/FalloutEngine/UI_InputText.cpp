@@ -14,7 +14,7 @@
 
 InputText::InputText(int x, int y, UI_Type type, const std::string &text_input, UI_element* parent, j1Module* Observer,const std::string &font) : UI_element(x, y, type, parent, Observer) {
 
-	InputText_Actived = false;
+	InputText_Actived = true;
 	texture = nullptr;
 	type = InputBox;
 	this->pos.x = x;
@@ -37,7 +37,7 @@ InputText::~InputText() {
 
 bool InputText::Update(float dt) {
 
-	if (InputText_Actived) {
+	//if (InputText_Actived) {
 	
 		App->render->DrawQuad({ pos.x + r.w,pos.y,3,30 }, 255, 255, 255, 255, true, false);
 		
@@ -48,12 +48,10 @@ bool InputText::Update(float dt) {
 			App->input->isPresed = false;
 		}
 
-		
-		if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN && !text.empty()) {
+		if ((App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN) && (text.size() > 0)) {
 			
 				text.pop_back();
-				
-				if(text.size()>0){
+				if(text.size() > 0){
 					texture = App->font->Print(text.c_str(), { 255, 255, 255, 255 }, font_text);
 					App->font->CalcSize(text.c_str(), r.w, r.h);
 				}
@@ -68,12 +66,14 @@ bool InputText::Update(float dt) {
 			}
 		}
 
-		App->render->Blit_UI(texture, pos.x, pos.y, &r, SDL_FLIP_NONE, 0.0f);
-	}
-
+		if(text.size() > 0)
+		 App->render->Blit_UI(texture, pos.x, pos.y, &r, SDL_FLIP_NONE, 0.0f);
+	//}
+	/*
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN || App->console->isVisible) {
 		InputText_Actived = !InputText_Actived;
 	}
+	*/
 
 	return true;
 }

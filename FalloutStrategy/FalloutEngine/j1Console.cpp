@@ -162,7 +162,7 @@ void j1Console::CreateInterface() {
 		j++;
 	}
 
-	input_box = dynamic_cast<InputText*>(App->gui->CreateInputBox(x_margin, log_box.h + 5, InputBox, "Please Introduce Command", NULL, this, "OpenSans-Light"));
+	input_box = dynamic_cast<InputText*>(App->gui->CreateInputBox(x_margin, log_box.h + 5, InputBox, " ", NULL, this, "OpenSans-Light"));
 
 	SDL_StartTextInput();
 
