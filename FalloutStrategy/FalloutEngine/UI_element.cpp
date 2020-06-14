@@ -32,7 +32,8 @@ bool UI_element::CleanUp()
 
 bool UI_element::Draw()
 {
-	if (texture != nullptr) {
+	if (texture != nullptr) 
+	{
 		App->render->Blit(texture, pos.x, pos.y, &dimensions, SDL_FLIP_NONE);
 	}
 	return true;

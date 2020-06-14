@@ -21,11 +21,13 @@ InputText::InputText(int x, int y, UI_Type type, const std::string &text_input, 
 	this->pos.y = y;
 	H = 0;
 	W = 0;
-	text.assign(text_input);
-	//text = text_input;
+	//text.assign(text_input);
+	text = text_input;
 	font_text = font;
-	texture = App->font->Print(text.data(), { 255,255,255,255 }, font_text);
 	r = { 0,0,0,0 };
+
+	texture = App->font->Print(text.c_str(), { 255,255,255,255 }, font_text);
+	App->font->CalcSize(text.c_str(), r.w, r.h);
 }
 
 InputText::~InputText() {
@@ -41,8 +43,8 @@ bool InputText::Update(float dt) {
 		
 		if (App->input->isPresed) {
 			text += App->input->newLetter;
-			App->font->CalcSize(text.data(), r.w, r.h);
-			texture = App->font->Print(text.data(), {255,255,255,255}, font_text);
+			texture = App->font->Print(text.c_str(), { 255,255,255,255 }, font_text);
+			App->font->CalcSize(text.c_str(), r.w, r.h);
 			App->input->isPresed = false;
 		}
 
@@ -52,10 +54,9 @@ bool InputText::Update(float dt) {
 				text.pop_back();
 				
 				if(text.size()>0){
-					App->font->CalcSize(text.data(), r.w, r.h);
-					texture = App->font->Print(text.data(), {255, 255, 255, 255}, font_text);
+					texture = App->font->Print(text.c_str(), { 255, 255, 255, 255 }, font_text);
+					App->font->CalcSize(text.c_str(), r.w, r.h);
 				}
-		
 		}
 		
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
@@ -63,13 +64,11 @@ bool InputText::Update(float dt) {
 				text = ("Please introduce text");
 
 			if (observer == dynamic_cast<j1Module*>(App->console)) {
-				App->console->ProcessCommand(text.data());
+				App->console->ProcessCommand(text);
 			}
 		}
 
-		if(!text.empty()){
-			App->render->Blit_UI(texture, pos.x, pos.y, &r, SDL_FLIP_NONE, 0.0f);
-		}
+		App->render->Blit_UI(texture, pos.x, pos.y, &r, SDL_FLIP_NONE, 0.0f);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN || App->console->isVisible) {
