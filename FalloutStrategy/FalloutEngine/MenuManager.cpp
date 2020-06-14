@@ -624,8 +624,8 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 						vault_barrack[7] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 656, Label, "MAX", NULL, this, "StackedPixelXS"));
 
 					//Carta
-					vault_barrack[8] = dynamic_cast<j1Image*>(App->gui->CreateImage(1010, 600, Image, { 296, 1930, 44, 61 }, NULL, this));
-					vault_barrack[9] = dynamic_cast<j1Image*>(App->gui->CreateImage(1110, 600, Image, { 340, 1930, 34, 65 }, NULL, this));
+					vault_barrack[8] = dynamic_cast<j1Image*>(App->gui->CreateImage(1110, 600, Image, { 296, 1930, 44, 61 }, NULL, this));
+					vault_barrack[9] = dynamic_cast<j1Image*>(App->gui->CreateImage(1015, 600, Image, { 340, 1930, 34, 65 }, NULL, this));
 					vault_barrack[10] = dynamic_cast<j1Image*>(App->gui->CreateImage(1200, 610, Image, { 0, 2338, 41, 46 }, NULL, this));
 
 					//Cost

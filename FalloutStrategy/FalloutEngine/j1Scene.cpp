@@ -486,9 +486,7 @@ void j1Scene::closeGame()
 	App->menu_manager->DestroyMenu(Menu::TUTORIAL);
 	App->menu_manager->DestroyMenu(Menu::RADIO);
 	App->menu_manager->DestroyMenu(Menu::GUI);
-	App->menu_manager->DestroyMenu(Menu::QUEST);
-	App->fowManager->CleanUp();
-	App->fowManager->Disable();
+	App->menu_manager->DestroyMenu(Menu::QUEST);	
 	App->gui->ingame = false;
 	App->isPaused = true;
 	App->logo_scene->Loop = true;
