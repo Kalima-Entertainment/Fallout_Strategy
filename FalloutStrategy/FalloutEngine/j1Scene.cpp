@@ -55,12 +55,13 @@ j1Scene::j1Scene() : j1Module()
 	beaten_enemies = 0;
 
 	destination_texture = nullptr;
-	destination.PushBack(SDL_Rect{ 0, 0 , 64, 32 }, 3.0f);
-	destination.PushBack(SDL_Rect{ 64, 0 , 64, 32 }, 3.0f);
-	destination.PushBack(SDL_Rect{ 0, 32 , 64, 32 }, 3.0f);
-	destination.PushBack(SDL_Rect{ 64, 32 , 64, 32 }, 3.0f);
-	destination.PushBack(SDL_Rect{ 0, 32 , 64, 32 }, 3.0f);
-	destination.PushBack(SDL_Rect{ 64, 0 , 64, 32 }, 3.0f);
+	destination.PushBack(SDL_Rect{ 0, 0 , 64, 32 }, 12.0f);
+	destination.PushBack(SDL_Rect{ 64, 0 , 64, 32 }, 12.0f);
+	destination.PushBack(SDL_Rect{ 0, 32 , 64, 32 }, 12.0f);
+	destination.PushBack(SDL_Rect{ 64, 32 , 64, 32 }, 12.0f);
+	destination.PushBack(SDL_Rect{ 0, 32 , 64, 32 }, 12.0f);
+	destination.PushBack(SDL_Rect{ 64, 0 , 64, 32 }, 12.0f);
+	destination.loop = false;
 	destination.Reset();
 	blit_destination = false;
 }
@@ -84,6 +85,12 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
+	App->player->caps = 500;
+	App->player->food = 250;
+	App->player->water = 500;
+
+
+
 	srand(time(NULL));
 	menu_state = StatesMenu::NONE;
 	beaten_enemies = 0;
@@ -182,7 +189,12 @@ bool j1Scene::Update(float dt)
 
 	// -- Blit cursor destination
 	if(blit_destination)App->render->Blit(destination_texture, debug_destiny.x, debug_destiny.y, &destination.GetCurrentFrame(dt), 1.0f, 0.0f);
-	if (destination.Finished()) blit_destination = false;
+	
+	// If finished restart animation and set again blit to false, just to be rendered when mouse right click with any entitie able to move.
+	if (destination.Finished()) { 
+		destination.Reset();
+		blit_destination = false; 
+	}
 
 
 	if ((App->hud->minutes == 4) && (deathclaw1 == false))
@@ -445,15 +457,23 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 // Load Game State
 bool j1Scene::Load(pugi::xml_node& data)
 {
+	App->entities->DestroyAllEntitiesNow();
+	App->ai_manager->CleanUp();
 	App->map->CleanUp();
 	App->minimap->CleanUp();
-	App->scene->Start();
+
+	App->ai_manager->Start();
+
 	pugi::xml_node iterator = data.first_child();
 	int i = 0;
 
 	while(iterator){
 		modules[i] = iterator.attribute("map").as_string();
 		LOG("%s", modules[i]);
+		iterator = iterator.next_sibling();
+
+		App->entities->randomFaction[i] = iterator.attribute("value").as_int();
+		LOG("%i", App->entities->randomFaction[i]);
 		iterator = iterator.next_sibling();
 		i++;
 	}
@@ -467,6 +487,7 @@ bool j1Scene::Load(pugi::xml_node& data)
 
 	App->minimap->Start();
 	App->minimap->Show();
+	
 
 	return true;
 }
@@ -478,6 +499,9 @@ bool j1Scene::Save(pugi::xml_node& data) const
 
 		pugi::xml_node module = data.append_child("modules");
 		module.append_attribute("map") = modules[i].c_str();
+		
+		pugi::xml_node randomfaction = data.append_child("randomfaction");
+		randomfaction.append_attribute("value") = App->entities->randomFaction[i];
 
 	}
 	return true;

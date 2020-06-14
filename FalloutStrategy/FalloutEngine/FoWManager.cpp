@@ -398,18 +398,22 @@ void FoWManager::AddFowToResourceBuildings(iPoint basePos)
 	building_size[0] = resource_building[0]->tiles.size();
 	building_size[1] = resource_building[1]->tiles.size();
 
-	//We add the vision entity to them
-	//Water Resource Building
-	{
-		visionEntity = App->fowManager->CreateFoWEntity({ resource_building[0]->tiles[(int)(building_size[0] * 0.9)] }, true);
-		visionEntity->SetNewVisionRadius(7);
-	}
+	//Change last tiles (building_size tiles) so the fow always appear
+	iPoint render_position[2];
+	render_position[0] = resource_building[0]->tiles[building_size[0] - 1];
+	render_position[1] = resource_building[1]->tiles[building_size[1] - 1];
+	
+	render_position[0] += {-2, 0};
+	render_position[1] += {-2, 0};
 
-	//Caps Resource Building
-	{
-		visionEntity = App->fowManager->CreateFoWEntity({ resource_building[1]->tiles[(int)(building_size[1] * 0.9)] }, true);
-		visionEntity->SetNewVisionRadius(7);
-	}
+	//We add the vision entity to them
+	//Water Resource Building	
+	visionEntity = App->fowManager->CreateFoWEntity({ render_position[0] }, true);
+	visionEntity->SetNewVisionRadius(7);	
+
+	//Caps Resource Building	
+	visionEntity = App->fowManager->CreateFoWEntity({ render_position[1] }, true);
+	visionEntity->SetNewVisionRadius(7);	
 }
 
 void FoWManager::MapNeedsUpdate()

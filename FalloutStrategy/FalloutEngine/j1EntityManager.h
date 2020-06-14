@@ -161,6 +161,7 @@ public:
 	SDL_Texture* life_bars;
 	SDL_Rect background_health_bar;
 	SDL_Rect foreground_health_bar;
+	SDL_Rect gathering_health_bar;
 	SDL_Rect frame_quad;
 	//No Resourecs
 	SDL_Rect no_reso;

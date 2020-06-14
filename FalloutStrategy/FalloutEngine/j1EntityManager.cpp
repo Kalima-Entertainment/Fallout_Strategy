@@ -117,6 +117,7 @@ bool j1EntityManager::Start() {
 
 	background_health_bar = { 0,0,0,0 };
 	foreground_health_bar = { 0,0,0,0 };
+	gathering_health_bar = { 0,0,0,0 };
 	frame_quad = { 0,0,0,0 };
 
 	
@@ -1132,45 +1133,8 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		current_health = iterator.attribute("current_health").as_int();
 
 		LOG("%f %f %i %i", position.x, position.y , current_tile.x, current_tile.y);
-		if (dynamic_entity == false) {
-
-			//create building
-			StaticEntity* entity = dynamic_cast<StaticEntity*>(App->entities->CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]));
-
-			iPoint tile = current_tile;
-			if (type_name == "base") {
-				entity = App->scene->players[faction]->base;
-				width = height = 4;
-			}
-			else if (type_name == "barrack") {
-				if (App->scene->players[faction]->barrack[0] == nullptr) {
-					App->scene->players[faction]->barrack[0] = entity;
-				}
-				else {
-					App->scene->players[faction]->barrack[1] = entity;
-				}
-				width = 2;
-				height = 4;
-			}
-			else if (type_name == "laboratory") {
-				entity = App->scene->players[faction]->laboratory;
-				width = height = 3;
-			}
-
-			for(int y = 0; y < height; y++)
-			{
-				for(int x = 0; x < width; x++)
-				{
-					tile.x = current_tile.x + x;
-					tile.y = current_tile.y + y;
-					entity->tiles.push_back(tile);
-				}
-			}
-
-			entity->CalculateRenderAndSpawnPositions();
-
-		}
-		else if(dynamic_entity){
+		
+		if(dynamic_entity){
 
 			if (faction_name == "no_faction") {
 				CreateEntity(faction, type, current_tile.x, current_tile.y);
