@@ -117,6 +117,7 @@ bool j1EntityManager::Start() {
 
 	background_health_bar = { 0,0,0,0 };
 	foreground_health_bar = { 0,0,0,0 };
+	gathering_health_bar = { 0,0,0,0 };
 	frame_quad = { 0,0,0,0 };
 
 	
