@@ -91,6 +91,8 @@ bool j1Scene::Start()
 	if (App->render->fog_of_war)
 		App->fowManager->Enable();
 
+	deathclaw1 = deathclaw2 = deathclaw3 = deathclaw4 = false;
+
 	destination_texture = App->tex->Load("Assets/textures/player/destination_debug.png");
 
 	App->console->CreateCommand("win", "Automatically win the game", this);
@@ -183,7 +185,7 @@ bool j1Scene::Update(float dt)
 	if (destination.Finished()) blit_destination = false;
 
 
-	if ((App->hud->minutes == 5) && (deathclaw1 == false))
+	if ((App->hud->minutes == 4) && (deathclaw1 == false))
 	{
 		if (players[0]->base != nullptr && deathclaw1 == false)
 		{
@@ -488,9 +490,7 @@ void j1Scene::closeGame()
 	App->menu_manager->DestroyMenu(Menu::TUTORIAL);
 	App->menu_manager->DestroyMenu(Menu::RADIO);
 	App->menu_manager->DestroyMenu(Menu::GUI);
-	App->menu_manager->DestroyMenu(Menu::QUEST);
-	App->fowManager->CleanUp();
-	App->fowManager->Disable();
+	App->menu_manager->DestroyMenu(Menu::QUEST);	
 	App->gui->ingame = false;
 	App->isPaused = true;
 	App->logo_scene->Loop = true;
