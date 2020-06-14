@@ -148,7 +148,7 @@ bool AI_Player::Update(float dt) {
 		//else {
 		for (size_t i = 0; i < troops.size(); i++)
 		{
-			if ((target_building != nullptr) || (target_building->isValidTarget())) {
+			if ((target_building != nullptr) && (target_building->isValidTarget())) {
 				troops[i]->target_building = target_building;
 				troops[i]->PathfindToPosition(App->entities->ClosestTile(troops[i]->current_tile, target_building->surrounding_tiles));
 			}
