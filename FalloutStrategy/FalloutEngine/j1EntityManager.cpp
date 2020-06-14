@@ -697,7 +697,7 @@ void j1EntityManager::DestroyDynamicEntities() {
 		if (entities[i]->is_dynamic) {
 			delete entities[i];
 			entities[i] = nullptr;
-			entities.erase(entities.cbegin() + i);
+			entities.erase(entities.begin() + i);
 		}
 	}
 }
@@ -1087,9 +1087,9 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 
 		if (type_name == "melee") { type = MELEE;}
 		else if (type_name == "ranged") { type = RANGED;}
-		else if (type_name == "gatherer") { 
-			type = GATHERER;
-			resource_collected= iterator.attribute("resource_collected").as_int();
+		else if (type_name == "gatherer") { type = GATHERER;
+		type = GATHERER;
+		resource_collected = iterator.attribute("resource_collected").as_int();
 		}
 		else if (type_name == "base") {
 			type = BASE;
@@ -1116,16 +1116,23 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 
 
 		if (type_name == "base") {
-			upgrade_gath =iterator.attribute("level_gatherer_resource_limit").as_int();
+			upgrade_gath = iterator.attribute("level_gatherer_resource_limit").as_int();
 			upgrade_base = iterator.attribute("level_base_resource_limit").as_int();
+			gatherer_resource_limit[faction].upgrade_num = upgrade_gath;
+			base_resource_limit[faction].upgrade_num = upgrade_base;
 		}
 		else if (type_name == "laboratory") {
 			upgrade_health = iterator.attribute("level_units_health").as_int();
 			upgrade_creat = iterator.attribute("level_units_creation_time").as_int();
+			units_health[faction].upgrade_num = upgrade_health;
+			units_creation_time[faction].upgrade_num = upgrade_creat;
 		}
 		else if (type_name == "barrack") {
 			upgrade_dama = iterator.attribute("level_units_damage").as_int();
 			upgrade_speed = iterator.attribute("level_units_speed").as_int();
+			units_damage[faction].upgrade_num = upgrade_dama;
+			units_speed[faction].upgrade_num = upgrade_speed;
+
 		}
 
 		position.x = iterator.attribute("position_x").as_float();
@@ -1139,18 +1146,16 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		if(dynamic_entity){
 
 			if (faction_name == "no_faction") {
-				CreateEntity(faction, type, current_tile.x, current_tile.y);
+				//CreateEntity(faction, type, current_tile.x, current_tile.y);
 			}
 			else{
 				DynamicEntity* entity = dynamic_cast<DynamicEntity*>(CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]));
+				if(entity!= nullptr){ entity->current_health = current_health; }
+				
 				if (type == GATHERER)dynamic_cast<Gatherer*>(entity)->resource_collected = resource_collected;
-
 				
 			}
-		
-
 		}
-
 
 		iterator = iterator.next_sibling();
 	}
@@ -1184,7 +1189,7 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 		if (entities[i]->type == MELEE) { entities_pugi.append_attribute("type") = "melee"; }
 		else if (entities[i]->type == RANGED) { entities_pugi.append_attribute("type") = "ranged"; }
 		else if (entities[i]->type == GATHERER) { 
-			entities_pugi.append_attribute("type") = "gatherer";
+			entities_pugi.append_attribute("type") = "gatherer"; 
 			entities_pugi.append_attribute("resource_collected") = dynamic_cast<Gatherer*>(entities[i])->resource_collected;
 		}
 		else if (entities[i]->type == BASE) { entities_pugi.append_attribute("type") = "base"; }
