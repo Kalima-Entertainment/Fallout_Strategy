@@ -88,7 +88,8 @@ bool j1Scene::Start()
 	menu_state = StatesMenu::NONE;
 	beaten_enemies = 0;
 
-	if (App->render->fog_of_war)App->fowManager->Enable();
+	if (App->render->fog_of_war)
+		App->fowManager->Enable();
 
 	deathclaw1 = deathclaw2 = deathclaw3 = deathclaw4 = false;
 
@@ -446,6 +447,7 @@ bool j1Scene::Load(pugi::xml_node& data)
 {
 	App->map->CleanUp();
 	App->minimap->CleanUp();
+	App->scene->Start();
 	pugi::xml_node iterator = data.first_child();
 	int i = 0;
 
