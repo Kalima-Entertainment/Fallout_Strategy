@@ -117,6 +117,7 @@ bool j1EntityManager::Start() {
 
 	background_health_bar = { 0,0,0,0 };
 	foreground_health_bar = { 0,0,0,0 };
+	gathering_health_bar = { 0,0,0,0 };
 	frame_quad = { 0,0,0,0 };
 
 	
@@ -688,6 +689,17 @@ bool j1EntityManager::LoadReferenceEntityData() {
 
 void j1EntityManager::DestroyEntity(j1Entity* entity) { entity->to_delete = true;}
 
+void j1EntityManager::DestroyDynamicEntities() {
+	for (size_t i = 0; i < entities.size(); i++)
+	{
+		if (entities[i]->is_dynamic) {
+			delete entities[i];
+			entities[i] = nullptr;
+			entities.erase(entities.cbegin() + i);
+		}
+	}
+}
+
 void j1EntityManager::DestroyAllEntities() {
 	for(size_t i = 0; i < entities.size(); i++)
 	{
@@ -1029,7 +1041,9 @@ void j1EntityManager::DestroyResourceSpot(ResourceBuilding* resource_spot) {
 // Load Game State
 bool j1EntityManager::Load(pugi::xml_node& data)
 {
-
+	DestroyDynamicEntities();
+	App->ai_manager->CleanUp();
+	App->ai_manager->Start();
 	RestartOccupiedTiles();
 
 	std::string player_faction = "NO_FACTION_ASSIGNED";

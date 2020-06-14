@@ -165,6 +165,7 @@ void j1Transition::Transition()
 		transition = false;
 		App->gui->active;
 		App->Mmanager->Enable();
+		App->render->fog_of_war = true;
 		App->scene->Enable();
 		App->main_menu->Disable();
 		App->hud->Enable();

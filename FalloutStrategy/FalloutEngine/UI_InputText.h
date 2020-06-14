@@ -25,7 +25,4 @@ public:
 
 	SDL_Texture* texture;
 	SDL_Rect r;
-
-	
-
 };
