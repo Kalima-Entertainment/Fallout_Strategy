@@ -343,8 +343,10 @@ bool j1Player::Update(float dt) {
 
 		//Verify blit depending if enemy entity is placed there
 		if (dynamic != nullptr) {
-			if (dynamic->is_dynamic && dynamic->faction != faction)
+			if (dynamic->is_dynamic && dynamic->faction != faction) {
+				App->scene->debug_destiny = iPoint(dynamic->position.x - 32, dynamic->position.y - 12);
 				App->scene->attack_destination = true;
+			}
 		}
 		else {
 			App->scene->blit_destination = true;
@@ -352,7 +354,7 @@ bool j1Player::Update(float dt) {
 		
 
 
-		if ((selected_entity != nullptr)&&(selected_entity->is_dynamic))
+		if ((selected_entity != nullptr)&&(selected_entity->is_dynamic) && (selected_entity->isValidTarget()))
 			MoveEntity(dynamic_cast<DynamicEntity*>(selected_entity));
 
 		if (selected_group != nullptr)

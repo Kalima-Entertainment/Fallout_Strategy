@@ -697,7 +697,7 @@ void j1EntityManager::DestroyDynamicEntities() {
 		if (entities[i]->is_dynamic) {
 			delete entities[i];
 			entities[i] = nullptr;
-			entities.erase(entities.cbegin() + i);
+			entities.erase(entities.begin() + i);
 		}
 	}
 }
@@ -1113,7 +1113,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 
 
 		if (type_name == "base") {
-			upgrade_gath =iterator.attribute("level_gatherer_resource_limit").as_int();
+			gatherer_resource_limit[faction] = iterator.attribute("level_gatherer_resource_limit").as_int();
 			upgrade_base = iterator.attribute("level_base_resource_limit").as_int();
 		}
 		else if (type_name == "laboratory") {
@@ -1136,15 +1136,13 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		if(dynamic_entity){
 
 			if (faction_name == "no_faction") {
-				CreateEntity(faction, type, current_tile.x, current_tile.y);
+				//CreateEntity(faction, type, current_tile.x, current_tile.y);
 			}
 			else{
 				DynamicEntity* entity = dynamic_cast<DynamicEntity*>(CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]));
+				entity->current_health = current_health;
 			}
-		
-
 		}
-
 
 		iterator = iterator.next_sibling();
 	}
@@ -1177,7 +1175,10 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 
 		if (entities[i]->type == MELEE) { entities_pugi.append_attribute("type") = "melee"; }
 		else if (entities[i]->type == RANGED) { entities_pugi.append_attribute("type") = "ranged"; }
-		else if (entities[i]->type == GATHERER) { entities_pugi.append_attribute("type") = "gatherer"; }
+		else if (entities[i]->type == GATHERER) { 
+			entities_pugi.append_attribute("type") = "gatherer"; 
+			entities_pugi.append_attribute("resource_collected") = dynamic_cast<Gatherer*>(entities[i])->resource_collected;
+		}
 		else if (entities[i]->type == BASE) { entities_pugi.append_attribute("type") = "base"; }
 		else if (entities[i]->type == LABORATORY) { entities_pugi.append_attribute("type") = "laboratory"; }
 		else if (entities[i]->type == BARRACK) { entities_pugi.append_attribute("type") = "barrack"; }
