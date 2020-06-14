@@ -134,12 +134,12 @@ html {
   .navigation{
     position: relative;
     bottom: 30px;
-    left: 90%;
+    left: 75%;
     transform: translateX(-50%);
     display: flex;
   }
   .bar{
-    width: 50px;
+    width: 100px;
     height: 10px;
     border: 2px solid #fff;
     margin: 6px;
