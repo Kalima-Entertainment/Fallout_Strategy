@@ -111,7 +111,6 @@ bool j1Console::PostUpdate() {
 		}
 		
 		input_box->Update(last_dt);
-		input_box->Draw();
 	}
 	return ret;
 }
@@ -162,8 +161,7 @@ void j1Console::CreateInterface() {
 		j++;
 	}
 
-	input_box = dynamic_cast<InputText*>(App->gui->CreateInputBox(x_margin, log_box.h + 5, InputBox, "_", NULL, this, "StackedPixelMedium"));
-
+	input_box = dynamic_cast<InputText*>(App->gui->CreateInputBox(x_margin, log_box.h + 5, InputBox, " ", NULL, this, "OpenSans-Light"));
 	SDL_StartTextInput();
 
 }

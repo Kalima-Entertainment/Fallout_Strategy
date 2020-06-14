@@ -17,7 +17,6 @@ struct FoWDataStruct
 	unsigned short tileShroudBits; //same as above but for shroud
 };
 
-
 class FoWManager :public j1Module
 {
 	//FUNCTIONS
