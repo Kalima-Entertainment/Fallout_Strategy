@@ -88,7 +88,8 @@ bool j1Scene::Start()
 	menu_state = StatesMenu::NONE;
 	beaten_enemies = 0;
 
-	if (App->render->fog_of_war)App->fowManager->Enable();
+	if (App->render->fog_of_war)
+		App->fowManager->Enable();
 
 	destination_texture = App->tex->Load("Assets/textures/player/destination_debug.png");
 
@@ -444,6 +445,7 @@ bool j1Scene::Load(pugi::xml_node& data)
 {
 	App->map->CleanUp();
 	App->minimap->CleanUp();
+	App->scene->Start();
 	pugi::xml_node iterator = data.first_child();
 	int i = 0;
 
