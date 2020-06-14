@@ -1060,7 +1060,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 	iPoint current_tile = { 0,0 }, target_tile = { 0,0 };
 	GenericPlayer* owner = nullptr;
 	int width = 0, height = 0;
-
+	int resource_collected = 0;
 	player_faction = data.child("player").attribute("player_faction").as_string();
 
 	if (player_faction == "brotherhood") { App->player->faction = BROTHERHOOD; }
@@ -1087,7 +1087,10 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 
 		if (type_name == "melee") { type = MELEE;}
 		else if (type_name == "ranged") { type = RANGED;}
-		else if (type_name == "gatherer") { type = GATHERER;}
+		else if (type_name == "gatherer") { 
+			type = GATHERER;
+			resource_collected= iterator.attribute("resource_collected").as_int();
+		}
 		else if (type_name == "base") {
 			type = BASE;
 			dynamic_entity = false;
@@ -1140,6 +1143,9 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 			}
 			else{
 				DynamicEntity* entity = dynamic_cast<DynamicEntity*>(CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]));
+				if (type == GATHERER)dynamic_cast<Gatherer*>(entity)->resource_collected = resource_collected;
+
+				
 			}
 		
 
@@ -1177,7 +1183,10 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 
 		if (entities[i]->type == MELEE) { entities_pugi.append_attribute("type") = "melee"; }
 		else if (entities[i]->type == RANGED) { entities_pugi.append_attribute("type") = "ranged"; }
-		else if (entities[i]->type == GATHERER) { entities_pugi.append_attribute("type") = "gatherer"; }
+		else if (entities[i]->type == GATHERER) { 
+			entities_pugi.append_attribute("type") = "gatherer";
+			entities_pugi.append_attribute("resource_collected") = dynamic_cast<Gatherer*>(entities[i])->resource_collected;
+		}
 		else if (entities[i]->type == BASE) { entities_pugi.append_attribute("type") = "base"; }
 		else if (entities[i]->type == LABORATORY) { entities_pugi.append_attribute("type") = "laboratory"; }
 		else if (entities[i]->type == BARRACK) { entities_pugi.append_attribute("type") = "barrack"; }
