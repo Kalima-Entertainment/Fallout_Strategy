@@ -57,6 +57,7 @@ public:
 
 	void AddFowToResourceBuildings(iPoint basePos);
 	FoWEntity* visionEntity;
+
 	//VARIABLES
 public:
 	//A number of precomputed circle masks for you to use ranging between a radius of 2 to a radius of 5

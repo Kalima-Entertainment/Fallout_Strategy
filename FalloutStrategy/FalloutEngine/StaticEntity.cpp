@@ -114,7 +114,6 @@ StaticEntity::~StaticEntity() {
 	HitParticle = nullptr;
 	visionEntity = nullptr;
 	StaticParticle = nullptr;
-	visionEntity = nullptr;
 
 	tiles.clear();
 	surrounding_tiles.clear();
@@ -150,7 +149,7 @@ bool StaticEntity::Update(float dt) {
 		if ((App->player->selected_entity != nullptr) && (App->player->selected_entity == this))
 			App->player->selected_entity = nullptr;
 
-		visionEntity->SetNewPosition(App->map->MapToWorld(-10, -10));
+		visionEntity = nullptr;
 
 		if ((delete_timer.ReadSec() > 5)||(current_animation->Finished()))
 			to_delete = true;

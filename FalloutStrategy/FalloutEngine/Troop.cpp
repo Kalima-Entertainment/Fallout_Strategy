@@ -337,7 +337,7 @@ bool Troop::Update(float dt) {
 				}
 			}
 		}
-		visionEntity->SetNewPosition(App->map->MapToWorld(-10, -10));
+		visionEntity = nullptr;
 
 		if (delete_timer.ReadSec() > 4) {
 			to_delete = true;
