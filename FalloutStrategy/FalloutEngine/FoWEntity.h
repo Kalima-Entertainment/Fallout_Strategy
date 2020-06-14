@@ -21,11 +21,8 @@ public:
 
 	std::vector<iPoint> GetTilesInsideRadius()const;
 
-
 private:
-
 	void ApplyMaskToTiles(std::vector<iPoint>tilesAffected);
-
 	//VARIABLES
 public:
 	bool deleteEntity;

@@ -16,6 +16,8 @@ public:
 
 	bool Update(float dt);
 
+	UI_Type GetType();
+
 public:
 
 	bool InputText_Actived;
@@ -25,7 +27,4 @@ public:
 
 	SDL_Texture* texture;
 	SDL_Rect r;
-
-	
-
 };

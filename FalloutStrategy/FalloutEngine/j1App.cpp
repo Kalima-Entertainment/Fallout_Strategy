@@ -92,12 +92,13 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(menu_manager);
 	AddModule(gui);
 	AddModule(minimap);
-	//AddModule(console);
 	AddModule(main_menu);
 	AddModule(logo_scene);
 	AddModule(transition);
 	AddModule(hud);
+	AddModule(console);
 	AddModule(cursor);
+
 	// render last to swap buffer
 	AddModule(render);
 

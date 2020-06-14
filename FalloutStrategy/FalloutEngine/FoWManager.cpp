@@ -19,7 +19,7 @@ FoWManager::FoWManager()
 
 FoWManager::~FoWManager()
 {
-	CleanUp();
+	CleanUp();	
 }
 
 bool FoWManager::Awake(pugi::xml_node&)
@@ -148,7 +148,7 @@ BROFILER_CATEGORY("Fog of War PostUpdate", Profiler::Color::Black)
 bool FoWManager::CleanUp()
 {
 	bool ret = true;
-	DeleteFoWMap();
+	DeleteFoWMap();	
 
 	int i = 0;
 	while (fowEntities.size() > 0)
@@ -163,7 +163,6 @@ bool FoWManager::CleanUp()
 		i++;
 	}
 	fowEntities.clear();
-
 
 	if (debugFoWtexture != nullptr)
 	{
