@@ -1087,9 +1087,9 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 
 		if (type_name == "melee") { type = MELEE;}
 		else if (type_name == "ranged") { type = RANGED;}
-		else if (type_name == "gatherer") { type = GATHERER;
-		type = GATHERER;
-		resource_collected = iterator.attribute("resource_collected").as_int();
+		else if (type_name == "gatherer") { 
+			type = GATHERER;
+			resource_collected = iterator.attribute("resource_collected").as_int();
 		}
 		else if (type_name == "base") {
 			type = BASE;
@@ -1150,10 +1150,11 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 			}
 			else{
 				DynamicEntity* entity = dynamic_cast<DynamicEntity*>(CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]));
-				if(entity!= nullptr){ entity->current_health = current_health; }
 				
 				if (type == GATHERER)dynamic_cast<Gatherer*>(entity)->resource_collected = resource_collected;
-				
+				if ((type == MELEE) || (type == RANGED) || (type == MR_HANDY) || (type == GATHERER))entity->current_health = current_health;
+				/*if (type == RANGED)entity->current_health = current_health;
+				if (type == MR_HANDY)entity->current_health = current_health;*/
 			}
 		}
 
