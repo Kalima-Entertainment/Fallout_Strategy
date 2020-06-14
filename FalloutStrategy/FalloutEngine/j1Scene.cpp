@@ -90,14 +90,15 @@ bool j1Scene::Start()
 	App->player->food = 250;
 	App->player->water = 500;
 
-
-
 	srand(time(NULL));
 	menu_state = StatesMenu::NONE;
 	beaten_enemies = 0;
 
-	if (App->render->fog_of_war)
+	if (App->render->fog_of_war) {
+		App->fowManager->ResetFoWEntities();
+		App->fowManager->ResetFoWMap();
 		App->fowManager->Enable();
+	}		
 
 	deathclaw1 = deathclaw2 = deathclaw3 = deathclaw4 = false;
 
