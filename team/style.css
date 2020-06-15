@@ -55,3 +55,7 @@
     display: table;
     clear: both;
 }
+
+.center-div {
+  margin: auto;
+}
