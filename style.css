@@ -123,6 +123,7 @@ html {
     width: 1200px;
     height: 900px;
     margin-top: 600px;
+    margin-bottom: 1%;
     overflow: hidden;
   }
   .middle{
