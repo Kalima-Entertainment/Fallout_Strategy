@@ -235,14 +235,9 @@ bool Troop::Update(float dt) {
 					if (type == MELEE) {
 						iPoint free_adjacent_tile = App->entities->FindFreeAdjacentTile(current_tile, dynamic_target->current_tile);
 						if (free_adjacent_tile == iPoint(-1, -1)) {
-							if (owner->is_ai) {
-								target_building = RequestTargetBuilding(target_building->faction);
-							}
-							else {
 								state = IDLE;
-								target_building = nullptr;
+								dynamic_target = nullptr;
 								commanded = false;
-							}
 						}
 						else {
 							PathfindToPosition(free_adjacent_tile);
@@ -358,6 +353,7 @@ bool Troop::Update(float dt) {
 			}
 
 			//Mr Handy explode
+			/*
 			if (type == MR_HANDY) {
 				DetectEntitiesInRange();
 				for(int i = 0; i < entities_in_range.size(); i++)
@@ -366,6 +362,7 @@ bool Troop::Update(float dt) {
 						entities_in_range[i]->current_health -= 2 * damage;
 				}
 			}
+			*/
 		}
 		visionEntity->deleteEntity = true;
 
