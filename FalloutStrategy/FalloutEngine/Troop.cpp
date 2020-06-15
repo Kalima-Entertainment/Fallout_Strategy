@@ -21,7 +21,7 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 
 	attack_time = 3;
 	attack_time = 3;
-	detection_radius = 4;
+	detection_radius = 6;
 
 	position = App->map->floatMapToWorld(current_tile.x, current_tile.y);
 	position.x += HALF_TILE;
@@ -197,10 +197,15 @@ bool Troop::Update(float dt) {
 							PathfindToPosition(free_surrounding_tile);
 						}
 						else {
-							state = IDLE;
-							target_building = nullptr;
-							commanded = false;
-							//LOG("building surrounded");
+							if (owner->is_ai) {
+								target_building = RequestTargetBuilding(target_building->faction);
+							}
+							else {
+								state = IDLE;
+								target_building = nullptr;
+								commanded = false;
+							}
+							LOG("building surrounded");
 						}
 					}
 				}
@@ -230,9 +235,14 @@ bool Troop::Update(float dt) {
 					if (type == MELEE) {
 						iPoint free_adjacent_tile = App->entities->FindFreeAdjacentTile(current_tile, dynamic_target->current_tile);
 						if (free_adjacent_tile == iPoint(-1, -1)) {
-							state = IDLE;
-							dynamic_target = nullptr;
-							commanded = false;
+							if (owner->is_ai) {
+								target_building = RequestTargetBuilding(target_building->faction);
+							}
+							else {
+								state = IDLE;
+								target_building = nullptr;
+								commanded = false;
+							}
 						}
 						else {
 							PathfindToPosition(free_adjacent_tile);
