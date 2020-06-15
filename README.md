@@ -2,13 +2,13 @@
 This is a real-time strategy game produced by 2nd year students from CITM/UPC University in Terrassa, Barcelona.
 
 ## Goal
-* Make your faction survive among the others in this exciting RTS! Be careful with the deathclaws at the end of the game.
+* Make your faction survive among the others in this exciting RTS! Be careful with the deathclaws at the end of the game, they are really fast and will try to destroy your base as fast as possible!
 
 ### Win / Lose conditions
-Destroy all other factions' buildings to win the game before you run out of time, if all of yours are destroyed you will lose.  
+Destroy all other factions' buildings to win the game before you run out of time, if all of yours are destroyed you will lose. If the Deathclaws have appeared you will also have to kill them in order to win the game.
 
 ## Controls
-* Left click on the unit and left click on the position you want to make it go to.
+* Left click on the unit and right click on the position you want it go.
 * º - Turn console ON/OFF
 * Y - Block/Unblock border scroll
 * C - Center camera on selected entity
@@ -23,17 +23,17 @@ Destroy all other factions' buildings to win the game before you run out of time
 
 ## Boost
 Upgrade your buildings to give differents boosts to your faction. Every building will gain a different boost depending of the level of the upgrade.
-* Base - Increase resource limit and Gatherer resource limit
-* Barrack - Damage and Speed to all the units
-* Laboratory - Add health to units and decrease creation time
+* Base - Increase resource limit and Gatherer resource limit.
+* Barrack - Damage and Speed to all the units. If you upgrade one barrack, the both of them will. 
+* Laboratory - Add health to units and decrease creation time.
 
 ## Special ability/unit
 Obtain an extra help in the laboratory of your faction that would make your journey easier.
-*Radar- Reveal the location of your enemies
-*Mr. Handy- Great robot with a big amount of life and damage, that will lend you a hand in the fight.
+* Radar- Reveal the location of your enemies
+* Mr. Handy- Great robot with a big amount of life and damage, that will lend you a hand in the fight.
 
 ## Quests
-Complete the quests at the beginning of the game to receive a Mr. Handy totally free.
+Complete the quests at the beginning of the game to receive a Mr. Handy totally for free.
 
 ### Debug
 In debug mode you will be able to see the path the player follows and how it does so.
@@ -51,7 +51,7 @@ In debug mode you will be able to see the path the player follows and how it doe
 * spawn gatherer/melee/ranged/army -  spawns 1 unit of the selected type or an army of 10 melee and 10 ranged
 * win - automatically win the game
 * lose - automatically lose the game
-* fog of war - active/desactive the fog of war
+* fog_of_war - enable/disable the fog of war
 
 ## Team
 
