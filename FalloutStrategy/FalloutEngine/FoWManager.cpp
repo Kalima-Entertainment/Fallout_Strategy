@@ -441,7 +441,7 @@ void FoWManager::OnCommand(std::vector<std::string> command_parts)
 	//Increase all resources
 	if (command_beginning == "fog_of_war") {
 		App->render->fog_of_war = !App->render->fog_of_war;
-		if (App->render->fog_of_war)	LOG("Fog Of War Activated");
-		else LOG("Fog Of War Deactivated");
+		if (App->render->fog_of_war)	LOG("Fog Of War enabled");
+		else LOG("Fog Of War disabled");
 	}
 }
