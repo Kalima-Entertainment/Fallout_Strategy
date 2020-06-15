@@ -467,7 +467,9 @@ bool j1Scene::Load(pugi::xml_node& data)
 	App->map->CleanUp();
 	App->minimap->CleanUp();
 
+	App->ai_manager->CleanUp();
 	App->ai_manager->Start();
+	App->player->CleanUp();
 
 	pugi::xml_node iterator = data.first_child();
 	int i = 0;

@@ -60,7 +60,6 @@ j1Player::~j1Player() {
 
 bool j1Player::Start() {
 
-
 	App->console->CreateCommand("caps+", "increase the amount of caps", this);
 	App->console->CreateCommand("food+", "increase the amount of food", this);
 	App->console->CreateCommand("water+", "increase the amount of water", this);
@@ -71,6 +70,22 @@ bool j1Player::Start() {
 	defeated = false;
 
 	return true;
+}
+
+bool j1Player::CleanUp() {
+	bool ret = true;
+	selected_entity = nullptr;
+	last_selected_entity = nullptr;
+	selected_group = nullptr;
+
+	for (size_t t = 0; t < troops.size(); t++) { troops[t] = nullptr; }
+	troops.clear();
+
+	for (size_t g = 0; g < gatherers_vector.size(); g++) { gatherers_vector[g] = nullptr; }
+	gatherers_vector.clear();
+
+	base = barrack[0] = barrack[1] = laboratory = nullptr;
+	return ret;
 }
 
 bool j1Player::PreUpdate() {
@@ -386,22 +401,6 @@ bool j1Player::Update(float dt) {
 	if ((App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) && (App->render->camera.x > -MAP_LENGTH* HALF_TILE + App->render->camera.w * 0.75f))
 		App->render->camera.x -= (int)(floor(200.0f * dt));
 
-	return ret;
-}
-
-bool j1Player::CleanUp() {
-	bool ret = true;
-	selected_entity = nullptr;
-	last_selected_entity = nullptr;
-	selected_group = nullptr;
-
-	for (size_t t = 0; t < troops.size(); t++) { troops[t] = nullptr; }
-	troops.clear();
-
-	for (size_t g = 0; g < gatherers_vector.size(); g++) { gatherers_vector[g] = nullptr; }
-	gatherers_vector.clear();
-
-	base = barrack[0] = barrack[1] = laboratory = nullptr;
 	return ret;
 }
 
