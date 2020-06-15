@@ -465,7 +465,7 @@ bool j1App::LoadGameNow()
 bool j1App::SavegameNow() const
 {
 	bool ret = true;
-	save_game.assign("save_file.xml");
+	save_game.assign("data/save_file.xml");
 	LOG("Saving Game State to %s...", save_game.c_str());
 
 	// xml object were we will store all data

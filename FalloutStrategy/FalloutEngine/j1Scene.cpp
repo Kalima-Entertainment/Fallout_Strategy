@@ -268,7 +268,7 @@ bool j1Scene::Update(float dt)
 	}
 
 	else if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN || load_game == true) {
-		App->LoadGame("save_file.xml");
+		App->LoadGame("data/save_file.xml");
 		load_game = false;
 	}
 
