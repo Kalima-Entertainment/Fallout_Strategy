@@ -99,7 +99,7 @@ bool Animal::Update(float dt) {
 			next_tile = { -1,-1 };
 
 			if ((attacking_entity != nullptr)&&(attacking_entity->owner->is_ai)) {
-				((AI_Player*)attacking_entity->owner)->GatherFood(resource_spot);
+				dynamic_cast<AI_Player*>(attacking_entity->owner)->GatherFood(resource_spot);
 				attacking_entity = nullptr;
 			}
 		}

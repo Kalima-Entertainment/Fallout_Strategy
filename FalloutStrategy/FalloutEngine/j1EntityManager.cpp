@@ -1030,6 +1030,15 @@ ResourceBuilding* j1EntityManager::CreateResourceSpot(int position_x, int positi
 }
 
 void j1EntityManager::DestroyResourceSpot(ResourceBuilding* resource_spot) {
+	//make gatherers forget about this resource spot to prevent memory deallocation
+	for (size_t i = 0; i < entities.size(); i++) {
+		if (entities[i]->type == GATHERER) {
+			if (dynamic_cast<Gatherer*>(entities[i])->GetResourceBuilding() == resource_spot)
+				dynamic_cast<Gatherer*>(entities[i])->AssignResourceBuilding(nullptr);
+		}
+	}
+	
+	//destroy the resource spot
 	for(size_t i = 0; i < resource_buildings.size(); i++)
 	{
 		if (resource_spot == resource_buildings[i]) {

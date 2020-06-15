@@ -108,6 +108,7 @@ bool Gatherer::Update(float dt) {
 	case WALK:
 		Move(dt);
 
+
 		if ((current_tile == target_tile)&&(node_path.size() == 0)) {
 			//gather
 			if ((((resource_building != nullptr) && (resource_collected < storage_capacity)) || ((resource_collected > 0) && (base != nullptr))) && gathering) {
@@ -241,7 +242,8 @@ void Gatherer::Gather() {
 
 void Gatherer::AssignResourceBuilding(ResourceBuilding* g_resource_building) {
 	resource_building = g_resource_building;
-	gathering = true;
+	if(resource_building != nullptr)
+		gathering = true;
 }
 
 void Gatherer::StoreGatheredResources() {

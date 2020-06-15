@@ -305,6 +305,7 @@ bool j1Scene::CleanUp()
 	LOG("Freeing scene");
 	App->tex->UnLoad(destination_texture);
 	destination_texture = nullptr;
+	App->map->CleanUp();
 	players[0] = players[1] = players[2] = players[3] = nullptr;
 	return true;
 }
@@ -424,6 +425,7 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 					players[i]->barrack[1]->state = DIE;
 			}
 		}
+		/*
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 		App->menu_manager->DestroyMenu(Menu::RESOURCES);
 		App->menu_manager->DestroyMenu(Menu::GUI);
@@ -437,6 +439,7 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 		deathclaw2 = false;
 		deathclaw3 = false;
 		deathclaw4 = false;
+		*/
 	}
 	//Instantly lose the game
 	else if (command_beginning == "lose") {
@@ -448,6 +451,7 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 			App->player->barrack[0]->state = DIE;
 		if (App->player->barrack[1] != nullptr)
 			App->player->barrack[1]->state = DIE;
+		/*
 		lose = true;
 		App->menu_manager->DestroyMenu(App->menu_manager->current_menu);
 		App->menu_manager->DestroyMenu(Menu::RESOURCES);
@@ -457,6 +461,7 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 		App->gui->ingame = false;
 		App->isPaused = true;
 		App->logo_scene->Loop = true;
+		*/
 	}
 }
 

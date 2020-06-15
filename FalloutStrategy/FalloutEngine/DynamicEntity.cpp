@@ -307,7 +307,7 @@ void DynamicEntity::Move(float dt) {
 
 	// -- Get next tile center
 	next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
-	next_tile_rect = { next_tile_position.x + HALF_TILE - 1, next_tile_position.y + HALF_TILE - 1, 2, 2 };
+	next_tile_rect = { next_tile_position.x + HALF_TILE - 1, next_tile_position.y + HALF_TILE - 1, 1, 1 };
 
 	//direction movement ---------------------------------
 	last_direction = direction;
@@ -342,29 +342,6 @@ void DynamicEntity::Move(float dt) {
 }
 
 Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
-
-	/*
-	//if position is in the middle of the next tile rect
-	if ((position.x > next_tile_rect.x) && (position.x < next_tile_rect.x + next_tile_rect.w)
-		&& (position.y > next_tile_rect.y) && (position.y < next_tile_rect.y + next_tile_rect.h)) {
-		return Direction::NO_DIRECTION;
-	}
-	if ((position.x > next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y > next_tile_rect.y + next_tile_rect.h * 0.5f)) {
-		return Direction::TOP_LEFT;
-	}
-	else if ((position.x > next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y < next_tile_rect.y + next_tile_rect.h * 0.5f)) {
-		return Direction::BOTTOM_LEFT;
-	}
-	else if ((position.x < next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y) > next_tile_rect.y + next_tile_rect.h * 0.5f) {
-		return Direction::TOP_RIGHT;
-	}
-	else if ((position.x < next_tile_rect.x + next_tile_rect.w * 0.5f) && (position.y < next_tile_rect.y + next_tile_rect.h * 0.5f)) {
-		return Direction::BOTTOM_RIGHT;
-	}
-	else {
-		return NO_DIRECTION;
-	}
-	*/
 
 	if ((ceil(position.x) > floor(next_tile_rect.x)) && (floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w))
 		&& (ceil(position.y) > floor(next_tile_rect.y)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h))) {
