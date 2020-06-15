@@ -95,14 +95,14 @@ void ParticleSystem::Move(int x, int y)
 	int previousX = position[0];
 	int previousY = position[1];
 
-	int xPos, yPos;
-
 	if (active)
 	{
 		int numEmiters = emiterVector.size();
 
 		for(int i = 0; i < numEmiters; i++)
 		{
+			int xPos = 0, yPos = 0;
+
 			emiterVector[i].GetPosition(xPos, yPos);
 
 			xPos += x - previousX;

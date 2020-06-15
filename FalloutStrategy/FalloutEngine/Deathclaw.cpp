@@ -68,16 +68,6 @@ bool Deathclaw::Update(float dt) {
 		}
 		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
         break;
-    case HIT:
-		current_animation = &animations[HIT][direction];
-		if (current_animation->Finished()) {
-			current_animation->Reset();
-			//PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
-			state = WALK;
-		}
-
-		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
-        break;
     case DIE:
 		direction = TOP_LEFT;
 		if (!delete_timer.Started()) {
@@ -94,7 +84,7 @@ bool Deathclaw::Update(float dt) {
 			App->entities->occupied_tiles[current_tile.x][current_tile.y] = false;
 		}
 		SpatialAudio(static_cast<int>(position.x), static_cast<int>(position.y), faction, state, type);
-
+		App->scene->CheckWinner();
         break;
     default:
         break;

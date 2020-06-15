@@ -8,6 +8,8 @@
 #include "p2Log.h"
 #include "j1Minimap.h"
 #include "brofiler/Brofiler/Brofiler.h"
+#include "j1EntityManager.h"
+#include "j1Player.h"
 
 FoWManager::FoWManager()
 {
@@ -17,16 +19,14 @@ FoWManager::FoWManager()
 
 FoWManager::~FoWManager()
 {
-	CleanUp();
+	CleanUp();	
 }
-
 
 bool FoWManager::Awake(pugi::xml_node&)
 {
 	bool ret = true;
 	return ret;
 }
-
 
 bool FoWManager::Start()
 {
@@ -89,7 +89,6 @@ bool FoWManager::Start()
 	return ret;
 }
 
-
 bool FoWManager::PreUpdate()
 {
 	bool ret = true;
@@ -104,7 +103,6 @@ bool FoWManager::PreUpdate()
 			fowEntities.erase(fowEntities.begin() + i);
 			i--;
 		}
-
 	}
 
 	//debug input handling
@@ -126,7 +124,6 @@ bool FoWManager::PreUpdate()
 	return ret;
 }
 
-
 bool FoWManager::Update(float dt) {
 	BROFILER_CATEGORY("Fog of War Update", Profiler::Color::Gray)
 	bool ret = true;
@@ -140,7 +137,6 @@ bool FoWManager::Update(float dt) {
 	return ret;
 }
 
-
 bool FoWManager::PostUpdate() {
 BROFILER_CATEGORY("Fog of War PostUpdate", Profiler::Color::Black)
 	bool ret = true;
@@ -149,19 +145,16 @@ BROFILER_CATEGORY("Fog of War PostUpdate", Profiler::Color::Black)
 	return ret;
 }
 
-
 bool FoWManager::CleanUp()
 {
 	bool ret = true;
-	DeleteFoWMap();
-
+	DeleteFoWMap();		
+	
 	int i = 0;
 	while (fowEntities.size() > 0)
 	{
-
-
 		if (fowEntities[i] != nullptr)
-		{
+		{			
 			delete fowEntities[i];
 			fowEntities[i] = nullptr;
 			fowEntities.erase(fowEntities.begin() + i);
@@ -170,7 +163,6 @@ bool FoWManager::CleanUp()
 		i++;
 	}
 	fowEntities.clear();
-
 
 	if (debugFoWtexture != nullptr)
 	{
@@ -186,6 +178,19 @@ bool FoWManager::CleanUp()
 	return ret;
 }
 
+void FoWManager::ResetFoWEntities() {
+	
+	for (size_t i = 0; i < fowEntities.size(); i++)
+	{
+
+			delete fowEntities[i];
+			fowEntities[i] = nullptr;
+			fowEntities.erase(fowEntities.begin() + i);
+			i--;
+
+	}
+
+}
 void FoWManager::ResetFoWMap()
 {
 	if (fowMap != nullptr)
@@ -199,7 +204,6 @@ void FoWManager::ResetFoWMap()
 		}
 	}
 }
-
 
 FoWDataStruct* FoWManager::GetFoWTileState(iPoint mapPos)const
 {
@@ -382,7 +386,6 @@ bool FoWManager::CheckTileVisibility(iPoint mapPos)const
 
 	if (tileState != nullptr)
 	{
-
 		//Entity will only be visible in visible areas (no fog nor shroud)
 		//Think about what happens with the smooth borders, are the considered visble or fogged?
 		//Also, do you need to check both the fog and shroud states?
@@ -391,6 +394,38 @@ bool FoWManager::CheckTileVisibility(iPoint mapPos)const
 	}
 
 	return ret;
+}
+
+void FoWManager::AddFowToResourceBuildings(iPoint basePos)
+{
+	//App->entities->GetClosestResourceBuilding(App->player->base);
+	ResourceBuilding* resource_building[2];
+
+	//We get the two buildings
+	resource_building[0] = App->entities->GetClosestResourceBuilding(basePos, Resource::WATER);
+	resource_building[1] = App->entities->GetClosestResourceBuilding(basePos, Resource::CAPS);
+
+	//We get resource_building sizes
+	size_t building_size[2];
+	building_size[0] = resource_building[0]->tiles.size();
+	building_size[1] = resource_building[1]->tiles.size();
+
+	//Change last tiles (building_size tiles) so the fow always appear
+	iPoint render_position[2];
+	render_position[0] = resource_building[0]->tiles[building_size[0] - 1];
+	render_position[1] = resource_building[1]->tiles[building_size[1] - 1];
+	
+	render_position[0] += {-2, 0};
+	render_position[1] += {-2, 0};
+
+	//We add the vision entity to them
+	//Water Resource Building	
+	visionEntity = App->fowManager->CreateFoWEntity({ render_position[0] }, true);
+	visionEntity->SetNewVisionRadius(7);	
+
+	//Caps Resource Building	
+	visionEntity = App->fowManager->CreateFoWEntity({ render_position[1] }, true);
+	visionEntity->SetNewVisionRadius(7);	
 }
 
 void FoWManager::MapNeedsUpdate()

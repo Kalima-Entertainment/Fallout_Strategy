@@ -50,6 +50,7 @@ j1Entity::j1Entity() {
 }
 
 j1Entity::~j1Entity() {
+	current_tile = { -1, -1 };
 	reference_entity = nullptr;
 	attacking_entity = nullptr;
 	owner = nullptr;
@@ -239,4 +240,8 @@ void j1Entity::SpatialAudio(int positionx, int positiony, Faction faction, State
 		Mix_SetPosition(channel, 0, volume);
  		App->audio->PlayFx(channel, fx, 0);
 	}
+}
+
+bool j1Entity::isValidTarget() {
+	return ((state >= IDLE) && (state < NO_STATE));
 }

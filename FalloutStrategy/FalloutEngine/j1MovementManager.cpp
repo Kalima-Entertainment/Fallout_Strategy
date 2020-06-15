@@ -60,7 +60,7 @@ void j1MovementManager::SelectEntities_inRect(SDL_Rect SRect)
 					(*entity)->info.IsSelected = false;
 			}
 		}
-		entity++;
+		++entity;
 	}
 }
 
@@ -91,13 +91,13 @@ j1Group* j1MovementManager::CreateGroup(std::vector<DynamicEntity*> entities_vec
 		// --- Add the entity to the new group, update its current group pointer ---
 		group->addUnit(*entity);
 		(*entity)->info.current_group = group;
-		entity++;
+		++entity;
 	}
 
 	// --- Finally, If the group is Valid add it to our Groups list, else delete it ---
 	if (Validgroup) {
 		Groups.push_back(group);
-		LOG("Group Created");
+		//LOG("Group Created");
 		return group;
 	}
 	else {
@@ -129,6 +129,6 @@ void j1MovementManager::Move(j1Group* group, iPoint goal_path, float dt)
 			(*unit)->info.goal_tile = goal_path;
 			group->Occupied_tiles.push_back(&(*unit)->info.goal_tile);
 		}
-		unit++;
+		++unit;
 	}
 }

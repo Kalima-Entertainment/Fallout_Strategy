@@ -34,6 +34,7 @@ struct ResourceBuilding {
 	Resource resource_type = Resource::NO_TYPE;
 	int quantity = 0;
 	std::vector<iPoint> tiles;
+	iPoint no_resources_blit_position;
 	~ResourceBuilding() {tiles.clear();}
 };
 
@@ -82,6 +83,7 @@ public:
 
 	j1Entity* CreateEntity(Faction faction, EntityType type, int position_x, int position_y, GenericPlayer* owner = nullptr);
 	void DestroyEntity(j1Entity* delete_entity);
+	void DestroyDynamicEntities();
 	void DestroyAllEntities();
 	void DestroyAllEntitiesNow();
 	iPoint FindSpawnPoint(int position_x, int position_y);
@@ -90,13 +92,15 @@ public:
 	void DestroyResourceSpot(ResourceBuilding* resource_spot);
 
 	//Find entities
-	j1Entity*		  FindEntityByTile(iPoint tile);
+	j1Entity*		  FindEntityByTile(iPoint tile, j1Entity* entity_to_skip = nullptr);
 	ResourceBuilding* FindResourceBuildingByTile(iPoint tile);
 	ResourceBuilding* GetClosestResourceBuilding(iPoint current_position, Resource resource_type);
 	bool IsTileOccupied(iPoint position);
 	bool IsTileInPositionOccupied(fPoint position);
 
 	iPoint ClosestTile(iPoint position, std::vector<iPoint> entity_tiles);
+	iPoint FindClosestFreeTile(iPoint origin, iPoint destination);
+	iPoint FindClosestFreeTileFromVector(iPoint origin, std::vector<iPoint> tiles);
 	iPoint FindFreeAdjacentTile(iPoint origin, iPoint destination);
 
 	bool LoadReferenceEntityAnimations();
@@ -157,7 +161,12 @@ public:
 	SDL_Texture* life_bars;
 	SDL_Rect background_health_bar;
 	SDL_Rect foreground_health_bar;
+	SDL_Rect gathering_health_bar;
 	SDL_Rect frame_quad;
+	//No Resourecs
+	SDL_Rect no_reso;
+
+	SDL_Texture* debug_tex;
 
 private:
 	int loading_faction;

@@ -18,15 +18,18 @@
 #include "j1Scene.h"
 #include "j1Console.h"
 #include "Gatherer.h"
+#include "FoWManager.h"
 
 j1Player::j1Player() : GenericPlayer() {
-	
+
 	name.assign("Player");
 
-	selected_entity = last_selected_entity = nullptr;
+	selected_entity = nullptr;
+	last_selected_entity = nullptr;
 	selected_group = nullptr;
 	border_scroll = false;
 	mouse_speed_multiplier = 1.5f;
+	resource_fow_added = false;
 
 	god_mode = false;
 
@@ -44,6 +47,7 @@ j1Player::j1Player() : GenericPlayer() {
 j1Player::~j1Player() {
 	selected_entity = nullptr;
 	last_selected_entity = nullptr;
+	selected_group = nullptr;
 
 	for(size_t t = 0; t < troops.size(); t++) { troops[t] = nullptr; }
 	troops.clear();
@@ -55,15 +59,33 @@ j1Player::~j1Player() {
 }
 
 bool j1Player::Start() {
+
 	App->console->CreateCommand("caps+", "increase the amount of caps", this);
 	App->console->CreateCommand("food+", "increase the amount of food", this);
 	App->console->CreateCommand("water+", "increase the amount of water", this);
 	App->console->CreateCommand("resources+", "increase all resources", this);
 	App->console->CreateCommand("god_mode", "turn god mode on and off", this);
-	App->console->CreateCommand("spawn_units", "spawn 1 gatherer, 1 melee and 1 ranged. Must have a building selected", this);	
+	App->console->CreateCommand("spawn_units", "spawn 1 gatherer, 1 melee and 1 ranged. Must have a building selected", this);
 	App->console->CreateCommand("spawn", "<spawn gatherer><spawn melee><spawn ranged><spawn army>. Spawn one unit or an army. Must have a building selected", this);
 	defeated = false;
+
 	return true;
+}
+
+bool j1Player::CleanUp() {
+	bool ret = true;
+	selected_entity = nullptr;
+	last_selected_entity = nullptr;
+	selected_group = nullptr;
+
+	for (size_t t = 0; t < troops.size(); t++) { troops[t] = nullptr; }
+	troops.clear();
+
+	for (size_t g = 0; g < gatherers_vector.size(); g++) { gatherers_vector[g] = nullptr; }
+	gatherers_vector.clear();
+
+	base = barrack[0] = barrack[1] = laboratory = nullptr;
+	return ret;
 }
 
 bool j1Player::PreUpdate() {
@@ -83,7 +105,11 @@ bool j1Player::PreUpdate() {
 
 	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) {
 		App->entities->CreateEntity(faction, MR_HANDY, 1, 1, this);
+	}
 
+	if (base != nullptr && resource_fow_added == false) {
+		App->fowManager->AddFowToResourceBuildings(base->current_tile);
+		resource_fow_added = true;
 	}
 
 	if (!App->isPaused)
@@ -117,11 +143,14 @@ bool j1Player::PreUpdate() {
 		//entity selection and interaction
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
 			selected_entity = SelectEntity();
-			if ((selected_entity == nullptr) && (selected_group != nullptr)) {
-				selected_group->DeselectGroup();
-				selected_group = nullptr;
-			}
 
+			if ((selected_group != nullptr)) 
+			{
+				if (!TouchingUI(mouse_position.x, mouse_position.y)) {
+					selected_group->DeselectGroup();
+					selected_group = nullptr;
+				}
+			}
 
 			if (App->entities->showing_building_menu) {
 				if (selected_entity == nullptr) {
@@ -138,6 +167,7 @@ bool j1Player::PreUpdate() {
 				last_selected_entity = selected_entity;
 			}
 		}
+
 
 		//move camera
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_REPEAT) {
@@ -205,9 +235,9 @@ bool j1Player::Update(float dt) {
 	Map_mouseposition = App->map->WorldToMap((int)App->scene->mouse_pos.x, (int)App->scene->mouse_pos.y);
 
 	if (qcaps == false) {
-		
+
 		if (caps >= 1000) {
-			
+
 			if (App->gui->open == false) {
 				App->menu_manager->quest[8] = (j1Image*)App->gui->CreateImage(-274, 200, Image, { 3061, 619, 30, 27 }, NULL, this);
 				reward++;
@@ -234,7 +264,7 @@ bool j1Player::Update(float dt) {
 					App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
 				}
 			}
-		
+
 			qcaps = true;
 		}
 	}
@@ -269,13 +299,13 @@ bool j1Player::Update(float dt) {
 					App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
 				}
 			}
-			
+
 			qwater = true;
 		}
 	}
 
 	if (qfood == false) {
-		
+
 		if (food >= 400) {
 
 			if (App->gui->open == false) {
@@ -304,16 +334,42 @@ bool j1Player::Update(float dt) {
 					App->entities->CreateEntity(App->player->faction, MR_HANDY, 75, 75, App->player);
 				}
 			}
-			
+
 			qfood = true;
 		}
 	}
 
 	iPoint selected_spot;
 	App->input->GetMousePosition(selected_spot.x, selected_spot.y);
-	
+
 	if ((App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) && ((selected_entity != nullptr)||(selected_group != nullptr))) {
-		if ((selected_entity != nullptr)&&(selected_entity->is_dynamic))
+
+		// -- Check wich tile does the player select
+		App->scene->debug_destiny = App->render->ScreenToWorld(selected_spot.x, selected_spot.y);
+		App->scene->debug_destiny = App->map->WorldToMap(App->scene->debug_destiny.x, App->scene->debug_destiny.y);
+
+		// -- Save tile info to check later if tile belongs to an enemy
+		iPoint enemy_tile = App->scene->debug_destiny;
+		j1Entity* dynamic = App->entities->FindEntityByTile(enemy_tile);
+
+		//Convert from tile/map to world again to be blited
+		App->scene->debug_destiny = App->map->MapToWorld(App->scene->debug_destiny.x, App->scene->debug_destiny.y);
+		App->scene->debug_destiny.y += 18;
+
+		//Verify blit depending if enemy entity is placed there
+		if (dynamic != nullptr) {
+			if (dynamic->is_dynamic && dynamic->faction != faction) {
+				App->scene->debug_destiny = iPoint(dynamic->position.x - 32, dynamic->position.y - 12);
+				App->scene->attack_destination = true;
+			}
+		}
+		else {
+			App->scene->blit_destination = true;
+		}
+		
+
+
+		if ((selected_entity != nullptr)&&(selected_entity->is_dynamic) && (selected_entity->isValidTarget()))
 			MoveEntity(dynamic_cast<DynamicEntity*>(selected_entity));
 
 		if (selected_group != nullptr)
@@ -360,7 +416,7 @@ j1Entity* j1Player::SelectEntity() {
 	j1Entity* target = App->entities->FindEntityByTile(selected_spot);
 
 	if (target != nullptr) {
-		if (((god_mode) || (target->faction == faction)) && (target->state != DIE)) {
+		if (((god_mode) || (target->faction == faction)) && (target->state >= IDLE) && (target->state < NO_STATE)) {
 			if (target->info.current_group != nullptr) {
 				target->ClearUnitInfo();
 			}
@@ -390,7 +446,7 @@ void j1Player::MoveEntity(DynamicEntity* entity){
 	}
 
 	//dynamic entities
-	if (entity->state != DIE) 
+	if ((entity->state != DIE)&&((entity->state >= IDLE)&&(entity->state < NO_STATE)))
 	{
 		if (entity->info.current_group != nullptr)
 			entity->info.current_group = nullptr;
@@ -460,14 +516,14 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 	}
 
 	if (command_beginning == "god_mode") {
-		if (command_parts[1] == "on") { 
+		if (command_parts[1] == "on") {
 			god_mode = true;
 			LOG("God mode turned on");
 		}
-		if (command_parts[1] == "off") { 
-			god_mode = false; 
+		if (command_parts[1] == "off") {
+			god_mode = false;
 			LOG("God mode turned off");
-		}		
+		}
 	}
 
 	if (command_beginning == "spawn_units") {
@@ -476,14 +532,14 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 			static_entity = static_cast<StaticEntity*>(last_selected_entity);
 		else
 			static_entity = static_cast<StaticEntity*>(selected_entity);
-		
+
 		if (static_entity != nullptr) {
 			App->entities->CreateEntity(static_entity->faction, GATHERER, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
 			App->entities->CreateEntity(static_entity->faction, MELEE, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
 			App->entities->CreateEntity(static_entity->faction, RANGED, static_entity->spawnPosition.x, static_entity->spawnPosition.y);
 
 			LOG("1 unit from each type spawned successfully");
-		}		
+		}
 	}
 
 	if (command_beginning == "spawn") {
@@ -516,9 +572,7 @@ void j1Player::OnCommand(std::vector<std::string> command_parts) {
 }
 
 bool j1Player::TouchingUI(int x, int y) {
-	bool ret = false;
-	if (y > App->minimap->position.y - 8) { ret = true; }
-	return ret;
+	return y > App->minimap->position.y - 8;
 }
 
 // Load Game State

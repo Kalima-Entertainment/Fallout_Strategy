@@ -20,6 +20,7 @@
 #include "DialogManager.h"
 #include "MenuManager.h"
 #include "MainMenu.h"
+#include "j1Video.h"
 #include "AssetsManager.h"
 #include "SDL_mixer\include\SDL_mixer.h"
 
@@ -66,8 +67,6 @@ bool j1Transition::LoadAnimations() {
 		int tile_height = tileset.attribute("tileheight").as_int();
 		int columns = tileset.attribute("columns").as_int();
 		int firstgid = tileset.attribute("firstgid").as_int();
-		int tile_id;
-		float speed;
 
 		pugi::xml_node animation = tileset.child("tile");
 		pugi::xml_node frame = animation.child("animation").child("frame");
@@ -88,8 +87,8 @@ bool j1Transition::LoadAnimations() {
 		}
 
 		while (frame != nullptr) {
-			tile_id = frame.attribute("tileid").as_int();
-			speed = frame.attribute("duration").as_int() * speed_reducer;
+			int tile_id = frame.attribute("tileid").as_int();
+			float speed = frame.attribute("duration").as_int() * speed_reducer;
 			rect.x = rect.w * ((tile_id) % columns);
 			rect.y = rect.h * ((tile_id) / columns);
 			loader->PushBack(rect, speed);
@@ -108,6 +107,7 @@ bool j1Transition::LoadAnimations() {
 bool j1Transition::Start()
 {
 	speed_reducer = 0.01f;
+
 	if (loader == nullptr)
 	{
 		LoadAnimations();
@@ -165,9 +165,11 @@ void j1Transition::Transition()
 		transition = false;
 		App->gui->active;
 		App->Mmanager->Enable();
+		App->render->fog_of_war = true;
 		App->scene->Enable();
 		App->main_menu->Disable();
 		App->hud->Enable();
+		App->video->Disable();
 		if(App->gui->load==false){
 			App->dialog_manager->Enable();
 			App->menu_manager->CreateMenu(Menu::DIALOG); 
@@ -175,6 +177,7 @@ void j1Transition::Transition()
 		}				
 		App->gui->load = false;
 		freeTransitionTex = true;
+		App->player->resource_fow_added = false;
 	}
 	else if ((fadetimer.Read() > 2500)&&(!App->gui->ingame)) {
 		Mix_PauseMusic();
@@ -183,18 +186,18 @@ void j1Transition::Transition()
 		App->ai_manager->Disable();
 		App->player->Disable();
 		App->entities->Disable();
-		App->fowManager->CleanUp();
+		App->fowManager->Disable();
 		App->scene->Disable();
 		App->map->Disable();
 		App->minimap->Disable();
 		App->Mmanager->Disable();
-		App->hud->Disable();
 		transition = false;
-		App->gui->ingame = false;		
+		App->gui->ingame = false;
 		App->menu_manager->CreateMenu(Menu::MAIN_MENU);
 		App->isPaused = false;
 		App->scene->win = false;
 		App->scene->lose = false;
+		App->gui->open = true;
 		App->main_menu->Enable();
 		if (App->entities->showing_building_menu == true) {
 			App->menu_manager->DestroyFaction(Menu::BUI_BASES, App->menu_manager->current_building_faction, App->menu_manager->current_building_type);

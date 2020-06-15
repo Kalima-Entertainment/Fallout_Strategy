@@ -158,7 +158,7 @@ void Particle::Draw(float dt)
 	if (fade == true)
 	{
 		Uint8 transparency = life / originalLife * 255;
-		App->render->Blit(texture, position[0], position[1], &animation.GetCurrentFrame(dt), 1, 1, angle, 0, 0, transparency);
+		App->render->Blit(texture, position[0], position[1], &animation.GetCurrentFrame(dt), 1, 1, false, NONE, angle, 0, 0, transparency);
 	}
 
 	else

@@ -47,6 +47,7 @@ DynamicEntity::~DynamicEntity() {
 	next_tile_rect = { 0,0,0,0 };
 	detection_radius = 0;
 
+	state = NO_STATE;
 	direction = last_direction = TOP_LEFT;
 
 	dynamic_target = nullptr;
@@ -76,7 +77,7 @@ bool DynamicEntity::PostUpdate() {
 		for (uint j = 0; j < path_to_target.size(); ++j) {
 			iPoint pos = App->map->MapToWorld(path_to_target[j].x, path_to_target[j].y);
 			position_rect = { 192, 0, 64,64 };
-			App->render->Blit(App->render->debug_tex, pos.x, pos.y, &position_rect);
+			App->render->Blit(App->entities->debug_tex, pos.x, pos.y, &position_rect);
 		}
 
 		//ally
@@ -88,12 +89,12 @@ bool DynamicEntity::PostUpdate() {
 		else 
 			position_rect = { 64,0,64,64 };
 
-		App->render->Blit(App->render->debug_tex, tile_tex_position.x, tile_tex_position.y, &position_rect);
+		App->render->Blit(App->entities->debug_tex, tile_tex_position.x, tile_tex_position.y, &position_rect);
 	}
 	
 	if ((App->player->selected_entity == this)||(info.IsSelected)) {
 		position_rect = {394, 24, 42, 26};
-		App->render->Blit(App->render->debug_tex, static_cast<int>(position.x - 21), static_cast<int>(position.y - 13), &position_rect);
+		App->render->Blit(App->entities->debug_tex, static_cast<int>(position.x - 21), static_cast<int>(position.y - 13), &position_rect);
 	}
 
 	if (direction >= NO_DIRECTION) {
@@ -112,16 +113,19 @@ bool DynamicEntity::PostUpdate() {
 	//Health Bar
 	App->entities->background_health_bar = { 0, 4, 50, 4 };
 	App->entities->foreground_health_bar = { 0, 0,  static_cast<int>(current_health / max_health * 50), 4 };
+	App->entities->gathering_health_bar = { 0, 8,  static_cast<int>(current_health / max_health * 50), 4 };
 
-	if (App->entities->foreground_health_bar.w < 0) {
+	if (App->entities->foreground_health_bar.w < 0 || App->entities->gathering_health_bar.w < 0) {
 		App->entities->foreground_health_bar.w = 0;
+		App->entities->gathering_health_bar.w = 0;
 	}
+
 	//App->entities->frame_quad = { (int)(position.x - HALF_TILE * 0.75f - 1), (int)(position.y - TILE_SIZE * 1.25f - 1), 52, 6 };
 
 	//Fog Of War Rendering Based
 	if (current_tile.x >= 0 && current_tile.y >= 0)
 	{
-		if ((App->fowManager->GetFoWTileState({ this->current_tile })->tileFogBits != fow_ALL)||(App->render->debug))
+		if ((App->fowManager->GetFoWTileState({ this->current_tile })->tileFogBits != fow_ALL)||(!App->render->fog_of_war))
 		{
 			//Character Render
 			App->render->Blit(texture, render_position.x, render_position.y, &current_animation->GetCurrentFrame(last_dt));
@@ -129,8 +133,24 @@ bool DynamicEntity::PostUpdate() {
 			//Enemy Health Bar only if visible on fog of war and alive
 			if (current_health > 0) {
 				
-				App->render->Blit(App->entities->life_bars, static_cast<int>(position.x - HALF_TILE * 0.75f), static_cast<int>(position.y - TILE_SIZE * 1.25f), &App->entities->background_health_bar);
-				App->render->Blit(App->entities->life_bars, static_cast<int>(position.x - HALF_TILE * 0.75f), static_cast<int>(position.y - TILE_SIZE * 1.25f), &App->entities->foreground_health_bar);
+				if (type == GATHERER) {
+
+					if (dynamic_cast<Gatherer*>(this)->resource_collected > 0) {
+						App->render->Blit(App->entities->life_bars, static_cast<int>(position.x - HALF_TILE * 0.75f), static_cast<int>(position.y - TILE_SIZE * 1.25f), &App->entities->background_health_bar);
+						App->render->Blit(App->entities->life_bars, static_cast<int>(position.x - HALF_TILE * 0.75f), static_cast<int>(position.y - TILE_SIZE * 1.25f), &App->entities->gathering_health_bar);
+					}
+					else {
+						App->render->Blit(App->entities->life_bars, static_cast<int>(position.x - HALF_TILE * 0.75f), static_cast<int>(position.y - TILE_SIZE * 1.25f), &App->entities->background_health_bar);
+						App->render->Blit(App->entities->life_bars, static_cast<int>(position.x - HALF_TILE * 0.75f), static_cast<int>(position.y - TILE_SIZE * 1.25f), &App->entities->foreground_health_bar);
+					}
+				}
+				else {
+
+					App->render->Blit(App->entities->life_bars, static_cast<int>(position.x - HALF_TILE * 0.75f), static_cast<int>(position.y - TILE_SIZE * 1.25f), &App->entities->background_health_bar);
+					App->render->Blit(App->entities->life_bars, static_cast<int>(position.x - HALF_TILE * 0.75f), static_cast<int>(position.y - TILE_SIZE * 1.25f), &App->entities->foreground_health_bar);
+
+				}
+				
 				//App->render->DrawQuad(App->entities->background_health_bar, 75, 75, 75, 255, true, true);
 				//App->render->DrawQuad(App->entities->foreground_health_bar, 0, 235, 0, 255, true, true);
 				//App->render->DrawQuad(App->entities->frame_quad, 200, 200, 200, 185, false, true);
@@ -164,14 +184,12 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 	//if the tile is in the map but it's not walkable
 	if (!App->pathfinding->IsWalkable(destination)) {
 		destination = App->pathfinding->FindNearestWalkableTile(current_tile, destination);
-		ret = App->pathfinding->IsWalkable(destination);
 
-		if(!ret)
-			LOG("unwalkable destination");
+		ret = App->pathfinding->IsWalkable(destination);
 	}
 
 	if (App->entities->occupied_tiles[destination.x][destination.y]) {
-		destination = App->entities->FindFreeAdjacentTile(current_tile, destination);
+		destination = App->entities->FindClosestFreeTile(current_tile, destination);
 		if (App->entities->occupied_tiles[destination.x][destination.y])
 			LOG("occupied destination");
 	}
@@ -190,23 +208,20 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 		if (node_path.back() == current_tile)
 			node_path.pop_back();
 
-		App->pathfinding->CreatePath(current_tile, node_path.back());
+		if (!App->pathfinding->IsWalkable(node_path.back()))
+			node_path.back() = App->pathfinding->ExpandTile(node_path.back());
+
+		if(node_path.size() > 0)
+			App->pathfinding->CreatePath(current_tile, node_path.back());
 	}
 	else {
 		if (App->pathfinding->CreatePath(current_tile, destination) == -1) {
-			//LOG("No path");
-			if (!App->pathfinding->IsWalkable(destination)) {
-				LOG("Unwalkable destination");
-
-				ret = false;
-			}
+			ret = App->pathfinding->IsWalkable(destination);
 		}
 	}
 
 	path_to_target.clear();
 	path_to_target = App->pathfinding->GetLastPath();
-
-	state = WALK;
 
 	if (path_to_target.size() > 0) {
 		if (path_to_target.front() == current_tile)
@@ -216,37 +231,37 @@ bool DynamicEntity::PathfindToPosition(iPoint destination) {
 			next_tile = path_to_target.front();
 	}
 
+	if (ret == true)
+		state = WALK;
+
 	return ret;
 }
 
 void DynamicEntity::Move(float dt) {
-
-	last_direction = direction;
-	direction = GetDirectionToGo(next_tile_rect);
-
 	fPoint auxPos = position; //We use that variable to optimize Fog Of War code
 
 	//check if the tile that wants to be occupied is already occupied
 	if (!App->entities->IsTileInPositionOccupied(position))
 		UpdateTile();
 	else {
-		if (node_path.size() > 0) {
-			if (current_tile.DistanceManhattan(node_path.back()) < 3)
-				node_path.pop_back();
-			if (node_path.size() > 0)
-				PathfindToPosition(node_path.back());
-			else
+		//iPoint tile = App->map->fWorldToMap(position.x, position.y);
+		//if (App->entities->FindEntityByTile(tile, this) != nullptr) {
+			if (node_path.size() > 0) {
+				if ((current_tile.DistanceManhattan(node_path.back()) <= 4)
+					||(current_tile.DistanceManhattan(node_path.back()) <= 8) && !App->pathfinding->IsWalkable(node_path.back()))
+					node_path.pop_back();
+				if (node_path.size() > 0)
+					PathfindToPosition(node_path.back());
+				else
+					PathfindToPosition(target_tile);
+			}
+			else {
 				PathfindToPosition(target_tile);
-		}
-		else {
-			PathfindToPosition(target_tile);
-		}
+			}
+		//}
 	}
 
-	// -- Get next tile center
-	next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
-	next_tile_rect = { next_tile_position.x + HALF_TILE - 4, next_tile_position.y + HALF_TILE - 2, 8, 8 };
-
+	//Follow node path -----------------------------------
 	//we are following a node path
 	if (node_path.size() > 0) {
 		//if we have reached the closest node
@@ -265,12 +280,17 @@ void DynamicEntity::Move(float dt) {
 		}
 	}
 
+	//Follow normal path ---------------------------------
 	if (current_tile == target_tile) {
 		direction = last_direction;
 		path_to_target.clear();
 		commanded = false;
 	}
-	else {
+	else if (current_tile == next_tile){
+		//if there is a new path erase the first element
+		if (path_to_target.size() > 0)
+			path_to_target.erase(path_to_target.cbegin());
+
 		//if the entity has a path to follow
 		if (path_to_target.size() > 0) {
 			//next tile is the first tile in the list
@@ -279,15 +299,19 @@ void DynamicEntity::Move(float dt) {
 			//if next tile is occupied create the path again
 			if (App->entities->IsTileOccupied(next_tile))
 				PathfindToPosition(target_tile);
-
-			//if there is a new path erase the first element
-			if (path_to_target.size() > 0)
-				path_to_target.erase(path_to_target.cbegin());
 		}
 		else {
 			PathfindToPosition(target_tile);
 		}
 	}
+
+	// -- Get next tile center
+	next_tile_position = App->map->MapToWorld(next_tile.x, next_tile.y);
+	next_tile_rect = { next_tile_position.x + HALF_TILE - 1, next_tile_position.y + HALF_TILE - 1, 2, 2 };
+
+	//direction movement ---------------------------------
+	last_direction = direction;
+	direction = GetDirectionToGo(next_tile_rect);
 
 	switch (direction) 
 	{
@@ -310,9 +334,10 @@ void DynamicEntity::Move(float dt) {
 	default:
 		break;
 	}
+	//---------------------------------------------------
 
 	//Update Fog Of War Position
-	if (auxPos != position && visionEntity != NULL)
+	if (auxPos != position && visionEntity != nullptr)
 		visionEntity->SetNewPosition(App->map->MapToWorld(this->current_tile.x, this->current_tile.y));
 }
 
@@ -343,7 +368,7 @@ Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
 
 	if ((ceil(position.x) > floor(next_tile_rect.x)) && (floor(position.x) < ceil(next_tile_rect.x + next_tile_rect.w))
 		&& (ceil(position.y) > floor(next_tile_rect.y)) && (floor(position.y) < ceil(next_tile_rect.y + next_tile_rect.h))) {
-		return Direction::NO_DIRECTION;
+		return last_direction;
 	}
 	if ((ceil(position.x) > floor(next_tile_rect.x + next_tile_rect.w * 0.5f)) && (ceil(position.y) > floor(next_tile_rect.y + next_tile_rect.h * 0.5f))) {
 		return Direction::TOP_LEFT;
@@ -358,7 +383,7 @@ Direction DynamicEntity::GetDirectionToGo(SDL_Rect next_tile_rect) const {
 		return Direction::BOTTOM_RIGHT;
 	}
 	else {
-		return Direction::NO_DIRECTION;
+		return last_direction;
 	}
 }
 
@@ -555,21 +580,41 @@ void DynamicEntity::CheckDestination(iPoint destination) {
 				dynamic_cast<Gatherer*>(this)->gathering = false;
 			}
 		}
-
-		commanded = true;
+		else if (is_agressive) {
+			if ((type == MELEE) || (type == RANGED) || (type == MR_HANDY)) {
+				dynamic_cast<Troop*>(this)->target_building = nullptr;
+				dynamic_cast<Troop*>(this)->dynamic_target = nullptr;
+			}
+			else if (type == DEATHCLAW) {
+				dynamic_cast<Deathclaw*>(this)->target_building = dynamic_cast<StaticEntity*>(target);
+			}
+		}
 	}
 	else{
-		if (target->is_dynamic)
+		if (target->is_dynamic) {
 			dynamic_target = dynamic_cast<DynamicEntity*>(target);
-		else if (is_agressive) {
-			if ((type == MELEE)||(type == RANGED)||(type == MR_HANDY))
+			if (((type == MELEE) || (type == RANGED) || (type == MR_HANDY)) && (faction != target->faction)) {
+				dynamic_cast<Troop*>(this)->target_building = nullptr;
+			}
+		}
+		else {
+			if (((type == MELEE) || (type == RANGED) || (type == MR_HANDY)) && (faction != target->faction)) {
 				dynamic_cast<Troop*>(this)->target_building = dynamic_cast<StaticEntity*>(target);
+				dynamic_cast<Troop*>(this)->dynamic_target = nullptr;
+			}
 			else if(type == DEATHCLAW)
 				dynamic_cast<Deathclaw*>(this)->target_building = dynamic_cast<StaticEntity*>(target);
 		}
 
-		if (type == GATHERER)
+		if (type == GATHERER) {
 			dynamic_cast<Gatherer*>(this)->gathering = true;
+			ResourceBuilding* resource_building = App->entities->FindResourceBuildingByTile(destination);
+
+			//assign a resource building to the entity
+			if ((resource_building != nullptr) && (resource_building->quantity > 0)) {
+				dynamic_cast<Gatherer*>(this)->AssignResourceBuilding(resource_building);
+			}
+		}
 	}
 }
 

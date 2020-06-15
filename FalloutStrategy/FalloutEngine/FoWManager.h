@@ -17,7 +17,6 @@ struct FoWDataStruct
 	unsigned short tileShroudBits; //same as above but for shroud
 };
 
-
 class FoWManager :public j1Module
 {
 	//FUNCTIONS
@@ -40,6 +39,7 @@ public:
 
 	//Resets the map to its shrouded state
 	void ResetFoWMap();
+	void ResetFoWEntities();
 	void CreateFoWMap(uint width, uint height);
 	void DeleteFoWMap();
 	//Updates the data on the FoWMap based on the FoWEntities position and mask shape
@@ -54,6 +54,9 @@ public:
 	bool CheckFoWTileBoundaries(iPoint mapPos)const;
 	//Returns true if the tile is visible (there's no FOG in it) otherwise returns false
 	bool CheckTileVisibility(iPoint mapPos)const;
+
+	void AddFowToResourceBuildings(iPoint basePos);
+	FoWEntity* visionEntity;
 
 	//VARIABLES
 public:

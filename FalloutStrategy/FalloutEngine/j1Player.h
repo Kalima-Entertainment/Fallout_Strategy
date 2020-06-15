@@ -6,6 +6,7 @@
 
 class j1Group;
 
+
 class j1Player : public GenericPlayer
 {
 public:
@@ -15,6 +16,7 @@ public:
 	bool Start();
 	bool PreUpdate();
 	bool Update(float dt);
+	bool CleanUp();
 
 	void OnCommand(std::vector<std::string> command_parts);
 
@@ -27,7 +29,6 @@ public:
 	// Load / Save
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
-
 public:
 	j1Entity* selected_entity;
 	j1Entity* last_selected_entity;
@@ -40,9 +41,12 @@ public:
 	bool qwater;
 	int reward ;
 
+	bool resource_fow_added;
 private:
+
 	float mouse_speed_multiplier;
 	bool border_scroll;
+
 };
 
 

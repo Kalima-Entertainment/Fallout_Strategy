@@ -9,7 +9,7 @@
 j1PathFinding::j1PathFinding() : j1Module(), last_path(DEFAULT_PATH_LENGTH), width(150), height(150)
 {
 	name = ("pathfinding");
-	node_map_divisions = 15;
+	node_map_divisions = 10;
 	node_map = CreateNodeMap();
 	path_timer.Start();
 }
@@ -59,7 +59,7 @@ void j1PathFinding::SetTileAsUnwalkable(int tile_x, int tile_y) {
 }
 
 iPoint j1PathFinding::FindWalkableAdjacentTile(iPoint point) const {
-	iPoint tile;
+	iPoint tile = {-1, -1};
 
 	//north
 	tile = { point.x, point.y - 1 };
@@ -101,14 +101,11 @@ iPoint j1PathFinding::FindWalkableAdjacentTile(iPoint point) const {
 	if (App->pathfinding->IsWalkable(tile) && !App->entities->IsTileOccupied(tile))
 		return tile;
 
-	return { -1,-1 };
+	return tile;
 }
 
 iPoint j1PathFinding::FindNearestWalkableTile(iPoint origin, iPoint destination) const
 {
-	if (!IsWalkable(origin))
-		origin = FindWalkableAdjacentTile(origin);
-
 	if (!IsWalkable(destination)) {
 		ResourceBuilding* reference_resource_building = App->entities->FindResourceBuildingByTile(destination);
 		if (reference_resource_building != nullptr)
@@ -132,7 +129,7 @@ iPoint j1PathFinding::FindNearestWalkableTile(iPoint origin, iPoint destination)
 					destination = App->entities->ClosestTile(origin, reference_static_entity->tiles);
 					destination = App->pathfinding->FindWalkableAdjacentTile(destination);
 					if (!IsWalkable(destination))
-						LOG("Unwalkable building tile");
+						destination = ExpandTile(destination);
 				}
 			}
 			else
@@ -145,7 +142,7 @@ iPoint j1PathFinding::FindNearestWalkableTile(iPoint origin, iPoint destination)
 	}
 
 	if (!IsWalkable(destination))
-		LOG("Unwalkable destination 3");
+		destination = ExpandTile(destination);
 
 	return destination;
 }
@@ -186,6 +183,9 @@ std::vector<iPoint> j1PathFinding::CreateNodePath(iPoint origin, iPoint destinat
 	BROFILER_CATEGORY("CreateNodePath", Profiler::Color::Azure)
 	std::vector<iPoint> path;
 	int node_distance = GetDistanceBetweenNodes();
+	srand(time(NULL));
+	int x_delay = (rand() % 3) - 1;
+	int y_delay = (rand() % 3) - 1;
 
 	iPoint origin_node = node_map[0];
 	iPoint destination_node = node_map[0];
@@ -230,8 +230,18 @@ std::vector<iPoint> j1PathFinding::CreateNodePath(iPoint origin, iPoint destinat
 		path.push_back(best_node);
 	}
 
+	
+	for (size_t i = 0; i < path.size(); i++)
+	{
+		path[i].x += x_delay;
+		path[i].y += y_delay;
+	}
+
 	//flip final path
 	std::reverse(path.begin(), path.end());
+
+	if (origin.DistanceManhattan(destination) < path.back().DistanceManhattan(destination))
+		path.pop_back();
 
 	return path;
 }
@@ -344,13 +354,13 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	last_path.clear();
 
 	if (!IsWalkable(origin)) {
-		LOG("Unwalkable origin");
-		return -2;
+		//LOG("Unwalkable origin");
+		return -1;
 	}
 
 	if ((!IsWalkable(destination))) {
 		LOG("Unwalkable destination");
-		return -2;
+		return -1;
 	}
 
 
@@ -413,6 +423,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 		}
 	}
 
+	//LOG("Impossible path");
 	path_timer.Start();
 
 	return -1;
@@ -432,11 +443,11 @@ iPoint j1PathFinding::ExpandTile(iPoint target_tile) const {
 				pivot.x = target_tile.x + x;
 				pivot.y = target_tile.y + y;
 
-				if (IsWalkable(pivot))
+				if (IsWalkable(pivot)) // && !App->entities->IsTileOccupied(pivot))
 					return pivot;
 			}
 		}
-		max++;
+		++max;
 	}
 
 	return pivot;

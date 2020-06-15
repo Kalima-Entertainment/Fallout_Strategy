@@ -32,6 +32,7 @@
 #include "FoWManager.h"
 #include "j1Hud.h"
 #include "Deathclaw.h"
+#include "j1Video.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -39,7 +40,7 @@ j1Scene::j1Scene() : j1Module()
 
 	create = false;
 	load_game = false;
-	create_tutorial = true;
+	create_tutorial = false;
 	menu_state = StatesMenu::NONE;
 	mouse_pos = { 0,0 };
 	rectangle_origin = { 0,0 };
@@ -53,11 +54,25 @@ j1Scene::j1Scene() : j1Module()
 	SongPlaying = 0;
 	beaten_enemies = 0;
 
+	destination_texture = nullptr;
+	destination.PushBack(SDL_Rect{ 0, 0 , 64, 32 }, 12.0f);
+	destination.PushBack(SDL_Rect{ 64, 0 , 64, 32 }, 12.0f);
+	destination.PushBack(SDL_Rect{ 0, 32 , 64, 32 }, 12.0f);
+	destination.PushBack(SDL_Rect{ 64, 32 , 64, 32 }, 12.0f);
+	destination.PushBack(SDL_Rect{ 0, 32 , 64, 32 }, 12.0f);
+	destination.PushBack(SDL_Rect{ 64, 0 , 64, 32 }, 12.0f);
+	destination.loop = false;
+	destination.Reset();
+	blit_destination = false;
+	attack_destination = false;
 }
 
 // Destructor
 j1Scene::~j1Scene()
-{}
+{
+	App->tex->UnLoad(destination_texture);
+	destination_texture = nullptr;
+}
 
 // Called before render is available
 bool j1Scene::Awake()
@@ -71,12 +86,23 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
+	App->player->caps = 500;
+	App->player->food = 250;
+	App->player->water = 500;
+
 	srand(time(NULL));
 	menu_state = StatesMenu::NONE;
 	beaten_enemies = 0;
 
-	if (App->render->fog_of_war)App->fowManager->Enable();
+	if (App->render->fog_of_war) {
+		App->fowManager->ResetFoWEntities();
+		App->fowManager->ResetFoWMap();
+		App->fowManager->Enable();
+	}		
 
+	deathclaw1 = deathclaw2 = deathclaw3 = deathclaw4 = false;
+
+	destination_texture = App->tex->Load("Assets/textures/player/destination_debug.png");
 
 	App->console->CreateCommand("win", "Automatically win the game", this);
 	App->console->CreateCommand("lose", "Automatically lose the game", this);
@@ -116,7 +142,7 @@ bool j1Scene::Start()
 	if (App->render->fog_of_war)App->fowManager->CreateFoWMap(App->map->data.width, App->map->data.height);
 
 	App->minimap->Enable();
-
+	
 	//top_left
 	App->entities->CreateEntity(VAULT, MELEE, 20, 20, App->player);
 	App->entities->CreateEntity(VAULT, MELEE, 21, 20, App->player);
@@ -163,7 +189,20 @@ bool j1Scene::Update(float dt)
 {
 	App->map->Draw();
 
-	if ((App->hud->minutes == 5) && (deathclaw1 == false))
+	// -- Blit cursor destination
+	if(blit_destination)App->render->Blit(destination_texture, debug_destiny.x, debug_destiny.y, &destination.GetCurrentFrame(dt), 1.0f, 1.0f, true, Color_Code::GREEN);
+	if (attack_destination)App->render->Blit(destination_texture, debug_destiny.x, debug_destiny.y, &destination.GetCurrentFrame(dt), 1.0f, 1.0f, true, Color_Code::RED);
+
+	
+	// If finished restart animation and set again blit to false, just to be rendered when mouse right click with any entitie able to move.
+	if (destination.Finished()) { 
+		destination.Reset();
+		blit_destination = false; 
+		attack_destination = false;
+	}
+
+
+	if ((App->hud->minutes == 4) && (deathclaw1 == false))
 	{
 		if (players[0]->base != nullptr && deathclaw1 == false)
 		{
@@ -242,51 +281,18 @@ bool j1Scene::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 	{
 		win = true;
-		App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
-		App->menu_manager->DestroyMenu(Menu::RESOURCES);
-		App->menu_manager->DestroyMenu(Menu::TUTORIAL);
-		App->menu_manager->DestroyMenu(Menu::RADIO);
-		App->menu_manager->DestroyMenu(Menu::GUI);
-		App->menu_manager->DestroyMenu(Menu::QUEST);
-		App->logo_scene->playsound = true;
-		App->gui->ingame = false;
-		App->isPaused = true;
-		App->logo_scene->Loop = true;
-		App->hud->activateTimer = false;
-		App->transition->freeTransitionTex = false;
+		closeGame();
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 	{
 		lose = true;
-		App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
-		App->menu_manager->DestroyMenu(Menu::RESOURCES);
-		App->menu_manager->DestroyMenu(Menu::TUTORIAL);
-		App->menu_manager->DestroyMenu(Menu::RADIO);
-		App->menu_manager->DestroyMenu(Menu::GUI);
-		App->menu_manager->DestroyMenu(Menu::QUEST);
-		App->logo_scene->playsound = true;
-		App->gui->ingame = false;
-		App->isPaused = true;
-		App->logo_scene->Loop = true;
-		App->hud->activateTimer = false;
-		App->transition->freeTransitionTex = false;
+		closeGame();
 	}
 	//LOSE BY TIME
-	if (App->hud->minutes <= 0 && App->hud->timer < 2)
+	if (App->hud->minutes == 0 && App->hud->timer == 1)
 	{
 		lose = true;
-		App->logo_scene->Loop = true;
-		App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
-		App->menu_manager->DestroyMenu(Menu::RESOURCES);
-		App->menu_manager->DestroyMenu(Menu::TUTORIAL);
-		App->menu_manager->DestroyMenu(Menu::RADIO);
-		App->menu_manager->DestroyMenu(Menu::GUI);
-		App->menu_manager->DestroyMenu(Menu::QUEST);
-		App->hud->Disable();
-		App->gui->ingame = false;
-		App->isPaused = true;
-		App->logo_scene->playsound = true;
-		App->transition->freeTransitionTex = false;
+		closeGame();
 	}
 	return true;
 }
@@ -295,6 +301,8 @@ bool j1Scene::Update(float dt)
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
+	App->tex->UnLoad(destination_texture);
+	destination_texture = nullptr;
 	players[0] = players[1] = players[2] = players[3] = nullptr;
 	return true;
 }
@@ -314,8 +322,14 @@ void j1Scene::RectangleSelection()
 	rectangle_width = mouse_pos.x - rectangle_origin.x;
 	rectangle_height = mouse_pos.y - rectangle_origin.y;
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) rectangle_origin = mouse_pos;
-	else if (std::abs(rectangle_width) >= RECT_MIN_AREA && std::abs(rectangle_height) >= RECT_MIN_AREA && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) {
+	int mouse_x;
+	int mouse_y;
+
+	App->input->GetMousePosition(mouse_x, mouse_y);
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+		rectangle_origin = mouse_pos;
+	else if (std::abs(rectangle_width) >= RECT_MIN_AREA && std::abs(rectangle_height) >= RECT_MIN_AREA && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && !App->player->TouchingUI(mouse_x, mouse_y)) {
 
 		// --- Rectangle size ---
 		int width = mouse_pos.x - rectangle_origin.x;
@@ -338,7 +352,7 @@ void j1Scene::RectangleSelection()
 		// --- Check for Units in the rectangle, select them ---
 		App->Mmanager->SelectEntities_inRect(SRect);
 	}
-	else if (((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) && (App->player->TouchingUI(mouse_pos.x, mouse_pos.y))) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)) {
+	else if (((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) && (App->player->TouchingUI(mouse_x, mouse_y))) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)) {
 		std::vector<DynamicEntity*> selected_entities;
 		for(size_t i = 0; i < App->entities->entities.size(); i++)
 		{
@@ -360,18 +374,7 @@ void j1Scene::CheckWinner() {
 				if (players[i]->faction == App->player->faction) {
 					//LOSE
 					lose = true;
-					App->logo_scene->Loop = true;
-					App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
-					App->menu_manager->DestroyMenu(Menu::RESOURCES);
-					App->menu_manager->DestroyMenu(Menu::TUTORIAL);
-					App->menu_manager->DestroyMenu(Menu::RADIO);
-					App->menu_manager->DestroyMenu(Menu::GUI);
-					App->menu_manager->DestroyMenu(Menu::QUEST);
-					App->hud->Disable();
-					App->gui->ingame = false;
-					App->isPaused = true;
-					App->logo_scene->playsound = true;
-					App->transition->freeTransitionTex = false;
+					closeGame();
 				}
 				else {
 					beaten_enemies++;
@@ -388,18 +391,7 @@ void j1Scene::CheckWinner() {
 			else if ((players[App->player->faction]->base == nullptr) && (Deathclaws[App->player->faction] != nullptr)) {
 				//LOSE
 				lose = true;
-				App->logo_scene->Loop = true;
-				App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
-				App->menu_manager->DestroyMenu(Menu::RESOURCES);
-				App->menu_manager->DestroyMenu(Menu::TUTORIAL);
-				App->menu_manager->DestroyMenu(Menu::RADIO);
-				App->menu_manager->DestroyMenu(Menu::GUI);
-				App->menu_manager->DestroyMenu(Menu::QUEST);
-				App->hud->Disable();
-				App->gui->ingame = false;
-				App->isPaused = true;
-				App->logo_scene->playsound = true;
-				App->transition->freeTransitionTex = false;
+				closeGame();
 			}
 		}
 	}
@@ -408,16 +400,7 @@ void j1Scene::CheckWinner() {
 	if (((beaten_enemies == 3) && (Deathclaws[App->player->faction] == nullptr)) || ((Deathclaws[App->player->faction] != nullptr) && (Deathclaws [App->player->faction]->state == DIE) && (App->player->base != nullptr))) {
 		LOG("You won!");
 		win = true;
-		App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
-		App->menu_manager->DestroyMenu(Menu::RESOURCES);
-		App->menu_manager->DestroyMenu(Menu::TUTORIAL);
-		App->menu_manager->DestroyMenu(Menu::RADIO);
-		App->menu_manager->DestroyMenu(Menu::GUI);
-		App->menu_manager->DestroyMenu(Menu::QUEST);
-		App->gui->ingame = false;
-		App->isPaused = true;
-		App->logo_scene->Loop = true;
-		App->logo_scene->playsound = true;
+		closeGame();
 	}
 }
 
@@ -479,14 +462,25 @@ void j1Scene::OnCommand(std::vector<std::string> command_parts) {
 // Load Game State
 bool j1Scene::Load(pugi::xml_node& data)
 {
+	App->entities->DestroyAllEntitiesNow();
+	App->ai_manager->CleanUp();
 	App->map->CleanUp();
 	App->minimap->CleanUp();
+
+	App->ai_manager->CleanUp();
+	App->ai_manager->Start();
+	App->player->CleanUp();
+
 	pugi::xml_node iterator = data.first_child();
 	int i = 0;
 
 	while(iterator){
 		modules[i] = iterator.attribute("map").as_string();
 		LOG("%s", modules[i]);
+		iterator = iterator.next_sibling();
+
+		App->entities->randomFaction[i] = iterator.attribute("value").as_int();
+		LOG("%i", App->entities->randomFaction[i]);
 		iterator = iterator.next_sibling();
 		i++;
 	}
@@ -500,6 +494,7 @@ bool j1Scene::Load(pugi::xml_node& data)
 
 	App->minimap->Start();
 	App->minimap->Show();
+	
 
 	return true;
 }
@@ -511,7 +506,27 @@ bool j1Scene::Save(pugi::xml_node& data) const
 
 		pugi::xml_node module = data.append_child("modules");
 		module.append_attribute("map") = modules[i].c_str();
+		
+		pugi::xml_node randomfaction = data.append_child("randomfaction");
+		randomfaction.append_attribute("value") = App->entities->randomFaction[i];
 
 	}
 	return true;
+}
+
+void j1Scene::closeGame()
+{
+	App->menu_manager->DestroyMenu(Menu::PAUSE_MENU);
+	App->menu_manager->DestroyMenu(Menu::RESOURCES);
+	App->menu_manager->DestroyMenu(Menu::TUTORIAL);
+	App->menu_manager->DestroyMenu(Menu::RADIO);
+	App->menu_manager->DestroyMenu(Menu::GUI);
+	App->menu_manager->DestroyMenu(Menu::QUEST);	
+	App->gui->ingame = false;
+	App->isPaused = true;
+	App->logo_scene->Loop = true;
+	App->logo_scene->playsound = true;
+	App->hud->Disable();
+	App->video->Enable();
+	App->transition->freeTransitionTex = false;	
 }

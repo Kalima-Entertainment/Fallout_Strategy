@@ -163,7 +163,6 @@ bool j1Minimap::PostUpdate() {
 		}
 
 		//white rect
-		SDL_Rect rect = { 0,0,0,0 };
 		iPoint rect_position = WorldToMinimap(-App->render->camera.x, -App->render->camera.y);
 		App->render->DrawQuad({ rect_position.x, rect_position.y, (int)(App->render->camera.w * scale),(int)(App->render->camera.h * scale) }, 255, 255, 255, 255, false, false);
 
@@ -266,14 +265,11 @@ void j1Minimap::DrawFogOfWar() {
 
 	int tile_width = width / 150;
 	fog_of_war_rect.h = 1;
-	int y = 0;
 	int j = 0;
-	int counter = 0;
-	
 
 	for(int i = 0; i < 300; i++)
 	{
-		y = i - j;
+		int y = i - j;
 
 		if (i >= 149) {
 			j++;
@@ -281,7 +277,7 @@ void j1Minimap::DrawFogOfWar() {
 		}
 
 		rect_pos = MapToMinimap(j, y);
-		counter = 0;
+		int counter = 0;
 
 		for(int x = j; x < i + 1, y >= j; x++, y--)
 		{

@@ -20,6 +20,7 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 	attack_timer.Start();
 
 	attack_time = 3;
+	attack_time = 3;
 	detection_radius = 4;
 
 	position = App->map->floatMapToWorld(current_tile.x, current_tile.y);
@@ -56,9 +57,28 @@ Troop::Troop(EntityType g_type, Faction g_faction, iPoint g_current_tile, Generi
 
 	DynaParticle = App->entities->CreateParticle(position);
 	Animation anim;
-	anim.PushBack(SDL_Rect{ 0, 0 , 5, 5 }, 1);
+
+	//First Row
+	anim.PushBack(SDL_Rect{ 0, 0 , 64 , 64 }, 10);
+	anim.PushBack(SDL_Rect{ 64, 0 , 64 , 64 }, 10);
+	anim.PushBack(SDL_Rect{ 128, 0 , 64 , 64 }, 10);
+	anim.PushBack(SDL_Rect{ 192, 0 , 64 , 64 }, 10);
+
+	//Second Row
+	anim.PushBack(SDL_Rect{ 0, 64,  64 , 64 }, 10);
+	anim.PushBack(SDL_Rect{ 64,  64, 64 , 64 }, 10);
+	anim.PushBack(SDL_Rect{ 128, 64, 64 , 64 }, 10);
+	anim.PushBack(SDL_Rect{ 192, 64, 64 , 64 }, 10);
+
+	//Third Row
+	anim.PushBack(SDL_Rect{ 0,  128,64 , 64 }, 10);
+	anim.PushBack(SDL_Rect{ 64, 128 ,64 , 64 }, 10);
+	anim.PushBack(SDL_Rect{ 128, 128, 64 , 64 }, 10);
+	anim.PushBack(SDL_Rect{ 192, 128, 64 , 64 }, 10);
+	
 	anim.Reset();
-	Emiter Blood(position.x, position.y - 20, 0.2f, 0.2f, 5, 5, 0, 0, 0, 0, 2.0f, 2, 20, 0.4f, nullptr, App->entities->blood, anim, true);
+
+	Emiter Blood(position.x, position.y, 0.0f, 0.0f, 0, 0, 0, 0, 0, 0, 0 , 0, 1, 2.5f, nullptr, App->entities->blood, anim, true);
 	DynaParticle->PushEmiter(Blood);
 	DynaParticle->Desactivate();
 }
@@ -75,24 +95,25 @@ bool Troop::Update(float dt) {
 	DynamicEntity* enemy_in_range = nullptr;
 	current_animation = &animations[state][direction];
 
-	/*
-	if ((dynamic_target != nullptr) && (dynamic_target->state == DIE))
+	if ((dynamic_target != nullptr) && (!dynamic_target->isValidTarget())) {
+		state = IDLE;
 		dynamic_target = nullptr;
+	}
 
-	if ((target_building != nullptr) && (target_building->state == DIE))
+	if ((target_building != nullptr) && ((!target_building->isValidTarget()))) {
+		state = IDLE;
 		target_building = nullptr;
-	*/
+	}
 
 	switch (state)
 	{
     case IDLE:
-		enemy_in_range = DetectEntitiesInRange();
 
 		//if is not commanded and there is no building to attack
 		if ((!commanded)&&(target_building == nullptr)) {
-			dynamic_target = enemy_in_range;
+			dynamic_target = DetectEntitiesInRange();
 			if(dynamic_target != nullptr)
-				PathfindToPosition(enemy_in_range->current_tile);
+				PathfindToPosition(dynamic_target->current_tile);
 		}
 		else {
 			if (target_building != nullptr) {
@@ -132,16 +153,34 @@ bool Troop::Update(float dt) {
 			if (target_building->state == DIE) {
 				target_building = RequestTargetBuilding(target_building->faction);
 
-				if (target_building != nullptr)
-					PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
+				if (target_building != nullptr){
+					if (type == MELEE) {
+						if (App->entities->IsTileOccupied(target_tile)) {
+							iPoint free_surrounding_tile = App->entities->FindClosestFreeTileFromVector(current_tile, target_building->surrounding_tiles);
+							if (free_surrounding_tile != iPoint(-1, -1)) {
+								PathfindToPosition(free_surrounding_tile);
+							}
+							else {
+								state = IDLE;
+								target_building = nullptr;
+								commanded = false;
+								LOG("building surrounded");
+							}
+						}
+					}
+					else {
+						PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
+					}
+				}
 				else
 					commanded = false;
 			}
-			//if teh building is still standing still and close enough attack it
+			//if the building is still standing still and close enough attack it
 			else if (current_tile.DistanceManhattan(App->entities->ClosestTile(current_tile, target_building->tiles)) <= range) {
 				UpdateTile();
 				path_to_target.clear();
 				if (target_building->faction != faction) {
+					direction = GetBuildingDirection(target_building->tiles);
 					state = ATTACK;
 				}
 				else {
@@ -150,8 +189,25 @@ bool Troop::Update(float dt) {
 				}
 			}
 			//if we are too far away to attack go where the building is
-			else if (path_to_target.size() == 0)
-				PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
+			else {
+				if (type == MELEE) {
+					if (App->entities->IsTileOccupied(target_tile)) {
+						iPoint free_surrounding_tile = App->entities->FindClosestFreeTileFromVector(current_tile, target_building->surrounding_tiles);
+						if (free_surrounding_tile != iPoint(-1, -1)) {
+							PathfindToPosition(free_surrounding_tile);
+						}
+						else {
+							state = IDLE;
+							target_building = nullptr;
+							commanded = false;
+							//LOG("building surrounded");
+						}
+					}
+				}
+				else if (App->entities->IsTileOccupied(target_tile)) {
+					PathfindToPosition(App->entities->ClosestTile(current_tile, target_building->tiles));
+				}
+			}
 		}
 		else if (dynamic_target != nullptr) {
 			//if the entitiy is in range
@@ -160,6 +216,7 @@ bool Troop::Update(float dt) {
 					UpdateTile();
 					path_to_target.clear();
 					if (dynamic_target->faction != faction) {
+						direction = GetDirectionToGo({static_cast<int>(dynamic_target->position.x), static_cast<int>(dynamic_target->position.y), 2, 2});
 						state = ATTACK;
 					}
 					else {
@@ -167,9 +224,23 @@ bool Troop::Update(float dt) {
 						commanded = false;
 					}
 				}
-				//if the entity is too far away
-				else if (target_tile != dynamic_target->current_tile) {
-					PathfindToPosition(dynamic_target->current_tile);
+				//if the entity has changed its position
+				else if (App->entities->IsTileOccupied(target_tile)) {
+					//check that the entity is not surrounded
+					if (type == MELEE) {
+						iPoint free_adjacent_tile = App->entities->FindFreeAdjacentTile(current_tile, dynamic_target->current_tile);
+						if (free_adjacent_tile == iPoint(-1, -1)) {
+							state = IDLE;
+							dynamic_target = nullptr;
+							commanded = false;
+						}
+						else {
+							PathfindToPosition(free_adjacent_tile);
+						}
+					}
+					else {
+						PathfindToPosition(dynamic_target->current_tile);
+					}
 				}
 			}
 			else {
@@ -189,12 +260,14 @@ bool Troop::Update(float dt) {
 			}
 			else {
 				state = IDLE;
+				UpdateTile();
 				commanded = false;
 			}
 		}
 		else if (current_tile == target_tile){
 			state = IDLE;
-			path_to_target.clear();
+			UpdateTile();
+			//path_to_target.clear();
 			commanded = false;
 		}
 
@@ -230,7 +303,7 @@ bool Troop::Update(float dt) {
 				}
 			}
 			else if (dynamic_target != nullptr) {
-				if (current_tile.DistanceNoSqrt(dynamic_target->current_tile) > range) {
+				if (current_tile.DistanceManhattan(dynamic_target->current_tile) > range) {
 					PathfindToPosition(dynamic_target->current_tile);
 				}
 				else {
@@ -284,7 +357,7 @@ bool Troop::Update(float dt) {
 				}
 			}
 		}
-		visionEntity->SetNewPosition(App->map->MapToWorld(-10, -10));
+		visionEntity->deleteEntity = true;
 
 		if (delete_timer.ReadSec() > 4) {
 			to_delete = true;
@@ -304,13 +377,14 @@ bool Troop::Update(float dt) {
 			DynaParticle->Activate();
 		else
 			DynaParticle->Desactivate();
-	}
+	}	
 
 	if (DynaParticle->IsActive()) {
-		DynaParticle->Move(static_cast<int>(position.x), static_cast<int>(position.y));
+		DynaParticle->Move(static_cast<int>(position.x) - 38, static_cast<int>(position.y) - 55);
 		DynaParticle->Update(dt);
 	}
 
+	/*
 	if (this->info.current_group != nullptr)
 	{
 		if (info.current_group->IsGroupLead(this)) {
@@ -318,7 +392,7 @@ bool Troop::Update(float dt) {
 				info.current_group->CheckForMovementRequest(App->player->Map_mouseposition, dt);
 		}
 	}
-
+	*/
 	last_dt = dt;
 
 	return ret;
@@ -339,29 +413,32 @@ void Troop::Attack() {
 	if (dynamic_target != nullptr) {
 
 		dynamic_target->current_health -= damage;
-		dynamic_target->state = HIT;
 		dynamic_target->attacking_entity = this;
 
-		if (dynamic_target->state == ATTACK)
-			dynamic_target->current_animation->Reset();
+		if (dynamic_target->type != DEATHCLAW) 
+		{
+			dynamic_target->state = HIT;
 
-		if ((current_tile.x > dynamic_target->current_tile.x) && (current_tile.y == dynamic_target->current_tile.y)) {
-			direction = TOP_LEFT;
-			dynamic_target->direction = BOTTOM_RIGHT;
-		}
-		else if ((current_tile.x == dynamic_target->current_tile.x) && (current_tile.y > dynamic_target->current_tile.y)) {
-			direction = TOP_RIGHT;
-			dynamic_target->direction = BOTTOM_LEFT;
-		}
-		else if ((current_tile.x == dynamic_target->current_tile.x) && (current_tile.y < dynamic_target->current_tile.y)) {
-			direction = BOTTOM_LEFT;
-			dynamic_target->direction = TOP_RIGHT;
-		}
-		else if ((current_tile.x < dynamic_target->current_tile.x) && (current_tile.y == dynamic_target->current_tile.y)) {
-			direction = BOTTOM_RIGHT;
-			dynamic_target->direction = TOP_LEFT;
-		}
+			if (dynamic_target->state == ATTACK)
+				dynamic_target->current_animation->Reset();
 
+			if ((current_tile.x > dynamic_target->current_tile.x) && (current_tile.y == dynamic_target->current_tile.y)) {
+				direction = TOP_LEFT;
+				dynamic_target->direction = BOTTOM_RIGHT;
+			}
+			else if ((current_tile.x == dynamic_target->current_tile.x) && (current_tile.y > dynamic_target->current_tile.y)) {
+				direction = TOP_RIGHT;
+				dynamic_target->direction = BOTTOM_LEFT;
+			}
+			else if ((current_tile.x == dynamic_target->current_tile.x) && (current_tile.y < dynamic_target->current_tile.y)) {
+				direction = BOTTOM_LEFT;
+				dynamic_target->direction = TOP_RIGHT;
+			}
+			else if ((current_tile.x < dynamic_target->current_tile.x) && (current_tile.y == dynamic_target->current_tile.y)) {
+				direction = BOTTOM_RIGHT;
+				dynamic_target->direction = TOP_LEFT;
+			}
+		}
 		//kill entity
 		if (dynamic_target->current_health <= 0) {
 			dynamic_target->state = DIE;

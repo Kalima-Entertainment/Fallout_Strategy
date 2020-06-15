@@ -24,6 +24,7 @@
 #include "GenericPlayer.h"
 #include "j1Entity.h"
 #include "AssetsManager.h"
+#include "FoWManager.h"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -31,7 +32,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
-
+#include "j1Gui.h"
 #include "ParticleSystem.h"
 #include "Emiter.h"
 
@@ -39,7 +40,9 @@ j1EntityManager::j1EntityManager(){
 
 	name.assign("entities");
 
-	randomFaction[0] = randomFaction[1] = randomFaction[2] = randomFaction[3] = 0;
+	for (int i = 0; i < 4;i++) {
+		randomFaction[i] = 0;
+	}
 
 	loading_faction = VAULT;
 	loading_entity = MELEE;
@@ -52,6 +55,12 @@ j1EntityManager::j1EntityManager(){
 
 	mr_handy_cost = NULL;
 	mr_handy_time = NULL;
+
+	no_reso.x = 2757;
+	no_reso.y = 3086;
+	no_reso.w = 106;
+	no_reso.h = 104;
+
 
 	radar_cost = NULL;
 }
@@ -109,6 +118,7 @@ bool j1EntityManager::Start() {
 
 	background_health_bar = { 0,0,0,0 };
 	foreground_health_bar = { 0,0,0,0 };
+	gathering_health_bar = { 0,0,0,0 };
 	frame_quad = { 0,0,0,0 };
 
 	
@@ -144,6 +154,8 @@ bool j1EntityManager::Start() {
 
 	sort_timer.Start();
 	load_timer.Start();
+
+	debug_tex = App->tex->Load("Assets/maps/debug_textures.png");
 
 	// -- Loading Particle textures
 	blood = App->tex->Load("Assets/textures/particles/blood.png");
@@ -189,6 +201,9 @@ bool j1EntityManager::CleanUp()
 		}
 	}
 
+	App->tex->UnLoad(debug_tex);
+	debug_tex = nullptr;
+
 	particles.clear();
 	App->tex->UnLoad(blood);
 	App->tex->UnLoad(smoke);
@@ -205,6 +220,9 @@ bool j1EntityManager::CleanUp()
 		resource_buildings[j] = nullptr;
 	}
 	resource_buildings.clear();
+
+	App->tex->UnLoad(life_bars);
+	life_bars = nullptr;
 
 	return ret;
 }
@@ -245,11 +263,6 @@ bool j1EntityManager::Update(float dt)
 				entities[i]->Update(dt);
 			
 		}
-
-		if (sort_timer.Read() > 500) {
-			BubbleSortEntities();
-			sort_timer.Start();
-		}
 	}
 
 	return ret;
@@ -271,15 +284,29 @@ bool j1EntityManager::PostUpdate()
 				for(size_t j = 0; j < resource_buildings[i]->tiles.size(); j++)
 				{
 					SDL_Rect rect = { 128,0,64,64 };
+					
 					tex_position = App->map->MapToWorld(resource_buildings[i]->tiles[j].x, resource_buildings[i]->tiles[j].y);
+					
 
 					if ((tex_position.x + rect.w > -(App->render->camera.x))
 						&& (tex_position.x < -App->render->camera.x + App->render->camera.w)
 						&& (tex_position.y + rect.h > -(App->render->camera.y))
 						&& (tex_position.y < (-App->render->camera.y + App->render->camera.h)))
 						{
-							App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &rect);
+							App->render->Blit(debug_tex, tex_position.x, tex_position.y, &rect);
+
 						}
+				}
+			}
+		}
+
+		for (size_t i = 0; i < resource_buildings.size(); i++)
+		{
+			for (size_t j = 0; j < resource_buildings[i]->tiles.size(); j++)
+			{
+				if (resource_buildings[i]->quantity <= 0) {
+					SDL_Rect rect2 = { 2680,3123,68,67 };
+					App->render->Blit((SDL_Texture*)App->gui->GetAtlas(), resource_buildings[i]->no_resources_blit_position.x, resource_buildings[i]->no_resources_blit_position.y, &rect2);
 				}
 			}
 		}
@@ -414,10 +441,27 @@ bool j1EntityManager::PostUpdate()
 				if ((!entities[i]->is_dynamic) && (!App->IsLoading()))
 					App->scene->CheckWinner();
 
+				for (int j = 0; j < entities.size(); j++)
+				{
+					if (entities[j]->is_dynamic) {
+						if ((entities[j]->type == MELEE) || (entities[j]->type == RANGED) || (entities[j]->type == MR_HANDY)) {
+							if (entities[i]->is_dynamic)
+								dynamic_cast<Troop*>(entities[j])->dynamic_target = nullptr;
+							else
+								dynamic_cast<Troop*>(entities[j])->target_building = nullptr;
+						}
+					}
+				}
+
 				delete entities[i];
 				entities[i] = nullptr;
 				entities.erase(entities.begin() + i);
 			}
+		}
+
+		if (sort_timer.Read() > 500) {
+			BubbleSortEntities();
+			sort_timer.Start();
 		}
 
 		/*
@@ -571,7 +615,7 @@ bool j1EntityManager::LoadReferenceEntityData() {
 	pugi::xml_node type_node;
 	pugi::xml_node faction_node;
 	Faction faction = NO_FACTION;
-	EntityType type = NO_TYPE;
+	//EntityType type = NO_TYPE;
 	std::string faction_name;
 	std::string type_name;
 
@@ -646,6 +690,18 @@ bool j1EntityManager::LoadReferenceEntityData() {
 
 void j1EntityManager::DestroyEntity(j1Entity* entity) { entity->to_delete = true;}
 
+void j1EntityManager::DestroyDynamicEntities() {
+	
+	for (size_t i = 0; i < entities.size(); i++)
+	{
+		if (entities[i]->is_dynamic) {
+			delete entities[i];
+			entities[i] = nullptr;
+			entities.erase(entities.begin() + i);
+		}
+	}
+}
+
 void j1EntityManager::DestroyAllEntities() {
 	for(size_t i = 0; i < entities.size(); i++)
 	{
@@ -660,23 +716,32 @@ void j1EntityManager::DestroyAllEntitiesNow() {
 		entities[i] = nullptr;
 	}
 	entities.clear();
+
+	for (size_t i = 0; i < resource_buildings.size(); i++)
+	{
+		delete resource_buildings[i];
+		resource_buildings[i] = nullptr;
+	}
+	resource_buildings.clear();
 }
 
-j1Entity* j1EntityManager::FindEntityByTile(iPoint tile) {
+j1Entity* j1EntityManager::FindEntityByTile(iPoint tile, j1Entity* entity_to_skip) {
 	for(size_t i = 0; i < entities.size(); i++)
 	{
-		if (entities[i]->is_dynamic)
-		{
-			if (entities[i]->current_tile == tile)
-				return entities[i];
-		}
-		else
-		{
-			StaticEntity* static_entity = dynamic_cast<StaticEntity*>(entities[i]);
-			for(size_t j = 0; j < static_entity->tiles.size(); j++)
+		if (entities[i] != entity_to_skip) {
+			if (entities[i]->is_dynamic)
 			{
-				if (static_entity->tiles[j] == tile)
+				if (entities[i]->current_tile == tile)
 					return entities[i];
+			}
+			else
+			{
+				StaticEntity* static_entity = dynamic_cast<StaticEntity*>(entities[i]);
+				for (size_t j = 0; j < static_entity->tiles.size(); j++)
+				{
+					if (static_entity->tiles[j] == tile)
+						return entities[i];
+				}
 			}
 		}
 	}
@@ -705,14 +770,14 @@ iPoint j1EntityManager::ClosestTile(iPoint position, std::vector<iPoint> entity_
 	return pivot;
 }
 
-iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) {
+iPoint j1EntityManager::FindClosestFreeTile(iPoint origin, iPoint destination) {
 	int max = 1;
-	iPoint possible_tile;
+	iPoint possible_tile = {-1,-1};
 	iPoint closest_possible_tile = {-1,-1};
 	int distance_to_origin = 100000;
 	int distance_to_destination = 100000;
 
-	while (max < 5) {
+	while (max < 10) {
 		for(int y = -max; y <= max; y++)
 		{
 			for(int x = -max; x <= max; x++)
@@ -722,7 +787,7 @@ iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) 
 					possible_tile.y = destination.y + y;
 
 					if ((!occupied_tiles[possible_tile.x][possible_tile.y])&&(App->pathfinding->IsWalkable(possible_tile))) {
-						if ((possible_tile.DistanceManhattan(destination) < distance_to_destination)&&(possible_tile.DistanceManhattan(origin) <= distance_to_origin)) {
+						if ((possible_tile.DistanceManhattan(destination) <= distance_to_destination)&&(possible_tile.DistanceManhattan(origin) <= distance_to_origin)) {
 								distance_to_origin = possible_tile.DistanceManhattan(origin);
 								distance_to_destination = possible_tile.DistanceManhattan(destination);
 								closest_possible_tile = possible_tile;
@@ -738,19 +803,56 @@ iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) 
 
 		max++;
 	}
+
 	return possible_tile;
+}
+
+iPoint j1EntityManager::FindClosestFreeTileFromVector(iPoint origin, std::vector<iPoint> tiles) {
+	iPoint closest_free_tile = {-1, -1};
+
+	for (int i = 0; i < tiles.size(); i++) {
+		if ((occupied_tiles[tiles[i].x][tiles[i].y] == false) &&
+			((closest_free_tile == iPoint(-1, -1)) || (origin.DistanceManhattan(tiles[i]) < origin.DistanceManhattan(closest_free_tile)))) {
+			closest_free_tile = tiles[i];
+		}
+	}
+
+	return closest_free_tile;
+}
+
+iPoint j1EntityManager::FindFreeAdjacentTile(iPoint origin, iPoint destination) {
+	iPoint closest_adjacent_tile = { -1,-1 };
+	iPoint adjacent_tiles[4];
+	int distance = 10000;
+
+	//east
+	adjacent_tiles[0] = { destination.x - 1, destination.y };
+	//north
+	adjacent_tiles[1] = { destination.x , destination.y -1 };
+	//east
+	adjacent_tiles[2] = { destination.x + 1, destination.y };
+	//south
+	adjacent_tiles[3] = { destination.x, destination.y + 1 };
+
+	for (int i = 0; i < 4; i++)
+	{
+		if ((occupied_tiles[adjacent_tiles[i].x][adjacent_tiles[i].y] == false) && (App->pathfinding->IsWalkable(adjacent_tiles[i])) 
+			&& (adjacent_tiles[i].DistanceManhattan(origin) < distance))
+			closest_adjacent_tile = adjacent_tiles[i];
+	}
+
+	return closest_adjacent_tile;
 }
 
 ResourceBuilding* j1EntityManager::GetClosestResourceBuilding(iPoint current_position, Resource resource_type) {
 	ResourceBuilding* closest_building = nullptr;
 	int min_distance = 10000;
-	int building_distance = 0;
 
 	for(size_t i = 0; i < resource_buildings.size(); i++)
 	{
-		if ((resource_buildings[i]->quantity > 0)&&((resource_type == Resource::NO_TYPE)||(resource_buildings[i]->resource_type == resource_type)))
+		if ((resource_buildings[i]->quantity > 0) && ((resource_type == Resource::NO_TYPE)||(resource_buildings[i]->resource_type == resource_type)))
 		{
-			building_distance = ClosestTile(current_position, resource_buildings[i]->tiles).DistanceManhattan(current_position);
+			int building_distance = ClosestTile(current_position, resource_buildings[i]->tiles).DistanceManhattan(current_position);
 			if (building_distance < min_distance) {
 				closest_building = resource_buildings[i];
 				min_distance = building_distance;
@@ -793,19 +895,12 @@ void j1EntityManager::RandomFactions() {
 
 	srand((unsigned int)time(NULL));
 
-	int temp = 0;
-	int randomIndex = 0;
-
 	for(int i = 0; i < 4; i++) {
-		randomIndex = rand() % 4;
-		temp = randomFaction[i];
+		int randomIndex = rand() % 4;
+		int temp = randomFaction[i];
 		randomFaction[i] = randomFaction[randomIndex];
 		randomFaction[randomIndex] = temp;
 	}
-
-
-	for(int i = 0; i < 4; i++)
-		LOG("faction %i", randomFaction[i]);
 }
 
 void j1EntityManager::OnCommand(std::vector<std::string> command_parts) {
@@ -943,220 +1038,6 @@ void j1EntityManager::DestroyResourceSpot(ResourceBuilding* resource_spot) {
 			resource_buildings.erase(resource_buildings.cbegin() + i);
 		}
 	}
-}
-
-// Load Game State
-bool j1EntityManager::Load(pugi::xml_node& data)
-{
-	DestroyAllEntitiesNow();
-	App->ai_manager->CleanUp();
-	App->ai_manager->Start();
-	RestartOccupiedTiles();
-
-	std::string player_faction = "NO_FACTION_ASSIGNED";
-	Faction faction = NO_FACTION;
-	std::string type_name = "NO_TYPE";
-	std::string faction_name = "NO_FACTION";
-	EntityType type = NO_TYPE;
-	fPoint position = { -1.0f,-1.0f };
-	iPoint current_tile = { 0,0 }, target_tile = { 0,0 };
-	GenericPlayer* owner = nullptr;
-
-	int current_health = 0;
-	int upgrade_gath = 0;
-	int upgrade_base = 0;
-	int upgrade_health = 0;
-	int upgrade_creat = 0;
-	int upgrade_dama = 0;
-	int upgrade_speed = 0;
-	int width, height;
-	bool dynamic_entity = true;
-
-	player_faction = data.child("player").attribute("player_faction").as_string();
-
-	if (player_faction == "brotherhood") { App->player->faction = BROTHERHOOD; }
-	else if (player_faction == "supermutant") { App->player->faction = MUTANT; }
-	else if (player_faction == "ghoul") { App->player->faction = GHOUL; }
-	else if (player_faction == "vault") { App->player->faction = VAULT; }
-
-
-	pugi::xml_node iterator = data.first_child();
-	while (iterator)
-	{
-		dynamic_entity = true;
-
-		type_name = iterator.attribute("type").as_string();
-		faction_name = iterator.attribute("faction").as_string();
-
-		if (type_name == "melee") { type = MELEE;}
-		else if (type_name == "ranged") { type = RANGED;}
-		else if (type_name == "gatherer") { type = GATHERER;}
-		else if (type_name == "base") {
-			type = BASE;
-			dynamic_entity = false;
-		}
-		else if (type_name == "laboratory") {
-			type = LABORATORY;
-			dynamic_entity = false;
-		}
-		else if (type_name == "barrack") {
-			type = BARRACK;
-			dynamic_entity = false;
-		}
-		else if (type_name == "bighorner") { type = BIGHORNER; }
-		else if (type_name == "braham") { type = BRAHAM; }
-		else if (type_name == "deathclaw") { type = DEATHCLAW; }
-		else if (type_name == "mr_handy") { type = MR_HANDY; }
-
-		if (faction_name == "brotherhood") { faction = BROTHERHOOD; }
-		else if (faction_name == "supermutant"){ faction = MUTANT; }
-		else if (faction_name == "vault"){ faction = VAULT; }
-		else if (faction_name == "ghoul") { faction = GHOUL; }
-		else if (faction_name == "no_faction") { faction = NO_FACTION; }
-
-
-		if (type_name == "base") {
-			upgrade_gath =iterator.attribute("level_gatherer_resource_limit").as_int();
-			upgrade_base = iterator.attribute("level_base_resource_limit").as_int();
-		}
-		else if (type_name == "laboratory") {
-			upgrade_health = iterator.attribute("level_units_health").as_int();
-			upgrade_creat = iterator.attribute("level_units_creation_time").as_int();
-		}
-		else if (type_name == "barrack") {
-			upgrade_dama = iterator.attribute("level_units_damage").as_int();
-			upgrade_speed = iterator.attribute("level_units_speed").as_int();
-		}
-
-		position.x = iterator.attribute("position_x").as_float();
-		position.y = iterator.attribute("position_y").as_float();
-		current_tile.x = iterator.attribute("current_tile_x").as_int();
-		current_tile.y = iterator.attribute("current_tile_y").as_int();
-		current_health = iterator.attribute("current_health").as_int();
-
-		LOG("%f %f %i %i", position.x, position.y , current_tile.x, current_tile.y);
-		if (dynamic_entity == false) {
-
-			//create building
-			StaticEntity* entity = dynamic_cast<StaticEntity*>(App->entities->CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]));
-
-			iPoint tile = current_tile;
-			if (type_name == "base") {
-				entity = App->scene->players[faction]->base;
-				width = height = 4;
-			}
-			else if (type_name == "barrack") {
-				if (App->scene->players[faction]->barrack[0] == nullptr) {
-					App->scene->players[faction]->barrack[0] = entity;
-				}
-				else {
-					App->scene->players[faction]->barrack[1] = entity;
-				}
-				width = 2;
-				height = 4;
-			}
-			else if (type_name == "laboratory") {
-				entity = App->scene->players[faction]->laboratory;
-				width = height = 3;
-			}
-
-			for(int y = 0; y < height; y++)
-			{
-				for(int x = 0; x < width; x++)
-				{
-					tile.x = current_tile.x + x;
-					tile.y = current_tile.y + y;
-					entity->tiles.push_back(tile);
-				}
-			}
-
-			entity->CalculateRenderAndSpawnPositions();
-
-		}
-		else if(dynamic_entity){
-
-			if (faction_name == "no_faction") {
-				CreateEntity(faction, type, current_tile.x, current_tile.y);
-			}
-			else {
-				DynamicEntity* entity = dynamic_cast<DynamicEntity*>(CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]));
-
-			}
-
-		}
-
-
-		iterator = iterator.next_sibling();
-	}
-
-
-
-	LOG("%i", entities.size());
-
-	return true;
-}
-
-// Save Game State
-bool j1EntityManager::Save(pugi::xml_node& data) const
-{
-	for(size_t i = 0; i < entities.size(); i++)
-	{
-		pugi::xml_node entities_pugi = data.append_child("entity");
-		entities_pugi.append_attribute("number") = i;
-
-		if (entities[i]->type == MELEE) { entities_pugi.append_attribute("type") = "melee"; }
-		else if (entities[i]->type == RANGED) { entities_pugi.append_attribute("type") = "ranged"; }
-		else if (entities[i]->type == GATHERER) { entities_pugi.append_attribute("type") = "gatherer"; }
-		else if (entities[i]->type == BASE) { entities_pugi.append_attribute("type") = "base"; }
-		else if (entities[i]->type == LABORATORY) { entities_pugi.append_attribute("type") = "laboratory"; }
-		else if (entities[i]->type == BARRACK) { entities_pugi.append_attribute("type") = "barrack"; }
-		else if (entities[i]->type == BIGHORNER) { entities_pugi.append_attribute("type") = "bighorner"; }
-		else if (entities[i]->type == BRAHAM) { entities_pugi.append_attribute("type") = "braham"; }
-		else if (entities[i]->type == DEATHCLAW) { entities_pugi.append_attribute("type") = "deathclaw"; }
-		else if (entities[i]->type == MR_HANDY) { entities_pugi.append_attribute("type") = "mr_handy"; }
-
-		if (entities[i]->faction == BROTHERHOOD) { entities_pugi.append_attribute("faction") = "brotherhood"; }
-		else if (entities[i]->faction == MUTANT) { entities_pugi.append_attribute("faction") = "supermutant"; }
-		else if (entities[i]->faction == VAULT) { entities_pugi.append_attribute("faction") = "vault"; }
-		else if (entities[i]->faction == GHOUL) { entities_pugi.append_attribute("faction") = "ghoul"; }
-		else if (entities[i]->faction == NO_FACTION) { entities_pugi.append_attribute("faction") = "no_faction"; }
-
-
-
-		entities_pugi.append_attribute("position_x") = entities[i]->position.x;
-		entities_pugi.append_attribute("position_y") = entities[i]->position.y;
-		entities_pugi.append_attribute("current_tile_x") = entities[i]->current_tile.x;
-		entities_pugi.append_attribute("current_tile_y") = entities[i]->current_tile.y;
-		entities_pugi.append_attribute("current_health") = entities[i]->current_health;
-
-
-		if (entities[i]->type == BASE) {
-			entities_pugi.append_attribute("level_gatherer_resource_limit") = App->entities->gatherer_resource_limit[entities[i]->faction].upgrade_num;
-			entities_pugi.append_attribute("level_base_resource_limit") = App->entities->base_resource_limit[entities[i]->faction].upgrade_num;
-		}
-
-		if (entities[i]->type == LABORATORY) {
-		entities_pugi.append_attribute("level_units_health") = App->entities->units_health[entities[i]->faction].upgrade_num;
-		entities_pugi.append_attribute("level_units_creation_time") = App->entities->units_creation_time[entities[i]->faction].upgrade_num;
-		}
-
-		if (entities[i]->type == BARRACK) {
-		entities_pugi.append_attribute("level_units_damage") = App->entities->units_damage[entities[i]->faction].upgrade_num;
-		entities_pugi.append_attribute("level_units_speed") = App->entities-> units_speed[entities[i]->faction].upgrade_num;
-		}
-
-	}
-
-	pugi::xml_node player_pugi = data.append_child("player");
-
-	if (App->player->faction == BROTHERHOOD) { player_pugi.append_attribute("player_faction") = "brotherhood"; }
-	else if (App->player->faction == MUTANT) { player_pugi.append_attribute("player_faction") = "supermutant"; }
-	else if (App->player->faction == VAULT) { player_pugi.append_attribute("player_faction") = "vault"; }
-	else if (App->player->faction == GHOUL) { player_pugi.append_attribute("player_faction") = "ghoul"; }
-
-	LOG("%i", entities.size());
-
-	return true;
 }
 
 iPoint j1EntityManager::FindSpawnPoint(int position_x, int position_y) {
@@ -1310,4 +1191,223 @@ void j1EntityManager::RestartOccupiedTiles() {
 			occupied_tiles[x][y] = false;
 		}
 	}
+}
+
+// Load Game State
+bool j1EntityManager::Load(pugi::xml_node& data)
+{
+	DestroyDynamicEntities();
+	App->player->resource_fow_added = false;
+	App->fowManager->ResetFoWEntities();
+	App->fowManager->ResetFoWMap();
+
+	App->player->selected_entity = nullptr;
+	if (App->player->selected_group != nullptr) {
+		App->player->selected_group->ClearGroup();
+		App->player->selected_group = nullptr;
+	}
+
+	RestartOccupiedTiles();
+
+	std::string player_faction = "NO_FACTION_ASSIGNED";
+	Faction faction = NO_FACTION;
+	std::string type_name = "NO_TYPE";
+	std::string faction_name = "NO_FACTION";
+	EntityType type = NO_TYPE;
+	fPoint position = { -1.0f,-1.0f };
+	iPoint current_tile = { 0,0 }, target_tile = { 0,0 };
+	GenericPlayer* owner = nullptr;
+	int width = 0, height = 0;
+	int resource_collected = 0;
+	player_faction = data.child("player").attribute("player_faction").as_string();
+
+	if (player_faction == "brotherhood") { App->player->faction = BROTHERHOOD; }
+	else if (player_faction == "supermutant") { App->player->faction = MUTANT; }
+	else if (player_faction == "ghoul") { App->player->faction = GHOUL; }
+	else if (player_faction == "vault") { App->player->faction = VAULT; }
+
+
+	pugi::xml_node iterator = data.first_child();
+	while (iterator)
+	{
+		int current_health = 0;
+		int upgrade_gath = 0;
+		int upgrade_base = 0;
+		int upgrade_health = 0;
+		int upgrade_creat = 0;
+		int upgrade_dama = 0;
+		int upgrade_speed = 0;
+
+		bool dynamic_entity = true;
+
+		type_name = iterator.attribute("type").as_string();
+		faction_name = iterator.attribute("faction").as_string();
+
+		if (type_name == "melee") { type = MELEE; }
+		else if (type_name == "ranged") { type = RANGED; }
+		else if (type_name == "gatherer") {
+			type = GATHERER;
+			resource_collected = iterator.attribute("resource_collected").as_int();
+		}
+		else if (type_name == "base") {
+			type = BASE;
+			dynamic_entity = false;
+		}
+		else if (type_name == "laboratory") {
+			type = LABORATORY;
+			dynamic_entity = false;
+		}
+		else if ((type_name == "barrack 1")|| (type_name == "barrack 2")) {
+			type = BARRACK;
+			dynamic_entity = false;
+		}
+		else if (type_name == "bighorner") { type = BIGHORNER; }
+		else if (type_name == "braham") { type = BRAHAM; }
+		else if (type_name == "deathclaw") { type = DEATHCLAW; }
+		else if (type_name == "mr_handy") { type = MR_HANDY; }
+
+		if (faction_name == "brotherhood") { faction = BROTHERHOOD; }
+		else if (faction_name == "supermutant") { faction = MUTANT; }
+		else if (faction_name == "vault") { faction = VAULT; }
+		else if (faction_name == "ghoul") { faction = GHOUL; }
+		else if (faction_name == "no_faction") { faction = NO_FACTION; }
+
+
+		if (type_name == "base") {
+			App->scene->players[faction]->base->level = iterator.attribute("level").as_int();
+			upgrade_gath = iterator.attribute("level_gatherer_resource_limit").as_int();
+			upgrade_base = iterator.attribute("level_base_resource_limit").as_int();
+			gatherer_resource_limit[faction].upgrade_num = upgrade_gath;
+			base_resource_limit[faction].upgrade_num = upgrade_base;
+		}
+		else if (type_name == "laboratory") {
+			App->scene->players[faction]->laboratory->level = iterator.attribute("level").as_int();
+			upgrade_health = iterator.attribute("level_units_health").as_int();
+			upgrade_creat = iterator.attribute("level_units_creation_time").as_int();
+			units_health[faction].upgrade_num = upgrade_health;
+			units_creation_time[faction].upgrade_num = upgrade_creat;
+		}
+		else if (type == BARRACK) {
+			if(type_name == "barrack 1")
+				App->scene->players[faction]->barrack[0]->level = iterator.attribute("level").as_int();
+			else if (type_name == "barrack 2")
+				App->scene->players[faction]->barrack[1]->level = iterator.attribute("level").as_int();
+
+			upgrade_dama = iterator.attribute("level_units_damage").as_int();
+			upgrade_speed = iterator.attribute("level_units_speed").as_int();
+			units_damage[faction].upgrade_num = upgrade_dama;
+			units_speed[faction].upgrade_num = upgrade_speed;
+
+		}
+
+		position.x = iterator.attribute("position_x").as_float();
+		position.y = iterator.attribute("position_y").as_float();
+		current_tile.x = iterator.attribute("current_tile_x").as_int();
+		current_tile.y = iterator.attribute("current_tile_y").as_int();
+		current_health = iterator.attribute("current_health").as_int();
+
+		LOG("%f %f %i %i", position.x, position.y, current_tile.x, current_tile.y);
+
+		if (dynamic_entity) {
+
+			if (faction_name == "no_faction") {
+				//CreateEntity(faction, type, current_tile.x, current_tile.y);
+			}
+			else {
+				DynamicEntity* entity = dynamic_cast<DynamicEntity*>(CreateEntity(faction, type, current_tile.x, current_tile.y, App->scene->players[faction]));
+
+				if (type == GATHERER)dynamic_cast<Gatherer*>(entity)->resource_collected = resource_collected;
+				if ((type == MELEE) || (type == RANGED) || (type == MR_HANDY) || (type == GATHERER))entity->current_health = current_health;
+				/*if (type == RANGED)entity->current_health = current_health;
+				if (type == MR_HANDY)entity->current_health = current_health;*/
+			}
+		}
+
+		iterator = iterator.next_sibling();
+	}
+
+	if (App->player->base != nullptr && App->player->resource_fow_added == false) {
+		App->fowManager->AddFowToResourceBuildings(App->player->base->current_tile);
+		App->player->resource_fow_added = true;
+	}
+
+	LOG("%i", entities.size());
+
+	return true;
+}
+
+// Save Game State
+bool j1EntityManager::Save(pugi::xml_node& data) const
+{
+
+	pugi::xml_node player_pugi = data.append_child("player");
+
+	if (App->player->faction == BROTHERHOOD) { player_pugi.append_attribute("player_faction") = "brotherhood"; }
+	else if (App->player->faction == MUTANT) { player_pugi.append_attribute("player_faction") = "supermutant"; }
+	else if (App->player->faction == VAULT) { player_pugi.append_attribute("player_faction") = "vault"; }
+	else if (App->player->faction == GHOUL) { player_pugi.append_attribute("player_faction") = "ghoul"; }
+
+	for (size_t i = 0; i < entities.size(); i++)
+	{
+		pugi::xml_node entities_pugi = data.append_child("entity");
+		entities_pugi.append_attribute("number") = i;
+
+		if (entities[i]->type == MELEE) { entities_pugi.append_attribute("type") = "melee"; }
+		else if (entities[i]->type == RANGED) { entities_pugi.append_attribute("type") = "ranged"; }
+		else if (entities[i]->type == GATHERER) {
+			entities_pugi.append_attribute("type") = "gatherer";
+			entities_pugi.append_attribute("resource_collected") = dynamic_cast<Gatherer*>(entities[i])->resource_collected;
+		}
+		else if (entities[i]->type == BASE) { entities_pugi.append_attribute("type") = "base"; }
+		else if (entities[i]->type == LABORATORY) { entities_pugi.append_attribute("type") = "laboratory"; }
+		else if (entities[i]->type == BARRACK) {
+			StaticEntity* barrack = dynamic_cast<StaticEntity*>(entities[i]);
+			if(barrack->owner->barrack[0] == barrack)
+				entities_pugi.append_attribute("type") = "barrack 1";
+			else 
+				entities_pugi.append_attribute("type") = "barrack 2";
+		}
+		else if (entities[i]->type == BIGHORNER) { entities_pugi.append_attribute("type") = "bighorner"; }
+		else if (entities[i]->type == BRAHAM) { entities_pugi.append_attribute("type") = "braham"; }
+		else if (entities[i]->type == DEATHCLAW) { entities_pugi.append_attribute("type") = "deathclaw"; }
+		else if (entities[i]->type == MR_HANDY) { entities_pugi.append_attribute("type") = "mr_handy"; }
+
+		if (entities[i]->faction == BROTHERHOOD) { entities_pugi.append_attribute("faction") = "brotherhood"; }
+		else if (entities[i]->faction == MUTANT) { entities_pugi.append_attribute("faction") = "supermutant"; }
+		else if (entities[i]->faction == VAULT) { entities_pugi.append_attribute("faction") = "vault"; }
+		else if (entities[i]->faction == GHOUL) { entities_pugi.append_attribute("faction") = "ghoul"; }
+		else if (entities[i]->faction == NO_FACTION) { entities_pugi.append_attribute("faction") = "no_faction"; }
+
+
+
+		entities_pugi.append_attribute("position_x") = entities[i]->position.x;
+		entities_pugi.append_attribute("position_y") = entities[i]->position.y;
+		entities_pugi.append_attribute("current_tile_x") = entities[i]->current_tile.x;
+		entities_pugi.append_attribute("current_tile_y") = entities[i]->current_tile.y;
+		entities_pugi.append_attribute("current_health") = entities[i]->current_health;
+
+
+		if (entities[i]->type == BASE) {
+			entities_pugi.append_attribute("level") = dynamic_cast<StaticEntity*>(entities[i])->level;
+			entities_pugi.append_attribute("level_gatherer_resource_limit") = App->entities->gatherer_resource_limit[entities[i]->faction].upgrade_num;
+			entities_pugi.append_attribute("level_base_resource_limit") = App->entities->base_resource_limit[entities[i]->faction].upgrade_num;
+		}
+
+		if (entities[i]->type == LABORATORY) {
+			entities_pugi.append_attribute("level") = dynamic_cast<StaticEntity*>(entities[i])->level;
+			entities_pugi.append_attribute("level_units_health") = App->entities->units_health[entities[i]->faction].upgrade_num;
+			entities_pugi.append_attribute("level_units_creation_time") = App->entities->units_creation_time[entities[i]->faction].upgrade_num;
+		}
+
+		if (entities[i]->type == BARRACK) {
+			entities_pugi.append_attribute("level") = dynamic_cast<StaticEntity*>(entities[i])->level;
+			entities_pugi.append_attribute("level_units_damage") = App->entities->units_damage[entities[i]->faction].upgrade_num;
+			entities_pugi.append_attribute("level_units_speed") = App->entities->units_speed[entities[i]->faction].upgrade_num;
+		}
+
+	}
+
+	LOG("%i", entities.size());
+
+	return true;
 }

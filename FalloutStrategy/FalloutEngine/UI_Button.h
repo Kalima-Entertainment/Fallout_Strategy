@@ -53,6 +53,7 @@ public:
 	void DoNotShowElement(UI_element*);
 
 	j1Image* faction_image;
+	j1Image* group_image;
 
 	BUTTON_STATE current_state;
 	std::list<UI_element*> elements_to_show;

@@ -76,12 +76,9 @@ bool AI_Player::Update(float dt) {
 		gatherers_commanded = true;
 	}
 
-	// ------------------------------------------------------------
-
 	//Spawn Units -------------------------------------------------
 
 	//melee-ranged proportion
-
 	float mr_proportion = 0;
 	if (rangeds > 0)
 		mr_proportion = melees / rangeds;
@@ -105,14 +102,25 @@ bool AI_Player::Update(float dt) {
 	//Choose enemy player -----------------------------------------
 
 	//if the ai_player is ready choose a player to attack
-	if ((wave_timer.ReadSec() > wave_time)&&(!is_attacking)) {
+	if ((wave_timer.ReadSec() >= wave_time) && (!is_attacking)) {
 		if ((rangeds >= ranged_minimum) && (melees >= melee_minimum)) {
 			if (target_player == nullptr) {
 				ChooseRandomPlayerEnemy();
 			}
 			is_attacking = true;
 			wave_timer.Start();
-			LOG("Attacking %i:%i", App->hud->minutes, App->hud->timer);
+
+			std::string faction_name;
+			if (faction == VAULT)
+				faction_name = "vault";
+			else if (faction == BROTHERHOOD)
+				faction_name = "brotherhood";
+			else if (faction == MUTANT)
+				faction_name = "mutant";
+			else if (faction == GHOUL)
+				faction_name = "ghoul";
+
+			LOG("%s attacking %i:%i", faction_name.c_str(), App->hud->minutes, App->hud->timer);
 		}
 	}
 
@@ -125,25 +133,27 @@ bool AI_Player::Update(float dt) {
 	if (is_attacking) 
 	{
 		//if the target building is destroyed forget about it
-		if ((target_building != nullptr) && (target_building->state == DIE))
+		if ((target_building != nullptr) && (!target_building->isValidTarget() || target_building->state == DIE))
 			target_building = nullptr;
 
 		//if there is no target building find one
-		if (target_building == nullptr) {
+		if ((target_building == nullptr)||(!target_building->isValidTarget())) {
 			target_building = ChooseTargetBuilding();
 			//if the enemy player has no buildings left choose another player
-			if (target_building == nullptr) {
+			if ((target_building == nullptr) || (!target_building->isValidTarget())) {
 				ChooseRandomPlayerEnemy();
 				target_building = ChooseTargetBuilding();
 			}
 		}
-		else {
-			for (size_t i = 0; i < troops.size(); i++)
-			{
-				if (troops[i]->target_building == nullptr)
-					troops[i]->target_building = target_building;
+		//else {
+		for (size_t i = 0; i < troops.size(); i++)
+		{
+			if ((target_building != nullptr) && (target_building->isValidTarget())) {
+				troops[i]->target_building = target_building;
+				troops[i]->PathfindToPosition(App->entities->ClosestTile(troops[i]->current_tile, target_building->surrounding_tiles));
 			}
 		}
+		//}
 
 		is_attacking = false;
 	}
@@ -182,14 +192,16 @@ DynamicEntity* AI_Player::GetClosestDynamicEntity() {
 StaticEntity* AI_Player::ChooseTargetBuilding() {
 
 	//choose a building to attack in preference order
-	if (target_player->barrack[0] != nullptr)
+	if ((target_player->barrack[0] != nullptr) && (target_player->barrack[0]->isValidTarget()))
 		target_building = target_player->barrack[0];
-	else if (target_player->laboratory != nullptr)
+	else if ((target_player->laboratory != nullptr) && (target_player->laboratory->isValidTarget()))
 		target_building = target_player->laboratory;
-	else if (target_player->barrack[1] != nullptr)
+	else if ((target_player->barrack[1] != nullptr) && (target_player->barrack[1]->isValidTarget()))
 		target_building = target_player->barrack[1];
-	else if (target_player->base != nullptr)
+	else if ((target_player->base != nullptr) && (target_player->base->isValidTarget()))
 		target_building = target_player->base;
+	else
+		return nullptr;
 
 	return target_building;
 }

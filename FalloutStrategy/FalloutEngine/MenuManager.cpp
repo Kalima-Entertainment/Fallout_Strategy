@@ -59,8 +59,8 @@ MenuManager::MenuManager()
 	for(int i = 0; i <= 9; i++) {
 		select_faction_menu[i] = nullptr;
 	}
-	for(int i = 0; i <= 3; i++) {
-		select_faction_photos[i] = nullptr;
+	for(int i = 0; i <= 7; i++) {
+		group_photos[i] = nullptr;
 	}
 	for(int i = 0; i <= 6; i++) {
 		pause_menu[i] = nullptr;
@@ -197,6 +197,15 @@ void MenuManager::CreateMenu(Menu menu) {
 		credits_menu[2] = dynamic_cast<UI_Button*>(App->gui->CreateButton(65, 200, button_github_credits, { 2181,841,73,78 }, { 2181,919,73,78 }, { 2181,1005,73,78 }, NULL, this));
 		credits_menu[3] = dynamic_cast<UI_Button*>(App->gui->CreateButton(65, 300, button_web_credits, { 2268,841,73,78 }, { 2268,919,73,78 }, { 2268,1005,73,78 }, NULL, this));
 		credits_menu[4] = dynamic_cast<UI_Button*>(App->gui->CreateButton(65, 400, button_twitter_credits, { 2355,841,73,78 }, { 2355,919,73,78 }, { 2355,1005,73,78 }, NULL, this));
+
+		group_photos[0] = dynamic_cast<UI_Button*>(App->gui->CreateButton(450, 127, marc_photo, { 11, 541, 166, 25 }, { 11, 541,166, 25 }, { 11, 541, 166, 25 }, NULL, this));
+		group_photos[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(450, 172, javi_photo, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, NULL, this));
+		group_photos[2] = dynamic_cast<UI_Button*>(App->gui->CreateButton(450, 217, pablo_photo, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, NULL, this));
+		group_photos[3] = dynamic_cast<UI_Button*>(App->gui->CreateButton(450, 262, german_photo, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, NULL, this));
+		group_photos[4] = dynamic_cast<UI_Button*>(App->gui->CreateButton(450, 307, macia_photo, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, NULL, this));
+		group_photos[5] = dynamic_cast<UI_Button*>(App->gui->CreateButton(450, 352, pol_photo, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, NULL, this));
+		group_photos[6] = dynamic_cast<UI_Button*>(App->gui->CreateButton(450, 397, silvino_photo, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, NULL, this));
+		group_photos[7] = dynamic_cast<UI_Button*>(App->gui->CreateButton(450, 442, christian_photo, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, { 11, 541, 166, 25 }, NULL, this));
 
 		last_menu = current_menu;
 		current_menu = Menu::CREDITS;
@@ -354,6 +363,7 @@ void MenuManager::CreateMenu(Menu menu) {
 		gui_ingame[2] = dynamic_cast<j1Image*>(App->gui->CreateImage(1205, 70, Image, { 1037, 2120, 74, 71 }, NULL, this));
 		gui_ingame[3] = dynamic_cast<UI_Button*>(App->gui->CreateButton(1160, 70, info_button, { 973,2084,43,46 }, { 973,2135,43,46 }, { 973,2185,43,46 }, NULL, this));
 		gui_ingame[4] = dynamic_cast<UI_Button*>(App->gui->CreateButton(1205, 0, Radio_button, { 1043,1998,74,71 }, { 966,1998,74,71 }, { 889,1998,74,71 }, NULL, this));
+		gui_ingame[5] = dynamic_cast<UI_Button*>(App->gui->CreateButton(1180, 0, Radio_off_button, { 1671,922,25,26 }, { 1713,922,25,26 }, { 1713,922,25,26 }, NULL, this));
 
 		timer_item = dynamic_cast<UI_Label*>(App->gui->CreateLabel(700, 7, Label, "0", NULL, this, "StackedPixel"));
 		timer_minutes = dynamic_cast<UI_Label*>(App->gui->CreateLabel(652, 7, Label, "0", NULL, this, "StackedPixel"));
@@ -446,8 +456,8 @@ void MenuManager::CreateMenu(Menu menu) {
 		break; 
 
 	case Menu::HOW_TO_PLAY:
-		how_to_play[0] = dynamic_cast<UI_Button*>(App->gui->CreateButton(920, 470, how_to_play_previous, { 1671,880,26,26 }, { 1738,880,26,26 }, { 1671,880,26,26 }, NULL, this));
-		how_to_play[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(970, 470, how_to_play_next, { 1703,880,26,26 }, { 1770,880,26,26 }, { 1703,880,26,26 }, NULL, this));
+		how_to_play[0] = dynamic_cast<UI_Button*>(App->gui->CreateButton(920, 470, how_to_play_previous, { 1670,788,42,41 }, { 1773,788,42,41 }, { 1670,788,42,41 }, NULL, this));
+		how_to_play[1] = dynamic_cast<UI_Button*>(App->gui->CreateButton(970, 470, how_to_play_next, { 1719,788,42,41 }, { 1823,788,42,41 }, { 1719,788,42,41 }, NULL, this));
 
 		if (how_to_play_counter == 0) {
 			how_to_play[2] = dynamic_cast<j1Image*>(App->gui->CreateImage(690, 160, Image, { 2869, 1188, 542, 296 }, NULL, this));
@@ -614,8 +624,8 @@ void MenuManager::CreateMenuFaction(Menu menu, Faction faction, EntityType type)
 						vault_barrack[7] = dynamic_cast<UI_Label*>(App->gui->CreateLabel(750, 656, Label, "MAX", NULL, this, "StackedPixelXS"));
 
 					//Carta
-					vault_barrack[8] = dynamic_cast<j1Image*>(App->gui->CreateImage(1010, 600, Image, { 296, 1930, 44, 61 }, NULL, this));
-					vault_barrack[9] = dynamic_cast<j1Image*>(App->gui->CreateImage(1110, 600, Image, { 340, 1930, 34, 65 }, NULL, this));
+					vault_barrack[8] = dynamic_cast<j1Image*>(App->gui->CreateImage(1110, 600, Image, { 296, 1930, 44, 61 }, NULL, this));
+					vault_barrack[9] = dynamic_cast<j1Image*>(App->gui->CreateImage(1015, 600, Image, { 340, 1930, 34, 65 }, NULL, this));
 					vault_barrack[10] = dynamic_cast<j1Image*>(App->gui->CreateImage(1200, 610, Image, { 0, 2338, 41, 46 }, NULL, this));
 
 					//Cost
@@ -1153,6 +1163,7 @@ void MenuManager::DestroyMenu(Menu menu) {
 		break;
 	case Menu::CREDITS:
 		App->gui->DeleteArrayElements(credits_menu, 5);
+		App->gui->DeleteArrayElements(group_photos, 8);
 		break;
 	case Menu::SELECT_FACTION:
 		App->gui->DeleteArrayElements(select_faction_menu, 10);
@@ -1161,7 +1172,7 @@ void MenuManager::DestroyMenu(Menu menu) {
 		App->gui->DeleteArrayElements(pause_menu, 7);
 		break;
 	case Menu::GUI:
-		App->gui->DeleteArrayElements(gui_ingame, 5);
+		App->gui->DeleteArrayElements(gui_ingame, 6);
 		App->gui->Delete_Element(timer_item);
 		App->gui->Delete_Element(timer_minutes);
 		break;

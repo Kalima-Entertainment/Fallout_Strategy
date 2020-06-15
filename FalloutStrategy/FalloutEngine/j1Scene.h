@@ -2,6 +2,7 @@
 #define __j1SCENE_H__
 
 #include "j1Module.h"
+#include "Animation.h"
 
 struct SDL_Texture;
 class DynamicEntity;
@@ -57,6 +58,8 @@ public:
 
 	void OnCommand(std::vector<std::string> command_parts);
 
+	void closeGame();
+
 public:
 
 	bool create;
@@ -78,6 +81,12 @@ public:
 	bool deathclaw2;
 	bool deathclaw3;
 	bool deathclaw4;
+
+	SDL_Texture* destination_texture;
+	iPoint debug_destiny;
+	Animation destination;
+	bool blit_destination;
+	bool attack_destination;
 	
 private:
 	int SongPlaying;

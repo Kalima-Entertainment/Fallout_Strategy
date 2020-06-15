@@ -11,6 +11,8 @@
 #include "FoWManager.h"
 #include "j1EntityManager.h"
 #include "AssetsManager.h"
+#include "FoWManager.h"
+#include <math.h>
 
 #include "ParticleSystem.h"
 #include "Emiter.h"
@@ -44,7 +46,6 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 	attacking_entity = nullptr;
 	current_animation = nullptr;
 	texture = nullptr;
-	//App->entities->ReleaseParticle(StaticParticle);
 
 	StaticParticle = nullptr;
 	HitParticle = nullptr;
@@ -93,7 +94,7 @@ StaticEntity::StaticEntity(Faction g_faction, EntityType g_type, iPoint g_curren
 
 		hit.Reset();
 
-		Emiter Hit(position.x, position.y, 0 , 0, 0 , 0, 0, 0, 0, 0, 0, 0, 1, 2.0f, nullptr, App->entities->hit, hit, true);
+		Emiter Hit(position.x, position.y, 0 , 0, 0 , 0, 0, 0, 0, 0, 0, 0, 2, 2.0f, nullptr, App->entities->hit, hit, true);
 		HitParticle->PushEmiter(Hit);
 		HitParticle->Desactivate();
 	}
@@ -111,12 +112,13 @@ StaticEntity::~StaticEntity() {
 	texture = nullptr;
 	StaticParticle = nullptr;
 	HitParticle = nullptr;
-
 	visionEntity = nullptr;
-	tiles.clear();
-
 	StaticParticle = nullptr;
-	visionEntity = nullptr;
+
+	tiles.clear();
+	surrounding_tiles.clear();
+
+	state = NO_STATE;
 
 	//Clean Unit Spawn Stacks
 	for(int i = 0; i < 10; i++)
@@ -147,7 +149,7 @@ bool StaticEntity::Update(float dt) {
 		if ((App->player->selected_entity != nullptr) && (App->player->selected_entity == this))
 			App->player->selected_entity = nullptr;
 
-		visionEntity->SetNewPosition(App->map->MapToWorld(-10, -10));
+		visionEntity->deleteEntity = true;
 
 		if ((delete_timer.ReadSec() > 5)||(current_animation->Finished()))
 			to_delete = true;
@@ -201,7 +203,7 @@ bool StaticEntity::PostUpdate() {
 		for(int i = 0; i < tiles.size(); i++)
 		{
 			tex_position = App->map->MapToWorld(tiles[i].x, tiles[i].y);
-			App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
+			App->render->Blit(App->entities->debug_tex, tex_position.x, tex_position.y, &tile_rect);
 		}
 	}
 
@@ -212,7 +214,14 @@ bool StaticEntity::PostUpdate() {
 		for(int i = 0; i < tiles.size(); i++)
 		{
 			tex_position = App->map->MapToWorld(tiles[i].x, tiles[i].y);
-			App->render->Blit(App->render->debug_tex, tex_position.x, tex_position.y, &tile_rect);
+			App->render->Blit(App->entities->debug_tex, tex_position.x, tex_position.y, &tile_rect);
+		}
+
+		tile_rect = { 128,0,64,64 };
+		for (int i = 0; i < surrounding_tiles.size(); i++)
+		{
+			tex_position = App->map->MapToWorld(surrounding_tiles[i].x, surrounding_tiles[i].y);
+			App->render->Blit(App->entities->debug_tex, tex_position.x, tex_position.y, &tile_rect);
 		}
 	}
 
@@ -421,6 +430,8 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 			if (storage_capacity < max_capacity) {
 				int cost = App->entities->base_resource_limit[faction].first_price + (App->entities->base_resource_limit[faction].price_increment * App->entities->base_resource_limit[faction].upgrade_num);
 
+				if (App->player->god_mode == true) cost = 0;
+
 				if (owner->caps >= cost) {
 					//Pay the price
 					if (owner == App->player)
@@ -440,6 +451,8 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 		}
 		else if (upgrades_data.upgrade == GATHERER_CAPACITY && App->entities->gatherer_resource_limit[faction].upgrade_num < 4) {
 			int cost = App->entities->gatherer_resource_limit[faction].first_price + (App->entities->gatherer_resource_limit[faction].price_increment * App->entities->gatherer_resource_limit[faction].upgrade_num);
+
+			if (App->player->god_mode == true) cost = 0;
 
 			if (owner->caps >= cost) {
 				//Pay the price
@@ -461,6 +474,8 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 		else if (upgrades_data.upgrade == UNITS_DAMAGE && App->entities->units_damage[faction].upgrade_num < 4) {
 			int cost = App->entities->units_damage[faction].first_price + (App->entities->units_damage[faction].price_increment * App->entities->units_damage[faction].upgrade_num);
 
+			if (App->player->god_mode == true) cost = 0;
+
 			if (owner->caps >= cost) {
 				//Pay the price
 				if (owner == App->player)
@@ -480,6 +495,8 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 		}
 		else if (upgrades_data.upgrade == UNITS_SPEED && App->entities->units_speed[faction].upgrade_num < 4) {
 			int cost = App->entities->units_speed[faction].first_price + (App->entities->units_speed[faction].price_increment * App->entities->units_speed[faction].upgrade_num);
+
+			if (App->player->god_mode == true) cost = 0;
 
 			if (owner->caps >= cost) {
 				//Pay the price
@@ -501,6 +518,8 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 		else if (upgrades_data.upgrade == UNITS_HEALTH && App->entities->units_health[faction].upgrade_num < 4) {
 			int cost = App->entities->units_health[faction].first_price + (App->entities->units_health[faction].price_increment * App->entities->units_health[faction].upgrade_num);
 
+			if (App->player->god_mode == true) cost = 0;
+
 			if (owner->caps >= cost) {
 				//Pay the price
 				if (owner == App->player)
@@ -520,6 +539,8 @@ void StaticEntity::Upgrade(Upgrades_Data upgrades_data) {
 		}
 		else if (upgrades_data.upgrade == CREATION_TIME && App->entities->units_creation_time[faction].upgrade_num < 4) {
 			int cost = App->entities->units_creation_time[faction].first_price + (App->entities->units_creation_time[faction].price_increment * App->entities->units_creation_time[faction].upgrade_num);
+
+			if (App->player->god_mode == true) cost = 0;
 
 			if (owner->caps >= cost) {
 				//Pay the price
@@ -547,6 +568,8 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 		if (storage_capacity < max_capacity) {
 			int cost = App->entities->base_resource_limit[faction].first_price + (App->entities->base_resource_limit[faction].price_increment * App->entities->base_resource_limit[faction].upgrade_num);
 
+			if (App->player->god_mode == true)	cost = 0;
+
 			float value_increment = App->entities->base_resource_limit[faction].value_increment;
 			storage_capacity += static_cast<int>(storage_capacity * value_increment);
 
@@ -558,6 +581,8 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 	}
 	else if (upgrade_name == GATHERER_CAPACITY) {
 		int cost = App->entities->gatherer_resource_limit[faction].first_price + (App->entities->gatherer_resource_limit[faction].price_increment * App->entities->gatherer_resource_limit[faction].upgrade_num);
+
+		if (App->player->god_mode == true) cost = 0;
 
 		float value_increment = App->entities->gatherer_resource_limit[faction].value_increment;
 
@@ -573,6 +598,8 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 	else if (upgrade_name == UNITS_DAMAGE) {
 		int cost = App->entities->units_damage[faction].first_price + (App->entities->units_damage[faction].price_increment * App->entities->units_damage[faction].upgrade_num);
 
+		if (App->player->god_mode == true) cost = 0;
+
 		float value_increment = App->entities->units_damage[faction].value_increment;
 
 		//Upgrade melees and ranged that are currently alive
@@ -587,6 +614,8 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 	}
 	else if (upgrade_name == UNITS_SPEED) {
 		int cost = App->entities->units_speed[faction].first_price + (App->entities->units_speed[faction].price_increment * App->entities->units_speed[faction].upgrade_num);
+
+		if (App->player->god_mode == true) cost = 0;
 
 		float value_increment = App->entities->units_speed[faction].value_increment;
 
@@ -610,6 +639,8 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 	else if (upgrade_name == UNITS_HEALTH) {
 		int cost = App->entities->units_health[faction].first_price + (App->entities->units_health[faction].price_increment * App->entities->units_health[faction].upgrade_num);
 
+		if (App->player->god_mode == true) cost = 0;
+
 		float value_increment = App->entities->units_health[faction].value_increment;
 
 		//Upgrade melees and ranged that are currently alive
@@ -627,6 +658,8 @@ void StaticEntity::ExecuteUpgrade(Faction faction, Upgrades upgrade_name) {
 	else if (upgrade_name == CREATION_TIME) {
 		int cost = App->entities->units_creation_time[faction].first_price + (App->entities->units_creation_time[faction].price_increment * App->entities->units_creation_time[faction].upgrade_num);
 
+		if (App->player->god_mode == true) cost = 0;
+
 		float value_increment = App->entities->units_creation_time[faction].value_increment;
 
 		App->entities->unit_data[faction][GATHERER].spawn_seconds = (floor)(App->entities->unit_data[faction][GATHERER].spawn_seconds * (1-value_increment));
@@ -642,7 +675,7 @@ void StaticEntity::SpawnUnit(EntityType type, bool no_cost) {
 	int cost_water, cost_meat;
 	int spawn_seconds;	
 
-	if (((faction == App->player->faction) && (App->player->god_mode))||(no_cost == true)) {
+	if (App->player->god_mode||no_cost == true) {
 		cost_water = 0;
 		cost_meat = 0;
 		spawn_seconds = 0;
@@ -719,23 +752,25 @@ void StaticEntity::UpgradeChrono() {
 	}
 	if (upgrading == true) {
 		//LOG("time remaining %f ", 45 - chrono_upgrade.ReadSec());
-		if (chrono_upgrade.ReadSec() > upgrade_stack.upgrade_seconds) {
+		if ((chrono_upgrade.ReadSec() > upgrade_stack.upgrade_seconds)||(App->player->god_mode == true)) {
 			if (upgrade_stack.building == BASE) {
 				ExecuteUpgrade(upgrade_stack.faction, RESOURCES_LIMIT);
 				ExecuteUpgrade(upgrade_stack.faction, GATHERER_CAPACITY);
-				
+				level++;
 			}
 			else if (upgrade_stack.building == BARRACK) {
 				ExecuteUpgrade(upgrade_stack.faction, UNITS_DAMAGE);
 				ExecuteUpgrade(upgrade_stack.faction, UNITS_SPEED);
+				owner->barrack[0]->level++;
+				owner->barrack[1]->level++;
 			}
 			else if (upgrade_stack.building == LABORATORY) {
 				ExecuteUpgrade(upgrade_stack.faction, UNITS_HEALTH);
 				ExecuteUpgrade(upgrade_stack.faction, CREATION_TIME);
+				level++;
 			}
 			upgrading = false;
 			
-			level++;
 			App->audio->PlayFx(1, App->audio->upgrade_fx);
 		}
 
@@ -876,7 +911,6 @@ void StaticEntity::CalculateRenderAndSpawnPositions() {
 		}
 
 		//Spawn position is just below render position
-		spawnPosition = { App->map->WorldToMap(static_cast<int>(render_position.x + sprite_size * 0.5f), static_cast<int>(render_position.y + sprite_size)) };
-		
+		spawnPosition = { tiles.back().x + 1, tiles.back().y + 1 };
 	}
 }
