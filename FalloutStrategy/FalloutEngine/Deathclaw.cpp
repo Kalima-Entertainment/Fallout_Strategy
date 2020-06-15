@@ -43,9 +43,6 @@ bool Deathclaw::Update(float dt) {
 
 	current_animation = &animations[state][direction];
 
-	if (target_building == nullptr)
-		state = DIE;
-
 	switch (state)
 	{
     case IDLE:

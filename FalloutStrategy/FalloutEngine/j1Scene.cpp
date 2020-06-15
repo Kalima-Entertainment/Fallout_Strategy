@@ -203,8 +203,7 @@ bool j1Scene::Update(float dt)
 		attack_destination = false;
 	}
 
-
-	if ((App->hud->minutes == 4) && (deathclaw1 == false))
+	if ((App->hud->minutes == 14) && (deathclaw1 == false))
 	{
 		if (players[0]->base != nullptr && deathclaw1 == false)
 		{
@@ -528,7 +527,8 @@ void j1Scene::closeGame()
 	App->menu_manager->DestroyMenu(Menu::TUTORIAL);
 	App->menu_manager->DestroyMenu(Menu::RADIO);
 	App->menu_manager->DestroyMenu(Menu::GUI);
-	App->menu_manager->DestroyMenu(Menu::QUEST);	
+	App->menu_manager->DestroyMenu(Menu::QUEST);
+	beaten_enemies = 0;
 	App->gui->ingame = false;
 	App->isPaused = true;
 	App->logo_scene->Loop = true;
