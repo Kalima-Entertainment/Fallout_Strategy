@@ -261,7 +261,6 @@ bool j1EntityManager::Update(float dt)
 		{
 			if(!entities[i]->to_delete)
 				entities[i]->Update(dt);
-			
 		}
 	}
 
@@ -453,9 +452,7 @@ bool j1EntityManager::PostUpdate()
 					}
 				}
 
-				delete entities[i];
-				entities[i] = nullptr;
-				entities.erase(entities.begin() + i);
+				DestroyEntity(entities[i]);
 			}
 		}
 
@@ -688,7 +685,30 @@ bool j1EntityManager::LoadReferenceEntityData() {
 	return ret;
 }
 
-void j1EntityManager::DestroyEntity(j1Entity* entity) { entity->to_delete = true;}
+void j1EntityManager::DestroyEntity(j1Entity* entity) { 
+
+	for (size_t i = 0; i < entities.size(); i++)
+	{
+		if (entities[i]->is_dynamic) {
+			if ((entities[i]->type == MELEE) || (entities[i]->type == RANGED) || (entities[i]->type == MR_HANDY)) {
+				if (dynamic_cast<Troop*>(entities[i])->dynamic_target == entity) {
+					dynamic_cast<Troop*>(entities[i])->dynamic_target = nullptr;
+				}
+				else if (dynamic_cast<Troop*>(entities[i])->target_building == entity) {
+					dynamic_cast<Troop*>(entities[i])->target_building = nullptr;
+				}
+			}
+			else if ((entities[i]->type == DEATHCLAW)&&(dynamic_cast<Deathclaw*>(entities[i])->target_building == entity)) {
+				dynamic_cast<Deathclaw*>(entities[i])->target_building = nullptr;
+			}
+		}
+		if (entities[i] == entity) {
+			delete entities[i];
+			entities[i] = nullptr;
+			entities.erase(entities.begin() + i);
+		}
+	}
+}
 
 void j1EntityManager::DestroyDynamicEntities() {
 	
